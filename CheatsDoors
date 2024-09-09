@@ -151,10 +151,9 @@ createButton("Esp Player", scrollingframeEsp)
 createButton("Full Bright", scrollingFrame)
 createButton("No Cooldown Prompt", scrollingFrame)
 createButton("Auto Prompt", scrollingFrame)
-createButton("ESP Off", scrollingframeEsp) -- Renommé de ESO Door
+createButton("ESP Off", scrollingFrame) -- Correction du nom du bouton
 createButton("No Lag", scrollingFrame)
 
--- Aj
 -- Fonctionnalité ESP
 local espActive = false
 local espTargets = {}
@@ -217,7 +216,7 @@ local function restoreMaterials()
 end
 
 scrollingFrame:FindFirstChild("No Lag").MouseButton1Click:Connect(function()
-        if next(originalMaterials) == nil then
+    if next(originalMaterials) == nil then
         activateNoLag()
     else
         restoreMaterials()
@@ -236,9 +235,7 @@ local function highlightModel(model)
     end
 end
 
--- Déclaration d'un tableau pour les connexions de boutons
-
-
+-- Fonction pour
 -- Fonction pour gérer l'affichage/masquage du GUI
 toggleButton.MouseButton1Click:Connect(function()
     frame.Visible = not frame.Visible
@@ -250,7 +247,7 @@ scrollingframeEsp:FindFirstChild("Esp Player").MouseButton1Click:Connect(functio
     espActive = not espActive
     if espActive then
         highlightPlayers()
-        scrollingframeEsp:FindFirstChild(Esp Player").Text = "ESP On"
+        scrollingframeEsp:FindFirstChild("Esp Player").Text = "ESP On"
     else
         for _, target in pairs(espTargets) do
             if target and target:FindFirstChildOfClass("Highlight") then
@@ -292,11 +289,10 @@ scrollingFrame:FindFirstChild("ESP Off").MouseButton1Click:Connect(function()
 end)
 
 -- Fonction pour mettre à jour les boutons selon les besoins (ex. : rafraîchir l'UI)
-
-RunService.RenderStepped:Connect()
-if espActive then
+RunService.RenderStepped:Connect(function()
+    if espActive then
         highlightPlayers()
-        scrollingframeEsp:FindFirstChild(Esp Player").Text = "ESP On"
+        scrollingframeEsp:FindFirstChild("Esp Player").Text = "ESP On"
     else
         for _, target in pairs(espTargets) do
             if target and target:FindFirstChildOfClass("Highlight") then
@@ -307,4 +303,3 @@ if espActive then
         scrollingframeEsp:FindFirstChild("Esp Player").Text = "ESP Off"
     end
 end)
-
