@@ -21,15 +21,6 @@ end
 -- Création du GUI
 local screenGui = createUIElement("ScreenGui", player.PlayerGui, { Name = "GuiPlayer", ResetOnSpawn = false })
 
--- Main Frame
-local frame = createUIElement("Frame", screenGui, {
-    Size = UDim2.new(0.25, 0, 0.75, 0),
-    Position = UDim2.new(0.7, -90, 0.2, 0),
-    BackgroundColor3 = Color3.fromRGB(60, 60, 60),
-    BackgroundTransparency = 0.25,
-    Visible = false
-})
-
 -- Fonction pour afficher un message de bienvenue quand le GUI est ouvert
 local welcomeText = createUIElement("TextLabel", screenGui, {
     Size = UDim2.new(0.5, 0, 0.1, 0),
@@ -41,6 +32,21 @@ local welcomeText = createUIElement("TextLabel", screenGui, {
     BackgroundTransparency = 1,
     Visible = false
 })
+
+welcomeText.Visible = true
+wait(5)  -- Affiche le message pendant 2 secondes
+welcomeText.Visible = false
+
+-- Main Frame
+local frame = createUIElement("Frame", screenGui, {
+    Size = UDim2.new(0.25, 0, 0.75, 0),
+    Position = UDim2.new(0.7, -90, 0.2, 0),
+    BackgroundColor3 = Color3.fromRGB(60, 60, 60),
+    BackgroundTransparency = 0.25,
+    Visible = false
+})
+
+
 
 -- Gradient sur le Frame
 createUIElement("UIGradient", frame, {
@@ -196,10 +202,6 @@ local function toggleFullBright()
     FullBrightActive = not FullBrightActive
     game.Lighting.Brightness = FullBrightActive and 100 or 1
 end
-
-welcomeText.Visible = true
-wait(5)  -- Affiche le message pendant 2 secondes
-welcomeText.Visible = false
 
 local function highlightPlayers()
     espTargets = {}
