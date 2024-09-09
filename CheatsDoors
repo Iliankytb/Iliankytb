@@ -123,28 +123,33 @@ local InfoButton = createButton("Information", sidebarScrollingFrame)
 local RemoveGuiButton = createButton("Remove UI", sidebarScrollingFrame)
 
 -- ESP bouton
-local espButton = createButton("ESP Off", scrollingframeEsp)
+local espButton = createButton("Voir Joueurs", scrollingframeEsp)
 
 -- Ajout des nouveaux boutons dans scrollingFrame (Main)
 local fullBrightButton = createButton("Full Bright", scrollingFrame)
 local noCooldownButton = createButton("No Cooldown Prompt", scrollingFrame)
 local autoPromptButton = createButton("Auto Prompt", scrollingFrame)
-local espDoorButton = createButton("ESP Door", scrollingFrame) -- Renommé de ESO Door
+local espDoorButton = createButton("ESP Off", scrollingFrame) -- Renommé de ESO Door
 
 -- Ajout du bouton "No Lag"
 local noLagButton = createButton("No Lag", scrollingFrame)
 
--- Ajout des nouveaux boutons dans scrollingFrame ESP
+-- Ajout du bouton "Voir Joueurs" dans scrollingframeEsp
 local espPlayerButton = createButton("Voir Joueurs", scrollingframeEsp)
 
 -- Fonctionnalité ESP
 local espActive = false
 local espTargets = {}
 
+local FullBrightActive = false
+
 -- Fonction pour activer FullBright
 local function activateFullBright()
-    game.Lighting.Brightness = 2
-    game.Lighting.ClockTime = 14
+FullBrightActive = not FullBrightActive
+if FullBrightActive then
+    game.Lighting.Brightness = 100
+else
+game.Lighting.Brightness = 1
 end
 
 fullBrightButton.MouseButton1Click:Connect(activateFullBright)
@@ -159,7 +164,10 @@ local function highlightPlayers()
     end
 end
 
+
 espPlayerButton.MouseButton1Click:Connect(highlightPlayers)
+
+noCooldownButton.MouseButton1Click:Connect(highlightPlayers)
 
 -- Fonction pour réduire les lags (No Lag)
 local originalMaterials = {}
@@ -191,15 +199,15 @@ noLagButton.MouseButton1Click:Connect(function()
 end)
 
 -- Toggle ESP
-espButton.MouseButton1Click:Connect(function()
+espDoorButton.MouseButton1Click:Connect(function()
     espActive = not espActive
     if espActive then
         updateEspTargets()
         highlightModels()
-        espButton.Text = "ESP On"
+        espDoorButton.Text = "ESP On"
     else
         clearHighlights()
-        espButton.Text = "ESP Off"
+        espDoorButton.Text = "ESP Off"
     end
 end)
 
@@ -224,11 +232,16 @@ end)
 
 -- Boucle de mise à jour continue
 RunService.RenderStepped:Connect(function()
-        if espActive then
+    if espActive then
         updateEspTargets()
         highlightModels()
     else
         clearHighlights()
+    end
+if next(originalMaterials) == nil then
+        activateNoLag()
+    else
+        restoreMaterials()
     end
 end)
 
@@ -274,3 +287,4 @@ function clearHighlights()
         end
     end
 end
+
