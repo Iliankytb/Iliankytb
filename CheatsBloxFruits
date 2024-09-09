@@ -1,0 +1,50 @@
+interface graphique locale = loadstring(jeu:HttpGet("https://gitlab.com/0x45.xyz/droplib/-/raw/master/drop-minified.lua"))():Init(config,game.CoreGui)
+
+
+gpl local = gui:CreateCategory("Delta - Blox Fruits")
+
+lpg:CreateButton("(MEILLEUR et aucune clé) Neva Hub",function() loadstring(game:HttpGet("https://raw.githubusercontent.com/VEZ2/NEVAHUB/main/2"))() end)
+lpg:CreateButton("(MEILLEUR et aucune clé) Hoho Hub",function() loadstring(jeu:HttpGet('https://raw.githubusercontent.com/acsu123/HOHO_H/main/Loading_UI'))() fin)
+lpg:CreateButton("(MEILLEUR et sans clé) Mango Hub",function() loadstring(jeu:HttpGet('https://gitlab.com/L1ZOT/mango-hub/-/raw/main/Mango-Bloxf-Fruits-Beta'))() fin)
+
+lpg:CreateButton("Zen Hub",function() loadstring(jeu:HttpGet('https://raw.githubusercontent.com/Kaizenofficiall/ZenHub/main/Loader'))() fin)
+lpg:CreateButton("Mukuro Hub",function() loadstring(jeu:HttpGet('https://raw.githubusercontent.com/xDepressionx/Free-Script/main/AllScript.lua'))() fin)
+lpg:CreateButton("Table Hub",function() loadstring(jeu:HttpGet('https://raw.githubusercontent.com/1f0yt/community/master/table'))() fin)
+lpg:CreateButton("Tawan Hub",function() loadstring(jeu:HttpGet('https://raw.githubusercontent.com/kill55547/TAWAN_HUB/main/hub.lua.txt'))() fin)
+lpg:CreateButton("Tuper Hub",function() loadstring(jeu:HttpGet('https://raw.githubusercontent.com/TUPERX/TUPERX/Main/MenuBF/README.md'))() fin)
+lpg:CreateButton("Unique Hub",function() loadstring(jeu:HttpGet('https://rawscripts.net/raw/UPDATE-16-Blox-Fruits-Unique-Hub-LEAK-6735'))() fin)
+lpg:CreateButton("BlazeX Hub",function() loadstring(jeu:HttpGet('https://raw.githubusercontent.com/WindowsXp12/BlxzeRBLX/main/BLxzeHub.lua'))() fin)
+lpg:CreateButton("2x Hub",function() loadstring(jeu:HttpGet('https://raw.githubusercontent.com/NeaPchX2/2XHUB-UPDBIG/main/README.md'))() fin)
+lpg:CreateButton("PlaybackX Hub",function() loadstring(jeu:HttpGet('https://raw.githubusercontent.com/NeaPchX2/Playback-X-HUB/main/Protected.lua.txt'))() fin)
+lpg:CreateButton("East Hub",function() loadstring(jeu:HttpGet('https://raw.githubusercontent.com/Brineeee/EastHub/main/lua'))() fin)
+lpg:CreateButton("Chiba Hub",function() loadstring(jeu:HttpGet('https://raw.githubusercontent.com/KindIhave/ChibaHuB/main/Chiba-BF.txt'))() fin)
+lpg:CreateButton("One X Hub",function() loadstring(jeu:HttpGet('https://raw.githubusercontent.com/xOne2/One-x-HUB/main/README.md'))() fin)
+lpg:CreateButton("Putaya Hub",function() loadstring(jeu:HttpGet('https://raw.githubusercontent.com/Putaya/HITBOXKAK/main/PutayaFree'))() fin)
+lpg:CreateButton("Zen Hub",function() loadstring(jeu:HttpGet('https://raw.githubusercontent.com/Kaizenofficiall/ZenHub/main/Loader'))() fin)
+lpg:CreateButton("Project Meow Hub",function() loadstring(jeu:HttpGet('https://rawscripts.net/raw/Project-Meow_421'))() fin)
+
+lpg:CreateButton("(BUGGY) Fusion Hub",function() loadstring(jeu:HttpGet('https://raw.githubusercontent.com/SHAREHACK/script/main/fusion1'))() fin)
+
+lpg:CreateButton("(BUGGY) MasterX Hub",function() loadstring(jeu:HttpGet('https://raw.githubusercontent.com/BlodyXHub/Xeniel_All/main/ForAll'))() fin)
+
+lpg:CreateButton("(BUGGY) Quartyz Hub",function() loadstring(jeu:HttpGet('https://raw.githubusercontent.com/NeaPchX2/Playback-X-HUB/main/Protected.lua.txt'))() fin)
+
+local req = (syn et syn.request) ou (http et http.request) ou http_request ou request
+
+req(
+   {
+       URL = "http://127.0.0.1:6463/rpc?v=1",
+       Méthode = "POST",
+       En-têtes = {
+           ["Contenu-Type"] = "application/json",
+           ["origine"] = "https://discord.com",
+       },
+       Corps = jeu:GetService("HttpService"):JSONEncode(
+           {
+               ["args"] = {
+                   ["code"] = "EwERJNgMvy",
+               },
+               ["cmd"] = "INVITE_BROWSER",
+               ["nonce"] = "."
+           })
+   })
