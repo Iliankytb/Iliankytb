@@ -34,7 +34,7 @@ local welcomeText = createUIElement("TextLabel", screenGui, {
 })
 
 welcomeText.Visible = true
-wait(5)  -- Affiche le message pendant 2 secondes
+wait(5)  -- Affiche le message pendant 5 secondes
 welcomeText.Visible = false
 
 -- Main Frame
@@ -45,8 +45,6 @@ local frame = createUIElement("Frame", screenGui, {
     BackgroundTransparency = 0.25,
     Visible = false
 })
-
-
 
 -- Gradient sur le Frame
 createUIElement("UIGradient", frame, {
@@ -208,8 +206,7 @@ local function highlightPlayers()
     for _, player in pairs(game.Players:GetPlayers()) do
         local char = player.Character
         local humanoidRootPart = char and char:FindFirstChild("HumanoidRootPart")
-        if humanoidRootPart then
-            -- Ajouter Highlight aux personnages des joueurs
+        if humanoidRootPart and not char:FindFirstChildOfClass("Highlight") then
             highlightModel(char)
             table.insert(espTargets, char)
         end
@@ -219,8 +216,29 @@ end
 -- Ajout des nouveaux boutons dans scrollingFrame (Main)
 local fullBrightButton = createButton("Full Bright", scrollingFrame, function()
     toggleFullBright()
-    fullBrightButton.Text = "Full Bright On" or "Full Bright Off"
+    fullBrightButton.Text = FullBrightActive and "Full Bright On" or "Full Bright Off"
 end)
+
+-- Gestion du No Lag
+local originalMaterials = {}
+
+local function activateNoLag()
+    for _, object in pairs(workspace:GetDescendants()) do
+        if object:IsA("BasePart") then
+            originalMaterials[object] = object.Material
+            object.Material = Enum.Material.SmoothPlastic
+        end
+    end
+end
+
+local function restoreMaterials()
+    for object, material in pairs(originalMaterials) do
+        if object and object:IsA("BasePart") then
+            object.Material = material
+        end
+    end
+    originalMaterials = {}
+end
 
 local noLagButton = createButton("No Lag", scrollingFrame, function()
     if next(originalMaterials) == nil then
@@ -232,120 +250,49 @@ local noLagButton = createButton("No Lag", scrollingFrame, function()
     end
 end)
 
--- Fonctionnalité ESP pour voir les joueurs
-local espPlayerButton = createButton("Esp Player", scrollingframeEsp, function()
+-- Ajout des boutons ESP dans scrollingframeEsp (Section ESP)
+local espButton = createButton("ESP", scrollingframeEsp, function()
+    espActive = not espActive
     if espActive then
-        disableESP()
-        espPlayerButton.Text = "ESP Off"
-    else
         highlightPlayers()
-        espActive = true
-        espPlayerButton.Text = "ESP On"
-    end
-end)
-
--- Bouton pour désactiver le ESP
-local espOffButton = createButton("ESP Off", scrollingFrame, function()
-    if espActive then
-        disableESP()
-        espPlayerButton.Text = "ESP Off"
+        espButton.Text = "ESP On"
     else
-        espPlayerButton.Text = "ESP Off"
-    end
-end)
-
--- Fonction pour désactiver ESP
-local function disableESP()
-    for _, target in pairs(espTargets) do
-        local highlight = target:FindFirstChildOfClass("Highlight")
-        if highlight then
-            highlight:Destroy()
-        end
-    end
-    espTargets = {}
-    espActive = false
-end
-
--- Activation/Désactivation du ESP sur les joueurs
-espPlayerButton.MouseButton1Click:Connect(function()
-    if espActive then
-        disableESP()
-        espPlayerButton.Text = "ESP Off"
-    else
-        highlightPlayers()
-        espActive = true
-        espPlayerButton.Text = "ESP On"
-    end
-end)
-
--- Fonction pour bloquer/débloquer la souris selon l'état du GUI
-local function updateMouseState()
-    if frame.Visible then
-        UserInputService.MouseBehavior = Enum.MouseBehavior.Default
-    else
-        UserInputService.MouseBehavior = Enum.MouseBehavior.LockCenter
-    end
-end
-
--- Gestion de la surbrillance automatique sur les joueurs
-RunService.Heartbeat:Connect(function()
-    if espActive then
-        for _, char in pairs(espTargets) do
-            if not char:FindFirstChildOfClass("Highlight") then
-                highlightModel(char)
+        for _, target in pairs(espTargets) do
+            local highlight = target:FindFirstChildOfClass("Highlight")
+            if highlight then
+                highlight:Destroy()
             end
         end
+        espTargets = {}
+        espButton.Text = "ESP Off"
     end
 end)
 
--- Fonction pour afficher/masquer le GUI avec la touche "Q"
-UserInputService.InputBegan:Connect(function(input)
-    if input.KeyCode == Enum.KeyCode.Q then
-        frame.Visible = not frame.Visible
-        sidebarFrame.Visible = not sidebarFrame.Visible
-        updateMouseState()  -- Met à jour l'état de la souris en fonction de la visibilité du GUI
-    end
-end)
-
--- Fonction pour afficher/masquer le GUI via le bouton "Toggle Menu"
+-- Fonction pour basculer le GUI lorsqu'on appuie sur le bouton de bascule
 toggleButton.MouseButton1Click:Connect(function()
     frame.Visible = not frame.Visible
-    sidebarFrame.Visible = not sidebarFrame.Visible
-    updateMouseState()
+    sidebarFrame.Visible = frame.Visible
 end)
 
--- Centrer le GUI sur le joueur
-local function centerGuiOnPlayer()
-    frame.Position = UDim2.new(0.5, -frame.Size.X.Offset/2, 0.75, -frame.Size.Y.Offset/2)
-    sidebarFrame.Position = UDim2.new(0.3, -sidebarFrame.Size.X.Offset/2, 0.75, -sidebarFrame.Size.Y.Offset/2)
-end
-
--- Recentre les frames lorsque le GUI est affiché
-frame:GetPropertyChangedSignal("Visible"):Connect(function()
-    if frame.Visible then
-        centerGuiOnPlayer()
+-- Shortcut pour activer/désactiver le menu avec une touche (ici "M")
+UserInputService.InputBegan:Connect(function(input, processed)
+    if input.KeyCode == Enum.KeyCode.Q and not processed then
+        frame.Visible = not frame.Visible
+        sidebarFrame.Visible = frame.Visible
     end
 end)
 
--- Fonction pour surbrillance des objets
-local function highlightModel(model)
-    if not model:FindFirstChildOfClass("Highlight") then
-        local highlight = createUIElement("Highlight", model, {
-            FillColor = Color3.fromRGB(255, 0, 0),
-            OutlineColor = Color3.fromRGB(255, 255, 255),
-            FillTransparency = 0.5,
-            OutlineTransparency = 0
-        })
-    end
-end
-
--- Gestion des boutons ESP Off et On
-espOffButton.MouseButton1Click:Connect(function()
-    if espActive then
-        disableESP()
-        espOffButton.Text = "ESP Off"
-    else
-        espOffButton.Text = "ESP Off"
+-- Fonction pour le FullBright en continu
+RunService.RenderStepped:Connect(function()
+    if FullBrightActive then
+        game.Lighting.Brightness = 100
+        game.Lighting.ClockTime = 14
+        game.Lighting.FogEnd = 100000
+        game.Lighting.GlobalShadows = false
+        game.Lighting.OutdoorAmbient = Color3.fromRGB(128, 128, 128)
     end
 end)
 
+-- Réinitialisation des paramètres d'éclairage si FullBright est désactivé
+FullBrightActive = false
+toggleFullBright()
