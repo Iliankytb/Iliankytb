@@ -14,7 +14,7 @@ screenGui.ResetOnSpawn = false
 -- Main Frame
 local frame = Instance.new("Frame", screenGui)
 frame.Size = UDim2.new(0.25, 0, 0.75, 0)
-frame.Position = UDim2.new(0.4, -90, 0.2, 0)
+frame.Position = UDim2.new(0.7, -90, 0.2, 0)
 frame.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 frame.BackgroundTransparency = 0.25
 frame.Visible = false
@@ -43,19 +43,19 @@ toggleButton.Text = "Toggle Menu"
 toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 toggleButton.Font = Enum.Font.GothamBold
 toggleButton.TextSize = 18
-toggleButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+toggleButton.BackgroundColor3 = Color3.fromRGB(85, 170, 255)
 
 -- Gradient sur le bouton toggleButton
 local buttonGradient = Instance.new("UIGradient", toggleButton)
 buttonGradient.Color = ColorSequence.new{
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 0)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(225, 0, 0))
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(85, 170, 255)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(65, 150, 255))
 }
 
 -- Sidebar Frame à gauche
 local sidebarFrame = Instance.new("Frame", screenGui)
 sidebarFrame.Size = UDim2.new(0.2, 0, 0.75, 0)
-sidebarFrame.Position = UDim2.new(0.3, -90, 0.2, 0)
+sidebarFrame.Position = UDim2.new(0.5, -90, 0.2, 0)
 sidebarFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
 sidebarFrame.BackgroundTransparency = 0.25
 sidebarFrame.Visible = false
