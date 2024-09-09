@@ -154,6 +154,12 @@ createButton("Auto Prompt", scrollingFrame)
 createButton("ESP Off", scrollingFrame)
 createButton("No Lag", scrollingFrame)
 
+local mainButton = sidebarScrollingFrame:FindFirstChild("Main")
+local espButton = sidebarScrollingFrame:FindFirstChild("ESP")
+local fullBrightButton = scrollingFrame:FindFirstChild("Full Bright")
+local espOffButton = scrollingFrame:FindFirstChild("ESP Off")
+local espPlayerButton = scrollingframeEsp:FindFirstChild("Esp Player")
+
 -- Fonctionnalité ESP
 local espActive = false
 local espTargets = {}
@@ -166,7 +172,7 @@ local function toggleFullBright()
     game.Lighting.Brightness = FullBrightActive and 100 or 1
 end
 
-scrollingFrame:FindFirstChild("Full Bright").MouseButton1Click:Connect(function()
+fullBrightButton.MouseButton1Click:Connect(function()
 toggleFullBright()
 end)
 
