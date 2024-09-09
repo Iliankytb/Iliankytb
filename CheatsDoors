@@ -12,8 +12,9 @@ local function createUIElement(className, parent, properties)
 end
 
 -- Supprimer l'ancien GUI si présent
-if player.PlayerGui:FindFirstChild("GuiPlayer") then
-    player.PlayerGui.GuiPlayer:Destroy()
+local oldGui = player.PlayerGui:FindFirstChild("GuiPlayer")
+if oldGui then
+    oldGui:Destroy()
 end
 
 -- Création du GUI
@@ -154,12 +155,6 @@ createButton("Auto Prompt", scrollingFrame)
 createButton("ESP Off", scrollingFrame)
 createButton("No Lag", scrollingFrame)
 
-local mainButton = sidebarScrollingFrame:FindFirstChild("Main")
-local espButton = sidebarScrollingFrame:FindFirstChild("ESP")
-local fullBrightButton = scrollingFrame:FindFirstChild("Full Bright")
-local espOffButton = scrollingFrame:FindFirstChild("ESP Off")
-local espPlayerButton = scrollingframeEsp:FindFirstChild("Esp Player")
-
 -- Fonctionnalité ESP
 local espActive = false
 local espTargets = {}
@@ -172,8 +167,8 @@ local function toggleFullBright()
     game.Lighting.Brightness = FullBrightActive and 100 or 1
 end
 
-fullBrightButton.MouseButton1Click:Connect(function()
-toggleFullBright()
+scrollingFrame:WaitForChild("Full Bright").MouseButton1Click:Connect(function()
+    toggleFullBright()
 end)
 
 -- Fonctionnalité ESP pour voir les joueurs
@@ -181,7 +176,8 @@ local function highlightPlayers()
     espTargets = {}
     for _, player in pairs(game.Players:GetPlayers()) do
         local char = player.Character
-        if char and char:FindFirstChild("HumanoidRootPart") then
+        local humanoidRootPart = char and char:FindFirstChild("HumanoidRootPart")
+        if humanoidRootPart then
             highlightModel(char)
             table.insert(espTargets, char)
         end
@@ -225,7 +221,7 @@ local function restoreMaterials()
     originalMaterials = {}
 end
 
-scrollingFrame:FindFirstChild("No Lag").MouseButton1Click:Connect(function()
+scrollingFrame:WaitForChild("No Lag").MouseButton1Click:Connect(function()
     if next(originalMaterials) == nil then
         activateNoLag()
     else
@@ -245,13 +241,9 @@ local function highlightModel(model)
     end
 end
 
--- Gérer l'affichage/masquage du GUI
 toggleButton.MouseButton1Click:Connect(function()
     frame.Visible = not frame.Visible
     sidebarFrame.Visible = not sidebarFrame.Visible
-end)
-scrollingframeEsp:FindFirstChild("Esp Player").MouseButton1Click:Connect(function()
-    highlightPlayers()
 end)
 
 -- Gérer le bouton "Remove UI"
@@ -269,19 +261,16 @@ local function switchToSection(sectionName)
 end
 
 -- Associer les boutons de la sidebar aux sections
-sidebarScrollingFrame:FindFirstChild("Main").MouseButton1Click:Connect(function()
+sidebarScrollingFrame:WaitForChild("Main").MouseButton1Click:Connect(function()
     switchToSection("Main")
 end)
 
-sidebarScrollingFrame:FindFirstChild("ESP").MouseButton1Click:Connect(function()
+sidebarScrollingFrame:WaitForChild("ESP").MouseButton1Click:Connect(function()
     switchToSection("ESP")
 end)
 
--- Vous pouvez ajouter des actions pour les autres sections de la sidebar ici, par exemple :
--- sidebarScrollingFrame:FindFirstChild("Player").MouseButton1Click:Connect(...)
-
 -- Fonction pour désactiver ESP
-scrollingFrame:FindFirstChild("ESP Off").MouseButton1Click:Connect(function()
+scrollingFrame:WaitForChild("ESP Off").MouseButton1Click:Connect(function()
     for _, target in pairs(espTargets) do
         if target and target:FindFirstChildOfClass("Highlight") then
             target:FindFirstChildOfClass("Highlight"):Destroy()
@@ -290,3 +279,9 @@ scrollingFrame:FindFirstChild("ESP Off").MouseButton1Click:Connect(function()
     espTargets = {}
 end)
 
+-- Gérer le bouton pour activer l'ESP
+scrollingframeEsp:WaitForChild("Esp Player").MouseButton1Click:Connect(function()
+    highlightPlayers()
+end)
+
+-- Le script est maintenant terminé.
