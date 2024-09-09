@@ -209,6 +209,61 @@ noLagButton.MouseButton1Click:Connect(function()
     end
 end)
 
+-- Fonction pour ajouter un effet de surbrillance
+function highlightModel(model)
+    local highlight = Instance.new("Highlight", model)
+    highlight.FillColor = Color3.fromRGB(255, 0, 0)
+    highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+    highlight.FillTransparency = 0.5
+    highlight.OutlineTransparency = 0
+end
+
+-- Déclaration d'un tableau pour stocker les modèles trouvés
+local modelsFound = {}
+
+-- Fonction pour rechercher les modèles par nom
+local function findModelsByName(name)
+    -- Parcours de tous les objets dans le Workspace
+    for _, object in ipairs(workspace:GetDescendants()) do
+        if object:IsA("Model") and object.Name:lower() == name:lower() then
+            table.insert(modelsFound, object)
+        end
+    end
+end
+
+-- Rechercher les modèles appelés "door" et "wardrobe"
+findModelsByName("door")
+findModelsByName("wardrobe")
+findModelsByName("locker_large")
+findModelsByName("locker_small")
+findModelsByName("locker")
+findModelsByName("sideroomdupe")
+findModelsByName("fuse")
+findModelsByName("Crucifix")
+findModelsByName("flashlight")
+findModelsByName("key")
+findModelsByName("key_holder")
+findModelsByName("keyholder")
+findModelsByName("rush")
+findModelsByName("ambush")
+findModelsByName("halt")
+findModelsByName("seek")
+findModelsByName("livehintbook")
+findModelsByName("book")
+findModelsByName("figurerig")
+findModelsByName("figure_rig")
+findModelsByName("rift")
+findModelsByName("lighter")
+findModelsByName("glowstick")
+findModelsByName("minesgenerator")
+
+local function modelhightlight()
+-- Afficher les modèles trouvés dans la console
+for _, model in ipairs(modelsFound) do
+    highlightModel(model)
+end
+
+
 -- Fonction pour mettre à jour les cibles ESP
 function updateEspTargets()
     espTargets = {}
@@ -228,14 +283,7 @@ function highlightModels()
     end
 end
 
--- Fonction pour ajouter un effet de surbrillance
-function highlightModel(model)
-    local highlight = Instance.new("Highlight", model)
-    highlight.FillColor = Color3.fromRGB(255, 0, 0)
-    highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
-    highlight.FillTransparency = 0.5
-    highlight.OutlineTransparency = 0
-end
+
 
 -- Fonction pour supprimer tous les highlights
 function clearHighlights()
@@ -247,12 +295,22 @@ function clearHighlights()
     end
 end
 
+function clearHighlightsmodel()
+    for _, model in ipairs(workspace:GetDescendants()) do
+        if  model:FindFirstChildOfClass("Highlight") then
+            model:FindFirstChildOfClass("Highlight"):Destroy()
+        end
+    end
+end
+
 -- Boucle de mise à jour continue
 RunService.RenderStepped:Connect(function()
     if espActive then
         updateEspTargets()
         highlightModels()
+modelhightlight()
     else
+clearHighlightsmodel()
         clearHighlights()
     end
 end)
