@@ -137,27 +137,24 @@ createUIElement("UIListLayout", scrollingframeEsp, {
 })
 
 -- Boutons dans la sidebar
-local mainButton = createButton("Main", sidebarScrollingFrame)
-local EspButton = createButton("ESP", sidebarScrollingFrame)
-local PlayerButton = createButton("Player", sidebarScrollingFrame)
-local GiveItemButton = createButton("Give Item", sidebarScrollingFrame)
-local InfoButton = createButton("Information", sidebarScrollingFrame)
-local RemoveGuiButton = createButton("Remove UI", sidebarScrollingFrame)
+createButton("Main", sidebarScrollingFrame)
+createButton("ESP", sidebarScrollingFrame)
+createButton("Player", sidebarScrollingFrame)
+createButton("Give Item", sidebarScrollingFrame)
+createButton("Information", sidebarScrollingFrame)
+local removeGuiButton = createButton("Remove UI", sidebarScrollingFrame)
 
--- ESP bouton
-local espButton = createButton("Voir Joueurs", scrollingframeEsp)
+-- ESP boutons
+createButton("Esp Player", scrollingframeEsp)
 
 -- Ajout des nouveaux boutons dans scrollingFrame (Main)
-local fullBrightButton = createButton("Full Bright", scrollingFrame)
-local noCooldownButton = createButton("No Cooldown Prompt", scrollingFrame)
-local autoPromptButton = createButton("Auto Prompt", scrollingFrame)
-local espDoorButton = createButton("ESP Off", scrollingFrame) -- Renommé de ESO Door
-
--- Ajout du bouton "No Lag"
-local noLagButton = createButton("No Lag", scrollingFrame)
+createButton("Full Bright", scrollingFrame)
+createButton("No Cooldown Prompt", scrollingFrame)
+createButton("Auto Prompt", scrollingFrame)
+createButton("ESP Off", scrollingFrame) -- Renommé de ESO Door
+createButton("No Lag", scrollingFrame)
 
 -- Ajout du bouton "Voir Joueurs" dans scrollingframeEsp
-local espPlayerButton = createButton("Voir Joueurs", scrollingframeEsp)
 
 -- Fonctionnalité ESP
 local espActive = false
@@ -171,7 +168,7 @@ local function toggleFullBright()
     game.Lighting.Brightness = FullBrightActive and 100 or 1
 end
 
-fullBrightButton.MouseButton1Click:Connect(toggleFullBright)
+scrollingFrame:FindFirstChild("Full Bright").MouseButton1Click:Connect(toggleFullBright)
 
 -- Fonctionnalité ESP pour voir les joueurs
 local function highlightPlayers()
@@ -220,8 +217,8 @@ local function restoreMaterials()
     originalMaterials = {}
 end
 
-noLagButton.MouseButton1Click:Connect(function()
-    if next(originalMaterials) == nil then
+scrollingFrame:FindFirstChild("No Lag").MouseButton1Click:Connect(function()
+        if next(originalMaterials) == nil then
         activateNoLag()
     else
         restoreMaterials()
@@ -240,7 +237,6 @@ local function highlightModel(model)
     end
 end
 
--- Déclaration d'un tableau pour
 -- Déclaration d'un tableau pour les connexions de boutons
 local connections = {}
 
@@ -251,11 +247,11 @@ toggleButton.MouseButton1Click:Connect(function()
 end)
 
 -- Fonction pour gérer le bouton "Voir Joueurs"
-espButton.MouseButton1Click:Connect(function()
+scrollingframeEsp:FindFirstChild("Esp Player").MouseButton1Click:Connect(function()
     espActive = not espActive
     if espActive then
         highlightPlayers()
-        espButton.Text = "ESP On"
+        scrollingframeEsp:FindFirstChild(Esp Player").Text = "ESP On"
     else
         for _, target in pairs(espTargets) do
             if target and target:FindFirstChildOfClass("Highlight") then
@@ -263,31 +259,29 @@ espButton.MouseButton1Click:Connect(function()
             end
         end
         espTargets = {}
-        espButton.Text = "ESP Off"
+        scrollingframeEsp:FindFirstChild("Esp Player").Text = "ESP Off"
     end
 end)
 
 -- Fonction pour gérer le bouton "Remove UI"
-RemoveGuiButton.MouseButton1Click:Connect(function()
+removeGuiButton.MouseButton1Click:Connect(function()
     screenGui:Destroy()
 end)
 
 -- Fonction pour gérer le bouton "No Cooldown Prompt"
-noCooldownButton.MouseButton1Click:Connect(function()
+scrollingFrame:FindFirstChild("No Cooldown Prompt").MouseButton1Click:Connect(function()
     for _, prompt in pairs(findProximityPrompts(workspace)) do
-        prompt.ActionText = ""
-        prompt.ObjectText = ""
         prompt.HoldDuration = 0
     end
 end)
 
 -- Fonction pour gérer le bouton "Auto Prompt"
-autoPromptButton.MouseButton1Click:Connect(function()
+scrollingFrame:FindFirstChild("Auto Prompt").MouseButton1Click:Connect(function()
     -- Remplir cette fonction selon vos besoins
 end)
 
 -- Fonction pour gérer le bouton "ESP Off" (désactivation de l'ESP)
-espDoorButton.MouseButton1Click:Connect(function()
+scrollingFrame:FindFirstChild("ESP Off").MouseButton1Click:Connect(function()
     espActive = false
     for _, target in pairs(espTargets) do
         if target and target:FindFirstChildOfClass("Highlight") then
@@ -295,12 +289,7 @@ espDoorButton.MouseButton1Click:Connect(function()
         end
     end
     espTargets = {}
-    espButton.Text = "ESP Off"
-end)
-
--- Fonction pour gérer le bouton "Voir Joueurs" (reprise de la fonctionnalité ESP)
-espPlayerButton.MouseButton1Click:Connect(function()
-    highlightPlayers()
+    scrollingframeEsp:FindFirstChild("Esp Player").Text = "ESP Off"
 end)
 
 -- Fonction pour mettre à jour les boutons selon les besoins (ex. : rafraîchir l'UI)
@@ -312,9 +301,12 @@ RunService.RenderStepped:Connect(updateUI)
 
 -- Ajout des connexions au tableau pour un éventuel débogage ou nettoyage
 table.insert(connections, toggleButton.MouseButton1Click)
-table.insert(connections, espButton.MouseButton1Click)
-table.insert(connections, RemoveGuiButton.MouseButton1Click)
-table.insert(connections, noCooldownButton.MouseButton1Click)
-table.insert(connections, autoPromptButton.MouseButton1Click)
-table.insert(connections, espDoorButton.MouseButton1Click)
-table.insert(connections, espPlayerButton.MouseButton1Click)
+table.insert(connections, scrollingframeEsp:FindFirstChild("Esp Player").MouseButton1Click)
+table.insert(connections, removeGuiButton.MouseButton1Click)
+table.insert(connections, scrollingFrame:FindFirstChild("No Cooldown Prompt").MouseButton1Click)
+table.insert(connections, scrollingFrame:FindFirstChild("Auto Prompt").MouseButton1Click)
+table.insert(connections, scrollingFrame:FindFirstChild("ESP Off").MouseButton1Click)
+table.insert(connections, scrollingFrame:FindFirstChild("Full Bright").MouseButton1Click)
+table.insert(connections, scrollingFrame:FindFirstChild("No Lag").MouseButton1Click)
+
+
