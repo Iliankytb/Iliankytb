@@ -30,7 +30,7 @@ local frame = createUIElement("Frame", screenGui, {
     Visible = false
 })
 
-- Fonction pour afficher un message de bienvenue quand le GUI est ouvert
+-- Fonction pour afficher un message de bienvenue quand le GUI est ouvert
 local welcomeText = createUIElement("TextLabel", screenGui, {
     Size = UDim2.new(0.5, 0, 0.1, 0),
     Position = UDim2.new(0.25, 0, 0.05, 0),
