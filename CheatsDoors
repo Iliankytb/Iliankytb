@@ -142,14 +142,14 @@ local espActive = false
 local espTargets = {}
 
 local FullBrightActive = false
-
 -- Fonction pour activer FullBright
 local function activateFullBright()
-FullBrightActive = not FullBrightActive
-if FullBrightActive then
-    game.Lighting.Brightness = 100
-else
-game.Lighting.Brightness = 1
+    FullBrightActive = not FullBrightActive
+    if FullBrightActive then
+        game.Lighting.Brightness = 100
+    else
+        game.Lighting.Brightness = 1
+    end
 end
 
 fullBrightButton.MouseButton1Click:Connect(activateFullBright)
@@ -164,8 +164,6 @@ local function highlightPlayers()
     end
 end
 
-local Workspace = game:GetService("Workspace")
-
 -- Fonction pour trouver tous les ProximityPrompt dans un objet
 local function findProximityPrompts(parent)
     local prompts = {}
@@ -173,29 +171,16 @@ local function findProximityPrompts(parent)
         if child:IsA("ProximityPrompt") then
             table.insert(prompts, child)
         elseif child:IsA("Model") or child:IsA("Folder") then
-            -- Recherche récursive dans les modèles et dossiers
             local subPrompts = findProximityPrompts(child)
             for _, prompt in pairs(subPrompts) do
                 table.insert(prompts, prompt)
-local allProximityPrompts = findProximityPrompts(Workspace)
-
--- Afficher les paramètres de chaque ProximityPrompt
-for _, prompt in pairs(allProximityPrompts) do
-prompt.HoldDuration = 0  
-prompt.RequiresLineOfSight = false
-end
             end
         end
     end
     return prompts
 end
 
-
-espPlayerButton.MouseButton1Click:Connect(highlightPlayers)
-
-noCooldownButton.MouseButton1Click:Connect(findProximityPrompts)
-
--- Fonction pour réduire les lags (No Lag)
+-- Fonction pour activer "No Lag"
 local originalMaterials = {}
 
 local function activateNoLag()
@@ -222,43 +207,6 @@ noLagButton.MouseButton1Click:Connect(function()
     else
         restoreMaterials()
     end
-end)
-
--- Toggle ESP
-espDoorButton.MouseButton1Click:Connect(function()
-    espActive = not espActive
-    if espActive then
-        updateEspTargets()
-        highlightModels()
-        espDoorButton.Text = "ESP On"
-    else
-        clearHighlights()
-        espDoorButton.Text = "ESP Off"
-    end
-end)
-
--- Toggle pour afficher/masquer le GUI
-local function toggleFrame()
-    frame.Visible = not frame.Visible
-    sidebarFrame.Visible = not sidebarFrame.Visible
-end
-
-toggleButton.MouseButton1Click:Connect(toggleFrame)
-
--- Navigation entre les frames
-EspButton.MouseButton1Click:Connect(function()
-    scrollingframeEsp.Visible = true
-    scrollingFrame.Visible = false
-end)
-
-mainButton.MouseButton1Click:Connect(function()
-    scrollingFrame.Visible = true
-    scrollingframeEsp.Visible = false
-end)
-
--- Bouton pour supprimer le GUI
-RemoveGuiButton.MouseButton1Click:Connect(function()
-    screenGui:Destroy()
 end)
 
 -- Fonction pour mettre à jour les cibles ESP
@@ -307,10 +255,41 @@ RunService.RenderStepped:Connect(function()
     else
         clearHighlights()
     end
-if next(originalMaterials) == nil then
-        activateNoLag()
+end)
+
+-- Fonction pour afficher/masquer le GUI
+local function toggleFrame()
+    frame.Visible = not frame.Visible
+    sidebarFrame.Visible = not sidebarFrame.Visible
+end
+
+toggleButton.MouseButton1Click:Connect(toggleFrame)
+
+-- Navigation entre les frames
+EspButton.MouseButton1Click:Connect(function()
+    scrollingframeEsp.Visible = true
+    scrollingFrame.Visible = false
+end)
+
+mainButton.MouseButton1Click:Connect(function()
+    scrollingFrame.Visible = true
+    scrollingframeEsp.Visible = false
+end)
+
+-- Bouton pour supprimer le GUI
+RemoveGuiButton.MouseButton1Click:Connect(function()
+    screenGui:Destroy()
+end)
+
+-- Fonction pour activer/désactiver ESP
+espDoorButton.MouseButton1Click:Connect(function()
+    espActive = not espActive
+    if espActive then
+        updateEspTargets()
+        highlightModels()
+        espDoorButton.Text = "ESP On"
     else
-        restoreMaterials()
+        clearHighlights()
+        espDoorButton.Text = "ESP Off"
     end
-findProximityPrompts()
 end)
