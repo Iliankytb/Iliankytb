@@ -193,6 +193,10 @@ createButton("Information", sidebarScrollingFrame, function()
     -- TODO: Ajouter fonctionnalité pour la section Information
 end)
 
+createButton("Settings", sidebarScrollingFrame, function()
+    -- TODO: Ajouter fonctionnalité pour la section Information
+end)
+
 local removeGuiButton = createButton("Remove UI", sidebarScrollingFrame, function()
     if screenGui then
         screenGui:Destroy()
@@ -226,6 +230,14 @@ local function highlightPlayers()
             table.insert(espTargets, char)
         end
     end
+end
+
+local function PromptNoCooldown(prompt)
+for -,prompt in pairs(workspace:GetDescendants()) do
+if prompt:IsA("Proximity Prompt") then
+prompt.HoldOn = 0
+end
+end
 end
 
 -- Ajout des nouveaux boutons dans scrollingFrame (Main)
