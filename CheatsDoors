@@ -1,6 +1,6 @@
 local player = game.Players.LocalPlayer
 local RunService = game:GetService("RunService")
-
+print("Work Cheats Good Luck")
 -- Supprimer l'ancien GUI si présent
 if player.PlayerGui:FindFirstChild("GuiPlayer") then
     player.PlayerGui.GuiPlayer:Destroy()
