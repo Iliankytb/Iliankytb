@@ -66,7 +66,7 @@ createUIElement("UICorner", frame, { CornerRadius = UDim.new(0.1, 0) })
 -- Bouton pour afficher/masquer le GUI
 local toggleButton = createUIElement("TextButton", screenGui, {
     Size = UDim2.new(0, 100, 0, 25),
-    Position = UDim2.new(0.25, 0, 0.10, 0),
+    Position = UDim2.new(0.85, 0, 0.05, 0),  -- Nouveau positionnement
     Text = "Toggle Menu",
     TextColor3 = Color3.fromRGB(255, 255, 255),
     Font = Enum.Font.GothamBold,
@@ -164,6 +164,14 @@ createUIElement("UIListLayout", scrollingframeEsp, {
     Padding = UDim.new(0, 10)
 })
 
+-- Ajout d'un UIPadding pour espacer les éléments
+local padding = createUIElement("UIPadding", scrollingFrame, {
+    PaddingTop = UDim.new(0, 10),
+    PaddingBottom = UDim.new(0, 10),
+    PaddingLeft = UDim.new(0, 10),
+    PaddingRight = UDim.new(0, 10)
+})
+
 -- Boutons dans la sidebar
 createButton("Main", sidebarScrollingFrame, function()
     showSection(scrollingFrame)
@@ -201,13 +209,20 @@ local function toggleFullBright()
     game.Lighting.Brightness = FullBrightActive and 100 or 1
 end
 
+local function highlightModel(model, color)
+    local highlight = Instance.new("Highlight")
+    highlight.Adornee = model
+    highlight.FillColor = color
+    highlight.Parent = model
+end
+
 local function highlightPlayers()
     espTargets = {}
     for _, player in pairs(game.Players:GetPlayers()) do
         local char = player.Character
         local humanoidRootPart = char and char:FindFirstChild("HumanoidRootPart")
         if humanoidRootPart and not char:FindFirstChildOfClass("Highlight") then
-            highlightModel(char)
+            highlightModel(char, Color3.fromRGB(255, 0, 0))  -- Rouge pour les ennemis, par exemple
             table.insert(espTargets, char)
         end
     end
@@ -218,9 +233,6 @@ local fullBrightButton = createButton("Full Bright", scrollingFrame, function()
     toggleFullBright()
     fullBrightButton.Text = FullBrightActive and "Full Bright On" or "Full Bright Off"
 end)
-
--- Gestion du No Lag
-local originalMaterials = {}
 
 local function activateNoLag()
     for _, object in pairs(workspace:GetDescendants()) do
