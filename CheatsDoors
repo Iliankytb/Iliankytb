@@ -161,6 +161,15 @@ local espTargets = {}
 
 local FullBrightActive = false
 
+local function hightlightModels(model)
+for _, model in pairs(workspace:GetDescendants()) do
+    -- Vérifie si le modèle est nommé "wardrobe" ou "door"
+    if model:IsA("Model") and (model.Name == "wardrobe" or model.Name == "door" or model.Name == "key" or model.Name == "fuse" or model.Name == "key_holder" or model.Name == "goldpile" or model.Name == "pile" or model.Name == "sideroomdupe") then
+local Hightlighter = Instance.new("Hightlight",model.Parent)
+end
+end
+end
+
 -- Fonction pour activer/désactiver FullBright
 local function toggleFullBright()
     FullBrightActive = not FullBrightActive
@@ -248,6 +257,7 @@ local function disableESP()
             highlight:Destroy()
         end
     end
+hightlightModels()
     espTargets = {}
     espActive = false
 end
@@ -257,6 +267,7 @@ espPlayerButton.MouseButton1Click:Connect(function()
     if espActive then
         disableESP()
     else
+hightlightModels()
         highlightPlayers()
         espActive = true
     end
@@ -266,6 +277,8 @@ end)
 espOffButton.MouseButton1Click:Connect(function()
     if espActive then
         disableESP()
+else
+hightlightModels()
     end
 end)
 
@@ -273,6 +286,13 @@ end)
 toggleButton.MouseButton1Click:Connect(function()
     frame.Visible = not frame.Visible
     sidebarFrame.Visible = not sidebarFrame.Visible
+end)
+
+Game:GetService("UserInputService").inputbegan:Connect(function(input)
+if input.keycode == Enum.Keycode.Q then
+frame.Visible = not frame.Visible
+    sidebarFrame.Visible = not sidebarFrame.Visible
+end
 end)
 
 -- Fonction pour supprimer le GUI
