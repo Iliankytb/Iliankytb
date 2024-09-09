@@ -67,6 +67,13 @@ sidebarGradient.Color = ColorSequence.new{
     ColorSequenceKeypoint.new(1, Color3.fromRGB(70, 70, 70))
 }
 
+local scrollingframeEsp = Instance.New("ScrollingFrame", Frame)
+scrollingframeEsp.Size = UDim2.new(1, 0, 1, 0)
+scrollingframeEsp.CanvasSize = UDim2.new(0, 0, 0, 800)
+scrollingframeEsp.ScrollBarThickness = 8
+scrollingframeEsp.BackgroundTransparency = 1
+scrollingframeEsp.Visible = False
+
 -- UI Stroke et Coin arrondi pour la sidebarFrame
 local sidebarStroke = Instance.new("UIStroke", sidebarFrame)
 sidebarStroke.Thickness = 3
@@ -124,6 +131,10 @@ local function createButton(text, parent)
     return button
 end
 
+local espListLayout = Instance.new("UIListLayout", scrollingframeEsp)
+espListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+espListLayout.Padding = UDim.new(0, 10)
+
 -- Boutons dans la sidebar
 local mainButton = createButton("Main", sidebarScrollingFrame)
 local EspButton = createButton("Esp", sidebarScrollingFrame)
@@ -131,7 +142,7 @@ local PlayerButton = createButton("Player", sidebarScrollingFrame)
 local GiveItemButton = createButton("Give Item", sidebarScrollingFrame)
 local InfoButton = createButton("information ", sidebarScrollingFrame)
 local RemoveGuiButton = createButton("Remove Ui", sidebarScrollingFrame)
-local espButton = createButton("ESP Off", scrollingFrame)
+local espButton = createButton("ESP Off", scrollingframeEsp)
 local noLagButton = createButton("No Lag Off", scrollingFrame)
 local noCooldownPromptButton = createButton("No Cooldown Prompt Off", scrollingFrame)
 local fullBrightButton = createButton("Full Bright Off", scrollingFrame)
@@ -253,6 +264,16 @@ noLagButton.MouseButton1Click:Connect(function()
         restoreOriginalMaterials()
         noLagButton.Text = "No Lag Off"
     end
+end)
+
+EspButton.MouseButton1Click:Connect(function()
+scrollingframeEsp.Visible = true
+scrollingFrame.Visible = false
+end)
+
+MainButton.MouseButton1Click:Connect(function()
+scrollingFrame.Visible = true
+scrollingframeEsp.Visible = false
 end)
 
 -- Fonction ESP
