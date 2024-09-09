@@ -14,7 +14,7 @@ screenGui.ResetOnSpawn = false
 -- Main Frame
 local frame = Instance.new("Frame", screenGui)
 frame.Size = UDim2.new(0.25, 0, 0.75, 0)
-frame.Position = UDim2.new(0.4, 0, 0.5, 0)
+frame.Position = UDim2.new(0.4, -90, 0.2, 0)
 frame.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 frame.BackgroundTransparency = 0.25
 frame.Visible = false
@@ -37,19 +37,19 @@ uicorner.CornerRadius = UDim.new(0.1, 0)
 
 -- Bouton pour afficher/masquer le GUI
 local toggleButton = Instance.new("TextButton", screenGui)
-toggleButton.Size = UDim2.new(0, 120, 0, 40)
-toggleButton.Position = UDim2.new(0.5, -60, 0.2, 0)
+toggleButton.Size = UDim2.new(0, 100, 0, 25)
+toggleButton.Position = UDim2.new(0.9, -60, 0.2, 0)
 toggleButton.Text = "Toggle Menu"
 toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 toggleButton.Font = Enum.Font.GothamBold
 toggleButton.TextSize = 18
-toggleButton.BackgroundColor3 = Color3.fromRGB(85, 170, 255)
+toggleButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 
 -- Gradient sur le bouton toggleButton
 local buttonGradient = Instance.new("UIGradient", toggleButton)
 buttonGradient.Color = ColorSequence.new{
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(85, 170, 255)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(65, 150, 255))
+    ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 0)),
+    ColorSequenceKeypoint.new(1, Color3.fromRGB(225, 0, 0))
 }
 
 -- Sidebar Frame à gauche
@@ -128,6 +128,7 @@ end
 local mainButton = createButton("Main", sidebarScrollingFrame)
 local EspButton = createButton("Esp", sidebarScrollingFrame)
 local PlayerButton = createButton("Player", sidebarScrollingFrame)
+local GiveItemButton = createButton("Give Item", sidebarScrollingFrame)
 local InfoButton = createButton("information ", sidebarScrollingFrame)
 local RemoveGuiButton = createButton("Remove Ui", sidebarScrollingFrame)
 local espButton = createButton("ESP Off", scrollingFrame)
