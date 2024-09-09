@@ -166,7 +166,9 @@ local function toggleFullBright()
     game.Lighting.Brightness = FullBrightActive and 100 or 1
 end
 
-scrollingFrame:FindFirstChild("Full Bright").MouseButton1Click:Connect(toggleFullBright)
+scrollingFrame:FindFirstChild("Full Bright").MouseButton1Click:Connect()
+toggleFullBright()
+end)
 
 -- Fonctionnalité ESP pour voir les joueurs
 local function highlightPlayers()
