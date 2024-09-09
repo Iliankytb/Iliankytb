@@ -14,7 +14,7 @@ screenGui.ResetOnSpawn = false
 -- Main Frame
 local frame = Instance.new("Frame", screenGui)
 frame.Size = UDim2.new(0.25, 0, 0.75, 0)
-frame.Position = UDim2.new(0.4, -90, 0.2, 0)
+frame.Position = UDim2.new(0.4, 0, 0.5, 0)
 frame.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 frame.BackgroundTransparency = 0.25
 frame.Visible = false
@@ -126,6 +126,9 @@ end
 
 -- Boutons dans la sidebar
 local mainButton = createButton("Main", sidebarScrollingFrame)
+local EspButton = createButton("Esp", sidebarScrollingFrame)
+local PlayerButton = createButton("Player", sidebarScrollingFrame)
+local InfoButton = createButton("information ", sidebarScrollingFrame)
 local RemoveGuiButton = createButton("Remove Ui", sidebarScrollingFrame)
 local espButton = createButton("ESP Off", scrollingFrame)
 local noLagButton = createButton("No Lag Off", scrollingFrame)
