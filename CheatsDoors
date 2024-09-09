@@ -1,118 +1,140 @@
 local player = game.Players.LocalPlayer
 local RunService = game:GetService("RunService")
 
+-- Fonction pour créer des éléments UI
+local function createUIElement(className, parent, properties)
+    local element = Instance.new(className)
+    element.Parent = parent
+    for prop, value in pairs(properties) do
+        element[prop] = value
+    end
+    return element
+end
+
 -- Supprimer l'ancien GUI si présent
 if player.PlayerGui:FindFirstChild("GuiPlayer") then
     player.PlayerGui.GuiPlayer:Destroy()
 end
 
 -- Création du GUI
-local screenGui = Instance.new("ScreenGui", player.PlayerGui)
-screenGui.Name = "GuiPlayer"
-screenGui.ResetOnSpawn = false
+local screenGui = createUIElement("ScreenGui", player.PlayerGui, { Name = "GuiPlayer", ResetOnSpawn = false })
 
 -- Main Frame
-local frame = Instance.new("Frame", screenGui)
-frame.Size = UDim2.new(0.25, 0, 0.75, 0)
-frame.Position = UDim2.new(0.7, -90, 0.2, 0)
-frame.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-frame.BackgroundTransparency = 0.25
-frame.Visible = false
+local frame = createUIElement("Frame", screenGui, {
+    Size = UDim2.new(0.25, 0, 0.75, 0),
+    Position = UDim2.new(0.7, -90, 0.2, 0),
+    BackgroundColor3 = Color3.fromRGB(60, 60, 60),
+    BackgroundTransparency = 0.25,
+    Visible = false
+})
 
 -- Gradient sur le Frame
-local gradient = Instance.new("UIGradient", frame)
-gradient.Color = ColorSequence.new{
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(60, 60, 60)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(90, 90, 90))
-}
+createUIElement("UIGradient", frame, {
+    Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(60, 60, 60)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(90, 90, 90))
+    }
+})
 
 -- UI Stroke et Coin arrondi pour le Frame
-local uistroke = Instance.new("UIStroke", frame)
-uistroke.Thickness = 3
-uistroke.Color = Color3.fromRGB(20, 20, 20)
-uistroke.LineJoinMode = Enum.LineJoinMode.Round
+createUIElement("UIStroke", frame, {
+    Thickness = 3,
+    Color = Color3.fromRGB(20, 20, 20),
+    LineJoinMode = Enum.LineJoinMode.Round
+})
 
-local uicorner = Instance.new("UICorner", frame)
-uicorner.CornerRadius = UDim.new(0.1, 0)
+createUIElement("UICorner", frame, { CornerRadius = UDim.new(0.1, 0) })
 
 -- Bouton pour afficher/masquer le GUI
-local toggleButton = Instance.new("TextButton", screenGui)
-toggleButton.Size = UDim2.new(0, 100, 0, 25)
-toggleButton.Position = UDim2.new(0.9, -60, 0.2, 0)
-toggleButton.Text = "Toggle Menu"
-toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-toggleButton.Font = Enum.Font.GothamBold
-toggleButton.TextSize = 18
-toggleButton.BackgroundColor3 = Color3.fromRGB(85, 170, 255)
+local toggleButton = createUIElement("TextButton", screenGui, {
+    Size = UDim2.new(0, 100, 0, 25),
+    Position = UDim2.new(0.9, -60, 0.2, 0),
+    Text = "Toggle Menu",
+    TextColor3 = Color3.fromRGB(255, 255, 255),
+    Font = Enum.Font.GothamBold,
+    TextSize = 18,
+    BackgroundColor3 = Color3.fromRGB(85, 170, 255)
+})
 
 -- Sidebar Frame à gauche
-local sidebarFrame = Instance.new("Frame", screenGui)
-sidebarFrame.Size = UDim2.new(0.2, 0, 0.75, 0)
-sidebarFrame.Position = UDim2.new(0.5, -90, 0.2, 0)
-sidebarFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-sidebarFrame.BackgroundTransparency = 0.25
-sidebarFrame.Visible = false
+local sidebarFrame = createUIElement("Frame", screenGui, {
+    Size = UDim2.new(0.2, 0, 0.75, 0),
+    Position = UDim2.new(0.5, -90, 0.2, 0),
+    BackgroundColor3 = Color3.fromRGB(40, 40, 40),
+    BackgroundTransparency = 0.25,
+    Visible = false
+})
 
 -- Scrolling Frame dans sidebar
-local sidebarScrollingFrame = Instance.new("ScrollingFrame", sidebarFrame)
-sidebarScrollingFrame.Size = UDim2.new(1, 0, 1, 0)
-sidebarScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 800)
-sidebarScrollingFrame.ScrollBarThickness = 8
-sidebarScrollingFrame.BackgroundTransparency = 1
+local sidebarScrollingFrame = createUIElement("ScrollingFrame", sidebarFrame, {
+    Size = UDim2.new(1, 0, 1, 0),
+    CanvasSize = UDim2.new(0, 0, 0, 800),
+    ScrollBarThickness = 8,
+    BackgroundTransparency = 1
+})
 
 -- Frame des boutons ESP
-local scrollingframeEsp = Instance.new("ScrollingFrame", frame)
-scrollingframeEsp.Size = UDim2.new(1, 0, 1, 0)
-scrollingframeEsp.CanvasSize = UDim2.new(0, 0, 0, 800)
-scrollingframeEsp.ScrollBarThickness = 8
-scrollingframeEsp.BackgroundTransparency = 1
-scrollingframeEsp.Visible = false
+local scrollingframeEsp = createUIElement("ScrollingFrame", frame, {
+    Size = UDim2.new(1, 0, 1, 0),
+    CanvasSize = UDim2.new(0, 0, 0, 800),
+    ScrollBarThickness = 8,
+    BackgroundTransparency = 1,
+    Visible = false
+})
 
 -- Main Scrolling Frame
-local scrollingFrame = Instance.new("ScrollingFrame", frame)
-scrollingFrame.Size = UDim2.new(1, 0, 1, 0)
-scrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 800)
-scrollingFrame.ScrollBarThickness = 8
-scrollingFrame.BackgroundTransparency = 1
+local scrollingFrame = createUIElement("ScrollingFrame", frame, {
+    Size = UDim2.new(1, 0, 1, 0),
+    CanvasSize = UDim2.new(0, 0, 0, 800),
+    ScrollBarThickness = 8,
+    BackgroundTransparency = 1
+})
 
 -- Fonction pour créer des boutons
 local function createButton(text, parent)
-    local button = Instance.new("TextButton", parent)
-    button.Size = UDim2.new(0.90, 0, 0, 50)
-    button.Text = text
-    button.TextColor3 = Color3.fromRGB(255, 255, 255)
-    button.Font = Enum.Font.GothamBold
-    button.TextSize = 16
-    button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    local button = createUIElement("TextButton", parent, {
+        Size = UDim2.new(0.90, 0, 0, 50),
+        Text = text,
+        TextColor3 = Color3.fromRGB(255, 255, 255),
+        Font = Enum.Font.GothamBold,
+        TextSize = 16,
+        BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    })
 
     -- Gradient sur chaque bouton
-    local buttonGradient = Instance.new("UIGradient", button)
-    buttonGradient.Color = ColorSequence.new{
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(70, 70, 70)),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(100, 100, 100))
-    }
+    createUIElement("UIGradient", button, {
+        Color = ColorSequence.new{
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(70, 70, 70)),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(100, 100, 100))
+        }
+    })
 
-    local buttonStroke = uistroke:Clone()
-    buttonStroke.Parent = button
+    createUIElement("UIStroke", button, {
+        Thickness = 2,
+        Color = Color3.fromRGB(20, 20, 20),
+        LineJoinMode = Enum.LineJoinMode.Round
+    })
 
-    local buttonCorner = uicorner:Clone()
-    buttonCorner.Parent = button
+    createUIElement("UICorner", button, { CornerRadius = UDim.new(0.1, 0) })
 
     return button
 end
 
 -- UIListLayout pour organiser les boutons dans le frame principal et le scrolling ESP
-local sidebarListLayout = Instance.new("UIListLayout", sidebarScrollingFrame)
-sidebarListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-sidebarListLayout.Padding = UDim.new(0, 10)
+createUIElement("UIListLayout", sidebarScrollingFrame, {
+    SortOrder = Enum.SortOrder.LayoutOrder,
+    Padding = UDim.new(0, 10)
+})
 
-local frameListLayout = Instance.new("UIListLayout", scrollingFrame)
-frameListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-frameListLayout.Padding = UDim.new(0, 10)
+createUIElement("UIListLayout", scrollingFrame, {
+    SortOrder = Enum.SortOrder.LayoutOrder,
+    Padding = UDim.new(0, 10)
+})
 
-local espListLayout = Instance.new("UIListLayout", scrollingframeEsp)
-espListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-espListLayout.Padding = UDim.new(0, 10)
+createUIElement("UIListLayout", scrollingframeEsp, {
+    SortOrder = Enum.SortOrder.LayoutOrder,
+    Padding = UDim.new(0, 10)
+})
 
 -- Boutons dans la sidebar
 local mainButton = createButton("Main", sidebarScrollingFrame)
@@ -142,17 +164,14 @@ local espActive = false
 local espTargets = {}
 
 local FullBrightActive = false
--- Fonction pour activer FullBright
-local function activateFullBright()
+
+-- Fonction pour activer/désactiver FullBright
+local function toggleFullBright()
     FullBrightActive = not FullBrightActive
-    if FullBrightActive then
-        game.Lighting.Brightness = 100
-    else
-        game.Lighting.Brightness = 1
-    end
+    game.Lighting.Brightness = FullBrightActive and 100 or 1
 end
 
-fullBrightButton.MouseButton1Click:Connect(activateFullBright)
+fullBrightButton.MouseButton1Click:Connect(toggleFullBright)
 
 -- Fonctionnalité ESP pour voir les joueurs
 local function highlightPlayers()
@@ -210,144 +229,92 @@ noLagButton.MouseButton1Click:Connect(function()
 end)
 
 -- Fonction pour ajouter un effet de surbrillance
-function highlightModel(model)
-    local highlight = Instance.new("Highlight", model)
-    highlight.FillColor = Color3.fromRGB(255, 0, 0)
-    highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
-    highlight.FillTransparency = 0.5
-    highlight.OutlineTransparency = 0
-end
-
--- Déclaration d'un tableau pour stocker les modèles trouvés
-local modelsFound = {}
-
--- Fonction pour rechercher les modèles par nom
-local function findModelsByName(name)
-    -- Parcours de tous les objets dans le Workspace
-    for _, object in ipairs(workspace:GetDescendants()) do
-        if object:IsA("Model") and object.Name:lower() == name:lower() then
-            table.insert(modelsFound, object)
-        end
+local function highlightModel(model)
+    if not model:FindFirstChildOfClass("Highlight") then
+        local highlight = createUIElement("Highlight", model, {
+            FillColor = Color3.fromRGB(255, 0, 0),
+            OutlineColor = Color3.fromRGB(255, 255, 255),
+            FillTransparency = 0.5,
+            OutlineTransparency = 0
+        })
     end
 end
 
--- Rechercher les modèles appelés "door" et "wardrobe"
-findModelsByName("door")
-findModelsByName("wardrobe")
-findModelsByName("locker_large")
-findModelsByName("locker_small")
-findModelsByName("locker")
-findModelsByName("sideroomdupe")
-findModelsByName("fuse")
-findModelsByName("Crucifix")
-findModelsByName("flashlight")
-findModelsByName("key")
-findModelsByName("key_holder")
-findModelsByName("keyholder")
-findModelsByName("rush")
-findModelsByName("ambush")
-findModelsByName("halt")
-findModelsByName("seek")
-findModelsByName("livehintbook")
-findModelsByName("book")
-findModelsByName("figurerig")
-findModelsByName("figure_rig")
-findModelsByName("rift")
-findModelsByName("lighter")
-findModelsByName("glowstick")
-findModelsByName("minesgenerator")
+-- Déclaration d'un tableau pour
+-- Déclaration d'un tableau pour les connexions de boutons
+local connections = {}
 
-local function modelhightlight()
--- Afficher les modèles trouvés dans la console
-for _, model in ipairs(modelsFound) do
-    highlightModel(model)
-end
-
-
--- Fonction pour mettre à jour les cibles ESP
-function updateEspTargets()
-    espTargets = {}
-    for _, player in pairs(game.Players:GetPlayers()) do
-        if player ~= game.Players.LocalPlayer then
-            table.insert(espTargets, player.Character)
-        end
-    end
-end
-
--- Fonction pour ajouter les contours ESP
-function highlightModels()
-    for _, model in pairs(espTargets) do
-        if model and model:FindFirstChild("HumanoidRootPart") then
-            highlightModel(model)
-        end
-    end
-end
-
-
-
--- Fonction pour supprimer tous les highlights
-function clearHighlights()
-    for _, player in pairs(game.Players:GetPlayers()) do
-        local char = player.Character
-        if char and char:FindFirstChildOfClass("Highlight") then
-            char:FindFirstChildOfClass("Highlight"):Destroy()
-        end
-    end
-end
-
-function clearHighlightsmodel()
-    for _, model in ipairs(workspace:GetDescendants()) do
-        if  model:FindFirstChildOfClass("Highlight") then
-            model:FindFirstChildOfClass("Highlight"):Destroy()
-        end
-    end
-end
-
--- Boucle de mise à jour continue
-RunService.RenderStepped:Connect(function()
-    if espActive then
-        updateEspTargets()
-        highlightModels()
-modelhightlight()
-    else
-clearHighlightsmodel()
-        clearHighlights()
-    end
-end)
-
--- Fonction pour afficher/masquer le GUI
-local function toggleFrame()
+-- Fonction pour gérer l'affichage/masquage du GUI
+toggleButton.MouseButton1Click:Connect(function()
     frame.Visible = not frame.Visible
     sidebarFrame.Visible = not sidebarFrame.Visible
-end
-
-toggleButton.MouseButton1Click:Connect(toggleFrame)
-
--- Navigation entre les frames
-EspButton.MouseButton1Click:Connect(function()
-    scrollingframeEsp.Visible = true
-    scrollingFrame.Visible = false
 end)
 
-mainButton.MouseButton1Click:Connect(function()
-    scrollingFrame.Visible = true
-    scrollingframeEsp.Visible = false
+-- Fonction pour gérer le bouton "Voir Joueurs"
+espButton.MouseButton1Click:Connect(function()
+    espActive = not espActive
+    if espActive then
+        highlightPlayers()
+        espButton.Text = "ESP On"
+    else
+        for _, target in pairs(espTargets) do
+            if target and target:FindFirstChildOfClass("Highlight") then
+                target:FindFirstChildOfClass("Highlight"):Destroy()
+            end
+        end
+        espTargets = {}
+        espButton.Text = "ESP Off"
+    end
 end)
 
--- Bouton pour supprimer le GUI
+-- Fonction pour gérer le bouton "Remove UI"
 RemoveGuiButton.MouseButton1Click:Connect(function()
     screenGui:Destroy()
 end)
 
--- Fonction pour activer/désactiver ESP
-espDoorButton.MouseButton1Click:Connect(function()
-    espActive = not espActive
-    if espActive then
-        updateEspTargets()
-        highlightModels()
-        espDoorButton.Text = "ESP On"
-    else
-        clearHighlights()
-        espDoorButton.Text = "ESP Off"
+-- Fonction pour gérer le bouton "No Cooldown Prompt"
+noCooldownButton.MouseButton1Click:Connect(function()
+    for _, prompt in pairs(findProximityPrompts(workspace)) do
+        prompt.ActionText = ""
+        prompt.ObjectText = ""
+        prompt.HoldDuration = 0
     end
 end)
+
+-- Fonction pour gérer le bouton "Auto Prompt"
+autoPromptButton.MouseButton1Click:Connect(function()
+    -- Remplir cette fonction selon vos besoins
+end)
+
+-- Fonction pour gérer le bouton "ESP Off" (désactivation de l'ESP)
+espDoorButton.MouseButton1Click:Connect(function()
+    espActive = false
+    for _, target in pairs(espTargets) do
+        if target and target:FindFirstChildOfClass("Highlight") then
+            target:FindFirstChildOfClass("Highlight"):Destroy()
+        end
+    end
+    espTargets = {}
+    espButton.Text = "ESP Off"
+end)
+
+-- Fonction pour gérer le bouton "Voir Joueurs" (reprise de la fonctionnalité ESP)
+espPlayerButton.MouseButton1Click:Connect(function()
+    highlightPlayers()
+end)
+
+-- Fonction pour mettre à jour les boutons selon les besoins (ex. : rafraîchir l'UI)
+local function updateUI()
+    -- Code pour mettre à jour l'UI, par exemple, réinitialiser les positions des boutons, etc.
+end
+
+RunService.RenderStepped:Connect(updateUI)
+
+-- Ajout des connexions au tableau pour un éventuel débogage ou nettoyage
+table.insert(connections, toggleButton.MouseButton1Click)
+table.insert(connections, espButton.MouseButton1Click)
+table.insert(connections, RemoveGuiButton.MouseButton1Click)
+table.insert(connections, noCooldownButton.MouseButton1Click)
+table.insert(connections, autoPromptButton.MouseButton1Click)
+table.insert(connections, espDoorButton.MouseButton1Click)
+table.insert(connections, espPlayerButton.MouseButton1Click)
