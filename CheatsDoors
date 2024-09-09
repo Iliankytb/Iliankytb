@@ -151,11 +151,10 @@ createButton("Esp Player", scrollingframeEsp)
 createButton("Full Bright", scrollingFrame)
 createButton("No Cooldown Prompt", scrollingFrame)
 createButton("Auto Prompt", scrollingFrame)
-createButton("ESP Off", scrollingFrame) -- Renommé de ESO Door
+createButton("ESP Off", scrollingframeEsp) -- Renommé de ESO Door
 createButton("No Lag", scrollingFrame)
 
--- Ajout du bouton "Voir Joueurs" dans scrollingframeEsp
-
+-- Aj
 -- Fonctionnalité ESP
 local espActive = false
 local espTargets = {}
@@ -238,7 +237,7 @@ local function highlightModel(model)
 end
 
 -- Déclaration d'un tableau pour les connexions de boutons
-local connections = {}
+
 
 -- Fonction pour gérer l'affichage/masquage du GUI
 toggleButton.MouseButton1Click:Connect(function()
@@ -293,20 +292,19 @@ scrollingFrame:FindFirstChild("ESP Off").MouseButton1Click:Connect(function()
 end)
 
 -- Fonction pour mettre à jour les boutons selon les besoins (ex. : rafraîchir l'UI)
-local function updateUI()
-    -- Code pour mettre à jour l'UI, par exemple, réinitialiser les positions des boutons, etc.
-end
 
-RunService.RenderStepped:Connect(updateUI)
-
--- Ajout des connexions au tableau pour un éventuel débogage ou nettoyage
-table.insert(connections, toggleButton.MouseButton1Click)
-table.insert(connections, scrollingframeEsp:FindFirstChild("Esp Player").MouseButton1Click)
-table.insert(connections, removeGuiButton.MouseButton1Click)
-table.insert(connections, scrollingFrame:FindFirstChild("No Cooldown Prompt").MouseButton1Click)
-table.insert(connections, scrollingFrame:FindFirstChild("Auto Prompt").MouseButton1Click)
-table.insert(connections, scrollingFrame:FindFirstChild("ESP Off").MouseButton1Click)
-table.insert(connections, scrollingFrame:FindFirstChild("Full Bright").MouseButton1Click)
-table.insert(connections, scrollingFrame:FindFirstChild("No Lag").MouseButton1Click)
-
+RunService.RenderStepped:Connect()
+if espActive then
+        highlightPlayers()
+        scrollingframeEsp:FindFirstChild(Esp Player").Text = "ESP On"
+    else
+        for _, target in pairs(espTargets) do
+            if target and target:FindFirstChildOfClass("Highlight") then
+                target:FindFirstChildOfClass("Highlight"):Destroy()
+            end
+        end
+        espTargets = {}
+        scrollingframeEsp:FindFirstChild("Esp Player").Text = "ESP Off"
+    end
+end)
 
