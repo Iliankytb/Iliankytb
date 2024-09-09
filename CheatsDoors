@@ -164,10 +164,36 @@ local function highlightPlayers()
     end
 end
 
+local Workspace = game:GetService("Workspace")
+
+-- Fonction pour trouver tous les ProximityPrompt dans un objet
+local function findProximityPrompts(parent)
+    local prompts = {}
+    for _, child in pairs(parent:GetChildren()) do
+        if child:IsA("ProximityPrompt") then
+            table.insert(prompts, child)
+        elseif child:IsA("Model") or child:IsA("Folder") then
+            -- Recherche récursive dans les modèles et dossiers
+            local subPrompts = findProximityPrompts(child)
+            for _, prompt in pairs(subPrompts) do
+                table.insert(prompts, prompt)
+local allProximityPrompts = findProximityPrompts(Workspace)
+
+-- Afficher les paramètres de chaque ProximityPrompt
+for _, prompt in pairs(allProximityPrompts) do
+prompt.HoldDuration = 0  
+prompt.RequiresLineOfSight = false
+end
+            end
+        end
+    end
+    return prompts
+end
+
 
 espPlayerButton.MouseButton1Click:Connect(highlightPlayers)
 
-noCooldownButton.MouseButton1Click:Connect(highlightPlayers)
+noCooldownButton.MouseButton1Click:Connect(findProximityPrompts)
 
 -- Fonction pour réduire les lags (No Lag)
 local originalMaterials = {}
@@ -230,21 +256,6 @@ mainButton.MouseButton1Click:Connect(function()
     scrollingframeEsp.Visible = false
 end)
 
--- Boucle de mise à jour continue
-RunService.RenderStepped:Connect(function()
-    if espActive then
-        updateEspTargets()
-        highlightModels()
-    else
-        clearHighlights()
-    end
-if next(originalMaterials) == nil then
-        activateNoLag()
-    else
-        restoreMaterials()
-    end
-end)
-
 -- Bouton pour supprimer le GUI
 RemoveGuiButton.MouseButton1Click:Connect(function()
     screenGui:Destroy()
@@ -288,3 +299,18 @@ function clearHighlights()
     end
 end
 
+-- Boucle de mise à jour continue
+RunService.RenderStepped:Connect(function()
+    if espActive then
+        updateEspTargets()
+        highlightModels()
+    else
+        clearHighlights()
+    end
+if next(originalMaterials) == nil then
+        activateNoLag()
+    else
+        restoreMaterials()
+    end
+findProximityPrompts()
+end)
