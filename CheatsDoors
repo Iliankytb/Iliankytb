@@ -288,7 +288,7 @@ toggleButton.MouseButton1Click:Connect(function()
     sidebarFrame.Visible = not sidebarFrame.Visible
 end)
 
-Game:GetService("UserInputService").inputbegan:Connect(function(input)
+Game:GetService("UserInputService").InputBegan:Connect(function(input)
 if input.keycode == Enum.Keycode.Q then
 frame.Visible = not frame.Visible
     sidebarFrame.Visible = not sidebarFrame.Visible
