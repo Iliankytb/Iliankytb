@@ -40,7 +40,7 @@ welcomeText.Visible = false
 -- Main Frame
 local frame = createUIElement("Frame", screenGui, {
     Size = UDim2.new(0.25, 0, 0.75, 0),
-    Position = UDim2.new(0.7, -90, 0.2, 0),
+    Position = UDim2.new(0.25, 0, 0.10, 0),
     BackgroundColor3 = Color3.fromRGB(60, 60, 60),
     BackgroundTransparency = 0.25,
     Visible = false
@@ -68,7 +68,7 @@ createUIElement("UICorner", frame, { CornerRadius = UDim.new(0.1, 0) })
 -- Bouton pour afficher/masquer le GUI
 local toggleButton = createUIElement("TextButton", screenGui, {
     Size = UDim2.new(0, 100, 0, 25),
-    Position = UDim2.new(0.9, -60, 0.2, 0),
+    Position = UDim2.new(0.25, 0, 0.10, 0),
     Text = "Toggle Menu",
     TextColor3 = Color3.fromRGB(255, 255, 255),
     Font = Enum.Font.GothamBold,
