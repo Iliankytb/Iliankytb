@@ -151,7 +151,7 @@ createButton("Esp Player", scrollingframeEsp)
 createButton("Full Bright", scrollingFrame)
 createButton("No Cooldown Prompt", scrollingFrame)
 createButton("Auto Prompt", scrollingFrame)
-createButton("ESP Off", scrollingFrame) -- Correction du nom du bouton
+createButton("ESP Off", scrollingFrame)
 createButton("No Lag", scrollingFrame)
 
 -- Fonctionnalité ESP
@@ -166,14 +166,16 @@ local function toggleFullBright()
     game.Lighting.Brightness = FullBrightActive and 100 or 1
 end
 
-scrollingFrame:FindFirstChild("Full Bright").MouseButton1Click:Connect(function(toggleFullBright)
+scrollingFrame:FindFirstChild("Full Bright").MouseButton1Click:Connect(toggleFullBright)
 
 -- Fonctionnalité ESP pour voir les joueurs
 local function highlightPlayers()
+    espTargets = {}
     for _, player in pairs(game.Players:GetPlayers()) do
         local char = player.Character
         if char and char:FindFirstChild("HumanoidRootPart") then
             highlightModel(char)
+            table.insert(espTargets, char)
         end
     end
 end
@@ -235,70 +237,48 @@ local function highlightModel(model)
     end
 end
 
--- Fonction pour
--- Fonction pour gérer l'affichage/masquage du GUI
+-- Gérer l'affichage/masquage du GUI
 toggleButton.MouseButton1Click:Connect(function()
     frame.Visible = not frame.Visible
     sidebarFrame.Visible = not sidebarFrame.Visible
 end)
-
--- Fonction pour gérer le bouton "Voir Joueurs"
 scrollingframeEsp:FindFirstChild("Esp Player").MouseButton1Click:Connect(function()
-    espActive = not espActive
-    if espActive then
-        highlightPlayers()
-        scrollingframeEsp:FindFirstChild("Esp Player").Text = "ESP On"
-    else
-        for _, target in pairs(espTargets) do
-            if target and target:FindFirstChildOfClass("Highlight") then
-                target:FindFirstChildOfClass("Highlight"):Destroy()
-            end
-        end
-        espTargets = {}
-        scrollingframeEsp:FindFirstChild("Esp Player").Text = "ESP Off"
-    end
+    highlightPlayers()
 end)
--- Fonction pour gérer le bouton "Remove UI"
+
+-- Gérer le bouton "Remove UI"
 removeGuiButton.MouseButton1Click:Connect(function()
-    screenGui:Destroy()
-end)
-
--- Fonction pour gérer le bouton "No Cooldown Prompt"
-scrollingFrame:FindFirstChild("No Cooldown Prompt").MouseButton1Click:Connect(function()
-    for _, prompt in pairs(findProximityPrompts(workspace)) do
-        prompt.HoldDuration = 0
+    if screenGui then
+        screenGui:Destroy()
     end
 end)
 
--- Fonction pour gérer le bouton "Auto Prompt"
-scrollingFrame:FindFirstChild("Auto Prompt").MouseButton1Click:Connect(function()
-    -- Remplir cette fonction selon vos besoins
+-- Gestion de l'affichage/masquage des différentes sections du GUI
+local function switchToSection(sectionName)
+    scrollingFrame.Visible = (sectionName == "Main")
+    scrollingframeEsp.Visible = (sectionName == "ESP")
+    -- Vous pouvez ajouter d'autres sections ici, par exemple pour "Player" ou "Give Item"
+end
+
+-- Associer les boutons de la sidebar aux sections
+sidebarScrollingFrame:FindFirstChild("Main").MouseButton1Click:Connect(function()
+    switchToSection("Main")
 end)
 
--- Fonction pour gérer le bouton "ESP Off" (désactivation de l'ESP)
+sidebarScrollingFrame:FindFirstChild("ESP").MouseButton1Click:Connect(function()
+    switchToSection("ESP")
+end)
+
+-- Vous pouvez ajouter des actions pour les autres sections de la sidebar ici, par exemple :
+-- sidebarScrollingFrame:FindFirstChild("Player").MouseButton1Click:Connect(...)
+
+-- Fonction pour désactiver ESP
 scrollingFrame:FindFirstChild("ESP Off").MouseButton1Click:Connect(function()
-    espActive = false
     for _, target in pairs(espTargets) do
         if target and target:FindFirstChildOfClass("Highlight") then
             target:FindFirstChildOfClass("Highlight"):Destroy()
         end
     end
     espTargets = {}
-    scrollingframeEsp:FindFirstChild("Esp Player").Text = "ESP Off"
 end)
 
--- Fonction pour mettre à jour les boutons selon les besoins (ex. : rafraîchir l'UI)
-RunService.RenderStepped:Connect(function()
-    if espActive then
-        highlightPlayers()
-        scrollingframeEsp:FindFirstChild("Esp Player").Text = "ESP On"
-    else
-        for _, target in pairs(espTargets) do
-            if target and target:FindFirstChildOfClass("Highlight") then
-                target:FindFirstChildOfClass("Highlight"):Destroy()
-            end
-        end
-        espTargets = {}
-        scrollingframeEsp:FindFirstChild("Esp Player").Text = "ESP Off"
-    end
-end)
