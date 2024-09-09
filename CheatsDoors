@@ -30,6 +30,18 @@ local frame = createUIElement("Frame", screenGui, {
     Visible = false
 })
 
+- Fonction pour afficher un message de bienvenue quand le GUI est ouvert
+local welcomeText = createUIElement("TextLabel", screenGui, {
+    Size = UDim2.new(0.5, 0, 0.1, 0),
+    Position = UDim2.new(0.25, 0, 0.05, 0),
+    Text = "Thanks To Support Me!",
+    TextColor3 = Color3.fromRGB(255, 255, 255),
+    Font = Enum.Font.GothamBold,
+    TextSize = 24,
+    BackgroundTransparency = 1,
+    Visible = false
+})
+
 -- Gradient sur le Frame
 createUIElement("UIGradient", frame, {
     Color = ColorSequence.new{
@@ -185,6 +197,10 @@ local function toggleFullBright()
     game.Lighting.Brightness = FullBrightActive and 100 or 1
 end
 
+welcomeText.Visible = true
+wait(5)  -- Affiche le message pendant 2 secondes
+welcomeText.Visible = false
+
 local function highlightPlayers()
     espTargets = {}
     for _, player in pairs(game.Players:GetPlayers()) do
@@ -201,7 +217,7 @@ end
 -- Ajout des nouveaux boutons dans scrollingFrame (Main)
 local fullBrightButton = createButton("Full Bright", scrollingFrame, function()
     toggleFullBright()
-    fullBrightButton.Text = FullBrightActive and "Full Bright On" or "Full Bright Off"
+    fullBrightButton.Text = "Full Bright On" or "Full Bright Off"
 end)
 
 local noLagButton = createButton("No Lag", scrollingFrame, function()
@@ -296,29 +312,10 @@ toggleButton.MouseButton1Click:Connect(function()
     updateMouseState()
 end)
 
--- Fonction pour afficher un message de bienvenue quand le GUI est ouvert
-local welcomeText = createUIElement("TextLabel", screenGui, {
-    Size = UDim2.new(0.5, 0, 0.1, 0),
-    Position = UDim2.new(0.25, 0, 0.05, 0),
-    Text = "Merci d'utiliser ce GUI !",
-    TextColor3 = Color3.fromRGB(255, 255, 255),
-    Font = Enum.Font.GothamBold,
-    TextSize = 24,
-    BackgroundTransparency = 1,
-    Visible = false
-})
-
--- Afficher le texte de bienvenue quand le GUI est visible
-frame:GetPropertyChangedSignal("Visible"):Connect(function()
-    welcomeText.Visible = frame.Visible
-    wait(2)  -- Affiche le message pendant 2 secondes
-    welcomeText.Visible = false
-end)
-
 -- Centrer le GUI sur le joueur
 local function centerGuiOnPlayer()
-    frame.Position = UDim2.new(0.5, -frame.Size.X.Offset/2, 0.5, -frame.Size.Y.Offset/2)
-    sidebarFrame.Position = UDim2.new(0.3, -sidebarFrame.Size.X.Offset/2, 0.5, -sidebarFrame.Size.Y.Offset/2)
+    frame.Position = UDim2.new(0.5, -frame.Size.X.Offset/2, 0.75, -frame.Size.Y.Offset/2)
+    sidebarFrame.Position = UDim2.new(0.3, -sidebarFrame.Size.X.Offset/2, 0.75, -sidebarFrame.Size.Y.Offset/2)
 end
 
 -- Recentre les frames lorsque le GUI est affiché
@@ -347,23 +344,6 @@ espOffButton.MouseButton1Click:Connect(function()
         espOffButton.Text = "ESP Off"
     else
         espOffButton.Text = "ESP Off"
-    end
-end)
-
--- Fonction pour activer/désactiver FullBright
-fullBrightButton.MouseButton1Click:Connect(function()
-    toggleFullBright()
-    fullBrightButton.Text = FullBrightActive and "Full Bright On" or "Full Bright Off"
-end)
-
--- Activation/Désactivation du No Lag
-noLagButton.MouseButton1Click:Connect(function()
-    if next(originalMaterials) == nil then
-        activateNoLag()
-        noLagButton.Text = "No Lag On"
-    else
-        restoreMaterials()
-        noLagButton.Text = "No Lag Off"
     end
 end)
 
