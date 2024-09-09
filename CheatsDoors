@@ -67,29 +67,22 @@ sidebarGradient.Color = ColorSequence.new{
     ColorSequenceKeypoint.new(1, Color3.fromRGB(70, 70, 70))
 }
 
-local scrollingframeEsp = Instance.New("ScrollingFrame", Frame)
-scrollingframeEsp.Size = UDim2.new(1, 0, 1, 0)
-scrollingframeEsp.CanvasSize = UDim2.new(0, 0, 0, 800)
-scrollingframeEsp.ScrollBarThickness = 8
-scrollingframeEsp.BackgroundTransparency = 1
-scrollingframeEsp.Visible = false
-
--- UI Stroke et Coin arrondi pour la sidebarFrame
-local sidebarStroke = Instance.new("UIStroke", sidebarFrame)
-sidebarStroke.Thickness = 3
-sidebarStroke.Color = Color3.fromRGB(20, 20, 20)
-sidebarStroke.LineJoinMode = Enum.LineJoinMode.Round
-
-local sidebarCorner = Instance.new("UICorner", sidebarFrame)
-sidebarCorner.CornerRadius = UDim.new(0.1, 0)
-
--- Scrolling Frame à l'intérieur de la sidebarFrame
+-- Scrolling Frame dans sidebar
 local sidebarScrollingFrame = Instance.new("ScrollingFrame", sidebarFrame)
 sidebarScrollingFrame.Size = UDim2.new(1, 0, 1, 0)
 sidebarScrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 800)
 sidebarScrollingFrame.ScrollBarThickness = 8
 sidebarScrollingFrame.BackgroundTransparency = 1
 
+-- Frame des boutons ESP
+local scrollingframeEsp = Instance.new("ScrollingFrame", frame)
+scrollingframeEsp.Size = UDim2.new(1, 0, 1, 0)
+scrollingframeEsp.CanvasSize = UDim2.new(0, 0, 0, 800)
+scrollingframeEsp.ScrollBarThickness = 8
+scrollingframeEsp.BackgroundTransparency = 1
+scrollingframeEsp.Visible = false
+
+-- Main Scrolling Frame
 local scrollingFrame = Instance.new("ScrollingFrame", frame)
 scrollingFrame.Size = UDim2.new(1, 0, 1, 0)
 scrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 800)
@@ -105,7 +98,7 @@ local frameListLayout = Instance.new("UIListLayout", scrollingFrame)
 frameListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 frameListLayout.Padding = UDim.new(0, 10)
 
--- Fonction d'aide pour créer des boutons avec UI
+-- Fonction pour créer des boutons
 local function createButton(text, parent)
     local button = Instance.new("TextButton", parent)
     button.Size = UDim2.new(0.90, 0, 0, 50)
@@ -137,61 +130,20 @@ espListLayout.Padding = UDim.new(0, 10)
 
 -- Boutons dans la sidebar
 local mainButton = createButton("Main", sidebarScrollingFrame)
-local EspButton = createButton("Esp", sidebarScrollingFrame)
+local EspButton = createButton("ESP", sidebarScrollingFrame)
 local PlayerButton = createButton("Player", sidebarScrollingFrame)
 local GiveItemButton = createButton("Give Item", sidebarScrollingFrame)
-local InfoButton = createButton("information ", sidebarScrollingFrame)
-local RemoveGuiButton = createButton("Remove Ui", sidebarScrollingFrame)
-local espButton = createButton("ESP Off", scrollingframeEsp)
-local noLagButton = createButton("No Lag Off", scrollingFrame)
-local noCooldownPromptButton = createButton("No Cooldown Prompt Off", scrollingFrame)
-local fullBrightButton = createButton("Full Bright Off", scrollingFrame)
-local godModeButton = createButton("God Mode Off", scrollingFrame)
-local autoLootButton = createButton("Auto Loot Off", scrollingFrame)
-local flyButton = createButton("Fly Off", scrollingFrame)
-local autoHealButton = createButton("Auto Heal Off", scrollingFrame)
-local speedBoostButton = createButton("Speed Boost Off", scrollingFrame)
-local noScreechButton = createButton("No Screech Off", scrollingFrame)
+local InfoButton = createButton("Information", sidebarScrollingFrame)
+local RemoveGuiButton = createButton("Remove UI", sidebarScrollingFrame)
 
--- Variables de fonctionnalité
+-- ESP bouton
+local espButton = createButton("ESP Off", scrollingframeEsp)
+
+-- Fonctionnalité ESP
 local espActive = false
-local noLagActive = false
-local noCooldownPromptActive = false
-local fullBrightActive = false
-local godModeActive = false
-local autoLootActive = false
-local flyActive = false
-local autoHealActive = false
-local speedBoostActive = false
-local noScreechValue = false
-local highlightColor = Color3.fromRGB(255, 0, 0)
-local highlightTransparency = 0.5
-local originalMaterials = {}
 local espTargets = {}
 
--- Accéder au service Workspace
-local workspace = game:GetService("Workspace")
-
--- Fonction pour mettre à jour les paramètres des ProximityPrompts
-local function updateProximityPrompts()
-    for _, object in pairs(workspace:GetDescendants()) do
-        if object:IsA("ProximityPrompt") then
-            object.RequiresLineOfSight = false
-            object.HoldDuration = 0
-        end
-    end
-end
-
--- Fonction pour désactiver Screech
-local function noScreech()
-    local gameData = game:GetService("ReplicatedStorage"):WaitForChild("GameData")
-    local disableScreech = gameData:FindFirstChild("DisableEntitieScreech")
-    if disableScreech then
-        disableScreech.Value = noScreechValue
-    end
-end
-
--- Fonction ESP
+-- Fonction pour récupérer les cibles ESP
 local function updateEspTargets()
     espTargets = {}
     for _, model in pairs(workspace:GetDescendants()) do
@@ -205,78 +157,49 @@ local function updateEspTargets()
     end
 end
 
+-- Fonction pour activer les Highlights
 local function highlightModel(model)
     if not model:FindFirstChildOfClass("Highlight") then
         local highlight = Instance.new("Highlight", model)
-        highlight.FillColor = highlightColor
-        highlight.FillTransparency = highlightTransparency
-        highlight.OutlineTransparency = highlightTransparency
+        highlight.FillColor = Color3.fromRGB(255, 0, 0)
+        highlight.FillTransparency = 0.5
+        highlight.OutlineTransparency = 0.5
+
+if not model:FindFirstChildOfClass("BillboardGui") then
+        local billboard = Instance.new("BillboardGui")
+        billboard.Parent = model
+        billboard.Adornee = model
+        billboard.AlwaysOnTop = true
+        billboard.Size = UDim2.new(0, 100, 0, 50)
+        billboard.StudsOffset = Vector3.new(0, 2, 0)
+
+        local textLabel = Instance.new("TextLabel")
+        textLabel.Parent = billboard
+        textLabel.Size = UDim2.new(1, 0, 1, 0)
+        textLabel.BackgroundTransparency = 1
+        textLabel.Text = model.Name
+        textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    end
     end
 end
 
+-- Fonction pour afficher les ESP
 local function highlightModels()
     for _, model in pairs(espTargets) do
         highlightModel(model)
     end
 end
 
+-- Fonction pour effacer les Highlights
 local function clearHighlights()
     for _, obj in pairs(workspace:GetDescendants()) do
-        if obj:IsA("Highlight") then
+        if obj:IsA("Highlight") and obj:IsA("BillboardGui") then
             obj:Destroy()
         end
     end
 end
 
--- Fonction No Lag
-local function setSmoothPlastic()
-    for _, part in pairs(workspace:GetDescendants()) do
-        if part:IsA("Part") then
-            table.insert(originalMaterials, {part = part, material = part.Material})
-            part.Material = Enum.Material.SmoothPlastic
-        end
-    end
-end
-
-local function restoreOriginalMaterials()
-    for _, entry in pairs(originalMaterials) do
-        if entry.part then
-            entry.part.Material = entry.material
-        end
-    end
-end
-
--- Fonction Toggle pour le GUI
-local function toggleFrame()
-    frame.Visible = not frame.Visible
-    sidebarFrame.Visible = not sidebarFrame.Visible
-end
-
-toggleButton.MouseButton1Click:Connect(toggleFrame)
-
--- Fonction No Lag
-noLagButton.MouseButton1Click:Connect(function()
-    noLagActive = not noLagActive
-    if noLagActive then
-        setSmoothPlastic()
-        noLagButton.Text = "No Lag On"
-    else
-        restoreOriginalMaterials()
-        noLagButton.Text = "No Lag Off"
-    end
-end)
-
-EspButton.MouseButton1Click:Connect(function()
-scrollingframeEsp.Visible = true
-scrollingFrame.Visible = false
-end)
-
-mainButton.MouseButton1Click:Connect(function()
-scrollingFrame.Visible = true
-scrollingframeEsp.Visible = false
-end)
-
--- Fonction ESP
+-- Toggle ESP
 espButton.MouseButton1Click:Connect(function()
     espActive = not espActive
     if espActive then
@@ -289,143 +212,52 @@ espButton.MouseButton1Click:Connect(function()
     end
 end)
 
--- Fonction No Cooldown Prompt
-noCooldownPromptButton.MouseButton1Click:Connect(function()
-    noCooldownPromptActive = not noCooldownPromptActive
-    if noCooldownPromptActive then
-        updateProximityPrompts()
-        noCooldownPromptButton.Text = "No Cooldown Prompt On"
-    else
-        noCooldownPromptButton.Text = "No Cooldown Prompt Off"
-    end
-end)
-
--- Fonction Full Bright
-fullBrightButton.MouseButton1Click:Connect(function()
-    fullBrightActive = not fullBrightActive
-    if fullBrightActive then
-        fullBrightButton.Text = "Full Bright On"
-        game.Lighting.Brightness = 100
-    else
-        fullBrightButton.Text = "Full Bright Off"
-        game.Lighting.Brightness = 1
-    end
-end)
-
--- Fonction God Mode
-godModeButton.MouseButton1Click:Connect(function()
-    godModeActive = not godModeActive
-    if godModeActive then
-        godModeButton.Text = "God Mode On"
-        -- Logic for God Mode activation
-    else
-        godModeButton.Text = "God Mode Off"
-        -- Logic for disabling God Mode
-    end
-end)
-
--- Fonction Auto Loot
-autoLootButton.MouseButton1Click:Connect(function()
-    autoLootActive = not autoLootActive
-    if autoLootActive then
-        autoLootButton.Text = "Auto Loot On"
-        -- Logic for Auto Loot activation
-    else
-        autoLootButton.Text = "Auto Loot Off"
-        -- Logic for disabling Auto Loot
-    end
-end)
-
--- Fonction Fly
-flyButton.MouseButton1Click:Connect(function()
-    flyActive = not flyActive
-    if flyActive then
-        flyButton.Text = "Fly On"
-        -- Logic to enable flying
-    else
-        flyButton.Text = "Fly Off"
-        -- Logic to disable flying
-    end
-end)
-
--- Fonction Auto Heal
-autoHealButton.MouseButton1Click:Connect(function()
-    autoHealActive = not autoHealActive
-    if autoHealActive then
-        autoHealButton.Text = "Auto Heal On"
-        -- Logic to enable auto heal
-    else
-        autoHealButton.Text = "Auto Heal Off"
-        -- Logic to disable auto heal
-    end
-end)
-
--- Fonction Speed Boost
-speedBoostButton.MouseButton1Click:Connect(function()
-    speedBoostActive = not speedBoostActive
-    if speedBoostActive then
-        speedBoostButton.Text = "Speed Boost On"
-        -- Logic to increase player's speed
-    else
-        speedBoostButton.Text = "Speed Boost Off"
-        -- Logic to reset player's speed
-    end
-end)
-
--- Fonction No Screech
-noScreechButton.MouseButton1Click:Connect(function()
-    noScreechValue = not noScreechValue
-    if noScreechValue then
-        noScreechButton.Text = "No Screech On"
-        noScreech()
-    else
-        noScreechButton.Text = "No Screech Off"
-        noScreech()
-    end
-end)
-
-RemoveGuiButton.MouseButton1Click:Connect(function()
-if player.PlayerGui:FindFirstChild("GuiPlayer") then
-    player.PlayerGui.GuiPlayer:Destroy()
+-- Toggle pour afficher/masquer le GUI
+local function toggleFrame()
+    frame.Visible = not frame.Visible
+    sidebarFrame.Visible = not sidebarFrame.Visible
 end
+
+toggleButton.MouseButton1Click:Connect(toggleFrame)
+
+-- Navigation entre les frames
+EspButton.MouseButton1Click:Connect(function()
+    scrollingframeEsp.Visible = true
+    scrollingFrame.Visible = false
+end)
+
+mainButton.MouseButton1Click:Connect(function()
+    scrollingFrame.Visible = true
+    scrollingframeEsp.Visible = false
 end)
 
 -- Boucle de mise à jour continue
 RunService.RenderStepped:Connect(function()
-    if noScreechValue then
-        noScreech()
-    end
-    if speedBoostActive then
-        -- Logic to increase player's speed
-    end
-    if autoHealActive then
-        -- Logic to enable auto heal
-    end
-    if autoLootActive then
-        -- Logic for Auto Loot activation
-    end
-    if godModeActive then
-        -- Logic for God Mode activation
-    end
-    if fullBrightActive then
-        game.Lighting.Brightness = 100
-    end
-    if noCooldownPromptActive then
-        updateProximityPrompts()
-    end
-if noLagActive then
-        setSmoothPlastic()
-        noLagButton.Text = "No Lag On"
-    else
-        restoreOriginalMaterials()
-        noLagButton.Text = "No Lag Off"
-    end
-if espActive then
+    if espActive then
         updateEspTargets()
         highlightModels()
-        espButton.Text = "ESP On"
     else
         clearHighlights()
-        espButton.Text = "ESP Off"
     end
+end)
+
+-- Bouton pour supprimer le GUI
+RemoveGuiButton.MouseButton1Click:Connect(function()
+    screenGui:Destroy()
+end)
+
+-- Code additionnel pour les autres boutons (Player, Give Item, Information)
+PlayerButton.MouseButton1Click:Connect(function()
+    print("Player Button Clicked")
+    -- Ajoutez ici des fonctionnalités spécifiques pour le bouton Player
+end)
+
+GiveItemButton.MouseButton1Click:Connect(function()
+    print("Give Item Button Clicked")
+    -- Ajoutez ici des fonctionnalités spécifiques pour le bouton Give Item
+end)
+
+InfoButton.MouseButton1Click:Connect(function()
+    print("Information Button Clicked")
+    -- Ajoutez ici des informations ou des fonctionnalités spécifiques pour le bouton Information
 end)
