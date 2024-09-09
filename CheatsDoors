@@ -233,17 +233,22 @@ local function highlightPlayers()
 end
 
 local function PromptNoCooldown(prompt)
-for -,prompt in pairs(workspace:GetDescendants()) do
+for _,prompt in pairs(workspace:GetDescendants()) do
 if prompt:IsA("Proximity Prompt") then
-prompt.HoldOn = 0
+if promptActive then
+        prompt.HoldDuration = 0
+        PromptButton.Text = "No Cooldown Prompt On"
+    else
+        PromptButton.Text = "No Cooldown Prompt Off"
+    end
 end
 end
 end
 
 -- Ajout des nouveaux boutons dans scrollingFrame (Main)
-local fullBrightButton = createButton("Full Bright", scrollingFrame, function()
+local fullBrightButton = createButton("Full Bright Off", scrollingFrame, function()
     toggleFullBright()
-    fullBrightButton.Text = FullBrightActive and "Full Bright On" or "Full Bright Off"
+    fullBrightButton.Text = "Full Bright On" or "Full Bright Off"
 end)
 
 local function activateNoLag()
@@ -275,11 +280,11 @@ local noLagButton = createButton("No Lag", scrollingFrame, function()
 end)
 
 -- Ajout des boutons ESP dans scrollingframeEsp (Section ESP)
-local espButton = createButton("ESP", scrollingframeEsp, function()
+local espButton = createButton("ESP Player Off", scrollingframeEsp, function()
     espActive = not espActive
     if espActive then
         highlightPlayers()
-        espButton.Text = "ESP On"
+        espButton.Text = "ESP Player On"
     else
         for _, target in pairs(espTargets) do
             local highlight = target:FindFirstChildOfClass("Highlight")
@@ -288,7 +293,18 @@ local espButton = createButton("ESP", scrollingframeEsp, function()
             end
         end
         espTargets = {}
-        espButton.Text = "ESP Off"
+        espButton.Text = "ESP Player Off"
+    end
+end)
+
+local PromptButton = createButton("No Cooldown Prompt Off", scrollingframe, function()
+local promptActive = false
+    promptActive = not promptActive
+    if promptActive then
+        PromptNoCooldown()
+        PromptButton.Text = "No Cooldown Prompt On"
+    else
+        PromptButton.Text = "No Cooldown Prompt Off"
     end
 end)
 
@@ -317,6 +333,5 @@ RunService.RenderStepped:Connect(function()
     end
 end)
 
--- Réinitialisation des paramètres d'éclairage si FullBright est désactivé
-FullBrightActive = false
-toggleFullBright()
+
+
