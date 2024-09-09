@@ -72,7 +72,7 @@ scrollingframeEsp.Size = UDim2.new(1, 0, 1, 0)
 scrollingframeEsp.CanvasSize = UDim2.new(0, 0, 0, 800)
 scrollingframeEsp.ScrollBarThickness = 8
 scrollingframeEsp.BackgroundTransparency = 1
-scrollingframeEsp.Visible = False
+scrollingframeEsp.Visible = false
 
 -- UI Stroke et Coin arrondi pour la sidebarFrame
 local sidebarStroke = Instance.new("UIStroke", sidebarFrame)
@@ -271,7 +271,7 @@ scrollingframeEsp.Visible = true
 scrollingFrame.Visible = false
 end)
 
-MainButton.MouseButton1Click:Connect(function()
+mainButton.MouseButton1Click:Connect(function()
 scrollingFrame.Visible = true
 scrollingframeEsp.Visible = false
 end)
@@ -412,5 +412,20 @@ RunService.RenderStepped:Connect(function()
     end
     if noCooldownPromptActive then
         updateProximityPrompts()
+    end
+if noLagActive then
+        setSmoothPlastic()
+        noLagButton.Text = "No Lag On"
+    else
+        restoreOriginalMaterials()
+        noLagButton.Text = "No Lag Off"
+    end
+if espActive then
+        updateEspTargets()
+        highlightModels()
+        espButton.Text = "ESP On"
+    else
+        clearHighlights()
+        espButton.Text = "ESP Off"
     end
 end)
