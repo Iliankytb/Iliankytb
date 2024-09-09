@@ -1,32 +1,40 @@
 -- Variables
 local player = game.Players.LocalPlayer
+local RunService = game:GetService("RunService")
+
+-- Supprimer l'ancien GUI si présent
+if player.PlayerGui:FindFirstChild("GuiPlayer") then
+    player.PlayerGui.GuiPlayer:Destroy()
+end
+
+-- Création du GUI
 local screenGui = Instance.new("ScreenGui", player.PlayerGui)
 screenGui.Name = "GuiPlayer"
-screenGui.ResetOnSpawn = false -- Conserver le GUI après la réinitialisation
+screenGui.ResetOnSpawn = false
 
 -- Main Frame
 local frame = Instance.new("Frame", screenGui)
 frame.Size = UDim2.new(0.35, 0, 0.4, 0)
 frame.Position = UDim2.new(0.325, 0, 0.3, 0)
-frame.BackgroundColor3 = Color3.fromRGB(60, 60, 60) -- Couleur de fond sombre pour contraste
+frame.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 frame.BackgroundTransparency = 0.25
 frame.Visible = false
 
--- Ajout d'un gradient sur le Frame
+-- Gradient sur le Frame
 local gradient = Instance.new("UIGradient", frame)
 gradient.Color = ColorSequence.new{
     ColorSequenceKeypoint.new(0, Color3.fromRGB(60, 60, 60)),
     ColorSequenceKeypoint.new(1, Color3.fromRGB(90, 90, 90))
 }
 
--- UI Stroke et Coin arrondi pour le Main Frame
+-- UI Stroke et Coin arrondi pour le Frame
 local uistroke = Instance.new("UIStroke", frame)
 uistroke.Thickness = 3
-uistroke.Color = Color3.fromRGB(20, 20, 20) -- Bordure sombre pour un bon contraste
+uistroke.Color = Color3.fromRGB(20, 20, 20)
 uistroke.LineJoinMode = Enum.LineJoinMode.Round
 
 local uicorner = Instance.new("UICorner", frame)
-uicorner.CornerRadius = UDim.new(0.1, 0) -- Courbes plus douces
+uicorner.CornerRadius = UDim.new(0.1, 0)
 
 -- Bouton pour afficher/masquer le GUI
 local closeopen = Instance.new("TextButton", screenGui)
@@ -36,11 +44,9 @@ closeopen.Text = "Toggle Menu"
 closeopen.TextColor3 = Color3.fromRGB(255, 255, 255)
 closeopen.Font = Enum.Font.GothamBold
 closeopen.TextSize = 18
-closeopen.BackgroundColor3 = Color3.fromRGB(85, 170, 255) -- Couleur vive pour attirer l'attention
-uistroke:Clone().Parent = closeopen
-uicorner:Clone().Parent = closeopen
+closeopen.BackgroundColor3 = Color3.fromRGB(85, 170, 255)
 
--- Ajout d'un gradient sur le bouton closeopen
+-- Gradient sur le bouton closeopen
 local buttonGradient = Instance.new("UIGradient", closeopen)
 buttonGradient.Color = ColorSequence.new{
     ColorSequenceKeypoint.new(0, Color3.fromRGB(85, 170, 255)),
@@ -56,14 +62,14 @@ closeopen.MouseButton1Click:Connect(toggleFrame)
 -- Scrolling Frame à l'intérieur du Main Frame
 local scrollingFrame = Instance.new("ScrollingFrame", frame)
 scrollingFrame.Size = UDim2.new(1, 0, 1, 0)
-scrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 800) -- Ajusté pour plus de boutons
+scrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 800)
 scrollingFrame.ScrollBarThickness = 8
-scrollingFrame.BackgroundTransparency = 1 -- Fond transparent pour scrollingFrame
+scrollingFrame.BackgroundTransparency = 1
 
 -- UIListLayout pour les boutons
 local listLayout = Instance.new("UIListLayout", scrollingFrame)
 listLayout.SortOrder = Enum.SortOrder.LayoutOrder
-listLayout.Padding = UDim.new(0, 10) -- Espacement entre les boutons
+listLayout.Padding = UDim.new(0, 10)
 
 -- Fonction d'aide pour créer des boutons
 local function createButton(text, parent)
@@ -73,55 +79,41 @@ local function createButton(text, parent)
     button.TextColor3 = Color3.fromRGB(255, 255, 255)
     button.Font = Enum.Font.GothamBold
     button.TextSize = 16
-    button.BackgroundColor3 = Color3.fromRGB(50, 50, 50) -- Gris foncé pour contraste
-    uistroke:Clone().Parent = button
-    uicorner:Clone().Parent = button
+    button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
 
-    -- Ajout d'un gradient sur chaque bouton
+    -- Gradient sur chaque bouton
     local buttonGradient = Instance.new("UIGradient", button)
     buttonGradient.Color = ColorSequence.new{
         ColorSequenceKeypoint.new(0, Color3.fromRGB(70, 70, 70)),
         ColorSequenceKeypoint.new(1, Color3.fromRGB(100, 100, 100))
     }
 
+    uistroke:Clone().Parent = button
+    uicorner:Clone().Parent = button
     return button
 end
 
--- ESP Button
+-- Création des boutons
 local espButton = createButton("ESP Off", scrollingFrame)
-
--- No Lag Button
 local NoLagButton = createButton("No Lag Off", scrollingFrame)
-
--- ProximityPromptNoCooldown Button
 local NoCooldownPromptButton = createButton("No Cooldown Prompt Off", scrollingFrame)
-
--- Full Bright Button
 local FullBrightButton = createButton("Full Bright Off", scrollingFrame)
-
--- God Mode Button
 local GodModeButton = createButton("God Mode Off", scrollingFrame)
-
--- AutoLoot Button
 local autoLootButton = createButton("Auto Loot Off", scrollingFrame)
-
--- Fly Button
 local flyButton = createButton("Fly Off", scrollingFrame)
-
--- Auto Heal Button
 local autoHealButton = createButton("Auto Heal Off", scrollingFrame)
-
--- Speed Boost Button
 local speedBoostButton = createButton("Speed Boost Off", scrollingFrame)
 
--- ESP Functions
+-- Variables de fonctionnalité
+local espActive, noLagActive, noCooldownPromptActive, fullBrightActive, godModeActive, autoLootActive, flyActive, autoHealActive, speedBoostActive = false, false, false, false, false, false, false, false, false
 local highlightColor = Color3.fromRGB(255, 0, 0)
 local highlightTransparency = 0.5
-
+local originalMaterials = {}
 local espTargets = {}
 
+-- Fonction ESP
 local function updateEspTargets()
-    espTargets = {} -- Reset table
+    espTargets = {}
     for _, model in pairs(workspace:GetDescendants()) do
         if model:IsA("Model") or model:IsA("Part") then
             local nameLower = model.Name:lower()
@@ -134,23 +126,20 @@ end
 
 local function highlightModel(model)
     if not model:FindFirstChildOfClass("Highlight") then
-        local highlight = Instance.new("Highlight")
-        highlight.Parent = model
+        local highlight = Instance.new("Highlight", model)
         highlight.FillColor = highlightColor
         highlight.FillTransparency = highlightTransparency
         highlight.OutlineTransparency = highlightTransparency
     end
 
     if not model:FindFirstChildOfClass("BillboardGui") then
-        local billboard = Instance.new("BillboardGui")
-        billboard.Parent = model
+        local billboard = Instance.new("BillboardGui", model)
         billboard.Adornee = model
         billboard.AlwaysOnTop = true
         billboard.Size = UDim2.new(0, 100, 0, 50)
         billboard.StudsOffset = Vector3.new(0, 2, 0)
 
-        local textLabel = Instance.new("TextLabel")
-        textLabel.Parent = billboard
+        local textLabel = Instance.new("TextLabel", billboard)
         textLabel.Size = UDim2.new(1, 0, 1, 0)
         textLabel.BackgroundTransparency = 1
         textLabel.Text = model.Name
@@ -172,26 +161,7 @@ local function clearHighlights()
     end
 end
 
--- ESP Activation
-local espActive = false
-
-espButton.MouseButton1Click:Connect(function()
-    espActive = not espActive
-
-    if espActive then
-        espButton.Text = "ESP On"
-        updateEspTargets() -- Update targets when toggled on
-        highlightModels()
-    else
-        espButton.Text = "ESP Off"
-        clearHighlights()
-    end
-end)
-
--- No Lag Functions
-local noLagActive = false
-local originalMaterials = {}
-
+-- Fonction No Lag
 local function setSmoothPlastic()
     for _, part in pairs(workspace:GetDescendants()) do
         if part:IsA("Part") then
@@ -209,171 +179,117 @@ local function restoreMaterials()
     end
 end
 
-NoLagButton.MouseButton1Click:Connect(function()
-    noLagActive = not noLagActive
-    if noLagActive then
-        NoLagButton.Text = "No Lag On"
-        setSmoothPlastic()
+-- Gestion des boutons
+espButton.MouseButton1Click:Connect(function()
+    espActive = not espActive
+    espButton.Text = espActive and "ESP On" or "ESP Off"
+    if espActive then
+        updateEspTargets()
+        highlightModels()
     else
-        NoLagButton.Text = "No Lag Off"
-        restoreMaterials()
+        clearHighlights()
     end
 end)
 
--- ProximityPromptNoCooldown Function
-local noCooldownPromptActive = false
+NoLagButton.MouseButton1Click:Connect(function()
+    noLagActive = not noLagActive
+    NoLagButton.Text = noLagActive and "No Lag On" or "No Lag Off"
+    if noLagActive then
+        setSmoothPlastic()
+    else
+        restoreMaterials()
+    end
+end)
 
 NoCooldownPromptButton.MouseButton1Click:Connect(function()
     noCooldownPromptActive = not noCooldownPromptActive
-
-    if noCooldownPromptActive then
-        NoCooldownPromptButton.Text = "No Cooldown Prompt On"
-        for _, prompt in pairs(workspace:GetDescendants()) do
-            if prompt:IsA("ProximityPrompt") then
-                prompt.RequiresLineOfSight = false
-                prompt.HoldDuration = 0
-            end
-        end
-    else
-        NoCooldownPromptButton.Text = "No Cooldown Prompt Off"
-        for _, prompt in pairs(workspace:GetDescendants()) do
-            if prompt:IsA("ProximityPrompt") then
-                prompt.HoldDuration = 0.5 -- Remet la durée de maintien par défaut
-            end
+    NoCooldownPromptButton.Text = noCooldownPromptActive and "No Cooldown Prompt On" or "No Cooldown Prompt Off"
+    
+    for _, prompt in pairs(workspace:GetDescendants()) do
+        if prompt:IsA("ProximityPrompt") then
+            prompt.RequiresLineOfSight = not noCooldownPromptActive
+            prompt.HoldDuration = noCooldownPromptActive and 0 or 0.5
         end
     end
 end)
-
--- Full Bright Function
-local fullBrightActive = false
 
 FullBrightButton.MouseButton1Click:Connect(function()
     fullBrightActive = not fullBrightActive
-
-    if fullBrightActive then
-        FullBrightButton.Text = "Full Bright On"
-        game.Lighting.Brightness = 100 -- Ajuste la luminosité
-        game.Lighting.Ambient = Color3.new(1, 1, 1) -- Fait briller tout
-    else
-        FullBrightButton.Text = "Full Bright Off"
-        game.Lighting.Brightness = 1 -- Luminosité par défaut
-        game.Lighting.Ambient = Color3.new(0.5, 0.5, 0.5) -- Ambiance par défaut
-    end
+    FullBrightButton.Text = fullBrightActive and "Full Bright On" or "Full Bright Off"
+    
+    game.Lighting.Brightness = fullBrightActive and 100 or 1
+    game.Lighting.Ambient = fullBrightActive and Color3.new(1, 1, 1) or Color3.new(0.5, 0.5, 0.5)
 end)
-
--- God Mode Function
-local godModeActive = false
 
 GodModeButton.MouseButton1Click:Connect(function()
     godModeActive = not godModeActive
-
-    if godModeActive then
-        GodModeButton.Text = "God Mode On"
-        player.Character.Humanoid.MaxHealth = math.huge -- Santé infinie
-        player.Character.Humanoid.Health = player.Character.Humanoid.MaxHealth
-    else
-        GodModeButton.Text = "God Mode Off"
-        player.Character.Humanoid.MaxHealth = 100 -- Santé par défaut
-        player.Character.Humanoid.Health = player.Character.Humanoid.MaxHealth
+    GodModeButton.Text = godModeActive and "God Mode On" or "God Mode Off"
+    
+    local humanoid = player.Character and player.Character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        humanoid.MaxHealth = godModeActive and math.huge or 100
+        humanoid.Health = godModeActive and humanoid.MaxHealth or humanoid.Health
     end
 end)
-
--- Auto Loot Function
-local autoLootActive = false
 
 autoLootButton.MouseButton1Click:Connect(function()
     autoLootActive = not autoLootActive
-
-    if autoLootActive then
-        autoLootButton.Text = "Auto Loot On"
-        -- Fonctionnalité d'auto-loot (vous pouvez implémenter un script qui interagit automatiquement avec des objets proches)
-    else
-        autoLootButton.Text = "Auto Loot Off"
-        -- Désactiver la fonctionnalité d'auto-loot
-    end
+    autoLootButton.Text = autoLootActive and "Auto Loot On" or "Auto Loot Off"
+    
+    -- Fonctionnalité d'auto-loot (vous pouvez implémenter une logique spécifique ici)
 end)
-
--- Fly Function
-local flyActive = false
 
 flyButton.MouseButton1Click:Connect(function()
     flyActive = not flyActive
-
-    if flyActive then
-        flyButton.Text = "Fly On"
-        -- Ajoutez ici votre fonction de vol personnalisée
-    else
-        flyButton.Text = "Fly Off"
-        -- Désactiver la fonction de vol
-    end
+    flyButton.Text = flyActive and "Fly On" or "Fly Off"
+    
+    -- Ajoutez ici la logique pour la fonction de vol
 end)
-
--- Auto Heal Function
-local autoHealActive = false
 
 autoHealButton.MouseButton1Click:Connect(function()
     autoHealActive = not autoHealActive
-
-    if autoHealActive then
-        autoHealButton.Text = "Auto Heal On"
-        -- Ajouter une fonctionnalité pour régénérer automatiquement la santé
-    else
-        autoHealButton.Text = "Auto Heal Off"
-        -- Désactiver la régénération automatique
-    end
+    autoHealButton.Text = autoHealActive and "Auto Heal On" or "Auto Heal Off"
+    
+    -- Ajouter la logique pour régénérer automatiquement la santé
 end)
-
--- Speed Boost Function
-local speedBoostActive = false
 
 speedBoostButton.MouseButton1Click:Connect(function()
     speedBoostActive = not speedBoostActive
-
-    if speedBoostActive then
-        speedBoostButton.Text = "Speed Boost On"
-        player.Character.Humanoid.WalkSpeed = 50 -- Vitesse boostée
-    else
-        speedBoostButton.Text = "Speed Boost Off"
-        player.Character.Humanoid.WalkSpeed = 16 -- Vitesse par défaut
+    speedBoostButton.Text = speedBoostActive and "Speed Boost On" or "Speed Boost Off"
+    
+    local humanoid = player.Character and player.Character:FindFirstChildOfClass("Humanoid")
+    if humanoid then
+        humanoid.WalkSpeed = speedBoostActive and 50 or 16
     end
 end)
 
+-- Boucle principale pour les fonctions activées
+RunService.RenderStepped:Connect(function()
+    if speedBoostActive then
+        local humanoid = player.Character and player.Character:FindFirstChildOfClass("Humanoid")
+        if humanoid then
+            humanoid.WalkSpeed = 50
+        end
+    end
 
-   while true do
-if speedBoostActive then
-        speedBoostButton.Text = "Speed Boost On"
-        player.Character.Humanoid.WalkSpeed = 50 -- Vitesse boostée
-    else
-        speedBoostButton.Text = "Speed Boost Off"
-        player.Character.Humanoid.WalkSpeed = 16 -- Vitesse par défaut
-    end
     if autoHealActive then
-        autoHealButton.Text = "Auto Heal On"
-        -- Ajouter une fonctionnalité pour régénérer automatiquement la santé
-    else
-        autoHealButton.Text = "Auto Heal Off"
-        -- Désactiver la régénération automatique
+        -- Logique pour régénérer automatiquement la santé
     end
-if autoLootActive then
-        autoLootButton.Text = "Auto Loot On"
-        -- Fonctionnalité d'auto-loot (vous pouvez implémenter un script qui interagit automatiquement avec des objets proches)
-    else
-        autoLootButton.Text = "Auto Loot Off"
-        -- Désactiver la fonctionnalité d'auto-loot
+
+    if autoLootActive then
+        -- Logique pour auto-loot
     end
-if noLagActive then
-        NoLagButton.Text = "No Lag On"
+
+    if noLagActive then
         setSmoothPlastic()
     else
-        NoLagButton.Text = "No Lag Off"
         restoreMaterials()
     end
-if espActive then
-        espButton.Text = "ESP On"
-        updateEspTargets() -- Update targets when toggled on
+
+    if espActive then
+        updateEspTargets()
         highlightModels()
     else
-        espButton.Text = "ESP Off"
         clearHighlights()
     end
-end
+end)
