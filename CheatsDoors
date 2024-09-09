@@ -169,14 +169,14 @@ end
 scrollingFrame:FindFirstChild("Full Bright").MouseButton1Click:Connect(toggleFullBright)
 
 -- Fonctionnalité ESP pour voir les joueurs
-local function highlightPlayers()
+--[[local function highlightPlayers()
     for _, player in pairs(game.Players:GetPlayers()) do
         local char = player.Character
         if char and char:FindFirstChild("HumanoidRootPart") then
             highlightModel(char)
         end
     end
-end
+end]]--
 
 -- Fonction pour trouver tous les ProximityPrompt dans un objet
 local function findProximityPrompts(parent)
@@ -243,7 +243,7 @@ toggleButton.MouseButton1Click:Connect(function()
 end)
 
 -- Fonction pour gérer le bouton "Voir Joueurs"
-scrollingframeEsp:FindFirstChild("Esp Player").MouseButton1Click:Connect(function()
+--[[scrollingframeEsp:FindFirstChild("Esp Player").MouseButton1Click:Connect(function()
     espActive = not espActive
     if espActive then
         highlightPlayers()
@@ -257,7 +257,7 @@ scrollingframeEsp:FindFirstChild("Esp Player").MouseButton1Click:Connect(functio
         espTargets = {}
         scrollingframeEsp:FindFirstChild("Esp Player").Text = "ESP Off"
     end
-end)
+end)]]--
 
 -- Fonction pour gérer le bouton "Remove UI"
 removeGuiButton.MouseButton1Click:Connect(function()
