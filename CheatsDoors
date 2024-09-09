@@ -159,13 +159,12 @@ end
 
 -- Fonction pour activer les Highlights
 local function highlightModel(model)
-    if not model:FindFirstChildOfClass("Highlight") then
+    if not model:FindFirstChildOfClass("Highlight") or model:FindFirstChildOfClass("BillboardGui") then
         local highlight = Instance.new("Highlight", model)
         highlight.FillColor = Color3.fromRGB(255, 0, 0)
         highlight.FillTransparency = 0.5
         highlight.OutlineTransparency = 0.5
 
-if not model:FindFirstChildOfClass("BillboardGui") then
         local billboard = Instance.new("BillboardGui")
         billboard.Parent = model
         billboard.Adornee = model
@@ -193,7 +192,7 @@ end
 -- Fonction pour effacer les Highlights
 local function clearHighlights()
     for _, obj in pairs(workspace:GetDescendants()) do
-        if obj:IsA("Highlight") and obj:IsA("BillboardGui") then
+        if obj:IsA("Highlight") or obj:IsA("BillboardGui") then
             obj:Destroy()
         end
     end
