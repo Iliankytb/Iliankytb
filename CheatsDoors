@@ -1,6 +1,6 @@
 local player = game.Players.LocalPlayer
 local RunService = game:GetService("RunService")
-print("Work Cheats Good Luck")
+
 -- Supprimer l'ancien GUI si présent
 if player.PlayerGui:FindFirstChild("GuiPlayer") then
     player.PlayerGui.GuiPlayer:Destroy()
@@ -13,7 +13,7 @@ screenGui.ResetOnSpawn = false
 
 -- Main Frame
 local frame = Instance.new("Frame", screenGui)
-frame.Size = UDim2.new(0.5, 0, 0.5, 0)
+frame.Size = UDim2.new(0.25, 0, 0.75, 0)
 frame.Position = UDim2.new(0.325, 0, 0.3, 0)
 frame.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 frame.BackgroundTransparency = 0.25
@@ -54,8 +54,8 @@ buttonGradient.Color = ColorSequence.new{
 
 -- Sidebar Frame à gauche
 local sidebarFrame = Instance.new("Frame", screenGui)
-sidebarFrame.Size = UDim2.new(0.25, 0, 0.50, 0)
-sidebarFrame.Position = UDim2.new(0.25, -70, 0.2, 0)
+sidebarFrame.Size = UDim2.new(0.2, 0, 0.75, 0)
+sidebarFrame.Position = UDim2.new(0.2, -90, 0.2, 0)
 sidebarFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
 sidebarFrame.BackgroundTransparency = 0.25
 sidebarFrame.Visible = false
@@ -126,6 +126,7 @@ end
 
 -- Boutons dans la sidebar
 local mainButton = createButton("Main", sidebarScrollingFrame)
+local RemoveGuiButton = createButton("Remove Ui", sidebarScrollingFrame)
 local espButton = createButton("ESP Off", scrollingFrame)
 local noLagButton = createButton("No Lag Off", scrollingFrame)
 local noCooldownPromptButton = createButton("No Cooldown Prompt Off", scrollingFrame)
@@ -356,6 +357,12 @@ noScreechButton.MouseButton1Click:Connect(function()
         noScreechButton.Text = "No Screech Off"
         noScreech()
     end
+end)
+
+RemoveGuiButton.MouseButton1Click:Connect(function()
+if player.PlayerGui:FindFirstChild("GuiPlayer") then
+    player.PlayerGui.GuiPlayer:Destroy()
+end
 end)
 
 -- Boucle de mise à jour continue
