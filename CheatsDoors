@@ -45,13 +45,6 @@ toggleButton.Font = Enum.Font.GothamBold
 toggleButton.TextSize = 18
 toggleButton.BackgroundColor3 = Color3.fromRGB(85, 170, 255)
 
--- Gradient sur le bouton toggleButton
-local buttonGradient = Instance.new("UIGradient", toggleButton)
-buttonGradient.Color = ColorSequence.new{
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(85, 170, 255)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(65, 150, 255))
-}
-
 -- Sidebar Frame à gauche
 local sidebarFrame = Instance.new("Frame", screenGui)
 sidebarFrame.Size = UDim2.new(0.2, 0, 0.75, 0)
@@ -59,13 +52,6 @@ sidebarFrame.Position = UDim2.new(0.5, -90, 0.2, 0)
 sidebarFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
 sidebarFrame.BackgroundTransparency = 0.25
 sidebarFrame.Visible = false
-
--- Gradient sur la sidebarFrame
-local sidebarGradient = Instance.new("UIGradient", sidebarFrame)
-sidebarGradient.Color = ColorSequence.new{
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(40, 40, 40)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(70, 70, 70))
-}
 
 -- Scrolling Frame dans sidebar
 local sidebarScrollingFrame = Instance.new("ScrollingFrame", sidebarFrame)
@@ -88,15 +74,6 @@ scrollingFrame.Size = UDim2.new(1, 0, 1, 0)
 scrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 800)
 scrollingFrame.ScrollBarThickness = 8
 scrollingFrame.BackgroundTransparency = 1
-
--- UIListLayout pour organiser les boutons dans la sidebarFrame
-local sidebarListLayout = Instance.new("UIListLayout", sidebarScrollingFrame)
-sidebarListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-sidebarListLayout.Padding = UDim.new(0, 10)
-
-local frameListLayout = Instance.new("UIListLayout", scrollingFrame)
-frameListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-frameListLayout.Padding = UDim.new(0, 10)
 
 -- Fonction pour créer des boutons
 local function createButton(text, parent)
@@ -124,6 +101,15 @@ local function createButton(text, parent)
     return button
 end
 
+-- UIListLayout pour organiser les boutons dans le frame principal et le scrolling ESP
+local sidebarListLayout = Instance.new("UIListLayout", sidebarScrollingFrame)
+sidebarListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+sidebarListLayout.Padding = UDim.new(0, 10)
+
+local frameListLayout = Instance.new("UIListLayout", scrollingFrame)
+frameListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+frameListLayout.Padding = UDim.new(0, 10)
+
 local espListLayout = Instance.new("UIListLayout", scrollingframeEsp)
 espListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 espListLayout.Padding = UDim.new(0, 10)
@@ -139,64 +125,70 @@ local RemoveGuiButton = createButton("Remove UI", sidebarScrollingFrame)
 -- ESP bouton
 local espButton = createButton("ESP Off", scrollingframeEsp)
 
+-- Ajout des nouveaux boutons dans scrollingFrame (Main)
+local fullBrightButton = createButton("Full Bright", scrollingFrame)
+local noCooldownButton = createButton("No Cooldown Prompt", scrollingFrame)
+local autoPromptButton = createButton("Auto Prompt", scrollingFrame)
+local espDoorButton = createButton("ESP Door", scrollingFrame) -- Renommé de ESO Door
+
+-- Ajout du bouton "No Lag"
+local noLagButton = createButton("No Lag", scrollingFrame)
+
+-- Ajout des nouveaux boutons dans scrollingFrame ESP
+local espPlayerButton = createButton("Voir Joueurs", scrollingframeEsp)
+
 -- Fonctionnalité ESP
 local espActive = false
 local espTargets = {}
 
--- Fonction pour récupérer les cibles ESP
-local function updateEspTargets()
-    espTargets = {}
-    for _, model in pairs(workspace:GetDescendants()) do
-        if model:IsA("Model") or model:IsA("Part") then
-            local nameLower = model.Name:lower()
-            if nameLower == "locker_large" or nameLower == "locker_small" or nameLower == "door" or
-            nameLower == "sideroomdupe" or nameLower == "wardrobe" or nameLower == "gold" then
-                table.insert(espTargets, model)
-            end
+-- Fonction pour activer FullBright
+local function activateFullBright()
+    game.Lighting.Brightness = 2
+    game.Lighting.ClockTime = 14
+end
+
+fullBrightButton.MouseButton1Click:Connect(activateFullBright)
+
+-- Fonctionnalité ESP pour voir les joueurs
+local function highlightPlayers()
+    for _, player in pairs(game.Players:GetPlayers()) do
+        local char = player.Character
+        if char and char:FindFirstChild("HumanoidRootPart") then
+            highlightModel(char)
         end
     end
 end
 
--- Fonction pour activer les Highlights
-local function highlightModel(model)
-    if not model:FindFirstChildOfClass("Highlight") or model:FindFirstChildOfClass("BillboardGui") then
-        local highlight = Instance.new("Highlight", model)
-        highlight.FillColor = Color3.fromRGB(255, 0, 0)
-        highlight.FillTransparency = 0.5
-        highlight.OutlineTransparency = 0.5
+espPlayerButton.MouseButton1Click:Connect(highlightPlayers)
 
-        local billboard = Instance.new("BillboardGui")
-        billboard.Parent = model
-        billboard.Adornee = model
-        billboard.AlwaysOnTop = true
-        billboard.Size = UDim2.new(0, 100, 0, 50)
-        billboard.StudsOffset = Vector3.new(0, 2, 0)
+-- Fonction pour réduire les lags (No Lag)
+local originalMaterials = {}
 
-        local textLabel = Instance.new("TextLabel")
-        textLabel.Parent = billboard
-        textLabel.Size = UDim2.new(1, 0, 1, 0)
-        textLabel.BackgroundTransparency = 1
-        textLabel.Text = model.Name
-        textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    end
-    end
-end
-
--- Fonction pour afficher les ESP
-local function highlightModels()
-    for _, model in pairs(espTargets) do
-        highlightModel(model)
-    end
-end
-
--- Fonction pour effacer les Highlights
-local function clearHighlights()
-    for _, obj in pairs(workspace:GetDescendants()) do
-        if obj:IsA("Highlight") or obj:IsA("BillboardGui") then
-            obj:Destroy()
+local function activateNoLag()
+    for _, part in pairs(workspace:GetDescendants()) do
+        if part:IsA("BasePart") then
+            originalMaterials[part] = part.Material
+            part.Material = Enum.Material.SmoothPlastic
         end
     end
 end
+
+local function restoreMaterials()
+    for part, material in pairs(originalMaterials) do
+        if part and part:IsA("BasePart") then
+            part.Material = material
+        end
+    end
+    originalMaterials = {}
+end
+
+noLagButton.MouseButton1Click:Connect(function()
+    if next(originalMaterials) == nil then
+        activateNoLag()
+    else
+        restoreMaterials()
+    end
+end)
 
 -- Toggle ESP
 espButton.MouseButton1Click:Connect(function()
@@ -232,7 +224,7 @@ end)
 
 -- Boucle de mise à jour continue
 RunService.RenderStepped:Connect(function()
-    if espActive then
+        if espActive then
         updateEspTargets()
         highlightModels()
     else
@@ -245,18 +237,40 @@ RemoveGuiButton.MouseButton1Click:Connect(function()
     screenGui:Destroy()
 end)
 
--- Code additionnel pour les autres boutons (Player, Give Item, Information)
-PlayerButton.MouseButton1Click:Connect(function()
-    print("Player Button Clicked")
-    -- Ajoutez ici des fonctionnalités spécifiques pour le bouton Player
-end)
+-- Fonction pour mettre à jour les cibles ESP
+function updateEspTargets()
+    espTargets = {}
+    for _, player in pairs(game.Players:GetPlayers()) do
+        if player ~= game.Players.LocalPlayer then
+            table.insert(espTargets, player.Character)
+        end
+    end
+end
 
-GiveItemButton.MouseButton1Click:Connect(function()
-    print("Give Item Button Clicked")
-    -- Ajoutez ici des fonctionnalités spécifiques pour le bouton Give Item
-end)
+-- Fonction pour ajouter les contours ESP
+function highlightModels()
+    for _, model in pairs(espTargets) do
+        if model and model:FindFirstChild("HumanoidRootPart") then
+            highlightModel(model)
+        end
+    end
+end
 
-InfoButton.MouseButton1Click:Connect(function()
-    print("Information Button Clicked")
-    -- Ajoutez ici des informations ou des fonctionnalités spécifiques pour le bouton Information
-end)
+-- Fonction pour ajouter un effet de surbrillance
+function highlightModel(model)
+    local highlight = Instance.new("Highlight", model)
+    highlight.FillColor = Color3.fromRGB(255, 0, 0)
+    highlight.OutlineColor = Color3.fromRGB(255, 255, 255)
+    highlight.FillTransparency = 0.5
+    highlight.OutlineTransparency = 0
+end
+
+-- Fonction pour supprimer tous les highlights
+function clearHighlights()
+    for _, player in pairs(game.Players:GetPlayers()) do
+        local char = player.Character
+        if char and char:FindFirstChildOfClass("Highlight") then
+            char:FindFirstChildOfClass("Highlight"):Destroy()
+        end
+    end
+end
