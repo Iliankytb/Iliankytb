@@ -174,16 +174,65 @@ local speedBoostButton = createButton("Speed Boost Off", scrollingFramePlayer)
 
 
 
+end
+
+local function highlightModels()
+    for _, model in pairs(espTargets) do
+        highlightModel(model)
+    end
+end
+
+local function clearHighlights()
+    for _, obj in pairs(workspace:GetDescendants()) do
+        if obj:IsA("Highlight") or obj:IsA("BillboardGui") then
+            obj:Destroy()
+        end
+    end
+end
+
+-- Fonction No Lag
+local function setSmoothPlastic()
+    for _, part in pairs(workspace:GetDescendants()) do
+        if part:IsA("Part") then
+            table.insert(originalMaterials, {part = part, material = part.Material})
+            part.Material = Enum.Material.SmoothPlastic
+        end
+    end
+end
+
+local function restoreMaterials()
+    for _, entry in pairs(originalMaterials) do
+        if entry.part and entry.material then
+            entry.part.Material = entry.material
+        end
+    end
+end
+
+NoCooldownPromptButton.Mouse1Click:Connect(function()
+local noCooldownPromptActive = false
+noCooldownPromptActive = not noCooldownPromptActive
+    NoCooldownPromptButton.Text = noCooldownPromptActive and "No Cooldown Prompt On" or "No Cooldown Prompt Off"
+    
+    for _, prompt in pairs(workspace:GetDescendants()) do
+        if prompt:IsA("ProximityPrompt") then
+            prompt.RequiresLineOfSight = not noCooldownPromptActive
+            prompt.HoldDuration = noCooldownPromptActive and 0 or 1
+        end
+    end
+end)
+
 -- Toggle ESP
 local espEnabled = false
 espButton.MouseButton1Click:Connect(function()
+local espEnabled = false
     espEnabled = not espEnabled
     if espEnabled then
         espButton.Text = "ESP On"
-        -- Add your ESP logic here
+        updateEspTargets()
+        highlightModels()
     else
-        espButton.Text = "ESP Off"
-        -- Remove ESP logic here
+espButton.Text = "ESP Off"
+        clearHighlights()
     end
 end)
 
@@ -193,10 +242,10 @@ NoLagButton.MouseButton1Click:Connect(function()
     noLagEnabled = not noLagEnabled
     if noLagEnabled then
         NoLagButton.Text = "No Lag On"
-        -- No Lag logic
+        setSmoothPlastic()
     else
         NoLagButton.Text = "No Lag Off"
-        -- Disable No Lag logic
+        restoreMaterials()
     end
 end)
 
@@ -206,10 +255,13 @@ FullBrightButton.MouseButton1Click:Connect(function()
     fullBrightEnabled = not fullBrightEnabled
     if fullBrightEnabled then
         FullBrightButton.Text = "Full Bright On"
-        -- Enable Full Bright logic
+game.Lighting.Brightness = 100
+    game.Lighting.Ambient = Color3.new(1, 1, 1)
+end
     else
         FullBrightButton.Text = "Full Bright Off"
-        -- Disable Full Bright logic
+        game.Lighting.Brightness = 1
+    game.Lighting.Ambient =  Color3.new(0.5, 0.5, 0.5)
     end
 end)
 
@@ -251,5 +303,174 @@ flyButton.MouseButton1Click:Connect(function()
         -- Disable Fly logic
     end
 end)
+MenuButton.MouseButton1Click:Connect(function()
+scrollingFrame.Visible = true
+scrollingFrameEsp.Visible = false
+scrollingFramePlayer.Visible = false
+end)
 
--- Add other buttons functionality similarly
+EspButton.MouseButton1Click:Connect(function()
+scrollingFrame.Visible = false
+scrollingFrameEsp.Visible = true
+scrollingFramePlayer.Visible = false
+end)
+
+PlayerButton.MouseButton1Click:Connect(function()
+scrollingFrame.Visible = false
+scrollingFrameEsp.Visible = false
+scrollingFramePlayer.Visible = true
+end)
+
+RunService.RenderStepped:Connect(function()
+    if speedBoostActive then
+        local humanoid = player.Character and player.Character:FindFirstChildOfClass("Humanoid")
+        if humanoid then
+            humanoid.WalkSpeed = 19
+        end
+    end
+
+    if autoHealActive then
+        -- Logique pour régénérer automatiquement la santé
+    end
+
+    if autoLootActive then
+        -- Logique pour auto-loot
+    end
+
+    if noLagActive then
+        setSmoothPlastic()
+    else
+        restoreMaterials()
+    end
+
+    if espActive then
+        updateEspTargets()
+        highlightModels()
+    else
+        clearHighlights()
+    end
+if fullBrightActive then
+game.Lighting.Brightness = 100 
+    game.Lighting.Ambient = Color3.new(1, 1, 1) 
+else
+game.Lighting.Brightness = 100 
+    game.Lighting.Ambient = or Color3.new(0.5, 0.5, 0.5)
+end
+end)
+
+
+halt" 
+or nameLower == "Rush" 
+or nameLower == "LiveHintBook" 
+or nameLower == "drawercontainer" then
+                table.insert(espTargets, model)
+            end
+        end
+    end
+end
+
+local function highlightModel(model)
+    if not model:FindFirstChildOfClass("Highlight") then
+        local highlight = Instance.new("Highlight", model)
+        highlight.FillColor = highlightColor
+        highlight.FillTransparency = highlightTransparency
+        highlight.OutlineTransparency = highlightTransparency
+    end
+
+    if not model:FindFirstChildOfClass("BillboardGui") then
+        local billboard = Instance.new("BillboardGui", model)
+        billboard.Adornee = model
+        billboard.AlwaysOnTop = true
+        billboard.Size = UDim2.new(0, 100, 0, 50)
+        billboard.StudsOffset = Vector3.new(0, 2, 0)
+
+        local textLabel = Instance.new("TextLabel", billboard)
+        textLabel.Size = UDim2.new(1, 0, 1, 0)
+        textLabel.BackgroundTransparency = 1
+        textLabel.Text = model.Name
+        textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    end
+end
+
+local function highlightModels()
+    for _, model in pairs(espTargets) do
+        highlightModel(model)
+    end
+end
+
+local function clearHighlights()
+    for _, obj in pairs(workspace:GetDescendants()) do
+        if obj:IsA("Highlight") or obj:IsA("BillboardGui") then
+ setSmoothPlastic()
+    else
+        restoreMaterials()
+    end
+end)
+
+NoCooldownPromptButton.MouseButton1Click:Connect(function()
+    noCooldownPromptActive = not noCooldownPromptActive
+    NoCooldownPromptButton.Text = noCooldownPromptActive and "No Cooldown Prompt On" or "No Cooldown Prompt Off"
+    
+    for _, prompt in pairs(workspace:GetDescendants()) do
+        if prompt:IsA("ProximityPrompt") then
+            prompt.RequiresLineOfSight = not noCooldownPromptActive
+            prompt.HoldDuration = noCooldownPromptActive and 0 or 1
+        end
+    end
+end)
+
+
+MenuButton.MouseButton1Click:Connect(function()
+scrollingFrame.Visible = true
+scrollingFrameEsp.Visible = false
+scrollingFramePlayer.Visible = false
+end)
+
+EspButton.MouseButton1Click:Connect(function()
+scrollingFrame.Visible = false
+scrollingFrameEsp.Visible = true
+scrollingFramePlayer.Visible = false
+end)
+
+PlayerButton.MouseButton1Click:Connect(function()
+scrollingFrame.Visible = false
+scrollingFrameEsp.Visible = false
+scrollingFramePlayer.Visible = true
+end)
+
+RunService.RenderStepped:Connect(function()
+    if speedBoostActive then
+        local humanoid = player.Character and player.Character:FindFirstChildOfClass("Humanoid")
+        if humanoid then
+            humanoid.WalkSpeed = 19
+        end
+    end
+
+    if autoHealActive then
+        -- Logique pour régénérer automatiquement la santé
+    end
+
+    if autoLootActive then
+        -- Logique pour auto-loot
+    end
+
+    if noLagActive then
+        setSmoothPlastic()
+    else
+        restoreMaterials()
+    end
+
+    if espActive then
+        updateEspTargets()
+        highlightModels()
+    else
+        clearHighlights()
+    end
+if fullBrightActive then
+game.Lighting.Brightness = 100 
+    game.Lighting.Ambient = Color3.new(1, 1, 1) 
+else
+game.Lighting.Brightness = 100 
+    game.Lighting.Ambient = or Color3.new(0.5, 0.5, 0.5)
+end
+end)
