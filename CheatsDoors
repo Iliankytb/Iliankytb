@@ -190,6 +190,56 @@ local function createButton(text, parent, callback)
 
 	return button
 end
+local function updateEspTargets()
+    espTargets = {}
+    for _, model in pairs(workspace:GetDescendants()) do
+        if model:IsA("Model") or model:IsA("Part") then
+            local nameLower = model.Name:lower()
+            if nameLower == "locker_large" or nameLower == "locker_small" or nameLower == "door" or nameLower == "sideroomdupe" or nameLower == "wardrobe" or nameLower == "gold" or nameLower == "goldpile" or nameLower == "MineGenerator" or nameLower == "fuse" or nameLower == "key" or nameLower == "key_holder" or nameLower == "rift" or nameLower == "Chest" or nameLower == "Lockpick" or nameLower == "Battery" or nameLower == "FlashLight" or nameLower == "figure_rig" or nameLower == "figure" or nameLower == "rush" or nameLower == "ambush" or nameLower == "Screech" or nameLower == "halt" or nameLower == "Rushed" or nameLower == "LiveHintBook" or nameLower == "drawercontainer" then
+                table.insert(espTargets, model)
+            end
+        end
+    end
+end
+
+local function highlightModel(model)
+    if not model:FindFirstChildOfClass("Highlight") then
+        local highlight = Instance.new("Highlight", model)
+        highlight.FillColor = highlightColor
+        highlight.FillTransparency = highlightTransparency
+        highlight.OutlineTransparency = highlightTransparency
+    end
+
+    if not model:FindFirstChildOfClass("BillboardGui") then
+        local billboard = Instance.new("BillboardGui", model)
+        billboard.Adornee = model
+        billboard.AlwaysOnTop = true
+        billboard.Size = UDim2.new(0, 100, 0, 50)
+        billboard.StudsOffset = Vector3.new(0, 2, 0)
+
+        local textLabel = Instance.new("TextLabel", billboard)
+        textLabel.Size = UDim2.new(1, 0, 1, 0)
+        textLabel.BackgroundTransparency = 1
+        textLabel.Text = model.Name
+        textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    end
+end
+
+local function highlightModels()
+    for _, model in pairs(espTargets) do
+        highlightModel(model)
+    end
+end
+
+local function clearHighlights()
+    for _, obj in pairs(workspace:GetDescendants()) do
+        if obj:IsA("Highlight") or obj:IsA("BillboardGui") then
+            obj:Destroy()
+        end
+    end
+end
+
+
 
 -- Boutons dans la sidebar
 createButton("Main", sidebarScrollingFrame, function()
@@ -252,10 +302,12 @@ local NoCooldownPromptButton = createButton("No Prompt Cooldown: Off", scrolling
 	toggleNoPromptCooldown()
 end)
 
--- Fonction pour activer/désactiver l'ESP
-local function toggleESP()
-	espActive = not espActive
-	if espActive then
+local espActivePlayer = false
+
+
+local function toggleESPPlayer()
+espActivePlayer = not espActivePlayer
+if espActivePlayer then
 		-- Activer l'ESP
 		for _, target in ipairs(workspace:GetChildren()) do
 			if target:IsA("Model") and target:FindFirstChild("Humanoid") then
@@ -279,10 +331,27 @@ local function toggleESP()
 	end
 end
 
+-- Fonction pour activer/désactiver l'ESP
+local function toggleESP()
+	espActive = not espActive
+	espButton.Text = espActive and "ESP On" or "ESP Off"
+    if espActive then
+        updateEspTargets()
+        highlightModels()
+    else
+        clearHighlights()
+    end
+end
+
 -- Bouton pour activer/désactiver l'ESP
-createButton("Toggle ESP", scrollingframeEsp, function()
+createButton("ESP Off", scrollingframeEsp, function()
 	toggleESP()
 end)
+
+createButton("ESP Player Off", scrollingframeEsp, function()
+	toggleESPPlayer()
+end)
+
 
 -- Fonction pour activer/désactiver le FullBright
 local function toggleFullBright()
