@@ -157,15 +157,34 @@ local function createButton(text, parent, callback)
     return button
 end
 
+local ESPButton = createButton("ESP Off (Every)", scrollingframeEsp)
+local ESPPlayerButton = createButton("ESP Player Off", scrollingframeEsp)
+local ESPDoorButton = createButton("ESP Door Off(Coming Soon)", scrollingframeEsp)
+local ESPGoldPileButton = createButton("ESP Gold Off(Coming Soon)", scrollingframeEsp)
+local ESPDrawerButton = createButton("ESP drawer Off(Coming Soon)", scrollingframeEsp)
+local ESPKeyButton = createButton("ESP Key Off(Coming Soon)", scrollingframeEsp)
+local ESPItemButton = createButton("ESP Item Off(Coming Soon)", scrollingframeEsp)
+local ESPFakeDoorButton = createButton("ESP Fake Door Off(Coming Soon)", scrollingframeEsp)
+local ESPRushButton = createButton("ESP Rush Off(Coming Soon)", scrollingframeEsp)
+local ESPAmbushButton = createButton("ESP Ambush Off(Coming Soon)", scrollingframeEsp)
+local ESPHaltButton = createButton("ESP Halt Off(Coming Soon)", scrollingframeEsp)
+local ESPMinesGeneratorButton = createButton("ESP Mines Generator Off(Coming Soon)", scrollingframeEsp)
+local ESPWadrobeButton = createButton("ESP Wadrobe Off(Coming Soon)", scrollingframeEsp)
+local ESPFigureButton = createButton("ESP Figure Off(Coming Soon)", scrollingframeEsp)
+local ESPSeekButton = createButton("ESP Seek Off(Coming Soon)", scrollingframeEsp)
+local ESPDGiggleButton = createButton("ESP Giggle Off(Coming Soon)", scrollingframeEsp)
+
 -- Fonctionnalité ESP
-local espActive = false
+local espActive,FullBrightActive = false
 local espTargets = {}
-local FullBrightActive = false
-local highlightColor = Color3.fromRGB(255, 0, 0)
-local highlightTransparency = 0.5
+local highlightColor = Color3.fromRGB(255, 255, 255)
+local highlightTransparency = 0.25
+local highlightColorMonster = Color3.fromRGB(255, 0, 0)
+local highlightColorModel = Color3.fromRGB(255, 170, 0)
+local highlightTransparencyModel = 0.5
 
 -- Mise à jour des cibles
-local function updateEspTargets()
+local function updateEspTargetsModels()
     espTargets = {}
     for _, model in pairs(workspace:GetDescendants()) do
         if model:IsA("Model") or model:IsA("Part") then
@@ -181,9 +200,9 @@ end
 local function highlightModel(model)
     if not model:FindFirstChildOfClass("Highlight") then
         local highlight = Instance.new("Highlight", model)
-        highlight.FillColor = highlightColor
-        highlight.FillTransparency = highlightTransparency
-        highlight.OutlineTransparency = highlightTransparency
+        highlight.FillColor = highlightColorModel
+        highlight.FillTransparency = highlightTransparencyModel
+        highlight.OutlineTransparency = highlightTransparencyModel
     end
 end
 
@@ -204,10 +223,10 @@ local function clearHighlights()
 end
 
 -- Activer/désactiver le ESP
-local function toggleEsp()
+local function Esp()
     espActive = not espActive
     if espActive then
-        updateEspTargets()
+        updateEspTargetsModel()
         highlightModels()
     else
         clearHighlights()
@@ -215,8 +234,8 @@ local function toggleEsp()
 end
 
 -- Ajouter le bouton ESP dans le menu
-createButton("Toggle ESP", scrollingframeEsp, function()
-    toggleEsp()
+ESPButton.Mouse1Click:Connect(function()
+Esp()
 end)
 
 -- Fonction FullBright
