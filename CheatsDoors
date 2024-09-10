@@ -41,7 +41,7 @@ welcomeText.Visible = false
 -- Main Frame
 local frame = createUIElement("Frame", screenGui, {
     Size = UDim2.new(0.25, 0, 0.75, 0),
-    Position = UDim2.new(0.55, 0, 0.5, 0),
+    Position = UDim2.new(0.55, 0, 0.05, 0),
     BackgroundColor3 = Color3.fromRGB(60, 60, 60),
     BackgroundTransparency = 0.25,
     Visible = false
@@ -78,7 +78,7 @@ local toggleButton = createUIElement("TextButton", screenGui, {
 -- Sidebar Frame à gauche
 local sidebarFrame = createUIElement("Frame", screenGui, {
     Size = UDim2.new(0.2, 0, 0.75, 0),
-    Position = UDim2.new(0.45, 0, 0.55, 0),
+    Position = UDim2.new(0.45, 0, 0.05, 0),
     BackgroundColor3 = Color3.fromRGB(40, 40, 40),
     BackgroundTransparency = 0.25,
     Visible = false
@@ -208,10 +208,26 @@ end)
 local espActive = false
 local espTargets = {}
 local FullBrightActive = false
+local NoPromptCooldown = False
+
+local function NoPromptCooldown(prompt)
+NoPromptCooldown = not NoPromptCooldown
+if NoPromptCooldown then
+for _,prompt in ipairs(workspace:GetDecendent()) do
+if prompt:IsA("Proximity Prompt") then
+prompt.HoldDuration = 0
+end
+end
+end
+end
 
 local function toggleFullBright()
     FullBrightActive = not FullBrightActive
-    game.Lighting.Brightness = FullBrightActive and 100 or 1
+if FullBrightActive then
+    game.Lighting.Brightness = 100
+else
+game.Lighting.Brightness = 1
+end
 end
 
 local function highlightModel(model, color)
@@ -236,7 +252,16 @@ end
 -- Ajout des nouveaux boutons dans scrollingFrame (Main)
 local fullBrightButton = createButton("Full Bright Off", scrollingFrame, function()
     toggleFullBright()
-    fullBrightButton.Text = FullBrightActive and "Full Bright On" or "Full Bright Off"
+    fullBrightButton.text = "Full Bright On" or "Full Bright Off"
+end)
+
+local NoCooldownPromptButton = createButton("No Prompt Cooldown Off", scrollingFrame, function()
+if NoPromptCooldown then
+NoCooldownPromptButton.text = "No Prompt Cooldown On"
+NoPromptCooldown()
+else
+NoCooldownPromptButton.text = "No Prompt Cooldown Off"
+end
 end)
 
 -- Ajout des boutons ESP dans scrollingframeEsp (Section ESP)
@@ -244,7 +269,7 @@ local espButton = createButton("ESP Player Off", scrollingframeEsp, function()
     espActive = not espActive
     if espActive then
         highlightPlayers()
-        espButton.Text = "ESP Player On"
+        espButton.text = "ESP Player On"
     else
         for _, target in pairs(espTargets) do
             local highlight = target:FindFirstChildOfClass("Highlight")
@@ -253,7 +278,7 @@ local espButton = createButton("ESP Player Off", scrollingframeEsp, function()
             end
         end
         espTargets = {}
-        espButton.Text = "ESP Player Off"
+        espButton.text = "ESP Player Off"
     end
 end)
 
