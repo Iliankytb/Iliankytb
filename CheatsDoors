@@ -4,33 +4,33 @@ local UserInputService = game:GetService("UserInputService")
 
 -- Fonction pour créer des éléments UI
 local function createUIElement(className, parent, properties)
-	local element = Instance.new(className)
-	element.Parent = parent
-	for prop, value in pairs(properties) do
-		element[prop] = value
-	end
-	return element
+    local element = Instance.new(className)
+    element.Parent = parent
+    for prop, value in pairs(properties) do
+        element[prop] = value
+    end
+    return element
 end
 
 -- Supprimer l'ancien GUI si présent
 local oldGui = player.PlayerGui:FindFirstChild("GuiPlayer")
 if oldGui then
-	oldGui:Destroy()
+    oldGui:Destroy()
 end
 
 -- Création du GUI
 local screenGui = createUIElement("ScreenGui", player.PlayerGui, { Name = "GuiPlayer", ResetOnSpawn = false })
 
--- Fonction pour afficher un message de bienvenue quand le GUI est ouvert
+-- Fonction pour afficher un message de bienvenue
 local welcomeText = createUIElement("TextLabel", screenGui, {
-	Size = UDim2.new(0.5, 0, 0.1, 0),
-	Position = UDim2.new(0.25, 0, 0.05, 0),
-	Text = "Thanks To Support Me!",
-	TextColor3 = Color3.fromRGB(255, 255, 255),
-	Font = Enum.Font.GothamBold,
-	TextSize = 24,
-	BackgroundTransparency = 1,
-	Visible = false
+    Size = UDim2.new(0.5, 0, 0.1, 0),
+    Position = UDim2.new(0.25, 0, 0.05, 0),
+    Text = "Thanks To Support Me!",
+    TextColor3 = Color3.fromRGB(255, 255, 255),
+    Font = Enum.Font.GothamBold,
+    TextSize = 24,
+    BackgroundTransparency = 1,
+    Visible = false
 })
 
 welcomeText.Visible = true
@@ -39,189 +39,187 @@ welcomeText.Visible = false
 
 -- Main Frame
 local frame = createUIElement("Frame", screenGui, {
-	Size = UDim2.new(0.25, 0, 0.25, 0),
-	Position = UDim2.new(0.55, 0, 0.05, 0),
-	BackgroundColor3 = Color3.fromRGB(60, 60, 60),
-	BackgroundTransparency = 0.25,
-	Visible = false
+    Size = UDim2.new(0.25, 0, 0.25, 0),
+    Position = UDim2.new(0.55, 0, 0.05, 0),
+    BackgroundColor3 = Color3.fromRGB(60, 60, 60),
+    BackgroundTransparency = 0.25,
+    Visible = false
 })
 
 -- Gradient sur le Frame
 createUIElement("UIGradient", frame, {
-	Color = ColorSequence.new{
-		ColorSequenceKeypoint.new(0, Color3.fromRGB(60, 60, 60)),
-		ColorSequenceKeypoint.new(1, Color3.fromRGB(90, 90, 90))
-	}
+    Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(60, 60, 60)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(90, 90, 90))
+    }
 })
 
 -- UI Stroke et Coin arrondi pour le Frame
 createUIElement("UIStroke", frame, {
-	Thickness = 3,
-	Color = Color3.fromRGB(20, 20, 20),
-	LineJoinMode = Enum.LineJoinMode.Round
+    Thickness = 3,
+    Color = Color3.fromRGB(20, 20, 20),
+    LineJoinMode = Enum.LineJoinMode.Round
 })
 
 createUIElement("UICorner", frame, { CornerRadius = UDim.new(0.1, 0) })
 
 -- Bouton pour afficher/masquer le GUI
 local toggleButton = createUIElement("TextButton", screenGui, {
-	Size = UDim2.new(0, 100, 0, 25),
-	Position = UDim2.new(0.85, 0, 0.05, 0),
-	Text = "Toggle Menu",
-	TextColor3 = Color3.fromRGB(255, 255, 255),
-	Font = Enum.Font.GothamBold,
-	TextSize = 18,
-	BackgroundColor3 = Color3.fromRGB(85, 170, 255)
+    Size = UDim2.new(0, 100, 0, 25),
+    Position = UDim2.new(0.85, 0, 0.05, 0),
+    Text = "Toggle Menu",
+    TextColor3 = Color3.fromRGB(255, 255, 255),
+    Font = Enum.Font.GothamBold,
+    TextSize = 18,
+    BackgroundColor3 = Color3.fromRGB(85, 170, 255)
 })
 
 createUIElement("UICorner", toggleButton, { CornerRadius = UDim.new(0.45, 0) })
 
 -- Sidebar Frame à gauche
 local sidebarFrame = createUIElement("Frame", screenGui, {
-	Size = UDim2.new(0.2, 0, 0.25, 0),
-	Position = UDim2.new(0.45, 0, 0.05, 0),
-	BackgroundColor3 = Color3.fromRGB(40, 40, 40),
-	BackgroundTransparency = 0.25,
-	Visible = false
+    Size = UDim2.new(0.2, 0, 0.25, 0),
+    Position = UDim2.new(0.45, 0, 0.05, 0),
+    BackgroundColor3 = Color3.fromRGB(40, 40, 40),
+    BackgroundTransparency = 0.25,
+    Visible = false
 })
 
 -- Scrolling Frame dans sidebar
 local sidebarScrollingFrame = createUIElement("ScrollingFrame", sidebarFrame, {
-	Size = UDim2.new(1, 0, 1, 0),
-	CanvasSize = UDim2.new(0, 0, 0, 800),
-	ScrollBarThickness = 8,
-	BackgroundTransparency = 1
+    Size = UDim2.new(1, 0, 1, 0),
+    CanvasSize = UDim2.new(0, 0, 0, 800),
+    ScrollBarThickness = 8,
+    BackgroundTransparency = 1
 })
 
 -- Frames pour différentes sections
 local scrollingFrame = createUIElement("ScrollingFrame", frame, {
-	Size = UDim2.new(1, 0, 1, 0),
-	CanvasSize = UDim2.new(0, 0, 0, 800),
-	ScrollBarThickness = 8,
-	BackgroundTransparency = 1
+    Size = UDim2.new(1, 0, 1, 0),
+    CanvasSize = UDim2.new(0, 0, 0, 800),
+    ScrollBarThickness = 8,
+    BackgroundTransparency = 1
 })
 
 local scrollingframeEsp = createUIElement("ScrollingFrame", frame, {
-	Size = UDim2.new(1, 0, 1, 0),
-	CanvasSize = UDim2.new(0, 0, 0, 800),
-	ScrollBarThickness = 8,
-	BackgroundTransparency = 1,
-	Visible = false
+    Size = UDim2.new(1, 0, 1, 0),
+    CanvasSize = UDim2.new(0, 0, 0, 800),
+    ScrollBarThickness = 8,
+    BackgroundTransparency = 1,
+    Visible = false
 })
 
 local scrollingframePlayer = createUIElement("ScrollingFrame", frame, {
-	Size = UDim2.new(1, 0, 1, 0),
-	CanvasSize = UDim2.new(0, 0, 0, 800),
-	ScrollBarThickness = 8,
-	BackgroundTransparency = 1,
-	Visible = false
+    Size = UDim2.new(1, 0, 1, 0),
+    CanvasSize = UDim2.new(0, 0, 0, 800),
+    ScrollBarThickness = 8,
+    BackgroundTransparency = 1,
+    Visible = false
 })
 
 local scrollingframeDupeItem = createUIElement("ScrollingFrame", frame, {
-	Size = UDim2.new(1, 0, 1, 0),
-	CanvasSize = UDim2.new(0, 0, 0, 800),
-	ScrollBarThickness = 8,
-	BackgroundTransparency = 1,
-	Visible = false
+    Size = UDim2.new(1, 0, 1, 0),
+    CanvasSize = UDim2.new(0, 0, 0, 800),
+    ScrollBarThickness = 8,
+    BackgroundTransparency = 1,
+    Visible = false
 })
 
 -- Fonction pour afficher/masquer différentes sections
 local function showSection(sectionFrame)
-	scrollingFrame.Visible = false
-	scrollingframeEsp.Visible = false
-	scrollingframePlayer.Visible = false
-	scrollingframeDupeItem.Visible = false
-	sectionFrame.Visible = true
+    scrollingFrame.Visible = false
+    scrollingframeEsp.Visible = false
+    scrollingframePlayer.Visible = false
+    scrollingframeDupeItem.Visible = false
+    sectionFrame.Visible = true
 end
 
 -- UIListLayout pour organiser les boutons dans le frame principal et le scrolling ESP
 createUIElement("UIListLayout", sidebarScrollingFrame, {
-	SortOrder = Enum.SortOrder.LayoutOrder,
-	Padding = UDim.new(0, 10)
+    SortOrder = Enum.SortOrder.LayoutOrder,
+    Padding = UDim.new(0, 10)
 })
 
 createUIElement("UIListLayout", scrollingFrame, {
-	SortOrder = Enum.SortOrder.LayoutOrder,
-	Padding = UDim.new(0, 10)
+    SortOrder = Enum.SortOrder.LayoutOrder,
+    Padding = UDim.new(0, 10)
 })
 
 createUIElement("UIListLayout", scrollingframeEsp, {
-	SortOrder = Enum.SortOrder.LayoutOrder,
-	Padding = UDim.new(0, 10)
+    SortOrder = Enum.SortOrder.LayoutOrder,
+    Padding = UDim.new(0, 10)
 })
 
 -- Ajout d'un UIPadding pour espacer les éléments
 createUIElement("UIPadding", scrollingFrame, {
-	PaddingTop = UDim.new(0, 10),
-	PaddingBottom = UDim.new(0, 10),
-	PaddingLeft = UDim.new(0, 10),
-	PaddingRight = UDim.new(0, 10)
+    PaddingTop = UDim.new(0, 10),
+    PaddingBottom = UDim.new(0, 10),
+    PaddingLeft = UDim.new(0, 10),
+    PaddingRight = UDim.new(0, 10)
 })
 
 -- Fonction pour créer des boutons avec changement de texte "On/Off"
 local function createButton(text, parent, callback)
-	local button = createUIElement("TextButton", parent, {
-		Size = UDim2.new(0.90, 0, 0, 50),
-		Text = text,
-		TextColor3 = Color3.fromRGB(255, 255, 255),
-		Font = Enum.Font.GothamBold,
-		TextSize = 16,
-		BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-	})
+    local button = createUIElement("TextButton", parent, {
+        Size = UDim2.new(0.90, 0, 0, 50),
+        Text = text,
+        TextColor3 = Color3.fromRGB(255, 255, 255),
+        Font = Enum.Font.GothamBold,
+        TextSize = 16,
+        BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+    })
 
-	-- Gradient sur chaque bouton
-	createUIElement("UIGradient", button, {
-		Color = ColorSequence.new{
-			ColorSequenceKeypoint.new(0, Color3.fromRGB(70, 70, 70)),
-			ColorSequenceKeypoint.new(1, Color3.fromRGB(100, 100, 100))
-		}
-	})
+    -- Gradient sur chaque bouton
+    createUIElement("UIGradient", button, {
+        Color = ColorSequence.new{
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(70, 70, 70)),
+            ColorSequenceKeypoint.new(1, Color3.fromRGB(100, 100, 100))
+        }
+    })
 
-	createUIElement("UIStroke", button, {
-		Thickness = 2,
-		Color = Color3.fromRGB(20, 20, 20),
-		LineJoinMode = Enum.LineJoinMode.Round
-	})
+    createUIElement("UIStroke", button, {
+        Thickness = 2,
+        Color = Color3.fromRGB(20, 20, 20),
+        LineJoinMode = Enum.LineJoinMode.Round
+    })
 
-	createUIElement("UICorner", button, { CornerRadius = UDim.new(0.15, 0) })
+    createUIElement("UICorner", button, { CornerRadius = UDim.new(0.15, 0) })
 
-	-- Connecter le callback pour le bouton
-	button.MouseButton1Click:Connect(callback)
+    -- Connecter le callback pour le bouton
+    button.MouseButton1Click:Connect(callback)
 
-	return button
+    return button
 end
-
-
 
 -- Boutons dans la sidebar
 createButton("Main", sidebarScrollingFrame, function()
-	showSection(scrollingFrame)
+    showSection(scrollingFrame)
 end)
 
 createButton("ESP", sidebarScrollingFrame, function()
-	showSection(scrollingframeEsp)
+    showSection(scrollingframeEsp)
 end)
 
 createButton("Player", sidebarScrollingFrame, function()
-	showSection(scrollingframePlayer)
+    showSection(scrollingframePlayer)
 end)
 
 createButton("Item Dupe", sidebarScrollingFrame, function()
-	showSection(scrollingframeDupeItem)
+    showSection(scrollingframeDupeItem)
 end)
 
 createButton("Information", sidebarScrollingFrame, function()
-	-- TODO: Ajouter fonctionnalité pour la section Information
+    -- TODO: Ajouter fonctionnalité pour la section Information
 end)
 
 createButton("Settings", sidebarScrollingFrame, function()
-	-- TODO: Ajouter fonctionnalité pour la section Settings
+    -- TODO: Ajouter fonctionnalité pour la section Settings
 end)
 
 createButton("Remove UI", sidebarScrollingFrame, function()
-	if screenGui then
-		screenGui:Destroy()
-	end
+    if screenGui then
+        screenGui:Destroy()
+    end
 end)
 
 -- Fonctionnalité ESP
@@ -229,7 +227,11 @@ local espActive = false
 local espTargets = {}
 local FullBrightActive = false
 local NoPromptCooldown = false
+local highlightColor = Color3.fromRGB(255, 0, 0)
+local highlightTransparency = 0.5
 
+-- Mise à jour des cibles
+-- Fonction pour mettre à jour les cibles ESP
 local function updateEspTargets()
     espTargets = {}
     for _, model in pairs(workspace:GetDescendants()) do
@@ -242,6 +244,7 @@ local function updateEspTargets()
     end
 end
 
+-- Fonction pour mettre en surbrillance un modèle
 local function highlightModel(model)
     if not model:FindFirstChildOfClass("Highlight") then
         local highlight = Instance.new("Highlight", model)
@@ -265,12 +268,14 @@ local function highlightModel(model)
     end
 end
 
+-- Fonction pour surligner tous les modèles dans la table ESP
 local function highlightModels()
     for _, model in pairs(espTargets) do
         highlightModel(model)
     end
 end
 
+-- Fonction pour effacer les surbrillances
 local function clearHighlights()
     for _, obj in pairs(workspace:GetDescendants()) do
         if obj:IsA("Highlight") or obj:IsA("BillboardGui") then
@@ -279,64 +284,9 @@ local function clearHighlights()
     end
 end
 
-
-local function toggleNoPromptCooldown()
-	NoPromptCooldown = not NoPromptCooldown
-	if NoPromptCooldown then
-		for _, prompt in ipairs(workspace:GetDescendants()) do
-			if prompt:IsA("ProximityPrompt") then
-				prompt.HoldDuration = 0
-			end
-		end
-		NoCooldownPromptButton.Text = "No Prompt Cooldown: On"
-	else
-		for _, prompt in ipairs(workspace:GetDescendants()) do
-			if prompt:IsA("ProximityPrompt") then
-				prompt.HoldDuration = 0.5 -- ou la valeur par défaut souhaitée
-			end
-		end
-		NoCooldownPromptButton.Text = "No Prompt Cooldown: Off"
-	end
-end
-
--- Création du bouton pour le No Prompt Cooldown
-local NoCooldownPromptButton = createButton("No Prompt Cooldown: Off", scrollingFrame, function()
-	toggleNoPromptCooldown()
-end)
-
-local espActivePlayer = false
-
-
-local function toggleESPPlayer()
-espActivePlayer = not espActivePlayer
-if espActivePlayer then
-		-- Activer l'ESP
-		for _, target in ipairs(workspace:GetChildren()) do
-			if target:IsA("Model") and target:FindFirstChild("Humanoid") then
-				local espBox = Instance.new("BoxHandleAdornment")
-				espBox.Size = target:GetExtentsSize()
-				espBox.Adornee = target.PrimaryPart
-				espBox.AlwaysOnTop = true
-				espBox.ZIndex = 10
-				espBox.Color3 = Color3.fromRGB(255, 0, 0)
-				espBox.Transparency = 0.5
-				espBox.Parent = target
-				table.insert(espTargets, espBox)
-			end
-		end
-	else
-		-- Désactiver l'ESP
-		for _, espBox in ipairs(espTargets) do
-			espBox:Destroy()
-		end
-		espTargets = {}
-	end
-end
-
--- Fonction pour activer/désactiver l'ESP
-local function toggleESP()
-	espActive = not espActive
-	espButton.Text = espActive and "ESP On" or "ESP Off"
+-- Activer/désactiver le ESP
+local function toggleEsp()
+    espActive = not espActive
     if espActive then
         updateEspTargets()
         highlightModels()
@@ -345,34 +295,22 @@ local function toggleESP()
     end
 end
 
--- Bouton pour activer/désactiver l'ESP
-createButton("ESP Off", scrollingframeEsp, function()
-	toggleESP()
+-- Ajouter le bouton ESP dans le menu
+createButton("Toggle ESP", ScrollingFrame, function()
+    toggleEsp()
 end)
 
-createButton("ESP Player Off", scrollingframeEsp, function()
-	toggleESPPlayer()
+-- Détecter la touche de raccourci pour activer/désactiver le ESP
+UserInputService.InputBegan:Connect(function(input)
+    if input.KeyCode == Enum.KeyCode.Q then
+        frame.Visible = not frame.Visible0
+    end
 end)
 
-
--- Fonction pour activer/désactiver le FullBright
-local function toggleFullBright()
-	FullBrightActive = not FullBrightActive
-	if FullBrightActive then
-		game.Lighting.Brightness = 2
-		game.Lighting.ClockTime = 14
-		game.Lighting.FogEnd = 100000
-		game.Lighting.GlobalShadows = false
-	else
-		-- Remettre les paramètres par défaut de l'éclairage (ajuster si nécessaire)
-		game.Lighting.Brightness = 1
-		game.Lighting.ClockTime = 12
-		game.Lighting.FogEnd = 1000
-		game.Lighting.GlobalShadows = true
-	end
-end
-
--- Bouton pour activer/désactiver le FullBright
-createButton("Toggle FullBright",scrollingFrame, function()
-	toggleFullBright()
+-- Toggle du menu principal avec le bouton
+toggleButton.MouseButton1Click:Connect(function()
+    frame.Visible = not frame.Visible
 end)
+
+-- Activer par défaut la section principale
+showSection(scrollingFrame)
