@@ -1,3 +1,4 @@
+-- Obtenez les services nécessaires
 local player = game.Players.LocalPlayer
 local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
@@ -40,7 +41,7 @@ welcomeText.Visible = false
 -- Main Frame
 local frame = createUIElement("Frame", screenGui, {
     Size = UDim2.new(0.25, 0, 0.75, 0),
-    Position = UDim2.new(0.25, 0, 0.10, 0),
+    Position = UDim2.new(0.55, 0, 0.5, 0),
     BackgroundColor3 = Color3.fromRGB(60, 60, 60),
     BackgroundTransparency = 0.25,
     Visible = false
@@ -66,7 +67,7 @@ createUIElement("UICorner", frame, { CornerRadius = UDim.new(0.1, 0) })
 -- Bouton pour afficher/masquer le GUI
 local toggleButton = createUIElement("TextButton", screenGui, {
     Size = UDim2.new(0, 100, 0, 25),
-    Position = UDim2.new(0.85, 0, 0.05, 0),  -- Nouveau positionnement
+    Position = UDim2.new(0.85, 0, 0.05, 0),
     Text = "Toggle Menu",
     TextColor3 = Color3.fromRGB(255, 255, 255),
     Font = Enum.Font.GothamBold,
@@ -77,7 +78,7 @@ local toggleButton = createUIElement("TextButton", screenGui, {
 -- Sidebar Frame à gauche
 local sidebarFrame = createUIElement("Frame", screenGui, {
     Size = UDim2.new(0.2, 0, 0.75, 0),
-    Position = UDim2.new(0.5, -90, 0.2, 0),
+    Position = UDim2.new(0.45, 0, 0.55, 0),
     BackgroundColor3 = Color3.fromRGB(40, 40, 40),
     BackgroundTransparency = 0.25,
     Visible = false
@@ -165,7 +166,7 @@ createUIElement("UIListLayout", scrollingframeEsp, {
 })
 
 -- Ajout d'un UIPadding pour espacer les éléments
-local padding = createUIElement("UIPadding", scrollingFrame, {
+createUIElement("UIPadding", scrollingFrame, {
     PaddingTop = UDim.new(0, 10),
     PaddingBottom = UDim.new(0, 10),
     PaddingLeft = UDim.new(0, 10),
@@ -194,10 +195,10 @@ createButton("Information", sidebarScrollingFrame, function()
 end)
 
 createButton("Settings", sidebarScrollingFrame, function()
-    -- TODO: Ajouter fonctionnalité pour la section Information
+    -- TODO: Ajouter fonctionnalité pour la section Settings
 end)
 
-local removeGuiButton = createButton("Remove UI", sidebarScrollingFrame, function()
+createButton("Remove UI", sidebarScrollingFrame, function()
     if screenGui then
         screenGui:Destroy()
     end
@@ -226,57 +227,16 @@ local function highlightPlayers()
         local char = player.Character
         local humanoidRootPart = char and char:FindFirstChild("HumanoidRootPart")
         if humanoidRootPart and not char:FindFirstChildOfClass("Highlight") then
-            highlightModel(char, Color3.fromRGB(255, 0, 0))  -- Rouge pour les ennemis, par exemple
+            highlightModel(char, Color3.fromRGB(255, 0, 0))  -- Rouge pour les ennemis
             table.insert(espTargets, char)
         end
     end
 end
 
-local function PromptNoCooldown(prompt)
-for _,prompt in pairs(workspace:GetDescendants()) do
-if prompt:IsA("Proximity Prompt") then
-if promptActive then
-        prompt.HoldDuration = 0
-        PromptButton.Text = "No Cooldown Prompt On"
-    else
-        PromptButton.Text = "No Cooldown Prompt Off"
-    end
-end
-end
-end
-
 -- Ajout des nouveaux boutons dans scrollingFrame (Main)
 local fullBrightButton = createButton("Full Bright Off", scrollingFrame, function()
     toggleFullBright()
-    fullBrightButton.Text = "Full Bright On" or "Full Bright Off"
-end)
-
-local function activateNoLag()
-    for _, object in pairs(workspace:GetDescendants()) do
-        if object:IsA("BasePart") then
-            originalMaterials[object] = object.Material
-            object.Material = Enum.Material.SmoothPlastic
-        end
-    end
-end
-
-local function restoreMaterials()
-    for object, material in pairs(originalMaterials) do
-        if object and object:IsA("BasePart") then
-            object.Material = material
-        end
-    end
-    originalMaterials = {}
-end
-
-local noLagButton = createButton("No Lag", scrollingFrame, function()
-    if next(originalMaterials) == nil then
-        activateNoLag()
-        noLagButton.Text = "No Lag On"
-    else
-        restoreMaterials()
-        noLagButton.Text = "No Lag Off"
-    end
+    fullBrightButton.Text = FullBrightActive and "Full Bright On" or "Full Bright Off"
 end)
 
 -- Ajout des boutons ESP dans scrollingframeEsp (Section ESP)
@@ -297,17 +257,6 @@ local espButton = createButton("ESP Player Off", scrollingframeEsp, function()
     end
 end)
 
-local PromptButton = createButton("No Cooldown Prompt Off", scrollingframe, function()
-local promptActive = false
-    promptActive = not promptActive
-    if promptActive then
-        PromptNoCooldown()
-        PromptButton.Text = "No Cooldown Prompt On"
-    else
-        PromptButton.Text = "No Cooldown Prompt Off"
-    end
-end)
-
 -- Fonction pour basculer le GUI lorsqu'on appuie sur le bouton de bascule
 toggleButton.MouseButton1Click:Connect(function()
     frame.Visible = not frame.Visible
@@ -316,7 +265,7 @@ end)
 
 -- Shortcut pour activer/désactiver le menu avec une touche (ici "M")
 UserInputService.InputBegan:Connect(function(input, processed)
-    if input.KeyCode == Enum.KeyCode.Q and not processed then
+    if input.KeyCode == Enum.KeyCode.M and not processed then
         frame.Visible = not frame.Visible
         sidebarFrame.Visible = frame.Visible
     end
@@ -333,5 +282,5 @@ RunService.RenderStepped:Connect(function()
     end
 end)
 
-
+-- Fin du script
 
