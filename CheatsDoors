@@ -296,7 +296,7 @@ local function toggleEsp()
 end
 
 -- Ajouter le bouton ESP dans le menu
-createButton("Toggle ESP", ScrollingFrame, function()
+createButton("Toggle ESP", ScrollingFrameEsp, function()
     toggleEsp()
 end)
 
@@ -354,13 +354,16 @@ end)
 -- Détecter la touche de raccourci pour activer/désactiver le ESP
 UserInputService.InputBegan:Connect(function(input)
     if input.KeyCode == Enum.KeyCode.Q then
-        frame.Visible = not frame.Visible0
+        frame.Visible = not frame.Visible
+sidebarFrame.Visible = not sidebarFrame.Visible
+
     end
 end)
 
 -- Toggle du menu principal avec le bouton
 toggleButton.MouseButton1Click:Connect(function()
     frame.Visible = not frame.Visible
+sidebarFrame.Visible = not sidebarFrame.Visible
 end)
 
 -- Activer par défaut la section principale
