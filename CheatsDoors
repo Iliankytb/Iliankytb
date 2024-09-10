@@ -290,13 +290,10 @@ end)
 -- Fonction pour afficher/masquer le menu principal
 local menuVisible = false
 toggleButton.MouseButton1Click:Connect(function()
-    menuVisible = not menuVisible
-    frame.Visible = menuVisible
-    sidebarFrame.Visible = menuVisible
+    Frame.Visible = not Frame.Visible
+    sidebarFrame.Visible = not sidebarFrame.Visible
 end)
 
--- Activer le menu par défaut
-frame.Visible = true
-sidebarFrame.Visible = true
+
 showSection(scrollingFrame)
 
