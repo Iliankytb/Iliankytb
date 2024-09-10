@@ -1,9 +1,11 @@
-local player = Game.Players.LocalPlayer --le joueur
+local player = Game.Players.LocalPlayer -- le joueur
 
-local function dupeItems(tool) --la fonction
-    for _, tool in pairs(player.Character:GetChildren()) do
-        local clone = tool:Clone()
-        tool.Parent = player.Backpack
+local function dupeItems()
+    for _, item in pairs(player.Character:GetChildren()) do
+        if item:IsA("Tool") then  -- Vérifie si l'élément est un outil
+            local clone = item:Clone()
+            clone.Parent = player.Backpack  -- Ajoute le clone dans le sac à dos
+        end
     end
 end
 
