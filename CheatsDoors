@@ -1,3 +1,6 @@
+
+
+print("My cheat work now coming soon new update Don't work on solara support mobile enabled support pc coming verryyy soon.")
 -- Variables
 local player = game.Players.LocalPlayer
 local RunService = game:GetService("RunService")
@@ -14,8 +17,8 @@ screenGui.ResetOnSpawn = false
 
 -- Main Frame
 local frame = Instance.new("Frame", screenGui)
-frame.Size = UDim2.new(0.2, 0, 0.4, 0)
-frame.Position = UDim2.new(0.350, 0, 0.3, 0)
+frame.Size = UDim2.new(0.05, 0, 0.4, 0)
+frame.Position = UDim2.new(0.4, 0, 0.3, 0)
 frame.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 frame.BackgroundTransparency = 0.25
 frame.Visible = false
@@ -37,7 +40,7 @@ local uicorner = Instance.new("UICorner", frame)
 uicorner.CornerRadius = UDim.new(0.1, 0)
 
 local frameMenu = Instance.new("Frame", screenGui)
-frameMenu.Size = UDim2.new(0.2, 0, 0.4, 0)
+frameMenu.Size = UDim2.new(0.05, 0, 0.4, 0)
 frameMenu.Position = UDim2.new(0.25, 0, 0.3, 0)
 frameMenu.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 frameMenu.BackgroundTransparency = 0.25
@@ -106,6 +109,30 @@ local listLayout = Instance.new("UIListLayout", scrollingFrame)
 listLayout.SortOrder = Enum.SortOrder.LayoutOrder
 listLayout.Padding = UDim.new(0, 10)
 
+local scrollingFrameEsp = Instance.new("ScrollingFrame", frame)
+scrollingFrameEsp.Size = UDim2.new(1, 0, 1, 0)
+scrollingFrameEsp.CanvasSize = UDim2.new(0, 0, 0, 800)
+scrollingFrameEsp.ScrollBarThickness = 8
+scrollingFrameEsp.BackgroundTransparency = 1
+scrollingFrameEsp.Visible = false
+
+-- UIListLayout pour les boutons
+local listLayoutEsp = Instance.new("UIListLayout", scrollingFrameEsp)
+listLayoutEsp.SortOrder = Enum.SortOrder.LayoutOrder
+listLayoutEsp.Padding = UDim.new(0, 10)
+
+local scrollingFramePlayer = Instance.new("ScrollingFrame", frame)
+scrollingFramePlayer.Size = UDim2.new(1, 0, 1, 0)
+scrollingFramePlayer.CanvasSize = UDim2.new(0, 0, 0, 800)
+scrollingFramePlayer.ScrollBarThickness = 8
+scrollingFramePlayer.BackgroundTransparency = 1
+scrollingFramePlayer.Visible = false
+
+-- UIListLayout pour les boutons
+local listLayoutPlayer = Instance.new("UIListLayout", scrollingFramePlayer)
+listLayoutPlayer.SortOrder = Enum.SortOrder.LayoutOrder
+listLayoutPlayer.Padding = UDim.new(0, 10)
+
 -- Fonction d'aide pour créer des boutons
 local function createButton(text, parent)
     local button = Instance.new("TextButton", parent)
@@ -128,30 +155,23 @@ local function createButton(text, parent)
     return button
 end
 
-local MenuButton = createButton("Menu(Coming Soon)", scrollingFrameMenu)
-local EspButton = createButton("ESP(Coming Soon)", scrollingFrameMenu)
-local PlayerButton = createButton("Player Menu(Coming Soon)", scrollingFrameMenu)
+local MenuButton = createButton("Menu", scrollingFrameMenu)
+local EspButton = createButton("ESP", scrollingFrameMenu)
+local PlayerButton = createButton("Player Menu", scrollingFrameMenu)
 local DupeItemButton = createButton("Dupe Item Menu(Coming Soon)", scrollingFrameMenu)
 local InfoButton = createButton("Information(Coming Soon)", scrollingFrameMenu)
 local SettingdButton = createButton("Setting(Coming Soon)", scrollingFrameMenu)
 local RemoveUiButton = createButton("Remove Ui(Coming Soon)", scrollingFrameMenu)
-
-
-
-
-
-
-
 -- Création des boutons
-local espButton = createButton("ESP Off", scrollingFrame)
+local espButton = createButton("ESP Off", scrollingFrameEsp)
 local NoLagButton = createButton("No Lag Off", scrollingFrame)
 local NoCooldownPromptButton = createButton("No Cooldown Prompt Off", scrollingFrame)
 local FullBrightButton = createButton("Full Bright Off", scrollingFrame)
-local GodModeButton = createButton("God Mode Off", scrollingFrame)
-local autoLootButton = createButton("Auto Loot Off", scrollingFrame)
-local flyButton = createButton("Fly Off", scrollingFrame)
-local autoHealButton = createButton("Auto Heal Off", scrollingFrame)
-local speedBoostButton = createButton("Speed Boost Off", scrollingFrame)
+local GodModeButton = createButton("God Mode Off(in rework)", scrollingFramePlayer)
+local autoLootButton = createButton("Auto Loot Off(Coming Soon)", scrollingFrame)
+local flyButton = createButton("Fly Off(don't work)", scrollingFramePlayer)
+local autoHealButton = createButton("Auto Heal Off(Don't Click In Rework Coming Soon)", scrollingFramePlayer)
+local speedBoostButton = createButton("Speed Boost Off", scrollingFramePlayer)
 
 -- Variables de fonctionnalité
 local espActive, noLagActive, noCooldownPromptActive, fullBrightActive, godModeActive, autoLootActive, flyActive, autoHealActive, speedBoostActive = false, false, false, false, false, false, false, false, false
@@ -165,7 +185,7 @@ local function updateEspTargets()
     espTargets = {}
     for _, model in pairs(workspace:GetDescendants()) do
         if model:IsA("Model") or model:IsA("Part") then
-            local nameLower = model.Name:lower()
+local nameLower = model.Name:lower()
 if nameLower == "locker_large" 
 or nameLower == "locker_small" 
 or nameLower == "door" 
@@ -188,7 +208,7 @@ or nameLower == "rush"
 or nameLower == "ambush" 
 or nameLower == "Screech" 
 or nameLower == "halt" 
-or nameLower == "Rushed" 
+or nameLower == "Rush" 
 or nameLower == "LiveHintBook" 
 or nameLower == "drawercontainer" then
                 table.insert(espTargets, model)
@@ -332,10 +352,27 @@ speedBoostButton.MouseButton1Click:Connect(function()
     
     local humanoid = player.Character and player.Character:FindFirstChildOfClass("Humanoid")
     if humanoid then
-        humanoid.WalkSpeed = speedBoostActive and 25 or 16
+        humanoid.WalkSpeed = speedBoostActive and 19 or 10
     end
 end)
 
+MenuButton.MouseButton1Click:Connect(function()
+scrollingFrame.Visible = true
+scrollingFrameEsp.Visible = false
+scrollingFramePlayer.Visible = false
+end)
+
+EspButton.MouseButton1Click:Connect(function()
+scrollingFrame.Visible = false
+scrollingFrameEsp.Visible = true
+scrollingFramePlayer.Visible = false
+end)
+
+PlayerButton.MouseButton1Click:Connect(function()
+scrollingFrame.Visible = false
+scrollingFrameEsp.Visible = false
+scrollingFramePlayer.Visible = true
+end)
 -- Boucle principale pour les fonctions activées
 RunService.RenderStepped:Connect(function()
     if speedBoostActive then
@@ -365,4 +402,11 @@ RunService.RenderStepped:Connect(function()
     else
         clearHighlights()
     end
+if fullBrightActive then
+game.Lighting.Brightness = 100 
+    game.Lighting.Ambient = Color3.new(1, 1, 1) 
+else
+game.Lighting.Brightness = 100 
+    game.Lighting.Ambient = or Color3.new(0.5, 0.5, 0.5)
+end
 end)
