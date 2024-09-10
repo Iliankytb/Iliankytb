@@ -185,7 +185,7 @@ createButton("Player", sidebarScrollingFrame, function()
     -- TODO: Ajouter fonctionnalité pour la section Player
 end)
 
-createButton("Give Item", sidebarScrollingFrame, function()
+createButton("Item Dupe", sidebarScrollingFrame, function()
     -- TODO: Ajouter fonctionnalité pour la section Give Item
 end)
 
