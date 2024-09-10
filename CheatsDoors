@@ -300,6 +300,57 @@ createButton("Toggle ESP", ScrollingFrame, function()
     toggleEsp()
 end)
 
+local function toggleESPPlayer()
+espActivePlayer = not espActivePlayer
+if espActivePlayer then
+		-- Activer l'ESP
+		for _, target in ipairs(workspace:GetChildren()) do
+			if target:IsA("Model") and target:FindFirstChild("Humanoid") then
+				local espBox = Instance.new("BoxHandleAdornment")
+				espBox.Size = target:GetExtentsSize()
+				espBox.Adornee = target.PrimaryPart
+				espBox.AlwaysOnTop = true
+				espBox.ZIndex = 10
+				espBox.Color3 = Color3.fromRGB(255, 0, 0)
+				espBox.Transparency = 0.5
+				espBox.Parent = target
+				table.insert(espTargets, espBox)
+			end
+		end
+	else
+		-- Désactiver l'ESP
+		for _, espBox in ipairs(espTargets) do
+			espBox:Destroy()
+		end
+		espTargets = {}
+	end
+end
+
+createButton("ESP Player Off", scrollingframeEsp, function()
+	toggleESPPlayer()
+end)
+
+local function toggleFullBright()
+	FullBrightActive = not FullBrightActive
+	if FullBrightActive then
+		game.Lighting.Brightness = 2
+		game.Lighting.ClockTime = 14
+		game.Lighting.FogEnd = 100000
+		game.Lighting.GlobalShadows = false
+	else
+		-- Remettre les paramètres par défaut de l'éclairage (ajuster si nécessaire)
+		game.Lighting.Brightness = 1
+		game.Lighting.ClockTime = 12
+		game.Lighting.FogEnd = 1000
+		game.Lighting.GlobalShadows = true
+	end
+end
+
+-- Bouton pour activer/désactiver le FullBright
+createButton("Toggle FullBright",scrollingFrame, function()
+	toggleFullBright()
+end)
+
 -- Détecter la touche de raccourci pour activer/désactiver le ESP
 UserInputService.InputBegan:Connect(function(input)
     if input.KeyCode == Enum.KeyCode.Q then
