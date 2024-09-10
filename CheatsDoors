@@ -190,6 +190,46 @@ local function createButton(text, parent, callback)
 
 	return button
 end
+
+
+
+-- Boutons dans la sidebar
+createButton("Main", sidebarScrollingFrame, function()
+	showSection(scrollingFrame)
+end)
+
+createButton("ESP", sidebarScrollingFrame, function()
+	showSection(scrollingframeEsp)
+end)
+
+createButton("Player", sidebarScrollingFrame, function()
+	showSection(scrollingframePlayer)
+end)
+
+createButton("Item Dupe", sidebarScrollingFrame, function()
+	showSection(scrollingframeDupeItem)
+end)
+
+createButton("Information", sidebarScrollingFrame, function()
+	-- TODO: Ajouter fonctionnalité pour la section Information
+end)
+
+createButton("Settings", sidebarScrollingFrame, function()
+	-- TODO: Ajouter fonctionnalité pour la section Settings
+end)
+
+createButton("Remove UI", sidebarScrollingFrame, function()
+	if screenGui then
+		screenGui:Destroy()
+	end
+end)
+
+-- Fonctionnalité ESP
+local espActive = false
+local espTargets = {}
+local FullBrightActive = false
+local NoPromptCooldown = false
+
 local function updateEspTargets()
     espTargets = {}
     for _, model in pairs(workspace:GetDescendants()) do
@@ -239,44 +279,6 @@ local function clearHighlights()
     end
 end
 
-
-
--- Boutons dans la sidebar
-createButton("Main", sidebarScrollingFrame, function()
-	showSection(scrollingFrame)
-end)
-
-createButton("ESP", sidebarScrollingFrame, function()
-	showSection(scrollingframeEsp)
-end)
-
-createButton("Player", sidebarScrollingFrame, function()
-	showSection(scrollingframePlayer)
-end)
-
-createButton("Item Dupe", sidebarScrollingFrame, function()
-	showSection(scrollingframeDupeItem)
-end)
-
-createButton("Information", sidebarScrollingFrame, function()
-	-- TODO: Ajouter fonctionnalité pour la section Information
-end)
-
-createButton("Settings", sidebarScrollingFrame, function()
-	-- TODO: Ajouter fonctionnalité pour la section Settings
-end)
-
-createButton("Remove UI", sidebarScrollingFrame, function()
-	if screenGui then
-		screenGui:Destroy()
-	end
-end)
-
--- Fonctionnalité ESP
-local espActive = false
-local espTargets = {}
-local FullBrightActive = false
-local NoPromptCooldown = false
 
 local function toggleNoPromptCooldown()
 	NoPromptCooldown = not NoPromptCooldown
