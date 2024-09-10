@@ -37,18 +37,18 @@ welcomeText.Visible = true
 wait(5)
 welcomeText.Visible = false
 
--- Main Frame et Sidebar
+-- Main Frame et Sidebar (Centré)
 local frame = createUIElement("Frame", screenGui, {
-    Size = UDim2.new(0.25, 0, 0.25, 0),
-    Position = UDim2.new(0.55, 0, 0.05, 0),
+    Size = UDim2.new(0.3, 0, 0.4, 0),
+    Position = UDim2.new(0.35, 0, 0.3, 0),
     BackgroundColor3 = Color3.fromRGB(60, 60, 60),
     BackgroundTransparency = 0.25,
     Visible = false
 })
 
 local sidebarFrame = createUIElement("Frame", screenGui, {
-    Size = UDim2.new(0.2, 0, 0.25, 0),
-    Position = UDim2.new(0.45, 0, 0.05, 0),
+    Size = UDim2.new(0.2, 0, 0.4, 0),
+    Position = UDim2.new(0.15, 0, 0.3, 0),
     BackgroundColor3 = Color3.fromRGB(40, 40, 40),
     BackgroundTransparency = 0.25,
     Visible = false
@@ -72,7 +72,7 @@ createUIElement("UICorner", frame, { CornerRadius = UDim.new(0.1, 0) })
 
 -- Bouton pour afficher/masquer le GUI
 local toggleButton = createUIElement("TextButton", screenGui, {
-    Size = UDim2.new(0, 100, 0, 25),
+    Size = UDim2.new(0, 150, 0, 50),
     Position = UDim2.new(0.85, 0, 0.05, 0),
     Text = "Toggle Menu",
     TextColor3 = Color3.fromRGB(255, 255, 255),
@@ -157,33 +157,14 @@ local function createButton(text, parent, callback)
     return button
 end
 
-local ESPButton = createButton("ESP Off (Every)", scrollingframeEsp)
+local ESPButton = createButton("ESP Off (Every Esp)", scrollingframeEsp)
 local ESPPlayerButton = createButton("ESP Player Off", scrollingframeEsp)
-local ESPDoorButton = createButton("ESP Door Off(Coming Soon)", scrollingframeEsp)
-local ESPGoldPileButton = createButton("ESP Gold Off(Coming Soon)", scrollingframeEsp)
-local ESPDrawerButton = createButton("ESP drawer Off(Coming Soon)", scrollingframeEsp)
-local ESPKeyButton = createButton("ESP Key Off(Coming Soon)", scrollingframeEsp)
-local ESPItemButton = createButton("ESP Item Off(Coming Soon)", scrollingframeEsp)
-local ESPFakeDoorButton = createButton("ESP Fake Door Off(Coming Soon)", scrollingframeEsp)
-local ESPRushButton = createButton("ESP Rush Off(Coming Soon)", scrollingframeEsp)
-local ESPAmbushButton = createButton("ESP Ambush Off(Coming Soon)", scrollingframeEsp)
-local ESPHaltButton = createButton("ESP Halt Off(Coming Soon)", scrollingframeEsp)
-local ESPMinesGeneratorButton = createButton("ESP Mines Generator Off(Coming Soon)", scrollingframeEsp)
-local ESPWadrobeButton = createButton("ESP Wadrobe Off(Coming Soon)", scrollingframeEsp)
-local ESPFigureButton = createButton("ESP Figure Off(Coming Soon)", scrollingframeEsp)
-local ESPSeekButton = createButton("ESP Seek Off(Coming Soon)", scrollingframeEsp)
-local ESPDGiggleButton = createButton("ESP Giggle Off(Coming Soon)", scrollingframeEsp)
+local ESPDoorButton = createButton("ESP Door Off (Coming Soon)", scrollingframeEsp)
 
 -- Fonctionnalité ESP
-local espActive,FullBrightActive = false
+local espActive = false
 local espTargets = {}
-local highlightColor = Color3.fromRGB(255, 255, 255)
-local highlightTransparency = 0.25
-local highlightColorMonster = Color3.fromRGB(255, 0, 0)
-local highlightColorModel = Color3.fromRGB(255, 170, 0)
-local highlightTransparencyModel = 0.5
 
--- Mise à jour des cibles
 local function updateEspTargetsModels()
     espTargets = {}
     for _, model in pairs(workspace:GetDescendants()) do
@@ -196,73 +177,75 @@ local function updateEspTargetsModels()
     end
 end
 
--- Fonction pour mettre en surbrillance un modèle
 local function highlightModel(model)
     if not model:FindFirstChildOfClass("Highlight") then
         local highlight = Instance.new("Highlight", model)
-        highlight.FillColor = highlightColorModel
-        highlight.FillTransparency = highlightTransparencyModel
-        highlight.OutlineTransparency = highlightTransparencyModel
+        highlight.FillColor = Color3.fromRGB(255, 170, 0)
+        highlight.FillTransparency = 0.5
+        highlight.OutlineTransparency = 0.5
     end
 end
 
--- Fonction pour surligner tous les modèles dans la table ESP
 local function highlightModels()
     for _, model in pairs(espTargets) do
         highlightModel(model)
     end
 end
 
--- Fonction pour effacer les surbrillances
 local function clearHighlights()
     for _, obj in pairs(workspace:GetDescendants()) do
-        if obj:IsA("Highlight") or obj:IsA("BillboardGui") then
+        if obj:IsA("Highlight") then
             obj:Destroy()
         end
     end
 end
 
--- Activer/désactiver le ESP
 local function Esp()
     espActive = not espActive
     if espActive then
-        updateEspTargetsModel()
+        updateEspTargetsModels()
         highlightModels()
     else
         clearHighlights()
     end
 end
 
--- Ajouter le bouton ESP dans le menu
-
-
-createButton("Esp off", scrollingframeEsp, function()
-    ESP()
+createButton("ESP Off", scrollingframeEsp, function()
+    Esp()
 end)
 
+-- FullBright
+local FullBrightActive = false
 
--- Fonction FullBright
 local function toggleFullBright()
     FullBrightActive = not FullBrightActive
     if FullBrightActive then
-        game.Lighting.Brightness = 2
+        game.Lighting.Brightness = 100
         game.Lighting.ClockTime = 14
         game.Lighting.FogEnd = 100000
         game.Lighting.GlobalShadows = false
     else
         game.Lighting.Brightness = 1
         game.Lighting.ClockTime = 12
-                game.Lighting.FogEnd = 1000
+        game.Lighting.FogEnd = 1000
         game.Lighting.GlobalShadows = true
     end
 end
 
--- Ajouter le bouton FullBright dans le menu
-createButton("Toggle FullBright", scrollingframeEsp, function()
+createButton("FullBright Off", scrollingframeEsp, function()
     toggleFullBright()
 end)
 
--- Fonction pour dupliquer des objets
+-- Ajouter des sections supplémentaires (Player, Dupe Items, etc.)
+createButton("Player Menu", scrollingFrame, function()
+    showSection(scrollingframePlayer)
+end)
+
+createButton("Dupe Items Menu", scrollingFrame, function()
+    showSection(scrollingframeDupeItem)
+end)
+
+-- Fonction pour dupliquer des objets dans le sac à dos du joueur
 local function dupeItems()
     for _, item in pairs(player.Backpack:GetChildren()) do
         local clone = item:Clone()
@@ -270,32 +253,26 @@ local function dupeItems()
     end
 end
 
--- Ajouter le bouton pour dupliquer des objets
+-- Ajouter le bouton pour dupliquer les objets dans le menu Dupe Items
 createButton("Dupe Items", scrollingframeDupeItem, function()
     dupeItems()
 end)
 
--- Ajouter le bouton pour afficher la section ESP
+-- Bouton pour afficher la section ESP
 createButton("ESP Menu", scrollingFrame, function()
     showSection(scrollingframeEsp)
 end)
 
--- Ajouter le bouton pour afficher la section Player
+-- Bouton pour afficher la section Player
 createButton("Player Menu", scrollingFrame, function()
     showSection(scrollingframePlayer)
 end)
 
--- Ajouter le bouton pour afficher la section Dupe Items
-createButton("Dupe Items Menu", scrollingFrame, function()
-    showSection(scrollingframeDupeItem)
-end)
-
 -- Fonction pour afficher/masquer le menu principal
 toggleButton.MouseButton1Click:Connect(function()
-    Frame.Visible = not Frame.Visible
+    frame.Visible = not frame.Visible
     sidebarFrame.Visible = not sidebarFrame.Visible
 end)
 
-
+-- Démarrer avec la section principale visible
 showSection(scrollingFrame)
-
