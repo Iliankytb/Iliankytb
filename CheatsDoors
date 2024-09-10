@@ -165,6 +165,7 @@ local RemoveUiButton = createButton("Remove Ui(Coming Soon)", scrollingFrameMenu
 -- Création des boutons
 local espButton = createButton("ESP Off", scrollingFrameEsp)
 local NoLagButton = createButton("No Lag Off", scrollingFrame)
+local NoScreechButton = createButton("No Screech Off(Coming Soon)", scrollingFrame)
 local NoCooldownPromptButton = createButton("No Cooldown Prompt Off", scrollingFrame)
 local FullBrightButton = createButton("Full Bright Off", scrollingFrame)
 local GodModeButton = createButton("God Mode Off(in rework)", scrollingFramePlayer)
