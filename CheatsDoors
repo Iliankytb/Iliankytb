@@ -14,7 +14,7 @@ screenGui.ResetOnSpawn = false
 
 -- Main Frame
 local frame = Instance.new("Frame", screenGui)
-frame.Size = UDim2.new(0.25, 0, 0.4, 0)
+frame.Size = UDim2.new(0.2, 0, 0.4, 0)
 frame.Position = UDim2.new(0.350, 0, 0.3, 0)
 frame.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 frame.BackgroundTransparency = 0.25
@@ -38,7 +38,7 @@ uicorner.CornerRadius = UDim.new(0.1, 0)
 
 local frameMenu = Instance.new("Frame", screenGui)
 frameMenu.Size = UDim2.new(0.2, 0, 0.4, 0)
-frameMenu.Position = UDim2.new(0.275, 0, 0.3, 0)
+frameMenu.Position = UDim2.new(0.25, 0, 0.3, 0)
 frameMenu.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 frameMenu.BackgroundTransparency = 0.25
 frameMenu.Visible = false
