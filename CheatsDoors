@@ -236,7 +236,7 @@ local function toggleNoPromptCooldown()
 				prompt.HoldDuration = 0
 			end
 		end
-				NoCooldownPromptButton.Text = "No Prompt Cooldown: On"
+		NoCooldownPromptButton.Text = "No Prompt Cooldown: On"
 	else
 		for _, prompt in ipairs(workspace:GetDescendants()) do
 			if prompt:IsA("ProximityPrompt") then
@@ -248,7 +248,7 @@ local function toggleNoPromptCooldown()
 end
 
 -- Création du bouton pour le No Prompt Cooldown
-local NoCooldownPromptButton = createButton("No Prompt Cooldown: Off", scrollingframePlayer, function()
+local NoCooldownPromptButton = createButton("No Prompt Cooldown: Off", scrollingFrame, function()
 	toggleNoPromptCooldown()
 end)
 
@@ -302,6 +302,6 @@ local function toggleFullBright()
 end
 
 -- Bouton pour activer/désactiver le FullBright
-createButton("Toggle FullBright",scrollingframe, function()
-toggleFullBright()
+createButton("Toggle FullBright",scrollingFrame, function()
+	toggleFullBright()
 end)
