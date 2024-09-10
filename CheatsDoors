@@ -172,10 +172,6 @@ local flyButton = createButton("Fly Off(don't work)", scrollingFramePlayer)
 local autoHealButton = createButton("Auto Heal Off(Don't Click In Rework Coming Soon)", scrollingFramePlayer)
 local speedBoostButton = createButton("Speed Boost Off", scrollingFramePlayer)
 
-
-
-end
-
 local function highlightModels()
     for _, model in pairs(espTargets) do
         highlightModel(model)
