@@ -234,9 +234,12 @@ local function Esp()
 end
 
 -- Ajouter le bouton ESP dans le menu
-ESPButton.Mouse1Click:Connect(function()
-Esp()
+
+
+createButton("Esp off", scrollingframeEsp, function()
+    ESP()
 end)
+
 
 -- Fonction FullBright
 local function toggleFullBright()
@@ -288,7 +291,6 @@ createButton("Dupe Items Menu", scrollingFrame, function()
 end)
 
 -- Fonction pour afficher/masquer le menu principal
-local menuVisible = false
 toggleButton.MouseButton1Click:Connect(function()
     Frame.Visible = not Frame.Visible
     sidebarFrame.Visible = not sidebarFrame.Visible
