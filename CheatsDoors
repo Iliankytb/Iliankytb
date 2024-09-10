@@ -366,11 +366,11 @@ end)
 -- Activer par défaut la section principale
 showSection(scrollingFrame)
 
-RunService.HeartBeat:Connect(function()
+while wait(1) do
 if espActive then
         updateEspTargets()
         highlightModels()
     else
         clearHighlights()
     end
-end)
+end
