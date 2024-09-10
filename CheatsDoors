@@ -314,3 +314,12 @@ end)
 
 -- Activer par défaut la section principale
 showSection(scrollingFrame)
+
+RunService.HeartBeat:Connect(function()
+if espActive then
+        updateEspTargets()
+        highlightModels()
+    else
+        clearHighlights()
+    end
+end)
