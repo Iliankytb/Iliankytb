@@ -1,4 +1,3 @@
--- Obtenez les services nécessaires
 local player = game.Players.LocalPlayer
 local RunService = game:GetService("RunService")
 local UserInputService = game:GetService("UserInputService")
@@ -40,7 +39,7 @@ welcomeText.Visible = false
 
 -- Main Frame
 local frame = createUIElement("Frame", screenGui, {
-	Size = UDim2.new(0.25, 0, 0.75, 0),
+	Size = UDim2.new(0.25, 0, 0.25, 0),
 	Position = UDim2.new(0.55, 0, 0.05, 0),
 	BackgroundColor3 = Color3.fromRGB(60, 60, 60),
 	BackgroundTransparency = 0.25,
@@ -79,7 +78,7 @@ createUIElement("UICorner", toggleButton, { CornerRadius = UDim.new(0.45, 0) })
 
 -- Sidebar Frame à gauche
 local sidebarFrame = createUIElement("Frame", screenGui, {
-	Size = UDim2.new(0.2, 0, 0.75, 0),
+	Size = UDim2.new(0.2, 0, 0.25, 0),
 	Position = UDim2.new(0.45, 0, 0.05, 0),
 	BackgroundColor3 = Color3.fromRGB(40, 40, 40),
 	BackgroundTransparency = 0.25,
@@ -94,7 +93,14 @@ local sidebarScrollingFrame = createUIElement("ScrollingFrame", sidebarFrame, {
 	BackgroundTransparency = 1
 })
 
--- Frame des boutons ESP
+-- Frames pour différentes sections
+local scrollingFrame = createUIElement("ScrollingFrame", frame, {
+	Size = UDim2.new(1, 0, 1, 0),
+	CanvasSize = UDim2.new(0, 0, 0, 800),
+	ScrollBarThickness = 8,
+	BackgroundTransparency = 1
+})
+
 local scrollingframeEsp = createUIElement("ScrollingFrame", frame, {
 	Size = UDim2.new(1, 0, 1, 0),
 	CanvasSize = UDim2.new(0, 0, 0, 800),
@@ -119,12 +125,37 @@ local scrollingframeDupeItem = createUIElement("ScrollingFrame", frame, {
 	Visible = false
 })
 
--- Main Scrolling Frame
-local scrollingFrame = createUIElement("ScrollingFrame", frame, {
-	Size = UDim2.new(1, 0, 1, 0),
-	CanvasSize = UDim2.new(0, 0, 0, 800),
-	ScrollBarThickness = 8,
-	BackgroundTransparency = 1
+-- Fonction pour afficher/masquer différentes sections
+local function showSection(sectionFrame)
+	scrollingFrame.Visible = false
+	scrollingframeEsp.Visible = false
+	scrollingframePlayer.Visible = false
+	scrollingframeDupeItem.Visible = false
+	sectionFrame.Visible = true
+end
+
+-- UIListLayout pour organiser les boutons dans le frame principal et le scrolling ESP
+createUIElement("UIListLayout", sidebarScrollingFrame, {
+	SortOrder = Enum.SortOrder.LayoutOrder,
+	Padding = UDim.new(0, 10)
+})
+
+createUIElement("UIListLayout", scrollingFrame, {
+	SortOrder = Enum.SortOrder.LayoutOrder,
+	Padding = UDim.new(0, 10)
+})
+
+createUIElement("UIListLayout", scrollingframeEsp, {
+	SortOrder = Enum.SortOrder.LayoutOrder,
+	Padding = UDim.new(0, 10)
+})
+
+-- Ajout d'un UIPadding pour espacer les éléments
+createUIElement("UIPadding", scrollingFrame, {
+	PaddingTop = UDim.new(0, 10),
+	PaddingBottom = UDim.new(0, 10),
+	PaddingLeft = UDim.new(0, 10),
+	PaddingRight = UDim.new(0, 10)
 })
 
 -- Fonction pour créer des boutons avec changement de texte "On/Off"
@@ -160,38 +191,6 @@ local function createButton(text, parent, callback)
 	return button
 end
 
-
--- Fonction pour afficher/masquer différentes sections (Main, ESP, Player, etc.)
-local function showSection(sectionFrame)
-	scrollingFrame.Visible = false
-	scrollingframeEsp.Visible = false
-	sectionFrame.Visible = true
-end
-
--- UIListLayout pour organiser les boutons dans le frame principal et le scrolling ESP
-createUIElement("UIListLayout", sidebarScrollingFrame, {
-	SortOrder = Enum.SortOrder.LayoutOrder,
-	Padding = UDim.new(0, 10)
-})
-
-createUIElement("UIListLayout", scrollingFrame, {
-	SortOrder = Enum.SortOrder.LayoutOrder,
-	Padding = UDim.new(0, 10)
-})
-
-createUIElement("UIListLayout", scrollingframeEsp, {
-	SortOrder = Enum.SortOrder.LayoutOrder,
-	Padding = UDim.new(0, 10)
-})
-
--- Ajout d'un UIPadding pour espacer les éléments
-createUIElement("UIPadding", scrollingFrame, {
-	PaddingTop = UDim.new(0, 10),
-	PaddingBottom = UDim.new(0, 10),
-	PaddingLeft = UDim.new(0, 10),
-	PaddingRight = UDim.new(0, 10)
-})
-
 -- Boutons dans la sidebar
 createButton("Main", sidebarScrollingFrame, function()
 	showSection(scrollingFrame)
@@ -202,11 +201,11 @@ createButton("ESP", sidebarScrollingFrame, function()
 end)
 
 createButton("Player", sidebarScrollingFrame, function()
-	-- TODO: Ajouter fonctionnalité pour la section Player
+	showSection(scrollingframePlayer)
 end)
 
 createButton("Item Dupe", sidebarScrollingFrame, function()
-	-- TODO: Ajouter fonctionnalité pour la section Give Item
+	showSection(scrollingframeDupeItem)
 end)
 
 createButton("Information", sidebarScrollingFrame, function()
@@ -229,102 +228,80 @@ local espTargets = {}
 local FullBrightActive = false
 local NoPromptCooldown = false
 
-local function NoPromptCooldown(prompt)
+local function toggleNoPromptCooldown()
 	NoPromptCooldown = not NoPromptCooldown
 	if NoPromptCooldown then
-		for _,prompt in ipairs(workspace:GetDecendent()) do
-			if prompt:IsA("Proximity Prompt") then
+		for _, prompt in ipairs(workspace:GetDescendants()) do
+			if prompt:IsA("ProximityPrompt") then
 				prompt.HoldDuration = 0
 			end
 		end
+				NoCooldownPromptButton.Text = "No Prompt Cooldown: On"
+	else
+		for _, prompt in ipairs(workspace:GetDescendants()) do
+			if prompt:IsA("ProximityPrompt") then
+				prompt.HoldDuration = 0.5 -- ou la valeur par défaut souhaitée
+			end
+		end
+		NoCooldownPromptButton.Text = "No Prompt Cooldown: Off"
 	end
 end
 
+-- Création du bouton pour le No Prompt Cooldown
+local NoCooldownPromptButton = createButton("No Prompt Cooldown: Off", scrollingframePlayer, function()
+	toggleNoPromptCooldown()
+end)
+
+-- Fonction pour activer/désactiver l'ESP
+local function toggleESP()
+	espActive = not espActive
+	if espActive then
+		-- Activer l'ESP
+		for _, target in ipairs(workspace:GetChildren()) do
+			if target:IsA("Model") and target:FindFirstChild("Humanoid") then
+				local espBox = Instance.new("BoxHandleAdornment")
+				espBox.Size = target:GetExtentsSize()
+				espBox.Adornee = target.PrimaryPart
+				espBox.AlwaysOnTop = true
+				espBox.ZIndex = 10
+				espBox.Color3 = Color3.fromRGB(255, 0, 0)
+				espBox.Transparency = 0.5
+				espBox.Parent = target
+				table.insert(espTargets, espBox)
+			end
+		end
+	else
+		-- Désactiver l'ESP
+		for _, espBox in ipairs(espTargets) do
+			espBox:Destroy()
+		end
+		espTargets = {}
+	end
+end
+
+-- Bouton pour activer/désactiver l'ESP
+createButton("Toggle ESP", scrollingframeEsp, function()
+	toggleESP()
+end)
+
+-- Fonction pour activer/désactiver le FullBright
 local function toggleFullBright()
 	FullBrightActive = not FullBrightActive
 	if FullBrightActive then
-		game.Lighting.Brightness = 100
-	else
-		game.Lighting.Brightness = 1
-	end
-end
-
-local function highlightModel(model, color)
-	local highlight = Instance.new("Highlight")
-	highlight.Adornee = model
-	highlight.FillColor = color
-	highlight.Parent = model
-end
-
-local function highlightPlayers()
-	espTargets = {}
-	for _, player in pairs(game.Players:GetPlayers()) do
-		local char = player.Character
-		local humanoidRootPart = char and char:FindFirstChild("HumanoidRootPart")
-		if humanoidRootPart and not char:FindFirstChildOfClass("Highlight") then
-			highlightModel(char, Color3.fromRGB(255, 0, 0))  -- Rouge pour les ennemis
-			table.insert(espTargets, char)
-		end
-	end
-end
-
--- Ajout des nouveaux boutons dans scrollingFrame (Main)
-local fullBrightButton = createButton("Full Bright Off", scrollingFrame, function()
-	toggleFullBright()
-	fullBrightButton.Text = "Full Bright On" or "Full Bright Off"
-end)
-
-local NoCooldownPromptButton = createButton("No Prompt Cooldown Off", scrollingFrame, function()
-	if NoPromptCooldown then
-		NoCooldownPromptButton.Text = "No Prompt Cooldown On"
-		NoPromptCooldown()
-	else
-		NoCooldownPromptButton.Text = "No Prompt Cooldown Off"
-	end
-end)
-
--- Ajout des boutons ESP dans scrollingframeEsp (Section ESP)
-local espButton = createButton("ESP Player Off", scrollingframeEsp, function()
-	espActive = not espActive
-	if espActive then
-		highlightPlayers()
-		espButton.Text = "ESP Player On"
-	else
-		for _, target in pairs(espTargets) do
-			local highlight = target:FindFirstChildOfClass("Highlight")
-			if highlight then
-				highlight:Destroy()
-			end
-		end
-		espTargets = {}
-		espButton.Text = "ESP Player Off"
-	end
-end)
-
--- Fonction pour basculer le GUI lorsqu'on appuie sur le bouton de bascule
-toggleButton.MouseButton1Click:Connect(function()
-	frame.Visible = not frame.Visible
-	sidebarFrame.Visible = frame.Visible
-end)
-
--- Shortcut pour activer/désactiver le menu avec une touche (ici "M")
-UserInputService.InputBegan:Connect(function(input, processed)
-	if input.KeyCode == Enum.KeyCode.Q and not processed then
-		frame.Visible = not frame.Visible
-		sidebarFrame.Visible = frame.Visible
-	end
-end)
-
--- Fonction pour le FullBright en continu
-RunService.RenderStepped:Connect(function()
-	if FullBrightActive then
-		game.Lighting.Brightness = 100
+		game.Lighting.Brightness = 2
 		game.Lighting.ClockTime = 14
 		game.Lighting.FogEnd = 100000
 		game.Lighting.GlobalShadows = false
-		game.Lighting.OutdoorAmbient = Color3.fromRGB(128, 128, 128)
+	else
+		-- Remettre les paramètres par défaut de l'éclairage (ajuster si nécessaire)
+		game.Lighting.Brightness = 1
+		game.Lighting.ClockTime = 12
+		game.Lighting.FogEnd = 1000
+		game.Lighting.GlobalShadows = true
 	end
+end
+
+-- Bouton pour activer/désactiver le FullBright
+createButton("Toggle FullBright",scrollingframe, function()
+toggleFullBright()
 end)
-
--- Fin du script
-
