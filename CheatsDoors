@@ -204,8 +204,9 @@ local function restoreMaterials()
     end
 end
 
-NoCooldownPromptButton.Mouse1Click:Connect(function()
 local noCooldownPromptActive = false
+
+NoCooldownPromptButton.Mouse1Click:Connect(function()
 noCooldownPromptActive = not noCooldownPromptActive
     NoCooldownPromptButton.Text = noCooldownPromptActive and "No Cooldown Prompt On" or "No Cooldown Prompt Off"
     
@@ -220,7 +221,6 @@ end)
 -- Toggle ESP
 local espEnabled = false
 espButton.MouseButton1Click:Connect(function()
-local espEnabled = false
     espEnabled = not espEnabled
     if espEnabled then
         espButton.Text = "ESP On"
@@ -253,11 +253,11 @@ FullBrightButton.MouseButton1Click:Connect(function()
         FullBrightButton.Text = "Full Bright On"
 game.Lighting.Brightness = 100
     game.Lighting.Ambient = Color3.new(1, 1, 1)
-end
     else
         FullBrightButton.Text = "Full Bright Off"
         game.Lighting.Brightness = 1
     game.Lighting.Ambient =  Color3.new(0.5, 0.5, 0.5)
+end
     end
 end)
 
@@ -350,6 +350,6 @@ game.Lighting.Brightness = 100
     game.Lighting.Ambient = Color3.new(1, 1, 1) 
 else
 game.Lighting.Brightness = 100 
-    game.Lighting.Ambient = or Color3.new(0.5, 0.5, 0.5)
+    game.Lighting.Ambient = Color3.new(0.5, 0.5, 0.5)
 end
 end)
