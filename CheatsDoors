@@ -9,6 +9,9 @@ local autoHealActive = false
 local autoLootActive = false
 local espActive = false
 local fullBrightActive = false
+local highlightColor = Color3.fromRGB(255, 0, 0)
+local highlightTransparency = 0.5
+local originalMaterials = {}
 
 -- Supprimer l'ancien GUI si présent
 if player.PlayerGui:FindFirstChild("GuiPlayer") then
