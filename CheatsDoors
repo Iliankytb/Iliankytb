@@ -11,6 +11,24 @@ local espActive = false
 local fullBrightActive = false
 local highlightColor = Color3.fromRGB(255, 0, 0)
 local highlightTransparency = 0.5
+local maxEspDistance = 1000
+
+
+
+print("My cheat work now coming soon new update Don't work on solara support mobile enabled support pc coming verryyy soon.")
+-- Variables
+local player = game.Players.LocalPlayer
+local RunService = game:GetService("RunService")
+local espTargets = {}
+local originalMaterials = {}
+local speedBoostActive = false
+local autoHealActive = false
+local autoLootActive = false
+local espActive = false
+local fullBrightActive = false
+local highlightColor = Color3.fromRGB(255, 0, 0)
+local highlightTransparency = 0.5
+local maxEspDistance = 1000 -- Distance maximale pour ESP
 
 -- Supprimer l'ancien GUI si présent
 if player.PlayerGui:FindFirstChild("GuiPlayer") then
@@ -39,27 +57,7 @@ gradient.Color = ColorSequence.new{
 
 -- UI Stroke et Coin arrondi pour le Frame
 local uistroke = Instance.new("UIStroke", frame)
-uistroke.Thickness = 3
-uistroke.Color = Color3.fromRGB(20, 20, 20)
-uistroke.LineJoinMode = Enum.LineJoinMode.Round
 
-local uicorner = Instance.new("UICorner", frame)
-uicorner.CornerRadius = UDim.new(0.1, 0)
-
--- Frame Menu
-local frameMenu = Instance.new("Frame", screenGui)
-frameMenu.Size = UDim2.new(0.25, 0, 0.4, 0)
-frameMenu.Position = UDim2.new(0.25, 0, 0.3, 0)
-frameMenu.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-frameMenu.BackgroundTransparency = 0.25
-frameMenu.Visible = false
-
--- Gradient sur le Frame
-local gradient1 = Instance.new("UIGradient", frameMenu)
-gradient1.Color = ColorSequence.new{
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(60, 60, 60)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(90, 90, 90))
-}
 
 -- UI Stroke et Coin arrondi pour le Frame
 local uistroke1 = Instance.new("UIStroke", frameMenu)
@@ -155,6 +153,89 @@ local NoLagButton = createButton("No Lag Off", scrollingFrame)
 local FullBrightButton = createButton("Full Bright Off", scrollingFrame)
 local GodModeButton = createButton("God Mode Off", scrollingFrame)
 
+
+-- Fonction ESP
+local function updateEspTargetsModels()
+    espTargets = {}
+    for _, model in pairs(workspace:GetDescendants()) do
+        if model:IsA("Model") or model:IsA("Part") then
+            local nameLower = model.Name:lower()
+            if nameLower == "locker_large" 
+            or nameLower == "locker_small" 
+            or nameLower == "door" 
+            or nameLower == "sideroomdupe" 
+            or nameLower == "wardrobe" 
+            or nameLower == "gold" 
+            or nameLower == "goldpile" 
+            or nameLower == "minegenerator" 
+            or nameLower == "fuse" 
+            or nameLower == "key" 
+            or nameLower == "key_holder" 
+            or nameLower == "rift" 
+            or nameLower == "chest" 
+            or nameLower == "lockpick" 
+            or nameLower == "battery" 
+            or nameLower == "flashlight" 
+            or nameLower == "figure_rig" 
+            or nameLower == "figure" 
+            or nameLower == "rush" 
+            or nameLower == "ambush" 
+            or nameLower == "screech" 
+            or nameLower == "halt" 
+            or nameLower == "rushed" 
+            or nameLower == "livehintbook" 
+            or nameLower == "drawercontainer" then
+                table.insert(espTargets, model)
+            end
+        end
+    end
+end
+
+-- Fonction pour appliquer le highlight à un modèle si dans la distance maximale
+local function highlightModel(model)
+    if (model.Position - player.Character.HumanoidRootPart.Position).Magnitude <= maxEspDistance then
+        if not model:FindFirstChildOfClass("Highlight") then
+            local highlight = Instance.new("Highlight", model)
+            highlight.FillColor = Color3.fromRGB(255, 170, 0)
+            highlight.FillTransparency = 0.5
+            highlight.OutlineTransparency = 0.5
+            highlight.FillColor = highlightColor
+            highlight.FillTransparency = highlightTransparency
+            highlight.OutlineTransparency = highlightTransparency
+        end
+
+        if not model:FindFirstChildOfClass("BillboardGui") then
+            local billboard = Instance.new("BillboardGui", model)
+            billboard.Adornee = model
+            billboard.AlwaysOnTop = true
+            billboard.Size = UDim2.new(0, 100, 0, 50)
+            billboard.StudsOffset = Vector3.new(0, 2, 0)
+
+            local textLabel = Instance.new("TextLabel", billboard)
+            textLabel.Size = UDim2.new(1, 0, 1, 0)
+            textLabel.BackgroundTransparency = 1
+            textLabel.Text = model.Name
+            textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+        end
+    end
+end
+
+-- Fonction pour nettoyer les highlights existants
+local function clearHighlights()
+    for _, obj in pairs(workspace:GetDescendants()) do
+        if obj:IsA("Highlight") or obj:IsA("BillboardGui") then
+            obj:Destroy()
+        end
+    end
+end
+
+-- Fonction pour appliquer les highlights à tous les modèles cibles
+local function highlightModels()
+    for _, model in pairs(espTargets) do
+        highlightModel(model)
+    end
+end
+
 -- Toggle ESP
 local espEnabled = false
 espButton.MouseButton1Click:Connect(function()
@@ -168,7 +249,6 @@ espButton.MouseButton1Click:Connect(function()
         clearHighlights()
     end
 end)
-
 -- Toggle No Lag
 local noLagEnabled = false
 NoLagButton.MouseButton1Click:Connect(function()
@@ -235,87 +315,6 @@ GodModeButton.MouseButton1Click:Connect(function()
         deactivateGodMode()
     end
 end)
-
-
--- Fonction ESP
-local function updateEspTargetsModels()
-    espTargets = {}
-    for _, model in pairs(workspace:GetDescendants()) do
-        if model:IsA("Model") or model:IsA("Part") then
-            local nameLower = model.Name:lower()
-            if nameLower == "locker_large" 
-            or nameLower == "locker_small" 
-            or nameLower == "door" 
-            or nameLower == "sideroomdupe" 
-            or nameLower == "wardrobe" 
-            or nameLower == "gold" 
-            or nameLower == "goldpile" 
-            or nameLower == "MineGenerator" 
-            or nameLower == "fuse" 
-            or nameLower == "key" 
-            or nameLower == "key_holder" 
-            or nameLower == "rift" 
-            or nameLower == "chest" 
-            or nameLower == "lockpick" 
-            or nameLower == "battery" 
-            or nameLower == "flashlight" 
-            or nameLower == "figure_rig" 
-            or nameLower == "figure" 
-            or nameLower == "rush" 
-            or nameLower == "ambush" 
-            or nameLower == "screech" 
-            or nameLower == "halt" 
-            or nameLower == "rushed" 
-            or nameLower == "livehintbook" 
-            or nameLower == "drawercontainer" then
-                table.insert(espTargets, model)
-            end
-        end
-    end
-end
-
-local function highlightModel(model)
-    if not model:FindFirstChildOfClass("Highlight") then
-        local highlight = Instance.new("Highlight", model)
-        highlight.FillColor = Color3.fromRGB(255, 170, 0)
-        highlight.FillTransparency = 0.5
-        highlight.OutlineTransparency = 0.5
-        highlight.FillColor = highlightColor
-        highlight.FillTransparency = highlightTransparency
-        highlight.OutlineTransparency = highlightTransparency
-    end
-
-    if not model:FindFirstChildOfClass("BillboardGui") then
-        local billboard = Instance.new("BillboardGui", model)
-        billboard.Adornee = model
-        billboard.AlwaysOnTop = true
-        billboard.Size = UDim2.new(0, 100, 0, 50)
-        billboard.StudsOffset = Vector3.new(0, 2, 0)
-
-        local textLabel = Instance.new("TextLabel", billboard)
-        textLabel.Size = UDim2.new(1, 0, 1, 0)
-        textLabel.BackgroundTransparency = 1
-        textLabel.Text = model.Name
-        textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    end
-end
- end
-
-local function clearHighlights()
-    for _, obj in pairs(workspace:GetDescendants()) do
-        if obj:IsA("Highlight") or obj:IsA("BillboardGui") then
-            obj:Destroy()
-        end
-    end
-end
-
-
-local function highlightModels()
-    for _, model in pairs(espTargets) do
-        highlightModel(model)
-    end
-end
-
 
 local function UpdatePlayer()
 for _, target in pairs(game.Players:GetPlayers()) do
