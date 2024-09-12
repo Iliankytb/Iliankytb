@@ -129,8 +129,6 @@ local function createButton(text, parent)
         ColorSequenceKeypoint.new(0, Color3.fromRGB(70, 70, 70)),
         ColorSequenceKeypoint.new(1, Color3.fromRGB(100, 100, 100))
     }
-
-   --uistroke:Clone().Parent = button
     return button
 end
 
@@ -145,8 +143,9 @@ local espButton = createButton("ESP Off", scrollingFrameEsp)
 local NoLagButton = createButton("No Lag Off", scrollingFrame)
 local FullBrightButton = createButton("Full Bright Off", scrollingFrame)
 local GodModeButton = createButton("God Mode Off", scrollingFrame)
-
-
+local NoScreechButton = createButton("No Screech Off", scrollingFrame)
+local NoAmbushButton = createButton("No Ambush Off", scrollingFrame)
+local NoA90Button = createButton("No A-90 Off(Coming Soon)", scrollingFrame)
 
 local function updateEspTargetsModels()
     espTargets = {}
@@ -159,8 +158,9 @@ local function updateEspTargetsModels()
             or nameLower == "sideroomdupe" 
             or nameLower == "wardrobe" 
             or nameLower == "gold" 
-            or nameLower == "goldpile" 
-            or nameLower == "minegenerator" 
+            or nameLower == "goldpile"
+            or nameLower == "pile"
+            or nameLower == "minesgenerator" 
             or nameLower == "fuse" 
             or nameLower == "key" 
             or nameLower == "key_holder" 
@@ -169,14 +169,20 @@ local function updateEspTargetsModels()
             or nameLower == "lockpick" 
             or nameLower == "battery" 
             or nameLower == "flashlight" 
-            or nameLower == "figure_rig" 
+            or nameLower == "figurerig" 
             or nameLower == "figure" 
-            or nameLower == "rush" 
-            or nameLower == "ambush" 
+            or nameLower == "rushmoving" 
+            or nameLower == "ambushmoving" 
             or nameLower == "screech" 
-            or nameLower == "halt" 
-            or nameLower == "rushed" 
-            or nameLower == "livehintbook" 
+            or nameLower == "halt"
+            or nameLower == "livehintbook"
+      or nameLower == "book"
+      or nameLower == "lid"
+      or nameLower == "fuseobtain"
+      or nameLower == "giggleceiling"
+      or nameLower == "gloombatswarm"
+      or nameLower == "topteeth"
+      or nameLower == "screechmoving"
             or nameLower == "drawercontainer" then
                 table.insert(espTargets, model)
             end
@@ -266,10 +272,10 @@ FullBrightButton.MouseButton1Click:Connect(function()
     end
 end)
 
--- Toggle God Mode
+
 local godModeEnabled = false
 
--- Fonction pour activer le God Mode
+
 local function activateGodMode()
     local character = player.Character
     if character then
@@ -281,7 +287,7 @@ local function activateGodMode()
     end
 end
 
--- Fonction pour désactiver le God Mode
+
 local function deactivateGodMode()
     local character = player.Character
     if character then
@@ -347,6 +353,28 @@ local function deactivateNoLagV2()
     end
 end
 
+local NoScreechV = false
+local function NoScreech()
+NoScreechV = not NoScreechV
+if NoScreechV then
+game:GetService("ReplicatedStorage").GameData.EntityDisabledScreech.Value = true
+else
+game:GetService("ReplicatedStorage").GameData.EntityDisabledScreech.Value = false
+end
+end
+
+local NoAmbushV = false
+local function NoAmbush()
+NoAmbushV = not NoAmbushV
+if NoAmbushV then
+game:GetService("ReplicatedStorage").GameData.SpawnAmbush.Value = false
+else
+game:GetService("ReplicatedStorage").GameData.SpawnAmbush.Value = true
+end
+end
+
+NoScreechButton.MouseButton1click:Connect(NoScreech)
+NoAmbushButton.MouseButton1click:Connect(NoAmbush)
 
 local function toggleFrame()
     frame.Visible = not frame.Visible
@@ -368,8 +396,26 @@ scrollingFrame.Visible = false
 end
 
 EspButton.MouseButton1Click:Connect(toggleSFE)
-
+--[[game:GetService("ReplicatedStorage").Gamedata]]--
 RunService.RenderStepped:Connect(function()
+if espActive then
+        espButton.Text = "ESP On"
+        updateEspTargetsModels()
+        highlightModels()
+    else
+        espButton.Text = "ESP Off"
+        clearHighlights()
+    end
+if NoScreechV then
+game:GetService("ReplicatedStorage").GameData.EntityDisabledScreech.Value = true
+else
+game:GetService("ReplicatedStorage").GameData.EntityDisabledScreech.Value = false
+end
+if NoAmbushV then
+game:GetService("ReplicatedStorage").GameData.SpawnAmbush.Value = false
+else
+game:GetService("ReplicatedStorage").GameData.SpawnAmbush.Value = true
+end
 if noLagEnabled then
 activateNoLagV2()
 activateNoLag()
