@@ -20,12 +20,11 @@ local screenGui = Instance.new("ScreenGui", player.PlayerGui)
 screenGui.Name = "GuiPlayer"
 screenGui.ResetOnSpawn = false
 
-local TextWelcome = Instance.new("TextLabel",screenGui)
-TextWelcome.Size = UDim2.new(1,0,0.25,0)
-TextWelcome.Position = UDim2.new(0,0,0.15,0)
+local TextWelcome = Instance.new("TextLabel", screenGui)
+TextWelcome.Size = UDim2.new(1, 0, 0.25, 0)
+TextWelcome.Position = UDim2.new(0, 0, 0.15, 0)
 TextWelcome.BackgroundTransparency = 1
-TextWelcome.Text = "Thanks For Use My Script And Thanks For Support Iliankytb So GoodLuck 0.0"
-
+TextWelcome.Text = "Thanks for using my script and thanks for supporting Iliankytb. Good luck 0.0!"
 
 TextWelcome.Visible = True
 wait(3)
