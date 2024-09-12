@@ -370,7 +370,7 @@ NoCooldownPromptButton.Text = "No Cooldown Prompt Off"
 for _, obj in pairs(workspace:GetDescendants()) do
     if obj:IsA("ProximityPrompt") then
         obj.HoldDuration = 1
-    end
+end
 end
 end
 end
