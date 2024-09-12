@@ -456,7 +456,7 @@ end
     end
     if fullBrightEnabled then
         FullBrightButton.Text = "Full Bright On"
-        game.Lighting.Brightness = 2
+        game.Lighting.Brightness = 100
         game.Lighting.Ambient = Color3.fromRGB(255, 255, 255)
     else
         FullBrightButton.Text = "Full Bright Off"
