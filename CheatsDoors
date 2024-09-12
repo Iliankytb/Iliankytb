@@ -373,8 +373,8 @@ game:GetService("ReplicatedStorage").GameData.SpawnAmbush.Value = true
 end
 end
 
-NoScreechButton.MouseButton1click:Connect(NoScreech)
-NoAmbushButton.MouseButton1click:Connect(NoAmbush)
+NoScreechButton.MouseButton1Click:Connect(NoScreech)
+NoAmbushButton.MouseButton1Click:Connect(NoAmbush)
 
 local function toggleFrame()
     frame.Visible = not frame.Visible
