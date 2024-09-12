@@ -10,7 +10,6 @@ local espActive = false
 local fullBrightActive = false
 local highlightColor = Color3.fromRGB(255, 0, 0)
 local highlightTransparency = 0.5
-local maxEspDistance = 1000
 
 
 if player.PlayerGui:FindFirstChild("GuiPlayer") then
@@ -65,13 +64,6 @@ buttonGradient.Color = ColorSequence.new{
     ColorSequenceKeypoint.new(0, Color3.fromRGB(85, 170, 255)),
     ColorSequenceKeypoint.new(1, Color3.fromRGB(65, 150, 255))
 }
-
-local function toggleFrame()
-    frame.Visible = not frame.Visible
-    frameMenu.Visible = not frameMenu.Visible
-end
-
-closeopen.MouseButton1Click:Connect(toggleFrame)
 
 
 local scrollingFrameMenu = Instance.new("ScrollingFrame", frameMenu)
@@ -166,10 +158,8 @@ local function updateEspTargetsModels()
 end
 
 local function highlightModel(model)
-    if (model.Position - player.Character.HumanoidRootPart.Position).Magnitude <= maxEspDistance then
         if not model:FindFirstChildOfClass("Highlight") then
             local highlight = Instance.new("Highlight", model)
-highlight:SetAttribute("CreatedByScript",true)
             highlight.FillColor = Color3.fromRGB(255, 170, 0)
             highlight.FillTransparency = 0.5
             highlight.OutlineTransparency = 0.5
@@ -190,13 +180,12 @@ highlight:SetAttribute("CreatedByScript",true)
             textLabel.BackgroundTransparency = 1
             textLabel.Text = model.Name
             textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-        end
     end
 end
 
 local function clearHighlights()
     for _, obj in pairs(workspace:GetDescendants()) do
-        if obj:IsA("Highlight") or obj:IsA("BillboardGui") and obj:GetAttribute("CreatedByScript") then
+        if obj:IsA("Highlight") or obj:IsA("BillboardGui") then
             obj:Destroy()
         end
     end
@@ -298,9 +287,6 @@ for _, target in pairs(game.Players:GetPlayers()) do
 end
 
 
--- ESP Toggle logic
-
--- Fonction pour activer le No Lag
 local function activateNoLag()
     for _, descendant in pairs(workspace:GetDescendants()) do
         if descendant:IsA("ParticleEmitter") or descendant:IsA("Beam") or descendant:IsA("Trail") then
@@ -336,6 +322,14 @@ end
         end
     end
 end
+
+local function toggleFrame()
+    frame.Visible = not frame.Visible
+    frameMenu.Visible = not frameMenu.Visible
+end
+
+closeopen.MouseButton1Click:Connect(toggleFrame)
+
 
 RunService.RenderStepped:Connect(function()
 for _, part in pairs(workspace:GetDescendants()) do
