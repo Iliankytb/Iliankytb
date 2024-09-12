@@ -363,6 +363,8 @@ game:GetService("ReplicatedStorage").GameData.EntityDisabledScreech.Value = fals
 end
 end
 
+NoScreechButton.MouseButton1Click:Connect(NoScreech)
+
 local NoAmbushV = false
 local function NoAmbush()
 NoAmbushV = not NoAmbushV
@@ -373,7 +375,6 @@ game:GetService("ReplicatedStorage").GameData.SpawnAmbush.Value = true
 end
 end
 
-NoScreechButton.MouseButton1Click:Connect(NoScreech)
 NoAmbushButton.MouseButton1Click:Connect(NoAmbush)
 
 local function toggleFrame()
