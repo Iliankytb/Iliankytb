@@ -28,7 +28,7 @@ TextWelcome.BackgroundTransparency = 1
 TextWelcome.Text = "Thanks for using my script and thanks for supporting Iliankytb. Good luck 0.0!"
 
 
-TextWelcome.Visible = True
+TextWelcome.Visible = true
 wait(3)
 TextWelcome.Visible = false
 
