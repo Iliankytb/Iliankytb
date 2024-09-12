@@ -22,7 +22,7 @@ screenGui.ResetOnSpawn = false
 
 local TextWelcome = Instance.new("TextLabel", screenGui)
 TextWelcome.Size = UDim2.new(1, 0, 0.25, 0)
-TextWelcome.Position = UDim2.new(0, 0, 0.15, 0)
+TextWelcome.Position = UDim2.new(0, 0, 0, 0)
 TextWelcome.BackgroundTransparency = 1
 TextWelcome.Text = "Thanks for using my script and thanks for supporting Iliankytb. Good luck 0.0!"
 
@@ -32,8 +32,8 @@ wait(3)
 TextWelcome.Visible = false
 
 local frame = Instance.new("Frame", screenGui)
-frame.Size = UDim2.new(0.45, 0, 0.5, 0)
-frame.Position = UDim2.new(0.3, 0, 0.4, 0)
+frame.Size = UDim2.new(0.35, 0, 0.5, 0)
+frame.Position = UDim2.new(0.3, 0, 0.2, 0)
 frame.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 frame.BackgroundTransparency = 0.25
 frame.Visible = false
@@ -78,7 +78,7 @@ buttonGradient.Color = ColorSequence.new{
 
 local frameMenu = Instance.new("Frame", screenGui)
 frameMenu.Size = UDim2.new(0.25, 0, 0.45, 0)
-frameMenu.Position = UDim2.new(0.2, 0, 0.4, 0)
+frameMenu.Position = UDim2.new(0.2, 0, 0.2, 0)
 frameMenu.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 frameMenu.BackgroundTransparency = 0.25
 frameMenu.Visible = false
@@ -117,7 +117,7 @@ listLayoutEsp.Padding = UDim.new(0, 10)
 
 local function createButton(text, parent)
     local button = Instance.new("TextButton", parent)
-    button.Size = UDim2.new(1, 0, 0, 50)
+    button.Size = UDim2.new(0.90, 0, 0, 50)
     button.Text = text
     button.TextColor3 = Color3.fromRGB(255, 255, 255)
     button.Font = Enum.Font.GothamBold
