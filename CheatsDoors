@@ -22,8 +22,8 @@ screenGui.ResetOnSpawn = false
 
 
 local frame = Instance.new("Frame", screenGui)
-frame.Size = UDim2.new(0.45, 0, 0.7, 0)
-frame.Position = UDim2.new(0.4, 0, 0.3, 0)
+frame.Size = UDim2.new(0.45, 0, 0.5, 0)
+frame.Position = UDim2.new(0.3, 0, 0.4, 0)
 frame.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 frame.BackgroundTransparency = 0.25
 frame.Visible = false
@@ -68,7 +68,7 @@ buttonGradient.Color = ColorSequence.new{
 
 local frameMenu = Instance.new("Frame", screenGui)
 frameMenu.Size = UDim2.new(0.25, 0, 0.45, 0)
-frameMenu.Position = UDim2.new(0.35, 0, 0.3, 0)
+frameMenu.Position = UDim2.new(0.2, 0, 0.4, 0)
 frameMenu.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 frameMenu.BackgroundTransparency = 0.25
 frameMenu.Visible = false
@@ -94,6 +94,16 @@ local listLayout = Instance.new("UIListLayout", scrollingFrame)
 listLayout.SortOrder = Enum.SortOrder.LayoutOrder
 listLayout.Padding = UDim.new(0, 10)
 
+local scrollingFrameEsp = Instance.new("ScrollingFrame", frame)
+scrollingFrameEsp.Size = UDim2.new(1, 0, 1, 0)
+scrollingFrameEsp.CanvasSize = UDim2.new(0, 0, 0, 800)
+scrollingFrameEsp.ScrollBarThickness = 8
+scrollingFrameEsp.BackgroundTransparency = 1
+scrollingFrameEsp.Visible = false
+
+local listLayoutEsp = Instance.new("UIListLayout", scrollingFrameEsp)
+listLayoutEsp.SortOrder = Enum.SortOrder.LayoutOrder
+listLayoutEsp.Padding = UDim.new(0, 10)
 
 local function createButton(text, parent)
     local button = Instance.new("TextButton", parent)
@@ -121,7 +131,7 @@ local DupeItemButton = createButton("Dupe Item Menu (Coming Soon)", scrollingFra
 local InfoButton = createButton("Information (Coming Soon)", scrollingFrameMenu)
 local SettingButton = createButton("Setting (Coming Soon)", scrollingFrameMenu)
 local RemoveUiButton = createButton("Remove UI (Coming Soon)", scrollingFrameMenu)
-local espButton = createButton("ESP Off", scrollingFrame)
+local espButton = createButton("ESP Off", scrollingFrameEsp)
 local NoLagButton = createButton("No Lag Off", scrollingFrame)
 local FullBrightButton = createButton("Full Bright Off", scrollingFrame)
 local GodModeButton = createButton("God Mode Off", scrollingFrame)
@@ -336,6 +346,19 @@ end
 
 closeopen.MouseButton1Click:Connect(toggleFrame)
 
+local function toggleSF()
+scrollingFrameEsp.Visible = false
+scrollingFrame.Visible = true
+end
+
+MenuButton.Mouse1Click:Connect(function(toggleSF)
+
+local function toggleSFE()
+scrollingFrameEsp.Visible = true
+scrollingFrame.Visible = false
+end
+
+EspButton.Mouse1Click:Connect(function(toggleSFE)
 
 RunService.RenderStepped:Connect(function()
 for _, parts in pairs(workspace:GetDescendants()) do
