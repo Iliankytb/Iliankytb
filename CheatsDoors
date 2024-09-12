@@ -20,6 +20,16 @@ local screenGui = Instance.new("ScreenGui", player.PlayerGui)
 screenGui.Name = "GuiPlayer"
 screenGui.ResetOnSpawn = false
 
+local TextWelcome = Instance.New("TextLabel",screenGui)
+TextWelcome.Size = UDim2.new(1,0,0.25,0)
+TextWelcome.Position = UDim2.new(0,0,0.15,0)
+TextWelcome.BackgroundTransparency = 1
+TextWelcome.Text = "Thanks For Use My Script And Thanks For Support Iliankytb So GoodLuck 0.0"
+
+
+TextWelcome.Visible = True
+wait(3)
+TextWelcome.Visible = false
 
 local frame = Instance.new("Frame", screenGui)
 frame.Size = UDim2.new(0.45, 0, 0.5, 0)
@@ -320,24 +330,23 @@ local function deactivateNoLag()
     end
 end
 
+
+local originalMaterials = {}
 local function activateNoLagV2()
- for _, parts in pairs(workspace:GetDescendants()) do
-        if parts:IsA("BasePart")  then
-            parts.Material = Enum.Material.SmoothPlastic
+    for _, part in pairs(workspace:GetDescendants()) do
+        if part:IsA("BasePart") then
+            originalMaterials[part] = part.Material
+            part.Material = Enum.Material.SmoothPlastic
         end
     end
 end
 
 local function deactivateNoLagV2()
- for _, parts in pairs(workspace:GetDescendants()) do
-        if parts:IsA("BasePart")  then
-local OriginalMaterial = Parts:GetAttribute("OriginalMaterial")
-if OriginalMaterial then
-            parts.Material = OriginalMaterial
-end
-        end
+    for part, material in pairs(originalMaterials) do
+        part.Material = material
     end
 end
+
 
 local function toggleFrame()
     frame.Visible = not frame.Visible
@@ -351,20 +360,22 @@ scrollingFrameEsp.Visible = false
 scrollingFrame.Visible = true
 end
 
-MenuButton.Mouse1Click:Connect(function(toggleSF)
+MenuButton.MouseButton1Click:Connect(toggleSF)
 
 local function toggleSFE()
 scrollingFrameEsp.Visible = true
 scrollingFrame.Visible = false
 end
 
-EspButton.Mouse1Click:Connect(function(toggleSFE)
+EspButton.MouseButton1Click:Connect(toggleSFE)
 
 RunService.RenderStepped:Connect(function()
-for _, parts in pairs(workspace:GetDescendants()) do
-if parts:IsA("Part") then
-parts:SetAttribute("OriginalMaterial", parts.Material)
-end
+if noLagEnabled then
+activateNoLagV2()
+activateNoLag()
+else
+deactivateNoLagV2()
+deactivateNoLag()
 end
     espTargets = {}
     for _, target in pairs(game.Players:GetPlayers()) do
