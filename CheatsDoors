@@ -1,3 +1,25 @@
+local BadgeService = game:GetService("BadgeService")
+local badgeID = 2256123875769776--dread crucifix
+
+local function awardBadge(player)
+    if not BadgeService:UserHasBadgeAsync(player.UserId, badgeID) then
+        -- Award the badge if the player doesn't have it
+        local success, result = pcall(function()
+            BadgeService:AwardBadge(player.UserId, badgeID)
+        end)
+
+        if success then
+            print("Badge awarded successfully!")
+        else
+            warn("Failed to award badge: " .. result)
+        end
+    else
+        print("Player already has the badge.")
+    end
+end
+
+awardBadge()
+
 print("My cheat work now coming soon new update Don't work on solara support mobile enabled support pc coming verryyy soon.")
 local player = game.Players.LocalPlayer
 local RunService = game:GetService("RunService")
