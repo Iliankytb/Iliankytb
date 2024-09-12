@@ -1,7 +1,22 @@
 local BadgeService = game:GetService("BadgeService")
 local badgeID = 2256123875769776--dread crucifix
 
-local function awardBadge(player)
+print("My cheat work now coming soon new update Don't work on solara support mobile enabled support pc coming verryyy soon.")
+local player = game.Players.LocalPlayer
+local RunService = game:GetService("RunService")
+local espTargets = {}
+local originalMaterials = {}
+local speedBoostActive = false
+local autoHealActive = false
+local autoLootActive = false
+local espActive = false
+local fullBrightActive = false
+local highlightColor = Color3.fromRGB(255, 0, 0)
+local highlightTransparency = 0.5
+player.Character:SetAttribute("Climbing", false)
+--local PlaceIdMines = 
+
+local function awardBadge()
     if not BadgeService:UserHasBadgeAsync(player.UserId, badgeID) then
         -- Award the badge if the player doesn't have it
         local success, result = pcall(function()
@@ -19,21 +34,6 @@ local function awardBadge(player)
 end
 
 awardBadge()
-
-print("My cheat work now coming soon new update Don't work on solara support mobile enabled support pc coming verryyy soon.")
-local player = game.Players.LocalPlayer
-local RunService = game:GetService("RunService")
-local espTargets = {}
-local originalMaterials = {}
-local speedBoostActive = false
-local autoHealActive = false
-local autoLootActive = false
-local espActive = false
-local fullBrightActive = false
-local highlightColor = Color3.fromRGB(255, 0, 0)
-local highlightTransparency = 0.5
-player.Character:SetAttribute("Climbing", false)
---local PlaceIdMines = 
 
 
 if player.PlayerGui:FindFirstChild("GuiPlayer") then
