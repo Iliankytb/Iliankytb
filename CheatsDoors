@@ -480,7 +480,7 @@ end
 
 EspButton.MouseButton1Click:Connect(toggleSFE)
 
-RunService.RenderStepped:Connect(function()
+RunService.RenderStepped:Connect(function(model)
 if MobNotifV then
 frameMonsterNotify.Visible = true
 MonsterNotifyButton.Text = "Monster Notify On"
