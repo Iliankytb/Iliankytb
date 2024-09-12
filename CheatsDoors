@@ -26,6 +26,7 @@ TextWelcome.Position = UDim2.new(0, 0, 0.15, 0)
 TextWelcome.BackgroundTransparency = 1
 TextWelcome.Text = "Thanks for using my script and thanks for supporting Iliankytb. Good luck 0.0!"
 
+
 TextWelcome.Visible = True
 wait(3)
 TextWelcome.Visible = false
