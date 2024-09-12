@@ -422,7 +422,21 @@ end
 
 EspButton.MouseButton1Click:Connect(toggleSFE)
 RunService.RenderStepped:Connect(function()
-NoCooldownPrompt()
+if NoCPV then
+NoCooldownPromptButton.Text = "No Cooldown Prompt On"
+for _, obj in pairs(workspace:GetDescendants()) do
+    if obj:IsA("ProximityPrompt") then
+        obj.HoldDuration = 0
+    end
+end
+else
+NoCooldownPromptButton.Text = "No Cooldown Prompt Off"
+for _, obj in pairs(workspace:GetDescendants()) do
+    if obj:IsA("ProximityPrompt") then
+        obj.HoldDuration = 1
+end
+end
+end
 if espActive then
         espButton.Text = "ESP On"
         updateEspTargetsModels()
