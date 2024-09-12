@@ -421,6 +421,7 @@ scrollingFrame.Visible = false
 end
 
 EspButton.MouseButton1Click:Connect(toggleSFE)
+
 RunService.RenderStepped:Connect(function()
 if NoCPV then
 NoCooldownPromptButton.Text = "No Cooldown Prompt On"
