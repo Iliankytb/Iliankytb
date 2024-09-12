@@ -1,3 +1,7 @@
+if player.Character then
+    player.Character:SetAttribute("Climbing", false)
+end
+
 local BadgeService = game:GetService("BadgeService")
 local badgeID = 2256123875769776--dread crucifix
 
@@ -13,7 +17,6 @@ local espActive = false
 local fullBrightActive = false
 local highlightColor = Color3.fromRGB(255, 0, 0)
 local highlightTransparency = 0.5
-player.Character:SetAttribute("Climbing", false)
 --local PlaceIdMines = 
 
 --[[local function awardBadge()
@@ -569,6 +572,7 @@ end
 end
 if MobNotifV then
 frameMonsterNotify.Visible = true
+if model and model:IsA("Model") then
 MonsterNotifyButton.Text = "Monster Notify On"
     local nameLower = model.Name:lower()
     local monsterWarnings = {
@@ -589,6 +593,7 @@ MonsterNotifyButton.Text = "Monster Notify On"
 else
 MonsterNotifyButton.Text = "Monster Notify Off"
 frameMonsterNotify.Visible = false
+end
 end
 if NoCPV then
 NoCooldownPromptButton.Text = "No Cooldown Prompt On"
