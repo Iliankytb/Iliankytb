@@ -208,7 +208,6 @@ or nameLower == "screechrig"
       or nameLower == "gloombatswarm"
       or nameLower == "topteeth"
 or nameLower == "chestbox"
-or nameLower == "crucifix"
 or nameLower == "lighter"
       or nameLower == "screechmoving"
             or nameLower == "drawercontainer" then
@@ -274,63 +273,34 @@ end)
 
 
 local MobNotifV = false
-local function MobNotif()
+local function MobNotif(model)
 MobNotifV = not MobNotifV
 espTargetsMonsters = {}
 if MobNotifV then
 frameMonsterNotify.Visible = true
 MonsterNotifyButton.Text = "Monster Notify On"
-    for _, model in pairs(workspace:GetDescendants()) do
-        if model:IsA("Model") or model:IsA("Part") then
-            local nameLower = model.Name:lower()
-            if nameLower == "AmbushMoving"
-TextMonstersNotif.Text = "Warning Ambush Spawned!"
-wait(3)
-TextMonstersNotif.Text = ""
-end
-           if nameLower == "RushMoving"
-TextMonstersNotif.Text = "Warning Rush Spawned!"
-wait(3)
-TextMonstersNotif.Text = ""
-end
-           if nameLower == "HaltMoving"
-TextMonstersNotif.Text = "Warning Halt Spawned!"
-wait(3)
-TextMonstersNotif.Text = ""
-end
-           if nameLower == "figurerig"
-TextMonstersNotif.Text = "Warning Figure Spawned!"
-wait(3)
-TextMonstersNotif.Text = ""
-end
-           if nameLower == "GiggleCeiling"
-TextMonstersNotif.Text = "Warning Giggle Spawned!"
-wait(3)
-TextMonstersNotif.Text = ""
-end
-           if nameLower == "GloombatSwarm"
-TextMonstersNotif.Text = "Warning Gloombat Swarm Spawned!"
-wait(3)
-TextMonstersNotif.Text = ""
-end
-           if nameLower == "eyes"
-TextMonstersNotif.Text = "Warning Eyes Spawned!"
-wait(3)
-TextMonstersNotif.Text = ""
-end
-end
-end
-end
-end
-end
-end
-end
+    local nameLower = model.Name:lower()
+    local monsterWarnings = {
+        ambushmoving = "Warning Ambush Spawned!",
+        rushmoving = "Warning Rush Spawned!",
+        haltmoving = "Warning Halt Spawned!",
+        figurerig = "Warning Figure Spawned!",
+        giggleceiling = "Warning Giggle Spawned!",
+        gloombatswarm = "Warning Gloombat Swarm Spawned!",
+        eyes = "Warning Eyes Spawned!"
+    }
+
+    if monsterWarnings[nameLower] then
+        TextMonstersNotif.Text = monsterWarnings[nameLower]
+        wait(3)
+        TextMonstersNotif.Text = ""
+    end
 else
 MonsterNotifyButton.Text = "Monster Notify Off"
 frameMonsterNotify.Visible = false
 end
 end
-end
+
 
 MonsterNotifyButton.MouseButton1Click:Connect(MobNotif)
 
@@ -512,56 +482,27 @@ EspButton.MouseButton1Click:Connect(toggleSFE)
 
 RunService.RenderStepped:Connect(function()
 if MobNotifV then
+frameMonsterNotify.Visible = true
 MonsterNotifyButton.Text = "Monster Notify On"
-    for _, model in pairs(workspace:GetDescendants()) do
-        if model:IsA("Model") or model:IsA("Part") then
-            local nameLower = model.Name:lower()
-            if nameLower == "AmbushMoving"
-TextMonstersNotif.Text = "Warning Ambush Spawned!"
-wait(3)
-TextMonstersNotif.Text = ""
-end
-           if nameLower == "RushMoving"
-TextMonstersNotif.Text = "Warning Rush Spawned!"
-wait(3)
-TextMonstersNotif.Text = ""
-end
-           if nameLower == "HaltMoving"
-TextMonstersNotif.Text = "Warning Halt Spawned!"
-wait(3)
-TextMonstersNotif.Text = ""
-end
-           if nameLower == "figurerig"
-TextMonstersNotif.Text = "Warning Figure Spawned!"
-wait(3)
-TextMonstersNotif.Text = ""
-end
-           if nameLower == "GiggleCeiling"
-TextMonstersNotif.Text = "Warning Giggle Spawned!"
-wait(3)
-TextMonstersNotif.Text = ""
-end
-           if nameLower == "GloombatSwarm"
-TextMonstersNotif.Text = "Warning Gloombat Swarm Spawned!"
-wait(3)
-TextMonstersNotif.Text = ""
-end
-           if nameLower == "eyes"
-TextMonstersNotif.Text = "Warning Eyes Spawned!"
-wait(3)
-TextMonstersNotif.Text = ""
-end
-end
-end
-end
-end
-end
-end
-end
+    local nameLower = model.Name:lower()
+    local monsterWarnings = {
+        ambushmoving = "Warning Ambush Spawned!",
+        rushmoving = "Warning Rush Spawned!",
+        haltmoving = "Warning Halt Spawned!",
+        figurerig = "Warning Figure Spawned!",
+        giggleceiling = "Warning Giggle Spawned!",
+        gloombatswarm = "Warning Gloombat Swarm Spawned!",
+        eyes = "Warning Eyes Spawned!"
+    }
+
+    if monsterWarnings[nameLower] then
+        TextMonstersNotif.Text = monsterWarnings[nameLower]
+        wait(3)
+        TextMonstersNotif.Text = ""
+    end
 else
 MonsterNotifyButton.Text = "Monster Notify Off"
-end
-end
+frameMonsterNotify.Visible = false
 end
 if NoCPV then
 NoCooldownPromptButton.Text = "No Cooldown Prompt On"
