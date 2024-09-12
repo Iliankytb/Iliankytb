@@ -321,7 +321,7 @@ end
 local function deactivateNoLagV2()
  for _, parts in pairs(workspace:GetDescendants()) do
         if parts:IsA("BasePart")  then
-local OriginalMaterial = Part:GetAttribute("OriginalMaterial")
+local OriginalMaterial = Parts:GetAttribute("OriginalMaterial")
 if OriginalMaterial then
             parts.Material = OriginalMaterial
 end
@@ -338,9 +338,9 @@ closeopen.MouseButton1Click:Connect(toggleFrame)
 
 
 RunService.RenderStepped:Connect(function()
-for _, part in pairs(workspace:GetDescendants()) do
-if part:IsA("Part") then
-part:SetAttribute("OriginalMaterial", part.Material)
+for _, parts in pairs(workspace:GetDescendants()) do
+if parts:IsA("Part") then
+parts:SetAttribute("OriginalMaterial", parts.Material)
 end
 end
     espTargets = {}
