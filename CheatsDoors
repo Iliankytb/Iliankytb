@@ -13,6 +13,10 @@ local espActive = false
 local fullBrightActive = false
 local highlightColor = Color3.fromRGB(255, 0, 0)
 local highlightTransparency = 0.5
+if player.Character then
+    player.Character:SetAttribute("Climbing", false)
+end
+
 --local PlaceIdMines = 
 
 --[[local function awardBadge()
@@ -307,26 +311,27 @@ local SpeedBoostV = false
 local function SpeedBoost()
 SpeedBoostV = not SpeedBoostV
 if SpeedBoostV then
-PlayerButton.Text = "Speed Boost On"
+SpeedBoostButton.Text = "Speed Boost On"
 local character = player.Character
     if character then
         local humanoid = character:FindFirstChildOfClass("Humanoid")
         if humanoid then
-            humanoid.Walkspeed = 22
+            humanoid.WalkSpeed = 22
 end
 end
 else
-PlayerButton.Text = "Speed Boost Off"
+SpeedBoostButton.Text = "Speed Boost Off"
 local character = player.Character
     if character then
         local humanoid = character:FindFirstChildOfClass("Humanoid")
         if humanoid then
-            humanoid.Walkspeed = 12
+            humanoid.WalkSpeed = 12
 end
 end
 end
 end
 
+SpeedBoostButton.MouseButton1Click(SpeedBoost)
 
 local MobNotifV = false
 local function MobNotif(model)
@@ -548,21 +553,21 @@ PlayerButton.MouseButton1Click:Connect(toggleSFP)
 
 RunService.RenderStepped:Connect(function()
 if SpeedBoostV then
-PlayerButton.Text = "Speed Boost On"
+SpeedBoostButton.Text = "Speed Boost On"
 local character = player.Character
     if character then
         local humanoid = character:FindFirstChildOfClass("Humanoid")
         if humanoid then
-            humanoid.Walkspeed = 22
+            humanoid.WalkSpeed = 22
 end
 end
 else
-PlayerButton.Text = "Speed Boost Off"
+SpeedBoostButton.Text = "Speed Boost Off"
 local character = player.Character
     if character then
         local humanoid = character:FindFirstChildOfClass("Humanoid")
         if humanoid then
-            humanoid.Walkspeed = 12
+            humanoid.WalkSpeed = 12
 end
 end
 end
