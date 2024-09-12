@@ -317,7 +317,7 @@ local character = player.Character
 end
 end
 else
-PlayerButton.Text = "Speed Boost Off
+PlayerButton.Text = "Speed Boost Off"
 local character = player.Character
     if character then
         local humanoid = character:FindFirstChildOfClass("Humanoid")
@@ -547,7 +547,7 @@ end
 
 PlayerButton.MouseButton1Click:Connect(toggleSFP)
 
-RunService.RenderStepped:Connect(function(model)
+RunService.RenderStepped:Connect(function()
 if SpeedBoostV then
 PlayerButton.Text = "Speed Boost On"
 local character = player.Character
@@ -558,7 +558,7 @@ local character = player.Character
 end
 end
 else
-PlayerButton.Text = "Speed Boost Off
+PlayerButton.Text = "Speed Boost Off"
 local character = player.Character
     if character then
         local humanoid = character:FindFirstChildOfClass("Humanoid")
@@ -570,6 +570,7 @@ end
 if MobNotifV then
 frameMonsterNotify.Visible = true
 MonsterNotifyButton.Text = "Monster Notify On"
+local model = workspace:GetDecendants()
     local nameLower = model.Name:lower()
     local monsterWarnings = {
         ambushmoving = "Warning Ambush Spawned!",
