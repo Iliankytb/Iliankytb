@@ -10,6 +10,7 @@ local espActive = false
 local fullBrightActive = false
 local highlightColor = Color3.fromRGB(255, 0, 0)
 local highlightTransparency = 0.5
+player.Character:SetAttribute("Climbing", false)
 --local PlaceIdMines = 
 
 
