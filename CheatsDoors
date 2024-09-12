@@ -1,5 +1,3 @@
-
-
 local BadgeService = game:GetService("BadgeService")
 local badgeID = 2256123875769776--dread crucifix
 
