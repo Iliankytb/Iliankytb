@@ -1,6 +1,4 @@
-if player.Character then
-    player.Character:SetAttribute("Climbing", false)
-end
+
 
 local BadgeService = game:GetService("BadgeService")
 local badgeID = 2256123875769776--dread crucifix
