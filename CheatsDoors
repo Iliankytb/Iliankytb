@@ -566,7 +566,7 @@ local character = player.Character
 end
 end
 end
-if MobNotifV then
+--[[if MobNotifV then
 frameMonsterNotify.Visible = true
 if model and model:IsA("Model") then
 MonsterNotifyButton.Text = "Monster Notify On"
@@ -590,7 +590,7 @@ else
 MonsterNotifyButton.Text = "Monster Notify Off"
 frameMonsterNotify.Visible = false
 end
-end
+end--]]
 if NoCPV then
 NoCooldownPromptButton.Text = "No Cooldown Prompt On"
 for _, obj in pairs(workspace:GetDescendants()) do
