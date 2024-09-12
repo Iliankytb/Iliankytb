@@ -331,7 +331,7 @@ end
 end
 end
 
-SpeedBoostButton.MouseButton1Click(SpeedBoost)
+SpeedBoostButton.MouseButton1Click:Connect(SpeedBoost)
 
 local MobNotifV = false
 local function MobNotif(model)
