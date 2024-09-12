@@ -16,7 +16,7 @@ local highlightTransparency = 0.5
 player.Character:SetAttribute("Climbing", false)
 --local PlaceIdMines = 
 
-local function awardBadge()
+--[[local function awardBadge()
     if not BadgeService:UserHasBadgeAsync(player.UserId, badgeID) then
         -- Award the badge if the player doesn't have it
         local success, result = pcall(function()
@@ -33,7 +33,7 @@ local function awardBadge()
     end
 end
 
-awardBadge()
+awardBadge()--]]
 
 
 if player.PlayerGui:FindFirstChild("GuiPlayer") then
@@ -151,6 +151,17 @@ local listLayoutEsp = Instance.new("UIListLayout", scrollingFrameEsp)
 listLayoutEsp.SortOrder = Enum.SortOrder.LayoutOrder
 listLayoutEsp.Padding = UDim.new(0, 10)
 
+local scrollingFramePlayer = Instance.new("ScrollingFrame", frame)
+scrollingFramePlayer.Size = UDim2.new(1, 0, 1, 0)
+scrollingFramePlayer.CanvasSize = UDim2.new(0, 0, 0, 800)
+scrollingFramePlayer.ScrollBarThickness = 8
+scrollingFramePlayer.BackgroundTransparency = 1
+scrollingFramePlayer.Visible = false
+
+local listLayoutPlayer = Instance.new("UIListLayout", scrollingFramePlayer)
+listLayoutPlayer.SortOrder = Enum.SortOrder.LayoutOrder
+listLayoutPlayer.Padding = UDim.new(0, 10)
+
 local function createButton(text, parent)
     local button = Instance.new("TextButton", parent)
     button.Size = UDim2.new(0.90, 0, 0, 50)
@@ -183,7 +194,7 @@ local FullBrightButton = createButton("Full Bright Off", scrollingFrame)
 local GodModeButton = createButton("God Mode Off", scrollingFrame)
 local NoScreechButton = createButton("No Screech Off", scrollingFrame)
 local NoAmbushButton = createButton("No Ambush Off", scrollingFrame)
-local NoA90Button = createButton("No A-90 Off(Coming Soon)", scrollingFrame)
+local SpeedBoostButton = createButton("Speed Boost Off", scrollingFramePlayer)
 
 local function updateEspTargetsModels()
     espTargets = {}
@@ -292,6 +303,30 @@ espButton.MouseButton1Click:Connect(function()
         clearHighlights()
     end
 end)
+
+local SpeedBoostV = false
+local function SpeedBoost()
+SpeedBoostV = not SpeedBoostV
+if SpeedBoostV then
+PlayerButton.Text = "Speed Boost On"
+local character = player.Character
+    if character then
+        local humanoid = character:FindFirstChildOfClass("Humanoid")
+        if humanoid then
+            humanoid.WalkSpeed = 22
+end
+end
+else
+PlayerButton.Text = "Speed Boost Off
+local character = player.Character
+    if character then
+        local humanoid = character:FindFirstChildOfClass("Humanoid")
+        if humanoid then
+            humanoid.WalkSpeed = 12
+end
+end
+end
+end
 
 
 local MobNotifV = false
@@ -491,6 +526,7 @@ closeopen.MouseButton1Click:Connect(toggleFrame)
 local function toggleSF()
 scrollingFrameEsp.Visible = false
 scrollingFrame.Visible = true
+scrollingFramePlayer.Visible = false
 end
 
 MenuButton.MouseButton1Click:Connect(toggleSF)
@@ -498,11 +534,39 @@ MenuButton.MouseButton1Click:Connect(toggleSF)
 local function toggleSFE()
 scrollingFrameEsp.Visible = true
 scrollingFrame.Visible = false
+scrollingFramePlayer.Visible = false
 end
 
 EspButton.MouseButton1Click:Connect(toggleSFE)
 
+local function toggleSFP()
+scrollingFrameEsp.Visible = false
+scrollingFrame.Visible = false
+scrollingFramePlayer.Visible = true
+end
+
+PlayerButton.MouseButton1Click:Connect(toggleSFP)
+
 RunService.RenderStepped:Connect(function(model)
+if SpeedBoostV then
+PlayerButton.Text = "Speed Boost On"
+local character = player.Character
+    if character then
+        local humanoid = character:FindFirstChildOfClass("Humanoid")
+        if humanoid then
+            humanoid.WalkSpeed = 22
+end
+end
+else
+PlayerButton.Text = "Speed Boost Off
+local character = player.Character
+    if character then
+        local humanoid = character:FindFirstChildOfClass("Humanoid")
+        if humanoid then
+            humanoid.WalkSpeed = 12
+end
+end
+end
 if MobNotifV then
 frameMonsterNotify.Visible = true
 MonsterNotifyButton.Text = "Monster Notify On"
