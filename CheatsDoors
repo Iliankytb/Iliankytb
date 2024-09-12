@@ -158,13 +158,14 @@ local GodModeButton = createButton("God Mode Off", scrollingFrame)
 -- Toggle ESP
 local espEnabled = false
 espButton.MouseButton1Click:Connect(function()
-    espEnabled = not espEnabled
-    if espEnabled then
+    espActive = not espActive
+    if espActive then
         espButton.Text = "ESP On"
-        -- Ajoutez votre logique pour activer ESP ici
+        updateEspTargetsModels()
+        highlightModels()
     else
         espButton.Text = "ESP Off"
-        -- Ajoutez votre logique pour désactiver ESP ici
+        clearHighlights()
     end
 end)
 
@@ -198,16 +199,6 @@ end)
 
 -- Toggle God Mode
 local godModeEnabled = false
-GodModeButton.MouseButton1Click:Connect(function()
-    godModeEnabled = not godModeEnabled
-    if godModeEnabled then
-        GodModeButton.Text = "God Mode On"
-        -- Ajoutez votre logique pour activer le God Mode ici
-    else
-        GodModeButton.Text = "God Mode Off"
-        -- Ajoutez votre logique pour désactiver le God Mode ici
-    end
-end)
 
 -- Fonction pour activer le God Mode
 local function activateGodMode()
@@ -336,16 +327,6 @@ end
 
 
 -- ESP Toggle logic
-espButton.MouseButton1Click:Connect(function()
-    espActive = not espActive
-    if espActive then
-        espButton.Text = "ESP On"
-        highlightModels()
-    else
-        espButton.Text = "ESP Off"
-        clearHighlights()
-    end
-end)
 
 -- Fonction pour activer le No Lag
 local function activateNoLag()
@@ -367,19 +348,6 @@ local function deactivateNoLag()
     end
 end
 
--- No Lag Toggle logic
-NoLagButton.MouseButton1Click:Connect(function()
-    noLagEnabled = not noLagEnabled
-    if noLagEnabled then
-        NoLagButton.Text = "No Lag On"
-        activateNoLag()
-    else
-        NoLagButton.Text = "No Lag Off"
-        deactivateNoLag()
-    end
-end)
-
--- Récupération des joueurs pour l'ESP
 RunService.RenderStepped:Connect(function()
     espTargets = {}
     for _, target in pairs(game.Players:GetPlayers()) do
@@ -388,11 +356,6 @@ RunService.RenderStepped:Connect(function()
         end
     end
 end)
-
--- Pleine luminosité (Full Bright)
-fullBrightEnabled = false
-FullBrightButton.MouseButton1Click:Connect(function()
-    fullBrightEnabled = not fullBrightEnabled
     if fullBrightEnabled then
         FullBrightButton.Text = "Full Bright On"
         game.Lighting.Brightness = 2
