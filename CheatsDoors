@@ -10,7 +10,7 @@ local espActive = false
 local fullBrightActive = false
 local highlightColor = Color3.fromRGB(255, 0, 0)
 local highlightTransparency = 0.5
-local PlaceIdMines = 
+--local PlaceIdMines = 
 
 
 if player.PlayerGui:FindFirstChild("GuiPlayer") then
