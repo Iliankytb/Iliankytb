@@ -570,7 +570,6 @@ end
 if MobNotifV then
 frameMonsterNotify.Visible = true
 MonsterNotifyButton.Text = "Monster Notify On"
-local model = workspace:GetDecendants()
     local nameLower = model.Name:lower()
     local monsterWarnings = {
         ambushmoving = "Warning Ambush Spawned!",
