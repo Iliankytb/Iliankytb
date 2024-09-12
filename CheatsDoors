@@ -478,5 +478,6 @@ end
         FullBrightButton.Text = "Full Bright Off"
         game.Lighting.Brightness = 1
         game.Lighting.Ambient = Color3.fromRGB(127, 127, 127)
+task.wait(1)
     end
 end)
