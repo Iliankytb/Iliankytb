@@ -118,7 +118,6 @@ local function createButton(text, parent)
     }
 
     uistroke:Clone().Parent = button
-    uicorner:Clone().Parent = button
     return button
 end
 
