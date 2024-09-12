@@ -15,7 +15,6 @@ player.Character:SetAttribute("Climbing", false)
 
 
 if player.PlayerGui:FindFirstChild("GuiPlayer") then
-clearHighlights()
     player.PlayerGui.GuiPlayer:Destroy()
 end
 
@@ -162,6 +161,10 @@ local function updateEspTargetsModels()
             or nameLower == "SeekMovingNewClone"  
             or nameLower == "SeekRig"
             or nameLower == "eyes" 
+or nameLower == "leverforgate"
+or nameLower == "crucifix"
+or nameLower == "candle"
+or nameLower == "screechrig"
             or nameLower == "KeyObtain" 
             or nameLower == "door" 
             or nameLower == "sideroomdupe" 
