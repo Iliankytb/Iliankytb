@@ -40,6 +40,18 @@ frame.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 frame.BackgroundTransparency = 0.25
 frame.Visible = false
 
+local frameMonsterNotify = Instance.new("Frame", screenGui)
+frameMonsterNotify.Size = UDim2.new(0.25, 0, 0.25, 0)
+frameMonsterNotify.Position = UDim2.new(0.1, 0, 0.7, 0)
+frameMonsterNotify.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+frameMonsterNotify.BackgroundTransparency = 1
+frameMonsterNotify.Visible = false
+
+local TextMonstersNotif = Instance.new("TextLabel", frameMonsterNotify)
+TextMonstersNotif.Size = UDim2.new(1, 0, 1, 0)
+TextMonstersNotif.Position = UDim2.new(0, 0, 0, 0)
+TextMonstersNotif.BackgroundTransparency = 1
+TextMonstersNotif.Text = ""
 
 local gradient = Instance.new("UIGradient", frame)
 gradient.Color = ColorSequence.new{
@@ -143,6 +155,7 @@ local SettingButton = createButton("Setting (Coming Soon)", scrollingFrameMenu)
 local RemoveUiButton = createButton("Remove UI (Coming Soon)", scrollingFrameMenu)
 local espButton = createButton("ESP Off", scrollingFrameEsp)
 local NoCooldownPromptButton = createButton("No Cooldown Prompt Off", scrollingFrame)
+local MonsterNotifyButton = createButton("Monsters Notify Off", scrollingFrame)
 local NoLagButton = createButton("No Lag Off", scrollingFrame)
 local FullBrightButton = createButton("Full Bright Off", scrollingFrame)
 local GodModeButton = createButton("God Mode Off", scrollingFrame)
@@ -194,6 +207,9 @@ or nameLower == "screechrig"
       or nameLower == "giggleceiling"
       or nameLower == "gloombatswarm"
       or nameLower == "topteeth"
+or nameLower == "chestbox"
+or nameLower == "crucifix"
+or nameLower == "lighter"
       or nameLower == "screechmoving"
             or nameLower == "drawercontainer" then
                 table.insert(espTargets, model)
@@ -255,6 +271,68 @@ espButton.MouseButton1Click:Connect(function()
         clearHighlights()
     end
 end)
+
+
+local MobNotifV = false
+local function MobNotif()
+MobNotifV = not MobNotifV
+espTargetsMonsters = {}
+if MobNotifV then
+frameMonsterNotify.Visible = true
+MonsterNotifyButton.Text = "Monster Notify On"
+    for _, model in pairs(workspace:GetDescendants()) do
+        if model:IsA("Model") or model:IsA("Part") then
+            local nameLower = model.Name:lower()
+            if nameLower == "AmbushMoving"
+TextMonstersNotif.Text = "Warning Ambush Spawned!"
+wait(3)
+TextMonstersNotif.Text = ""
+end
+           if nameLower == "RushMoving"
+TextMonstersNotif.Text = "Warning Rush Spawned!"
+wait(3)
+TextMonstersNotif.Text = ""
+end
+           if nameLower == "HaltMoving"
+TextMonstersNotif.Text = "Warning Halt Spawned!"
+wait(3)
+TextMonstersNotif.Text = ""
+end
+           if nameLower == "figurerig"
+TextMonstersNotif.Text = "Warning Figure Spawned!"
+wait(3)
+TextMonstersNotif.Text = ""
+end
+           if nameLower == "GiggleCeiling"
+TextMonstersNotif.Text = "Warning Giggle Spawned!"
+wait(3)
+TextMonstersNotif.Text = ""
+end
+           if nameLower == "GloombatSwarm"
+TextMonstersNotif.Text = "Warning Gloombat Swarm Spawned!"
+wait(3)
+TextMonstersNotif.Text = ""
+end
+           if nameLower == "eyes"
+TextMonstersNotif.Text = "Warning Eyes Spawned!"
+wait(3)
+TextMonstersNotif.Text = ""
+end
+end
+end
+end
+end
+end
+end
+end
+else
+MonsterNotifyButton.Text = "Monster Notify Off"
+frameMonsterNotify.Visible = false
+end
+end
+end
+
+MonsterNotifyButton.MouseButton1Click:Connect(MobNotif)
 
 local noLagEnabled = false
 NoLagButton.MouseButton1Click:Connect(function()
@@ -433,6 +511,58 @@ end
 EspButton.MouseButton1Click:Connect(toggleSFE)
 
 RunService.RenderStepped:Connect(function()
+if MobNotifV then
+MonsterNotifyButton.Text = "Monster Notify On"
+    for _, model in pairs(workspace:GetDescendants()) do
+        if model:IsA("Model") or model:IsA("Part") then
+            local nameLower = model.Name:lower()
+            if nameLower == "AmbushMoving"
+TextMonstersNotif.Text = "Warning Ambush Spawned!"
+wait(3)
+TextMonstersNotif.Text = ""
+end
+           if nameLower == "RushMoving"
+TextMonstersNotif.Text = "Warning Rush Spawned!"
+wait(3)
+TextMonstersNotif.Text = ""
+end
+           if nameLower == "HaltMoving"
+TextMonstersNotif.Text = "Warning Halt Spawned!"
+wait(3)
+TextMonstersNotif.Text = ""
+end
+           if nameLower == "figurerig"
+TextMonstersNotif.Text = "Warning Figure Spawned!"
+wait(3)
+TextMonstersNotif.Text = ""
+end
+           if nameLower == "GiggleCeiling"
+TextMonstersNotif.Text = "Warning Giggle Spawned!"
+wait(3)
+TextMonstersNotif.Text = ""
+end
+           if nameLower == "GloombatSwarm"
+TextMonstersNotif.Text = "Warning Gloombat Swarm Spawned!"
+wait(3)
+TextMonstersNotif.Text = ""
+end
+           if nameLower == "eyes"
+TextMonstersNotif.Text = "Warning Eyes Spawned!"
+wait(3)
+TextMonstersNotif.Text = ""
+end
+end
+end
+end
+end
+end
+end
+end
+else
+MonsterNotifyButton.Text = "Monster Notify Off"
+end
+end
+end
 if NoCPV then
 NoCooldownPromptButton.Text = "No Cooldown Prompt On"
 for _, obj in pairs(workspace:GetDescendants()) do
