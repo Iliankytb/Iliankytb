@@ -1,6 +1,5 @@
 
 print("My cheat work now coming soon new update Don't work on solara support mobile enabled support pc coming verryyy soon.")
--- Variables
 local player = game.Players.LocalPlayer
 local RunService = game:GetService("RunService")
 local espTargets = {}
@@ -12,19 +11,18 @@ local espActive = false
 local fullBrightActive = false
 local highlightColor = Color3.fromRGB(255, 0, 0)
 local highlightTransparency = 0.5
-local maxEspDistance = 1000 -- Distance maximale pour ESP
+local maxEspDistance = 1000
 
--- Supprimer l'ancien GUI si présent
+
 if player.PlayerGui:FindFirstChild("GuiPlayer") then
     player.PlayerGui.GuiPlayer:Destroy()
 end
 
--- Création du GUI
 local screenGui = Instance.new("ScreenGui", player.PlayerGui)
 screenGui.Name = "GuiPlayer"
 screenGui.ResetOnSpawn = false
 
--- Main Frame
+
 local frame = Instance.new("Frame", screenGui)
 frame.Size = UDim2.new(0.25, 0, 0.4, 0)
 frame.Position = UDim2.new(0.5, 0, 0.3, 0)
@@ -32,7 +30,7 @@ frame.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 frame.BackgroundTransparency = 0.25
 frame.Visible = false
 
--- Gradient sur le Frame
+
 local gradient = Instance.new("UIGradient", frame)
 gradient.Color = ColorSequence.new{
     ColorSequenceKeypoint.new(0, Color3.fromRGB(60, 60, 60)),
@@ -43,7 +41,7 @@ gradient.Color = ColorSequence.new{
 local uistroke = Instance.new("UIStroke", frame)
 
 
--- UI Stroke et Coin arrondi pour le Frame
+
 local uistroke1 = Instance.new("UIStroke", frameMenu)
 uistroke1.Thickness = 3
 uistroke1.Color = Color3.fromRGB(20, 20, 20)
@@ -52,7 +50,7 @@ uistroke1.LineJoinMode = Enum.LineJoinMode.Round
 local uicorner1 = Instance.new("UICorner", frameMenu)
 uicorner1.CornerRadius = UDim.new(0.1, 0)
 
--- Bouton pour afficher/masquer le GUI
+
 local closeopen = Instance.new("TextButton", screenGui)
 closeopen.Size = UDim2.new(0, 75, 0, 25)
 closeopen.Position = UDim2.new(0.9, 0, 0.2, 0)
@@ -76,31 +74,29 @@ end
 
 closeopen.MouseButton1Click:Connect(toggleFrame)
 
--- Scrolling Frame dans frameMenu
+
 local scrollingFrameMenu = Instance.new("ScrollingFrame", frameMenu)
 scrollingFrameMenu.Size = UDim2.new(1, 0, 1, 0)
 scrollingFrameMenu.CanvasSize = UDim2.new(0, 0, 0, 800)
 scrollingFrameMenu.ScrollBarThickness = 8
 scrollingFrameMenu.BackgroundTransparency = 1
 
--- UIListLayout pour organiser les boutons
+
 local listLayout1 = Instance.new("UIListLayout", scrollingFrameMenu)
 listLayout1.SortOrder = Enum.SortOrder.LayoutOrder
 listLayout1.Padding = UDim.new(0, 10)
 
--- Scrolling Frame à l'intérieur de frame
 local scrollingFrame = Instance.new("ScrollingFrame", frame)
 scrollingFrame.Size = UDim2.new(1, 0, 1, 0)
 scrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 800)
 scrollingFrame.ScrollBarThickness = 8
 scrollingFrame.BackgroundTransparency = 1
 
--- UIListLayout pour les boutons
 local listLayout = Instance.new("UIListLayout", scrollingFrame)
 listLayout.SortOrder = Enum.SortOrder.LayoutOrder
 listLayout.Padding = UDim.new(0, 10)
 
--- Fonction d'aide pour créer des boutons
+
 local function createButton(text, parent)
     local button = Instance.new("TextButton", parent)
     button.Size = UDim2.new(1, 0, 0, 50)
@@ -110,18 +106,16 @@ local function createButton(text, parent)
     button.TextSize = 16
     button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
 
-    -- Gradient sur chaque bouton
     local buttonGradient = Instance.new("UIGradient", button)
     buttonGradient.Color = ColorSequence.new{
         ColorSequenceKeypoint.new(0, Color3.fromRGB(70, 70, 70)),
         ColorSequenceKeypoint.new(1, Color3.fromRGB(100, 100, 100))
     }
 
-    uistroke:Clone().Parent = button
+   --uistroke:Clone().Parent = button
     return button
 end
 
--- Création des boutons dans le Menu
 local MenuButton = createButton("Menu", scrollingFrameMenu)
 local EspButton = createButton("ESP", scrollingFrameMenu)
 local PlayerButton = createButton("Player Menu", scrollingFrameMenu)
@@ -129,15 +123,13 @@ local DupeItemButton = createButton("Dupe Item Menu (Coming Soon)", scrollingFra
 local InfoButton = createButton("Information (Coming Soon)", scrollingFrameMenu)
 local SettingButton = createButton("Setting (Coming Soon)", scrollingFrameMenu)
 local RemoveUiButton = createButton("Remove UI (Coming Soon)", scrollingFrameMenu)
-
--- Création des boutons pour les options de jeu
 local espButton = createButton("ESP Off", scrollingFrame)
 local NoLagButton = createButton("No Lag Off", scrollingFrame)
 local FullBrightButton = createButton("Full Bright Off", scrollingFrame)
 local GodModeButton = createButton("God Mode Off", scrollingFrame)
 
 
--- Fonction ESP
+
 local function updateEspTargetsModels()
     espTargets = {}
     for _, model in pairs(workspace:GetDescendants()) do
@@ -174,7 +166,6 @@ local function updateEspTargetsModels()
     end
 end
 
--- Fonction pour appliquer le highlight à un modèle si dans la distance maximale
 local function highlightModel(model)
     if (model.Position - player.Character.HumanoidRootPart.Position).Magnitude <= maxEspDistance then
         if not model:FindFirstChildOfClass("Highlight") then
@@ -203,7 +194,6 @@ local function highlightModel(model)
     end
 end
 
--- Fonction pour nettoyer les highlights existants
 local function clearHighlights()
     for _, obj in pairs(workspace:GetDescendants()) do
         if obj:IsA("Highlight") or obj:IsA("BillboardGui") then
@@ -212,14 +202,13 @@ local function clearHighlights()
     end
 end
 
--- Fonction pour appliquer les highlights à tous les modèles cibles
 local function highlightModels()
     for _, model in pairs(espTargets) do
         highlightModel(model)
     end
 end
 
--- Toggle ESP
+
 local espEnabled = false
 espButton.MouseButton1Click:Connect(function()
     espActive = not espActive
@@ -232,21 +221,20 @@ espButton.MouseButton1Click:Connect(function()
         clearHighlights()
     end
 end)
--- Toggle No Lag
+
 local noLagEnabled = false
 NoLagButton.MouseButton1Click:Connect(function()
     noLagEnabled = not noLagEnabled
     if noLagEnabled then
         NoLagButton.Text = "No Lag On"
+activateNoLagV2()
 activateNoLag()
-        -- Ajoutez votre logique pour activer le No Lag ici
     else
         NoLagButton.Text = "No Lag Off"
-        -- Ajoutez votre logique pour désactiver le No Lag ici
+deactivateNoLagV2()
+deactivateNoLag()
     end
 end)
-
--- Toggle Full Bright
 local fullBrightEnabled = false
 FullBrightButton.MouseButton1Click:Connect(function()
     fullBrightEnabled = not fullBrightEnabled
@@ -313,7 +301,6 @@ end
 
 -- Fonction pour activer le No Lag
 local function activateNoLag()
-    -- Logique pour réduire les effets visuels et les particules
     for _, descendant in pairs(workspace:GetDescendants()) do
         if descendant:IsA("ParticleEmitter") or descendant:IsA("Beam") or descendant:IsA("Trail") then
             descendant.Enabled = false
@@ -321,9 +308,8 @@ local function activateNoLag()
     end
 end
 
--- Fonction pour désactiver le No Lag
+
 local function deactivateNoLag()
-    -- Logique pour réactiver les effets visuels et particules
     for _, descendant in pairs(workspace:GetDescendants()) do
         if descendant:IsA("ParticleEmitter") or descendant:IsA("Beam") or descendant:IsA("Trail") then
             descendant.Enabled = true
@@ -331,7 +317,31 @@ local function deactivateNoLag()
     end
 end
 
+local function activateNoLagV2()
+ for _, parts in pairs(workspace:GetDescendants()) do
+        if parts:IsA("Part")  then
+            parts.Material = Enum.Material.SmoothPlastic
+        end
+    end
+end
+
+local function deactivateNoLagV2()
+ for _, parts in pairs(workspace:GetDescendants()) do
+        if parts:IsA("Part")  then
+local OriginaleMaterial = Part:GetAttribute("OriginaleMaterial")
+if OriginaleMaterial then
+            parts.Material = OriginaleMaterial
+end
+        end
+    end
+end
+
 RunService.RenderStepped:Connect(function()
+for_,Part in pairs(workspace:GetDescendants()) do
+if Part:IsA("Part") then
+Part:SetAttribute("OriginalMaterial", Part.Material)
+end
+end
     espTargets = {}
     for _, target in pairs(game.Players:GetPlayers()) do
         if target ~= player then
