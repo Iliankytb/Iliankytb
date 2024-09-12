@@ -10,6 +10,7 @@ local espActive = false
 local fullBrightActive = false
 local highlightColor = Color3.fromRGB(255, 0, 0)
 local highlightTransparency = 0.5
+local PlaceIdMines = 
 
 
 if player.PlayerGui:FindFirstChild("GuiPlayer") then
@@ -140,6 +141,7 @@ local InfoButton = createButton("Information (Coming Soon)", scrollingFrameMenu)
 local SettingButton = createButton("Setting (Coming Soon)", scrollingFrameMenu)
 local RemoveUiButton = createButton("Remove UI (Coming Soon)", scrollingFrameMenu)
 local espButton = createButton("ESP Off", scrollingFrameEsp)
+local NoCooldownPromptButton = createButton("No Cooldown Prompt Off", scrollingFrame)
 local NoLagButton = createButton("No Lag Off", scrollingFrame)
 local FullBrightButton = createButton("Full Bright Off", scrollingFrame)
 local GodModeButton = createButton("God Mode Off", scrollingFrame)
@@ -353,18 +355,40 @@ local function deactivateNoLagV2()
     end
 end
 
+local NoCPV = false
+local function NoCooldownPrompt()
+NoCPV = not NoCPV
+if NoCPV then
+NoCooldownPromptButton.Text = "No Cooldown Prompt On"
+for _, obj in pairs(workspace:GetDescendants()) do
+    if obj:IsA("ProximityPrompt") then
+        obj.HoldDuration = 0
+    end
+end
+else
+NoCooldownPromptButton.Text = "No Cooldown Prompt Off"
+for _, obj in pairs(workspace:GetDescendants()) do
+    if obj:IsA("ProximityPrompt") then
+        obj.HoldDuration = 1
+    end
+end
+end
+end
+
+
+NoCooldownPromptButton.MouseButton1Click:Connect(NoCooldownPrompt)
+
 local NoScreechV = false
 local function NoScreech()
 NoScreechV = not NoScreechV
 if NoScreechV then
-game:GetService("ReplicatedStorage").GameData.EntityDisabledScreech.Value = true
+game:GetService("ReplicatedStorage").GameData.EntityDisableScreech.Value = true
 else
-game:GetService("ReplicatedStorage").GameData.EntityDisabledScreech.Value = false
+game:GetService("ReplicatedStorage").GameData.EntityDisableScreech.Value = false
 end
 end
 
 NoScreechButton.MouseButton1Click:Connect(NoScreech)
-
 local NoAmbushV = false
 local function NoAmbush()
 NoAmbushV = not NoAmbushV
@@ -397,8 +421,8 @@ scrollingFrame.Visible = false
 end
 
 EspButton.MouseButton1Click:Connect(toggleSFE)
---[[game:GetService("ReplicatedStorage").Gamedata]]--
 RunService.RenderStepped:Connect(function()
+NoCooldownPrompt()
 if espActive then
         espButton.Text = "ESP On"
         updateEspTargetsModels()
@@ -408,9 +432,9 @@ if espActive then
         clearHighlights()
     end
 if NoScreechV then
-game:GetService("ReplicatedStorage").GameData.EntityDisabledScreech.Value = true
+game:GetService("ReplicatedStorage").GameData.EntityDisableScreech.Value = true
 else
-game:GetService("ReplicatedStorage").GameData.EntityDisabledScreech.Value = false
+game:GetService("ReplicatedStorage").GameData.EntityDisableScreech.Value = false
 end
 if NoAmbushV then
 game:GetService("ReplicatedStorage").GameData.SpawnAmbush.Value = false
