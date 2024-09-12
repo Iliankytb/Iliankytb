@@ -15,6 +15,7 @@ player.Character:SetAttribute("Climbing", false)
 
 
 if player.PlayerGui:FindFirstChild("GuiPlayer") then
+clearHighlights()
     player.PlayerGui.GuiPlayer:Destroy()
 end
 
@@ -23,19 +24,19 @@ screenGui.Name = "GuiPlayer"
 screenGui.ResetOnSpawn = false
 
 local TextWelcome = Instance.new("TextLabel", screenGui)
-TextWelcome.Size = UDim2.new(1, 0, 0.25, 0)
+TextWelcome.Size = UDim2.new(1, 0, 0.5, 0)
 TextWelcome.Position = UDim2.new(0, 0, 0, 0)
 TextWelcome.BackgroundTransparency = 1
 TextWelcome.Text = "Thanks for using my script and thanks for supporting Iliankytb. Good luck 0.0!"
 
 
 TextWelcome.Visible = true
-wait(3)
+wait(5)
 TextWelcome.Visible = false
 
 local frame = Instance.new("Frame", screenGui)
 frame.Size = UDim2.new(0.35, 0, 0.5, 0)
-frame.Position = UDim2.new(0.3, 0, 0.2, 0)
+frame.Position = UDim2.new(0.4, 0, 0.4, 0)
 frame.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 frame.BackgroundTransparency = 0.25
 frame.Visible = false
@@ -80,7 +81,7 @@ buttonGradient.Color = ColorSequence.new{
 
 local frameMenu = Instance.new("Frame", screenGui)
 frameMenu.Size = UDim2.new(0.25, 0, 0.45, 0)
-frameMenu.Position = UDim2.new(0.2, 0, 0.2, 0)
+frameMenu.Position = UDim2.new(0.1, 0, 0.4, 0)
 frameMenu.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 frameMenu.BackgroundTransparency = 0.25
 frameMenu.Visible = false
@@ -157,6 +158,11 @@ local function updateEspTargetsModels()
             local nameLower = model.Name:lower()
             if nameLower == "locker_large" 
             or nameLower == "locker_small" 
+            or nameLower == "SeekRig"
+            or nameLower == "SeekMovingNewClone"  
+            or nameLower == "SeekRig"
+            or nameLower == "eyes" 
+            or nameLower == "KeyObtain" 
             or nameLower == "door" 
             or nameLower == "sideroomdupe" 
             or nameLower == "wardrobe" 
