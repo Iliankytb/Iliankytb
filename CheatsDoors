@@ -239,6 +239,7 @@ NoLagButton.MouseButton1Click:Connect(function()
     noLagEnabled = not noLagEnabled
     if noLagEnabled then
         NoLagButton.Text = "No Lag On"
+activateNoLag()
         -- Ajoutez votre logique pour activer le No Lag ici
     else
         NoLagButton.Text = "No Lag Off"
@@ -338,7 +339,6 @@ RunService.RenderStepped:Connect(function()
             table.insert(espTargets, target)
         end
     end
-end)
     if fullBrightEnabled then
         FullBrightButton.Text = "Full Bright On"
         game.Lighting.Brightness = 2
