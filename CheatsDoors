@@ -169,6 +169,7 @@ local function highlightModel(model)
     if (model.Position - player.Character.HumanoidRootPart.Position).Magnitude <= maxEspDistance then
         if not model:FindFirstChildOfClass("Highlight") then
             local highlight = Instance.new("Highlight", model)
+highlight:SetAttribute("CreatedByScript",true)
             highlight.FillColor = Color3.fromRGB(255, 170, 0)
             highlight.FillTransparency = 0.5
             highlight.OutlineTransparency = 0.5
@@ -195,7 +196,7 @@ end
 
 local function clearHighlights()
     for _, obj in pairs(workspace:GetDescendants()) do
-        if obj:IsA("Highlight") or obj:IsA("BillboardGui") then
+        if obj:IsA("Highlight") or obj:IsA("BillboardGui") and obj:GetAttribute("CreatedByScript") then
             obj:Destroy()
         end
     end
@@ -234,6 +235,7 @@ deactivateNoLagV2()
 deactivateNoLag()
     end
 end)
+
 local fullBrightEnabled = false
 FullBrightButton.MouseButton1Click:Connect(function()
     fullBrightEnabled = not fullBrightEnabled
@@ -327,18 +329,18 @@ end
 local function deactivateNoLagV2()
  for _, parts in pairs(workspace:GetDescendants()) do
         if parts:IsA("Part")  then
-local OriginaleMaterial = Part:GetAttribute("OriginaleMaterial")
-if OriginaleMaterial then
-            parts.Material = OriginaleMaterial
+local OriginalMaterial = Part:GetAttribute("OriginalMaterial")
+if OriginalMaterial then
+            parts.Material = OriginalMaterial
 end
         end
     end
 end
 
 RunService.RenderStepped:Connect(function()
-for_,Part in pairs(workspace:GetDescendants()) do
-if Part:IsA("Part") then
-Part:SetAttribute("OriginalMaterial", Part.Material)
+for _, part in pairs(workspace:GetDescendants()) do
+if part:IsA("Part") then
+part:SetAttribute("OriginalMaterial", part.Material)
 end
 end
     espTargets = {}
