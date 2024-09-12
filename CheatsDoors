@@ -11,7 +11,6 @@ local espActive = false
 local fullBrightActive = false
 local highlightColor = Color3.fromRGB(255, 0, 0)
 local highlightTransparency = 0.5
-local originalMaterials = {}
 
 -- Supprimer l'ancien GUI si présent
 if player.PlayerGui:FindFirstChild("GuiPlayer") then
@@ -246,43 +245,44 @@ GodModeButton.MouseButton1Click:Connect(function()
     end
 end)
 
-local function updateEspTargetsModels()
+
 -- Fonction ESP
-local function updateEspTargets()
+local function updateEspTargetsModels()
     espTargets = {}
     for _, model in pairs(workspace:GetDescendants()) do
         if model:IsA("Model") or model:IsA("Part") then
             local nameLower = model.Name:lower()
-            if nameLower == "locker_large" or nameLower == "door" or nameLower == "gold" or nameLower == "key" then
-if nameLower == "locker_large" 
-or nameLower == "locker_small" 
-or nameLower == "door" 
-or nameLower == "sideroomdupe" 
-or nameLower == "wardrobe" 
-or nameLower == "gold" 
-or nameLower == "goldpile" 
-or nameLower == "MineGenerator" 
-or nameLower == "fuse" 
-or nameLower == "key" 
-or nameLower == "key_holder" 
-or nameLower == "rift" 
-or nameLower == "Chest" 
-or nameLower == "Lockpick" 
-or nameLower == "Battery" 
-or nameLower == "FlashLight" 
-or nameLower == "figure_rig" 
-or nameLower == "figure" 
-or nameLower == "rush" 
-or nameLower == "ambush" 
-or nameLower == "Screech" 
-or nameLower == "halt" 
-or nameLower == "Rushed" 
-or nameLower == "LiveHintBook" 
-or nameLower == "drawercontainer" then
+            if nameLower == "locker_large" 
+            or nameLower == "locker_small" 
+            or nameLower == "door" 
+            or nameLower == "sideroomdupe" 
+            or nameLower == "wardrobe" 
+            or nameLower == "gold" 
+            or nameLower == "goldpile" 
+            or nameLower == "MineGenerator" 
+            or nameLower == "fuse" 
+            or nameLower == "key" 
+            or nameLower == "key_holder" 
+            or nameLower == "rift" 
+            or nameLower == "chest" 
+            or nameLower == "lockpick" 
+            or nameLower == "battery" 
+            or nameLower == "flashlight" 
+            or nameLower == "figure_rig" 
+            or nameLower == "figure" 
+            or nameLower == "rush" 
+            or nameLower == "ambush" 
+            or nameLower == "screech" 
+            or nameLower == "halt" 
+            or nameLower == "rushed" 
+            or nameLower == "livehintbook" 
+            or nameLower == "drawercontainer" then
                 table.insert(espTargets, model)
             end
         end
-@@ -180,9 +200,23 @@ end
+    end
+end
+
 local function highlightModel(model)
     if not model:FindFirstChildOfClass("Highlight") then
         local highlight = Instance.new("Highlight", model)
@@ -312,12 +312,12 @@ end
 
 local function clearHighlights()
     for _, obj in pairs(workspace:GetDescendants()) do
-        if obj:IsA("Highlight") then
         if obj:IsA("Highlight") or obj:IsA("BillboardGui") then
             obj:Destroy()
         end
     end
 end
+
 
 local function highlightModels()
     for _, model in pairs(espTargets) do
@@ -325,10 +325,11 @@ local function highlightModels()
     end
 end
 
-local function clearHighlights()
-    for _, obj in pairs(workspace:GetDescendants()) do
-        if obj:IsA("Highlight") or obj:IsA("BillboardGui") then
-            obj:Destroy()
+
+local function UpdatePlayer()
+for _, target in pairs(game.Players:GetPlayers()) do
+        if target ~= player then
+            table.insert(espTargets, target)
         end
     end
 end
