@@ -1,0 +1,122 @@
+-- Variables
+local player = game.Players.LocalPlayer
+local userInputService = game:GetService("UserInputService")
+local lighting = game:GetService("Lighting")
+
+-- Création du GUI
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = player:WaitForChild("PlayerGui")
+
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 300, 0, 400)
+frame.Position = UDim2.new(0.5, -150, 0.5, -200)
+frame.BackgroundColor3 = Color3.new(0.1, 0.1, 0.1)
+frame.Visible = false
+frame.Parent = screenGui
+
+local titleLabel = Instance.new("TextLabel")
+titleLabel.Size = UDim2.new(1, 0, 0.2, 0)
+titleLabel.Text = "Admin Panel"
+titleLabel.TextColor3 = Color3.new(1, 1, 1)
+titleLabel.BackgroundTransparency = 1
+titleLabel.Parent = frame
+
+-- Variables pour l'état de la frame
+local frameVisible = false
+
+-- Fonction pour ouvrir ou fermer la frame
+local function toggleFrame()
+    frameVisible = not frameVisible
+    frame.Visible = frameVisible
+
+    if frameVisible then
+        userInputService.MouseBehavior = Enum.MouseBehavior.Default
+    else
+        userInputService.MouseBehavior = Enum.MouseBehavior.LockCenter
+    end
+end
+
+-- Détection de la touche pour ouvrir/fermer la frame (Touche F)
+userInputService.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed and input.KeyCode == Enum.KeyCode.F then
+        toggleFrame()
+    end
+end)
+
+-- ESP
+local function enableESP(targetPlayer)
+    local highlight = Instance.new("Highlight")
+    highlight.Parent = targetPlayer.Character
+    highlight.FillColor = Color3.new(1, 0, 0)
+    highlight.FillTransparency = 0.5
+    highlight.OutlineTransparency = 0
+end
+
+-- Speed Boost
+local function speedBoost(speed)
+    if player.Character then
+        player.Character.Humanoid.WalkSpeed = speed
+    end
+end
+
+-- Fullbright
+local function fullBright()
+    lighting.Brightness = 2
+    lighting.Ambient = Color3.new(1, 1, 1)
+end
+
+-- Bouton ESP
+local espButton = Instance.new("TextButton")
+espButton.Size = UDim2.new(1, 0, 0.2, 0)
+espButton.Position = UDim2.new(0, 0, 0.2, 0)
+espButton.Text = "Activer ESP"
+espButton.TextColor3 = Color3.new(1, 1, 1)
+espButton.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+espButton.Parent = frame
+
+espButton.MouseButton1Click:Connect(function()
+    for _, targetPlayer in ipairs(game.Players:GetPlayers()) do
+        if targetPlayer ~= player then
+            enableESP(targetPlayer)
+        end
+    end
+end)
+
+-- Bouton Speed Boost
+local speedButton = Instance.new("TextButton")
+speedButton.Size = UDim2.new(1, 0, 0.2, 0)
+speedButton.Position = UDim2.new(0, 0, 0.4, 0)
+speedButton.Text = "Activer Speed Boost"
+speedButton.TextColor3 = Color3.new(1, 1, 1)
+speedButton.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+speedButton.Parent = frame
+
+speedButton.MouseButton1Click:Connect(function()
+    speedBoost(100) -- Boost la vitesse à 100
+end)
+
+-- Bouton Fullbright
+local brightButton = Instance.new("TextButton")
+brightButton.Size = UDim2.new(1, 0, 0.2, 0)
+brightButton.Position = UDim2.new(0, 0, 0.6, 0)
+brightButton.Text = "Activer Fullbright"
+brightButton.TextColor3 = Color3.new(1, 1, 1)
+brightButton.BackgroundColor3 = Color3.new(0.2, 0.2, 0.2)
+brightButton.Parent = frame
+
+brightButton.MouseButton1Click:Connect(function()
+    fullBright()
+end)
+
+-- Pour mobile, on peut ajouter un bouton de déclenchement sur l'écran
+if userInputService.TouchEnabled then
+    local toggleButton = Instance.new("TextButton")
+    toggleButton.Size = UDim2.new(0, 100, 0, 50)
+    toggleButton.Position = UDim2.new(0, 20, 0, 20)
+    toggleButton.Text = "Ouvrir Panel"
+    toggleButton.Parent = screenGui
+    
+    toggleButton.MouseButton1Click:Connect(function()
+        toggleFrame()
+    end)
+end
