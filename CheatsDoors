@@ -49,7 +49,7 @@ local TextWelcome = Instance.new("TextLabel", screenGui)
 TextWelcome.Size = UDim2.new(1, 0, 0, 0)
 TextWelcome.Position = UDim2.new(0, 0, 0, 0)
 TextWelcome.BackgroundTransparency = 1
-TextWelcome.TextSize = 18
+TextWelcome.TextSize = 14
 TextWelcome.Text = "Thanks for using my script and thanks for supporting Iliankytb. Good luck 0.0!"
 
 
@@ -187,7 +187,7 @@ local SettingButton = createButton("Setting (Coming Soon)", scrollingFrameMenu)
 local RemoveUiButton = createButton("Remove UI (Coming Soon)", scrollingFrameMenu)
 local espButton = createButton("ESP Off", scrollingFrameEsp)
 local NoCooldownPromptButton = createButton("No Cooldown Prompt Off", scrollingFrame)
-local AutoLootButton = createButton("Auto Loot Off", scrollingFrame)
+local AutoLootButton = createButton("Auto Loot Off(coming Soon)", scrollingFrame)
 local MonsterNotifyButton = createButton("Monsters Notify Off", scrollingFrame)
 local NoLagButton = createButton("No Lag Off", scrollingFrame)
 local FullBrightButton = createButton("Full Bright Off", scrollingFrame)
@@ -404,12 +404,12 @@ AutoLootButton.Text = "Auto Loot Off"
 end
 end
 
-AutoLootButton.MouseButton1Click:Connect(function()
+--[[AutoLootButton.MouseButton1Click:Connect(function()
 AutoLootV = not AutoLootV
 if AutoLootV then
 checkProximityPrompts()
 end
-end)
+end)]]--
 -- Main loop to continuously check for proximity prompts nearby
 
 
