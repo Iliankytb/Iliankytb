@@ -346,12 +346,13 @@ local function MobNotif(model)
         if model and model.Name then
             local nameLower = model.Name:lower()
             local monsterWarnings = {
-                ambushmoving = "Warning Ambush Spawned!",
-                rushmoving = "Warning Rush Spawned!",
-                haltmoving = "Warning Halt Spawned!",
-                figurerig = "Warning Figure Spawned!",
-                giggleceiling = "Warning Giggle Spawned!",
-                gloombatswarm = "Warning Gloombat Swarm Spawned!",
+                AmbushMoving = "Warning Ambush Spawned!",
+                RushMoving = "Warning Rush Spawned!",
+                HaltMoving = "Warning Halt Spawned!",
+                FigureRig = "Warning Figure Spawned!",
+Screech = "WarningScreech Spawned!",
+                GiggleCeiling = "Warning Giggle Spawned!",
+                GloombatSwarm = "Warning Gloombat Swarm Spawned!",
                 eyes = "Warning Eyes Spawned!"
             }
 
@@ -361,8 +362,7 @@ local function MobNotif(model)
                 task.wait(3)  -- Use task.wait instead of wait
                 TextMonstersNotif.Text = ""
             end
-        else
-            print("Invalid model passed to MobNotif")
+
         end
     else
         MonsterNotifyButton.Text = "Monster Notify Off"
@@ -578,7 +578,8 @@ end
 else
 SpeedBoostButton.Text = "Speed Boost Off"
 end
-if MobNotifV then
+espTargetsMonsters = {}
+    if MobNotifV then
         frameMonsterNotify.Visible = true
         MonsterNotifyButton.Text = "Monster Notify On"
         
@@ -586,12 +587,13 @@ if MobNotifV then
         if model and model.Name then
             local nameLower = model.Name:lower()
             local monsterWarnings = {
-                ambushmoving = "Warning Ambush Spawned!",
-                rushmoving = "Warning Rush Spawned!",
-                haltmoving = "Warning Halt Spawned!",
-                figurerig = "Warning Figure Spawned!",
-                giggleceiling = "Warning Giggle Spawned!",
-                gloombatswarm = "Warning Gloombat Swarm Spawned!",
+                AmbushMoving = "Warning Ambush Spawned!",
+                RushMoving = "Warning Rush Spawned!",
+                HaltMoving = "Warning Halt Spawned!",
+                FigureRig = "Warning Figure Spawned!",
+Screech = "WarningScreech Spawned!",
+                GiggleCeiling = "Warning Giggle Spawned!",
+                GloombatSwarm = "Warning Gloombat Swarm Spawned!",
                 eyes = "Warning Eyes Spawned!"
             }
 
@@ -601,8 +603,7 @@ if MobNotifV then
                 task.wait(3)  -- Use task.wait instead of wait
                 TextMonstersNotif.Text = ""
             end
-        else
-            print("Invalid model passed to MobNotif")
+
         end
     else
         MonsterNotifyButton.Text = "Monster Notify Off"
