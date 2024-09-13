@@ -201,6 +201,10 @@ local function updateEspTargetsModels()
             if nameLower == "locker_large" 
             or nameLower == "locker_small" 
             or nameLower == "SeekRig"
+or nameLower == "BackdoorLookman"
+or nameLower == "KeyHitbox"
+or nameLower == "KeyObtain"
+or nameLower == "TimerModel"
             or nameLower == "SeekMovingNewClone"  
             or nameLower == "SeekRig"
             or nameLower == "eyes"
@@ -208,10 +212,12 @@ or nameLower == "TimeLever"
 or nameLower == "BackdoorRush"
 or nameLower == "LeverForGate"
 or nameLower == "KeyBackdoor"
-or nameLower == "Backdoor_wadrobe"
+or nameLower == "Backdoor_wardrobe"
 or nameLower == "crucifix"
 or nameLower == "candle"
 or nameLower == "screechrig"
+or nameLower == "A-60"
+or nameLower == "A-120"
             or nameLower == "KeyObtain" 
             or nameLower == "door" 
             or nameLower == "sideroomdupe" 
@@ -319,13 +325,6 @@ end
 end
 else
 SpeedBoostButton.Text = "Speed Boost Off"
-local character = player.Character
-    if character then
-        local humanoid = character:FindFirstChildOfClass("Humanoid")
-        if humanoid then
-            humanoid.WalkSpeed = 12
-end
-end
 end
 end
 
@@ -348,12 +347,15 @@ MonsterNotifyButton.Text = "Monster Notify On"
         gloombatswarm = "Warning Gloombat Swarm Spawned!",
         eyes = "Warning Eyes Spawned!"
     }
-
+for _, monsters in pairs(workspace:GetDescendants()) do
+        if monsters:IsA("Model") or monsters:IsA("Part") then
     if monsterWarnings[nameLower] then
         TextMonstersNotif.Text = monsterWarnings[nameLower]
         wait(3)
         TextMonstersNotif.Text = ""
     end
+end
+end
 else
 MonsterNotifyButton.Text = "Monster Notify Off"
 frameMonsterNotify.Visible = false
@@ -362,7 +364,7 @@ end
 
 
 MonsterNotifyButton.MouseButton1Click:Connect(function()
-    MobNotif(model) -- Vous devrez définir le modèle ici
+    MobNotif(monsters) -- Vous devrez définir le modèle ici
 end)
 
 local noLagEnabled = false
@@ -402,7 +404,7 @@ local function activateGodMode()
     if character then
         local humanoid = character:FindFirstChildOfClass("Humanoid")
         if humanoid then
-            humanoid.MaxHealth = math.huge
+            humanoid.MaxHealth = 500
             humanoid.Health = humanoid.MaxHealth
         end
     end
@@ -568,17 +570,9 @@ end
 end
 else
 SpeedBoostButton.Text = "Speed Boost Off"
-local character = player.Character
-    if character then
-        local humanoid = character:FindFirstChildOfClass("Humanoid")
-        if humanoid then
-            humanoid.WalkSpeed = 12
 end
-end
-end
---[[if MobNotifV then
+if MobNotifV then
 frameMonsterNotify.Visible = true
-if model and model:IsA("Model") then
 MonsterNotifyButton.Text = "Monster Notify On"
     local nameLower = model.Name:lower()
     local monsterWarnings = {
@@ -590,17 +584,19 @@ MonsterNotifyButton.Text = "Monster Notify On"
         gloombatswarm = "Warning Gloombat Swarm Spawned!",
         eyes = "Warning Eyes Spawned!"
     }
-
+for _, monsters in pairs(workspace:GetDescendants()) do
+        if monsters:IsA("Model") or monsters:IsA("Part") then
     if monsterWarnings[nameLower] then
         TextMonstersNotif.Text = monsterWarnings[nameLower]
         wait(3)
         TextMonstersNotif.Text = ""
     end
+end
+end
 else
 MonsterNotifyButton.Text = "Monster Notify Off"
 frameMonsterNotify.Visible = false
 end
-end--]]
 if NoCPV then
 NoCooldownPromptButton.Text = "No Cooldown Prompt On"
 for _, obj in pairs(workspace:GetDescendants()) do
