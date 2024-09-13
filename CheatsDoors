@@ -13,10 +13,7 @@ local espActive = false
 local fullBrightActive = false
 local highlightColor = Color3.fromRGB(255, 0, 0)
 local highlightTransparency = 0.5
-if player.Character then
-    player.Character:SetAttribute("Climbing", false)
-end
-
+player.Character:SetAttribute("Climbing", false)
 --local PlaceIdMines = 
 
 --[[local function awardBadge()
@@ -502,19 +499,24 @@ local function NoScreech()
 NoScreechV = not NoScreechV
 if NoScreechV then
 game:GetService("ReplicatedStorage").GameData.EntityDisableScreech.Value = true
+NoScreechButton.Text = "No Screech On"
 else
 game:GetService("ReplicatedStorage").GameData.EntityDisableScreech.Value = false
+NoScreechButton.Text = "No Screech Off"
 end
 end
 
 NoScreechButton.MouseButton1Click:Connect(NoScreech)
+
 local NoAmbushV = false
 local function NoAmbush()
 NoAmbushV = not NoAmbushV
 if NoAmbushV then
 game:GetService("ReplicatedStorage").GameData.SpawnAmbush.Value = false
+NoAmbushButton.Text = "No Ambush On"
 else
 game:GetService("ReplicatedStorage").GameData.SpawnAmbush.Value = true
+NoAmbushButton.Text = "No Ambush Off"
 end
 end
 
@@ -621,13 +623,17 @@ if espActive then
     end
 if NoScreechV then
 game:GetService("ReplicatedStorage").GameData.EntityDisableScreech.Value = true
+NoScreechButton.Text = "No Screech On"
 else
 game:GetService("ReplicatedStorage").GameData.EntityDisableScreech.Value = false
+NoScreechButton.Text = "No Screech Off"
 end
 if NoAmbushV then
 game:GetService("ReplicatedStorage").GameData.SpawnAmbush.Value = false
+NoAmbushButton.Text = "No Ambush On"
 else
 game:GetService("ReplicatedStorage").GameData.SpawnAmbush.Value = true
+NoAmbushButton.Text = "No Ambush Off"
 end
 if noLagEnabled then
 activateNoLagV2()
