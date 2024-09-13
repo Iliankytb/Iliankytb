@@ -603,6 +603,38 @@ end
 
 PlayerButton.MouseButton1Click:Connect(toggleSFP)
 
+-- Variables
+ -- La frame que tu veux ouvrir/fermer
+local player = game.Players.LocalPlayer
+local userInputService = game:GetService("UserInputService")
+
+-- Variables pour l'état de la frame
+local frameVisible = false
+
+-- Fonction pour ouvrir ou fermer la frame
+local function toggleFrame()
+    frameVisible = not frameVisible -- Inverse l'état de visibilité de la frame
+    frame.Visible = frameVisible -- Modifie la visibilité de la frame
+
+    if frameVisible then
+        -- Si la frame est visible, débloque la souris
+        userInputService.MouseBehavior = Enum.MouseBehavior.Default
+    else
+        -- Si la frame est fermée, bloque la souris au centre de l'écran
+        userInputService.MouseBehavior = Enum.MouseBehavior.LockCenter
+    end
+end
+
+-- Détection de la touche (ex. touche "F" pour ouvrir/fermer la frame)
+userInputService.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed then
+        if input.KeyCode == Enum.KeyCode.Q then
+            toggleFrame()
+        end
+    end
+end)
+
+
 RunService.RenderStepped:Connect(function()
 --[[if AutoLootV then
 checkProximityPrompts()
