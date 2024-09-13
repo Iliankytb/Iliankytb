@@ -738,5 +738,5 @@ end
         game.Lighting.Ambient = Color3.fromRGB(127, 127, 127)
 end
 player.Character:SetAttribute("Climbing", false)
-task.wait(1.15)
+wait(1)
 end)
