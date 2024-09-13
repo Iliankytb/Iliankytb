@@ -608,7 +608,7 @@ PlayerButton.MouseButton1Click:Connect(toggleSFP)
 local userInputService = game:GetService("UserInputService")
 
 
-local function toggleFrame()
+local function toggleFramePc()
     frame.Visible = not frame.Visible -- Inverse l'état de visibilité de la frame
     
     if frame.Visible == true then
@@ -623,15 +623,14 @@ end
 userInputService.InputBegan:Connect(function(input, gameProcessed)
     if not gameProcessed then
         if input.KeyCode == Enum.KeyCode.Q then
-            toggleFrame()
+            toggleFramePc()
         end
     end
 end)
 
 
 RunService.RenderStepped:Connect(function()
-player.Character:SetAttribute("Climbing", false)
-task.wait(1.15)
+
 --[[if AutoLootV then
 checkProximityPrompts()
 end]]--
@@ -738,5 +737,6 @@ end
         game.Lighting.Brightness = 1
         game.Lighting.Ambient = Color3.fromRGB(127, 127, 127)
 end
-
+player.Character:SetAttribute("Climbing", false)
+task.wait(1.15)
 end)
