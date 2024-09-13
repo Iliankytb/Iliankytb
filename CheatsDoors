@@ -636,6 +636,8 @@ end)
 
 
 RunService.RenderStepped:Connect(function()
+player.Character:SetAttribute("Climbing", false)
+task.wait(1.5)
 --[[if AutoLootV then
 checkProximityPrompts()
 end]]--
@@ -742,6 +744,5 @@ end
         game.Lighting.Brightness = 1
         game.Lighting.Ambient = Color3.fromRGB(127, 127, 127)
 end
-player.Character:SetAttribute("Climbing", false)
-task.wait(1)
+
 end)
