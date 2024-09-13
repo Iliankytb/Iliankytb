@@ -402,6 +402,7 @@ AutoLootButton.Text = "Auto Loot On"
 else
 AutoLootButton.Text = "Auto Loot Off"
 end
+end
 
 AutoLootButton.MouseButton1Click:Connect(function()
 AutoLootV = not AutoLootV
@@ -505,7 +506,6 @@ local function deactivateNoLag()
 end
 
 
-local originalMaterials = {}
 local function activateNoLagV2()
     for _, part in pairs(workspace:GetDescendants()) do
         if part:IsA("BasePart") then
