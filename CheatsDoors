@@ -275,7 +275,7 @@ local function highlightModel(model)
             local billboard = Instance.new("BillboardGui", model)
             billboard.Adornee = model
             billboard.AlwaysOnTop = true
-            billboard.Size = UDim2.new(0, 100, 0, 50)
+            billboard.Size = UDim2.new(0, 100, 0, 100)
             billboard.StudsOffset = Vector3.new(0, 2, 0)
 
             local textLabel = Instance.new("TextLabel", billboard)
