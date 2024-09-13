@@ -84,8 +84,7 @@ gradient.Color = ColorSequence.new{
 -- UI Stroke et Coin arrondi pour le Frame
 local uistroke = Instance.new("UIStroke", frame)
 
-
-
+local frameMenu = Instance.new("Frame", screenGui)
 local uistroke1 = Instance.new("UIStroke", frameMenu)
 uistroke1.Thickness = 3
 uistroke1.Color = Color3.fromRGB(20, 20, 20)
@@ -110,14 +109,6 @@ buttonGradient.Color = ColorSequence.new{
     ColorSequenceKeypoint.new(0, Color3.fromRGB(85, 170, 255)),
     ColorSequenceKeypoint.new(1, Color3.fromRGB(65, 150, 255))
 }
-
-
-local frameMenu = Instance.new("Frame", screenGui)
-frameMenu.Size = UDim2.new(0.25, 0, 0.45, 0)
-frameMenu.Position = UDim2.new(0.15, 0, 0.5, 0)
-frameMenu.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-frameMenu.BackgroundTransparency = 0.25
-frameMenu.Visible = false
 
 local scrollingFrameMenu = Instance.new("ScrollingFrame", frameMenu)
 scrollingFrameMenu.Size = UDim2.new(1, 0, 1, 0)
