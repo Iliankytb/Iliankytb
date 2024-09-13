@@ -331,40 +331,47 @@ end
 SpeedBoostButton.MouseButton1Click:Connect(SpeedBoost)
 
 local MobNotifV = false
-local function MobNotif()
-MobNotifV = not MobNotifV
-espTargetsMonsters = {}
-if MobNotifV then
-frameMonsterNotify.Visible = true
-MonsterNotifyButton.Text = "Monster Notify On"
-    local nameLower = model.Name:lower()
-    local monsterWarnings = {
-        ambushmoving = "Warning Ambush Spawned!",
-        rushmoving = "Warning Rush Spawned!",
-        haltmoving = "Warning Halt Spawned!",
-        figurerig = "Warning Figure Spawned!",
-        giggleceiling = "Warning Giggle Spawned!",
-        gloombatswarm = "Warning Gloombat Swarm Spawned!",
-        eyes = "Warning Eyes Spawned!"
-    }
-for _, monsters in pairs(workspace:GetDescendants()) do
-        if monsters:IsA("Model") or monsters:IsA("Part") then
-    if monsterWarnings[nameLower] then
-        TextMonstersNotif.Text = monsterWarnings[nameLower]
-        wait(3)
-        TextMonstersNotif.Text = ""
+local MobNotifV = false
+local espTargetsMonsters = {}
+
+local function MobNotif(model)
+    MobNotifV = not MobNotifV
+    espTargetsMonsters = {}
+
+    if MobNotifV then
+        frameMonsterNotify.Visible = true
+        MonsterNotifyButton.Text = "Monster Notify On"
+        
+        -- Make sure the model has a valid Name property
+        if model and model.Name then
+            local nameLower = model.Name:lower()
+            local monsterWarnings = {
+                ambushmoving = "Warning Ambush Spawned!",
+                rushmoving = "Warning Rush Spawned!",
+                haltmoving = "Warning Halt Spawned!",
+                figurerig = "Warning Figure Spawned!",
+                giggleceiling = "Warning Giggle Spawned!",
+                gloombatswarm = "Warning Gloombat Swarm Spawned!",
+                eyes = "Warning Eyes Spawned!"
+            }
+
+            -- Display the appropriate notification if the monster is recognized
+            if monsterWarnings[nameLower] then
+                TextMonstersNotif.Text = monsterWarnings[nameLower]
+                task.wait(3)  -- Use task.wait instead of wait
+                TextMonstersNotif.Text = ""
+            end
+        else
+            print("Invalid model passed to MobNotif")
+        end
+    else
+        MonsterNotifyButton.Text = "Monster Notify Off"
+        frameMonsterNotify.Visible = false
     end
 end
-end
-else
-MonsterNotifyButton.Text = "Monster Notify Off"
-frameMonsterNotify.Visible = false
-end
-end
-
 
 MonsterNotifyButton.MouseButton1Click:Connect(function()
-    MobNotif(monsters) -- Vous devrez définir le modèle ici
+    MobNotif() -- Vous devrez définir le modèle ici
 end)
 
 local noLagEnabled = false
@@ -572,31 +579,36 @@ else
 SpeedBoostButton.Text = "Speed Boost Off"
 end
 if MobNotifV then
-frameMonsterNotify.Visible = true
-MonsterNotifyButton.Text = "Monster Notify On"
-    local nameLower = model.Name:lower()
-    local monsterWarnings = {
-        ambushmoving = "Warning Ambush Spawned!",
-        rushmoving = "Warning Rush Spawned!",
-        haltmoving = "Warning Halt Spawned!",
-        figurerig = "Warning Figure Spawned!",
-        giggleceiling = "Warning Giggle Spawned!",
-        gloombatswarm = "Warning Gloombat Swarm Spawned!",
-        eyes = "Warning Eyes Spawned!"
-    }
-for _, monsters in pairs(workspace:GetDescendants()) do
-        if monsters:IsA("Model") or monsters:IsA("Part") then
-    if monsterWarnings[nameLower] then
-        TextMonstersNotif.Text = monsterWarnings[nameLower]
-        wait(3)
-        TextMonstersNotif.Text = ""
+        frameMonsterNotify.Visible = true
+        MonsterNotifyButton.Text = "Monster Notify On"
+        
+        -- Make sure the model has a valid Name property
+        if model and model.Name then
+            local nameLower = model.Name:lower()
+            local monsterWarnings = {
+                ambushmoving = "Warning Ambush Spawned!",
+                rushmoving = "Warning Rush Spawned!",
+                haltmoving = "Warning Halt Spawned!",
+                figurerig = "Warning Figure Spawned!",
+                giggleceiling = "Warning Giggle Spawned!",
+                gloombatswarm = "Warning Gloombat Swarm Spawned!",
+                eyes = "Warning Eyes Spawned!"
+            }
+
+            -- Display the appropriate notification if the monster is recognized
+            if monsterWarnings[nameLower] then
+                TextMonstersNotif.Text = monsterWarnings[nameLower]
+                task.wait(3)  -- Use task.wait instead of wait
+                TextMonstersNotif.Text = ""
+            end
+        else
+            print("Invalid model passed to MobNotif")
+        end
+    else
+        MonsterNotifyButton.Text = "Monster Notify Off"
+        frameMonsterNotify.Visible = false
     end
-end
-end
-else
-MonsterNotifyButton.Text = "Monster Notify Off"
-frameMonsterNotify.Visible = false
-end
+
 if NoCPV then
 NoCooldownPromptButton.Text = "No Cooldown Prompt On"
 for _, obj in pairs(workspace:GetDescendants()) do
