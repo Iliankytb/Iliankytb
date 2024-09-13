@@ -13,6 +13,7 @@ local espActive = false
 local fullBrightActive = false
 local highlightColor = Color3.fromRGB(255, 0, 0)
 local highlightTransparency = 0.5
+local originalMaterials = {} -- Cela ne devrait pas être réinitialisé dans la fonction activateNoLagV2
 player.Character:SetAttribute("Climbing", false)
 --local PlaceIdMines = 
 
@@ -327,7 +328,7 @@ end
 SpeedBoostButton.MouseButton1Click:Connect(SpeedBoost)
 
 local MobNotifV = false
-local function MobNotif(model)
+local function MobNotif()
 MobNotifV = not MobNotifV
 espTargetsMonsters = {}
 if MobNotifV then
@@ -356,7 +357,9 @@ end
 end
 
 
-MonsterNotifyButton.MouseButton1Click:Connect(MobNotif)
+MonsterNotifyButton.MouseButton1Click:Connect(function()
+    MobNotif(model) -- Vous devrez définir le modèle ici
+end)
 
 local noLagEnabled = false
 NoLagButton.MouseButton1Click:Connect(function()
