@@ -604,9 +604,9 @@ end
 PlayerButton.MouseButton1Click:Connect(toggleSFP)
 
 RunService.RenderStepped:Connect(function()
-if AutoLootV then
+--[[if AutoLootV then
 checkProximityPrompts()
-end
+end]]--
 if SpeedBoostV then
 SpeedBoostButton.Text = "Speed Boost On"
 local character = player.Character
