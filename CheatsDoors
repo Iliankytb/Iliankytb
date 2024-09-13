@@ -187,6 +187,7 @@ local SettingButton = createButton("Setting (Coming Soon)", scrollingFrameMenu)
 local RemoveUiButton = createButton("Remove UI (Coming Soon)", scrollingFrameMenu)
 local espButton = createButton("ESP Off", scrollingFrameEsp)
 local NoCooldownPromptButton = createButton("No Cooldown Prompt Off", scrollingFrame)
+local AutoLootButton = createButton("Auto Loot Off", scrollingFrame)
 local MonsterNotifyButton = createButton("Monsters Notify Off", scrollingFrame)
 local NoLagButton = createButton("No Lag Off", scrollingFrame)
 local FullBrightButton = createButton("Full Bright Off", scrollingFrame)
@@ -375,6 +376,41 @@ end
 MonsterNotifyButton.MouseButton1Click:Connect(function()
     MobNotif() -- Vous devrez définir le modèle ici
 end)
+
+-- Settings  -- Replace with the name of your proximity prompt
+local activationDistance = 10  -- Distance from the prompt where the player should auto-trigger
+
+-- Variables
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+local AutoLootV = false
+
+-- Function to automatically trigger the proximity prompt
+local function checkProximityPrompts()
+if AutoLootV then
+AutoLootButton.Text = "Auto Loot On"
+    for _, prompt in pairs(workspace:GetDescendants()) do
+        if prompt:IsA("ProximityPrompt") then
+            local distance = (humanoidRootPart.Position - prompt.Parent.Position).Magnitude
+            if distance <= activationDistance then
+                prompt:InputHoldBegin()  -- Start holding to trigger the prompt
+                wait(0.1)  -- Simulate holding for a short time
+                prompt:InputHoldEnd()  -- Stop holding
+            end
+        end
+    end
+else
+AutoLootButton.Text = "Auto Loot Off"
+end
+
+AutoLootButton.MouseButton1Click:Connect(function()
+AutoLootV = not AutoLootV
+if AutoLootV then
+checkProximityPrompts()
+end
+end)
+-- Main loop to continuously check for proximity prompts nearby
+
 
 local noLagEnabled = false
 NoLagButton.MouseButton1Click:Connect(function()
@@ -568,6 +604,9 @@ end
 PlayerButton.MouseButton1Click:Connect(toggleSFP)
 
 RunService.RenderStepped:Connect(function()
+if AutoLootV then
+checkProximityPrompts()
+end
 if SpeedBoostV then
 SpeedBoostButton.Text = "Speed Boost On"
 local character = player.Character
