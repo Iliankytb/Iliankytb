@@ -637,7 +637,7 @@ end)
 
 RunService.RenderStepped:Connect(function()
 player.Character:SetAttribute("Climbing", false)
-task.wait(1.5)
+task.wait(1.25)
 --[[if AutoLootV then
 checkProximityPrompts()
 end]]--
