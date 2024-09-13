@@ -86,7 +86,7 @@ local uistroke = Instance.new("UIStroke", frame)
 
 local frameMenu = Instance.new("Frame", screenGui)
 frameMenu.Size = UDim2.new(0.2, 0, 0.5, 0)
-frameMenu.Position = UDim2.new(0.1.5, 0, 0.2, 0)
+frameMenu.Position = UDim2.new(0.15, 0, 0.2, 0)
 frameMenu.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 frameMenu.BackgroundTransparency = 0.25
 frameMenu.Visible = false
@@ -98,7 +98,6 @@ uistroke1.LineJoinMode = Enum.LineJoinMode.Round
 
 local uicorner1 = Instance.new("UICorner", frameMenu)
 uicorner1.CornerRadius = UDim.new(0.1, 0)
-
 
 local closeopen = Instance.new("TextButton", screenGui)
 closeopen.Size = UDim2.new(0, 75, 0, 25)
