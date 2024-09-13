@@ -39,6 +39,7 @@ awardBadge()--]]
 
 if player.PlayerGui:FindFirstChild("GuiPlayer") then
     player.PlayerGui.GuiPlayer:Destroy()
+script:destroy()
 end
 
 local screenGui = Instance.new("ScreenGui", player.PlayerGui)
@@ -221,7 +222,7 @@ or nameLower == "candle"
 or nameLower == "screechrig"
 or nameLower == "A-60"
 or nameLower == "A-120"
-            or nameLower == "KeyObtain" 
+            or nameLower == "keyobtain" 
             or nameLower == "door" 
             or nameLower == "sideroomdupe" 
             or nameLower == "wardrobe" 
@@ -603,21 +604,14 @@ end
 
 PlayerButton.MouseButton1Click:Connect(toggleSFP)
 
--- Variables
- -- La frame que tu veux ouvrir/fermer
-local player = game.Players.LocalPlayer
+
 local userInputService = game:GetService("UserInputService")
 
--- Variables pour l'état de la frame
-local frameVisible = false
 
--- Fonction pour ouvrir ou fermer la frame
 local function toggleFrame()
-    frameVisible = not frameVisible -- Inverse l'état de visibilité de la frame
-    frame.Visible = frameVisible -- Modifie la visibilité de la frame
-
-    if frameVisible then
-        -- Si la frame est visible, débloque la souris
+    frame.Visible = not frame.Visible -- Inverse l'état de visibilité de la frame
+    
+    if frame.Visible == true then
         userInputService.MouseBehavior = Enum.MouseBehavior.Default
     else
         -- Si la frame est fermée, bloque la souris au centre de l'écran
