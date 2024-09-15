@@ -834,10 +834,8 @@ end)
 		AutoCollectButton.Text = "Auto Loot On"
 		detectProximityPrompts(targetObject)
 			autoActivateProximityPrompt(proximityPrompt)
-task.wait(1)
 	else
 		AutoCollectButton.Text = "Auto Loot Off"
-task.wait(1)
 	end
 	if EspPlayer then
 		EspPlayerButton.Text = "ESP Player On"
@@ -848,14 +846,13 @@ task.wait(1)
 				if object:IsA("Model") and game.Players:FindFirstChild(object.Name) then
 					AddHighlightModelPlayer(object)
 					UpdateDistancePlayer(humanoidRootPart)
-task.wait(2)
+
 				end
 			end
 		end
 	else
 		ClearHighlightModelPlayer()
 		EspPlayerButton.Text = "ESP Player Off"
-task.wait(2)
 	end
 	if FullBrightV then
 		-- Activer FullBright
@@ -863,38 +860,34 @@ task.wait(2)
 		game.Lighting.Ambient = Color3.new(1, 1, 1)
 		game.Lighting.OutdoorAmbient = Color3.new(1, 1, 1)
 		FullBrightButton.Text = "FullBright On"  -- Couleur activée
-task.wait(3)
 	else
 
 		game.Lighting.Brightness = originalLightingSettings.Brightness
 		game.Lighting.Ambient = originalLightingSettings.Ambient
 		game.Lighting.OutdoorAmbient = originalLightingSettings.OutdoorAmbient
 		FullBrightButton.Text = "FullBright Off"  -- Couleur désactivée
-task.wait(3)
 	end
 	if PromptDistanceV then
 		BigDistancePromptButton.Text = "Big Distance Prompt On"
 		for _, prompt in pairs(workspace:GetDescendants()) do
 			if prompt:IsA("ProximityPrompt") then
 				prompt.MaxActivationDistance = 50
-task.wait(4)
+
 			end
 		end
 	else
 		BigDistancePromptButton.Text = "Big Distance Prompt Off"
-task.wait(4)
 	end
 	if NoCooldownPrompt then
 		NoCooldownButton.Text = "No Cooldown Prompt On"
 		for _, prompt in pairs(workspace:GetDescendants()) do
 			if prompt:IsA("ProximityPrompt") then
 				prompt.HoldDuration = 0
-task.wait(5)
+
 			end
 		end
 	else
 		NoCooldownButton.Text = "No Cooldown Prompt Off"
-task.wait(5)
 	end
 	if NoLagV then
 		NoLagButton.Text = "No Lag On"
@@ -908,7 +901,7 @@ task.wait(5)
 				local originalMaterial = part:GetAttribute("OriginalMaterial")
 				if originalMaterial then
 					part.Material = originalMaterial
-task.wait(6)
+
 
 				end
 			end
@@ -922,7 +915,7 @@ task.wait(6)
 
 				end
 				NoLagButton.Text = "No Lag Off"
-task.wait(6)
+
 			end
 		end
 	end
@@ -935,7 +928,7 @@ task.wait(6)
 					if string.find(object.Name:lower(), substring) then
 						AddHightlightModelCloset(object)
 						DistanceCloset(object)
-task.wait(7)
+
 					end
 				end
 			end
@@ -953,7 +946,7 @@ task.wait(7)
 					if string.find(object.Name:lower(), substring) then
 						AddHightlightModelDoor(object)
 						DistanceDoor(object)
-task.wait(3)
+
 					end
 				end
 			end
@@ -972,7 +965,6 @@ task.wait(3)
 						object.Shape = Enum.PartType.Ball
 						DistanceEntities(object)
 						AddHightlightModelDEntities(object)
-task.wait(3)
 					end
 				end
 			end
@@ -986,7 +978,6 @@ task.wait(3)
 					if string.find(object.Name:lower(), substring)
 					then
 						object.Shape = Enum.PartType.Block
-task.wait(3)
 					end
 				end
 			end
@@ -1002,7 +993,6 @@ task.wait(3)
 					then
 						AddHightlightModelDItem(object)
 						DistanceItem(object)
-task.wait(3)
 					end
 				end
 			end
