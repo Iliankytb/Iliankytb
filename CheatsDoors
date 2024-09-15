@@ -828,12 +828,13 @@ PlayerButton.MouseButton1Click:Connect(function()
 end)
 
 	RunService.RenderStepped:Connect(function(deltaTime,targetObject,proximityPrompt)
-	deltaTime = 1
+	deltaTime = 1.5
 	
 	if AutoLootV then
 		AutoCollectButton.Text = "Auto Loot On"
 		detectProximityPrompts(targetObject)
 			autoActivateProximityPrompt(proximityPrompt)
+task.wait(3)
 	else
 		AutoCollectButton.Text = "Auto Loot Off"
 	end
@@ -846,6 +847,7 @@ end)
 				if object:IsA("Model") and game.Players:FindFirstChild(object.Name) then
 					AddHighlightModelPlayer(object)
 					UpdateDistancePlayer(humanoidRootPart)
+task.wait(3)
 				end
 			end
 		end
@@ -859,18 +861,21 @@ end)
 		game.Lighting.Ambient = Color3.new(1, 1, 1)
 		game.Lighting.OutdoorAmbient = Color3.new(1, 1, 1)
 		FullBrightButton.Text = "FullBright On"  -- Couleur activée
+task.wait(3)
 	else
 
 		game.Lighting.Brightness = originalLightingSettings.Brightness
 		game.Lighting.Ambient = originalLightingSettings.Ambient
 		game.Lighting.OutdoorAmbient = originalLightingSettings.OutdoorAmbient
 		FullBrightButton.Text = "FullBright Off"  -- Couleur désactivée
+task.wait(3)
 	end
 	if PromptDistanceV then
 		BigDistancePromptButton.Text = "Big Distance Prompt On"
 		for _, prompt in pairs(workspace:GetDescendants()) do
 			if prompt:IsA("ProximityPrompt") then
 				prompt.MaxActivationDistance = 50
+task.wait(3)
 			end
 		end
 	else
@@ -881,6 +886,7 @@ end)
 		for _, prompt in pairs(workspace:GetDescendants()) do
 			if prompt:IsA("ProximityPrompt") then
 				prompt.HoldDuration = 0
+task.wait(3)
 			end
 		end
 	else
@@ -898,6 +904,7 @@ end)
 				local originalMaterial = part:GetAttribute("OriginalMaterial")
 				if originalMaterial then
 					part.Material = originalMaterial
+task.wait(3)
 
 				end
 			end
@@ -924,6 +931,7 @@ end)
 					if string.find(object.Name:lower(), substring) then
 						AddHightlightModelCloset(object)
 						DistanceCloset(object)
+task.wait(3)
 					end
 				end
 			end
@@ -941,6 +949,7 @@ end)
 					if string.find(object.Name:lower(), substring) then
 						AddHightlightModelDoor(object)
 						DistanceDoor(object)
+task.wait(3)
 					end
 				end
 			end
@@ -959,6 +968,7 @@ end)
 						object.Shape = Enum.PartType.Ball
 						DistanceEntities(object)
 						AddHightlightModelDEntities(object)
+task.wait(3)
 					end
 				end
 			end
@@ -972,6 +982,7 @@ end)
 					if string.find(object.Name:lower(), substring)
 					then
 						object.Shape = Enum.PartType.Block
+task.wait(3)
 					end
 				end
 			end
@@ -987,6 +998,7 @@ end)
 					then
 						AddHightlightModelDItem(object)
 						DistanceItem(object)
+task.wait(3)
 					end
 				end
 			end
