@@ -1,742 +1,999 @@
-local BadgeService = game:GetService("BadgeService")
-local badgeID = 2256123875769776--dread crucifix
-
-print("My cheat work now coming soon new update Don't work on solara support mobile enabled support pc coming verryyy soon.")
-local player = game.Players.LocalPlayer
-local RunService = game:GetService("RunService")
-local espTargets = {}
-local originalMaterials = {}
-local speedBoostActive = false
-local autoHealActive = false
-local autoLootActive = false
-local espActive = false
-local fullBrightActive = false
-local highlightColor = Color3.fromRGB(255, 0, 0)
-local highlightTransparency = 0.5
-local originalMaterials = {} -- Cela ne devrait pas être réinitialisé dans la fonction activateNoLagV2
-player.Character:SetAttribute("Climbing", false)
---local PlaceIdMines = 
-
---[[local function awardBadge()
-    if not BadgeService:UserHasBadgeAsync(player.UserId, badgeID) then
-        -- Award the badge if the player doesn't have it
-        local success, result = pcall(function()
-            BadgeService:AwardBadge(player.UserId, badgeID)
-        end)
-
-        if success then
-            print("Badge awarded successfully!")
-        else
-            warn("Failed to award badge: " .. result)
-        end
-    else
-        print("Player already has the badge.")
-    end
-end
-
-awardBadge()--]]
-
-
-if player.PlayerGui:FindFirstChild("GuiPlayer") then
-    player.PlayerGui.GuiPlayer:Destroy()
-script:destroy()
-end
-
-local screenGui = Instance.new("ScreenGui", player.PlayerGui)
-screenGui.Name = "GuiPlayer"
-screenGui.ResetOnSpawn = false
-
-local TextWelcome = Instance.new("TextLabel", screenGui)
-TextWelcome.Size = UDim2.new(1, 0, 0, 0)
-TextWelcome.Position = UDim2.new(0, 0, 0, 0)
-TextWelcome.BackgroundTransparency = 1
-TextWelcome.TextSize = 14
-TextWelcome.Text = "Thanks for using my script and thanks for supporting Iliankytb. Good luck 0.0!"
-
-
-TextWelcome.Visible = true
-wait(5)
-TextWelcome.Visible = false
-
-local frame = Instance.new("Frame", screenGui)
-frame.Size = UDim2.new(0.35, 0, 0.5, 0)
-frame.Position = UDim2.new(0.3, 0, 0.2, 0)
-frame.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-frame.BackgroundTransparency = 0.25
-frame.Visible = false
-
-local frameMonsterNotify = Instance.new("Frame", screenGui)
-frameMonsterNotify.Size = UDim2.new(0.25, 0, 0.25, 0)
-frameMonsterNotify.Position = UDim2.new(0.1, 0, 0.7, 0)
-frameMonsterNotify.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-frameMonsterNotify.BackgroundTransparency = 1
-frameMonsterNotify.Visible = false
-
-local TextMonstersNotif = Instance.new("TextLabel", frameMonsterNotify)
-TextMonstersNotif.Size = UDim2.new(1, 0, 1, 0)
-TextMonstersNotif.Position = UDim2.new(0, 0, 0, 0)
-TextMonstersNotif.BackgroundTransparency = 1
-TextMonstersNotif.TextSize = 18
-TextMonstersNotif.Text = ""
-
-local gradient = Instance.new("UIGradient", frame)
-gradient.Color = ColorSequence.new{
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(60, 60, 60)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(90, 90, 90))
-}
-
--- UI Stroke et Coin arrondi pour le Frame
-local uistroke = Instance.new("UIStroke", frame)
-
-local frameMenu = Instance.new("Frame", screenGui)
-frameMenu.Size = UDim2.new(0.2, 0, 0.5, 0)
-frameMenu.Position = UDim2.new(0.15, 0, 0.2, 0)
-frameMenu.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-frameMenu.BackgroundTransparency = 0.25
-frameMenu.Visible = false
-
-local uistroke1 = Instance.new("UIStroke", frameMenu)
-uistroke1.Thickness = 3
-uistroke1.Color = Color3.fromRGB(20, 20, 20)
-uistroke1.LineJoinMode = Enum.LineJoinMode.Round
-
-local uicorner1 = Instance.new("UICorner", frameMenu)
-uicorner1.CornerRadius = UDim.new(0.1, 0)
-
-local closeopen = Instance.new("TextButton", screenGui)
-closeopen.Size = UDim2.new(0, 75, 0, 25)
-closeopen.Position = UDim2.new(0.9, 0, 0.2, 0)
-closeopen.Text = "Toggle Menu"
-closeopen.TextColor3 = Color3.fromRGB(255, 255, 255)
-closeopen.Font = Enum.Font.GothamBold
-closeopen.TextSize = 18
-closeopen.BackgroundColor3 = Color3.fromRGB(85, 170, 255)
-
--- Gradient sur le bouton closeopen
-local buttonGradient = Instance.new("UIGradient", closeopen)
-buttonGradient.Color = ColorSequence.new{
-    ColorSequenceKeypoint.new(0, Color3.fromRGB(85, 170, 255)),
-    ColorSequenceKeypoint.new(1, Color3.fromRGB(65, 150, 255))
-}
-
-local scrollingFrameMenu = Instance.new("ScrollingFrame", frameMenu)
-scrollingFrameMenu.Size = UDim2.new(1, 0, 1, 0)
-scrollingFrameMenu.CanvasSize = UDim2.new(0, 0, 0, 800)
-scrollingFrameMenu.ScrollBarThickness = 8
-scrollingFrameMenu.BackgroundTransparency = 1
-
-
-local listLayout1 = Instance.new("UIListLayout", scrollingFrameMenu)
-listLayout1.SortOrder = Enum.SortOrder.LayoutOrder
-listLayout1.Padding = UDim.new(0, 10)
-
-local scrollingFrame = Instance.new("ScrollingFrame", frame)
-scrollingFrame.Size = UDim2.new(1, 0, 1, 0)
-scrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 800)
-scrollingFrame.ScrollBarThickness = 8
-scrollingFrame.BackgroundTransparency = 1
-
-local listLayout = Instance.new("UIListLayout", scrollingFrame)
-listLayout.SortOrder = Enum.SortOrder.LayoutOrder
-listLayout.Padding = UDim.new(0, 10)
-
-local scrollingFrameEsp = Instance.new("ScrollingFrame", frame)
-scrollingFrameEsp.Size = UDim2.new(1, 0, 1, 0)
-scrollingFrameEsp.CanvasSize = UDim2.new(0, 0, 0, 800)
-scrollingFrameEsp.ScrollBarThickness = 8
-scrollingFrameEsp.BackgroundTransparency = 1
-scrollingFrameEsp.Visible = false
-
-local listLayoutEsp = Instance.new("UIListLayout", scrollingFrameEsp)
-listLayoutEsp.SortOrder = Enum.SortOrder.LayoutOrder
-listLayoutEsp.Padding = UDim.new(0, 10)
-
-local scrollingFramePlayer = Instance.new("ScrollingFrame", frame)
-scrollingFramePlayer.Size = UDim2.new(1, 0, 1, 0)
-scrollingFramePlayer.CanvasSize = UDim2.new(0, 0, 0, 800)
-scrollingFramePlayer.ScrollBarThickness = 8
-scrollingFramePlayer.BackgroundTransparency = 1
-scrollingFramePlayer.Visible = false
-
-local listLayoutPlayer = Instance.new("UIListLayout", scrollingFramePlayer)
-listLayoutPlayer.SortOrder = Enum.SortOrder.LayoutOrder
-listLayoutPlayer.Padding = UDim.new(0, 10)
-
-local function createButton(text, parent)
-    local button = Instance.new("TextButton", parent)
-    button.Size = UDim2.new(0.90, 0, 0, 50)
-    button.Text = text
-    button.TextColor3 = Color3.fromRGB(255, 255, 255)
-    button.Font = Enum.Font.GothamBold
-    button.TextSize = 16
-    button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-
-    local buttonGradient = Instance.new("UIGradient", button)
-    buttonGradient.Color = ColorSequence.new{
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(70, 70, 70)),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(100, 100, 100))
-    }
-    return button
-end
-
-local MenuButton = createButton("Menu", scrollingFrameMenu)
-local EspButton = createButton("ESP", scrollingFrameMenu)
-local PlayerButton = createButton("Player Menu", scrollingFrameMenu)
-local DupeItemButton = createButton("Dupe Item Menu (Coming Soon)", scrollingFrameMenu)
-local InfoButton = createButton("Information (Coming Soon)", scrollingFrameMenu)
-local SettingButton = createButton("Setting (Coming Soon)", scrollingFrameMenu)
-local RemoveUiButton = createButton("Remove UI (Coming Soon)", scrollingFrameMenu)
-local espButton = createButton("ESP Off", scrollingFrameEsp)
-local NoCooldownPromptButton = createButton("No Cooldown Prompt Off", scrollingFrame)
-local AutoLootButton = createButton("Auto Loot Off(coming Soon)", scrollingFrame)
-local MonsterNotifyButton = createButton("Monsters Notify Off", scrollingFrame)
-local NoLagButton = createButton("No Lag Off", scrollingFrame)
-local FullBrightButton = createButton("Full Bright Off", scrollingFrame)
-local GodModeButton = createButton("God Mode Off", scrollingFrame)
-local NoScreechButton = createButton("No Screech Off", scrollingFrame)
-local NoAmbushButton = createButton("No Ambush Off", scrollingFrame)
-local SpeedBoostButton = createButton("Speed Boost Off", scrollingFramePlayer)
-
-local function updateEspTargetsModels()
-    espTargets = {}
-    for _, model in pairs(workspace:GetDescendants()) do
-        if model:IsA("Model") or model:IsA("Part") then
-            local nameLower = model.Name:lower()
-            if nameLower == "locker_large" 
-            or nameLower == "locker_small" 
-            or nameLower == "seekRig"
-or nameLower == "backdoorlookman"
-or nameLower == "KeyHitbox"
-or nameLower == "KeyObtain"
-or nameLower == "timermodel"
-            or nameLower == "SeekMovingNewClone"  
-            or nameLower == "SeekRig"
-            or nameLower == "eyes"
-or nameLower == "TimeLever"
-or nameLower == "BackdoorRush"
-or nameLower == "leverforgate"
-or nameLower == "keybackdoor"
-or nameLower == "backdoor_wardrobe"
-or nameLower == "crucifix"
-or nameLower == "candle"
-or nameLower == "screechrig"
-or nameLower == "a-60"
-or nameLower == "a-120"
-            or nameLower == "keyobtain" 
-            or nameLower == "door" 
-            or nameLower == "sideroomdupe" 
-            or nameLower == "wardrobe" 
-            or nameLower == "gold" 
-            or nameLower == "goldpile"
-            or nameLower == "pile"
-            or nameLower == "minesgenerator" 
-            or nameLower == "fuse" 
-            or nameLower == "key" 
-            or nameLower == "key_holder" 
-            or nameLower == "rift" 
-            or nameLower == "chest" 
-            or nameLower == "lockpick" 
-            or nameLower == "battery" 
-            or nameLower == "flashlight" 
-            or nameLower == "figurerig" 
-            or nameLower == "figure" 
-            or nameLower == "rushmoving" 
-            or nameLower == "ambushmoving" 
-            or nameLower == "screech" 
-            or nameLower == "halt"
-            or nameLower == "livehintbook"
-      or nameLower == "book"
-      or nameLower == "lid"
-      or nameLower == "fuseobtain"
-      or nameLower == "giggleceiling"
-      or nameLower == "gloombatswarm"
-      or nameLower == "topteeth"
-or nameLower == "chestbox"
-or nameLower == "lighter"
-      or nameLower == "screechmoving"
-            or nameLower == "drawercontainer" then
-                table.insert(espTargets, model)
-            end
-        end
-    end
-end
-
-local function highlightModel(model)
-        if not model:FindFirstChildOfClass("Highlight") then
-            local highlight = Instance.new("Highlight", model)
-            highlight.FillColor = Color3.fromRGB(255, 170, 0)
-            highlight.FillTransparency = 0.5
-            highlight.OutlineTransparency = 0.5
-            highlight.FillColor = highlightColor
-            highlight.FillTransparency = highlightTransparency
-            highlight.OutlineTransparency = highlightTransparency
-        end
-
-        if not model:FindFirstChildOfClass("BillboardGui") then
-            local billboard = Instance.new("BillboardGui", model)
-            billboard.Adornee = model
-            billboard.AlwaysOnTop = true
-            billboard.Size = UDim2.new(0, 100, 0, 100)
-            billboard.StudsOffset = Vector3.new(0, 2, 0)
-
-            local textLabel = Instance.new("TextLabel", billboard)
-            textLabel.Size = UDim2.new(1, 0, 1, 0)
-            textLabel.BackgroundTransparency = 1
-            textLabel.Text = model.Name
-            textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    end
-end
-
-local function clearHighlights()
-    for _, obj in pairs(workspace:GetDescendants()) do
-        if obj:IsA("Highlight") or obj:IsA("BillboardGui") then
-            obj:Destroy()
-        end
-    end
-end
-
-local function highlightModels()
-    for _, model in pairs(espTargets) do
-        highlightModel(model)
-    end
-end
-
-
-local espEnabled = false
-espButton.MouseButton1Click:Connect(function()
-    espActive = not espActive
-    if espActive then
-        espButton.Text = "ESP On"
-        updateEspTargetsModels()
-        highlightModels()
-    else
-        espButton.Text = "ESP Off"
-        clearHighlights()
-    end
-end)
-
-local SpeedBoostV = false
-local function SpeedBoost()
-SpeedBoostV = not SpeedBoostV
-if SpeedBoostV then
-SpeedBoostButton.Text = "Speed Boost On"
-local character = player.Character
-    if character then
-        local humanoid = character:FindFirstChildOfClass("Humanoid")
-        if humanoid then
-            humanoid.WalkSpeed = 22
-end
-end
-else
-SpeedBoostButton.Text = "Speed Boost Off"
-end
-end
-
-SpeedBoostButton.MouseButton1Click:Connect(SpeedBoost)
-
-local MobNotifV = false
-local MobNotifV = false
-local espTargetsMonsters = {}
-
-local function MobNotif(model)
-    MobNotifV = not MobNotifV
-    espTargetsMonsters = {}
-
-    if MobNotifV then
-        frameMonsterNotify.Visible = true
-        MonsterNotifyButton.Text = "Monster Notify On"
-        
-        -- Make sure the model has a valid Name property
-        if model and model.Name then
-            local nameLower = model.Name:lower()
-            local monsterWarnings = {
-                AmbushMoving = "Warning Ambush Spawned!",
-                RushMoving = "Warning Rush Spawned!",
-                HaltMoving = "Warning Halt Spawned!",
-                FigureRig = "Warning Figure Spawned!",
-Screech = "WarningScreech Spawned!",
-                GiggleCeiling = "Warning Giggle Spawned!",
-                GloombatSwarm = "Warning Gloombat Swarm Spawned!",
-                eyes = "Warning Eyes Spawned!"
-            }
-
-            -- Display the appropriate notification if the monster is recognized
-            if monsterWarnings[nameLower] then
-                TextMonstersNotif.Text = monsterWarnings[nameLower]
-                task.wait(3)  -- Use task.wait instead of wait
-                TextMonstersNotif.Text = ""
-            end
-
-        end
-    else
-        MonsterNotifyButton.Text = "Monster Notify Off"
-        frameMonsterNotify.Visible = false
-    end
-end
-
-MonsterNotifyButton.MouseButton1Click:Connect(function()
-    MobNotif() -- Vous devrez définir le modèle ici
-end)
-
--- Settings  -- Replace with the name of your proximity prompt
-local activationDistance = 10  -- Distance from the prompt where the player should auto-trigger
-
--- Variables
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-local AutoLootV = false
-
--- Function to automatically trigger the proximity prompt
-local function checkProximityPrompts()
-if AutoLootV then
-AutoLootButton.Text = "Auto Loot On"
-    for _, prompt in pairs(workspace:GetDescendants()) do
-        if prompt:IsA("ProximityPrompt") then
-            local distance = (humanoidRootPart.Position - prompt.Parent.Position).Magnitude
-            if distance <= activationDistance then
-                prompt:InputHoldBegin()  -- Start holding to trigger the prompt
-                wait(0.1)  -- Simulate holding for a short time
-                prompt:InputHoldEnd()  -- Stop holding
-            end
-        end
-    end
-else
-AutoLootButton.Text = "Auto Loot Off"
-end
-end
-
---[[AutoLootButton.MouseButton1Click:Connect(function()
-AutoLootV = not AutoLootV
-if AutoLootV then
-checkProximityPrompts()
-end
-end)]]--
--- Main loop to continuously check for proximity prompts nearby
+local RunService = game:GetService("RunService")
+local originalLightingSettings = {
+	Brightness = game.Lighting.Brightness,
+	Ambient = game.Lighting.Ambient,
+	OutdoorAmbient = game.Lighting.OutdoorAmbient
+}
 
 
-local noLagEnabled = false
-NoLagButton.MouseButton1Click:Connect(function()
-    noLagEnabled = not noLagEnabled
-    if noLagEnabled then
-        NoLagButton.Text = "No Lag On"
-activateNoLagV2()
-activateNoLag()
-    else
-        NoLagButton.Text = "No Lag Off"
-deactivateNoLagV2()
-deactivateNoLag()
-    end
-end)
-
-local fullBrightEnabled = false
-FullBrightButton.MouseButton1Click:Connect(function()
-    fullBrightEnabled = not fullBrightEnabled
-    if fullBrightEnabled then
-        FullBrightButton.Text = "Full Bright On"
-        game.Lighting.Brightness = 100
-        game.Lighting.Ambient = Color3.new(1, 1, 1)
-    else
-        FullBrightButton.Text = "Full Bright Off"
-        game.Lighting.Brightness = 1
-        game.Lighting.Ambient = Color3.new(0.5, 0.5, 0.5)
-    end
-end)
-
-
-local godModeEnabled = false
-
-
-local function activateGodMode()
-    local character = player.Character
-    if character then
-        local humanoid = character:FindFirstChildOfClass("Humanoid")
-        if humanoid then
-            humanoid.MaxHealth = 500
-            humanoid.Health = humanoid.MaxHealth
-        end
-    end
+local function createUIElement(className, parent, properties)
+	local element = Instance.new(className)
+	element.Parent = parent
+	for prop, value in pairs(properties) do
+		element[prop] = value
+	end
+	return element
 end
 
 
-local function deactivateGodMode()
-    local character = player.Character
-    if character then
-        local humanoid = character:FindFirstChildOfClass("Humanoid")
-        if humanoid then
-            humanoid.MaxHealth = 100
-            humanoid.Health = humanoid.MaxHealth
-        end
-    end
+local Gui = Instance.new("ScreenGui",player.PlayerGui)
+Gui.Enabled = true
+Gui.ResetOnSpawn = false
+
+local function createButton(text, parent)
+	local button = createUIElement("TextButton", parent, {
+		Size = UDim2.new(0.90, 0, 0, 50),
+		Text = text,
+		TextColor3 = Color3.fromRGB(255, 255, 255),
+		Font = Enum.Font.GothamBold,
+		TextSize = 16,
+		BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+	})
+	createUIElement("UIGradient", button, {
+		Color = ColorSequence.new{
+			ColorSequenceKeypoint.new(0, Color3.fromRGB(70, 70, 70)),
+			ColorSequenceKeypoint.new(1, Color3.fromRGB(100, 100, 100))
+		}
+	})
+
+	createUIElement("UIStroke", button, {
+		Thickness = 2,
+		Color = Color3.fromRGB(20, 20, 20),
+		LineJoinMode = Enum.LineJoinMode.Round
+	})
+
+	createUIElement("UICorner", button, { CornerRadius = UDim.new(0.15, 0) })
+
+
+	return button
 end
 
-GodModeButton.MouseButton1Click:Connect(function()
-    godModeEnabled = not godModeEnabled
-    if godModeEnabled then
-        GodModeButton.Text = "God Mode On"
-        activateGodMode()
-    else
-        GodModeButton.Text = "God Mode Off"
-        deactivateGodMode()
-    end
-end)
+local ToggleFrameButton = createUIElement("TextButton", Gui, {
+	Size = UDim2.new(0, 100, 0, 25),
+	Position = UDim2.new(0.85, 0, 0.05, 0),
+	Text = "Toggle Cheat Menu",
+	TextColor3 = Color3.fromRGB(255, 255, 255),
+	Font = Enum.Font.GothamBold,
+	TextSize = 15,
+	BackgroundColor3 = Color3.fromRGB(85, 170, 255)
+})
 
-local function UpdatePlayer()
-for _, target in pairs(game.Players:GetPlayers()) do
-        if target ~= player then
-            table.insert(espTargets, target)
-        end
-    end
+local Frame = Instance.new("Frame", Gui)
+Frame.Size = UDim2.new(0.5, 0, 0.5, 0)
+Frame.Position = UDim2.new(0.25, 0, 0.25, 0)
+Frame.BackgroundTransparency = 0.2  -- Transparence légère
+Frame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)  -- Couleur plus douce
+Frame.BorderMode = Enum.BorderMode.Middle
+Frame.Visible = true
+
+-- Ajout d'une ombre portée (Frame)
+local shadow = Instance.new("ImageLabel", Frame)
+shadow.Size = UDim2.new(1, 20, 1, 20)
+shadow.Position = UDim2.new(-0.05, 0, -0.05, 0)
+shadow.BackgroundTransparency = 1
+shadow.Image = "rbxassetid://1316045217"  -- ID pour un effet d'ombre
+shadow.ImageColor3 = Color3.new(0, 0, 0)
+shadow.ImageTransparency = 0.5  -- Légère transparence pour l'ombre
+
+-- Bordure externe améliorée (Frame)
+local UiStroke = Instance.new("UIStroke", Frame)
+UiStroke.Thickness = 1.5  -- Bordure fine
+UiStroke.Color = Color3.fromRGB(80, 150, 250)  -- Bleu clair et doux
+UiStroke.LineJoinMode = Enum.LineJoinMode.Round
+
+-- Ajout de coins arrondis (Frame)
+local UiCorner = Instance.new("UICorner", Frame)
+UiCorner.CornerRadius = UDim.new(0, 15)  -- Coins plus arrondis
+
+-- Frame pour Scrolling (FrameScroll)
+local FrameScroll = Instance.new("Frame", Frame)
+FrameScroll.Size = UDim2.new(0.5, 0, 1, 0)
+FrameScroll.Position = UDim2.new(0, 0, 0, 0)
+FrameScroll.BackgroundTransparency = 1
+FrameScroll.Visible = true
+
+local shadow1 = Instance.new("ImageLabel", FrameScroll)
+shadow1.Size = UDim2.new(1, 20, 1, 20)
+shadow1.Position = UDim2.new(-0.05, 0, -0.05, 0)
+shadow1.BackgroundTransparency = 1
+shadow1.Image = "rbxassetid://1316045217"  -- ID pour un effet d'ombre
+shadow1.ImageColor3 = Color3.new(0, 0, 0)
+shadow1.ImageTransparency = 0.5  -- Légère transparence pour l'ombre
+
+-- Scrolling Frame
+local ScrollingFrameScroll = Instance.new("ScrollingFrame", FrameScroll)
+ScrollingFrameScroll.Size = UDim2.new(1, 0, 1, 0)
+ScrollingFrameScroll.Position = UDim2.new(0, 0, 0, 0)
+ScrollingFrameScroll.BackgroundTransparency = 1
+ScrollingFrameScroll.Visible = true
+ScrollingFrameScroll.CanvasSize = UDim2.new(0, 0, 0, 500)
+
+-- Ajout d'une mise en page (UIListLayout)
+local UiLayoutScrollingFrameScroll = Instance.new("UIListLayout", ScrollingFrameScroll)
+UiLayoutScrollingFrameScroll.Padding = UDim.new(0, 10)
+UiLayoutScrollingFrameScroll.SortOrder = Enum.SortOrder.LayoutOrder
+
+-- Frame principal (FrameMain)
+local FrameMain = Instance.new("Frame", Frame)
+FrameMain.Size = UDim2.new(0.5, 0, 1, 0)
+FrameMain.Position = UDim2.new(0.5, 0, 0, 0)
+FrameMain.BackgroundTransparency = 1  -- Plus de transparence pour un effet élégant
+FrameMain.BackgroundColor3 = Color3.fromRGB(45, 45, 45)  -- Couleur légèrement plus claire
+FrameMain.Visible = true
+
+
+-- Scrolling Frame principal (ScrollingFrameMain)
+local ScrollingFrameMain = Instance.new("ScrollingFrame", FrameMain)
+ScrollingFrameMain.Size = UDim2.new(1, 0, 1, 0)
+ScrollingFrameMain.Position = UDim2.new(0, 0, 0, 0)
+ScrollingFrameMain.BackgroundTransparency = 1
+ScrollingFrameMain.BackgroundColor3 = Color3.fromRGB(33, 33, 33)
+ScrollingFrameMain.Visible = true
+ScrollingFrameMain.CanvasSize = UDim2.new(0, 0, 0, 1000)
+
+local ScrollingFrameEsp = Instance.new("ScrollingFrame",FrameMain)
+ScrollingFrameEsp.Size = UDim2.new(1, 0, 1, 0)
+ScrollingFrameEsp.Position = UDim2.new(0, 0, 0, 0)
+ScrollingFrameEsp.BackgroundTransparency = 1
+ScrollingFrameEsp.BackgroundColor3 = Color3.fromRGB(33, 33, 33)
+ScrollingFrameEsp.Visible = false
+ScrollingFrameEsp.CanvasSize = UDim2.new(0, 0, 0, 1000)
+
+local ScrollingFramePlayer = Instance.new("ScrollingFrame",FrameMain)
+ScrollingFramePlayer.Size = UDim2.new(1, 0, 1, 0)
+ScrollingFramePlayer.Position = UDim2.new(0, 0, 0, 0)
+ScrollingFramePlayer.BackgroundTransparency = 1
+ScrollingFramePlayer.BackgroundColor3 = Color3.fromRGB(33, 33, 33)
+ScrollingFramePlayer.Visible = false
+ScrollingFramePlayer.CanvasSize = UDim2.new(0, 0, 0, 1000)
+
+-- Ajout d'un ListLayout pour le scrolling principal
+local UiLayoutScrollingFrameMain2 = Instance.new("UIListLayout", ScrollingFrameMain)
+UiLayoutScrollingFrameMain2.Padding = UDim.new(0, 10)
+UiLayoutScrollingFrameMain2.SortOrder = Enum.SortOrder.LayoutOrder
+
+-- Ajout de coins arrondis et bordure au Scrolling Frame principal
+local UiCornerMain2 = Instance.new("UICorner", ScrollingFrameMain)
+UiCornerMain2.CornerRadius = UDim.new(0, 12)
+
+local UiStrokeMain2 = Instance.new("UIStroke", ScrollingFrameMain)
+UiStrokeMain2.Thickness = 1.5  -- Bordure fine
+UiStrokeMain2.Color = Color3.fromRGB(60, 130, 220)  -- Couleur adoucie
+UiStrokeMain2.LineJoinMode = Enum.LineJoinMode.Round
+
+local UiLayoutScrollingFrameEsp = Instance.new("UIListLayout", ScrollingFrameEsp)
+UiLayoutScrollingFrameEsp.Padding = UDim.new(0, 10)
+UiLayoutScrollingFrameEsp.SortOrder = Enum.SortOrder.LayoutOrder
+
+local UiLayoutScrollingFramePlayer = Instance.new("UIListLayout", ScrollingFramePlayer)
+UiLayoutScrollingFramePlayer.Padding = UDim.new(0, 10)
+UiLayoutScrollingFramePlayer.SortOrder = Enum.SortOrder.LayoutOrder
+
+local function showSection(sectionFrame)
+	ScrollingFrameMain.Visible = false
+	ScrollingFrameEsp.Visible = false
+	ScrollingFramePlayer.Visible = false
+	sectionFrame.Visible = true
+end
+
+local EspCloset,PromptDistanceV,FullBrightV,ToggleCheat,AutoLootV,EspDoor,EspPlayer,EspItem,EspMonsters,NoCooldownPrompt,MonsterNotifV,EspGuide,NoLagV = false,false,false,false,false,false,false,false,false,false,false,false,false
+local MainButton = createButton("Main",ScrollingFrameScroll)
+local EspButton = createButton("Esp",ScrollingFrameScroll)
+local PlayerButton = createButton("Player",ScrollingFrameScroll)
+local ItemDupeButton = createButton("Item Dupe",ScrollingFrameScroll)
+local SettingButton = createButton("Setting",ScrollingFrameScroll)
+local InfoButton = createButton("Information",ScrollingFrameScroll)
+local RemoveUiButton = createButton("Remove Ui",ScrollingFrameScroll)
+local EspDoorButton = createButton("Esp Door Off",ScrollingFrameEsp)
+local EspClosetButton = createButton("Esp Closet Off",ScrollingFrameEsp)
+local EspPlayerButton = createButton("Esp Player Off",ScrollingFrameEsp)
+local EspItemButton = createButton("Esp Item Off",ScrollingFrameEsp)
+local EspMonstersButton = createButton("Esp Entities Off",ScrollingFrameEsp)
+local NoCooldownButton = createButton("No Cooldown Prompt Off",ScrollingFrameMain)
+local FullBrightButton = createButton("FullBright Off",ScrollingFrameMain)
+local BigDistancePromptButton = createButton("Big Distance Prompt Off",ScrollingFrameMain)
+local AutoCollectButton = createButton("Auto Loot Off",ScrollingFrameMain)
+local EspGuidingLightButton = createButton("Esp Guiding Light Off(Coming Soon)",ScrollingFrameEsp)
+local NoSeekButton = createButton("Delete Seek Toggle",ScrollingFrameMain)
+local NoLagButton = createButton("No Lag Off",ScrollingFrameMain)
+local NotifMonstersButton = createButton("Notifs Monster Off (Coming Soon)",ScrollingFrameMain)
+local SpeedBoostButton = createButton("Speed Boost Off",ScrollingFramePlayer)
+local BypassSpeedButton = createButton("Bypass Speed",ScrollingFramePlayer)
+local object_name_substrings_Monsters = {"rushmoving","ambushmoving","giggle","grumble","screech","figurerig","seekrig","gloombat","lookman","haltmoving","a90","a60","a120"}
+
+local function ToggleFrame()
+	ToggleCheat = not ToggleCheat
+	if ToggleCheat then
+		Frame.Visible = true
+		shadow.Visible = true
+		ToggleFrameButton.Interactable = false
+		Frame:TweenPosition(UDim2.new(0.25, 0, 0.25, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Quad, 1, true)
+		wait(1)
+		ToggleFrameButton.Interactable = true
+	else
+		ToggleFrameButton.Interactable = false
+		Frame:TweenPosition(UDim2.new(0.25, 0, 1, 0), Enum.EasingDirection.Out, Enum.EasingStyle.Quad, 1, true)
+		wait(1)
+		Frame.Visible = false
+		ToggleFrameButton.Interactable = true
+		shadow.Visible = false
+	end
+end
+
+local function AddHightlightModelCloset(object)
+		-- Check if the object already has a Highlight
+		if not object:FindFirstChildOfClass("Highlight") then
+			local highlight = Instance.new("Highlight")
+			highlight.FillColor = Color3.fromRGB(85, 170, 0)
+			highlight.OutlineColor = Color3.fromRGB(85, 255, 127)
+			highlight.FillTransparency = 0.75
+			highlight.OutlineTransparency = 0.75
+			highlight.Name = object.Name
+			highlight.Parent = object
+		end
+
+		-- Check if the object already has a BillboardGui
+		if not object:FindFirstChildOfClass("BillboardGui") then
+			local billboard = Instance.new("BillboardGui")
+			billboard.Size = UDim2.new(0.100, 0, 0.50, 0)
+		billboard.MaxDistance = math.huge
+			billboard.StudsOffset = Vector3.new(0, 0, 0)
+			billboard.Enabled = true
+			billboard.ResetOnSpawn = false
+			billboard.AlwaysOnTop = true
+			billboard.Name = object.Name
+			billboard.Parent = object
+
+			local textLabel = Instance.new("TextLabel")
+			textLabel.Size = UDim2.new(1, 0, 1, 0)
+			textLabel.BackgroundTransparency = 1
+			textLabel.TextColor3 = Color3.fromRGB(85, 255, 0)
+			textLabel.Parent = billboard
+		end
+end
+
+local function DistanceCloset(object)
+	for _, object in pairs(workspace:GetDescendants()) do
+		if object:IsA("BillboardGui") then
+		if object.Name == "Closet" then
+			object.Name = object.Name
+				local textLabel = object.TextLabel
+				if object.Parent:IsA("BasePart") then
+					local distance = (humanoidRootPart.Position - object.Parent.Position).Magnitude
+					textLabel.Text = object.Name.." [Distance: " .. math.floor(distance) .. " Studs]"
+				elseif object.Parent:IsA("Model") then
+					local distance = (humanoidRootPart.Position - object.Parent:GetPivot().Position).Magnitude
+					textLabel.Text = object.Name .. " [Distance: " .. math.floor(distance) .. " Studs]"
+				end
+		end
+		end
+		end
+end
+
+local function ClearHightlightModelCloset(Obj)
+	for _, Obj in pairs(workspace:GetDescendants()) do
+		if Obj:IsA("Highlight") or Obj:IsA("BillboardGui") then
+			if Obj.Name:lower() == "wardrobe"or Obj.Name:lower() == "backdoor_wardrobe" or Obj.Name:lower() == "bed" or Obj.Name:lower() == "beds" then
+		Obj:Destroy()
+		end
+		end
+		end
+end
+
+local function HightLightModelsCloset()
+	EspCloset = not EspCloset
+	if EspCloset then
+		EspClosetButton.Text = "Esp Closet On"
+	local object_name_substrings = {"wardrobe","backdoor_wardrobe","bed","beds"}
+	for _, object in pairs(workspace:GetDescendants()) do
+		if object:IsA("Model") or object:IsA("BasePart") then
+			for _, substring in pairs(object_name_substrings) do
+				if string.find(object.Name:lower(), substring) then
+					AddHightlightModelCloset(object)
+					DistanceCloset(object)
+				end
+				end
+			end
+	end
+	else
+		ClearHightlightModelCloset()
+		EspClosetButton.Text = "Esp Closet Off"
+	end
+end
+
+local function AddHightlightModelDoor(object)
+	-- Check if the object already has a Highlight
+	if not object:FindFirstChildOfClass("Highlight") then
+		local highlight = Instance.new("Highlight")
+		highlight.FillColor = Color3.fromRGB(0, 62, 186)
+		highlight.OutlineColor = Color3.fromRGB(0, 85, 255)
+		highlight.FillTransparency = 0.75
+		highlight.OutlineTransparency = 0.75
+		highlight.Name = object.Name
+		highlight.Parent = object
+	end
+
+	-- Check if the object already has a BillboardGui
+	if not object:FindFirstChildOfClass("BillboardGui") then
+		local billboard = Instance.new("BillboardGui")
+		billboard.Size = UDim2.new(0.100, 0, 0.50, 0)
+		billboard.MaxDistance = math.huge
+		billboard.StudsOffset = Vector3.new(0, 0, 0)
+		billboard.Enabled = true
+		billboard.ResetOnSpawn = false
+		billboard.AlwaysOnTop = true
+		billboard.Name = object.Name
+		billboard.Parent = object
+
+		local textLabel = Instance.new("TextLabel")
+		textLabel.Size = UDim2.new(1, 0, 1, 0)
+		textLabel.BackgroundTransparency = 1
+		textLabel.TextColor3 = Color3.fromRGB(0, 170, 255)
+		textLabel.Parent = billboard
+	end
+end
+
+local function DistanceDoor(object)
+	for _, object in pairs(workspace:GetDescendants()) do
+		if object:IsA("BillboardGui") then
+			if object.Name == "Door" or object.Name == "sideroomdupe" then
+		object.Name = object.Name
+				local textLabel = object.TextLabel
+				if object.Parent:IsA("BasePart") then
+					local distance = (humanoidRootPart.Position - object.Parent.Position).Magnitude
+					textLabel.Text = "Door"..object.Name.." [Distance: " .. math.floor(distance) .. " Studs]"
+				elseif object.Parent:IsA("Model") then
+					local distance = (humanoidRootPart.Position - object.Parent:GetPivot().Position).Magnitude
+					textLabel.Text = "Door"..object.Name .. " [Distance: " .. math.floor(distance) .. " Studs]"
+				end
+
+		end
+		end
+		end
+end
+
+local function ClearHightlightModelDoor(Obj)
+	for _, Obj in pairs(workspace:GetDescendants()) do
+		if Obj:IsA("Highlight") or Obj:IsA("BillboardGui") then
+			if Obj.Name == "Door" or Obj.Name == "sideroomdupe" then
+			Obj:Destroy()
+			end
+		end
+	end
 end
 
 
-local function activateNoLag()
-    for _, descendant in pairs(workspace:GetDescendants()) do
-        if descendant:IsA("ParticleEmitter") or descendant:IsA("Beam") or descendant:IsA("Trail") then
-            descendant.Enabled = false
-        end
-    end
+local function HightLightModelsDoor()
+	EspDoor = not EspDoor
+	if EspDoor then
+		EspDoorButton.Text = "Esp Door On"
+		local object_name_substrings = {"door","sideroomdupe"}
+		for _, object in pairs(workspace:GetDescendants()) do
+			if object:IsA("Model") or object:IsA("BasePart") then
+				for _, substring in pairs(object_name_substrings) do
+					if string.find(object.Name:lower(), substring) then
+						AddHightlightModelDoor(object)
+						DistanceDoor(object)
+					end
+				end
+			end
+		end
+	else
+		ClearHightlightModelDoor()
+		EspDoorButton.Text = "Esp Door Off"
+	end
+end
+
+local function AddHightlightModelDEntities(object)
+	-- Check if the object already has a Highlight
+	if not object:FindFirstChildOfClass("Highlight") then
+		local highlight = Instance.new("Highlight")
+		highlight.FillColor = Color3.fromRGB(171, 0, 0)
+		highlight.OutlineColor = Color3.fromRGB(255, 0, 0)
+		highlight.FillTransparency = 0.75
+		highlight.OutlineTransparency = 0.75
+		highlight.Name = object.Name
+		highlight.Parent = object
+	end
+
+	-- Check if the object already has a BillboardGui
+	if not object:FindFirstChildOfClass("BillboardGui") then
+		local billboard = Instance.new("BillboardGui")
+		billboard.Size = UDim2.new(0.250, 0, 0.250, 0)
+		billboard.MaxDistance = math.huge
+		billboard.StudsOffset = Vector3.new(0, 0, 0)
+		billboard.Enabled = true
+		billboard.ResetOnSpawn = false
+		billboard.AlwaysOnTop = true
+		billboard.Name = object.Name
+		billboard.Parent = object
+
+		local textLabel = Instance.new("TextLabel")
+		textLabel.Size = UDim2.new(1, 0, 1, 0)
+		textLabel.BackgroundTransparency = 1
+		textLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
+		textLabel.Parent = billboard
+	end
 end
 
 
-local function deactivateNoLag()
-    for _, descendant in pairs(workspace:GetDescendants()) do
-        if descendant:IsA("ParticleEmitter") or descendant:IsA("Beam") or descendant:IsA("Trail") then
-            descendant.Enabled = true
-        end
-    end
+local function DistanceEntities(object)
+	for _, object in pairs(workspace:GetDescendants()) do
+		if object:IsA("BillboardGui") then
+			local textLabel = object.TextLabel
+			if object.Parent:IsA("BasePart") then
+				local distance = (humanoidRootPart.Position - object.Parent.Position).Magnitude
+				textLabel.Text = object.Name .. " [Distance: " .. math.floor(distance) .. " Studs]"
+			elseif object.Parent:IsA("Model") then
+				local distance = (humanoidRootPart.Position - object.Parent:GetPivot().Position).Magnitude
+				textLabel.Text = object.Name .. " [Distance: " .. math.floor(distance) .. " Studs]"
+			end
+			end
+	end
+end
+
+local function ClearHightlightModelEntities(Obj)
+	for _, Obj in pairs(workspace:GetDescendants()) do
+		if Obj:IsA("Highlight") or Obj:IsA("BillboardGui") then
+			if Obj.Name:lower() == "rushmoving" or Obj.Name:lower() == "ambushmoving" or Obj.Name:lower() == "screech" or Obj.Name:lower() == "figurerig" or Obj.Name:lower() == "giggle" or Obj.Name:lower() == "grumble"  or Obj.Name:lower() == "gloombat" or Obj.Name:lower() == "lookman" or Obj.Name:lower() == "seekrig" or Obj.Name:lower() == "a90" or Obj.Name:lower() == "a120" or Obj.Name:lower() == "a60" or Obj.Name:lower() == "haltmoving" then 
+				Obj:Destroy()
+			end
+		end
+	end
 end
 
 
-local function activateNoLagV2()
-    for _, part in pairs(workspace:GetDescendants()) do
-        if part:IsA("BasePart") then
-            originalMaterials[part] = part.Material
-            part.Material = Enum.Material.SmoothPlastic
-        end
-    end
+local function HightLightModelsEntities()
+	EspMonsters = not EspMonsters
+	if EspMonsters then
+		EspMonstersButton.Text = "Esp Entities On"
+		for _, object in pairs(workspace:GetDescendants()) do
+			if object:IsA("Model") or object:IsA("BasePart") then
+				for _, substring in pairs(object_name_substrings_Monsters) do
+					if string.find(object.Name:lower(), substring)
+					then
+						object.Shape = Enum.PartType.Ball
+						DistanceEntities(object)
+						AddHightlightModelDEntities(object)
+					end
+				end
+			end
+		end
+	else
+		ClearHightlightModelEntities()
+		EspMonstersButton.Text = "Esp Entities Off"
+		for _, object in pairs(workspace:GetDescendants()) do
+			if object:IsA("Model") or object:IsA("BasePart") then
+				for _, substring in pairs(object_name_substrings_Monsters) do
+					if string.find(object.Name:lower(), substring)
+					then
+						object.Shape = Enum.PartType.Block
+					end
+				end
+			end
+		end
+		end
 end
 
-local function deactivateNoLagV2()
-    for part, material in pairs(originalMaterials) do
-        part.Material = material
-    end
+local function DeleteSeek(Object)
+	for _, Object in pairs(workspace:GetDescendants()) do
+		if Object.Name == "Trigger" then
+			Object.CanTouch = false
+			end
+		end
 end
 
-local NoCPV = false
+local function AddHightlightModelDItem(object)
+	-- Check if the object already has a Highlight
+	if not object:FindFirstChildOfClass("Highlight") then
+		local highlight = Instance.new("Highlight")
+		highlight.FillColor = Color3.fromRGB(180, 180, 0)
+		highlight.OutlineColor = Color3.fromRGB(255, 255, 127)
+		highlight.FillTransparency = 0.75
+		highlight.OutlineTransparency = 0.75
+		highlight.Name = object.Name
+		highlight.Parent = object
+	end
+
+	-- Check if the object already has a BillboardGui
+	if not object:FindFirstChildOfClass("BillboardGui") then
+		local billboard = Instance.new("BillboardGui")
+		billboard.Size = UDim2.new(0.100, 0, 0.50, 0)
+		billboard.MaxDistance = math.huge
+		billboard.StudsOffset = Vector3.new(0, 0, 0)
+		billboard.Enabled = true
+		billboard.ResetOnSpawn = false
+		billboard.AlwaysOnTop = true
+		billboard.Name = object.Name
+		billboard.Parent = object
+
+		local textLabel = Instance.new("TextLabel")
+		textLabel.Size = UDim2.new(1, 0, 1, 0)
+		textLabel.BackgroundTransparency = 1
+		textLabel.Text = object.Name
+		textLabel.TextColor3 = Color3.fromRGB(255, 255, 0)
+		textLabel.Parent = billboard
+	end
+end
+
+
+
+local function DistanceItem(object)
+	for _, object in pairs(workspace:GetDescendants()) do
+		if object:IsA("BillboardGui") then
+			local textLabel = object.TextLabel
+
+						if object.Parent:IsA("BasePart") then
+							local distance = (humanoidRootPart.Position - object.Parent.Position).Magnitude
+							textLabel.Text = object.Name .. " [Distance: " .. math.floor(distance) .. " Studs]"
+						elseif object.Parent:IsA("Model") then
+							local distance = (humanoidRootPart.Position - object.Parent:GetPivot().Position).Magnitude
+							textLabel.Text = object.Name .. " [Distance: " .. math.floor(distance) .. " Studs]"
+						end
+					
+
+		
+
+	end
+	end
+end
+
+local function ClearHightlightModelItem(Obj)
+	for _, Obj in pairs(workspace:GetDescendants()) do
+		if Obj:IsA("Highlight") or Obj:IsA("BillboardGui") then
+			if Obj.Name:lower() == "Keyobtain" or Obj.Name:lower() == "candle" or Obj.Name:lower() == "crucifix" or Obj.Name:lower() == "lockpick" or Obj.Name:lower() == "skeletonkey" or Obj.Name:lower() == "vitamin" or Obj.Name:lower() == "flashlight" or Obj.Name:lower() == "fuseobtain" or Obj.Name:lower() == "glowstick" or Obj.Name:lower() == "shears" or Obj.Name:lower() == "pile" or Obj.Name:lower() == "battery" or Obj.Name:lower() == "bandage" then
+				Obj:Destroy()
+			end
+		end
+	end
+end
+
+
+local function HightLightModelsItem()
+	EspItem = not EspItem
+	if EspItem then
+		EspItemButton.Text = "Esp Item On"
+		local object_name_substrings = {"key","candle","crucifix","lockpick","skeletonkey","vitamin","flashlight","fuseobtain","glowstick","shears","pile","battery","bandage"}
+		for _, object in pairs(workspace:GetDescendants()) do
+			if object:IsA("Model") or object:IsA("BasePart") then
+				for _, substring in pairs(object_name_substrings) do
+					if string.find(object.Name:lower(), substring)
+					then
+						AddHightlightModelDItem(object)
+						DistanceItem(object)
+					end
+				end
+			end
+		end
+	else
+		ClearHightlightModelItem()
+		EspItemButton.Text = "Esp Item Off"
+	end
+end
+
+
+
+-- Fonction pour ajouter un highlight et un BillboardGui au modèle du joueur
+local function AddHighlightModelPlayer(object)
+	-- Vérifie si l'objet a déjà un Highlight
+	if not object:FindFirstChildOfClass("Highlight") then
+		local highlight = Instance.new("Highlight")
+		highlight.FillColor = Color3.fromRGB(85, 170, 0)
+		highlight.OutlineColor = Color3.fromRGB(85, 255, 127)
+		highlight.FillTransparency = 0.75
+		highlight.OutlineTransparency = 0.75
+		highlight.Name = "Player"
+		highlight.Parent = object
+	end
+
+	-- Vérifie si l'objet a déjà un BillboardGui
+	if not object:FindFirstChildOfClass("BillboardGui") then
+		local billboard = Instance.new("BillboardGui")
+		billboard.Size = UDim2.new(0.250, 0, 0.250, 0)
+		billboard.StudsOffset = Vector3.new(0, 3, 0) -- Offset légèrement au-dessus de l'objet
+		billboard.Enabled = true
+		billboard.ResetOnSpawn = false
+		billboard.AlwaysOnTop = true
+		billboard.Name = "Player"
+		billboard.Parent = object
+
+		local textLabel = Instance.new("TextLabel")
+		textLabel.Size = UDim2.new(1, 0, 1, 0)
+		textLabel.BackgroundTransparency = 1
+		textLabel.TextColor3 = Color3.fromRGB(85, 255, 0)
+		textLabel.Text = object.Name
+		textLabel.Parent = billboard
+	end
+end
+
+-- Fonction pour calculer la distance entre le joueur et un objet, et l'afficher
+local function UpdateDistancePlayer(humanoidRootPart)
+	for _, object in pairs(workspace:GetDescendants()) do
+		if object:IsA("BillboardGui") then
+			local textLabel = object:FindFirstChildOfClass("TextLabel")
+			if textLabel and object.Parent then
+				-- Vérification que l'objet est bien un joueur
+				local player = game.Players:GetPlayerFromCharacter(object.Parent.Parent)
+				if player then
+					-- Calcul de la distance pour les BasePart et les Model
+					if object.Parent:IsA("BasePart") then
+						local distance = (humanoidRootPart.Position - object.Parent.Position).Magnitude
+						textLabel.Text = object.Parent.Name .. " [Distance: " .. math.floor(distance) .. " Studs]"
+					elseif object.Parent:IsA("Model") and object.Parent.PrimaryPart then
+						local distance = (humanoidRootPart.Position - object.Parent.PrimaryPart.Position).Magnitude
+						textLabel.Text = object.Parent.Name .. " [Distance: " .. math.floor(distance) .. " Studs]"
+					end
+				end
+			end
+		end
+	end
+end
+
+
+
+-- Fonction pour nettoyer les Highlights et BillboardGui existants
+local function ClearHighlightModelPlayer()
+	for _, obj in pairs(workspace:GetDescendants()) do
+		if obj:IsA("Highlight") or obj:IsA("BillboardGui") then
+			if obj.Name:lower() == "Player" then
+			obj:Destroy()
+		end
+	end
+	end
+	end
+
+-- Fonction pour activer ou désactiver le ESP Player
+local function HighlightModelsPlayers()
+	EspPlayer = not EspPlayer
+	if EspPlayer then
+		EspPlayerButton.Text = "ESP Player On"
+		local localPlayer = game.Players.LocalPlayer
+		local humanoidRootPart = localPlayer.Character and localPlayer.Character:FindFirstChild("HumanoidRootPart")
+		if humanoidRootPart then
+			for _, object in pairs(workspace:GetDescendants()) do
+				if object:IsA("Model") and game.Players:FindFirstChild(object.Name) then
+					AddHighlightModelPlayer(object)
+					UpdateDistancePlayer(humanoidRootPart)
+				end
+			end
+		end
+	else
+		ClearHighlightModelPlayer()
+		EspPlayerButton.Text = "ESP Player Off"
+	end
+end
+
+
+
 local function NoCooldownPrompt()
-NoCPV = not NoCPV
-if NoCPV then
-NoCooldownPromptButton.Text = "No Cooldown Prompt On"
-for _, obj in pairs(workspace:GetDescendants()) do
-    if obj:IsA("ProximityPrompt") then
-        obj.HoldDuration = 0
-    end
-end
-else
-NoCooldownPromptButton.Text = "No Cooldown Prompt Off"
-for _, obj in pairs(workspace:GetDescendants()) do
-    if obj:IsA("ProximityPrompt") then
-        obj.HoldDuration = 1
-end
-end
-end
+	NoCooldownPrompt = not NoCooldownPrompt
+	if NoCooldownPrompt then
+		NoCooldownButton.Text = "No Cooldown Prompt On"
+			for _, prompt in pairs(workspace:GetDescendants()) do
+				if prompt:IsA("ProximityPrompt") then
+					prompt.HoldDuration = 0
+				end
+			end
+		else
+			NoCooldownButton.Text = "No Cooldown Prompt Off"
+		end
+	
 end
 
 
-NoCooldownPromptButton.MouseButton1Click:Connect(NoCooldownPrompt)
+-- Fonction pour activer automatiquement un Proximity Prompt
+	local function autoActivateProximityPrompt(proximityPrompt)
+		if proximityPrompt and proximityPrompt:IsA("ProximityPrompt") then
+			-- Connecte une fonction vide lors du déclenchement du ProximityPrompt
+			proximityPrompt.Triggered:Connect(function() end)
 
-local NoScreechV = false
-local function NoScreech()
-NoScreechV = not NoScreechV
-if NoScreechV then
-game:GetService("ReplicatedStorage").GameData.EntityDisableScreech.Value = true
-NoScreechButton.Text = "No Screech On"
-else
-game:GetService("ReplicatedStorage").GameData.EntityDisableScreech.Value = false
-NoScreechButton.Text = "No Screech Off"
-end
-end
+			-- Vérifie si le ProximityPrompt est affiché et activé
+			proximityPrompt.PromptShown:Connect(function()
+				if proximityPrompt.Enabled and not proximityPrompt.Active then
+					-- Eviter la récursion infinie
+					autoActivateProximityPrompt(proximityPrompt)
+				end
+			end)
+		end
+		end
 
-NoScreechButton.MouseButton1Click:Connect(NoScreech)
 
-local NoAmbushV = false
-local function NoAmbush()
-NoAmbushV = not NoAmbushV
-if NoAmbushV then
-game:GetService("ReplicatedStorage").GameData.SpawnAmbush.Value = false
-NoAmbushButton.Text = "No Ambush On"
-else
-game:GetService("ReplicatedStorage").GameData.SpawnAmbush.Value = true
-NoAmbushButton.Text = "No Ambush Off"
-end
-end
+	local function detectProximityPrompts(targetObject)
+		-- Parcourt les descendants de targetObject (et non de workspace directement)
+		for _, object in pairs(workspace:GetDescendants()) do
+			if object:IsA("ProximityPrompt") then
+				autoActivateProximityPrompt(object)
+			end
+		end
+	end
 
-NoAmbushButton.MouseButton1Click:Connect(NoAmbush)
-
-local function toggleFrame()
-    frame.Visible = not frame.Visible
-    frameMenu.Visible = not frameMenu.Visible
-end
-
-closeopen.MouseButton1Click:Connect(toggleFrame)
-
-local function toggleSF()
-scrollingFrameEsp.Visible = false
-scrollingFrame.Visible = true
-scrollingFramePlayer.Visible = false
-end
-
-MenuButton.MouseButton1Click:Connect(toggleSF)
-
-local function toggleSFE()
-scrollingFrameEsp.Visible = true
-scrollingFrame.Visible = false
-scrollingFramePlayer.Visible = false
-end
-
-EspButton.MouseButton1Click:Connect(toggleSFE)
-
-local function toggleSFP()
-scrollingFrameEsp.Visible = false
-scrollingFrame.Visible = false
-scrollingFramePlayer.Visible = true
+	-- Fonction AutoLoot pour activer ou désactiver l'auto loot
+	local function AutoLoot(targetObject)
+		AutoLootV = not AutoLootV
+		if AutoLootV then
+			AutoCollectButton.Text = "Auto Loot On"
+			-- Parcourt tous les Proximity Prompts dans l'objet cible
+			detectProximityPrompts(targetObject)
+		else
+			AutoCollectButton.Text = "Auto Loot Off"
+		end
+	end
+	
+local function BigDistancePrompt()
+	PromptDistanceV = not PromptDistanceV
+	if PromptDistanceV then
+		BigDistancePromptButton.Text = "Big Distance Prompt On"
+		for _, prompt in pairs(workspace:GetDescendants()) do
+			if prompt:IsA("ProximityPrompt") then
+				prompt.MaxActivationDistance = 50
+			end
+		end
+	else
+		BigDistancePromptButton.Text = "Big Distance Prompt Off"
+	end
 end
 
-PlayerButton.MouseButton1Click:Connect(toggleSFP)
+local function toggleNoLag()
+	NoLagV = not NoLagV 
 
+	if NoLagV then
+		NoLagButton.Text = "No Lag On"
+		for _, part in pairs(workspace:GetDescendants()) do
+			if part:IsA("BasePart") then
+					if not part:GetAttribute("OriginalMaterial") then
+						part:SetAttribute("OriginalMaterial", part.Material)
+					end
+					part.Material = Enum.Material.SmoothPlastic
+				else
+					local originalMaterial = part:GetAttribute("OriginalMaterial")
+					if originalMaterial then
+						part.Material = originalMaterial
+				
+				end
+			end
+		end
+	else
+		for _, part in pairs(workspace:GetDescendants()) do
+			if part:IsA("BasePart") then
+		local originalMaterial = part:GetAttribute("OriginalMaterial")
+		if originalMaterial then
+			part.Material = originalMaterial
 
-local userInputService = game:GetService("UserInputService")
+		end
+		NoLagButton.Text = "No Lag Off"
 
-
-local function toggleFramePc()
-    frame.Visible = not frame.Visible -- Inverse l'état de visibilité de la frame
-    
-    if frame.Visible == true then
-        userInputService.MouseBehavior = Enum.MouseBehavior.Default
-    else
-        -- Si la frame est fermée, bloque la souris au centre de l'écran
-        userInputService.MouseBehavior = Enum.MouseBehavior.LockCenter
-    end
+			end
+		end
+		end
 end
 
--- Détection de la touche (ex. touche "F" pour ouvrir/fermer la frame)
-userInputService.InputBegan:Connect(function(input, gameProcessed)
-    if not gameProcessed then
-        if input.KeyCode == Enum.KeyCode.Q then
-            toggleFramePc()
-        end
-    end
+
+local function toggleFullBright()
+	FullBrightV = not FullBrightV 
+	if FullBrightV then
+		-- Activer FullBright
+		game.Lighting.Brightness = 50
+		game.Lighting.Ambient = Color3.new(1, 1, 1)
+		game.Lighting.OutdoorAmbient = Color3.new(1, 1, 1)
+		FullBrightButton.Text = "FullBright On"  -- Couleur activée
+	else
+
+		game.Lighting.Brightness = originalLightingSettings.Brightness
+		game.Lighting.Ambient = originalLightingSettings.Ambient
+		game.Lighting.OutdoorAmbient = originalLightingSettings.OutdoorAmbient
+		FullBrightButton.Text = "FullBright Off"  -- Couleur désactivée
+	end
+	 -- Inverser l'état
+end
+
+
+EspClosetButton.MouseButton1Click:Connect(HightLightModelsCloset)
+
+EspItemButton.MouseButton1Click:Connect(HightLightModelsItem)
+
+EspDoorButton.MouseButton1Click:Connect(HightLightModelsDoor)
+
+EspMonstersButton.MouseButton1Click:Connect(HightLightModelsEntities)
+
+NoCooldownButton.MouseButton1Click:Connect(NoCooldownPrompt)
+
+NoSeekButton.MouseButton1Click:Connect(DeleteSeek)
+
+NoLagButton.MouseButton1Click:Connect(toggleNoLag)
+
+BigDistancePromptButton.MouseButton1Click:Connect(BigDistancePrompt)
+
+FullBrightButton.MouseButton1Click:Connect(toggleFullBright)
+
+ToggleFrameButton.MouseButton1Click:Connect(ToggleFrame)
+
+EspPlayerButton.MouseButton1Click:Connect(HighlightModelsPlayers)
+
+	AutoCollectButton.MouseButton1Click:Connect(AutoLoot)
+
+MainButton.MouseButton1Click:Connect(function()
+	showSection(ScrollingFrameMain)
 end)
 
-
-RunService.RenderStepped:Connect(function()
-
---[[if AutoLootV then
-checkProximityPrompts()
-end]]--
-if SpeedBoostV then
-SpeedBoostButton.Text = "Speed Boost On"
-local character = player.Character
-    if character then
-        local humanoid = character:FindFirstChildOfClass("Humanoid")
-        if humanoid then
-            humanoid.WalkSpeed = 22
-end
-end
-else
-SpeedBoostButton.Text = "Speed Boost Off"
-end
-espTargetsMonsters = {}
-    if MobNotifV then
-        frameMonsterNotify.Visible = true
-        MonsterNotifyButton.Text = "Monster Notify On"
-        
-        -- Make sure the model has a valid Name property
-        if model and model.Name then
-            local nameLower = model.Name:lower()
-            local monsterWarnings = {
-                AmbushMoving = "Warning Ambush Spawned!",
-                RushMoving = "Warning Rush Spawned!",
-                HaltMoving = "Warning Halt Spawned!",
-                FigureRig = "Warning Figure Spawned!",
-Screech = "WarningScreech Spawned!",
-                GiggleCeiling = "Warning Giggle Spawned!",
-                GloombatSwarm = "Warning Gloombat Swarm Spawned!",
-                eyes = "Warning Eyes Spawned!"
-            }
-
-            -- Display the appropriate notification if the monster is recognized
-            if monsterWarnings[nameLower] then
-                TextMonstersNotif.Text = monsterWarnings[nameLower]
-                task.wait(3)  -- Use task.wait instead of wait
-                TextMonstersNotif.Text = ""
-            end
-
-        end
-    else
-        MonsterNotifyButton.Text = "Monster Notify Off"
-        frameMonsterNotify.Visible = false
-    end
-
-if NoCPV then
-NoCooldownPromptButton.Text = "No Cooldown Prompt On"
-for _, obj in pairs(workspace:GetDescendants()) do
-    if obj:IsA("ProximityPrompt") then
-        obj.HoldDuration = 0
-    end
-end
-else
-NoCooldownPromptButton.Text = "No Cooldown Prompt Off"
-for _, obj in pairs(workspace:GetDescendants()) do
-    if obj:IsA("ProximityPrompt") then
-        obj.HoldDuration = 1
-end
-end
-end
-if espActive then
-        espButton.Text = "ESP On"
-        updateEspTargetsModels()
-        highlightModels()
-    else
-        espButton.Text = "ESP Off"
-        clearHighlights()
-    end
-if NoScreechV then
-game:GetService("ReplicatedStorage").GameData.EntityDisableScreech.Value = true
-NoScreechButton.Text = "No Screech On"
-else
-game:GetService("ReplicatedStorage").GameData.EntityDisableScreech.Value = false
-NoScreechButton.Text = "No Screech Off"
-end
-if NoAmbushV then
-game:GetService("ReplicatedStorage").GameData.SpawnAmbush.Value = false
-NoAmbushButton.Text = "No Ambush On"
-else
-game:GetService("ReplicatedStorage").GameData.SpawnAmbush.Value = true
-NoAmbushButton.Text = "No Ambush Off"
-end
-if noLagEnabled then
-activateNoLagV2()
-activateNoLag()
-else
-deactivateNoLagV2()
-deactivateNoLag()
-end
-    espTargets = {}
-    for _, target in pairs(game.Players:GetPlayers()) do
-        if target ~= player then
-            table.insert(espTargets, target)
-        end
-    end
-    if fullBrightEnabled then
-        FullBrightButton.Text = "Full Bright On"
-        game.Lighting.Brightness = 100
-        game.Lighting.Ambient = Color3.fromRGB(255, 255, 255)
-    else
-        FullBrightButton.Text = "Full Bright Off"
-        game.Lighting.Brightness = 1
-        game.Lighting.Ambient = Color3.fromRGB(127, 127, 127)
-end
-player.Character:SetAttribute("Climbing", false)
-wait(1)
+EspButton.MouseButton1Click:Connect(function()
+	showSection(ScrollingFrameEsp)
 end)
+
+PlayerButton.MouseButton1Click:Connect(function()
+	showSection(ScrollingFramePlayer)
+end)
+
+	RunService.RenderStepped:Connect(function(deltaTime,targetObject,proximityPrompt)
+	deltaTime = 1
+	
+	if AutoLootV then
+		AutoCollectButton.Text = "Auto Loot On"
+		detectProximityPrompts(targetObject)
+			autoActivateProximityPrompt(proximityPrompt)
+	else
+		AutoCollectButton.Text = "Auto Loot Off"
+	end
+	if EspPlayer then
+		EspPlayerButton.Text = "ESP Player On"
+		local localPlayer = game.Players.LocalPlayer
+		local humanoidRootPart = localPlayer.Character and localPlayer.Character:FindFirstChild("HumanoidRootPart")
+		if humanoidRootPart then
+			for _, object in pairs(workspace:GetDescendants()) do
+				if object:IsA("Model") and game.Players:FindFirstChild(object.Name) then
+					AddHighlightModelPlayer(object)
+					UpdateDistancePlayer(humanoidRootPart)
+				end
+			end
+		end
+	else
+		ClearHighlightModelPlayer()
+		EspPlayerButton.Text = "ESP Player Off"
+	end
+	if FullBrightV then
+		-- Activer FullBright
+		game.Lighting.Brightness = 50
+		game.Lighting.Ambient = Color3.new(1, 1, 1)
+		game.Lighting.OutdoorAmbient = Color3.new(1, 1, 1)
+		FullBrightButton.Text = "FullBright On"  -- Couleur activée
+	else
+
+		game.Lighting.Brightness = originalLightingSettings.Brightness
+		game.Lighting.Ambient = originalLightingSettings.Ambient
+		game.Lighting.OutdoorAmbient = originalLightingSettings.OutdoorAmbient
+		FullBrightButton.Text = "FullBright Off"  -- Couleur désactivée
+	end
+	if PromptDistanceV then
+		BigDistancePromptButton.Text = "Big Distance Prompt On"
+		for _, prompt in pairs(workspace:GetDescendants()) do
+			if prompt:IsA("ProximityPrompt") then
+				prompt.MaxActivationDistance = 50
+			end
+		end
+	else
+		BigDistancePromptButton.Text = "Big Distance Prompt Off"
+	end
+	if NoCooldownPrompt then
+		NoCooldownButton.Text = "No Cooldown Prompt On"
+		for _, prompt in pairs(workspace:GetDescendants()) do
+			if prompt:IsA("ProximityPrompt") then
+				prompt.HoldDuration = 0
+			end
+		end
+	else
+		NoCooldownButton.Text = "No Cooldown Prompt Off"
+	end
+	if NoLagV then
+		NoLagButton.Text = "No Lag On"
+		for _, part in pairs(workspace:GetDescendants()) do
+			if part:IsA("BasePart") then
+				if not part:GetAttribute("OriginalMaterial") then
+					part:SetAttribute("OriginalMaterial", part.Material)
+				end
+				part.Material = Enum.Material.SmoothPlastic
+			else
+				local originalMaterial = part:GetAttribute("OriginalMaterial")
+				if originalMaterial then
+					part.Material = originalMaterial
+
+				end
+			end
+		end
+	else
+		for _, part in pairs(workspace:GetDescendants()) do
+			if part:IsA("BasePart") then
+				local originalMaterial = part:GetAttribute("OriginalMaterial")
+				if originalMaterial then
+					part.Material = originalMaterial
+
+				end
+				NoLagButton.Text = "No Lag Off"
+
+			end
+		end
+	end
+	if EspCloset then
+		EspClosetButton.Text = "Esp Closet On"
+		local object_name_substrings = {"closet"}
+		for _, object in pairs(workspace:GetDescendants()) do
+			if object:IsA("Model") or object:IsA("BasePart") then
+				for _, substring in pairs(object_name_substrings) do
+					if string.find(object.Name:lower(), substring) then
+						AddHightlightModelCloset(object)
+						DistanceCloset(object)
+					end
+				end
+			end
+		end
+	else
+		ClearHightlightModelCloset()
+		EspClosetButton.Text = "Esp Closet Off"
+	end
+	if EspDoor then
+		EspDoorButton.Text = "Esp Door On"
+		local object_name_substrings = {"door"}
+		for _, object in pairs(workspace:GetDescendants()) do
+			if object:IsA("Model") or object:IsA("BasePart") then
+				for _, substring in pairs(object_name_substrings) do
+					if string.find(object.Name:lower(), substring) then
+						AddHightlightModelDoor(object)
+						DistanceDoor(object)
+					end
+				end
+			end
+		end
+	else
+		ClearHightlightModelDoor()
+		EspDoorButton.Text = "Esp Door Off"
+	end
+	if EspMonsters then
+		EspMonstersButton.Text = "Esp Entities On"
+		for _, object in pairs(workspace:GetDescendants()) do
+			if object:IsA("Model") or object:IsA("BasePart") then
+				for _, substring in pairs(object_name_substrings_Monsters) do
+					if string.find(object.Name:lower(), substring)
+					then
+						object.Shape = Enum.PartType.Ball
+						DistanceEntities(object)
+						AddHightlightModelDEntities(object)
+					end
+				end
+			end
+		end
+	else
+		ClearHightlightModelEntities()
+		EspMonstersButton.Text = "Esp Entities Off"
+		for _, object in pairs(workspace:GetDescendants()) do
+			if object:IsA("Model") or object:IsA("BasePart") then
+				for _, substring in pairs(object_name_substrings_Monsters) do
+					if string.find(object.Name:lower(), substring)
+					then
+						object.Shape = Enum.PartType.Block
+					end
+				end
+			end
+		end
+	end
+	if EspItem then
+		EspItemButton.Text = "Esp Item On"
+		local object_name_substrings = {"key","candle","crucifix","lockpick","skeletonkey","vitamin","flashlight","fuseobtain","glowstick","shears","pile","battery","bandage"}
+		for _, object in pairs(workspace:GetDescendants()) do
+			if object:IsA("Model") or object:IsA("BasePart") then
+				for _, substring in pairs(object_name_substrings) do
+					if string.find(object.Name:lower(), substring)
+					then
+						AddHightlightModelDItem(object)
+						DistanceItem(object)
+					end
+				end
+			end
+		end
+	else
+		ClearHightlightModelItem()
+		EspItemButton.Text = "Esp Item Off"
+	end
+end)
+
