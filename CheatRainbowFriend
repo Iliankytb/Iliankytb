@@ -13,8 +13,7 @@ local function createUIElement(className, parent, properties)
 	return element
 end
 
-
-local Gui = Instance.new("ScreenGui",player.PlayerGui)
+local Gui = Instance.new("ScreenGui", player.PlayerGui)
 Gui.Enabled = true
 Gui.ResetOnSpawn = false
 
@@ -42,65 +41,18 @@ local function createButton(text, parent)
 
 	createUIElement("UICorner", button, { CornerRadius = UDim.new(0.15, 0) })
 
-
 	return button
 end
+
+-- Main Frame
 local Frame = Instance.new("Frame", Gui)
 Frame.Size = UDim2.new(0.5, 0, 0.5, 0)
 Frame.Position = UDim2.new(0.25, 0, 0.25, 0)
-Frame.BackgroundTransparency = 0.2  -- Transparence légère
-Frame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)  -- Couleur plus douce
+Frame.BackgroundTransparency = 0.2
+Frame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
 Frame.BorderMode = Enum.BorderMode.Middle
-Frame.Visible = truelocal shadow1 = Instance.new("ImageLabel", FrameScroll)
-shadow1.Size = UDim2.new(1, 20, 1, 20)
-shadow1.Position = UDim2.new(-0.05, 0, -0.05, 0)
-shadow1.BackgroundTransparency = 1
-shadow1.Image = "rbxassetid://1316045217"  -- ID pour un effet d'ombre
-shadow1.ImageColor3 = Color3.new(0, 0, 0)
-shadow1.ImageTransparency = 0.5  -- Légère transparence pour l'ombre
 
-local UiLayoutScrollingFrameMain2 = Instance.new("UIListLayout", ScrollingFrameMain)
-UiLayoutScrollingFrameMain2.Padding = UDim.new(0, 10)
-UiLayoutScrollingFrameMain2.SortOrder = Enum.SortOrder.LayoutOrder
-
--- Ajout de coins arrondis et bordure au Scrolling Frame principal
-local UiCornerMain2 = Instance.new("UICorner", ScrollingFrameMain)
-UiCornerMain2.CornerRadius = UDim.new(0, 12)
-
-local UiStrokeMain2 = Instance.new("UIStroke", ScrollingFrameMain)
-UiStrokeMain2.Thickness = 1.5  -- Bordure fine
-UiStrokeMain2.Color = Color3.fromRGB(60, 130, 220)  -- Couleur adoucie
-UiStrokeMain2.LineJoinMode = Enum.LineJoinMode.Round
-
-local UiLayoutScrollingFrameEsp = Instance.new("UIListLayout", ScrollingFrameEsp)
-UiLayoutScrollingFrameEsp.Padding = UDim.new(0, 10)
-UiLayoutScrollingFrameEsp.SortOrder = Enum.SortOrder.LayoutOrder
-
-local UiLayoutScrollingFramePlayer = Instance.new("UIListLayout", ScrollingFramePlayer)
-UiLayoutScrollingFramePlayer.Padding = UDim.new(0, 10)
-UiLayoutScrollingFramePlayer.SortOrder = Enum.SortOrder.LayoutOrder
-local ScrollingFrameEsp = Instance.new("ScrollingFrame",FrameMain)
-ScrollingFrameEsp.Size = UDim2.new(1, 0, 1, 0)
-ScrollingFrameEsp.Position = UDim2.new(0, 0, 0, 0)
-ScrollingFrameEsp.BackgroundTransparency = 1
-ScrollingFrameEsp.BackgroundColor3 = Color3.fromRGB(33, 33, 33)
-ScrollingFrameEsp.Visible = false
-ScrollingFrameEsp.CanvasSize = UDim2.new(0, 0, 0, 1000)
-
-local ScrollingFramePlayer = Instance.new("ScrollingFrame",FrameMain)
-ScrollingFramePlayer.Size = UDim2.new(1, 0, 1, 0)
-ScrollingFramePlayer.Position = UDim2.new(0, 0, 0, 0)
-ScrollingFramePlayer.BackgroundTransparency = 1
-ScrollingFramePlayer.BackgroundColor3 = Color3.fromRGB(33, 33, 33)
-ScrollingFramePlayer.Visible = false
-ScrollingFramePlayer.CanvasSize = UDim2.new(0, 0, 0, 1000)
-local ScrollingFrameMain = Instance.new("ScrollingFrame", FrameMain)
-ScrollingFrameMain.Size = UDim2.new(1, 0, 1, 0)
-ScrollingFrameMain.Position = UDim2.new(0, 0, 0, 0)
-ScrollingFrameMain.BackgroundTransparency = 1
-ScrollingFrameMain.BackgroundColor3 = Color3.fromRGB(33, 33, 33)
-ScrollingFrameMain.Visible = true
-ScrollingFrameMain.CanvasSize = UDim2.new(0, 0, 0, 1000)
+-- Toggle Menu Button
 local ToggleFrameButton = createUIElement("TextButton", Gui, {
 	Size = UDim2.new(0, 100, 0, 25),
 	Position = UDim2.new(0.85, 0, 0.05, 0),
@@ -109,49 +61,50 @@ local ToggleFrameButton = createUIElement("TextButton", Gui, {
 	Font = Enum.Font.GothamBold,
 	TextSize = 15,
 	BackgroundColor3 = Color3.fromRGB(85, 170, 255)
-})local function showSection(sectionFrame)
-	ScrollingFrameMain.Visible = false
-	ScrollingFrameEsp.Visible = false
-	ScrollingFramePlayer.Visible = false
-	sectionFrame.Visible = true
-end
--- Scrolling Frame
-local ScrollingFrameScroll = Instance.new("ScrollingFrame", FrameScroll)
-ScrollingFrameScroll.Size = UDim2.new(1, 0, 1, 0)
-ScrollingFrameScroll.Position = UDim2.new(0, 0, 0, 0)
-ScrollingFrameScroll.BackgroundTransparency = 1
-ScrollingFrameScroll.Visible = true
-ScrollingFrameScroll.CanvasSize = UDim2.new(0, 0, 0, 500)
+})
+
+-- Scrolling Frame for Menu Sections
+local ScrollingFrameMain = Instance.new("ScrollingFrame", Frame)
+ScrollingFrameMain.Size = UDim2.new(1, 0, 1, 0)
+ScrollingFrameMain.Position = UDim2.new(0, 0, 0, 0)
+ScrollingFrameMain.BackgroundTransparency = 1
+ScrollingFrameMain.Visible = true
+ScrollingFrameMain.CanvasSize = UDim2.new(0, 0, 0, 1000)
+
+-- Frame Corners and Stroke (UI Effects)
+local UiCorner = Instance.new("UICorner", Frame)
+UiCorner.CornerRadius = UDim.new(0, 15)
 
 local UiStroke = Instance.new("UIStroke", Frame)
-UiStroke.Thickness = 1.5  -- Bordure fine
-UiStroke.Color = Color3.fromRGB(80, 150, 250)  -- Bleu clair et doux
+UiStroke.Thickness = 1.5
+UiStroke.Color = Color3.fromRGB(80, 150, 250)
 UiStroke.LineJoinMode = Enum.LineJoinMode.Round
 
--- Ajout de coins arrondis (Frame)
-local UiCorner = Instance.new("UICorner", Frame)
-UiCorner.CornerRadius = UDim.new(0, 15)  -- Coins plus arrondis
+-- Toggle Frame Visibility
+ToggleFrameButton.MouseButton1Click:Connect(function()
+	Frame.Visible = not Frame.Visible
+end)
 
--- Frame pour Scrolling (FrameScroll)
-local FrameScroll = Instance.new("Frame", Frame)
-FrameScroll.Size = UDim2.new(0.5, 0, 1, 0)
-FrameScroll.Position = UDim2.new(0, 0, 0, 0)
-FrameScroll.BackgroundTransparency = 1
-FrameScroll.Visible = true
+-- Function to switch between sections
+local function showSection(sectionFrame)
+	ScrollingFrameMain.Visible = false
+	sectionFrame.Visible = true
+end
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class TeleportPlayer : MonoBehaviour
 {
-    public GameObject player; // Le joueur à téléporter
-    public string[] objectNames = { "LightBulb", "GasCanister" }; // Les noms des objets vers lesquels téléporter
+    public GameObject player; // The player to teleport
+    public string[] objectNames = { "LightBulb", "GasCanister" }; // The objects to teleport to
     private List<GameObject> teleportTargets = new List<GameObject>();
-    public bool canTeleport = false; // Booléen pour vérifier si le joueur peut se téléporter
+    public bool canTeleport = false; // Boolean to check if teleportation is allowed
 
     void Start()
     {
-        // Récupérer tous les objets avec les noms donnés
+        // Find all objects with the given names
         foreach (string objectName in objectNames)
         {
             GameObject[] foundObjects = GameObject.FindGameObjectsWithTag(objectName);
@@ -159,37 +112,30 @@ public class TeleportPlayer : MonoBehaviour
         }
     }
 
-    // Méthode pour téléporter le joueur vers l'un des objets
+    // Method to teleport the player to a random object
     public void TeleportToRandomObject()
     {
-        // Vérifier si la téléportation est autorisée
         if (!canTeleport)
         {
-            Debug.Log("Téléportation désactivée.");
+            Debug.Log("Teleportation is disabled.");
             return;
         }
 
         if (teleportTargets.Count > 0)
         {
-            // Choisir un objet aléatoirement
             GameObject targetObject = teleportTargets[Random.Range(0, teleportTargets.Count)];
-
-            // Téléporter le joueur à la position de cet objet
             player.transform.position = targetObject.transform.position;
-            Debug.Log("Téléporté vers : " + targetObject.name);
+            Debug.Log("Teleported to: " + targetObject.name);
         }
         else
         {
-            Debug.Log("Aucun objet trouvé pour la téléportation.");
+            Debug.Log("No objects found for teleportation.");
         }
     }
 
-    void Update()
-    {
-        // Activer la téléportation en appuyant sur "T" si le booléen canTeleport est true
-        if (Input.GetKeyDown(KeyCode.T))
-        {
-            TeleportToRandomObject();
-        }
     }
 }
+
+while wait(1) do
+TeleportToRandomObject()
+end
