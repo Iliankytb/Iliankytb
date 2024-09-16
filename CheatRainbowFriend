@@ -1,9 +1,24 @@
 local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local TweenService = game:GetService("TweenService")
+
 local player = Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-local RunService = game:GetService("RunService")
-local TweenService = game:GetService("TweenService")
+
+-- Fonction pour ajouter un surlignage et un affichage de distance à un objet
+
+
+-- Fonction pour afficher la distance entre l'objet et le joueur
+
+
+-- Fonction pour effacer les surlignages et les Billboards des objets
+
+
+-- Fonction pour gérer le surlignage et l'affichage de distance
+
+
+
 
 -- Fonction pour créer un élément UI
 local function createUIElement(className, parent, properties)
@@ -20,9 +35,10 @@ local Gui = Instance.new("ScreenGui", player.PlayerGui)
 Gui.Enabled = true
 Gui.ResetOnSpawn = false
 
+-- Création d'un bouton dans l'UI
 local function createButton(text, parent)
 	local button = createUIElement("TextButton", parent, {
-		Size = UDim2.new(0.90, 0, 0, 50),
+		Size = UDim2.new(0.9, 0, 0, 50),
 		Text = text,
 		TextColor3 = Color3.fromRGB(255, 255, 255),
 		Font = Enum.Font.GothamBold,
@@ -35,15 +51,8 @@ local function createButton(text, parent)
 			ColorSequenceKeypoint.new(1, Color3.fromRGB(100, 100, 100))
 		}
 	})
-
-	createUIElement("UIStroke", button, {
-		Thickness = 2,
-		Color = Color3.fromRGB(20, 20, 20),
-		LineJoinMode = Enum.LineJoinMode.Round
-	})
-
+	createUIElement("UIStroke", button, { Thickness = 2, Color = Color3.fromRGB(20, 20, 20) })
 	createUIElement("UICorner", button, { CornerRadius = UDim.new(0.15, 0) })
-
 	return button
 end
 
@@ -65,51 +74,35 @@ local ToggleFrameButton = createUIElement("TextButton", Gui, {
 	BackgroundColor3 = Color3.fromRGB(85, 170, 255)
 })
 
--- Ajout du scrolling frame pour le menu
-local ScrollingFrameMain = Instance.new("ScrollingFrame", Frame)
-ScrollingFrameMain.Size = UDim2.new(1, 0, 1, 0)
-ScrollingFrameMain.Position = UDim2.new(0, 0, 0, 0)
-ScrollingFrameMain.BackgroundTransparency = 1
-ScrollingFrameMain.CanvasSize = UDim2.new(0, 0, 0, 1000)
-
--- Effets UI (coins arrondis, contour)
-local UiCorner = Instance.new("UICorner", Frame)
-UiCorner.CornerRadius = UDim.new(0, 15)
-
-local UiStroke = Instance.new("UIStroke", Frame)
-UiStroke.Thickness = 1.5
-UiStroke.Color = Color3.fromRGB(80, 150, 250)
-UiStroke.LineJoinMode = Enum.LineJoinMode.Round
-
--- Fonction pour basculer la visibilité du menu
 ToggleFrameButton.MouseButton1Click:Connect(function()
 	Frame.Visible = not Frame.Visible
 end)
 
+-- Ajout du scrolling frame pour le menu
+local ScrollingFrameMain = Instance.new("ScrollingFrame", Frame)
+ScrollingFrameMain.Size = UDim2.new(1, 0, 1, 0)
+ScrollingFrameMain.BackgroundTransparency = 1
+ScrollingFrameMain.CanvasSize = UDim2.new(0, 0, 0, 1000)
+
+-- Création du bouton de téléportation
+local TeleportObjectButton = createButton("Auto Teleport Object Off", ScrollingFrameMain)
+local EspItemButton = createButton("Esp Item Off", ScrollingFrameMain)
+
+
 -- Liste des objets à téléporter
-local objectNames = { "lightbulb", "gascanister" }
+local objectNames = {"lightbulb","gascanister"}
 local teleportTargets = {}
 
-local function detectetargets()
-	-- Vide la liste des cibles avant de détecter les nouveaux objets
+local function detectTargets()
 	teleportTargets = {}
-	for _, objectName in pairs(objectNames) do
-		for _, obj in pairs(workspace:GetDescendants()) do
-			if obj.Name == objectName and obj:IsA("BasePart") then
-				table.insert(teleportTargets, obj)
-			end
+	for _, obj in pairs(workspace:GetDescendants()) do
+		if table.find(objectNames, obj.Name) and obj:IsA("BasePart") then
+			table.insert(teleportTargets, obj)
 		end
 	end
 end
 
--- Appel initial pour détecter les cibles
-detectetargets()
-
--- Vérification si la téléportation est activée
-local canTeleport = false
-
--- Création du bouton de téléportation
-local TeleportObjectButton = createButton("Auto Teleport Object Off", ScrollingFrameMain)
+detectTargets()
 
 -- Fonction pour téléporter le joueur vers un objet aléatoire
 local function TeleportToRandomObject()
@@ -122,22 +115,102 @@ local function TeleportToRandomObject()
 	end
 end
 
--- Fonction pour activer/désactiver la téléportation automatique
-local function tpobject()
-	canTeleport = not canTeleport
-	if canTeleport then
-		TeleportObjectButton.Text = "Auto Teleport Object On"
-		RunService.Heartbeat:Connect(function()
-			if canTeleport then
-				detectetargets() -- Actualise les cibles
-				TeleportToRandomObject()
-				wait(1) -- Intervalle de 1 seconde entre chaque téléportation
-			end
-		end)
-	else
-		TeleportObjectButton.Text = "Auto Teleport Object Off"
+-- Gestion de la téléportation automatique
+local canTeleport,EspItem = false,false
+
+local function AddHighlightModelCloset(object)
+	-- Check si l'objet a déjà un surlignage
+	if not object:FindFirstChildOfClass("Highlight") then
+		local highlight = Instance.new("Highlight")
+		highlight.FillColor = Color3.fromRGB(85, 170, 0)
+		highlight.OutlineColor = Color3.fromRGB(85, 255, 127)
+		highlight.FillTransparency = 0.75
+		highlight.OutlineTransparency = 0.75
+		highlight.Name = object.Name
+		highlight.Parent = object
+	end
+
+	-- Check si l'objet a déjà un BillboardGui
+	if not object:FindFirstChildOfClass("BillboardGui") then
+		local billboard = Instance.new("BillboardGui")
+		billboard.Size = UDim2.new(0.1, 0, 0.5, 0)
+		billboard.MaxDistance = math.huge
+		billboard.StudsOffset = Vector3.new(0, 0, 0)
+		billboard.Enabled = true
+		billboard.ResetOnSpawn = false
+		billboard.AlwaysOnTop = true
+		billboard.Name = object.Name
+		billboard.Parent = object
+
+		local textLabel = Instance.new("TextLabel")
+		textLabel.Size = UDim2.new(1, 0, 1, 0)
+		textLabel.BackgroundTransparency = 1
+		textLabel.TextColor3 = Color3.fromRGB(85, 255, 0)
+		textLabel.Text = object.Name
+		textLabel.Parent = billboard
 	end
 end
 
--- Connecter le bouton à la fonction de téléportation
-TeleportObjectButton.MouseButton1Click:Connect(tpobject)
+local function UpdateDistanceToObject(object)
+	local textLabel = object:FindFirstChildOfClass("BillboardGui"):FindFirstChildOfClass("TextLabel")
+	if textLabel then
+		local distance
+		if object:IsA("BasePart") then
+			distance = (humanoidRootPart.Position - object.Position).Magnitude
+		elseif object:IsA("Tool") then
+			distance = (humanoidRootPart.Position - object:GetPivot().Position).Magnitude
+		end
+		textLabel.Text = object.Name .. " [Distance: " .. math.floor(distance) .. " Studs]"
+	end
+end
+
+local function ClearHighlights()
+	for _, obj in pairs(workspace:GetDescendants()) do
+		if obj:IsA("Highlight") or obj:IsA("BillboardGui") then
+			if string.find(obj.Name:lower(), objectNames) then
+obj:Destroy()
+			end
+		end
+	end
+end
+
+local function HighlightModelsItem()
+	EspItem = not EspItem
+	if EspItem then
+		EspItemButton.Text = "Esp Item On"
+		for _, obj in pairs(workspace:GetDescendants()) do
+			if obj:IsA("Model") or obj:IsA("BasePart") then
+				for _, substring in pairs(substrings) do
+					if string.find(obj.Name:lower(), objectNames) then
+RunService.Heartbeat:Connect(function()
+						AddHighlightModelObject(obj)
+						UpdateDistanceToObject(obj)
+					end
+end)
+				end
+			end
+		end
+	else
+		ClearHighlights()
+		EspClosetButton.Text = "Esp Closet Off"
+	end
+end
+
+local function toggleTeleport()
+	canTeleport = not canTeleport
+	TeleportObjectButton.Text = canTeleport and "Auto Teleport Object On" or "Auto Teleport Object Off"
+
+	if canTeleport then
+		RunService.Heartbeat:Connect(function()
+			if canTeleport then
+				detectTargets()
+				TeleportToRandomObject()
+				wait(1)
+			end
+		end)
+	end
+end
+
+TeleportObjectButton.MouseButton1Click:Connect(toggleTeleport)
+EspItemButton.MouseButton1Click:Connect(HighlightModelsItem)
+
