@@ -1,9 +1,11 @@
-local player = game.Players.LocalPlayer
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
-local teleportObjects = {"LightBulb", "GasCanister"} -- Objets vers lesquels téléporter
-local canTeleport = false -- Booléen pour vérifier si la téléportation est activée
-local teleportInterval = 1.5 
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+local RunService = game:GetService("RunService")
+local TweenService = game:GetService("TweenService")
 
+-- Fonction pour créer un élément UI
 local function createUIElement(className, parent, properties)
 	local element = Instance.new(className)
 	element.Parent = parent
@@ -13,6 +15,7 @@ local function createUIElement(className, parent, properties)
 	return element
 end
 
+-- Création de l'interface utilisateur
 local Gui = Instance.new("ScreenGui", player.PlayerGui)
 Gui.Enabled = true
 Gui.ResetOnSpawn = false
@@ -44,15 +47,14 @@ local function createButton(text, parent)
 	return button
 end
 
--- Main Frame
+-- Création du cadre principal
 local Frame = Instance.new("Frame", Gui)
 Frame.Size = UDim2.new(0.5, 0, 0.5, 0)
 Frame.Position = UDim2.new(0.25, 0, 0.25, 0)
 Frame.BackgroundTransparency = 0.2
 Frame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-Frame.BorderMode = Enum.BorderMode.Middle
 
--- Toggle Menu Button
+-- Bouton pour ouvrir/fermer le menu
 local ToggleFrameButton = createUIElement("TextButton", Gui, {
 	Size = UDim2.new(0, 100, 0, 25),
 	Position = UDim2.new(0.85, 0, 0.05, 0),
@@ -63,15 +65,14 @@ local ToggleFrameButton = createUIElement("TextButton", Gui, {
 	BackgroundColor3 = Color3.fromRGB(85, 170, 255)
 })
 
--- Scrolling Frame for Menu Sections
+-- Ajout du scrolling frame pour le menu
 local ScrollingFrameMain = Instance.new("ScrollingFrame", Frame)
 ScrollingFrameMain.Size = UDim2.new(1, 0, 1, 0)
 ScrollingFrameMain.Position = UDim2.new(0, 0, 0, 0)
 ScrollingFrameMain.BackgroundTransparency = 1
-ScrollingFrameMain.Visible = true
 ScrollingFrameMain.CanvasSize = UDim2.new(0, 0, 0, 1000)
 
--- Frame Corners and Stroke (UI Effects)
+-- Effets UI (coins arrondis, contour)
 local UiCorner = Instance.new("UICorner", Frame)
 UiCorner.CornerRadius = UDim.new(0, 15)
 
@@ -80,53 +81,54 @@ UiStroke.Thickness = 1.5
 UiStroke.Color = Color3.fromRGB(80, 150, 250)
 UiStroke.LineJoinMode = Enum.LineJoinMode.Round
 
--- Toggle Frame Visibility
+-- Fonction pour basculer la visibilité du menu
 ToggleFrameButton.MouseButton1Click:Connect(function()
 	Frame.Visible = not Frame.Visible
 end)
 
--- Function to switch between sections
-local function showSection(sectionFrame)
-	ScrollingFrameMain.Visible = false
-	sectionFrame.Visible = true
-end
-
-local teleportButton = createButton("Auto Teleport Object Off",ScrollingFrameMain)
-
+-- Liste des objets à téléporter
+local objectNames = { "LightBulb", "GasCanister" }
 local teleportTargets = {}
-for _, objectName in ipairs(teleportObjects) do
-    for _, obj in ipairs(workspace:GetDescendants()) do
-        if obj.Name == objectName then
-            table.insert(teleportTargets, obj)
-        end
-    end
+
+-- Trouver les objets dans le jeu avec les noms donnés
+for _, objectName in pairs(objectNames) do
+	for _, obj in pairs(workspace:GetChildren()) do
+		if obj.Name == objectName then
+			table.insert(teleportTargets, obj)
+		end
+	end
 end
 
--- Fonction pour téléporter le joueur à un objet aléatoire
-local function teleportToObject()
-    if #teleportTargets > 0 and canTeleport then
-        local randomIndex = math.random(1, #teleportTargets)
-        local target = teleportTargets[randomIndex]
-        character:SetPrimaryPartCFrame(target.CFrame)
-        print("Téléporté à : " .. target.Name)
-    else
-        print("Aucun objet trouvé pour la téléportation.")
-    end
+-- Vérification si la téléportation est activée
+local canTeleport = false
+
+-- Création du bouton de téléportation
+local TeleportObjectButton = createButton("Auto Teleport Object Off", ScrollingFrameMain)
+
+-- Fonction pour téléporter le joueur vers un objet aléatoire
+local function TeleportToRandomObject()
+	if #teleportTargets > 0 then
+		local targetObject = teleportTargets[math.random(1, #teleportTargets)]
+		humanoidRootPart.CFrame = targetObject.CFrame
+		print("Téléporté à : " .. targetObject.Name)
+	else
+		print("Aucun objet trouvé pour la téléportation.")
+	end
 end
 
--- Boucle pour vérifier si la téléportation est activée
-game:GetService("RunService").Stepped:Connect(function()
-    if canTeleport then
-        teleportToObject()
-        wait(teleportInterval)
-    end
-end)
+-- Fonction pour activer/désactiver la téléportation automatique
+local function tpobject()
+	canTeleport = not canTeleport
+	if canTeleport then
+		TeleportObjectButton.Text = "Auto Teleport Object On"
+		while canTeleport do
+			wait(1) -- Intervalle de 1 seconde entre chaque téléportation
+			TeleportToRandomObject()
+		end
+	else
+		TeleportObjectButton.Text = "Auto Teleport Object Off"
+	end
+end
 
--- Bouton pour activer/désactiver la téléportation
-local teleportButton = createButton("Auto Teleport Object Off", ScrollingFrameMain)
-teleportButton.MouseButton1Click:Connect(function()
-    canTeleport = not canTeleport
-    teleportButton.Text = canTeleport and "Auto Teleport Object On" or "Auto Teleport Object Off"
-end)
-
- 
+-- Connecter le bouton à la fonction de téléportation
+TeleportObjectButton.MouseButton1Click:Connect(tpobject)
