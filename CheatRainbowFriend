@@ -118,7 +118,7 @@ end
 -- Gestion de la téléportation automatique
 local canTeleport,EspItem = false,false
 
-local function AddHighlightModelCloset(object)
+local function AddHighlightModelObject(object)
 	-- Check si l'objet a déjà un surlignage
 	if not object:FindFirstChildOfClass("Highlight") then
 		local highlight = Instance.new("Highlight")
@@ -165,31 +165,27 @@ local function UpdateDistanceToObject(object)
 end
 
 local function ClearHighlights()
-	for _, obj in pairs(workspace:GetDescendants()) do
-		if obj:IsA("Highlight") or obj:IsA("BillboardGui") then
-			if string.find(obj.Name:lower(), objectNames) then
-obj:Destroy()
-			end
-		end
-	end
+	for _, name in ipairs(objectNames) do
+    if string.find(obj.Name:lower(), name:lower()) then
+        obj:Destroy()
+    end
+end
+
 end
 
 local function HighlightModelsItem()
 	EspItem = not EspItem
 	if EspItem then
 		EspItemButton.Text = "Esp Item On"
-		for _, obj in pairs(workspace:GetDescendants()) do
-			if obj:IsA("Model") or obj:IsA("BasePart") then
-				for _, substring in pairs(substrings) do
-					if string.find(obj.Name:lower(), objectNames) then
-RunService.Heartbeat:Connect(function()
-						AddHighlightModelObject(obj)
-						UpdateDistanceToObject(obj)
-					end
-end)
-				end
-			end
-		end
+		for _, name in ipairs(objectNames) do
+    if string.find(obj.Name:lower(), name:lower()) then
+        RunService.Heartbeat:Connect(function()
+            AddHighlightModelObject(obj)
+            UpdateDistanceToObject(obj)
+        end)
+    end
+end
+
 	else
 		ClearHighlights()
 		EspClosetButton.Text = "Esp Closet Off"
