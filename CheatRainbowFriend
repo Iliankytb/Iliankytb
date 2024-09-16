@@ -87,7 +87,7 @@ ToggleFrameButton.MouseButton1Click:Connect(function()
 end)
 
 -- Liste des objets à téléporter
-local objectNames = { "LightBulb", "GasCanister" }
+local objectNames = { "lightbulb", "gascanister" }
 local teleportTargets = {}
 
 -- Trouver les objets dans le jeu avec les noms donnés
