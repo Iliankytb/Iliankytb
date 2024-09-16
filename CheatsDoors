@@ -829,7 +829,6 @@ end)
 
 	RunService.RenderStepped:Connect(function(deltaTime,targetObject,proximityPrompt)
 	deltaTime = 1.5
-	
 	if AutoLootV then
 		AutoCollectButton.Text = "Auto Loot On"
 		detectProximityPrompts(targetObject)
@@ -856,25 +855,30 @@ end)
 	end
 	if FullBrightV then
 		-- Activer FullBright
+if not game.Lighting.Brightness == 50 then
 		game.Lighting.Brightness = 50
 		game.Lighting.Ambient = Color3.new(1, 1, 1)
 		game.Lighting.OutdoorAmbient = Color3.new(1, 1, 1)
-		FullBrightButton.Text = "FullBright On"  -- Couleur activée
+		FullBrightButton.Text = "FullBright On"
+end-- Couleur activée
 	else
-
+if not game.Lighting.Brightness == originalLightingSettings.Brightness then
 		game.Lighting.Brightness = originalLightingSettings.Brightness
 		game.Lighting.Ambient = originalLightingSettings.Ambient
 		game.Lighting.OutdoorAmbient = originalLightingSettings.OutdoorAmbient
 		FullBrightButton.Text = "FullBright Off"  -- Couleur désactivée
 	end
+end
 	if PromptDistanceV then
 		BigDistancePromptButton.Text = "Big Distance Prompt On"
 		for _, prompt in pairs(workspace:GetDescendants()) do
 			if prompt:IsA("ProximityPrompt") then
+if not prompt.MaxActivationDistance == 50 then
 				prompt.MaxActivationDistance = 50
 
 			end
 		end
+end
 	else
 		BigDistancePromptButton.Text = "Big Distance Prompt Off"
 	end
@@ -882,42 +886,45 @@ end)
 		NoCooldownButton.Text = "No Cooldown Prompt On"
 		for _, prompt in pairs(workspace:GetDescendants()) do
 			if prompt:IsA("ProximityPrompt") then
+if not prompt.HoldDuration == 0 then
 				prompt.HoldDuration = 0
 
 			end
 		end
+end
 	else
 		NoCooldownButton.Text = "No Cooldown Prompt Off"
 	end
 	if NoLagV then
 		NoLagButton.Text = "No Lag On"
-		for _, part in pairs(workspace:GetDescendants()) do
-			if part:IsA("BasePart") then
-				if not part:GetAttribute("OriginalMaterial") then
-					part:SetAttribute("OriginalMaterial", part.Material)
-				end
-				part.Material = Enum.Material.SmoothPlastic
-			else
-				local originalMaterial = part:GetAttribute("OriginalMaterial")
-				if originalMaterial then
-					part.Material = originalMaterial
-
-
-				end
-			end
+for _, part in pairs(workspace:GetDescendants()) do
+	if part:IsA("BasePart") then
+		if part.Material == Enum.Material.SmoothPlastic then
+			-- If the part's material is already SmoothPlastic, do nothing
+			continue
 		end
+		
+		if not part:GetAttribute("OriginalMaterial") then
+			part:SetAttribute("OriginalMaterial", part.Material)
+		end
+		part.Material = Enum.Material.SmoothPlastic
 	else
-		for _, part in pairs(workspace:GetDescendants()) do
-			if part:IsA("BasePart") then
-				local originalMaterial = part:GetAttribute("OriginalMaterial")
-				if originalMaterial then
-					part.Material = originalMaterial
-
-				end
-				NoLagButton.Text = "No Lag Off"
-
+		local originalMaterial = part:GetAttribute("OriginalMaterial")
+		if originalMaterial then
+			part.Material = originalMaterial
+		end
+	end
+end
+else
+	for _, part in pairs(workspace:GetDescendants()) do
+		if part:IsA("BasePart") then
+			local originalMaterial = part:GetAttribute("OriginalMaterial")
+			if originalMaterial then
+				part.Material = originalMaterial
 			end
 		end
+	end
+	NoLagButton.Text = "No Lag Off"
 	end
 	if EspCloset then
 		EspClosetButton.Text = "Esp Closet On"
