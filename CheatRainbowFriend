@@ -91,14 +91,19 @@ local objectNames = { "lightbulb", "gascanister" }
 local teleportTargets = {}
 
 local function detectetargets()
-for _, objectName in pairs(objectNames) do
-	for _, obj in pairs(workspace:GetDescendants()) do
-		if obj.Name == objectName then
-			table.insert(teleportTargets, obj)
+	-- Vide la liste des cibles avant de détecter les nouveaux objets
+	teleportTargets = {}
+	for _, objectName in pairs(objectNames) do
+		for _, obj in pairs(workspace:GetDescendants()) do
+			if obj.Name == objectName and obj:IsA("BasePart") then
+				table.insert(teleportTargets, obj)
+			end
 		end
 	end
 end
-end
+
+-- Appel initial pour détecter les cibles
+detectetargets()
 
 -- Vérification si la téléportation est activée
 local canTeleport = false
@@ -114,7 +119,6 @@ local function TeleportToRandomObject()
 		print("Téléporté à : " .. targetObject.Name)
 	else
 		print("Aucun objet trouvé pour la téléportation.")
-detectetargets()
 	end
 end
 
@@ -123,10 +127,13 @@ local function tpobject()
 	canTeleport = not canTeleport
 	if canTeleport then
 		TeleportObjectButton.Text = "Auto Teleport Object On"
-		while canTeleport do
-			wait(1) -- Intervalle de 1 seconde entre chaque téléportation
-			TeleportToRandomObject()
-		end
+		RunService.Heartbeat:Connect(function()
+			if canTeleport then
+				detectetargets() -- Actualise les cibles
+				TeleportToRandomObject()
+				wait(1) -- Intervalle de 1 seconde entre chaque téléportation
+			end
+		end)
 	else
 		TeleportObjectButton.Text = "Auto Teleport Object Off"
 	end
