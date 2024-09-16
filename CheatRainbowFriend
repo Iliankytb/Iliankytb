@@ -91,33 +91,39 @@ local function showSection(sectionFrame)
 	sectionFrame.Visible = true
 end
 
+local TeleportObjectButton = createButton("Auto Teleport Object Off",ScrollingFrameMain)
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class TeleportPlayer : MonoBehaviour
 {
-    public GameObject player; // The player to teleport
-    public string[] objectNames = { "LightBulb", "GasCanister" }; // The objects to teleport to
+    public GameObject player; // Le joueur à téléporter
+    public string[] objectNames = { "LightBulb", "GasCanister" }; // Les objets vers lesquels téléporter
     private List<GameObject> teleportTargets = new List<GameObject>();
-    public bool canTeleport = false; // Boolean to check if teleportation is allowed
+    public bool canTeleport = false; // Booléen pour vérifier si la téléportation est autorisée
+    public float stepInterval = 1.0f; // Intervalle entre chaque step en secondes
 
     void Start()
     {
-        // Find all objects with the given names
+        // Trouver tous les objets avec les noms donnés
         foreach (string objectName in objectNames)
         {
             GameObject[] foundObjects = GameObject.FindGameObjectsWithTag(objectName);
             teleportTargets.AddRange(foundObjects);
         }
+
+        // Démarrer la boucle de "run stepped" avec le RunService simulé (via une coroutine)
+        StartCoroutine(RunStepped());
     }
 
-    // Method to teleport the player to a random object
+    // Méthode pour téléporter le joueur vers un objet aléatoire
     public void TeleportToRandomObject()
     {
         if (!canTeleport)
         {
-            Debug.Log("Teleportation is disabled.");
+            Debug.Log("La téléportation est désactivée.");
             return;
         }
 
@@ -125,13 +131,41 @@ public class TeleportPlayer : MonoBehaviour
         {
             GameObject targetObject = teleportTargets[Random.Range(0, teleportTargets.Count)];
             player.transform.position = targetObject.transform.position;
-            Debug.Log("Teleported to: " + targetObject.name);
+            Debug.Log("Téléporté à : " + targetObject.name);
         }
         else
         {
-            Debug.Log("No objects found for teleportation.");
+            Debug.Log("Aucun objet trouvé pour la téléportation.");
         }
     }
 
+    // Coroutine qui simule un service de "run stepped"
+    private IEnumerator RunStepped()
+    {
+        while (true) // Boucle infinie pour exécuter des étapes de manière continue
+        {
+            yield return new WaitForSeconds(stepInterval); // Attendre l'intervalle défini entre chaque step
+
+            if (canTeleport)
+            {
+                Debug.Log("Condition vraie, téléportation en cours...");
+                TeleportToRandomObject();
+            }
+            else
+            {
+                Debug.Log("Condition fausse, aucune action n'est effectuée.");
+            }
+        }
     }
 }
+
+local function tpobject()
+canTeleport = not canTeleport
+if canTeleport then
+TeleportObjectButton.Text = "Auto Teleport Object On"
+else
+TeleportObjectButton.Text = "Auto Teleport Object Off"
+end
+end
+
+TeleportObjectButton.MouseButton1Click:Connect(tpobject)
