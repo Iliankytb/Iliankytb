@@ -90,13 +90,14 @@ end)
 local objectNames = { "lightbulb", "gascanister" }
 local teleportTargets = {}
 
--- Trouver les objets dans le jeu avec les noms donnés
+local function detectetargets()
 for _, objectName in pairs(objectNames) do
-	for _, obj in pairs(workspace:GetChildren()) do
+	for _, obj in pairs(workspace:GetDecendants()) do
 		if obj.Name == objectName then
 			table.insert(teleportTargets, obj)
 		end
 	end
+end
 end
 
 -- Vérification si la téléportation est activée
@@ -113,6 +114,7 @@ local function TeleportToRandomObject()
 		print("Téléporté à : " .. targetObject.Name)
 	else
 		print("Aucun objet trouvé pour la téléportation.")
+detectetargets()
 	end
 end
 
