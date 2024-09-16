@@ -92,7 +92,7 @@ local teleportTargets = {}
 
 local function detectetargets()
 for _, objectName in pairs(objectNames) do
-	for _, obj in pairs(workspace:GetDecendants()) do
+	for _, obj in pairs(workspace:GetDescendants()) do
 		if obj.Name == objectName then
 			table.insert(teleportTargets, obj)
 		end
