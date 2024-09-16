@@ -135,7 +135,3 @@ public class TeleportPlayer : MonoBehaviour
 
     }
 }
-
-while wait(1) do
-TeleportToRandomObject()
-end
