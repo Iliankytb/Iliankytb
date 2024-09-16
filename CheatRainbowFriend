@@ -1,1 +1,55 @@
---Wait Pls
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class TeleportPlayer : MonoBehaviour
+{
+    public GameObject player; // Le joueur à téléporter
+    public string[] objectNames = { "LightBulb", "GasCanister" }; // Les noms des objets vers lesquels téléporter
+    private List<GameObject> teleportTargets = new List<GameObject>();
+    public bool canTeleport = false; // Booléen pour vérifier si le joueur peut se téléporter
+
+    void Start()
+    {
+        // Récupérer tous les objets avec les noms donnés
+        foreach (string objectName in objectNames)
+        {
+            GameObject[] foundObjects = GameObject.FindGameObjectsWithTag(objectName);
+            teleportTargets.AddRange(foundObjects);
+        }
+    }
+
+    // Méthode pour téléporter le joueur vers l'un des objets
+    public void TeleportToRandomObject()
+    {
+        // Vérifier si la téléportation est autorisée
+        if (!canTeleport)
+        {
+            Debug.Log("Téléportation désactivée.");
+            return;
+        }
+
+        if (teleportTargets.Count > 0)
+        {
+            // Choisir un objet aléatoirement
+            GameObject targetObject = teleportTargets[Random.Range(0, teleportTargets.Count)];
+
+            // Téléporter le joueur à la position de cet objet
+            player.transform.position = targetObject.transform.position;
+            Debug.Log("Téléporté vers : " + targetObject.name);
+        }
+        else
+        {
+            Debug.Log("Aucun objet trouvé pour la téléportation.");
+        }
+    }
+
+    void Update()
+    {
+        // Activer la téléportation en appuyant sur "T" si le booléen canTeleport est true
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            TeleportToRandomObject();
+        }
+    }
+}
