@@ -203,7 +203,7 @@ local NoLagButton = createButton("No Lag Off",ScrollingFrameMain)
 local NotifMonstersButton = createButton("Notifs Monster Off (Coming Soon)",ScrollingFrameMain)
 local SpeedBoostButton = createButton("Speed Boost Off",ScrollingFramePlayer)
 local BypassSpeedButton = createButton("Bypass Speed",ScrollingFramePlayer)
-local object_name_substrings_Monsters = {"rushmoving","ambushmoving","giggle","grumble","screech","figurerig","seekrig","gloombat","lookman","haltmoving","a90","a60","a120"}
+local object_name_substrings_Monsters = {"rushnew","ambushmoving","giggle","grumble","screech","figurerig","seekrig","gloombat","lookman","haltmoving","a90","a60","a120"}
 
 local function ToggleFrame()
 	ToggleCheat = not ToggleCheat
@@ -258,17 +258,17 @@ end
 
 local function DistanceCloset(object)
 	for _, object in pairs(workspace:GetDescendants()) do
-		if object:IsA("BillboardGui") then
-		if object.Name == "Closet" then
+		if  object:IsA("Highlight") and object:IsA("BillboardGui") then
+	
 				local textLabel = object.TextLabel
 				if object.Parent:IsA("Model") then
 					local distance = (humanoidRootPart.Position - object.Parent.Position).Magnitude
 					textLabel.Text = object.Name.." [Distance: " .. math.floor(distance) .. " Studs]"
-				elseif object.Parent:IsA("Model") then
+				elseif object.Parent:IsA("BasePart") then
 					local distance = (humanoidRootPart.Position - object.Parent:GetPivot().Position).Magnitude
 					textLabel.Text = object.Name .. " [Distance: " .. math.floor(distance) .. " Studs]"
 				end
-		end
+	
 		end
 		end
 end
@@ -276,7 +276,7 @@ end
 local function ClearHightlightModelCloset(Obj)
 	for _, Obj in pairs(workspace:GetDescendants()) do
 		if Obj:IsA("Highlight") or Obj:IsA("BillboardGui") then
-			if Obj.Name:lower() == "wardrobe"or Obj.Name:lower() == "backdoor_wardrobe" or Obj.Name:lower() == "bed" or Obj.Name:lower() == "beds" then
+			if Obj.Name:lower() == "wardrobe" or Obj.Name:lower() == "backdoor_wardrobe" or Obj.Name:lower() == "bed" or Obj.Name:lower() == "beds" then
 		Obj:Destroy()
 		end
 		end
@@ -339,7 +339,7 @@ end
 local function DistanceDoor(object)
 	for _, object in pairs(workspace:GetDescendants()) do
 		if object:IsA("BillboardGui") then
-			if object.Name == "Door" or object.Name == "sideroomdupe" then
+			if object.Name == "door" or object.Name == "sideroomdupe" then
 		object.Name = object.Name
 				local textLabel = object.TextLabel
 				if object.Parent:IsA("MeshPart") then
@@ -438,7 +438,7 @@ end
 local function ClearHightlightModelEntities(Obj)
 	for _, Obj in pairs(workspace:GetDescendants()) do
 		if Obj:IsA("Highlight") or Obj:IsA("BillboardGui") then
-			if Obj.Name:lower() == "rushmoving" or Obj.Name:lower() == "ambushmoving" or Obj.Name:lower() == "screech" or Obj.Name:lower() == "figurerig" or Obj.Name:lower() == "giggle" or Obj.Name:lower() == "grumble"  or Obj.Name:lower() == "gloombat" or Obj.Name:lower() == "lookman" or Obj.Name:lower() == "seekrig" or Obj.Name:lower() == "a90" or Obj.Name:lower() == "a120" or Obj.Name:lower() == "a60" or Obj.Name:lower() == "haltmoving" then 
+			if Obj.Name:lower() == "rushnew" or Obj.Name:lower() == "eyes" or Obj.Name:lower() == "ambushmoving" or Obj.Name:lower() == "screech" or Obj.Name:lower() == "figurerig" or Obj.Name:lower() == "giggle" or Obj.Name:lower() == "grumble"  or Obj.Name:lower() == "gloombat" or Obj.Name:lower() == "lookman" or Obj.Name:lower() == "seekrig" or Obj.Name:lower() == "a90" or Obj.Name:lower() == "a120" or Obj.Name:lower() == "a60" or Obj.Name:lower() == "haltmoving" then 
 				Obj:Destroy()
 			end
 		end
@@ -451,7 +451,8 @@ local function HightLightModelsEntities()
 	if EspMonsters then
 		EspMonstersButton.Text = "Esp Entities On"
 		for _, object in pairs(workspace:GetDescendants()) do
-			if object:IsA("BasePart") or object:IsA("Model") then
+			if object:IsA("BasePart")
+then
 				for _, substring in pairs(object_name_substrings_Monsters) do
 					if string.find(object.Name:lower(), substring)
 					then
@@ -466,7 +467,7 @@ local function HightLightModelsEntities()
 		ClearHightlightModelEntities()
 		EspMonstersButton.Text = "Esp Entities Off"
 		for _, object in pairs(workspace:GetDescendants()) do
-			if object:IsA("Model") or object:IsA("BasePart") then
+			if object:IsA("BasePart") then
 				for _, substring in pairs(object_name_substrings_Monsters) do
 					if string.find(object.Name:lower(), substring)
 					then
@@ -544,7 +545,7 @@ end
 local function ClearHightlightModelItem(Obj)
 	for _, Obj in pairs(workspace:GetDescendants()) do
 		if Obj:IsA("Highlight") or Obj:IsA("BillboardGui") then
-			if Obj.Name:lower() == "Keyobtain" or Obj.Name:lower() == "candle" or Obj.Name:lower() == "crucifix" or Obj.Name:lower() == "lockpick" or Obj.Name:lower() == "skeletonkey" or Obj.Name:lower() == "vitamin" or Obj.Name:lower() == "flashlight" or Obj.Name:lower() == "fuseobtain" or Obj.Name:lower() == "glowstick" or Obj.Name:lower() == "shears" or Obj.Name:lower() == "pile" or Obj.Name:lower() == "battery" or Obj.Name:lower() == "bandage" then
+			if Obj.Name:lower() == "Keyobtain" or Obj.Name:lower() == "ChestBox" or Obj.Name:lower() == "ChestBoxLocked" or Obj.Name:lower() == "candle" or Obj.Name:lower() == "crucifix" or Obj.Name:lower() == "lockpick" or Obj.Name:lower() == "skeletonkey" or Obj.Name:lower() == "vitamin" or Obj.Name:lower() == "flashlight" or Obj.Name:lower() == "fuseobtain" or Obj.Name:lower() == "glowstick" or Obj.Name:lower() == "shears" or Obj.Name:lower() == "pile" or Obj.Name:lower() == "battery" or Obj.Name:lower() == "bandage" then
 				Obj:Destroy()
 			end
 		end
@@ -556,7 +557,7 @@ local function HightLightModelsItem()
 	EspItem = not EspItem
 	if EspItem then
 		EspItemButton.Text = "Esp Item On"
-		local object_name_substrings = {"key","candle","crucifix","lockpick","skeletonkey","vitamin","flashlight","fuseobtain","glowstick","shears","pile","battery","bandage"}
+		local object_name_substrings = {"key","candle","ChestBox","ChestBoxLocked","crucifix","lockpick","skeletonkey","vitamin","flashlight","fuseobtain","glowstick","shears","pile","battery","bandage"}
 		for _, object in pairs(workspace:GetDescendants()) do
 			if object:IsA("Tool") or object:IsA("Model") then
 				for _, substring in pairs(object_name_substrings) do
@@ -954,7 +955,7 @@ RunService.RenderStepped:Connect(function(deltaTime)
     -- EspCloset
     if EspCloset then
         EspClosetButton.Text = "Esp Closet On"
-        local object_name_substrings = {"closet"}
+        local object_name_substrings = {"wardrobe",backdoor_wardrobe","bed","beds"}
         for _, object in pairs(workspace:GetDescendants()) do
             if object:IsA("Model") then
                 for _, substring in pairs(object_name_substrings) do
@@ -994,7 +995,7 @@ RunService.RenderStepped:Connect(function(deltaTime)
         EspMonstersButton.Text = "Esp Entities On"
         local object_name_substrings_Monsters = {"monster", "entity"}
         for _, object in pairs(workspace:GetDescendants()) do
-            if object:IsA("Model") or object:IsA("BasePart") then
+            if object:IsA("BasePart") then
                 for _, substring in pairs(object_name_substrings_Monsters) do
                     if string.find(object.Name:lower(), substring) then
                         object.Shape = Enum.PartType.Ball
@@ -1008,7 +1009,7 @@ RunService.RenderStepped:Connect(function(deltaTime)
         ClearHightlightModelEntities()
         EspMonstersButton.Text = "Esp Entities Off"
         for _, object in pairs(workspace:GetDescendants()) do
-            if object:IsA("Model") or object:IsA("BasePart") then
+            if object:IsA("BasePart") then
                 for _, substring in pairs(object_name_substrings_Monsters) do
                     if string.find(object.Name:lower(), substring) then
                         object.Shape = Enum.PartType.Block
@@ -1021,7 +1022,7 @@ RunService.RenderStepped:Connect(function(deltaTime)
     -- EspItem
     if EspItem then
         EspItemButton.Text = "Esp Item On"
-        local object_name_substrings = {"key", "candle", "crucifix", "lockpick", "skeletonkey", "vitamin", "flashlight", "fuseobtain", "glowstick", "shears", "pile", "battery", "bandage"}
+        local object_name_substrings = {"key","ChestBox","ChestBoxLocked", "candle", "crucifix", "lockpick", "skeletonkey", "vitamin", "flashlight", "fuseobtain", "glowstick", "shears", "pile", "battery", "bandage"}
         for _, object in pairs(workspace:GetDescendants()) do
             if object:IsA("Tool") or object:IsA("Model") then
                 for _, substring in pairs(object_name_substrings) do
