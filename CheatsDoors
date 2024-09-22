@@ -258,7 +258,7 @@ end
 
 local function DistanceCloset(object)
 	for _, object in pairs(workspace:GetDescendants()) do
-		if  object:IsA("Highlight") and object:IsA("BillboardGui") then
+		if  object:IsA("Highlight") or object:IsA("BillboardGui") then
 	
 				local textLabel = object.TextLabel
 				if object.Parent:IsA("Model") then
@@ -336,11 +336,11 @@ end
 local function DistanceDoor(object)
 	for _, object in pairs(workspace:GetDescendants()) do
 		if object:IsA("BillboardGui") then
-			if object.Name == "Door" or object.Name == "sideroomdupe" then
+			if object.Name:lower() == "Door" or object.Name:lower() == "sideroomdupe" then
 				local textLabel = object.TextLabel
 				if object.Parent:IsA("Model") then
 					local distance = (humanoidRootPart.Position - object.Parent:GetPivot().Position).Magnitude
-					textLabel.Text = object.Name.." "..object.Parent.Name.." [Distance: " .. math.floor(distance) .. " Studs]"
+					textLabel.Text = object.Name.." "..object.Parent.Parent.Name.." [Distance: " .. math.floor(distance) .. " Studs]"
 				end
 
 		end
@@ -351,7 +351,7 @@ end
 local function ClearHightlightModelDoor(Obj)
 	for _, Obj in pairs(workspace:GetDescendants()) do
 		if Obj:IsA("Highlight") or Obj:IsA("BillboardGui") then
-			if Obj.Name == "door" or Obj.Name == "sideroomdupe" then
+			if Obj.Name:lower() == "door" or Obj.Name:lower() == "sideroomdupe" then
 			Obj:Destroy()
 			end
 		end
@@ -511,7 +511,7 @@ end
 
 local function DistanceItem(object)
 	for _, object in pairs(workspace:GetDescendants()) do
-		if object:IsA("BillboardGui") then
+		if object:IsA("Highlight") or object:IsA("BillboardGui") then
 			local textLabel = object.TextLabel
 
 						if object.Parent:IsA("BasePart") then
@@ -961,7 +961,7 @@ RunService.RenderStepped:Connect(function(deltaTime)
     -- EspDoor
     if EspDoor then
         EspDoorButton.Text = "Esp Door On"
-        local object_name_substrings = {"door"}
+        local object_name_substrings = {"door","sideroomdupe"}
         for _, object in pairs(workspace:GetDescendants()) do
             if object:IsA("Model") then
                 for _, substring in pairs(object_name_substrings) do
