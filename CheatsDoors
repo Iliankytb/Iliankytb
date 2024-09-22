@@ -240,7 +240,7 @@ local function AddHightlightModelCloset(object)
 		if not object:FindFirstChildOfClass("BillboardGui") then
 			local billboard = Instance.new("BillboardGui")
 			billboard.Size = UDim2.new(0.100, 0, 0.50, 0)
-		billboard.MaxDistance = math.huge
+		billboard.MaxDistance = 100
 			billboard.StudsOffset = Vector3.new(0, 0, 0)
 			billboard.Enabled = true
 			billboard.ResetOnSpawn = false
@@ -264,9 +264,6 @@ local function DistanceCloset(object)
 				if object.Parent:IsA("Model") then
 					local distance = (humanoidRootPart.Position - object.Parent.Position).Magnitude
 					textLabel.Text = object.Name.." [Distance: " .. math.floor(distance) .. " Studs]"
-				elseif object.Parent:IsA("BasePart") then
-					local distance = (humanoidRootPart.Position - object.Parent:GetPivot().Position).Magnitude
-					textLabel.Text = object.Name .. " [Distance: " .. math.floor(distance) .. " Studs]"
 				end
 	
 		end
@@ -320,7 +317,7 @@ local function AddHightlightModelDoor(object)
 	if not object:FindFirstChildOfClass("BillboardGui") then
 		local billboard = Instance.new("BillboardGui")
 		billboard.Size = UDim2.new(0.100, 0, 0.50, 0)
-		billboard.MaxDistance = math.huge
+		billboard.MaxDistance = 100
 		billboard.StudsOffset = Vector3.new(0, 0, 0)
 		billboard.Enabled = true
 		billboard.ResetOnSpawn = false
@@ -339,15 +336,11 @@ end
 local function DistanceDoor(object)
 	for _, object in pairs(workspace:GetDescendants()) do
 		if object:IsA("BillboardGui") then
-			if object.Name == "door" or object.Name == "sideroomdupe" then
-		object.Name = object.Name
+			if object.Name == "Door" or object.Name == "sideroomdupe" then
 				local textLabel = object.TextLabel
 				if object.Parent:IsA("MeshPart") then
 					local distance = (humanoidRootPart.Position - object.Parent.Position).Magnitude
-					textLabel.Text = object.Name..object.Parent.Parent.Parent.Name.." [Distance: " .. math.floor(distance) .. " Studs]"
-				elseif object.Parent:IsA("Model") then
-					local distance = (humanoidRootPart.Position - object.Parent:GetPivot().Position).Magnitude
-					textLabel.Text = object.Name..object.Parent.Parent.Parent.Name.." [Distance: " .. math.floor(distance) .. " Studs]"
+					textLabel.Text = object.Name.." "..object.Parent.Parent.Parent.Name.." [Distance: " .. math.floor(distance) .. " Studs]"
 				end
 
 		end
@@ -370,7 +363,7 @@ local function HightLightModelsDoor()
 	EspDoor = not EspDoor
 	if EspDoor then
 		EspDoorButton.Text = "Esp Door On"
-		local object_name_substrings = {"door","sideroomdupe"}
+		local object_name_substrings = {"Door","sideroomdupe"}
 		for _, object in pairs(workspace:GetDescendants()) do
 			if object:IsA("MeshPart") then
 				for _, substring in pairs(object_name_substrings) do
@@ -403,7 +396,7 @@ local function AddHightlightModelDEntities(object)
 	if not object:FindFirstChildOfClass("BillboardGui") then
 		local billboard = Instance.new("BillboardGui")
 		billboard.Size = UDim2.new(0.250, 0, 0.250, 0)
-		billboard.MaxDistance = math.huge
+		billboard.MaxDistance = 500
 		billboard.StudsOffset = Vector3.new(0, 0, 0)
 		billboard.Enabled = true
 		billboard.ResetOnSpawn = false
@@ -453,9 +446,8 @@ local function HightLightModelsEntities()
 		for _, object in pairs(workspace:GetDescendants()) do
 			if object:IsA("BasePart") then
 				for _, substring in pairs(object_name_substrings_Monsters) do
-					if string.find(object.Name:lower(), substring)
-					then
-						object.Shape = Enum.PartType.Ball
+					if string.find(object.Name:lower(), substring) then
+		
 						DistanceEntities(object)
 						AddHightlightModelDEntities(object)
 					end
@@ -468,9 +460,8 @@ local function HightLightModelsEntities()
 		for _, object in pairs(workspace:GetDescendants()) do
 			if object:IsA("BasePart") then
 				for _, substring in pairs(object_name_substrings_Monsters) do
-					if string.find(object.Name:lower(), substring)
-					then
-						object.Shape = Enum.PartType.Block
+					if string.find(object.Name:lower(), substring) then
+						
 					end
 				end
 			end
@@ -556,9 +547,9 @@ local function HightLightModelsItem()
 	EspItem = not EspItem
 	if EspItem then
 		EspItemButton.Text = "Esp Item On"
-		local object_name_substrings = {"key","candle","ChestBox","ChestBoxLocked","crucifix","lockpick","skeletonkey","vitamin","flashlight","fuseobtain","glowstick","shears","pile","battery","bandage"}
+		local object_name_substrings = {"key","Keyobtain","candle","chestbox","chestboxlocked","crucifix","lockpick","skeletonkey","vitamin","flashlight","fuseobtain","glowstick","shears","pile","battery","bandage"}
 		for _, object in pairs(workspace:GetDescendants()) do
-			if object:IsA("Tool") or object:IsA("Model") then
+			if object:IsA("Model") then
 				for _, substring in pairs(object_name_substrings) do
 					if string.find(object.Name:lower(), substring)
 					then
@@ -997,7 +988,6 @@ RunService.RenderStepped:Connect(function(deltaTime)
             if object:IsA("BasePart") then
                 for _, substring in pairs(object_name_substrings_Monsters) do
                     if string.find(object.Name:lower(), substring) then
-                        object.Shape = Enum.PartType.Ball
                         DistanceEntities(object)
                         AddHightlightModelDEntities(object)
                     end
@@ -1011,7 +1001,7 @@ RunService.RenderStepped:Connect(function(deltaTime)
             if object:IsA("BasePart") then
                 for _, substring in pairs(object_name_substrings_Monsters) do
                     if string.find(object.Name:lower(), substring) then
-                        object.Shape = Enum.PartType.Block
+                        
                     end
                 end
             end
