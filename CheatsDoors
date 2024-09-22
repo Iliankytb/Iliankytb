@@ -260,9 +260,8 @@ local function DistanceCloset(object)
 	for _, object in pairs(workspace:GetDescendants()) do
 		if object:IsA("BillboardGui") then
 		if object.Name == "Closet" then
-			object.Name = object.Name
 				local textLabel = object.TextLabel
-				if object.Parent:IsA("BasePart") then
+				if object.Parent:IsA("Model") then
 					local distance = (humanoidRootPart.Position - object.Parent.Position).Magnitude
 					textLabel.Text = object.Name.." [Distance: " .. math.floor(distance) .. " Studs]"
 				elseif object.Parent:IsA("Model") then
@@ -290,7 +289,7 @@ local function HightLightModelsCloset()
 		EspClosetButton.Text = "Esp Closet On"
 	local object_name_substrings = {"wardrobe","backdoor_wardrobe","bed","beds"}
 	for _, object in pairs(workspace:GetDescendants()) do
-		if object:IsA("MeshPart") then
+		if object:IsA("Model") then
 			for _, substring in pairs(object_name_substrings) do
 				if string.find(object.Name:lower(), substring) then
 					AddHightlightModelCloset(object)
@@ -343,12 +342,12 @@ local function DistanceDoor(object)
 			if object.Name == "Door" or object.Name == "sideroomdupe" then
 		object.Name = object.Name
 				local textLabel = object.TextLabel
-				if object.Parent:IsA("BasePart") then
+				if object.Parent:IsA("MeshPart") then
 					local distance = (humanoidRootPart.Position - object.Parent.Position).Magnitude
-					textLabel.Text = object.Name.." [Distance: " .. math.floor(distance) .. " Studs]"
+					textLabel.Text = object.Name..object.Parent.Parent.Name.." [Distance: " .. math.floor(distance) .. " Studs]"
 				elseif object.Parent:IsA("Model") then
 					local distance = (humanoidRootPart.Position - object.Parent:GetPivot().Position).Magnitude
-					textLabel.Text = object.Name .. " [Distance: " .. math.floor(distance) .. " Studs]"
+					textLabel.Text = object.Name ..object.Parent.Parent.Name.." [Distance: " .. math.floor(distance) .. " Studs]"
 				end
 
 		end
@@ -359,7 +358,7 @@ end
 local function ClearHightlightModelDoor(Obj)
 	for _, Obj in pairs(workspace:GetDescendants()) do
 		if Obj:IsA("Highlight") or Obj:IsA("BillboardGui") then
-			if Obj.Name == "Door" or Obj.Name == "sideroomdupe" then
+			if Obj.Name == "door" or Obj.Name == "sideroomdupe" then
 			Obj:Destroy()
 			end
 		end
@@ -481,7 +480,7 @@ end
 
 local function DeleteSeek(Object)
 	for _, Object in pairs(workspace:GetDescendants()) do
-		if Object.Name == "Trigger" then
+		if Object.Name == "trigger" then
 			Object.CanTouch = false
 			end
 		end
@@ -509,7 +508,7 @@ local function AddHightlightModelDItem(object)
 		billboard.ResetOnSpawn = false
 		billboard.AlwaysOnTop = true
 		billboard.Name = object.Name
-		billboard.Parent = object
+		billboard.Parent = object.Name
 
 		local textLabel = Instance.new("TextLabel")
 		textLabel.Size = UDim2.new(1, 0, 1, 0)
@@ -559,7 +558,7 @@ local function HightLightModelsItem()
 		EspItemButton.Text = "Esp Item On"
 		local object_name_substrings = {"key","candle","crucifix","lockpick","skeletonkey","vitamin","flashlight","fuseobtain","glowstick","shears","pile","battery","bandage"}
 		for _, object in pairs(workspace:GetDescendants()) do
-			if object:IsA("Tool") then
+			if object:IsA("Tool") or object:IsA("Model") then
 				for _, substring in pairs(object_name_substrings) do
 					if string.find(object.Name:lower(), substring)
 					then
@@ -889,7 +888,7 @@ RunService.RenderStepped:Connect(function(deltaTime)
 
     if FullBrightV then
         -- Activer FullBright si nécessaire
-        if game.Lighting.Brightness ~= 50 then
+        if game.Lighting.Brightness < 50 then
             game.Lighting.Brightness = 50
             game.Lighting.Ambient = Color3.new(1, 1, 1)
             game.Lighting.OutdoorAmbient = Color3.new(1, 1, 1)
@@ -897,7 +896,7 @@ RunService.RenderStepped:Connect(function(deltaTime)
         end
     else
         -- Rétablir les paramètres d'éclairage originaux
-        if game.Lighting.Brightness ~= originalLightingSettings.Brightness then
+        if game.Lighting.Brightness >= originalLightingSettings.Brightness then
             game.Lighting.Brightness = originalLightingSettings.Brightness
             game.Lighting.Ambient = originalLightingSettings.Ambient
             game.Lighting.OutdoorAmbient = originalLightingSettings.OutdoorAmbient
@@ -957,7 +956,7 @@ RunService.RenderStepped:Connect(function(deltaTime)
         EspClosetButton.Text = "Esp Closet On"
         local object_name_substrings = {"closet"}
         for _, object in pairs(workspace:GetDescendants()) do
-            if object:IsA("MeshPart") then
+            if object:IsA("Model") then
                 for _, substring in pairs(object_name_substrings) do
                     if string.find(object.Name:lower(), substring) then
                         AddHightlightModelCloset(object)
@@ -1024,7 +1023,7 @@ RunService.RenderStepped:Connect(function(deltaTime)
         EspItemButton.Text = "Esp Item On"
         local object_name_substrings = {"key", "candle", "crucifix", "lockpick", "skeletonkey", "vitamin", "flashlight", "fuseobtain", "glowstick", "shears", "pile", "battery", "bandage"}
         for _, object in pairs(workspace:GetDescendants()) do
-            if object:IsA("Tool") then
+            if object:IsA("Tool") or object:IsA("Model") then
                 for _, substring in pairs(object_name_substrings) do
                     if string.find(object.Name:lower(), substring) then
                         AddHightlightModelDItem(object)
