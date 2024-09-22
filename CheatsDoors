@@ -451,8 +451,7 @@ local function HightLightModelsEntities()
 	if EspMonsters then
 		EspMonstersButton.Text = "Esp Entities On"
 		for _, object in pairs(workspace:GetDescendants()) do
-			if object:IsA("BasePart")
-then
+			if object:IsA("BasePart") then
 				for _, substring in pairs(object_name_substrings_Monsters) do
 					if string.find(object.Name:lower(), substring)
 					then
