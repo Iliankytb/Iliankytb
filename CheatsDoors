@@ -344,10 +344,10 @@ local function DistanceDoor(object)
 				local textLabel = object.TextLabel
 				if object.Parent:IsA("MeshPart") then
 					local distance = (humanoidRootPart.Position - object.Parent.Position).Magnitude
-					textLabel.Text = object.Name..object.Parent.Parent.Name.." [Distance: " .. math.floor(distance) .. " Studs]"
+					textLabel.Text = object.Name..object.Parent.Parent.Parent.Name.." [Distance: " .. math.floor(distance) .. " Studs]"
 				elseif object.Parent:IsA("Model") then
 					local distance = (humanoidRootPart.Position - object.Parent:GetPivot().Position).Magnitude
-					textLabel.Text = object.Name ..object.Parent.Parent.Name.." [Distance: " .. math.floor(distance) .. " Studs]"
+					textLabel.Text = object.Name..object.Parent.Parent.Parent.Name.." [Distance: " .. math.floor(distance) .. " Studs]"
 				end
 
 		end
