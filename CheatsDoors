@@ -827,186 +827,217 @@ PlayerButton.MouseButton1Click:Connect(function()
 	showSection(ScrollingFramePlayer)
 end)
 
-	RunService.RenderStepped:Connect(function(deltaTime,targetObject,proximityPrompt)
-	deltaTime = 1.5
-	if AutoLootV then
-		AutoCollectButton.Text = "Auto Loot On"
-		detectProximityPrompts(targetObject)
-			autoActivateProximityPrompt(proximityPrompt)
-	else
-		AutoCollectButton.Text = "Auto Loot Off"
-	end
-	if EspPlayer then
-		EspPlayerButton.Text = "ESP Player On"
-		local localPlayer = game.Players.LocalPlayer
-		local humanoidRootPart = localPlayer.Character and localPlayer.Character:FindFirstChild("HumanoidRootPart")
-		if humanoidRootPart then
-			for _, object in pairs(workspace:GetDescendants()) do
-				if object:IsA("Model") and game.Players:FindFirstChild(object.Name) then
-					AddHighlightModelPlayer(object)
-					UpdateDistancePlayer(humanoidRootPart)
+local CollectionService = game:GetService("CollectionService")
 
-				end
-			end
-		end
-	else
-		ClearHighlightModelPlayer()
-		EspPlayerButton.Text = "ESP Player Off"
-	end
-	if FullBrightV then
-		-- Activer FullBright
-if not game.Lighting.Brightness == 50 then
-		game.Lighting.Brightness = 50
-		game.Lighting.Ambient = Color3.new(1, 1, 1)
-		game.Lighting.OutdoorAmbient = Color3.new(1, 1, 1)
-		FullBrightButton.Text = "FullBright On"
-end-- Couleur activée
-	else
-if not game.Lighting.Brightness == originalLightingSettings.Brightness then
-		game.Lighting.Brightness = originalLightingSettings.Brightness
-		game.Lighting.Ambient = originalLightingSettings.Ambient
-		game.Lighting.OutdoorAmbient = originalLightingSettings.OutdoorAmbient
-		FullBrightButton.Text = "FullBright Off"  -- Couleur désactivée
-	end
+-- Fonction pour taguer toutes les portes générées
+local function tagDoors(door)
+    CollectionService:AddTag(door, "Door")
 end
-	if PromptDistanceV then
-		BigDistancePromptButton.Text = "Big Distance Prompt On"
-		for _, prompt in pairs(workspace:GetDescendants()) do
-			if prompt:IsA("ProximityPrompt") then
-if not prompt.MaxActivationDistance == 50 then
-				prompt.MaxActivationDistance = 50
 
-			end
-		end
+-- Fonction qui gère les événements quand un joueur touche une porte
+local function onDoorTouched(hit)
+    local character = hit.Parent
+    local player = game.Players:GetPlayerFromCharacter(character)
+
+    if player then
+        -- Remplacer ce bloc avec les actions à effectuer sur les portes
+        if AutoLootV then
+            AutoCollectButton.Text = "Auto Loot On"
+            detectProximityPrompts(hit)
+            autoActivateProximityPrompt(hit)
+        else
+            AutoCollectButton.Text = "Auto Loot Off"
+        end
+
+        if EspPlayer then
+            EspPlayerButton.Text = "ESP Player On"
+            local localPlayer = game.Players.LocalPlayer
+            local humanoidRootPart = localPlayer.Character and localPlayer.Character:FindFirstChild("HumanoidRootPart")
+            if humanoidRootPart then
+                for _, object in pairs(workspace:GetDescendants()) do
+                    if object:IsA("Model") and game.Players:FindFirstChild(object.Name) then
+                        AddHighlightModelPlayer(object)
+                        UpdateDistancePlayer(humanoidRootPart)
+                    end
+                end
+            end
+        else
+            ClearHighlightModelPlayer()
+            EspPlayerButton.Text = "ESP Player Off"
+        end
+
+        -- Autres fonctionnalités (FullBright, PromptDistanceV, etc.)
+    end
 end
-	else
-		BigDistancePromptButton.Text = "Big Distance Prompt Off"
-	end
-	if NoCooldownPrompt then
-		NoCooldownButton.Text = "No Cooldown Prompt On"
-		for _, prompt in pairs(workspace:GetDescendants()) do
-			if prompt:IsA("ProximityPrompt") then
-if not prompt.HoldDuration == 0 then
-				prompt.HoldDuration = 0
 
-			end
-		end
+-- Fonction pour connecter les événements à toutes les portes taguées
+local function connectDoorTouched()
+    for _, door in pairs(CollectionService:GetTagged("Door")) do
+        door.Touched:Connect(onDoorTouched)
+    end
 end
-	else
-		NoCooldownButton.Text = "No Cooldown Prompt Off"
-	end
-	if NoLagV then
-		NoLagButton.Text = "No Lag On"
-for _, part in pairs(workspace:GetDescendants()) do
-	if part:IsA("BasePart") then
-		if part.Material == Enum.Material.SmoothPlastic then
-			-- If the part's material is already SmoothPlastic, do nothing
-			continue
-		end
-		
-		if not part:GetAttribute("OriginalMaterial") then
-			part:SetAttribute("OriginalMaterial", part.Material)
-		end
-		part.Material = Enum.Material.SmoothPlastic
-	else
-		local originalMaterial = part:GetAttribute("OriginalMaterial")
-		if originalMaterial then
-			part.Material = originalMaterial
-		end
-	end
-end
-else
-	for _, part in pairs(workspace:GetDescendants()) do
-		if part:IsA("BasePart") then
-			local originalMaterial = part:GetAttribute("OriginalMaterial")
-			if originalMaterial then
-				part.Material = originalMaterial
-			end
-		end
-	end
-	NoLagButton.Text = "No Lag Off"
-	end
-	if EspCloset then
-		EspClosetButton.Text = "Esp Closet On"
-		local object_name_substrings = {"closet"}
-		for _, object in pairs(workspace:GetDescendants()) do
-			if object:IsA("Model") or object:IsA("BasePart") then
-				for _, substring in pairs(object_name_substrings) do
-					if string.find(object.Name:lower(), substring) then
-						AddHightlightModelCloset(object)
-						DistanceCloset(object)
 
-					end
-				end
-			end
-		end
-	else
-		ClearHightlightModelCloset()
-		EspClosetButton.Text = "Esp Closet Off"
-	end
-	if EspDoor then
-		EspDoorButton.Text = "Esp Door On"
-		local object_name_substrings = {"door"}
-		for _, object in pairs(workspace:GetDescendants()) do
-			if object:IsA("Model") or object:IsA("BasePart") then
-				for _, substring in pairs(object_name_substrings) do
-					if string.find(object.Name:lower(), substring) then
-						AddHightlightModelDoor(object)
-						DistanceDoor(object)
+-- Fonction de gestion du RunService avec des optimisations pour éviter le lag
+RunService.RenderStepped:Connect(function(deltaTime)
+    deltaTime = 1.5
+    if AutoLootV then
+        AutoCollectButton.Text = "Auto Loot On"
+        -- Tu peux mettre ici des actions globales sans passer par "Touched"
+    else
+        AutoCollectButton.Text = "Auto Loot Off"
+    end
 
-					end
-				end
-			end
-		end
-	else
-		ClearHightlightModelDoor()
-		EspDoorButton.Text = "Esp Door Off"
-	end
-	if EspMonsters then
-		EspMonstersButton.Text = "Esp Entities On"
-		for _, object in pairs(workspace:GetDescendants()) do
-			if object:IsA("Model") or object:IsA("BasePart") then
-				for _, substring in pairs(object_name_substrings_Monsters) do
-					if string.find(object.Name:lower(), substring)
-					then
-						object.Shape = Enum.PartType.Ball
-						DistanceEntities(object)
-						AddHightlightModelDEntities(object)
-					end
-				end
-			end
-		end
-	else
-		ClearHightlightModelEntities()
-		EspMonstersButton.Text = "Esp Entities Off"
-		for _, object in pairs(workspace:GetDescendants()) do
-			if object:IsA("Model") or object:IsA("BasePart") then
-				for _, substring in pairs(object_name_substrings_Monsters) do
-					if string.find(object.Name:lower(), substring)
-					then
-						object.Shape = Enum.PartType.Block
-					end
-				end
-			end
-		end
-	end
-	if EspItem then
-		EspItemButton.Text = "Esp Item On"
-		local object_name_substrings = {"key","candle","crucifix","lockpick","skeletonkey","vitamin","flashlight","fuseobtain","glowstick","shears","pile","battery","bandage"}
-		for _, object in pairs(workspace:GetDescendants()) do
-			if object:IsA("Model") or object:IsA("BasePart") then
-				for _, substring in pairs(object_name_substrings) do
-					if string.find(object.Name:lower(), substring)
-					then
-						AddHightlightModelDItem(object)
-						DistanceItem(object)
-					end
-				end
-			end
-		end
-	else
-		ClearHightlightModelItem()
-		EspItemButton.Text = "Esp Item Off"
-	end
+    if FullBrightV then
+        -- Activer FullBright si nécessaire
+        if game.Lighting.Brightness ~= 50 then
+            game.Lighting.Brightness = 50
+            game.Lighting.Ambient = Color3.new(1, 1, 1)
+            game.Lighting.OutdoorAmbient = Color3.new(1, 1, 1)
+            FullBrightButton.Text = "FullBright On"
+        end
+    else
+        -- Rétablir les paramètres d'éclairage originaux
+        if game.Lighting.Brightness ~= originalLightingSettings.Brightness then
+            game.Lighting.Brightness = originalLightingSettings.Brightness
+            game.Lighting.Ambient = originalLightingSettings.Ambient
+            game.Lighting.OutdoorAmbient = originalLightingSettings.OutdoorAmbient
+            FullBrightButton.Text = "FullBright Off"
+        end
+    end
+
+    -- Gérer la distance des ProximityPrompts
+    if PromptDistanceV then
+        BigDistancePromptButton.Text = "Big Distance Prompt On"
+        for _, prompt in pairs(workspace:GetDescendants()) do
+            if prompt:IsA("ProximityPrompt") and prompt.MaxActivationDistance ~= 50 then
+                prompt.MaxActivationDistance = 50
+            end
+        end
+    else
+        BigDistancePromptButton.Text = "Big Distance Prompt Off"
+    end
+
+    -- Gérer NoCooldownPrompt
+    if NoCooldownPrompt then
+        NoCooldownButton.Text = "No Cooldown Prompt On"
+        for _, prompt in pairs(workspace:GetDescendants()) do
+            if prompt:IsA("ProximityPrompt") and prompt.HoldDuration ~= 0 then
+                prompt.HoldDuration = 0
+            end
+        end
+    else
+        NoCooldownButton.Text = "No Cooldown Prompt Off"
+    end
+
+    -- NoLag Mode
+    if NoLagV then
+        NoLagButton.Text = "No Lag On"
+        for _, part in pairs(workspace:GetDescendants()) do
+            if part:IsA("BasePart") and part.Material ~= Enum.Material.SmoothPlastic then
+                if not part:GetAttribute("OriginalMaterial") then
+                    part:SetAttribute("OriginalMaterial", part.Material)
+                end
+                part.Material = Enum.Material.SmoothPlastic
+            end
+        end
+    else
+        for _, part in pairs(workspace:GetDescendants()) do
+            if part:IsA("BasePart") then
+                local originalMaterial = part:GetAttribute("OriginalMaterial")
+                if originalMaterial then
+                    part.Material = originalMaterial
+                end
+            end
+        end
+        NoLagButton.Text = "No Lag Off"
+    end
+
+    -- EspCloset
+    if EspCloset then
+        EspClosetButton.Text = "Esp Closet On"
+        local object_name_substrings = {"closet"}
+        for _, object in pairs(workspace:GetDescendants()) do
+            if object:IsA("Model") or object:IsA("BasePart") then
+                for _, substring in pairs(object_name_substrings) do
+                    if string.find(object.Name:lower(), substring) then
+                        AddHightlightModelCloset(object)
+                        DistanceCloset(object)
+                    end
+                end
+            end
+        end
+    else
+        ClearHightlightModelCloset()
+        EspClosetButton.Text = "Esp Closet Off"
+    end
+
+    -- EspDoor
+    if EspDoor then
+        EspDoorButton.Text = "Esp Door On"
+        local object_name_substrings = {"door"}
+        for _, object in pairs(workspace:GetDescendants()) do
+            if object:IsA("Model") or object:IsA("BasePart") then
+                for _, substring in pairs(object_name_substrings) do
+                    if string.find(object.Name:lower(), substring) then
+                        AddHightlightModelDoor(object)
+                        DistanceDoor(object)
+                    end
+                end
+            end
+        end
+    else
+        ClearHightlightModelDoor()
+        EspDoorButton.Text = "Esp Door Off"
+    end
+
+    -- EspMonsters
+    if EspMonsters then
+        EspMonstersButton.Text = "Esp Entities On"
+        local object_name_substrings_Monsters = {"monster", "entity"}
+        for _, object in pairs(workspace:GetDescendants()) do
+            if object:IsA("Model") or object:IsA("BasePart") then
+                for _, substring in pairs(object_name_substrings_Monsters) do
+                    if string.find(object.Name:lower(), substring) then
+                        object.Shape = Enum.PartType.Ball
+                        DistanceEntities(object)
+                        AddHightlightModelDEntities(object)
+                    end
+                end
+            end
+        end
+    else
+        ClearHightlightModelEntities()
+        EspMonstersButton.Text = "Esp Entities Off"
+        for _, object in pairs(workspace:GetDescendants()) do
+            if object:IsA("Model") or object:IsA("BasePart") then
+                for _, substring in pairs(object_name_substrings_Monsters) do
+                    if string.find(object.Name:lower(), substring) then
+                        object.Shape = Enum.PartType.Block
+                    end
+                end
+            end
+        end
+    end
+
+    -- EspItem
+    if EspItem then
+        EspItemButton.Text = "Esp Item On"
+        local object_name_substrings = {"key", "candle", "crucifix", "lockpick", "skeletonkey", "vitamin", "flashlight", "fuseobtain", "glowstick", "shears", "pile", "battery", "bandage"}
+        for _, object in pairs(workspace:GetDescendants()) do
+            if object:IsA("Model") or object:IsA("BasePart") then
+                for _, substring in pairs(object_name_substrings) do
+                    if string.find(object.Name:lower(), substring) then
+                        AddHightlightModelDItem(object)
+                        DistanceItem(object)
+                    end
+                end
+            end
+        end
+    else
+        ClearHightlightModelItem()
+        EspItemButton.Text = "Esp Item Off"
+    end
 end)
 
+-- Appeler cette fonction à chaque génération de porte
+connectDoorTouched()
