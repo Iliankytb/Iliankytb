@@ -888,7 +888,7 @@ RunService.RenderStepped:Connect(function(deltaTime)
 
     if FullBrightV then
         -- Activer FullBright si nécessaire
-        if game.Lighting.Brightness < 50 then
+        if game.Lighting.Brightness <= 50 then
             game.Lighting.Brightness = 50
             game.Lighting.Ambient = Color3.new(1, 1, 1)
             game.Lighting.OutdoorAmbient = Color3.new(1, 1, 1)
