@@ -508,7 +508,7 @@ local function AddHightlightModelDItem(object)
 		billboard.ResetOnSpawn = false
 		billboard.AlwaysOnTop = true
 		billboard.Name = object.Name
-		billboard.Parent = object.Name
+		billboard.Parent = object
 
 		local textLabel = Instance.new("TextLabel")
 		textLabel.Size = UDim2.new(1, 0, 1, 0)
