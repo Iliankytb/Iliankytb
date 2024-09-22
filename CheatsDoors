@@ -240,7 +240,7 @@ local function AddHightlightModelCloset(object)
 		if not object:FindFirstChildOfClass("BillboardGui") then
 			local billboard = Instance.new("BillboardGui")
 			billboard.Size = UDim2.new(0.100, 0, 0.50, 0)
-		billboard.MaxDistance = 100
+		billboard.MaxDistance = math.huge
 			billboard.StudsOffset = Vector3.new(0, 0, 0)
 			billboard.Enabled = true
 			billboard.ResetOnSpawn = false
@@ -316,7 +316,7 @@ local function AddHightlightModelDoor(object)
 	if not object:FindFirstChildOfClass("BillboardGui") then
 		local billboard = Instance.new("BillboardGui")
 		billboard.Size = UDim2.new(0.100, 0, 0.50, 0)
-		billboard.MaxDistance = 100
+		billboard.MaxDistance = math.huge
 		billboard.StudsOffset = Vector3.new(0, 0, 0)
 		billboard.Enabled = true
 		billboard.ResetOnSpawn = false
@@ -395,7 +395,7 @@ local function AddHightlightModelDEntities(object)
 	if not object:FindFirstChildOfClass("BillboardGui") then
 		local billboard = Instance.new("BillboardGui")
 		billboard.Size = UDim2.new(0.250, 0, 0.250, 0)
-		billboard.MaxDistance = 500
+		billboard.MaxDistance = math.huge
 		billboard.StudsOffset = Vector3.new(0, 0, 0)
 		billboard.Enabled = true
 		billboard.ResetOnSpawn = false
