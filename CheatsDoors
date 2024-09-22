@@ -954,7 +954,7 @@ RunService.RenderStepped:Connect(function(deltaTime)
     -- EspCloset
     if EspCloset then
         EspClosetButton.Text = "Esp Closet On"
-        local object_name_substrings = {"wardrobe",backdoor_wardrobe","bed","beds"}
+        local object_name_substrings = {"wardrobe","backdoor_wardrobe","bed","beds"}
         for _, object in pairs(workspace:GetDescendants()) do
             if object:IsA("Model") then
                 for _, substring in pairs(object_name_substrings) do
