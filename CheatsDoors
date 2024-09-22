@@ -290,7 +290,7 @@ local function HightLightModelsCloset()
 		EspClosetButton.Text = "Esp Closet On"
 	local object_name_substrings = {"wardrobe","backdoor_wardrobe","bed","beds"}
 	for _, object in pairs(workspace:GetDescendants()) do
-		if object:IsA("Model") or object:IsA("BasePart") then
+		if object:IsA("MeshPart") then
 			for _, substring in pairs(object_name_substrings) do
 				if string.find(object.Name:lower(), substring) then
 					AddHightlightModelCloset(object)
@@ -345,10 +345,10 @@ local function DistanceDoor(object)
 				local textLabel = object.TextLabel
 				if object.Parent:IsA("BasePart") then
 					local distance = (humanoidRootPart.Position - object.Parent.Position).Magnitude
-					textLabel.Text = "Door"..object.Name.." [Distance: " .. math.floor(distance) .. " Studs]"
+					textLabel.Text = object.Name.." [Distance: " .. math.floor(distance) .. " Studs]"
 				elseif object.Parent:IsA("Model") then
 					local distance = (humanoidRootPart.Position - object.Parent:GetPivot().Position).Magnitude
-					textLabel.Text = "Door"..object.Name .. " [Distance: " .. math.floor(distance) .. " Studs]"
+					textLabel.Text = object.Name .. " [Distance: " .. math.floor(distance) .. " Studs]"
 				end
 
 		end
@@ -373,7 +373,7 @@ local function HightLightModelsDoor()
 		EspDoorButton.Text = "Esp Door On"
 		local object_name_substrings = {"door","sideroomdupe"}
 		for _, object in pairs(workspace:GetDescendants()) do
-			if object:IsA("Model") or object:IsA("BasePart") then
+			if object:IsA("MeshPart") then
 				for _, substring in pairs(object_name_substrings) do
 					if string.find(object.Name:lower(), substring) then
 						AddHightlightModelDoor(object)
@@ -452,7 +452,7 @@ local function HightLightModelsEntities()
 	if EspMonsters then
 		EspMonstersButton.Text = "Esp Entities On"
 		for _, object in pairs(workspace:GetDescendants()) do
-			if object:IsA("Model") or object:IsA("BasePart") then
+			if object:IsA("BasePart") or object:IsA("Model") then
 				for _, substring in pairs(object_name_substrings_Monsters) do
 					if string.find(object.Name:lower(), substring)
 					then
@@ -559,7 +559,7 @@ local function HightLightModelsItem()
 		EspItemButton.Text = "Esp Item On"
 		local object_name_substrings = {"key","candle","crucifix","lockpick","skeletonkey","vitamin","flashlight","fuseobtain","glowstick","shears","pile","battery","bandage"}
 		for _, object in pairs(workspace:GetDescendants()) do
-			if object:IsA("Model") or object:IsA("BasePart") then
+			if object:IsA("Tool") then
 				for _, substring in pairs(object_name_substrings) do
 					if string.find(object.Name:lower(), substring)
 					then
@@ -957,7 +957,7 @@ RunService.RenderStepped:Connect(function(deltaTime)
         EspClosetButton.Text = "Esp Closet On"
         local object_name_substrings = {"closet"}
         for _, object in pairs(workspace:GetDescendants()) do
-            if object:IsA("Model") or object:IsA("BasePart") then
+            if object:IsA("MeshPart") then
                 for _, substring in pairs(object_name_substrings) do
                     if string.find(object.Name:lower(), substring) then
                         AddHightlightModelCloset(object)
@@ -976,7 +976,7 @@ RunService.RenderStepped:Connect(function(deltaTime)
         EspDoorButton.Text = "Esp Door On"
         local object_name_substrings = {"door"}
         for _, object in pairs(workspace:GetDescendants()) do
-            if object:IsA("Model") or object:IsA("BasePart") then
+            if object:IsA("MeshPart") then
                 for _, substring in pairs(object_name_substrings) do
                     if string.find(object.Name:lower(), substring) then
                         AddHightlightModelDoor(object)
@@ -1024,7 +1024,7 @@ RunService.RenderStepped:Connect(function(deltaTime)
         EspItemButton.Text = "Esp Item On"
         local object_name_substrings = {"key", "candle", "crucifix", "lockpick", "skeletonkey", "vitamin", "flashlight", "fuseobtain", "glowstick", "shears", "pile", "battery", "bandage"}
         for _, object in pairs(workspace:GetDescendants()) do
-            if object:IsA("Model") or object:IsA("BasePart") then
+            if object:IsA("Tool") then
                 for _, substring in pairs(object_name_substrings) do
                     if string.find(object.Name:lower(), substring) then
                         AddHightlightModelDItem(object)
@@ -1037,7 +1037,7 @@ RunService.RenderStepped:Connect(function(deltaTime)
         ClearHightlightModelItem()
         EspItemButton.Text = "Esp Item Off"
     end
+connectDoorTouched()
 end)
 
 -- Appeler cette fonction à chaque génération de porte
-connectDoorTouched()
