@@ -259,7 +259,6 @@ end
 local function DistanceCloset(object)
 	for _, object in pairs(workspace:GetDescendants()) do
 		if object:IsA("BillboardGui") then
-	
 				local textLabel = object.TextLabel
 				if object.Parent:IsA("Model") then
 					local distance = (humanoidRootPart.Position - object.Parent:GetPivot().Position).Magnitude
