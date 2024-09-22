@@ -262,7 +262,7 @@ local function DistanceCloset(object)
 	
 				local textLabel = object.TextLabel
 				if object.Parent:IsA("Model") then
-					local distance = (humanoidRootPart.Position - object.Parent.Position).Magnitude
+					local distance = (humanoidRootPart.Position - object.Parent:GetPivot().Position).Magnitude
 					textLabel.Text = object.Name.." [Distance: " .. math.floor(distance) .. " Studs]"
 				end
 	
@@ -339,7 +339,7 @@ local function DistanceDoor(object)
 			if object.Name == "Door" or object.Name == "sideroomdupe" then
 				local textLabel = object.TextLabel
 				if object.Parent:IsA("Model") then
-					local distance = (humanoidRootPart.Position - object.Parent.Position).Magnitude
+					local distance = (humanoidRootPart.Position - object.Parent:GetPivot().Position).Magnitude
 					textLabel.Text = object.Name.." "..object.Parent.Name.." [Distance: " .. math.floor(distance) .. " Studs]"
 				end
 
