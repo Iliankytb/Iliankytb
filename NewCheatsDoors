@@ -1,0 +1,178 @@
+-- Fonction pour détecter et détruire le GUI et le script s'ils existent déjà
+if game.Players.LocalPlayer.PlayerGui:FindFirstChild("GuiPlayer") then
+    game.Players.LocalPlayer.PlayerGui.GuiPlayer:Destroy()
+end
+if script.Parent:FindFirstChild(script.Name) then
+    script.Parent:FindFirstChild(script.Name):Destroy()
+end
+
+-- Création du GUI principal
+local gui = Instance.new("ScreenGui")
+gui.Name = "GuiPlayer"
+gui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Création de la Frame générale
+local frameGenerale = Instance.new("Frame")
+frameGenerale.Size = UDim2.new(0.5, 0, 0.5, 0)
+frameGenerale.Position = UDim2.new(0.25, 0, 0.25, 0)
+frameGenerale.BackgroundTransparency = 0.2
+frameGenerale.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+frameGenerale.BorderSizePixel = 0
+frameGenerale.Parent = gui
+
+-- Ajout d'effets visuels (ombre, contour lumineux)
+local uiCorner = Instance.new("UICorner", frameGenerale)
+uiCorner.CornerRadius = UDim.new(0.1, 0)
+local uiStroke = Instance.new("UIStroke", frameGenerale)
+uiStroke.Thickness = 2
+uiStroke.Color = Color3.fromRGB(0, 170, 255)
+
+-- Création des Frames supplémentaires
+local frameD = Instance.new("Frame")
+frameD.Size = UDim2.new(0.25, 0, 0.5, 0)
+frameD.Position = UDim2.new(0.75, 0, 0, 0)
+frameD.BackgroundTransparency = 0.2
+frameD.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+frameD.Parent = frameGenerale
+
+local frameG = Instance.new("Frame")
+frameG.Size = UDim2.new(0.25, 0, 0.5, 0)
+frameG.Position = UDim2.new(0, 0, 0, 0)
+frameG.BackgroundTransparency = 0.2
+frameG.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+frameG.Parent = frameGenerale
+
+-- Création du ScrollingFrame dans la Frame générale
+local scrollingFrame = Instance.new("ScrollingFrame")
+scrollingFrame.Size = UDim2.new(0.75, 0, 0.9, 0)
+scrollingFrame.Position = UDim2.new(0.125, 0, 0.05, 0)
+scrollingFrame.BackgroundTransparency = 1
+scrollingFrame.Parent = frameGenerale
+
+-- Ajout d'un UIListLayout pour organiser les boutons
+local uiListLayout = Instance.new("UIListLayout")
+uiListLayout.Padding = UDim.new(0.01, 0)
+uiListLayout.Parent = scrollingFrame
+
+-- Création des boutons principaux
+local buttonNames = {"Main", "Esp", "Player", "Anti Entity", "Settings", "Remove UI"}
+for _, name in pairs(buttonNames) do
+    local button = Instance.new("TextButton")
+    button.Size = UDim2.new(1, 0, 0.15, 0)
+    button.Text = name
+    button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    button.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+    button.Parent = scrollingFrame
+end
+
+-- Création des ScrollingFrames et UIListLayout dans la frameD
+local scrollingFrameDNames = {"scrollingFrameMain", "scrollingFrameEsp", "scrollingFramePlayer", "scrollingFrameAntiEntity", "scrollingFrameSettings"}
+for _, frameName in pairs(scrollingFrameDNames) do
+    local scrollingFrameD = Instance.new("ScrollingFrame")
+    scrollingFrameD.Size = UDim2.new(1, 0, 1, 0)
+    scrollingFrameD.Visible = false
+    scrollingFrameD.Name = frameName
+    scrollingFrameD.Parent = frameD
+
+    local layoutD = Instance.new("UIListLayout")
+    layoutD.Parent = scrollingFrameD
+end
+
+-- Fonction pour le bouton ESP (highlight des portes)
+local EspDoor = false
+
+local function AddHighlightModelDoor(object)
+    if not object:FindFirstChildOfClass("Highlight") then
+        local highlight = Instance.new("Highlight")
+        highlight.FillColor = Color3.fromRGB(0, 62, 186)
+        highlight.OutlineColor = Color3.fromRGB(0, 85, 255)
+        highlight.FillTransparency = 0.75
+        highlight.OutlineTransparency = 0.75
+        highlight.Name = object.Name
+        highlight.Parent = object
+    end
+
+    if not object:FindFirstChildOfClass("BillboardGui") then
+        local billboard = Instance.new("BillboardGui")
+        billboard.Size = UDim2.new(0.1, 0, 0.5, 0)
+        billboard.MaxDistance = 50
+        billboard.StudsOffset = Vector3.new(0, 0, 0)
+        billboard.Enabled = true
+        billboard.ResetOnSpawn = false
+        billboard.AlwaysOnTop = true
+        billboard.Name = object.Name
+        billboard.Parent = object
+
+        local textLabel = Instance.new("TextLabel")
+        textLabel.Size = UDim2.new(1, 0, 1, 0)
+        textLabel.BackgroundTransparency = 1
+        textLabel.TextColor3 = Color3.fromRGB(0, 170, 255)
+        textLabel.Text = object.Name
+        textLabel.Parent = billboard
+    end
+end
+
+local function UpdateDoorDistance(humanoidRootPart)
+    for _, obj in pairs(workspace:GetDescendants()) do
+        if obj:IsA("BillboardGui") then
+            local textLabel = obj:FindFirstChildOfClass("TextLabel")
+            if textLabel and obj.Parent:IsA("MeshPart") then
+                local distance = (humanoidRootPart.Position - obj.Parent.Position).Magnitude
+                textLabel.Text = obj.Name .. " [Distance: " .. math.floor(distance) .. " Studs]"
+            end
+        end
+    end
+end
+
+local function ClearHighlightModelDoor()
+    for _, obj in pairs(workspace:GetDescendants()) do
+        if obj:IsA("Highlight") or obj:IsA("BillboardGui") then
+            if obj.Name:lower() == "door" or obj.Name:lower() == "sideroomdupe" then
+                obj:Destroy()
+            end
+        end
+    end
+end
+
+local function HighlightModelsDoor(humanoidRootPart, EspDoorButton)
+    EspDoor = not EspDoor
+    if EspDoor then
+        EspDoorButton.Text = "Esp Door On"
+        for _, object in pairs(workspace:GetDescendants()) do
+            if object:IsA("MeshPart") and string.find(object.Name:lower(), "door") then
+                AddHighlightModelDoor(object)
+                UpdateDoorDistance(humanoidRootPart)
+            end
+        end
+    else
+        ClearHighlightModelDoor()
+        EspDoorButton.Text = "Esp Door Off"
+    end
+end
+
+-- Autres fonctions similaires pour ESP des objets comme "lockpick" et "keyobtain"
+
+-- Fonction Monsters Notifier
+local function MonsterNotifier()
+    workspace.ChildAdded:Connect(function(child)
+        if child:IsA("Model") and (child.Name:lower() == "rushnew" or child.Name:lower() == "ambushmoving") then
+            local warningFrame = Instance.new("Frame")
+            warningFrame.Size = UDim2.new(0.3, 0, 0.1, 0)
+            warningFrame.Position = UDim2.new(0.35, 0, 0.1, 0)
+            warningFrame.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+            warningFrame.Parent = gui
+
+            local warningLabel = Instance.new("TextLabel")
+            warningLabel.Text = "Monstre détecté : " .. child.Name
+            warningLabel.Size = UDim2.new(1, 0, 1, 0)
+            warningLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+            warningLabel.Parent = warningFrame
+
+            wait(3)
+            warningFrame:Destroy()
+        end
+    end)
+end
+
+-- Initialisation du Monster Notifier
+MonsterNotifier()
