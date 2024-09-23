@@ -926,7 +926,7 @@ RunService.Heartbeat:Connect(function(deltaTime)
         local object_name_substrings = {"door","sideroomdupe"}
         for _, object in pairs(workspace:GetDescendants()) do
             if object:IsA("MeshPart") then
-if object:IsA("MeshPart").Object.Name then return end
+if object:IsA("MeshPart").object.Name then return end
                 for _, substring in pairs(object_name_substrings) do
                     if string.find(object.Name:lower(), substring) then
                         AddHightlightModelDoor(object)
