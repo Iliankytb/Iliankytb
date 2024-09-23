@@ -256,18 +256,19 @@ local function AddHightlightModelCloset(object)
 		end
 end
 
-local function DistanceCloset(object)
-	for _, object in pairs(workspace:GetDescendants()) do
-		if object:IsA("BillboardGui") then
-				local textLabel = object.TextLabel
-				if object.Parent:IsA("Model") then
-					local distance = (humanoidRootPart.Position - object.Parent:GetPivot().Position).Magnitude
-					textLabel.Text = object.Name.." [Distance: " .. math.floor(distance) .. " Studs]"
-				end
-	
-		end
-		end
+local function UpdateClosetDistance(object)
+    for _, object in pairs(workspace:GetDescendants()) do
+        if object:IsA("BillboardGui") then
+            local textLabel = object.TextLabel
+
+            if object.Parent:IsA("Model") then
+                local distance = (humanoidRootPart.Position - object.Parent:GetPivot().Position).Magnitude
+                textLabel.Text = object.Name.." [Distance: " .. math.floor(distance) .. " Studs]"
+            end
+        end
+    end
 end
+
 
 local function ClearHightlightModelCloset(Obj)
 	for _, Obj in pairs(workspace:GetDescendants()) do
@@ -332,20 +333,19 @@ local function AddHightlightModelDoor(object)
 	end
 end
 
-local function DistanceDoor(object)
-	for _, object in pairs(workspace:GetDescendants()) do
-		if object:IsA("BillboardGui") then
-			if object.Name:lower() == "Door" or object.Name:lower() == "sideroomdupe" then
-				local textLabel = object.TextLabel
-				if object.Parent:IsA("Model") then
-					local distance = (humanoidRootPart.Position - object.Parent:GetPivot().Position).Magnitude
-					textLabel.Text = object.Name.." "..object.Parent.Parent.Name.." [Distance: " .. math.floor(distance) .. " Studs]"
-				end
+local function UpdateDoorDistance(object)
+    for _, object in pairs(workspace:GetDescendants()) do
+        if object:IsA("BillboardGui") and (object.Name:lower() == "door" or object.Name:lower() == "sideroomdupe") then
+            local textLabel = object.TextLabel
 
-		end
-		end
-		end
+            if object.Parent:IsA("Model") then
+                local distance = (humanoidRootPart.Position - object.Parent:GetPivot().Position).Magnitude
+                textLabel.Text = object.Name.." "..object.Parent.Parent.Name.." [Distance: " .. math.floor(distance) .. " Studs]"
+            end
+        end
+    end
 end
+
 
 local function ClearHightlightModelDoor(Obj)
 	for _, Obj in pairs(workspace:GetDescendants()) do
