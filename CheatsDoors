@@ -782,7 +782,9 @@ EspClosetButton.MouseButton1Click:Connect(HightLightModelsCloset)
 
 EspItemButton.MouseButton1Click:Connect(HightLightModelsItem)
 
-EspDoorButton.MouseButton1Click:Connect(HighlightModelsDoor)
+EspDoorButton.MouseButton1Click:Connect(function()
+HighlightModelsDoor(humanoidRootPart)
+end)
 
 EspMonstersButton.MouseButton1Click:Connect(HightLightModelsEntities)
 
