@@ -1,295 +1,95 @@
--- Variables
-local player = game.Players.LocalPlayer
-local RunService = game:GetService("RunService")
+-- Créer un nouvel écran GUI
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "CustomGUI"
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 
--- Création du GUI principal
-local gui = Instance.new("ScreenGui")
-gui.Name = "GuiPlayer"
-gui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+-- Créer un Frame principal
+local MainFrame = Instance.new("Frame")
+MainFrame.Size = UDim2.new(0, 400, 0, 300)
+MainFrame.Position = UDim2.new(0.5, -200, 0.5, -150)
+MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+MainFrame.BorderSizePixel = 0
+MainFrame.Parent = ScreenGui
 
--- Création de la Frame générale
-local frameGenerale = Instance.new("Frame")
-frameGenerale.Size = UDim2.new(0.5, 0, 0.5, 0)
-frameGenerale.Position = UDim2.new(0.25, 0, 0.25, 0)
-frameGenerale.BackgroundTransparency = 0.2
-frameGenerale.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-frameGenerale.BorderSizePixel = 0
-frameGenerale.Parent = gui
+-- Ajouter un titre
+local Title = Instance.new("TextLabel")
+Title.Text = "Custom Script GUI"
+Title.Size = UDim2.new(1, 0, 0, 50)
+Title.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+Title.TextColor3 = Color3.fromRGB(255, 255, 255)
+Title.Font = Enum.Font.SourceSansBold
+Title.TextSize = 24
+Title.Parent = MainFrame
 
--- Ajout d'effets visuels (ombre, contour lumineux)
-local uiCorner = Instance.new("UICorner", frameGenerale)
-uiCorner.CornerRadius = UDim.new(0.1, 0)
-local uiStroke = Instance.new("UIStroke", frameGenerale)
-uiStroke.Thickness = 2
-uiStroke.Color = Color3.fromRGB(0, 170, 255)
+-- Créer des boutons pour des options (ex: Speed Boost)
+local SpeedBoostButton = Instance.new("TextButton")
+SpeedBoostButton.Text = "Speed Boost"
+SpeedBoostButton.Size = UDim2.new(0, 200, 0, 50)
+SpeedBoostButton.Position = UDim2.new(0, 100, 0, 60)
+SpeedBoostButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+SpeedBoostButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+SpeedBoostButton.Font = Enum.Font.SourceSans
+SpeedBoostButton.TextSize = 18
+SpeedBoostButton.Parent = MainFrame
 
--- Création des Frames supplémentaires
-local frameD = Instance.new("Frame")
-frameD.Size = UDim2.new(0.25, 0, 0.5, 0)
-frameD.Position = UDim2.new(0.75, 0, 0, 0)
-frameD.BackgroundTransparency = 0.2
-frameD.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-frameD.Parent = frameGenerale
-
-local frameG = Instance.new("Frame")
-frameG.Size = UDim2.new(0.25, 0, 0.5, 0)
-frameG.Position = UDim2.new(0, 0, 0, 0)
-frameG.BackgroundTransparency = 0.2
-frameG.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-frameG.Parent = frameGenerale
-
--- Création du ScrollingFrame dans la Frame générale
-local scrollingFrame = Instance.new("ScrollingFrame")
-scrollingFrame.Size = UDim2.new(0.75, 0, 0.9, 0)
-scrollingFrame.Position = UDim2.new(0.125, 0, 0.05, 0)
-scrollingFrame.BackgroundTransparency = 1
-scrollingFrame.Parent = frameGenerale
-
--- Ajout d'un UIListLayout pour organiser les boutons
-local uiListLayout = Instance.new("UIListLayout")
-uiListLayout.Padding = UDim.new(0.01, 0)
-uiListLayout.Parent = scrollingFrame
-
--- Création des boutons principaux
-local buttonNames = {"Main", "Esp", "Player", "Anti Entity", "Settings", "Remove UI"}
-for _, name in pairs(buttonNames) do
-    local button = Instance.new("TextButton")
-    button.Size = UDim2.new(1, 0, 0.15, 0)
-    button.Text = name
-    button.TextColor3 = Color3.fromRGB(255, 255, 255)
-    button.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-    button.Parent = scrollingFrame
-end
-
--- Création des ScrollingFrames et UIListLayout dans la frameD
-local scrollingFrameDNames = {"scrollingFrameMain", "scrollingFrameEsp", "scrollingFramePlayer", "scrollingFrameAntiEntity", "scrollingFrameSettings"}
-for _, frameName in pairs(scrollingFrameDNames) do
-    local scrollingFrameD = Instance.new("ScrollingFrame")
-    scrollingFrameD.Size = UDim2.new(1, 0, 1, 0)
-    scrollingFrameD.Visible = false
-    scrollingFrameD.Name = frameName
--- Variables
-local player = game.Players.LocalPlayer
-local RunService = game:GetService("RunService")
-
--- Création du GUI principal
-local gui = Instance.new("ScreenGui")
-gui.Name = "GuiPlayer"
-gui.Parent = player:WaitForChild("PlayerGui")
-
--- Bouton pour ouvrir/fermer la Frame principale
-local toggleButton = Instance.new("TextButton")
-toggleButton.Size = UDim2.new(0, 200, 0, 50)
-toggleButton.Position = UDim2.new(0.85, 0, 0.05, 0)
-toggleButton.Text = "Toggle Cheat Menu"
-toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-toggleButton.TextScaled = true
-toggleButton.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-toggleButton.Parent = gui
-toggleButton.Visible = true
-
--- Ajout d'un effet de coin arrondi et d'une bordure lumineuse pour le bouton
-local toggleButtonCorner = Instance.new("UICorner")
-toggleButtonCorner.CornerRadius = UDim.new(0.15, 0)
-toggleButtonCorner.Parent = toggleButton
-local toggleButtonStroke = Instance.new("UIStroke")
-toggleButtonStroke.Thickness = 2
-toggleButtonStroke.Color = Color3.fromRGB(0, 170, 255)
-toggleButtonStroke.Parent = toggleButton
-
--- Création de la Frame générale (cachée au début)
-local frameGenerale = Instance.new("Frame")
-frameGenerale.Size = UDim2.new(0.3, 0, 0.4, 0)
-frameGenerale.Position = UDim2.new(0.35, 0, 0.3, 0)
-frameGenerale.BackgroundTransparency = 0.2
-frameGenerale.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-frameGenerale.BorderSizePixel = 0
-frameGenerale.Visible = false
-frameGenerale.Parent = gui
-
--- Ajout d'un effet lumineux et de coins arrondis pour la frame principale
-local frameCorner = Instance.new("UICorner")
-frameCorner.CornerRadius = UDim.new(0.1, 0)
-frameCorner.Parent = frameGenerale
-local frameStroke = Instance.new("UIStroke")
-frameStroke.Thickness = 3
-frameStroke.Color = Color3.fromRGB(0, 85, 255)
-frameStroke.Parent = frameGenerale
-
--- Création du ScrollingFrame pour les boutons (gauche)
-local scrollingFrame = Instance.new("ScrollingFrame")
-scrollingFrame.Size = UDim2.new(0.5, 0, 1, 0)
-scrollingFrame.BackgroundTransparency = 1
-scrollingFrame.Parent = frameGenerale
-
--- Layout pour organiser les boutons à gauche
-local uiListLayout = Instance.new("UIListLayout")
-uiListLayout.Padding = UDim.new(0.05, 0)
-uiListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-uiListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-uiListLayout.Parent = scrollingFrame
-
--- Création des boutons à gauche
-local buttonNames = {"Main", "Esp", "Player"}
-for _, name in pairs(buttonNames) do
-    local button = Instance.new("TextButton")
-    button.Size = UDim2.new(0.9, 0, 0.2, 0)
-    button.Text = name
-    button.TextColor3 = Color3.fromRGB(255, 255, 255)
-    button.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-    button.TextScaled = true
-    button.Parent = scrollingFrame
-
-    -- Effet lumineux et arrondi pour les boutons
-    local buttonCorner = Instance.new("UICorner")
-    buttonCorner.CornerRadius = UDim.new(0.1, 0)
-    buttonCorner.Parent = button
-    local buttonStroke = Instance.new("UIStroke")
-    buttonStroke.Thickness = 2
-    buttonStroke.Color = Color3.fromRGB(0, 170, 255)
-    buttonStroke.Parent = button
-end
-
--- Création des sous-menus (droite)
-local frameRight = Instance.new("Frame")
-frameRight.Size = UDim2.new(0.5, 0, 1, 0)
-frameRight.Position = UDim2.new(0.5, 0, 0, 0)
-frameRight.BackgroundTransparency = 1
-frameRight.Parent = frameGenerale
-
--- Création des sous-boutons pour les actions à droite
-local actionNames = {"No Cooldown Prompt On", "FullBright Off", "Big Distance Prompt Off"}
-local layoutAction = Instance.new("UIListLayout")
-layoutAction.Padding = UDim.new(0.05, 0)
-layoutAction.Parent = frameRight
-
-for _, action in pairs(actionNames) do
-    local actionButton = Instance.new("TextButton")
-    actionButton.Size = UDim2.new(0.9, 0, 0.2, 0)
-    actionButton.Text = action
-    actionButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    actionButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-    actionButton.TextScaled = true
-    actionButton.Parent = frameRight
-
-    -- Effet lumineux et arrondi pour les boutons d'action
-    local actionCorner = Instance.new("UICorner")
-    actionCorner.CornerRadius = UDim.new(0.1, 0)
-    actionCorner.Parent = actionButton
-    local actionStroke = Instance.new("UIStroke")
-    actionStroke.Thickness = 2
-    actionStroke.Color = Color3.fromRGB(0, 170, 255)
-    actionStroke.Parent = actionButton
-end
-
--- Fonction pour ouvrir/fermer le menu
-local isMenuOpen = false
-toggleButton.MouseButton1Click:Connect(function()
-    isMenuOpen = not isMenuOpen
-    frameGenerale.Visible = isMenuOpen
-    if isMenuOpen then
-        toggleButton.Text = "Close Cheat Menu"
-    else
-        toggleButton.Text = "Toggle Cheat Menu"
+-- Ajout d’un comportement de boost de vitesse
+local speedBoostActive = false
+SpeedBoostButton.MouseButton1Click:Connect(function()
+    local player = game.Players.LocalPlayer
+    local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
+    
+    if humanoid then
+        if speedBoostActive then
+            humanoid.WalkSpeed = 16 -- Revenir à la vitesse normale
+            SpeedBoostButton.Text = "Speed Boost"
+        else
+            humanoid.WalkSpeed = 50 -- Activer le boost de vitesse
+            SpeedBoostButton.Text = "Disable Speed Boost"
+        end
+        speedBoostActive = not speedBoostActive
     end
 end)
 
+-- Créer un bouton pour voler (Fly)
+local FlyButton = Instance.new("TextButton")
+FlyButton.Text = "Fly"
+FlyButton.Size = UDim2.new(0, 200, 0, 50)
+FlyButton.Position = UDim2.new(0, 100, 0, 120)
+FlyButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+FlyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+FlyButton.Font = Enum.Font.SourceSans
+FlyButton.TextSize = 18
+FlyButton.Parent = MainFrame
 
--- Fonction pour le bouton ESP (highlight des portes)
-local EspDoor = false
-
-local function AddHighlightModelDoor(object)
-    if not object:FindFirstChildOfClass("Highlight") then
-        local highlight = Instance.new("Highlight")
-        highlight.FillColor = Color3.fromRGB(0, 62, 186)
-        highlight.OutlineColor = Color3.fromRGB(0, 85, 255)
-        highlight.FillTransparency = 0.75
-        highlight.OutlineTransparency = 0.75
-        highlight.Name = object.Name
-        highlight.Parent = object
-    end
-
-    if not object:FindFirstChildOfClass("BillboardGui") then
-        local billboard = Instance.new("BillboardGui")
-        billboard.Size = UDim2.new(0.1, 0, 0.5, 0)
-        billboard.MaxDistance = 50
-        billboard.StudsOffset = Vector3.new(0, 0, 0)
-        billboard.Enabled = true
-        billboard.ResetOnSpawn = false
-        billboard.AlwaysOnTop = true
-        billboard.Name = object.Name
-        billboard.Parent = object
-
-        local textLabel = Instance.new("TextLabel")
-        textLabel.Size = UDim2.new(1, 0, 1, 0)
-        textLabel.BackgroundTransparency = 1
-        textLabel.TextColor3 = Color3.fromRGB(0, 170, 255)
-        textLabel.Text = object.Name
-        textLabel.Parent = billboard
-    end
-end
-
-local function UpdateDoorDistance(humanoidRootPart)
-    for _, obj in pairs(workspace:GetDescendants()) do
-        if obj:IsA("BillboardGui") then
-            local textLabel = obj:FindFirstChildOfClass("TextLabel")
-            if textLabel and obj.Parent:IsA("MeshPart") then
-                local distance = (humanoidRootPart.Position - obj.Parent.Position).Magnitude
-                textLabel.Text = obj.Name .. " [Distance: " .. math.floor(distance) .. " Studs]"
-            end
+-- Ajouter comportement de vol (Fly)
+local flying = false
+FlyButton.MouseButton1Click:Connect(function()
+    local player = game.Players.LocalPlayer
+    local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
+    
+    if humanoid then
+        if flying then
+            humanoid.PlatformStand = false -- Désactiver le vol
+            FlyButton.Text = "Fly"
+        else
+            humanoid.PlatformStand = true -- Activer le vol
+            FlyButton.Text = "Disable Fly"
         end
+        flying = not flying
     end
-end
+end)
 
-local function ClearHighlightModelDoor()
-    for _, obj in pairs(workspace:GetDescendants()) do
-        if obj:IsA("Highlight") or obj:IsA("BillboardGui") then
-            if obj.Name:lower() == "door" or obj.Name:lower() == "sideroomdupe" then
-                obj:Destroy()
-            end
-        end
-    end
-end
+-- Ajout d'un bouton pour quitter le GUI
+local ExitButton = Instance.new("TextButton")
+ExitButton.Text = "Close"
+ExitButton.Size = UDim2.new(0, 100, 0, 30)
+ExitButton.Position = UDim2.new(0.5, -50, 1, -40)
+ExitButton.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+ExitButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+ExitButton.Font = Enum.Font.SourceSans
+ExitButton.TextSize = 18
+ExitButton.Parent = MainFrame
 
-local function HighlightModelsDoor(humanoidRootPart, EspDoorButton)
-    EspDoor = not EspDoor
-    if EspDoor then
-        EspDoorButton.Text = "Esp Door On"
-        for _, object in pairs(workspace:GetDescendants()) do
-            if object:IsA("MeshPart") and string.find(object.Name:lower(), "door") then
-                AddHighlightModelDoor(object)
-                UpdateDoorDistance(humanoidRootPart)
-            end
-        end
-    else
-        ClearHighlightModelDoor()
-        EspDoorButton.Text = "Esp Door Off"
-    end
-end
-
--- Autres fonctions similaires pour ESP des objets comme "lockpick" et "keyobtain"
-
--- Fonction Monsters Notifier
-local function MonsterNotifier()
-    workspace.ChildAdded:Connect(function(child)
-        if child:IsA("Model") and (child.Name:lower() == "rushmoving" or child.Name:lower() == "ambushmoving") then
-            local warningFrame = Instance.new("Frame")
-            warningFrame.Size = UDim2.new(0.3, 0, 0.1, 0)
-            warningFrame.Position = UDim2.new(0.35, 0, 0.1, 0)
-            warningFrame.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
-            warningFrame.Parent = gui
-
-            local warningLabel = Instance.new("TextLabel")
-            warningLabel.Text = "Monstre détecté : " .. child.Name
-            warningLabel.Size = UDim2.new(1, 0, 1, 0)
-            warningLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-            warningLabel.Parent = warningFrame
-
-            wait(3)
-            warningFrame:Destroy()
-        end
-    end)
-end
-
--- Initialisation du Monster Notifier
-MonsterNotifier()
+ExitButton.MouseButton1Click:Connect(function()
+    ScreenGui:Destroy()
+end)
