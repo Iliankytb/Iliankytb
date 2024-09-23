@@ -813,55 +813,14 @@ PlayerButton.MouseButton1Click:Connect(function()
 	showSection(ScrollingFramePlayer)
 end)
 
-local CollectionService = game:GetService("CollectionService")
-
 -- Fonction pour taguer toutes les portes générées
-local function tagDoors(door)
-    CollectionService:AddTag(door, "Door")
-end
 
 -- Fonction qui gère les événements quand un joueur touche une porte
-local function onDoorTouched(hit)
-    local character = hit.Parent
-    local player = game.Players:GetPlayerFromCharacter(character)
+    
 
-    if player then
-        -- Remplacer ce bloc avec les actions à effectuer sur les portes
-        if AutoLootV then
-            AutoCollectButton.Text = "Auto Loot On"
-            detectProximityPrompts(hit)
-            autoActivateProximityPrompt(hit)
-        else
-            AutoCollectButton.Text = "Auto Loot Off"
-        end
-
-        if EspPlayer then
-            EspPlayerButton.Text = "ESP Player On"
-            local localPlayer = game.Players.LocalPlayer
-            local humanoidRootPart = localPlayer.Character and localPlayer.Character:FindFirstChild("HumanoidRootPart")
-            if humanoidRootPart then
-                for _, object in pairs(workspace:GetDescendants()) do
-                    if object:IsA("Model") and game.Players:FindFirstChild(object.Name) then
-                        AddHighlightModelPlayer(object)
-                        UpdateDistancePlayer(humanoidRootPart)
-                    end
-                end
-            end
-        else
-            ClearHighlightModelPlayer()
-            EspPlayerButton.Text = "ESP Player Off"
-        end
-
-        -- Autres fonctionnalités (FullBright, PromptDistanceV, etc.)
-    end
-end
-
+        
 -- Fonction pour connecter les événements à toutes les portes taguées
-local function connectDoorTouched()
-    for _, door in pairs(CollectionService:GetTagged("Door")) do
-        door.Touched:Connect(onDoorTouched)
-    end
-end
+
 
 -- Fonction de gestion du RunService avec des optimisations pour éviter le lag
 RunService.RenderStepped:Connect(function(deltaTime)
@@ -1021,7 +980,35 @@ RunService.RenderStepped:Connect(function(deltaTime)
         ClearHightlightModelItem()
         EspItemButton.Text = "Esp Item Off"
     end
-connectDoorTouched()
+if player then
+        -- Remplacer ce bloc avec les actions à effectuer sur les portes
+        if AutoLootV then
+            AutoCollectButton.Text = "Auto Loot On"
+            detectProximityPrompts(hit)
+            autoActivateProximityPrompt(hit)
+        else
+            AutoCollectButton.Text = "Auto Loot Off"
+        end
+if EspPlayer then
+            EspPlayerButton.Text = "ESP Player On"
+            local localPlayer = game.Players.LocalPlayer
+            local humanoidRootPart = localPlayer.Character and localPlayer.Character:FindFirstChild("HumanoidRootPart")
+            if humanoidRootPart then
+                for _, object in pairs(workspace:GetDescendants()) do
+                    if object:IsA("Model") and game.Players:FindFirstChild(object.Name) then
+                        AddHighlightModelPlayer(object)
+                        UpdateDistancePlayer(humanoidRootPart)
+                    end
+                end
+            end
+        else
+            ClearHighlightModelPlayer()
+            EspPlayerButton.Text = "ESP Player Off"
+        end
+
+        -- Autres fonctionnalités (FullBright, PromptDistanceV, etc.)
+    end
+
 end)
 
 -- Appeler cette fonction à chaque génération de porte
