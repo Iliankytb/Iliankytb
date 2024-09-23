@@ -301,7 +301,7 @@ local function HightLightModelsCloset()
 	end
 end
 
-local function AddHightlightModelDoor(object)
+local function AddHighlightModelDoor(object)
 	-- Check if the object already has a Highlight
 	if not object:FindFirstChildOfClass("Highlight") then
 		local highlight = Instance.new("Highlight")
@@ -329,57 +329,55 @@ local function AddHightlightModelDoor(object)
 		textLabel.Size = UDim2.new(1, 0, 1, 0)
 		textLabel.BackgroundTransparency = 1
 		textLabel.TextColor3 = Color3.fromRGB(0, 170, 255)
+		textLabel.Text = object.Name -- Texte de base
 		textLabel.Parent = billboard
 	end
 end
 
-local function UpdateDoorDistance(object)
-    for _, object in pairs(workspace:GetDescendants()) do
-        if object:IsA("BillboardGui") then
-local textLabel = object.TextLabel
-            if object.Parent:IsA("MeshPart") then
-                local distance = (humanoidRootPart.Position - object.Parent.Position).Magnitude
-                textLabel.Text = object.Name.." "..object.Parent.Parent.Parent.Name.." [Distance: " .. math.floor(distance) .. " Studs]"
+local function UpdateDoorDistance(humanoidRootPart)
+    for _, obj in pairs(workspace:GetDescendants()) do
+        if obj:IsA("BillboardGui") then
+            local textLabel = obj:FindFirstChildOfClass("TextLabel")
+            if textLabel and obj.Parent:IsA("MeshPart") then
+                local distance = (humanoidRootPart.Position - obj.Parent.Position).Magnitude
+                textLabel.Text = obj.Name .. " " .. obj.Parent.Parent.Parent.Name .. " [Distance: " .. math.floor(distance) .. " Studs]"
             end
         end
     end
 end
 
-
-local function ClearHightlightModelDoor(Obj)
-	for _, Obj in pairs(workspace:GetDescendants()) do
-		if Obj:IsA("Highlight") or Obj:IsA("BillboardGui") then
-			if Obj.Name:lower() == "door" or Obj.Name:lower() == "sideroomdupe" then
-			Obj:Destroy()
+local function ClearHighlightModelDoor()
+	for _, obj in pairs(workspace:GetDescendants()) do
+		if obj:IsA("Highlight") or obj:IsA("BillboardGui") then
+			if obj.Name:lower() == "door" or obj.Name:lower() == "sideroomdupe" then
+				obj:Destroy()
 			end
 		end
 	end
 end
 
-
-local function HightLightModelsDoor()
+local function HighlightModelsDoor(humanoidRootPart, EspDoorButton)
 	EspDoor = not EspDoor
 	if EspDoor then
-    EspDoorButton.Text = "Esp Door On"
-    local object_name_substrings = {"door", "sideroomdupe"}
-    
-    for _, object in pairs(workspace:GetDescendants()) do
-        if object:IsA("MeshPart") then
-            -- On parcourt les sous-chaînes pour vérifier si le nom de l'objet correspond
-            for _, substring in pairs(object_name_substrings) do
-                if string.find(object.Name:lower(), substring) then
-                    -- Ajouter le surlignage et mettre à jour la distance
-                    AddHightlightModelDoor(object)
-                    UpdateDoorDistance(object)
+        EspDoorButton.Text = "Esp Door On"
+        local object_name_substrings = {"door", "sideroomdupe"}
+
+        for _, object in pairs(workspace:GetDescendants()) do
+            if object:IsA("MeshPart") then
+                for _, substring in pairs(object_name_substrings) do
+                    if string.find(object.Name:lower(), substring) then
+                        -- Ajouter le surlignage et mettre à jour la distance
+                        AddHighlightModelDoor(object)
+                        UpdateDoorDistance(humanoidRootPart)
+                    end
                 end
             end
         end
-    end
-else
-    -- Efface les surlignages et met à jour le bouton
-    ClearHightlightModelDoor()
-    EspDoorButton.Text = "Esp Door Off"
-end
+	else
+        -- Efface les surlignages et met à jour le bouton
+        ClearHighlightModelDoor()
+        EspDoorButton.Text = "Esp Door Off"
+	end
 end
 
 local function AddHightlightModelDEntities(object)
@@ -926,26 +924,25 @@ RunService.Heartbeat:Connect(function(deltaTime)
 
     -- EspDoor
     if EspDoor then
-    EspDoorButton.Text = "Esp Door On"
-    local object_name_substrings = {"door", "sideroomdupe"}
-    
-    for _, object in pairs(workspace:GetDescendants()) do
-        if object:IsA("MeshPart") then
-            -- On parcourt les sous-chaînes pour vérifier si le nom de l'objet correspond
-            for _, substring in pairs(object_name_substrings) do
-                if string.find(object.Name:lower(), substring) then
-                    -- Ajouter le surlignage et mettre à jour la distance
-                    AddHightlightModelDoor(object)
-                    UpdateDoorDistance(object)
+        EspDoorButton.Text = "Esp Door On"
+        local object_name_substrings = {"door", "sideroomdupe"}
+
+        for _, object in pairs(workspace:GetDescendants()) do
+            if object:IsA("MeshPart") then
+                for _, substring in pairs(object_name_substrings) do
+                    if string.find(object.Name:lower(), substring) then
+                        -- Ajouter le surlignage et mettre à jour la distance
+                        AddHighlightModelDoor(object)
+                        UpdateDoorDistance(humanoidRootPart)
+                    end
                 end
             end
         end
-    end
-else
-    -- Efface les surlignages et met à jour le bouton
-    ClearHightlightModelDoor()
-    EspDoorButton.Text = "Esp Door Off"
-end
+	else
+        -- Efface les surlignages et met à jour le bouton
+        ClearHighlightModelDoor()
+        EspDoorButton.Text = "Esp Door Off"
+	end
 
     -- EspMonsters
     if EspMonsters then
