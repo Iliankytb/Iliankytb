@@ -823,8 +823,13 @@ end)
 
 
 -- Fonction de gestion du RunService avec des optimisations pour éviter le lag
-RunService.RenderStepped:Connect(function(deltaTime)
-    deltaTime = 1.5
+local lastExecutionTime = 0
+RunService.Heartbeat:Connect(function(deltaTime)
+    lastExecutionTime = lastExecutionTime + deltaTime
+    if lastExecutionTime >= 0.1 then -- Exécuter toutes les 0.1 secondes
+        lastExecutionTime = 0
+        -- Votre code ici
+
     if AutoLootV then
         AutoCollectButton.Text = "Auto Loot On"
         -- Tu peux mettre ici des actions globales sans passer par "Touched"
@@ -1008,7 +1013,7 @@ if EspPlayer then
 
         -- Autres fonctionnalités (FullBright, PromptDistanceV, etc.)
     end
-
+end
 end)
 
 -- Appeler cette fonction à chaque génération de porte
