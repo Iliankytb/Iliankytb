@@ -3,9 +3,9 @@ local player = game.Players.LocalPlayer
 local RunService = game:GetService("RunService")
 
 -- Supprimer l'ancien GUI si présent
-if player.PlayerGui:FindFirstChild("GuiPlayer") then
+--[[if player.PlayerGui:FindFirstChild("GuiPlayer") then
     player.PlayerGui.GuiPlayer:Destroy()
-end
+end]]--
 -- Fonction pour détecter et détruire le GUI et le script s'ils existent déjà
 if script.Parent:FindFirstChild(script.Name) then
     script.Parent:FindFirstChild(script.Name):Destroy()
