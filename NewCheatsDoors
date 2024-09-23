@@ -155,7 +155,7 @@ end
 -- Fonction Monsters Notifier
 local function MonsterNotifier()
     workspace.ChildAdded:Connect(function(child)
-        if child:IsA("Model") and (child.Name:lower() == "rushnew" or child.Name:lower() == "ambushmoving") then
+        if child:IsA("Model") and (child.Name:lower() == "rushmoving" or child.Name:lower() == "ambushmoving") then
             local warningFrame = Instance.new("Frame")
             warningFrame.Size = UDim2.new(0.3, 0, 0.1, 0)
             warningFrame.Position = UDim2.new(0.35, 0, 0.1, 0)
