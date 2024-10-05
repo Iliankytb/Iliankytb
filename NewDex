@@ -1,0 +1,50 @@
+-- Créer le GUI
+local player = game.Players.LocalPlayer
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = player:WaitForChild("PlayerGui")
+
+local scrollingFrame = Instance.new("ScrollingFrame")
+scrollingFrame.Size = UDim2.new(1, 0, 1, 0)
+scrollingFrame.CanvasSize = UDim2.new(0, 0, 5, 0)
+scrollingFrame.Parent = screenGui
+
+local uiListLayout = Instance.new("UIListLayout")
+uiListLayout.Parent = scrollingFrame
+uiListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+
+-- Fonction pour ajouter un objet dans la liste
+local function addItemToGui(object)
+    local textLabel = Instance.new("TextLabel")
+    textLabel.Size = UDim2.new(1, 0, 0, 30)
+    textLabel.Text = object:GetFullName()
+    textLabel.TextScaled = true
+    textLabel.Parent = scrollingFrame
+end
+
+-- Lister tous les objets dans le Workspace
+for _, obj in ipairs(workspace:GetDescendants()) do
+    addItemToGui(obj)
+end
+
+-- Lister tous les objets dans le StarterGui
+for _, obj in ipairs(game.StarterGui:GetDescendants()) do
+    addItemToGui(obj)
+end
+
+-- Ajouter d'autres services si nécessaire (exemple : ReplicatedStorage, etc.)
+for _, obj in ipairs(game.ReplicatedStorage:GetDescendants()) do
+    addItemToGui(obj)
+end
+
+-- Mettre à jour dynamiquement si de nouveaux objets sont ajoutés
+workspace.DescendantAdded:Connect(function(newObj)
+    addItemToGui(newObj)
+end)
+
+game.StarterGui.DescendantAdded:Connect(function(newObj)
+    addItemToGui(newObj)
+end)
+
+game.ReplicatedStorage.DescendantAdded:Connect(function(newObj)
+    addItemToGui(newObj)
+end)
