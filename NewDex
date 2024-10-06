@@ -112,11 +112,9 @@ game.ReplicatedStorage.DescendantAdded:Connect(onDescendantAdded)
 game.Players.DescendantAdded:Connect(onDescendantAdded)
 
 -- Fonction pour basculer l'affichage du Scrolling Frame
-local isOpen = false
 toggleButton.MouseButton1Click:Connect(function()
-    isOpen = not isOpen
-    scrollingFrame.Visible = isOpen
-    toggleButton.Text = isOpen and "Close" or "Open"
+    scrollingFrame.Visible = scrollingFrame.Visible
+    toggleButton.Text = "Close" or "Open"
 end)
 
 -- Fonction de filtrage des objets
