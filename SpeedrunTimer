@@ -1,28 +1,37 @@
 -- Créer le ScreenGui
+local player = game.Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+-- Supprimer l'ancien TimerGui s'il existe
+local existingGui = playerGui:FindFirstChild("TimerGui")
+if existingGui then
+    existingGui:Destroy()
+end
+
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "TimerGui"
-screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui") -- Assurez-vous que cela se trouve dans le PlayerGui
-if game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("TimerGui") then
-game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("TimerGui"):Destroy()
-end
+screenGui.Parent = playerGui -- Assurez-vous que cela se trouve dans le PlayerGui
+
 -- Créer le TextLabel pour le timer
 local timerLabel = Instance.new("TextLabel")
 timerLabel.Name = "TimerLabel"
 timerLabel.Size = UDim2.new(0, 200, 0, 50) -- Largeur et hauteur du label
-timerLabel.Position = UDim2.new(0, 0, 0.3, -25) -- Aligné à gauche et centré verticalement
+timerLabel.Position = UDim2.new(0, 0, 0.2, -25) -- Centré horizontalement
 timerLabel.Text = "00:00"
 timerLabel.TextScaled = true -- Pour ajuster le texte à la taille du label
-timerLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Correction ici
+timerLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Couleur de fond noir
+timerLabel.TextColor3 = Color3.fromRGB(255, 255, 255) -- Couleur du texte blanc
 timerLabel.Parent = screenGui
 
 -- Créer le bouton pour arrêter le timer
 local stopButton = Instance.new("TextButton")
 stopButton.Name = "StopButton"
 stopButton.Size = UDim2.new(0, 200, 0, 50) -- Largeur et hauteur du bouton
-stopButton.Position = UDim2.new(0, 0, 0.5, 0) -- Aligné à gauche et un peu plus bas
+stopButton.Position = UDim2.new(0, 0, 0.4, 0) -- Centré horizontalement
 stopButton.Text = "Stop The Timer"
 stopButton.TextScaled = true -- Pour ajuster le texte à la taille du bouton
-stopButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- Correction ici
+stopButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- Couleur de fond rouge
+stopButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- Couleur du texte blanc
 stopButton.Parent = screenGui
 
 -- Variables pour le timer
@@ -58,11 +67,8 @@ local function stopTimer()
     stopButton.Text = "Timer Arrêté"
 end
 
--- Lancer la fonction de mise à jour du timer
+-- Lancer la fonction de mise à jour du timer dans un thread séparé
 spawn(updateTimer)
 
 -- Connexion du bouton à l'arrêt du timer
 stopButton.MouseButton1Click:Connect(stopTimer)
-
--- Pas besoin de cette ligne car le ScreenGui est déjà parenté
--- screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
