@@ -1,0 +1,153 @@
+-- Création d'un ScreenGui pour contenir le GUI
+local player = game.Players.LocalPlayer
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = player:WaitForChild("PlayerGui")
+
+-- Création de l'Explorateur
+local explorerFrame = Instance.new("Frame")
+explorerFrame.Size = UDim2.new(0.2, 0, 0.5, 0)
+explorerFrame.Position = UDim2.new(0.8, 0, 0.1, 0)
+explorerFrame.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+explorerFrame.Parent = screenGui
+
+-- Titre de l'Explorateur
+local explorerTitle = Instance.new("TextLabel")
+explorerTitle.Size = UDim2.new(1, 0, 0.1, 0)
+explorerTitle.Position = UDim2.new(0, 0, 0, 0)
+explorerTitle.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+explorerTitle.Text = "Explorer"
+explorerTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+explorerTitle.TextScaled = true
+explorerTitle.Parent = explorerFrame
+
+-- Zone de contenu de l'Explorateur (où les objets vont apparaître)
+local explorerContent = Instance.new("ScrollingFrame")
+explorerContent.Size = UDim2.new(1, 0, 0.9, 0)
+explorerContent.Position = UDim2.new(0, 0, 0.1, 0)
+explorerContent.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+explorerContent.ScrollBarThickness = 8
+explorerContent.Parent = explorerFrame
+
+-- Création du panneau de Propriétés
+local propertiesFrame = Instance.new("Frame")
+propertiesFrame.Size = UDim2.new(0.2, 0, 0.4, 0)
+propertiesFrame.Position = UDim2.new(0.8, 0, 0.6, 0)
+propertiesFrame.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+propertiesFrame.Parent = screenGui
+
+-- Titre du panneau de Propriétés
+local propertiesTitle = Instance.new("TextLabel")
+propertiesTitle.Size = UDim2.new(1, 0, 0.1, 0)
+propertiesTitle.Position = UDim2.new(0, 0, 0, 0)
+propertiesTitle.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+propertiesTitle.Text = "Properties"
+propertiesTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
+propertiesTitle.TextScaled = true
+propertiesTitle.Parent = propertiesFrame
+
+-- Zone de contenu du panneau de Propriétés
+local propertiesContent = Instance.new("ScrollingFrame")
+propertiesContent.Size = UDim2.new(1, 0, 0.9, 0)
+propertiesContent.Position = UDim2.new(0, 0, 0.1, 0)
+propertiesContent.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+propertiesContent.ScrollBarThickness = 8
+propertiesContent.Parent = propertiesFrame
+
+-- Fonction pour ajouter des objets à l'explorateur
+local function ajouterObjetExplorateur(nom)
+    local objetLabel = Instance.new("TextButton")
+    objetLabel.Size = UDim2.new(1, 0, 0.05, 0)
+    objetLabel.Text = nom
+    objetLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+    objetLabel.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+    objetLabel.Parent = explorerContent
+
+    -- Lorsque l'objet est cliqué, on affiche ses propriétés
+    objetLabel.MouseButton1Click:Connect(function()
+        -- On efface le contenu actuel des propriétés
+        propertiesContent:ClearAllChildren()
+
+        -- Ajout d'exemple de propriétés
+        local prop1 = Instance.new("TextLabel")
+        prop1.Size = UDim2.new(1, 0, 0.1, 0)
+        prop1.Text = "Name: " .. nom
+        prop1.TextColor3 = Color3.fromRGB(255, 255, 255)
+        prop1.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+        prop1.Parent = propertiesContent
+
+        local prop2 = Instance.new("TextLabel")
+        prop2.Size = UDim2.new(1, 0, 0.1, 0)
+        prop2.Text = "Position: (X, Y, Z)"
+        prop2.TextColor3 = Color3.fromRGB(255, 255, 255)
+        prop2.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
+        prop2.Parent = propertiesContent
+    end)
+end
+
+-- Bouton pour ouvrir/fermer l'Explorateur
+local toggleButton = Instance.new("TextButton")
+toggleButton.Size = UDim2.new(0.1, 0, 0.05, 0) -- Taille ajustée
+toggleButton.Position = UDim2.new(0.95, -60, 0, 20) -- Position en haut à droite
+toggleButton.Text = "Open"
+toggleButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- Fond rouge
+toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- Texte blanc
+toggleButton.Parent = screenGui
+
+-- Fonction pour basculer l'affichage de l'Explorateur
+local isOpen = false
+toggleButton.MouseButton1Click:Connect(function()
+    isOpen = not isOpen
+    explorerFrame.Visible = isOpen
+    propertiesFrame.Visible = isOpen
+    toggleButton.Text = isOpen and "Close" or "Open"
+end)
+
+-- Ajouter des objets d'exemple à l'explorateur
+ajouterObjetExplorateur("Workspace")
+ajouterObjetExplorateur("Camera")
+ajouterObjetExplorateur("Lighting")
+ajouterObjetExplorateur("Terrain")
+
+-- Lister tous les objets dans divers services
+local function listObjects(service)
+    for _, obj in ipairs(service:GetDescendants()) do
+        ajouterObjetExplorateur(obj.Name)
+    end
+end
+
+-- Lister les objets dans les services importants
+listObjects(workspace)
+listObjects(game.Players)
+listObjects(game.ReplicatedFirst)
+listObjects(game.StarterPack)
+listObjects(game.StarterPlayer)
+listObjects(game.ServerStorage)
+listObjects(game.StarterGui)
+listObjects(game.ReplicatedStorage)
+
+-- Mettre à jour dynamiquement si de nouveaux objets sont ajoutés
+local function onDescendantAdded(object)
+    ajouterObjetExplorateur(object.Name)
+end
+
+workspace.DescendantAdded:Connect(onDescendantAdded)
+game.StarterGui.DescendantAdded:Connect(onDescendantAdded)
+game.ReplicatedStorage.DescendantAdded:Connect(onDescendantAdded)
+game.ServerStorage.DescendantAdded:Connect(onDescendantAdded)
+game.Players.DescendantAdded:Connect(onDescendantAdded)
+
+-- Mise à jour lorsque des objets sont supprimés
+local function onDescendantRemoving(object)
+    for _, label in ipairs(explorerContent:GetChildren()) do
+        if label:IsA("TextButton") and label.Text == object.Name then
+            label:Destroy()
+            break
+        end
+    end
+end
+
+workspace.DescendantRemoving:Connect(onDescendantRemoving)
+game.StarterGui.DescendantRemoving:Connect(onDescendantRemoving)
+game.ReplicatedStorage.DescendantRemoving:Connect(onDescendantRemoving)
+game.ServerStorage.DescendantRemoving:Connect(onDescendantRemoving)
+game.Players.DescendantRemoving:Connect(onDescendantRemoving)
