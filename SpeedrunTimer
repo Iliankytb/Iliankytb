@@ -7,18 +7,20 @@ screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui") -- Assurez
 local timerLabel = Instance.new("TextLabel")
 timerLabel.Name = "TimerLabel"
 timerLabel.Size = UDim2.new(0, 200, 0, 50) -- Largeur et hauteur du label
-timerLabel.Position = UDim2.new(0, 0, 0.5, -25) -- Aligné à gauche et centré verticalement
+timerLabel.Position = UDim2.new(0, 0, 0.3, -25) -- Aligné à gauche et centré verticalement
 timerLabel.Text = "00:00"
 timerLabel.TextScaled = true -- Pour ajuster le texte à la taille du label
+timerLabel.BackroundColor3 = Color3.New(0,0,0)
 timerLabel.Parent = screenGui
 
 -- Créer le bouton pour arrêter le timer
 local stopButton = Instance.new("TextButton")
 stopButton.Name = "StopButton"
 stopButton.Size = UDim2.new(0, 200, 0, 50) -- Largeur et hauteur du bouton
-stopButton.Position = UDim2.new(0, 0, 0.8, 0) -- Aligné à gauche et un peu plus bas
-stopButton.Text = "Arrêter le Timer"
+stopButton.Position = UDim2.new(0, 0, 0.5, 0) -- Aligné à gauche et un peu plus bas
+stopButton.Text = "Stop The Timer"
 stopButton.TextScaled = true -- Pour ajuster le texte à la taille du bouton
+stopButton.BackroundColor3 = Color3.New(255,0,0)
 stopButton.Parent = screenGui
 
 -- Variables pour le timer
