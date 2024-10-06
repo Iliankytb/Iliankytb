@@ -27,12 +27,22 @@ timerLabel.Parent = screenGui
 local stopButton = Instance.new("TextButton")
 stopButton.Name = "StopButton"
 stopButton.Size = UDim2.new(0, 200, 0, 50) -- Largeur et hauteur du bouton
-stopButton.Position = UDim2.new(0, 0, 0.4, 0) -- Centré horizontalement
+stopButton.Position = UDim2.new(0, 0, 0.3, 0) -- Centré horizontalement
 stopButton.Text = "Stop The Timer"
 stopButton.TextScaled = true -- Pour ajuster le texte à la taille du bouton
 stopButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- Couleur de fond rouge
 stopButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- Couleur du texte blanc
 stopButton.Parent = screenGui
+
+local RemoveGuiButton = Instance.new("TextButton")
+RemoveGuiButton.Name = "RemoveTimerGui"
+RemoveGuiButton.Size = UDim2.new(0, 200, 0, 50) -- Largeur et hauteur du bouton
+RemoveGuiButton.Position = UDim2.new(0, 0, 0.4, 0) -- Centré horizontalement
+RemoveGuiButton.Text = "Remove Timer"
+RemoveGuiButton.TextScaled = true -- Pour ajuster le texte à la taille du bouton
+RemoveGuiButton.BackgroundColor3 = Color3.fromRGB(255, 255, 0) -- Couleur de fond rouge
+RemoveGuiButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- Couleur du texte blanc
+RemoveGuiButton.Parent = screenGui
 
 -- Variables pour le timer
 local running = true -- Le timer démarre automatiquement
@@ -64,11 +74,18 @@ end
 -- Fonction pour stopper le timer
 local function stopTimer()
     running = false
-    stopButton.Text = "Timer Arrêté"
+    stopButton.Text = "Timer Stoped!"
+seconds = seconds -1
 end
 
+local function RemoveUi()
+existingGui:Destroy()
+Script:Destroy()
+end
 -- Lancer la fonction de mise à jour du timer dans un thread séparé
 spawn(updateTimer)
 
 -- Connexion du bouton à l'arrêt du timer
 stopButton.MouseButton1Click:Connect(stopTimer)
+
+RemoveGuiButton.MouseButton1Click:Connect(RemoveUi)
