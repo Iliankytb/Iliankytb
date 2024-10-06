@@ -1,7 +1,15 @@
--- Créer le GUI
 local player = game.Players.LocalPlayer
 local screenGui = Instance.new("ScreenGui")
 screenGui.Parent = player:WaitForChild("PlayerGui")
+
+-- Créer une barre de recherche
+local searchBox = Instance.new("TextBox")
+searchBox.Size = UDim2.new(0.3, 0, 0.05, 0)
+searchBox.Position = UDim2.new(0.05, 0, 0, 20)
+searchBox.PlaceholderText = "Rechercher..."
+searchBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- Fond blanc
+searchBox.TextColor3 = Color3.fromRGB(0, 0, 0) -- Texte noir
+searchBox.Parent = screenGui
 
 -- Bouton pour ouvrir/fermer le Scrolling Frame
 local toggleButton = Instance.new("TextButton")
@@ -12,10 +20,10 @@ toggleButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- Fond rouge
 toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- Texte blanc
 toggleButton.Parent = screenGui
 
--- Créer le Scrolling Frame
+-- Créer le Scrolling Frame pour les objets
 local scrollingFrame = Instance.new("ScrollingFrame")
-scrollingFrame.Size = UDim2.new(0.3, 0, 1, 0) -- Taille de la zone défilante
-scrollingFrame.Position = UDim2.new(0.7, 0, 0, 0) -- À droite
+scrollingFrame.Size = UDim2.new(0.3, 0, 0.8, 0) -- Taille de la zone défilante
+scrollingFrame.Position = UDim2.new(0.7, 0, 0.2, 0) -- À droite
 scrollingFrame.CanvasSize = UDim2.new(0, 0, 5000, 0) -- Taille du canevas pour le défilement
 scrollingFrame.Visible = false -- Invisible au départ
 scrollingFrame.BackgroundColor3 = Color3.fromRGB(50, 50, 50) -- Fond gris
@@ -24,6 +32,19 @@ scrollingFrame.Parent = screenGui
 local uiListLayout = Instance.new("UIListLayout")
 uiListLayout.Parent = scrollingFrame
 uiListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+
+-- Créer le Scrolling Frame pour les propriétés
+local propertyFrame = Instance.new("ScrollingFrame")
+propertyFrame.Size = UDim2.new(0.3, 0, 0.3, 0) -- Taille de la zone défilante
+propertyFrame.Position = UDim2.new(0.7, 0, 0.9, 0) -- À droite
+propertyFrame.CanvasSize = UDim2.new(0, 0, 0, 0) -- Taille du canevas pour le défilement
+propertyFrame.Visible = false -- Invisible au départ
+propertyFrame.BackgroundColor3 = Color3.fromRGB(70, 70, 70) -- Fond gris plus clair
+propertyFrame.Parent = screenGui
+
+local uiListLayoutProperties = Instance.new("UIListLayout")
+uiListLayoutProperties.Parent = propertyFrame
+uiListLayoutProperties.SortOrder = Enum.SortOrder.LayoutOrder
 
 -- Fonction pour ajouter un objet dans la liste
 local function addItemToGui(object)
@@ -35,6 +56,31 @@ local function addItemToGui(object)
     textLabel.BackgroundColor3 = Color3.fromRGB(70, 70, 70) -- Fond gris plus clair
     textLabel.BorderSizePixel = 0 -- Pas de bordure
     textLabel.Parent = scrollingFrame
+
+    -- Événement pour afficher les propriétés lors d'un clic
+    textLabel.MouseButton1Click:Connect(function()
+        -- Effacer les anciennes propriétés
+        for _, child in ipairs(propertyFrame:GetChildren()) do
+            if child:IsA("TextLabel") then
+                child:Destroy()
+            end
+        end
+
+        -- Ajouter les propriétés de l'objet sélectionné
+        for prop, value in pairs(object:GetAttributes()) do
+            local propertyLabel = Instance.new("TextLabel")
+            propertyLabel.Size = UDim2.new(1, 0, 0, 30)
+            propertyLabel.Text = prop .. ": " .. tostring(value)
+            propertyLabel.TextScaled = true
+            propertyLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+            propertyLabel.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
+            propertyLabel.BorderSizePixel = 0
+            propertyLabel.Parent = propertyFrame
+        end
+
+        propertyFrame.CanvasSize = UDim2.new(0, 0, #propertyFrame:GetChildren() * 0.04, 0) -- Ajuster la taille du canevas
+        propertyFrame.Visible = true -- Rendre le cadre des propriétés visible
+    end)
 end
 
 -- Lister tous les objets dans divers services
@@ -73,8 +119,17 @@ toggleButton.MouseButton1Click:Connect(function()
     toggleButton.Text = isOpen and "Close" or "Open"
 end)
 
+-- Fonction de filtrage des objets
+searchBox:GetPropertyChangedSignal("Text"):Connect(function()
+    local searchTerm = searchBox.Text:lower()
+    for _, label in ipairs(scrollingFrame:GetChildren()) do
+        if label:IsA("TextLabel") then
+            label.Visible = label.Text:lower():find(searchTerm, 1, true) ~= nil
+        end
+    end
+end)
+
 -- Ajout de fonctionnalités supplémentaires
--- Par exemple, mise à jour de l'interface utilisateur lorsque des objets sont supprimés
 local function onDescendantRemoving(object)
     for _, label in ipairs(scrollingFrame:GetChildren()) do
         if label:IsA("TextLabel") and label.Text == object.Name then
