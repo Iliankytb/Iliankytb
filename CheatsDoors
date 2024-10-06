@@ -475,95 +475,104 @@ local function DeleteSeek(Object)
 		end
 end
 
-local function AddHightlightModelDItem(object)
-	-- Check if the object already has a Highlight
-	if not object:FindFirstChildOfClass("Highlight") then
-		local highlight = Instance.new("Highlight")
-		highlight.FillColor = Color3.fromRGB(180, 180, 0)
-		highlight.OutlineColor = Color3.fromRGB(255, 255, 127)
-		highlight.FillTransparency = 0.75
-		highlight.OutlineTransparency = 0.75
-		highlight.Name = object.Name
-		highlight.Parent = object
-	end
 
-	-- Check if the object already has a BillboardGui
-	if not object:FindFirstChildOfClass("BillboardGui") then
-		local billboard = Instance.new("BillboardGui")
-		billboard.Size = UDim2.new(0.100, 0, 0.50, 0)
-		billboard.MaxDistance = math.huge
-		billboard.StudsOffset = Vector3.new(0, 0, 0)
-		billboard.Enabled = true
-		billboard.ResetOnSpawn = false
-		billboard.AlwaysOnTop = true
-		billboard.Name = object.Name
-		billboard.Parent = object
+-- Fonction pour ajouter un surlignage aux objets
+local function AddHighlight(object, fillColor, outlineColor, labelText)
+    -- Ajoute un surlignage
+    local highlight = Instance.new("Highlight", object)
+    highlight.FillColor = fillColor
+    highlight.OutlineColor = outlineColor
 
-		local textLabel = Instance.new("TextLabel")
-		textLabel.Size = UDim2.new(1, 0, 1, 0)
-		textLabel.BackgroundTransparency = 1
-		textLabel.Text = object.Name
-		textLabel.TextColor3 = Color3.fromRGB(255, 255, 0)
-		textLabel.Parent = billboard
-	end
+    -- Ajoute une BillboardGui pour afficher le texte
+    local billboardGui = Instance.new("BillboardGui", object)
+    billboardGui.Size = UDim2.new(1, 0, 1, 0)
+    billboardGui.Adornee = object
+
+    local textLabel = Instance.new("TextLabel", billboardGui)
+    textLabel.Size = UDim2.new(1, 0, 1, 0)
+    textLabel.BackgroundTransparency = 1
+    textLabel.TextColor3 = Color3.new(1, 1, 1)
+    textLabel.TextStrokeTransparency = 0
+    textLabel.Text = labelText
 end
 
-
-
-local function DistanceItem(object)
-	for _, object in pairs(workspace:GetDescendants()) do
-		if object:IsA("BillboardGui") then
-			local textLabel = object.TextLabel
-
-						if object.Parent:IsA("BasePart") then
-							local distance = (humanoidRootPart.Position - object.Parent.Position).Magnitude
-							textLabel.Text = object.Name .. " [Distance: " .. math.floor(distance) .. " Studs]"
-						elseif object.Parent:IsA("Model") then
-							local distance = (humanoidRootPart.Position - object.Parent:GetPivot().Position).Magnitude
-							textLabel.Text = object.Name .. " [Distance: " .. math.floor(distance) .. " Studs]"
-						end
-					
-
-		
-
-	end
-	end
+-- Fonction pour gérer les objets ESP
+local function ToggleEspItem()
+    EspItem = not EspItem
+    for _, object in pairs(workspace:GetDescendants()) do
+        if object:IsA("Model") and string.find(object.Name:lower(), "keyobtain") then
+            if EspItem then
+                AddHighlight(object, Color3.fromRGB(180, 180, 0), Color3.fromRGB(255, 255, 127), object.Name)
+            else
+                object:FindFirstChildOfClass("Highlight")?.Destroy()
+                object:FindFirstChildOfClass("BillboardGui")?.Destroy()
+            end
+        end
+    end
 end
 
-local function ClearHightlightModelItem(Obj)
-	for _, Obj in pairs(workspace:GetDescendants()) do
-		if Obj:IsA("Highlight") or Obj:IsA("BillboardGui") then
-			if Obj.Name:lower() == "Keyobtain" or Obj.Name:lower() == "ChestBox" or Obj.Name:lower() == "ChestBoxLocked" or Obj.Name:lower() == "candle" or Obj.Name:lower() == "crucifix" or Obj.Name:lower() == "lockpick" or Obj.Name:lower() == "skeletonkey" or Obj.Name:lower() == "vitamin" or Obj.Name:lower() == "flashlight" or Obj.Name:lower() == "fuseobtain" or Obj.Name:lower() == "glowstick" or Obj.Name:lower() == "shears" or Obj.Name:lower() == "pile" or Obj.Name:lower() == "battery" or Obj.Name:lower() == "bandage" then
-				Obj:Destroy()
-			end
-		end
-	end
+-- Fonction pour mettre à jour la distance des objets
+local function UpdateDistance()
+    for _, billboard in pairs(workspace:GetDescendants()) do
+        if billboard:IsA("BillboardGui") then
+            local textLabel = billboard.TextLabel
+            local target = billboard.Adornee
+            
+            if target and (target:IsA("BasePart") or target:IsA("Model")) then
+                local distance = (humanoidRootPart.Position - target:GetPivot().Position).Magnitude
+                textLabel.Text = target.Name .. " [Distance: " .. math.floor(distance) .. " Studs]"
+            end
+        end
+    end
 end
 
+-- Fonction pour effacer les surlignages des modèles
+local function ClearHighlights()
+    local modelNamesToClear = {
+        "keyobtain", "chestbox", "chestboxlocked", "candle", "crucifix",
+        "lockpick", "skeletonkey", "vitamin", "flashlight", "fuseobtain",
+        "glowstick", "shears", "pile", "battery", "bandage"
+    }
 
-local function HightLightModelsItem()
-	EspItem = not EspItem
-	if EspItem then
-		EspItemButton.Text = "Esp Item On"
-		local object_name_substrings = {"key","Keyobtain","candle","chestbox","chestboxlocked","crucifix","lockpick","skeletonkey","vitamin","flashlight","fuseobtain","glowstick","shears","pile","battery","bandage"}
-		for _, object in pairs(workspace:GetDescendants()) do
-			if object:IsA("Model") then
-				for _, substring in pairs(object_name_substrings) do
-					if string.find(object.Name:lower(), substring)
-					then
-						AddHightlightModelDItem(object)
-						DistanceItem(object)
-					end
-				end
-			end
-		end
-	else
-		ClearHightlightModelItem()
-		EspItemButton.Text = "Esp Item Off"
-	end
+    for _, obj in pairs(workspace:GetDescendants()) do
+        if obj:IsA("Highlight") or obj:IsA("BillboardGui") then
+            for _, name in pairs(modelNamesToClear) do
+                if obj.Name:lower() == name then
+                    obj:Destroy()
+                    break -- Sortir de la boucle dès qu'un objet est détruit
+                end
+            end
+        end
+    end
 end
 
+-- Fonction pour gérer l'activation/désactivation des surlignages
+local function ToggleHighlightModels()
+    EspItem = not EspItem
+    EspItemButton.Text = EspItem and "Esp Item On" or "Esp Item Off"
 
+    if EspItem then
+        local object_name_substrings = {"key", "keyobtain", "candle", "chestbox", "chestboxlocked", "crucifix", "lockpick", "skeletonkey", "vitamin", "flashlight", "fuseobtain", "glowstick", "shears", "pile", "battery", "bandage"}
+        
+        for _, object in pairs(workspace:GetDescendants()) do
+            if object:IsA("Model") then
+                for _, substring in pairs(object_name_substrings) do
+                    if string.find(object.Name:lower(), substring) then
+                        AddHighlight(object, Color3.fromRGB(180, 180, 0), Color3.fromRGB(255, 255, 127), object.Name)
+                        UpdateDistance() -- Mettez à jour la distance pour chaque objet surligné
+                    end
+                end
+            end
+        end
+    else
+        ClearHighlights()
+    end
+end
+
+-- Connexion à l'événement de clic
+EspItemButton.MouseButton1Click:Connect(ToggleHighlightModels)
+
+-- Ajout initial de l'ESP
 
 -- Fonction pour ajouter un highlight et un BillboardGui au modèle du joueur
 local function AddHighlightModelPlayer(object)
@@ -781,7 +790,6 @@ end
 
 EspClosetButton.MouseButton1Click:Connect(HightLightModelsCloset)
 
-EspItemButton.MouseButton1Click:Connect(HightLightModelsItem)
 
 EspDoorButton.MouseButton1Click:Connect(function()
 HighlightModelsDoor(humanoidRootPart)
