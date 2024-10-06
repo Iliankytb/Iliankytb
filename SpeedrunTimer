@@ -1,0 +1,43 @@
+-- Références aux objets GUI
+local screenGui = script.Parent
+local timerLabel = screenGui:WaitForChild("TimerLabel")
+local stopButton = screenGui:WaitForChild("StopButton")
+
+-- Variables pour le timer
+local running = true -- Le timer démarre automatiquement
+local minutes = 0
+local seconds = 0
+
+-- Fonction pour formater le temps sous la forme MM:SS
+local function formatTime(mins, secs)
+    return string.format("%02d:%02d", mins, secs)
+end
+
+-- Fonction pour mettre à jour l'affichage du timer
+local function updateTimer()
+    while running do
+        wait(1)
+        seconds = seconds + 1
+        
+        -- Si les secondes atteignent 60, on incrémente les minutes
+        if seconds >= 60 then
+            seconds = 0
+            minutes = minutes + 1
+        end
+
+        -- Mettre à jour le label avec le temps formaté
+        timerLabel.Text = formatTime(minutes, seconds)
+    end
+end
+
+-- Fonction pour stopper le timer
+local function stopTimer()
+    running = false
+    stopButton.Text = "Timer Arrêté"
+end
+
+-- Lancer la fonction de mise à jour du timer
+spawn(updateTimer)
+
+-- Connexion du bouton à l'arrêt du timer
+stopButton.MouseButton1Click:Connect(stopTimer)
