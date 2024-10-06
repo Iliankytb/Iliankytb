@@ -2,7 +2,9 @@
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "TimerGui"
 screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui") -- Assurez-vous que cela se trouve dans le PlayerGui
-
+if game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("TimerGui") then
+game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("TimerGui"):Destroy()
+end
 -- Créer le TextLabel pour le timer
 local timerLabel = Instance.new("TextLabel")
 timerLabel.Name = "TimerLabel"
