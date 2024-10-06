@@ -37,7 +37,7 @@ stopButton.Parent = screenGui
 local RemoveGuiButton = Instance.new("TextButton")
 RemoveGuiButton.Name = "RemoveTimerGui"
 RemoveGuiButton.Size = UDim2.new(0, 200, 0, 50) -- Largeur et hauteur du bouton
-RemoveGuiButton.Position = UDim2.new(0, 0, 0.4, 0) -- Centré horizontalement
+RemoveGuiButton.Position = UDim2.new(0, 0, 0.45, 0) -- Centré horizontalement
 RemoveGuiButton.Text = "Remove Timer"
 RemoveGuiButton.TextScaled = true -- Pour ajuster le texte à la taille du bouton
 RemoveGuiButton.BackgroundColor3 = Color3.fromRGB(255, 255, 0) -- Couleur de fond rouge
@@ -79,7 +79,7 @@ seconds = seconds -1
 end
 
 local function RemoveUi()
-ScreenGui:Destroy()
+screenGui:Destroy()
 Script:Destroy()
 end
 -- Lancer la fonction de mise à jour du timer dans un thread séparé
