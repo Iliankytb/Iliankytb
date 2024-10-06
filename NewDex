@@ -52,7 +52,6 @@ listObjects(game.Players)
 listObjects(game.ReplicatedFirst)
 listObjects(game.StarterPack)
 listObjects(game.StarterPlayer)
-listObjects(game.ServerStorage)
 listObjects(game.StarterGui)
 listObjects(game.ReplicatedStorage)
 
@@ -64,7 +63,6 @@ end
 workspace.DescendantAdded:Connect(onDescendantAdded)
 game.StarterGui.DescendantAdded:Connect(onDescendantAdded)
 game.ReplicatedStorage.DescendantAdded:Connect(onDescendantAdded)
-game.ServerStorage.DescendantAdded:Connect(onDescendantAdded)
 game.Players.DescendantAdded:Connect(onDescendantAdded)
 
 -- Fonction pour basculer l'affichage du Scrolling Frame
@@ -89,5 +87,4 @@ end
 workspace.DescendantRemoving:Connect(onDescendantRemoving)
 game.StarterGui.DescendantRemoving:Connect(onDescendantRemoving)
 game.ReplicatedStorage.DescendantRemoving:Connect(onDescendantRemoving)
-game.ServerStorage.DescendantRemoving:Connect(onDescendantRemoving)
 game.Players.DescendantRemoving:Connect(onDescendantRemoving)
