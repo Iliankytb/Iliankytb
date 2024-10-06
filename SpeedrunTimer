@@ -79,7 +79,7 @@ seconds = seconds -1
 end
 
 local function RemoveUi()
-existingGui:Destroy()
+ScreenGui:Destroy()
 Script:Destroy()
 end
 -- Lancer la fonction de mise à jour du timer dans un thread séparé
