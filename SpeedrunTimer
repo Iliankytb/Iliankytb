@@ -1,7 +1,29 @@
--- Références aux objets GUI
-local screenGui = script.Parent
-local timerLabel = screenGui:WaitForChild("TimerLabel")
-local stopButton = screenGui:WaitForChild("StopButton")
+-- Création du ScreenGui si nécessaire
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "TimerScreenGui"
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Création du TimerLabel
+local timerLabel = Instance.new("TextLabel")
+timerLabel.Name = "TimerLabel"
+timerLabel.Size = UDim2.new(0, 200, 0, 50)
+timerLabel.Position = UDim2.new(0.5, -100, 0.4, 0)
+timerLabel.BackgroundColor3 = Color3.new(0, 0, 0)
+timerLabel.TextColor3 = Color3.new(1, 1, 1)
+timerLabel.TextScaled = true
+timerLabel.Text = "00:00"
+timerLabel.Parent = screenGui
+
+-- Création du StopButton
+local stopButton = Instance.new("TextButton")
+stopButton.Name = "StopButton"
+stopButton.Size = UDim2.new(0, 200, 0, 50)
+stopButton.Position = UDim2.new(0.5, -100, 0.5, 0)
+stopButton.BackgroundColor3 = Color3.new(1, 0, 0)
+stopButton.TextColor3 = Color3.new(1, 1, 1)
+stopButton.TextScaled = true
+stopButton.Text = "Arrêter Timer"
+stopButton.Parent = screenGui
 
 -- Variables pour le timer
 local running = true -- Le timer démarre automatiquement
@@ -34,9 +56,10 @@ end
 local function stopTimer()
     running = false
     stopButton.Text = "Timer Arrêté"
+    wait(0.1) -- Assurez-vous que le timer s'arrête proprement
 end
 
--- Lancer la fonction de mise à jour du timer
+-- Lancer la fonction de mise à jour du timer dans un thread séparé
 spawn(updateTimer)
 
 -- Connexion du bouton à l'arrêt du timer
