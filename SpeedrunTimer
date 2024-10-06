@@ -1,28 +1,24 @@
--- Création du ScreenGui si nécessaire
+-- Créer le ScreenGui
 local screenGui = Instance.new("ScreenGui")
-screenGui.Name = "TimerScreenGui"
-screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+screenGui.Name = "TimerGui"
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui") -- Assurez-vous que cela se trouve dans le PlayerGui
 
--- Création du TimerLabel
+-- Créer le TextLabel pour le timer
 local timerLabel = Instance.new("TextLabel")
 timerLabel.Name = "TimerLabel"
-timerLabel.Size = UDim2.new(0, 200, 0, 50)
-timerLabel.Position = UDim2.new(0, 0, 0.2, 0)
-timerLabel.BackgroundColor3 = Color3.new(0, 0, 0)
-timerLabel.TextColor3 = Color3.new(1, 1, 1)
-timerLabel.TextScaled = true
+timerLabel.Size = UDim2.new(0, 200, 0, 50) -- Largeur et hauteur du label
+timerLabel.Position = UDim2.new(0, 10, 0.5, -25) -- Aligné à gauche et centré verticalement
 timerLabel.Text = "00:00"
+timerLabel.TextScaled = true -- Pour ajuster le texte à la taille du label
 timerLabel.Parent = screenGui
 
--- Création du StopButton
+-- Créer le bouton pour arrêter le timer
 local stopButton = Instance.new("TextButton")
 stopButton.Name = "StopButton"
-stopButton.Size = UDim2.new(0, 200, 0, 50)
-stopButton.Position = UDim2.new(0, 0, 0.4, 0)
-stopButton.BackgroundColor3 = Color3.new(1, 0, 0)
-stopButton.TextColor3 = Color3.new(1, 1, 1)
-stopButton.TextScaled = true
-stopButton.Text = "Arrêter Timer"
+stopButton.Size = UDim2.new(0, 200, 0, 50) -- Largeur et hauteur du bouton
+stopButton.Position = UDim2.new(0, 10, 0.7, 0) -- Aligné à gauche et un peu plus bas
+stopButton.Text = "Arrêter le Timer"
+stopButton.TextScaled = true -- Pour ajuster le texte à la taille du bouton
 stopButton.Parent = screenGui
 
 -- Variables pour le timer
@@ -56,11 +52,13 @@ end
 local function stopTimer()
     running = false
     stopButton.Text = "Timer Arrêté"
-    wait(0.1) -- Assurez-vous que le timer s'arrête proprement
 end
 
--- Lancer la fonction de mise à jour du timer dans un thread séparé
+-- Lancer la fonction de mise à jour du timer
 spawn(updateTimer)
 
 -- Connexion du bouton à l'arrêt du timer
 stopButton.MouseButton1Click:Connect(stopTimer)
+
+-- Ajouter le ScreenGui à la PlayerGui
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
