@@ -204,7 +204,6 @@ local NoLagButton = createButton("No Lag Off",ScrollingFrameMain)
 local NotifMonstersButton = createButton("Notifs Monster Off (Coming Soon)",ScrollingFrameMain)
 local SpeedBoostButton = createButton("Speed Boost Off",ScrollingFramePlayer)
 local BypassSpeedButton = createButton("Bypass Speed",ScrollingFramePlayer)
-local object_name_substrings_Monsters = {"rushnew","ambushmoving","giggle","grumble","screech","figurerig","seekrig","gloombat","lookman","haltmoving","a90","a60","a120"}
 
 local function ToggleFrame()
 	ToggleCheat = not ToggleCheat
@@ -892,10 +891,10 @@ end
 
 -- Connexion des événements
 workspace.DescendantAdded:Connect(onDescendantAdded)
+RunService.HeartBeat:Connect(function(deltaTime)
+deltaTime = 1 
 updateSettings()
+end)
 
 -- Gestion des changements d'état
-AutoLootVChanged.Event:Connect(updateSettings)
-FullBrightVChanged.Event:Connect(updateSettings)
-PromptDistanceVChanged.Event:Connect(updateSettings)
-NoLagVChanged.Event:Connect(updateSettings)
+
