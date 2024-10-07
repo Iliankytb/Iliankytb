@@ -1,6 +1,8 @@
 -- Créer le ScreenGui
 local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
+local character = player.Character or player.CharacterAdded:Wait() -- Attendre que le personnage soit disponible
+local humanoid = character:WaitForChild("Humanoid") -- Accéder à l'humanoïde du joueur
 
 -- Supprimer l'ancien TimerGui s'il existe
 local existingGui = playerGui:FindFirstChild("TimerGui")
@@ -22,6 +24,18 @@ timerLabel.TextScaled = true -- Pour ajuster le texte à la taille du label
 timerLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Couleur de fond noir
 timerLabel.TextColor3 = Color3.fromRGB(255, 255, 255) -- Couleur du texte blanc
 timerLabel.Parent = screenGui
+
+local ByIlianLabel = Instance.new("TextLabel")
+ByIlianLabel.Name = "ByIlian"
+ByIlianLabel.Size = UDim2.new(0, 200, 0,25) -- Largeur et hauteur du label
+ByIlianLabel.Position = UDim2.new(0, 0, 0.26, -25) -- Centré horizontalement
+ByIlianLabel.Text = "Created By Iliankytb"
+ByIlianLabel.TextScaled = true -- Pour ajuster le texte à la taille du label
+ByIlianLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+ByIlianLabel.BackgroundTransparency = 1 -- Couleur de fond noir
+ByIlianLabel.TextColor3 = Color3.fromRGB(255, 255, 255) -- Couleur du texte blanc
+ByIlianLabel.Parent = screenGui
+
 
 -- Créer le bouton pour arrêter le timer
 local stopButton = Instance.new("TextButton")
@@ -74,14 +88,20 @@ end
 -- Fonction pour stopper le timer
 local function stopTimer()
     running = false
-    stopButton.Text = "Timer Stoped!"
 seconds = seconds -1
+    stopButton.Text = "Timer Stopped!"
 end
 
 local function RemoveUi()
-playerGui:FindFirstChild("TimerGui"):Destroy()
-Script:Destroy()
+    playerGui:FindFirstChild("TimerGui"):Destroy()
+    script:Destroy()
 end
+
+-- Fonction pour arrêter le timer si le joueur meurt
+
+-- Connexion de l'événement de mort de l'humanoïde
+humanoid.Died:Connect(stopTimer)
+
 -- Lancer la fonction de mise à jour du timer dans un thread séparé
 spawn(updateTimer)
 
