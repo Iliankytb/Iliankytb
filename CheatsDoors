@@ -859,7 +859,9 @@ local function updateSettings()
     -- Autres fonctionnalités comme NoLag, EspCloset, etc.
 end
 
--- Fonction pour détecter les nouveaux objets et mettre à jour leurs propriétés
+local lastUpdate = 0
+local updateInterval = 1 -- Met à jour toutes les secondes
+
 local function onDescendantAdded(descendant)
     if descendant:IsA("ProximityPrompt") then
         if PromptDistanceV then
@@ -872,11 +874,12 @@ local function onDescendantAdded(descendant)
         if NoLagV and descendant.Material ~= Enum.Material.SmoothPlastic then
             descendant:SetAttribute("OriginalMaterial", descendant.Material)
             descendant.Material = Enum.Material.SmoothPlastic
-        elseif NoLagV == false and descendant:GetAttribute("OriginalMaterial") then
+        elseif not NoLagV and descendant:GetAttribute("OriginalMaterial") then
             descendant.Material = descendant:GetAttribute("OriginalMaterial")
         end
     elseif descendant:IsA("Model") then
         local lowerName = descendant.Name:lower()
+
         if EspCloset and (string.find(lowerName, "wardrobe") or string.find(lowerName, "bed")) then
             AddHightlightModelCloset(descendant)
         elseif EspDoor and (string.find(lowerName, "door") or string.find(lowerName, "sideroomdupe")) then
@@ -884,17 +887,22 @@ local function onDescendantAdded(descendant)
         elseif EspMonsters and string.find(lowerName, "monster") then
             AddHightlightModelEntities(descendant)
         elseif EspItem and string.find(lowerName, "key") then
-            ToggleHighlightModels(descendant)
+            AddHightlight(descendant)
         end
     end
 end
 
 -- Connexion des événements
 workspace.DescendantAdded:Connect(onDescendantAdded)
-RunService.HeartBeat:Connect(function(deltaTime)
-deltaTime = 1 
-updateSettings()
+
+RunService.Heartbeat:Connect(function(deltaTime)
+    lastUpdate = lastUpdate + deltaTime
+    if lastUpdate >= updateInterval then
+        updateSettings()
+        lastUpdate = 0
+    end
 end)
+
 
 -- Gestion des changements d'état
 
