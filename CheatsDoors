@@ -226,84 +226,83 @@ local function ToggleFrame()
 end
 
 local function AddHightlightModelCloset(object)
-		-- Check if the object already has a Highlight
-		if not object:FindFirstChildOfClass("Highlight") then
-			local highlight = Instance.new("Highlight")
-			highlight.FillColor = Color3.fromRGB(85, 170, 0)
-			highlight.OutlineColor = Color3.fromRGB(85, 255, 127)
-			highlight.FillTransparency = 0.75
-			highlight.OutlineTransparency = 0.75
-			highlight.Name = object.Name
-			highlight.Parent = object
-		end
+    -- Check if the object already has a Highlight
+    if not object:FindFirstChildOfClass("Highlight") then
+        local highlight = Instance.new("Highlight")
+        highlight.FillColor = Color3.fromRGB(85, 170, 0)
+        highlight.OutlineColor = Color3.fromRGB(85, 255, 127)
+        highlight.FillTransparency = 0.75
+        highlight.OutlineTransparency = 0.75
+        highlight.Name = object.Name
+        highlight.Parent = object
+    end
 
-		-- Check if the object already has a BillboardGui
-		if not object:FindFirstChildOfClass("BillboardGui") then
-			local billboard = Instance.new("BillboardGui")
-			billboard.Size = UDim2.new(0.100, 0, 0.50, 0)
-		billboard.MaxDistance = 50
-			billboard.StudsOffset = Vector3.new(0, 0, 0)
-			billboard.Enabled = true
-			billboard.ResetOnSpawn = false
-			billboard.AlwaysOnTop = true
-			billboard.Name = object.Name
-			billboard.Parent = object
+    -- Check if the object already has a BillboardGui
+    if not object:FindFirstChildOfClass("BillboardGui") then
+        local billboard = Instance.new("BillboardGui")
+        billboard.Size = UDim2.new(0.100, 0, 0.50, 0)
+        billboard.MaxDistance = 50
+        billboard.StudsOffset = Vector3.new(0, 0, 0)
+        billboard.Enabled = true
+        billboard.ResetOnSpawn = false
+        billboard.AlwaysOnTop = true
+        billboard.Name = object.Name
+        billboard.Parent = object
 
-			local textLabel = Instance.new("TextLabel")
-			textLabel.Size = UDim2.new(1, 0, 1, 0)
-			textLabel.BackgroundTransparency = 1
-			textLabel.TextColor3 = Color3.fromRGB(85, 255, 0)
-			textLabel.Parent = billboard
-		end
+        local textLabel = Instance.new("TextLabel")
+        textLabel.Size = UDim2.new(1, 0, 1, 0)
+        textLabel.BackgroundTransparency = 1
+        textLabel.TextColor3 = Color3.fromRGB(85, 255, 0)
+        textLabel.Parent = billboard
+    end
 end
 
-local function UpdateClosetDistance(object)
-    for _, object in pairs(workspace:GetDescendants()) do
-        if object:IsA("BillboardGui") then
-            local textLabel = object.TextLabel
-
-            if object.Parent:IsA("Model") then
-                local distance = (humanoidRootPart.Position - object.Parent:GetPivot().Position).Magnitude
-                textLabel.Text = object.Name.." [Distance: " .. math.floor(distance) .. " Studs]"
+local function UpdateClosetDistance(humanoidRootPart)
+    for _, obj in pairs(workspace:GetDescendants()) do
+        if obj:IsA("BillboardGui") and obj.Parent:IsA("Model") then
+            local textLabel = obj:FindFirstChild("TextLabel")
+            if textLabel then
+                local distance = (humanoidRootPart.Position - obj.Parent:GetPivot().Position).Magnitude
+                textLabel.Text = obj.Name.." [Distance: " .. math.floor(distance) .. " Studs]"
             end
         end
     end
 end
 
-
-local function ClearHightlightModelCloset(Obj)
-	for _, Obj in pairs(workspace:GetDescendants()) do
-		if Obj:IsA("Highlight") or Obj:IsA("BillboardGui") then
-			if Obj.Name:lower() == "wardrobe" or Obj.Name:lower() == "backdoor_wardrobe" or Obj.Name:lower() == "bed" or Obj.Name:lower() == "beds" then
-		Obj:Destroy()
-		end
-		end
-		end
+local function ClearHightlightModelCloset()
+    for _, obj in pairs(workspace:GetDescendants()) do
+        if obj:IsA("Highlight") or obj:IsA("BillboardGui") then
+            if obj.Name:lower() == "wardrobe" or obj.Name:lower() == "backdoor_wardrobe" or obj.Name:lower() == "bed" or obj.Name:lower() == "beds" then
+                obj:Destroy()
+            end
+        end
+    end
 end
 
 local function HightLightModelsCloset()
-	EspCloset = not EspCloset
-	if EspCloset then
-		EspClosetButton.Text = "Esp Closet On"
-	local object_name_substrings = {"wardrobe","backdoor_wardrobe","bed","beds"}
-	for _, object in pairs(workspace:GetDescendants()) do
-		if object:IsA("Model") then
-			for _, substring in pairs(object_name_substrings) do
-				if string.find(object.Name:lower(), substring) then
-					AddHightlightModelCloset(object)
-					UpdateClosetDistance(object)
-				end
-				end
-			end
-	end
-	else
-		ClearHightlightModelCloset()
-		EspClosetButton.Text = "Esp Closet Off"
-	end
+    EspCloset = not EspCloset
+    if EspCloset then
+        EspClosetButton.Text = "Esp Closet On"
+        local object_name_substrings = {"wardrobe", "backdoor_wardrobe", "bed", "beds"}
+        for _, object in pairs(workspace:GetDescendants()) do
+            if object:IsA("Model") then
+                for _, substring in pairs(object_name_substrings) do
+                    if string.find(object.Name:lower(), substring) then
+                        AddHightlightModelCloset(object)
+                        UpdateClosetDistance(game.Players.LocalPlayer.Character.HumanoidRootPart)
+                    end
+                end
+            end
+        end
+    else
+        ClearHightlightModelCloset()
+        EspClosetButton.Text = "Esp Closet Off"
+    end
 end
 
-local doors = {} -- Table pour stocker les portes et dupliques pertinents
-local EspDoor = false -- Garde l'état global de l'ESP
+-- Connect the button click event
+
+local doors = {} -- Table pour stocker les portes et dupliques pertinents l'état global de l'ESP
 
 -- Fonction pour ajouter surlignage et interface texte
 local function AddHighlightModelDoor(object)
@@ -886,7 +885,7 @@ local function onDescendantAdded(descendant)
         elseif EspMonsters and string.find(lowerName, "monster") then
             AddHightlightModelEntities(descendant)
         elseif EspItem and string.find(lowerName, "key") then
-            AddHightlightModelDItem(descendant)
+            ToggleHighlightModels(descendant)
         end
     end
 end
