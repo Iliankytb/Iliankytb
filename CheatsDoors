@@ -345,29 +345,6 @@ end
 -- Assure-toi d'avoir des boutons correspondants pour ces connexions
 
 
--- Surveiller les ajouts dans Workspace
-workspace.ChildAdded:Connect(function(child)
-    HighlightModelsDoor(child)
-    HighlightModelsCloset(child)
-    HighlightModelsItems(child)
-    HighlightModelsEntities(child)
-end)
-
--- Surveiller les ajouts de joueurs
-Players.PlayerAdded:Connect(function(player)
-    player.CharacterAdded:Connect(function()
-        if EspPlayers then
-            HighlightModelsPlayers()
-        end
-    end)
-end)
-
--- Surveiller la suppression de joueurs
-Players.PlayerRemoving:Connect(function(player)
-    if EspPlayers and player.Character then
-        player.Character:Destroy() -- Enlève le surlignage du personnage du joueur qui quitte
-    end
-end)
 
 
 local function DeleteSeek(Object)
@@ -567,5 +544,30 @@ local function updateSettings(targetObject)
 
     -- Autres fonctionnalités comme NoLag, EspCloset, etc.
 end
+
+-- Surveiller les ajouts dans Workspace
+workspace.ChildAdded:Connect(function(child)
+    HighlightModelsDoor(child)
+    HighlightModelsCloset(child)
+    HighlightModelsItems(child)
+    HighlightModelsEntities(child)
+end)
+
+-- Surveiller les ajouts de joueurs
+Players.PlayerAdded:Connect(function(player)
+    player.CharacterAdded:Connect(function()
+        if EspPlayers then
+            HighlightModelsPlayers()
+        end
+    end)
+end)
+
+-- Surveiller la suppression de joueurs
+Players.PlayerRemoving:Connect(function(player)
+    if EspPlayers and player.Character then
+        player.Character:Destroy() -- Enlève le surlignage du personnage du joueur qui quitte
+    end
+end)
+
 
 RunService.RenderStepped:Connect(updateSettings)
