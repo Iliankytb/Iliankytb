@@ -14,7 +14,7 @@ end
 
 -- Fonction pour ajuster la taille de la CanvasSize en fonction du contenu
 local function updateCanvasSize(frame)
-    local totalHeight = 500
+    local totalHeight = 0
 
     -- Calculer la hauteur totale des enfants
     for _, child in ipairs(frame:GetChildren()) do
@@ -154,6 +154,7 @@ end
 local function listerTousLesObjets()
     for _, Object in pairs(game:GetChildren()) do
         ajouterObjetExplorateur(Object)
+updateCanvasSize(explorerContent)
     end
 end
 
@@ -168,6 +169,7 @@ local function listObjectsSlowly(service)
             index = index + 1
             task.wait(0.5) -- Ajoute 1 objet toutes les 0.5 secondes
             addNextObject()
+updateCanvasSize(explorerContent)
         end
     end
 
