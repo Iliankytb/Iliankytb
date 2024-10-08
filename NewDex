@@ -15,11 +15,13 @@ end
 -- Fonction pour ajuster la taille de la CanvasSize en fonction du contenu
 local function updateCanvasSize(frame)
     local totalHeight = 0
+    local layout = frame:FindFirstChildOfClass("UIListLayout")
+    local padding = layout and layout.Padding.Offset or 0
 
     -- Calculer la hauteur totale des enfants
     for _, child in ipairs(frame:GetChildren()) do
         if child:IsA("GuiObject") then
-            totalHeight = totalHeight + child.Size.Y.Offset + frame.UIListLayout.Padding.Offset
+            totalHeight = totalHeight + child.Size.Y.Offset + padding
         end
     end
 
@@ -39,12 +41,12 @@ local searchFrame = createUIElement("Frame", {
 }, screenGui)
 
 local searchBox = createUIElement("TextBox", {
-    Text = "Search...",
     Size = UDim2.new(1, 0, 1, 0),
     BackgroundColor3 = Color3.fromRGB(60, 60, 60),
     TextColor3 = Color3.fromRGB(255, 255, 255),
     PlaceholderText = "Search...",
     TextScaled = true,
+    Text = "Search...",
 }, searchFrame)
 
 -- Table pour stocker les objets ajoutés
@@ -190,53 +192,28 @@ local function ajouterObjetExplorateur(objet)
 end
 
 -- Fonction pour lister les objets dans le jeu
-local function listerTousLesObjets()
-    for _, Object in pairs(game:GetChildren()) do
-        ajouterObjetExplorateur(Object)
+local function listerTousLesObjets(parent)
+    for _, objet in ipairs(parent:GetChildren()) do
+        ajouterObjetExplorateur(objet)
+        listerTousLesObjets(objet) -- Appel récursif pour les enfants
     end
 end
 
--- Fonction pour lister les objets petit à petit
-local function listObjectsSlowly(service)
-    local objects = service:GetDescendants()
-    local index = 1
+-- Événements pour gérer les objets ajoutés ou retirés
+workspace.DescendantAdded:Connect(function(objet)
+    ajouterObjetExplorateur(objet)
+end)
 
-    local function addNextObject()
-        if index <= #objects then
-            ajouterObjetExplorateur(objects[index]) -- Passe l'objet lui-même et non juste son nom
-            index = index + 1
-            task.wait(0.5) -- Ajoute 1 objet toutes les 0.5 secondes
-            addNextObject()
-        end
-    end
-
-    addNextObject()
-end
-
--- Lister les objets dans les services importants petit à petit
-listObjectsSlowly(game)
-
--- Mettre à jour dynamiquement si de nouveaux objets sont ajoutés
-local function onDescendantAdded(object)
-    ajouterObjetExplorateur(object)
-    updateCanvasSize(explorerContent) -- Mettre à jour la CanvasSize après l'ajout
-
-    -- Vérifier si l'objet ajouté correspond à la requête de recherche
-    updateObjectVisibility(searchBox.Text)
-end
-
-game.DescendantAdded:Connect(onDescendantAdded)
-
--- Mise à jour lorsque des objets sont supprimés
-local function onDescendantRemoving(object)
-    for i, button in ipairs(objectButtons) do
-        if button.Text == object.Name then
+workspace.DescendantRemoving:Connect(function(objet)
+    for index, button in ipairs(objectButtons) do
+        if button.Text == objet.Name then
             button:Destroy()
-            table.remove(objectButtons, i) -- Retirer le bouton de la table
-            updateCanvasSize(explorerContent)  -- Mettre à jour la CanvasSize après suppression
-            return
+            table.remove(objectButtons, index)
+            updateCanvasSize(explorerContent) -- Met à jour la taille après suppression
+            break
         end
     end
-end
+end)
 
-game.DescendantRemoving:Connect(onDescendantRemoving)
+-- Démarrer la liste des objets
+listerTousLesObjets(workspace)
