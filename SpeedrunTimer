@@ -19,7 +19,7 @@ local timerLabel = Instance.new("TextLabel")
 timerLabel.Name = "TimerLabel"
 timerLabel.Size = UDim2.new(0, 200, 0, 50) -- Largeur et hauteur du label
 timerLabel.Position = UDim2.new(0, 0, 0.2, -25) -- Centré horizontalement
-timerLabel.Text = "00:00"
+timerLabel.Text = "00:00:00"
 timerLabel.TextScaled = true -- Pour ajuster le texte à la taille du label
 timerLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Couleur de fond noir
 timerLabel.TextColor3 = Color3.fromRGB(255, 255, 255) -- Couleur du texte blanc
@@ -28,7 +28,7 @@ timerLabel.Parent = screenGui
 local ByIlianLabel = Instance.new("TextLabel")
 ByIlianLabel.Name = "ByIlian"
 ByIlianLabel.Size = UDim2.new(0, 200, 0,25) -- Largeur et hauteur du label
-ByIlianLabel.Position = UDim2.new(0, 0, 0.3, -25) -- Centré horizontalement
+ByIlianLabel.Position = UDim2.new(0, 0, 0.32, -25) -- Centré horizontalement
 ByIlianLabel.Text = "Created By Iliankytb"
 ByIlianLabel.TextScaled = true -- Pour ajuster le texte à la taille du label
 ByIlianLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
@@ -62,26 +62,30 @@ RemoveGuiButton.Parent = screenGui
 local running = true -- Le timer démarre automatiquement
 local minutes = 0
 local seconds = 0
+local Miliseconds = 0
 
 -- Fonction pour formater le temps sous la forme MM:SS
-local function formatTime(mins, secs)
-    return string.format("%02d:%02d", mins, secs)
+local function formatTime(mins, secs, Miliseconds)
+    return string.format("%02d:%02d:%02d", mins, secs, Miliseconds)
 end
 
 -- Fonction pour mettre à jour l'affichage du timer
 local function updateTimer()
     while running do
-        wait(1)
-        seconds = seconds + 1
+        wait(0.1)
+        Miliseconds = Miliseconds + 1
         
         -- Si les secondes atteignent 60, on incrémente les minutes
+if  Miliseconds >= 60 then
+seconds = seconds +1
         if seconds >= 60 then
             seconds = 0
             minutes = minutes + 1
         end
+end
 
         -- Mettre à jour le label avec le temps formaté
-        timerLabel.Text = formatTime(minutes, seconds)
+        timerLabel.Text = formatTime(minutes, seconds, Miliseconds)
     end
 end
 
@@ -89,6 +93,7 @@ end
 local function stopTimer()
     running = false
 seconds = seconds -1
+Miliseconds = 0
     stopButton.Text = "Timer Stopped!"
 end
 
