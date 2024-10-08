@@ -18,93 +18,92 @@ screenGui.Parent = playerGui -- Assurez-vous que cela se trouve dans le PlayerGu
 local timerLabel = Instance.new("TextLabel")
 timerLabel.Name = "TimerLabel"
 timerLabel.Size = UDim2.new(0, 200, 0, 50) -- Largeur et hauteur du label
-timerLabel.Position = UDim2.new(0, 0, 0.2, -25) -- Centré horizontalement
+timerLabel.Position = UDim2.new(0, 0, 0.2, -25) -- Positionnement du timer
 timerLabel.Text = "00:00:00"
-timerLabel.TextScaled = true -- Pour ajuster le texte à la taille du label
+timerLabel.TextScaled = true -- Ajuster le texte à la taille du label
 timerLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Couleur de fond noir
 timerLabel.TextColor3 = Color3.fromRGB(255, 255, 255) -- Couleur du texte blanc
 timerLabel.Parent = screenGui
 
+-- Label "Created by"
 local ByIlianLabel = Instance.new("TextLabel")
 ByIlianLabel.Name = "ByIlian"
-ByIlianLabel.Size = UDim2.new(0, 200, 0,25) -- Largeur et hauteur du label
-ByIlianLabel.Position = UDim2.new(0, 0, 0.32, -25) -- Centré horizontalement
+ByIlianLabel.Size = UDim2.new(0, 200, 0, 25) -- Largeur et hauteur du label
+ByIlianLabel.Position = UDim2.new(0, 0, 0.3, -25)
 ByIlianLabel.Text = "Created By Iliankytb"
-ByIlianLabel.TextScaled = true -- Pour ajuster le texte à la taille du label
-ByIlianLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-ByIlianLabel.BackgroundTransparency = 1 -- Couleur de fond noir
+ByIlianLabel.TextScaled = true
+ByIlianLabel.BackgroundTransparency = 1 -- Pas de fond
 ByIlianLabel.TextColor3 = Color3.fromRGB(255, 255, 255) -- Couleur du texte blanc
 ByIlianLabel.Parent = screenGui
 
-
--- Créer le bouton pour arrêter le timer
+-- Bouton pour arrêter le timer
 local stopButton = Instance.new("TextButton")
 stopButton.Name = "StopButton"
-stopButton.Size = UDim2.new(0, 200, 0, 50) -- Largeur et hauteur du bouton
-stopButton.Position = UDim2.new(0, 0, 0.3, 0) -- Centré horizontalement
+stopButton.Size = UDim2.new(0, 200, 0, 50)
+stopButton.Position = UDim2.new(0, 0, 0.3, 0)
 stopButton.Text = "Stop The Timer"
-stopButton.TextScaled = true -- Pour ajuster le texte à la taille du bouton
+stopButton.TextScaled = true
 stopButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- Couleur de fond rouge
-stopButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- Couleur du texte blanc
+stopButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- Texte blanc
 stopButton.Parent = screenGui
 
+-- Bouton pour enlever le GUI
 local RemoveGuiButton = Instance.new("TextButton")
 RemoveGuiButton.Name = "RemoveTimerGui"
-RemoveGuiButton.Size = UDim2.new(0, 200, 0, 50) -- Largeur et hauteur du bouton
-RemoveGuiButton.Position = UDim2.new(0, 0, 0.45, 0) -- Centré horizontalement
+RemoveGuiButton.Size = UDim2.new(0, 200, 0, 50)
+RemoveGuiButton.Position = UDim2.new(0, 0, 0.45, 0)
 RemoveGuiButton.Text = "Remove Timer"
-RemoveGuiButton.TextScaled = true -- Pour ajuster le texte à la taille du bouton
-RemoveGuiButton.BackgroundColor3 = Color3.fromRGB(255, 255, 0) -- Couleur de fond rouge
-RemoveGuiButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- Couleur du texte blanc
+RemoveGuiButton.TextScaled = true
+RemoveGuiButton.BackgroundColor3 = Color3.fromRGB(255, 255, 0) -- Couleur jaune
+RemoveGuiButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- Texte blanc
 RemoveGuiButton.Parent = screenGui
 
 -- Variables pour le timer
 local running = true -- Le timer démarre automatiquement
 local minutes = 0
 local seconds = 0
-local Miliseconds = 0
+local milliseconds = 0
 
--- Fonction pour formater le temps sous la forme MM:SS
-local function formatTime(mins, secs, Miliseconds)
-    return string.format("%02d:%02d:%02d", mins, secs, Miliseconds)
+-- Fonction pour formater le temps
+local function formatTime(mins, secs, millis)
+    return string.format("%02d:%02d:%02d", mins, secs, millis)
 end
 
 -- Fonction pour mettre à jour l'affichage du timer
 local function updateTimer()
     while running do
-        wait(0.0001)
-        Miliseconds = Miliseconds + 1
+        wait(0.01) -- Changer la fréquence de mise à jour
+        milliseconds = milliseconds + 1
         
-        -- Si les secondes atteignent 60, on incrémente les minutes
-if  Miliseconds >= 60 then
-Miliseconds = 0
-seconds = seconds +1
-        if seconds >= 60 then
-            seconds = 0
-            minutes = minutes + 1
+        -- Si les millisecondes atteignent 100, on incrémente les secondes
+        if milliseconds >= 100 then
+            milliseconds = 0
+            seconds = seconds + 1
+            
+            -- Si les secondes atteignent 60, on incrémente les minutes
+            if seconds >= 60 then
+                seconds = 0
+                minutes = minutes + 1
+            end
         end
-end
-
+        
         -- Mettre à jour le label avec le temps formaté
-        timerLabel.Text = formatTime(minutes, seconds, Miliseconds)
+        timerLabel.Text = formatTime(minutes, seconds, milliseconds)
     end
 end
 
 -- Fonction pour stopper le timer
 local function stopTimer()
     running = false
-seconds = seconds -1
     stopButton.Text = "Timer Stopped!"
 end
 
+-- Fonction pour enlever le GUI
 local function RemoveUi()
     playerGui:FindFirstChild("TimerGui"):Destroy()
-    script:Destroy()
 end
 
--- Fonction pour arrêter le timer si le joueur meurt
-
--- Connexion de l'événement de mort de l'humanoïde
+-- Arrêter le timer si le joueur meurt
 humanoid.Died:Connect(stopTimer)
 
 -- Lancer la fonction de mise à jour du timer dans un thread séparé
@@ -113,4 +112,5 @@ spawn(updateTimer)
 -- Connexion du bouton à l'arrêt du timer
 stopButton.MouseButton1Click:Connect(stopTimer)
 
+-- Connexion du bouton pour retirer le GUI
 RemoveGuiButton.MouseButton1Click:Connect(RemoveUi)
