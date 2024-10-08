@@ -13,7 +13,6 @@ local function createUIElement(className, properties, parent)
     return element
 end
 
-
 -- Fonction pour ajuster la taille de la CanvasSize en fonction du contenu
 local function updateCanvasSize(frame)
     local totalHeight = 0
@@ -83,6 +82,7 @@ local propertiesContent = createUIElement("ScrollingFrame", {
     ScrollBarThickness = 8
 }, propertiesFrame)
 
+-- Layouts
 local explorerLayout = createUIElement("UIListLayout", {
     SortOrder = Enum.SortOrder.LayoutOrder
 }, explorerContent)
@@ -103,19 +103,17 @@ local function ajouterObjetExplorateur(objet)
     -- Mettre à jour la taille de la CanvasSize après l'ajout d'un objet
     updateCanvasSize(explorerContent)
 
-    -- Lorsque l'objet est cliqué, on affiche ses propriétés réelles
+    -- Lorsque l'objet est cliqué, on affiche ses propriétés
     objetLabel.MouseButton1Click:Connect(function()
         propertiesContent:ClearAllChildren()
-   
--- Affichage du nom de l'objet
+
+        -- Affichage du nom de l'objet
         createUIElement("TextLabel", {
             Size = UDim2.new(1, 0, 0.1, 0),
-            Text = "Name: " .. Object.Name,
+            Text = "Name: " .. objet.Name,
             TextColor3 = Color3.fromRGB(255, 255, 255),
             BackgroundColor3 = Color3.fromRGB(70, 70, 70),
         }, propertiesContent)
-
-
 
         -- Affichage de la position si c'est un BasePart
         if objet:IsA("BasePart") or objet:IsA("MeshPart") then
@@ -135,7 +133,7 @@ local function ajouterObjetExplorateur(objet)
         end
 
         -- Affichage de la catégorie (service parent)
-        local category = Object.Parent.ClassName or "Unknown"
+        local category = objet.Parent.ClassName or "Unknown"
         createUIElement("TextLabel", {
             Size = UDim2.new(1, 0, 0.1, 0),
             Text = "Category: " .. category,
@@ -144,15 +142,20 @@ local function ajouterObjetExplorateur(objet)
         }, propertiesContent)
 
         -- Affichage du parent de l'objet
-        
         createUIElement("TextLabel", {
             Size = UDim2.new(1, 0, 0.1, 0),
-            Text = "Parent: " .. Object.Parent,
+            Text = "Parent: " .. tostring(objet.Parent),
             TextColor3 = Color3.fromRGB(255, 255, 255),
             BackgroundColor3 = Color3.fromRGB(70, 70, 70),
         }, propertiesContent)
     end)
 end
+
+-- Fonction pour lister les objets dans le jeu
+local function listerTousLesObjets()
+    for _, Object in pairs(game:GetChildren()) do
+        ajouterObjetExplorateur(Object)
+    end
 end
 
 -- Fonction pour lister les objets petit à petit
@@ -164,7 +167,7 @@ local function listObjectsSlowly(service)
         if index <= #objects then
             ajouterObjetExplorateur(objects[index]) -- Passe l'objet lui-même et non juste son nom
             index = index + 1
-            task.wait(0.5) -- Ajoute 1 objet toutes les 0.25 secondes
+            task.wait(0.5) -- Ajoute 1 objet toutes les 0.5 secondes
             addNextObject()
         end
     end
@@ -177,10 +180,8 @@ listObjectsSlowly(game)
 
 -- Mettre à jour dynamiquement si de nouveaux objets sont ajoutés
 local function onDescendantAdded(object)
-for _, object in pairs(game:GetChildren()) do
     ajouterObjetExplorateur(object)
-    updateCanvasSize(explorerContent)
-end-- Mettre à jour la CanvasSize après l'ajout
+    updateCanvasSize(explorerContent) -- Mettre à jour la CanvasSize après l'ajout
 end
 
 game.DescendantAdded:Connect(onDescendantAdded)
