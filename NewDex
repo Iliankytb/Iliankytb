@@ -39,7 +39,7 @@ local searchFrame = createUIElement("Frame", {
 }, screenGui)
 
 local searchBox = createUIElement("TextBox", {
-Text = "Search..."
+    Text = "Search...",
     Size = UDim2.new(1, 0, 1, 0),
     BackgroundColor3 = Color3.fromRGB(60, 60, 60),
     TextColor3 = Color3.fromRGB(255, 255, 255),
@@ -220,6 +220,9 @@ listObjectsSlowly(game)
 local function onDescendantAdded(object)
     ajouterObjetExplorateur(object)
     updateCanvasSize(explorerContent) -- Mettre à jour la CanvasSize après l'ajout
+
+    -- Vérifier si l'objet ajouté correspond à la requête de recherche
+    updateObjectVisibility(searchBox.Text)
 end
 
 game.DescendantAdded:Connect(onDescendantAdded)
