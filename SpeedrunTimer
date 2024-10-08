@@ -16,7 +16,7 @@ screenGui.Parent = playerGui -- Assurez-vous que cela se trouve dans le PlayerGu
 local FramMain = Instance.new("Frame")
 FramMain.Name = "FrameMain"
 FramMain.Size = UDim2.new(0, 500, 0, 500) -- Largeur et hauteur du label
-FramMain.Position = UDim2.new(0, 250, 0, 10) -- Positionnement du timer
+FramMain.Position = UDim2.new(0, 250, 0, 1) -- Positionnement du timer
 FramMain.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Couleur de fond noir
 FramMain.Parent = screenGui
 
@@ -79,7 +79,7 @@ end
 -- Fonction pour mettre à jour l'affichage du timer
 local function updateTimer()
     while running do
-        wait(0.01) -- Changer la fréquence de mise à jour
+        wait(0.005) -- Changer la fréquence de mise à jour
         milliseconds = milliseconds + 1
         
         -- Si les millisecondes atteignent 100, on incrémente les secondes
