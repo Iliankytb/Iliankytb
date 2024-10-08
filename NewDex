@@ -106,8 +106,6 @@ local function ajouterObjetExplorateur(objet)
     -- Lorsque l'objet est cliqué, on affiche ses propriétés réelles
     objetLabel.MouseButton1Click:Connect(function()
         propertiesContent:ClearAllChildren()
-
-for _, Object in pairs(game:GetChildren()) do
    
 -- Affichage du nom de l'objet
         createUIElement("TextLabel", {
@@ -156,7 +154,6 @@ for _, Object in pairs(game:GetChildren()) do
     end)
 end
 end
-end
 
 -- Fonction pour lister les objets petit à petit
 local function listObjectsSlowly(service)
@@ -180,8 +177,10 @@ listObjectsSlowly(game)
 
 -- Mettre à jour dynamiquement si de nouveaux objets sont ajoutés
 local function onDescendantAdded(object)
+for _, object in pairs(game:GetChildren()) do
     ajouterObjetExplorateur(object)
-    updateCanvasSize(explorerContent)  -- Mettre à jour la CanvasSize après l'ajout
+    updateCanvasSize(explorerContent)
+end-- Mettre à jour la CanvasSize après l'ajout
 end
 
 game.DescendantAdded:Connect(onDescendantAdded)
