@@ -107,7 +107,7 @@ local function ajouterObjetExplorateur(objet)
     objetLabel.MouseButton1Click:Connect(function()
         propertiesContent:ClearAllChildren()
 
-for _, Object in ipairs(game:GetChildren()) do
+for _, Object in pairs(game:GetChildren()) do
    
 -- Affichage du nom de l'objet
         createUIElement("TextLabel", {
