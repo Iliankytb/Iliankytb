@@ -143,7 +143,8 @@ end
 
 -- Fonction pour mettre à jour l'affichage du timer
 local function updateTimer()
-    while runningTimer do
+    while true do
+if runningTimer == true
         wait(0.0001)
         milliseconds = milliseconds + 1
         
@@ -159,6 +160,7 @@ local function updateTimer()
         
         timerLabel.Text = formatTime(minutes, seconds, milliseconds)
     end
+end
 end
 
 -- Fonction pour démarrer ou réinitialiser le timer
