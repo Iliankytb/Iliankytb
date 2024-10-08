@@ -62,6 +62,13 @@ local propertiesContent = createUIElement("ScrollingFrame", {
     ScrollBarThickness = 8
 }, propertiesFrame)
 
+local WorkspaceButton = createUIElement("TextButton", {
+        Size = UDim2.new(1, 0, 0.05, 0),
+        Text = "Workspace",
+        TextColor3 = Color3.fromRGB(255, 255, 255),
+        BackgroundColor3 = Color3.fromRGB(60, 60, 60),
+    }, explorerContent)
+
 -- Fonction pour ajouter des objets à l'explorateur
 local function ajouterObjetExplorateur(nom)
     local objetLabel = createUIElement("TextButton", {
@@ -159,7 +166,7 @@ local function onDescendantRemoving(object)
     for _, label in ipairs(explorerContent:GetChildren()) do
         if label.Text == object.Name then
             label:Destroy()
-            break
+return
         end
     end
 end
