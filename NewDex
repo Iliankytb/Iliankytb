@@ -2,11 +2,17 @@
 local function createUIElement(className, properties, parent)
     local element = Instance.new(className)
     for prop, value in pairs(properties) do
-        element[prop] = value
+        -- Vérifie si la propriété existe pour cet élément
+        if pcall(function() element[prop] = value end) then
+            element[prop] = value
+        else
+            warn("La propriété " .. prop .. " n'existe pas pour " .. className)
+        end
     end
     element.Parent = parent
     return element
 end
+
 
 -- Fonction pour ajuster la taille de la CanvasSize en fonction du contenu
 local function updateCanvasSize(frame)
