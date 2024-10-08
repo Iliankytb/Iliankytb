@@ -24,6 +24,46 @@ FramMain.Draggable = true
 FramMain.Visible = false
 FramMain.Parent = screenGui
 
+-- Ajouter le TextLabel "Settings" dans FrameMain
+local settingsLabel = Instance.new("TextLabel")
+settingsLabel.Name = "SettingsLabel"
+settingsLabel.Size = UDim2.new(1, 0, 0, 50)
+settingsLabel.Position = UDim2.new(0, 0, 0, 0)
+settingsLabel.Text = "Settings"
+settingsLabel.TextScaled = true
+settingsLabel.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+settingsLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+settingsLabel.Parent = FramMain
+
+-- Créer une ScrollingFrame dans FrameMain pour ajouter des fonctionnalités
+local scrollingFrame = Instance.new("ScrollingFrame")
+scrollingFrame.Name = "ScrollingFrame"
+scrollingFrame.Size = UDim2.new(1, 0, 0.7, 0)
+scrollingFrame.Position = UDim2.new(0, 0, 0.2, 0)
+scrollingFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+scrollingFrame.BorderSizePixel = 0
+scrollingFrame.CanvasSize = UDim2.new(0, 0, 2, 0) -- Ajuster la taille du canvas pour permettre le scroll
+scrollingFrame.ScrollBarThickness = 5
+scrollingFrame.Parent = FramMain
+
+-- Ajouter un UIGridLayout dans la ScrollingFrame
+local uiGridLayout = Instance.new("UIGridLayout")
+uiGridLayout.CellSize = UDim2.new(0, 100, 0, 50) -- Taille de chaque cellule dans la grille
+uiGridLayout.FillDirectionMaxCells = 2 -- Nombre de colonnes
+uiGridLayout.SortOrder = Enum.SortOrder.LayoutOrder
+uiGridLayout.Parent = scrollingFrame
+
+-- Ajouter des boutons/fonctionnalités dans la ScrollingFrame
+for i = 1, 39 do
+    local featureButton = Instance.new("TextButton")
+    featureButton.Name = "FeatureButton"..i
+    featureButton.Size = UDim2.new(0, 100, 0, 50)
+    featureButton.Text = "Feature " .. i
+    featureButton.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
+    featureButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+    featureButton.Parent = scrollingFrame
+end
+
 -- Variable pour verrouiller ou déverrouiller le déplacement
 local isLocked = false
 local isVisible = false
@@ -75,6 +115,8 @@ end
 
 lockButton.MouseButton1Click:Connect(toggleLock)
 VisibleFrameButton.MouseButton1Click:Connect(toggleVisible)
+
+-- Ajout des autres éléments du timer, boutons, et fonctions comme dans ton script original...
 
 -- Créer le TextLabel pour le timer
 local timerLabel = Instance.new("TextLabel")
