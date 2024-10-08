@@ -17,15 +17,16 @@ screenGui.Parent = playerGui
 local FramMain = Instance.new("Frame")
 FramMain.Name = "FrameMain"
 FramMain.Size = UDim2.new(0, 500, 0, 250)
-FramMain.Position = UDim2.new(0, 50, 50, 0)
+FramMain.Position = UDim2.new(0, 50, 0, 50)
 FramMain.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 FramMain.Active = true
 FramMain.Draggable = true
+FramMain.Visible = false
 FramMain.Parent = screenGui
 
 -- Variable pour verrouiller ou déverrouiller le déplacement
 local isLocked = false
-local isVisible = true -- Correction de True -> true
+local isVisible = false -- Correction de True -> true
 
 -- Bouton pour verrouiller ou déverrouiller la FrameMain
 local lockButton = Instance.new("TextButton")
@@ -90,7 +91,7 @@ local ByIlianLabel = Instance.new("TextLabel")
 ByIlianLabel.Name = "ByIlian"
 ByIlianLabel.Size = UDim2.new(0, 100, 0, 15)
 ByIlianLabel.Position = UDim2.new(0, 0, 0.3, -25)
-ByIlianLabel.Text = "Created By Iliankytb"
+ByIlianLabel.Text = "The Best Timer Created By Iliankytb"
 ByIlianLabel.TextScaled = true
 ByIlianLabel.BackgroundTransparency = 1
 ByIlianLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -145,7 +146,7 @@ local runService = game:GetService("RunService")
 
 local function updateTimer(deltaTime)
     if runningTimer then
-        milliseconds = milliseconds + deltaTime * 1 -- Ajuster selon la précision voulue
+        milliseconds = milliseconds + deltaTime * 10000 -- Ajuster selon la précision voulue
         
         if milliseconds >= 60 then
             milliseconds = 0
