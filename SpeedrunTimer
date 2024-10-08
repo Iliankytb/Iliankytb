@@ -148,7 +148,7 @@ end
 local ByIlianLabel = Instance.new("TextLabel")
 ByIlianLabel.Name = "ByIlian"
 ByIlianLabel.Size = UDim2.new(1, 0, 0, 15)
-ByIlianLabel.Position = UDim2.new(0, 0, 0.9, -25)
+ByIlianLabel.Position = UDim2.new(0, 0, 1, 0)
 ByIlianLabel.Text = "The Best Timer Created By Iliankytb"
 ByIlianLabel.TextScaled = true
 ByIlianLabel.BackgroundTransparency = 1
