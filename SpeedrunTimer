@@ -86,7 +86,22 @@ timerLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 timerLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 timerLabel.Parent = screenGui
 
--- Label "Created by"
+-- Fonction pour créer un effet arc-en-ciel sur le texte
+local function rainbowEffect(label)
+    local hue = 0
+    local runService = game:GetService("RunService")
+
+    runService.Heartbeat:Connect(function()
+        hue = hue + 1
+        if hue > 360 then
+            hue = 0
+        end
+        local color = Color3.fromHSV(hue / 360, 1, 1)
+        label.TextColor3 = color
+    end)
+end
+
+-- Label "Created by" avec effet arc-en-ciel
 local ByIlianLabel = Instance.new("TextLabel")
 ByIlianLabel.Name = "ByIlian"
 ByIlianLabel.Size = UDim2.new(0, 100, 0, 15)
@@ -94,9 +109,10 @@ ByIlianLabel.Position = UDim2.new(0, 0, 0.3, -25)
 ByIlianLabel.Text = "The Best Timer Created By Iliankytb"
 ByIlianLabel.TextScaled = true
 ByIlianLabel.BackgroundTransparency = 1
-ByIlianLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 ByIlianLabel.Parent = screenGui
 
+-- Appliquer l'effet arc-en-ciel au label
+rainbowEffect(ByIlianLabel)
 -- Bouton pour arrêter le timer
 local stopButton = Instance.new("TextButton")
 stopButton.Name = "StopButton"
