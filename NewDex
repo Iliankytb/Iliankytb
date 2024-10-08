@@ -86,10 +86,10 @@ local propertiesLayout = createUIElement("UIListLayout", {
 }, propertiesContent)
 
 -- Fonction pour ajouter des objets à l'explorateur
-local function ajouterObjetExplorateur(nom)
+local function ajouterObjetExplorateur(objet)
     local objetLabel = createUIElement("TextButton", {
         Size = UDim2.new(1, 0, 0.05, 0),
-        Text = nom,
+        Text = objet.Name,
         TextColor3 = Color3.fromRGB(255, 255, 255),
         BackgroundColor3 = Color3.fromRGB(60, 60, 60),
     }, explorerContent)
@@ -97,47 +97,62 @@ local function ajouterObjetExplorateur(nom)
     -- Mettre à jour la taille de la CanvasSize après l'ajout d'un objet
     updateCanvasSize(explorerContent)
 
-    -- Lorsque l'objet est cliqué, on affiche ses propriétés
+    -- Lorsque l'objet est cliqué, on affiche ses propriétés réelles
     objetLabel.MouseButton1Click:Connect(function()
         propertiesContent:ClearAllChildren()
 
-        -- Ajout d'exemple de propriétés
+for _, Object in ipairs(game:GetChildren()) do
+        if Object.Text == object.Name then
+   
+-- Affichage du nom de l'objet
         createUIElement("TextLabel", {
             Size = UDim2.new(1, 0, 0.1, 0),
-            Text = "Name: " .. nom,
+            Text = "Name: " .. Object.Name,
             TextColor3 = Color3.fromRGB(255, 255, 255),
             BackgroundColor3 = Color3.fromRGB(70, 70, 70),
         }, propertiesContent)
 
+
+
+        -- Affichage de la position si c'est un BasePart
+        if objet:IsA("BasePart") or objet:IsA("MeshPart") then
+            createUIElement("TextLabel", {
+                Size = UDim2.new(1, 0, 0.1, 0),
+                Text = string.format("Position: (%.2f, %.2f, %.2f)", objet.Position.X, objet.Position.Y, objet.Position.Z),
+                TextColor3 = Color3.fromRGB(255, 255, 255),
+                BackgroundColor3 = Color3.fromRGB(70, 70, 70),
+            }, propertiesContent)
+        else
+            createUIElement("TextLabel", {
+                Size = UDim2.new(1, 0, 0.1, 0),
+                Text = "Position: N/A",
+                TextColor3 = Color3.fromRGB(255, 255, 255),
+                BackgroundColor3 = Color3.fromRGB(70, 70, 70),
+            }, propertiesContent)
+        end
+
+        -- Affichage de la catégorie (service parent)
+        local category = Object.Parent.ClassName or "Unknown"
         createUIElement("TextLabel", {
             Size = UDim2.new(1, 0, 0.1, 0),
-            Text = "Position: (X, Y, Z)",
+            Text = "Category: " .. category,
+            TextColor3 = Color3.fromRGB(255, 255, 255),
+            BackgroundColor3 = Color3.fromRGB(70, 70, 70),
+        }, propertiesContent)
+
+        -- Affichage du parent de l'objet
+        
+        createUIElement("TextLabel", {
+            Size = UDim2.new(1, 0, 0.1, 0),
+            Text = "Parent: " .. Object.Parent,
             TextColor3 = Color3.fromRGB(255, 255, 255),
             BackgroundColor3 = Color3.fromRGB(70, 70, 70),
         }, propertiesContent)
     end)
 end
-
--- Bouton pour ouvrir/fermer l'Explorateur
-local toggleButton = createUIElement("TextButton", {
-    Size = UDim2.new(0.1, 0, 0.05, 0),
-    Position = UDim2.new(0.95, -60, 0, 20),
-    Text = "Open",
-    BackgroundColor3 = Color3.fromRGB(255, 0, 0),
-    TextColor3 = Color3.fromRGB(255, 255, 255),
-}, screenGui)
-
--- Fonction pour basculer l'affichage de l'Explorateur
-local isOpen = true
-toggleButton.MouseButton1Click:Connect(function()
-    isOpen = not isOpen
-    explorerFrame.Visible = isOpen
-    propertiesFrame.Visible = isOpen
-    toggleButton.Text = isOpen and "Close" or "Open"
-end)
-
--- Ajouter des objets d'exemple à l'explorateur
-ajouterObjetExplorateur("game")
+end
+end
+end
 
 -- Fonction pour lister les objets petit à petit
 local function listObjectsSlowly(service)
@@ -146,9 +161,9 @@ local function listObjectsSlowly(service)
 
     local function addNextObject()
         if index <= #objects then
-            ajouterObjetExplorateur(objects[index].Name)
+            ajouterObjetExplorateur(objects[index]) -- Passe l'objet lui-même et non juste son nom
             index = index + 1
-            task.wait(0.25) -- Ajoute 1 objet toutes les 0,5 secondes
+            task.wait(0.25) -- Ajoute 1 objet toutes les 0.25 secondes
             addNextObject()
         end
     end
@@ -161,7 +176,7 @@ listObjectsSlowly(game)
 
 -- Mettre à jour dynamiquement si de nouveaux objets sont ajoutés
 local function onDescendantAdded(object)
-    ajouterObjetExplorateur(object.Name)
+    ajouterObjetExplorateur(object)
     updateCanvasSize(explorerContent)  -- Mettre à jour la CanvasSize après l'ajout
 end
 
