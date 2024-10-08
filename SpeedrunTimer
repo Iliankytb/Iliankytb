@@ -143,8 +143,8 @@ end
 
 -- Fonction pour mettre à jour l'affichage du timer
 local function updateTimer()
-    while true do
-if runningTimer == true
+    while wait() do
+if runningTimer == true then
         wait(0.0001)
         milliseconds = milliseconds + 1
         
