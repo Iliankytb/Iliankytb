@@ -224,255 +224,122 @@ local function ToggleFrame()
 	end
 end
 
-local function AddHightlightModelCloset(object)
-    -- Check if the object already has a Highlight
+-- Services
+local DoorsNamed = {"Doors", "DoorSideRoom"} -- Liste des noms de portes
+local ClosetsNamed = {"wardrobe", "bed", "backdoor_wardrobe"} -- Liste des noms de closets
+local ItemsNamed = {"keyobtain", "chestbox", "chestboxlocked", "candle", "crucifix",
+                    "lockpick", "skeletonkey", "vitamin", "flashlight", "fuseobtain",
+                    "glowstick", "shears", "pile", "battery", "bandage"}
+local MonstersNamed = {"rushnew", "eyes", "ambushmoving", "screech", "figurerig", 
+                       "giggle", "grumble", "gloombat", "lookman", "seekrig", 
+                       "a90", "a120", "a60", "haltmoving"}
+
+-- Fonction pour créer un TextLabel personnalisé au-dessus d'un objet
+local function createTextLabel(object, labelText, textColor)
+    local billboard = Instance.new("BillboardGui")
+    billboard.Adornee = object
+    billboard.Size = UDim2.new(0, 200, 0, 50)
+    billboard.StudsOffset = Vector3.new(0, 3, 0)
+    billboard.AlwaysOnTop = true
+
+    local label = Instance.new("TextLabel", billboard)
+    label.Size = UDim2.new(1, 0, 1, 0)
+    label.Text = labelText
+    label.TextColor3 = textColor
+    label.BackgroundTransparency = 1
+    label.Font = Enum.Font.GothamBold
+    label.TextSize = 14
+
+    billboard.Parent = object
+
+    return label
+end
+
+-- Fonction pour ajouter un highlight à un objet
+local function highlightObject(object, highlightColor)
     if not object:FindFirstChildOfClass("Highlight") then
-        local highlight = Instance.new("Highlight")
-        highlight.FillColor = Color3.fromRGB(85, 170, 0)
-        highlight.OutlineColor = Color3.fromRGB(85, 255, 127)
-        highlight.FillTransparency = 0.75
-        highlight.OutlineTransparency = 0.75
-        highlight.Name = object.Name
-        highlight.Parent = object
-    end
-
-    -- Check if the object already has a BillboardGui
-    if not object:FindFirstChildOfClass("BillboardGui") then
-        local billboard = Instance.new("BillboardGui")
-        billboard.Size = UDim2.new(0.100, 0, 0.50, 0)
-        billboard.MaxDistance = 50
-        billboard.StudsOffset = Vector3.new(0, 0, 0)
-        billboard.Enabled = true
-        billboard.ResetOnSpawn = false
-        billboard.AlwaysOnTop = true
-        billboard.Name = object.Name
-        billboard.Parent = object
-
-        local textLabel = Instance.new("TextLabel")
-        textLabel.Size = UDim2.new(1, 0, 1, 0)
-        textLabel.BackgroundTransparency = 1
-        textLabel.TextColor3 = Color3.fromRGB(85, 255, 0)
-        textLabel.Parent = billboard
+        local highlight = Instance.new("Highlight", object)
+        highlight.FillColor = highlightColor
+        highlight.OutlineColor = Color3.fromRGB(0, 0, 0)
+        highlight.FillTransparency = 0.5
+        highlight.OutlineTransparency = 0
     end
 end
 
-local function UpdateClosetDistance(humanoidRootPart)
-    for _, obj in pairs(workspace:GetDescendants()) do
-        if obj:IsA("BillboardGui") and obj.Parent:IsA("Model") then
-            local textLabel = obj:FindFirstChild("TextLabel")
-            if textLabel then
-                local distance = (humanoidRootPart.Position - obj.Parent:GetPivot().Position).Magnitude
-                textLabel.Text = obj.Name.." [Distance: " .. math.floor(distance) .. " Studs]"
-            end
-        end
-    end
-end
-
-local function ClearHightlightModelCloset()
-    for _, obj in pairs(workspace:GetDescendants()) do
-        if obj:IsA("Highlight") or obj:IsA("BillboardGui") then
-            if obj.Name:lower() == "wardrobe" or obj.Name:lower() == "backdoor_wardrobe" or obj.Name:lower() == "bed" or obj.Name:lower() == "beds" then
-                obj:Destroy()
-            end
-        end
-    end
-end
-
-local function HightLightModelsCloset()
-    EspCloset = not EspCloset
-    if EspCloset then
-        EspClosetButton.Text = "Esp Closet On"
-        local object_name_substrings = {"wardrobe", "backdoor_wardrobe", "bed", "beds"}
-        for _, object in pairs(workspace:GetDescendants()) do
-            if object:IsA("Model") then
-                for _, substring in pairs(object_name_substrings) do
-                    if string.find(object.Name:lower(), substring) then
-                        AddHightlightModelCloset(object)
-                        UpdateClosetDistance(game.Players.LocalPlayer.Character.HumanoidRootPart)
-                    end
-                end
-            end
-        end
-    else
-        ClearHightlightModelCloset()
-        EspClosetButton.Text = "Esp Closet Off"
-    end
-end
-
--- Connect the button click event
-
-local doors = {} -- Table pour stocker les portes et dupliques pertinents l'état global de l'ESP
-
--- Fonction pour ajouter surlignage et interface texte
-local function AddHighlightModelDoor(object)
-    if not object:FindFirstChildOfClass("Highlight") then
-        local highlight = Instance.new("Highlight")
-        highlight.FillColor = Color3.fromRGB(0, 62, 186)
-        highlight.OutlineColor = Color3.fromRGB(0, 85, 255)
-        highlight.FillTransparency = 0.75
-        highlight.OutlineTransparency = 0.75
-        highlight.Name = "Highlight_" .. object.Name -- Pour éviter les conflits
-        highlight.Parent = object
-    end
-
-    if not object:FindFirstChildOfClass("BillboardGui") then
-        local billboard = Instance.new("BillboardGui")
-        billboard.Size = UDim2.new(0.100, 0, 0.50, 0)
-        billboard.MaxDistance = 50
-        billboard.StudsOffset = Vector3.new(0, 0, 0)
-        billboard.Enabled = true
-        billboard.ResetOnSpawn = false
-        billboard.AlwaysOnTop = true
-        billboard.Name = "Billboard_" .. object.Name -- Pour éviter les conflits
-        billboard.Parent = object
-
-        local textLabel = Instance.new("TextLabel")
-        textLabel.Size = UDim2.new(1, 0, 1, 0)
-        textLabel.BackgroundTransparency = 1
-        textLabel.TextColor3 = Color3.fromRGB(0, 170, 255)
-        textLabel.Text = object.Name -- Texte de base
-        textLabel.Parent = billboard
-    end
-end
-
--- Fonction pour mettre à jour la distance des portes
-local function UpdateDoorDistance(humanoidRootPart)
-    for _, doorData in pairs(doors) do
-        local obj = doorData.door
-        if obj:FindFirstChildOfClass("BillboardGui") then
-            local textLabel = obj.BillboardGui:FindFirstChildOfClass("TextLabel")
-            if textLabel then
-                local distance = (humanoidRootPart.Position - obj.Position).Magnitude
-                textLabel.Text = obj.Name .. " [Distance: " .. math.floor(distance) .. " Studs]"
-            end
-        end
-    end
-end
-
--- Fonction pour effacer surlignage et Billboard
-local function ClearHighlightModelDoor()
-    for _, doorData in pairs(doors) do
-        local obj = doorData.door
-        if obj:FindFirstChildOfClass("Highlight") then
-            obj.Highlight:Destroy()
-        end
-        if obj:FindFirstChildOfClass("BillboardGui") then
-            obj.BillboardGui:Destroy()
-        end
-    end
-    doors = {} -- Réinitialise la liste des portes
-end
-
--- Fonction pour chercher les portes et dupliques
-local function FindDoors()
-    local object_name_substrings = {"door", "sideroomdupe"}
-    for _, object in pairs(workspace:GetDescendants()) do
-        if object:IsA("MeshPart") then
-            for _, substring in pairs(object_name_substrings) do
-                if string.find(object.Name:lower(), substring) then
-                    table.insert(doors, {door = object})
-                    AddHighlightModelDoor(object)
-                end
-            end
-        end
-    end
-end
-
--- Fonction principale d'ESP
-local function HighlightModelsDoor(humanoidRootPart, EspDoorButton)
+-- Fonction pour traiter les portes
+local function HighlightModelsDoor()
     EspDoor = not EspDoor
     if EspDoor then
         EspDoorButton.Text = "Esp Door On"
-        FindDoors() -- Cherche et ajoute les portes
-        UpdateDoorDistance(humanoidRootPart)
+        for _, object in pairs(workspace:GetDescendants()) do
+            if object:IsA("MeshPart") and table.find(DoorsNamed, object.Name) then
+                createTextLabel(object, "Door", Color3.fromRGB(0, 0, 255)) -- Bleu pour les portes
+                highlightObject(object, Color3.fromRGB(0, 0, 255)) -- Highlight bleu
+            end
+        end
     else
-        ClearHighlightModelDoor() -- Nettoyage si désactivé
         EspDoorButton.Text = "Esp Door Off"
     end
 end
 
--- Connexion du bouton
-
-
-local function AddHightlightModelDEntities(object)
-	if not object:FindFirstChildOfClass("Highlight") then
-		local highlight = Instance.new("Highlight")
-		highlight.FillColor = Color3.fromRGB(171, 0, 0)
-		highlight.OutlineColor = Color3.fromRGB(255, 0, 0)
-		highlight.FillTransparency = 0.75
-		highlight.OutlineTransparency = 0.75
-		highlight.Name = object.Name
-		highlight.Parent = object
-	end
-
-	if not object:FindFirstChildOfClass("BillboardGui") then
-		local billboard = Instance.new("BillboardGui")
-		billboard.Size = UDim2.new(0.25, 0, 0.25, 0)
-		billboard.MaxDistance = math.huge
-		billboard.StudsOffset = Vector3.new(0, 0, 0)
-		billboard.Enabled = true
-		billboard.ResetOnSpawn = false
-		billboard.AlwaysOnTop = true
-		billboard.Name = object.Name
-		billboard.Parent = object
-
-		local textLabel = Instance.new("TextLabel")
-		textLabel.Size = UDim2.new(1, 0, 1, 0)
-		textLabel.BackgroundTransparency = 1
-		textLabel.TextColor3 = Color3.fromRGB(255, 0, 0)
-		textLabel.Text = object.Name -- Ajouter un texte initial
-		textLabel.Parent = billboard
-	end
+-- Fonction pour traiter les closets
+local function HighlightModelsCloset()
+    EspCloset = not EspCloset
+    if EspCloset then
+        EspClosetButton.Text = "Esp Closet On"
+        for _, object in pairs(workspace:GetDescendants()) do
+            if object:IsA("MeshPart") and table.find(ClosetsNamed, object.Name) then
+                createTextLabel(object, "Closet", Color3.fromRGB(0, 255, 0)) -- Vert pour les closets
+                highlightObject(object, Color3.fromRGB(0, 255, 0)) -- Highlight vert
+            end
+        end
+    else
+        EspClosetButton.Text = "Esp Closet Off"
+    end
 end
 
-local function DistanceEntities(humanoidRootPart)
-	for _, obj in pairs(workspace:GetDescendants()) do
-		if obj:IsA("BillboardGui") and obj:FindFirstChild("TextLabel") then
-			local textLabel = obj.TextLabel
-			if obj.Parent:IsA("BasePart") then
-				local distance = (humanoidRootPart.Position - obj.Parent.Position).Magnitude
-				textLabel.Text = obj.Name .. " [Distance: " .. math.floor(distance) .. " Studs]"
-			end
-		end
-	end
+-- Fonction pour traiter les items
+local function HighlightModelsItems()
+    EspItems = not EspItems
+    if EspItems then
+        for _, object in pairs(workspace:GetDescendants()) do
+            if object:IsA("Tool") and table.find(ItemsNamed, object.Name) then
+                createTextLabel(object, "Item", Color3.fromRGB(255, 165, 0)) -- Orange pour les items
+                highlightObject(object, Color3.fromRGB(255, 165, 0)) -- Highlight orange
+            end
+        end
+    end
 end
 
-local function ClearHightlightModelEntities()
-	for _, obj in pairs(workspace:GetDescendants()) do
-		if obj:IsA("Highlight") or obj:IsA("BillboardGui") then
-			local lowerName = obj.Name:lower()
-			if lowerName == "rushnew" or lowerName == "eyes" or lowerName == "ambushmoving" 
-			or lowerName == "screech" or lowerName == "figurerig" or lowerName == "giggle"
-			or lowerName == "grumble" or lowerName == "gloombat" or lowerName == "lookman"
-			or lowerName == "seekrig" or lowerName == "a90" or lowerName == "a120" 
-			or lowerName == "a60" or lowerName == "haltmoving" then
-				obj:Destroy()
-			end
-		end
-	end
+-- Fonction pour traiter les entités
+local function HighlightModelsEntities()
+    EspMonsters = not EspMonsters
+    if EspMonsters then
+        EspMonstersButton.Text = "Esp Monsters On"
+        for _, object in pairs(workspace:GetDescendants()) do
+            if object:IsA("Model") and table.find(MonstersNamed, object.Name:lower()) then
+                createTextLabel(object, "Monster", Color3.fromRGB(255, 0, 0)) -- Rouge pour les monstres
+                highlightObject(object, Color3.fromRGB(255, 0, 0)) -- Highlight rouge
+            end
+        end
+    else
+        EspMonstersButton.Text = "Esp Monsters Off"
+    end
 end
 
-local function HightLightModelsEntities()
-	EspMonsters = not EspMonsters
-	if EspMonsters then
-		EspMonstersButton.Text = "Esp Entities On"
-		for _, obj in pairs(workspace:GetDescendants()) do
-			if obj:IsA("BasePart") then
-				for _, substring in pairs(object_name_substrings_Monsters) do
-					if string.find(obj.Name:lower(), substring) then
-						DistanceEntities(humanoidRootPart) -- Utilise le bon nom pour la fonction
-						AddHightlightModelDEntities(obj)
-					end
-				end
-			end
-		end
-	else
-		ClearHightlightModelEntities()
-		EspMonstersButton.Text = "Esp Entities Off"
-	end
-end
+-- Connexion des boutons pour activer les fonctions
+EspClosetButton.MouseButton1Click:Connect(HighlightModelsCloset)
+EspDoorButton.MouseButton1Click:Connect(HighlightModelsDoor)
+EspMonstersButton.MouseButton1Click:Connect(HighlightModelsEntities)
 
-EspMonstersButton.MouseButton1Click:Connect(HightLightModelsEntities)
+-- Surveiller les ajouts dans Workspace
+workspace.ChildAdded:Connect(function(child)
+    HighlightModelsDoor(child)
+    HighlightModelsCloset(child)
+    HighlightModelsItems(child)
+    HighlightModelsEntities(child)
+end)
+
 
 local function DeleteSeek(Object)
 	for _, Object in pairs(workspace:GetDescendants()) do
@@ -482,196 +349,7 @@ local function DeleteSeek(Object)
 		end
 end
 
-
--- Fonction pour ajouter un surlignage aux objets
-local function AddHighlight(object, fillColor, outlineColor, labelText)
-    -- Ajoute un surlignage
-    local highlight = Instance.new("Highlight", object)
-    highlight.FillColor = fillColor
-    highlight.OutlineColor = outlineColor
-
-    -- Ajoute une BillboardGui pour afficher le texte
-    local billboardGui = Instance.new("BillboardGui", object)
-    billboardGui.Size = UDim2.new(1, 0, 1, 0)
-    billboardGui.Adornee = object
-
-    local textLabel = Instance.new("TextLabel", billboardGui)
-    textLabel.Size = UDim2.new(1, 0, 1, 0)
-    textLabel.BackgroundTransparency = 1
-    textLabel.TextColor3 = Color3.new(1, 1, 1)
-    textLabel.TextStrokeTransparency = 0
-    textLabel.Text = labelText
-end
-
--- Fonction pour gérer les objets ESP
-local function ToggleEspItem()
-    EspItem = not EspItem
-    for _, object in pairs(workspace:GetDescendants()) do
-        if object:IsA("Model") and string.find(object.Name:lower(), "keyobtain") then
-            if EspItem then
-                AddHighlight(object, Color3.fromRGB(180, 180, 0), Color3.fromRGB(255, 255, 127), object.Name)
-            else
-                object:FindFirstChildOfClass("Highlight")?.Destroy()
-                object:FindFirstChildOfClass("BillboardGui")?.Destroy()
-            end
-        end
-    end
-end
-
--- Fonction pour mettre à jour la distance des objets
-local function UpdateDistance()
-    for _, billboard in pairs(workspace:GetDescendants()) do
-        if billboard:IsA("BillboardGui") then
-            local textLabel = billboard.TextLabel
-            local target = billboard.Adornee
-            
-            if target and (target:IsA("BasePart") or target:IsA("Model")) then
-                local distance = (humanoidRootPart.Position - target:GetPivot().Position).Magnitude
-                textLabel.Text = target.Name .. " [Distance: " .. math.floor(distance) .. " Studs]"
-            end
-        end
-    end
-end
-
--- Fonction pour effacer les surlignages des modèles
-local function ClearHighlights()
-    local modelNamesToClear = {
-        "keyobtain", "chestbox", "chestboxlocked", "candle", "crucifix",
-        "lockpick", "skeletonkey", "vitamin", "flashlight", "fuseobtain",
-        "glowstick", "shears", "pile", "battery", "bandage"
-    }
-
-    for _, obj in pairs(workspace:GetDescendants()) do
-        if obj:IsA("Highlight") or obj:IsA("BillboardGui") then
-            for _, name in pairs(modelNamesToClear) do
-                if obj.Name:lower() == name then
-                    obj:Destroy()
-                    break -- Sortir de la boucle dès qu'un objet est détruit
-                end
-            end
-        end
-    end
-end
-
--- Fonction pour gérer l'activation/désactivation des surlignages
-local function ToggleHighlightModels()
-    EspItem = not EspItem
-    EspItemButton.Text = EspItem and "Esp Item On" or "Esp Item Off"
-
-    if EspItem then
-        local object_name_substrings = {"key", "keyobtain", "candle", "chestbox", "chestboxlocked", "crucifix", "lockpick", "skeletonkey", "vitamin", "flashlight", "fuseobtain", "glowstick", "shears", "pile", "battery", "bandage"}
-        
-        for _, object in pairs(workspace:GetDescendants()) do
-            if object:IsA("Model") then
-                for _, substring in pairs(object_name_substrings) do
-                    if string.find(object.Name:lower(), substring) then
-                        AddHighlight(object, Color3.fromRGB(180, 180, 0), Color3.fromRGB(255, 255, 127), object.Name)
-                        UpdateDistance() -- Mettez à jour la distance pour chaque objet surligné
-                    end
-                end
-            end
-        end
-    else
-        ClearHighlights()
-    end
-end
-
--- Connexion à l'événement de clic
 EspItemButton.MouseButton1Click:Connect(ToggleHighlightModels)
-
--- Ajout initial de l'ESP
-
--- Fonction pour ajouter un highlight et un BillboardGui au modèle du joueur
-local function AddHighlightModelPlayer(object)
-	-- Vérifie si l'objet a déjà un Highlight
-	if not object:FindFirstChildOfClass("Highlight") then
-		local highlight = Instance.new("Highlight")
-		highlight.FillColor = Color3.fromRGB(85, 170, 0)
-		highlight.OutlineColor = Color3.fromRGB(85, 255, 127)
-		highlight.FillTransparency = 0.75
-		highlight.OutlineTransparency = 0.75
-		highlight.Name = "Player"
-		highlight.Parent = object
-	end
-
-	-- Vérifie si l'objet a déjà un BillboardGui
-	if not object:FindFirstChildOfClass("BillboardGui") then
-		local billboard = Instance.new("BillboardGui")
-		billboard.Size = UDim2.new(0.250, 0, 0.250, 0)
-		billboard.StudsOffset = Vector3.new(0, 3, 0) -- Offset légèrement au-dessus de l'objet
-		billboard.Enabled = true
-		billboard.ResetOnSpawn = false
-		billboard.AlwaysOnTop = true
-		billboard.Name = "Player"
-		billboard.Parent = object
-
-		local textLabel = Instance.new("TextLabel")
-		textLabel.Size = UDim2.new(1, 0, 1, 0)
-		textLabel.BackgroundTransparency = 1
-		textLabel.TextColor3 = Color3.fromRGB(85, 255, 0)
-		textLabel.Text = object.Name
-		textLabel.Parent = billboard
-	end
-end
-
--- Fonction pour calculer la distance entre le joueur et un objet, et l'afficher
-local function UpdateDistancePlayer(humanoidRootPart)
-	for _, object in pairs(workspace:GetDescendants()) do
-		if object:IsA("BillboardGui") then
-			local textLabel = object:FindFirstChildOfClass("TextLabel")
-			if textLabel and object.Parent then
-				-- Vérification que l'objet est bien un joueur
-				local player = game.Players:GetPlayerFromCharacter(object.Parent.Parent)
-				if player then
-					-- Calcul de la distance pour les BasePart et les Model
-					if object.Parent:IsA("BasePart") then
-						local distance = (humanoidRootPart.Position - object.Parent.Position).Magnitude
-						textLabel.Text = object.Parent.Name .. " [Distance: " .. math.floor(distance) .. " Studs]"
-					elseif object.Parent:IsA("Model") and object.Parent.PrimaryPart then
-						local distance = (humanoidRootPart.Position - object.Parent.PrimaryPart.Position).Magnitude
-						textLabel.Text = object.Parent.Name .. " [Distance: " .. math.floor(distance) .. " Studs]"
-					end
-				end
-			end
-		end
-	end
-end
-
-
-
--- Fonction pour nettoyer les Highlights et BillboardGui existants
-local function ClearHighlightModelPlayer()
-	for _, obj in pairs(workspace:GetDescendants()) do
-		if obj:IsA("Highlight") or obj:IsA("BillboardGui") then
-			if obj.Name:lower() == "Player" then
-			obj:Destroy()
-		end
-	end
-	end
-	end
-
--- Fonction pour activer ou désactiver le ESP Player
-local function HighlightModelsPlayers()
-	EspPlayer = not EspPlayer
-	if EspPlayer then
-		EspPlayerButton.Text = "ESP Player On"
-		local localPlayer = game.Players.LocalPlayer
-		local humanoidRootPart = localPlayer.Character and localPlayer.Character:FindFirstChild("HumanoidRootPart")
-		if humanoidRootPart then
-			for _, object in pairs(workspace:GetDescendants()) do
-				if object:IsA("Model") and game.Players:FindFirstChild(object.Name) then
-					AddHighlightModelPlayer(object)
-					UpdateDistancePlayer(humanoidRootPart)
-				end
-			end
-		end
-	else
-		ClearHighlightModelPlayer()
-		EspPlayerButton.Text = "ESP Player Off"
-	end
-end
-
-
 
 local function NoCooldownPrompt()
 	NoCooldownPrompt = not NoCooldownPrompt
@@ -690,50 +368,67 @@ end
 
 
 -- Fonction pour activer automatiquement un Proximity Prompt
-	local function autoActivateProximityPrompt(proximityPrompt)
-		if proximityPrompt and proximityPrompt:IsA("ProximityPrompt") then
-			-- Connecte une fonction vide lors du déclenchement du ProximityPrompt
-			proximityPrompt.Triggered:Connect(function() end)
+local function autoActivateProximityPrompt(proximityPrompt)
+    if proximityPrompt and proximityPrompt:IsA("ProximityPrompt") then
+        -- Connecte une fonction vide lors du déclenchement du ProximityPrompt
+        proximityPrompt.Triggered:Connect(function() end)
 
-			-- Vérifie si le ProximityPrompt est affiché et activé
-			proximityPrompt.PromptShown:Connect(function()
-				if proximityPrompt.Enabled and not proximityPrompt.Active then
-					-- Eviter la récursion infinie
-					autoActivateProximityPrompt(proximityPrompt)
-				end
-			end)
-		end
-		end
+        -- Vérifie si le ProximityPrompt est affiché et activé
+        proximityPrompt.PromptShown:Connect(function()
+            if proximityPrompt.Enabled and not proximityPrompt.Active then
+                -- Simule un appui sur le ProximityPrompt
+                proximityPrompt:Trigger() -- Déclenche le Proximity Prompt
+            end
+        end)
+    end
+end
+
+local function detectProximityPrompts(targetObject)
+    -- Parcourt les descendants de targetObject (et non de workspace directement)
+    for _, object in pairs(targetObject:GetDescendants()) do
+        if object:IsA("ProximityPrompt") then
+            autoActivateProximityPrompt(object)
+        end
+    end
+end
+
+-- Fonction AutoLoot pour activer ou désactiver l'auto loot
+local function AutoLoot(targetObject)
+    AutoLootV = not AutoLootV
+    if AutoLootV then
+        AutoCollectButton.Text = "Auto Loot On"
+        -- Parcourt tous les Proximity Prompts dans l'objet cible
+        detectProximityPrompts(targetObject)
+    else
+        AutoCollectButton.Text = "Auto Loot Off"
+    end
+end
 
 
-	local function detectProximityPrompts(targetObject)
-		-- Parcourt les descendants de targetObject (et non de workspace directement)
-		for _, object in pairs(workspace:GetDescendants()) do
-			if object:IsA("ProximityPrompt") then
-				autoActivateProximityPrompt(object)
-			end
-		end
-	end
+-- Fonction pour mettre à jour la valeur d'un attribut spécifique dans tous les objets du Workspace
+local function UpdateAttributeValue(attributeName, newValue)
+    for _, object in pairs(workspace:GetDescendants()) do
+        -- Vérifiez si l'objet a l'attribut
+        if object:IsA("BasePart") and object:GetAttribute(attributeName) then
+            object:SetAttribute(attributeName, newValue) -- Mettre à jour l'attribut avec la nouvelle valeur
+        end
+    end
+end
 
-	-- Fonction AutoLoot pour activer ou désactiver l'auto loot
-	local function AutoLoot(targetObject)
-		AutoLootV = not AutoLootV
-		if AutoLootV then
-			AutoCollectButton.Text = "Auto Loot On"
-			-- Parcourt tous les Proximity Prompts dans l'objet cible
-			detectProximityPrompts(targetObject)
-		else
-			AutoCollectButton.Text = "Auto Loot Off"
-		end
-	end
-	
+-- Exemple d'utilisation de la fonction
+local function SetPromptDistance()
+    UpdateAttributeValue("MaxActivationDistance", 50) -- Remplacez "MaxActivationDistance" par le nom de votre attribut
+end
+
+-- Appeler la fonction pour mettre à jour la valeur de l'attribut
+
 local function BigDistancePrompt()
 	PromptDistanceV = not PromptDistanceV
 	if PromptDistanceV then
 		BigDistancePromptButton.Text = "Big Distance Prompt On"
 		for _, prompt in pairs(workspace:GetDescendants()) do
 			if prompt:IsA("ProximityPrompt") then
-				prompt.MaxActivationDistance = 50
+				SetPromptDistance()
 			end
 		end
 	else
@@ -795,14 +490,7 @@ local function toggleFullBright()
 end
 
 
-EspClosetButton.MouseButton1Click:Connect(HightLightModelsCloset)
 
-
-EspDoorButton.MouseButton1Click:Connect(function()
-HighlightModelsDoor(humanoidRootPart)
-end)
-
-EspMonstersButton.MouseButton1Click:Connect(HightLightModelsEntities)
 
 NoCooldownButton.MouseButton1Click:Connect(NoCooldownPrompt)
 
@@ -815,8 +503,6 @@ BigDistancePromptButton.MouseButton1Click:Connect(BigDistancePrompt)
 FullBrightButton.MouseButton1Click:Connect(toggleFullBright)
 
 ToggleFrameButton.MouseButton1Click:Connect(ToggleFrame)
-
-EspPlayerButton.MouseButton1Click:Connect(HighlightModelsPlayers)
 
 	AutoCollectButton.MouseButton1Click:Connect(AutoLoot)
 
@@ -858,51 +544,3 @@ local function updateSettings()
 
     -- Autres fonctionnalités comme NoLag, EspCloset, etc.
 end
-
-local lastUpdate = 0
-local updateInterval = 1 -- Met à jour toutes les secondes
-
-local function onDescendantAdded(descendant)
-    if descendant:IsA("ProximityPrompt") then
-        if PromptDistanceV then
-            descendant.MaxActivationDistance = 50
-        end
-        if NoCooldownPrompt then
-            descendant.HoldDuration = 0
-        end
-    elseif descendant:IsA("BasePart") then
-        if NoLagV and descendant.Material ~= Enum.Material.SmoothPlastic then
-            descendant:SetAttribute("OriginalMaterial", descendant.Material)
-            descendant.Material = Enum.Material.SmoothPlastic
-        elseif not NoLagV and descendant:GetAttribute("OriginalMaterial") then
-            descendant.Material = descendant:GetAttribute("OriginalMaterial")
-        end
-    elseif descendant:IsA("Model") then
-        local lowerName = descendant.Name:lower()
-
-        if EspCloset and (string.find(lowerName, "wardrobe") or string.find(lowerName, "bed")) then
-            AddHightlightModelCloset(descendant)
-        elseif EspDoor and (string.find(lowerName, "door") or string.find(lowerName, "sideroomdupe")) then
-            AddHighlightModelDoor(descendant)
-        elseif EspMonsters and string.find(lowerName, "monster") then
-            AddHightlightModelEntities(descendant)
-        elseif EspItem and string.find(lowerName, "key") then
-            AddHightlight(descendant)
-        end
-    end
-end
-
--- Connexion des événements
-workspace.DescendantAdded:Connect(onDescendantAdded)
-
-RunService.Heartbeat:Connect(function(deltaTime)
-    lastUpdate = lastUpdate + deltaTime
-    if lastUpdate >= updateInterval then
-        updateSettings()
-        lastUpdate = 0
-    end
-end)
-
-
--- Gestion des changements d'état
-
