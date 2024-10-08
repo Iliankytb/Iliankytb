@@ -568,4 +568,4 @@ local function updateSettings(targetObject)
     -- Autres fonctionnalités comme NoLag, EspCloset, etc.
 end
 
-RunService.RenderStepped:Connect(function(updateSettings)
+RunService.RenderStepped:Connect(updateSettings)
