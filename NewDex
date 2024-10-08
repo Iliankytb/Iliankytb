@@ -1,97 +1,105 @@
+-- Fonction utilitaire pour créer des éléments GUI
+local function createUIElement(className, properties, parent)
+    local element = Instance.new(className)
+    for prop, value in pairs(properties) do
+        element[prop] = value
+    end
+    element.Parent = parent
+    return element
+end
+
 -- Création d'un ScreenGui pour contenir le GUI
 local player = game.Players.LocalPlayer
-local screenGui = Instance.new("ScreenGui")
-screenGui.Parent = player:WaitForChild("PlayerGui")
+local screenGui = createUIElement("ScreenGui", {}, player:WaitForChild("PlayerGui"))
 
 -- Création de l'Explorateur
-local explorerFrame = Instance.new("Frame")
-explorerFrame.Size = UDim2.new(0.2, 0, 0.5, 0)
-explorerFrame.Position = UDim2.new(0.8, 0, 0.1, 0)
-explorerFrame.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-explorerFrame.Parent = screenGui
+local explorerFrame = createUIElement("Frame", {
+    Size = UDim2.new(0.2, 0, 0.5, 0),
+    Position = UDim2.new(0.8, 0, 0.1, 0),
+    BackgroundColor3 = Color3.fromRGB(45, 45, 45),
+}, screenGui)
 
 -- Titre de l'Explorateur
-local explorerTitle = Instance.new("TextLabel")
-explorerTitle.Size = UDim2.new(1, 0, 0.1, 0)
-explorerTitle.Position = UDim2.new(0, 0, 0, 0)
-explorerTitle.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-explorerTitle.Text = "Explorer"
-explorerTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-explorerTitle.TextScaled = true
-explorerTitle.Parent = explorerFrame
+local explorerTitle = createUIElement("TextLabel", {
+    Size = UDim2.new(1, 0, 0.1, 0),
+    Position = UDim2.new(0, 0, 0, 0),
+    BackgroundColor3 = Color3.fromRGB(35, 35, 35),
+    Text = "Explorer",
+    TextColor3 = Color3.fromRGB(255, 255, 255),
+    TextScaled = true
+}, explorerFrame)
 
 -- Zone de contenu de l'Explorateur (où les objets vont apparaître)
-local explorerContent = Instance.new("ScrollingFrame")
-explorerContent.Size = UDim2.new(1, 0, 0.9, 0)
-explorerContent.Position = UDim2.new(0, 0, 0.1, 0)
-explorerContent.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-explorerContent.ScrollBarThickness = 8
-explorerContent.Parent = explorerFrame
+local explorerContent = createUIElement("ScrollingFrame", {
+    Size = UDim2.new(1, 0, 0.9, 0),
+    Position = UDim2.new(0, 0, 0.1, 0),
+    BackgroundColor3 = Color3.fromRGB(50, 50, 50),
+    ScrollBarThickness = 8
+}, explorerFrame)
 
 -- Création du panneau de Propriétés
-local propertiesFrame = Instance.new("Frame")
-propertiesFrame.Size = UDim2.new(0.2, 0, 0.4, 0)
-propertiesFrame.Position = UDim2.new(0.8, 0, 0.6, 0)
-propertiesFrame.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-propertiesFrame.Parent = screenGui
+local propertiesFrame = createUIElement("Frame", {
+    Size = UDim2.new(0.2, 0, 0.4, 0),
+    Position = UDim2.new(0.8, 0, 0.6, 0),
+    BackgroundColor3 = Color3.fromRGB(45, 45, 45),
+}, screenGui)
 
 -- Titre du panneau de Propriétés
-local propertiesTitle = Instance.new("TextLabel")
-propertiesTitle.Size = UDim2.new(1, 0, 0.1, 0)
-propertiesTitle.Position = UDim2.new(0, 0, 0, 0)
-propertiesTitle.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-propertiesTitle.Text = "Properties"
-propertiesTitle.TextColor3 = Color3.fromRGB(255, 255, 255)
-propertiesTitle.TextScaled = true
-propertiesTitle.Parent = propertiesFrame
+local propertiesTitle = createUIElement("TextLabel", {
+    Size = UDim2.new(1, 0, 0.1, 0),
+    Position = UDim2.new(0, 0, 0, 0),
+    BackgroundColor3 = Color3.fromRGB(35, 35, 35),
+    Text = "Properties",
+    TextColor3 = Color3.fromRGB(255, 255, 255),
+    TextScaled = true
+}, propertiesFrame)
 
 -- Zone de contenu du panneau de Propriétés
-local propertiesContent = Instance.new("ScrollingFrame")
-propertiesContent.Size = UDim2.new(1, 0, 0.9, 0)
-propertiesContent.Position = UDim2.new(0, 0, 0.1, 0)
-propertiesContent.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-propertiesContent.ScrollBarThickness = 8
-propertiesContent.Parent = propertiesFrame
+local propertiesContent = createUIElement("ScrollingFrame", {
+    Size = UDim2.new(1, 0, 0.9, 0),
+    Position = UDim2.new(0, 0, 0.1, 0),
+    BackgroundColor3 = Color3.fromRGB(50, 50, 50),
+    ScrollBarThickness = 8
+}, propertiesFrame)
 
 -- Fonction pour ajouter des objets à l'explorateur
 local function ajouterObjetExplorateur(nom)
-    local objetLabel = Instance.new("TextButton")
-    objetLabel.Size = UDim2.new(1, 0, 0.05, 0)
-    objetLabel.Text = nom
-    objetLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    objetLabel.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-    objetLabel.Parent = explorerContent
+    local objetLabel = createUIElement("TextButton", {
+        Size = UDim2.new(1, 0, 0.05, 0),
+        Text = nom,
+        TextColor3 = Color3.fromRGB(255, 255, 255),
+        BackgroundColor3 = Color3.fromRGB(60, 60, 60),
+    }, explorerContent)
 
     -- Lorsque l'objet est cliqué, on affiche ses propriétés
     objetLabel.MouseButton1Click:Connect(function()
-        -- On efface le contenu actuel des propriétés
         propertiesContent:ClearAllChildren()
 
         -- Ajout d'exemple de propriétés
-        local prop1 = Instance.new("TextLabel")
-        prop1.Size = UDim2.new(1, 0, 0.1, 0)
-        prop1.Text = "Name: " .. nom
-        prop1.TextColor3 = Color3.fromRGB(255, 255, 255)
-        prop1.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-        prop1.Parent = propertiesContent
+        createUIElement("TextLabel", {
+            Size = UDim2.new(1, 0, 0.1, 0),
+            Text = "Name: " .. nom,
+            TextColor3 = Color3.fromRGB(255, 255, 255),
+            BackgroundColor3 = Color3.fromRGB(70, 70, 70),
+        }, propertiesContent)
 
-        local prop2 = Instance.new("TextLabel")
-        prop2.Size = UDim2.new(1, 0, 0.1, 0)
-        prop2.Text = "Position: (X, Y, Z)"
-        prop2.TextColor3 = Color3.fromRGB(255, 255, 255)
-        prop2.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-        prop2.Parent = propertiesContent
+        createUIElement("TextLabel", {
+            Size = UDim2.new(1, 0, 0.1, 0),
+            Text = "Position: (X, Y, Z)",
+            TextColor3 = Color3.fromRGB(255, 255, 255),
+            BackgroundColor3 = Color3.fromRGB(70, 70, 70),
+        }, propertiesContent)
     end)
 end
 
 -- Bouton pour ouvrir/fermer l'Explorateur
-local toggleButton = Instance.new("TextButton")
-toggleButton.Size = UDim2.new(0.1, 0, 0.05, 0) -- Taille ajustée
-toggleButton.Position = UDim2.new(0.95, -60, 0, 20) -- Position en haut à droite
-toggleButton.Text = "Open"
-toggleButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- Fond rouge
-toggleButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- Texte blanc
-toggleButton.Parent = screenGui
+local toggleButton = createUIElement("TextButton", {
+    Size = UDim2.new(0.1, 0, 0.05, 0),
+    Position = UDim2.new(0.95, -60, 0, 20),
+    Text = "Open",
+    BackgroundColor3 = Color3.fromRGB(255, 0, 0),
+    TextColor3 = Color3.fromRGB(255, 255, 255),
+}, screenGui)
 
 -- Fonction pour basculer l'affichage de l'Explorateur
 local isOpen = false
@@ -108,22 +116,32 @@ ajouterObjetExplorateur("Camera")
 ajouterObjetExplorateur("Lighting")
 ajouterObjetExplorateur("Terrain")
 
--- Lister tous les objets dans divers services
-local function listObjects(service)
-    for _, obj in ipairs(service:GetDescendants()) do
-        ajouterObjetExplorateur(obj.Name)
+-- Fonction pour lister les objets petit à petit
+local function listObjectsSlowly(service)
+    local objects = service:GetDescendants()
+    local index = 1
+
+    local function addNextObject()
+        if index <= #objects then
+            ajouterObjetExplorateur(objects[index].Name)
+            index = index + 1
+            task.wait(0.5) -- Ajoute 1 objet toutes les 0,5 secondes
+            addNextObject()
+        end
     end
+
+    addNextObject()
 end
 
--- Lister les objets dans les services importants
-listObjects(workspace)
-listObjects(game.Players)
-listObjects(game.ReplicatedFirst)
-listObjects(game.StarterPack)
-listObjects(game.StarterPlayer)
-listObjects(game.ServerStorage)
-listObjects(game.StarterGui)
-listObjects(game.ReplicatedStorage)
+-- Lister les objets dans les services importants petit à petit
+listObjectsSlowly(workspace)
+listObjectsSlowly(game.Players)
+listObjectsSlowly(game.ReplicatedFirst)
+listObjectsSlowly(game.StarterPack)
+listObjectsSlowly(game.StarterPlayer)
+listObjectsSlowly(game.ServerStorage)
+listObjectsSlowly(game.StarterGui)
+listObjectsSlowly(game.ReplicatedStorage)
 
 -- Mettre à jour dynamiquement si de nouveaux objets sont ajoutés
 local function onDescendantAdded(object)
@@ -139,7 +157,7 @@ game.Players.DescendantAdded:Connect(onDescendantAdded)
 -- Mise à jour lorsque des objets sont supprimés
 local function onDescendantRemoving(object)
     for _, label in ipairs(explorerContent:GetChildren()) do
-        if label:IsA("TextButton") and label.Text == object.Name then
+        if label.Text == object.Name then
             label:Destroy()
             break
         end
