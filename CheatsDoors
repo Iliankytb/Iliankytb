@@ -181,7 +181,7 @@ local function showSection(sectionFrame)
 	sectionFrame.Visible = true
 end
 
-local EspCloset,PromptDistanceV,FullBrightV,ToggleCheat,AutoLootV,EspDoor,EspPlayers,EspItem,EspMonsters,NoCooldownPrompt,MonsterNotifV,EspGuide,NoLagV = false,false,false,false,false,false,false,false,false,false,false,false,false
+local EspCloset,PromptDistanceV,FullBrightV,ToggleCheat,AutoLootV,EspDoor,EspPlayers,EspItems,EspMonsters,NoCooldownPrompt,MonsterNotifV,EspGuide,NoLagV = false,false,false,false,false,false,false,false,false,false,false,false,false
 local MainButton = createButton("Main",ScrollingFrameScroll)
 local EspButton = createButton("Esp",ScrollingFrameScroll)
 local PlayerButton = createButton("Player",ScrollingFrameScroll)
