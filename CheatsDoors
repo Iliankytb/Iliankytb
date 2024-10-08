@@ -3,8 +3,8 @@ local player = Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
 local RunService = game:GetService("RunService")
--- Variables globales
 local workspace = game:GetService("Workspace")
+
 local originalLightingSettings = {
     Brightness = game.Lighting.Brightness,
     Ambient = game.Lighting.Ambient,
@@ -181,7 +181,7 @@ local function showSection(sectionFrame)
 	sectionFrame.Visible = true
 end
 
-local EspCloset,PromptDistanceV,FullBrightV,ToggleCheat,AutoLootV,EspDoor,EspPlayer,EspItem,EspMonsters,NoCooldownPrompt,MonsterNotifV,EspGuide,NoLagV = false,false,false,false,false,false,false,false,false,false,false,false,false
+local EspCloset,PromptDistanceV,FullBrightV,ToggleCheat,AutoLootV,EspDoor,EspPlayers,EspItem,EspMonsters,NoCooldownPrompt,MonsterNotifV,EspGuide,NoLagV = false,false,false,false,false,false,false,false,false,false,false,false,false
 local MainButton = createButton("Main",ScrollingFrameScroll)
 local EspButton = createButton("Esp",ScrollingFrameScroll)
 local PlayerButton = createButton("Player",ScrollingFrameScroll)
@@ -225,14 +225,23 @@ local function ToggleFrame()
 end
 
 -- Services
-local DoorsNamed = {"Doors", "DoorSideRoom"} -- Liste des noms de portes
-local ClosetsNamed = {"wardrobe", "bed", "backdoor_wardrobe"} -- Liste des noms de closets
-local ItemsNamed = {"keyobtain", "chestbox", "chestboxlocked", "candle", "crucifix",
-                    "lockpick", "skeletonkey", "vitamin", "flashlight", "fuseobtain",
-                    "glowstick", "shears", "pile", "battery", "bandage"}
-local MonstersNamed = {"rushnew", "eyes", "ambushmoving", "screech", "figurerig", 
-                       "giggle", "grumble", "gloombat", "lookman", "seekrig", 
-                       "a90", "a120", "a60", "haltmoving"}
+
+-- Liste des noms de portes
+local DoorsNamed = {"Doors", "DoorSideRoom"}
+-- Liste des noms de closets
+local ClosetsNamed = {"wardrobe", "bed", "backdoor_wardrobe"}
+-- Liste des noms d'items
+local ItemsNamed = {
+    "keyobtain", "chestbox", "chestboxlocked", "candle", "crucifix",
+    "lockpick", "skeletonkey", "vitamin", "flashlight", "fuseobtain",
+    "glowstick", "shears", "pile", "battery", "bandage"
+}
+-- Liste des noms de monstres
+local MonstersNamed = {
+    "rushnew", "eyes", "ambushmoving", "screech", "figurerig",
+    "giggle", "grumble", "gloombat", "lookman", "seekrig",
+    "a90", "a120", "a60", "haltmoving"
+}
 
 -- Fonction pour créer un TextLabel personnalisé au-dessus d'un objet
 local function createTextLabel(object, labelText, textColor)
@@ -270,15 +279,12 @@ end
 local function HighlightModelsDoor()
     EspDoor = not EspDoor
     if EspDoor then
-        EspDoorButton.Text = "Esp Door On"
         for _, object in pairs(workspace:GetDescendants()) do
             if object:IsA("MeshPart") and table.find(DoorsNamed, object.Name) then
                 createTextLabel(object, "Door", Color3.fromRGB(0, 0, 255)) -- Bleu pour les portes
                 highlightObject(object, Color3.fromRGB(0, 0, 255)) -- Highlight bleu
             end
         end
-    else
-        EspDoorButton.Text = "Esp Door Off"
     end
 end
 
@@ -286,15 +292,12 @@ end
 local function HighlightModelsCloset()
     EspCloset = not EspCloset
     if EspCloset then
-        EspClosetButton.Text = "Esp Closet On"
         for _, object in pairs(workspace:GetDescendants()) do
             if object:IsA("MeshPart") and table.find(ClosetsNamed, object.Name) then
                 createTextLabel(object, "Closet", Color3.fromRGB(0, 255, 0)) -- Vert pour les closets
                 highlightObject(object, Color3.fromRGB(0, 255, 0)) -- Highlight vert
             end
         end
-    else
-        EspClosetButton.Text = "Esp Closet Off"
     end
 end
 
@@ -315,23 +318,36 @@ end
 local function HighlightModelsEntities()
     EspMonsters = not EspMonsters
     if EspMonsters then
-        EspMonstersButton.Text = "Esp Monsters On"
         for _, object in pairs(workspace:GetDescendants()) do
             if object:IsA("Model") and table.find(MonstersNamed, object.Name:lower()) then
                 createTextLabel(object, "Monster", Color3.fromRGB(255, 0, 0)) -- Rouge pour les monstres
                 highlightObject(object, Color3.fromRGB(255, 0, 0)) -- Highlight rouge
             end
         end
-    else
-        EspMonstersButton.Text = "Esp Monsters Off"
     end
 end
 
--- Connexion des boutons pour activer les fonctions
+-- Fonction pour traiter les joueurs
+local function HighlightModelsPlayers()
+    EspPlayers = not EspPlayers
+    if EspPlayers then
+        for _, player in pairs(Players:GetPlayers()) do
+            if player ~= Players.LocalPlayer and player.Character then
+                local character = player.Character
+                createTextLabel(character, player.Name, Color3.fromRGB(0, 255, 255)) -- Cyan pour les joueurs
+                highlightObject(character, Color3.fromRGB(0, 255, 255)) -- Highlight cyan
+            end
+        end
+    end
+end
+
+-- Connexion des boutons pour activer les fonctions (ajoute les boutons à ton interface graphique)
+-- Assure-toi d'avoir des boutons correspondants pour ces connexions
 EspClosetButton.MouseButton1Click:Connect(HighlightModelsCloset)
 EspDoorButton.MouseButton1Click:Connect(HighlightModelsDoor)
 EspMonstersButton.MouseButton1Click:Connect(HighlightModelsEntities)
-EspItemButton.MouseButton1Click:Connect(HighlightModelsItem)
+EspItemButton.MouseButton1Click:Connect(HighlightModelsItems)
+EspPlayersButton.MouseButton1Click:Connect(HighlightModelsPlayers)
 
 -- Surveiller les ajouts dans Workspace
 workspace.ChildAdded:Connect(function(child)
@@ -339,6 +355,22 @@ workspace.ChildAdded:Connect(function(child)
     HighlightModelsCloset(child)
     HighlightModelsItems(child)
     HighlightModelsEntities(child)
+end)
+
+-- Surveiller les ajouts de joueurs
+Players.PlayerAdded:Connect(function(player)
+    player.CharacterAdded:Connect(function()
+        if EspPlayers then
+            HighlightModelsPlayers()
+        end
+    end)
+end)
+
+-- Surveiller la suppression de joueurs
+Players.PlayerRemoving:Connect(function(player)
+    if EspPlayers and player.Character then
+        player.Character:Destroy() -- Enlève le surlignage du personnage du joueur qui quitte
+    end
 end)
 
 
@@ -519,10 +551,10 @@ end)
 
 -- Variables globales
 -- Fonction pour gérer les changements des paramètres globaux
-local function updateSettings()
+local function updateSettings(targetObject)
     if AutoLootV then
         AutoCollectButton.Text = "Auto Loot On"
-        -- Actions globales à exécuter
+    detectProximityPrompts(targetObject)
     else
         AutoCollectButton.Text = "Auto Loot Off"
     end
@@ -543,3 +575,5 @@ local function updateSettings()
 
     -- Autres fonctionnalités comme NoLag, EspCloset, etc.
 end
+
+RunService.RenderStepped:Connect(function(updateSettings)
