@@ -331,6 +331,7 @@ end
 EspClosetButton.MouseButton1Click:Connect(HighlightModelsCloset)
 EspDoorButton.MouseButton1Click:Connect(HighlightModelsDoor)
 EspMonstersButton.MouseButton1Click:Connect(HighlightModelsEntities)
+EspItemButton.MouseButton1Click:Connect(HighlightModelsItem)
 
 -- Surveiller les ajouts dans Workspace
 workspace.ChildAdded:Connect(function(child)
@@ -348,8 +349,6 @@ local function DeleteSeek(Object)
 			end
 		end
 end
-
-EspItemButton.MouseButton1Click:Connect(ToggleHighlightModels)
 
 local function NoCooldownPrompt()
 	NoCooldownPrompt = not NoCooldownPrompt
