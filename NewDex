@@ -31,6 +31,41 @@ end
 local player = game.Players.LocalPlayer
 local screenGui = createUIElement("ScreenGui", {}, player:WaitForChild("PlayerGui"))
 
+-- Création d'une zone de recherche
+local searchFrame = createUIElement("Frame", {
+    Size = UDim2.new(0.2, 0, 0.1, 0),
+    Position = UDim2.new(0.8, 0, 0.0, 0),
+    BackgroundColor3 = Color3.fromRGB(45, 45, 45),
+}, screenGui)
+
+local searchBox = createUIElement("TextBox", {
+    Size = UDim2.new(1, 0, 1, 0),
+    BackgroundColor3 = Color3.fromRGB(60, 60, 60),
+    TextColor3 = Color3.fromRGB(255, 255, 255),
+    PlaceholderText = "Rechercher...",
+    TextScaled = true,
+}, searchFrame)
+
+-- Table pour stocker les objets ajoutés
+local objectButtons = {}
+
+-- Fonction pour mettre à jour la visibilité des objets en fonction de la recherche
+local function updateObjectVisibility(query)
+    for _, button in pairs(objectButtons) do
+        if button.Text:lower():find(query:lower()) then
+            button.Visible = true
+        else
+            button.Visible = false
+        end
+    end
+    updateCanvasSize(explorerContent) -- Met à jour la taille de la CanvasSize après modification de la visibilité
+end
+
+-- Événement pour le changement de texte dans la TextBox
+searchBox:GetPropertyChangedSignal("Text"):Connect(function()
+    updateObjectVisibility(searchBox.Text)
+end)
+
 -- Création de l'Explorateur
 local explorerFrame = createUIElement("Frame", {
     Size = UDim2.new(0.2, 0, 0.5, 0),
@@ -99,6 +134,9 @@ local function ajouterObjetExplorateur(objet)
         BackgroundColor3 = Color3.fromRGB(60, 60, 60),
     }, explorerContent)
 
+    -- Ajouter le bouton à la table pour le filtrage
+    table.insert(objectButtons, objetLabel)
+
     -- Mettre à jour la taille de la CanvasSize après l'ajout d'un objet
     updateCanvasSize(explorerContent)
 
@@ -154,8 +192,8 @@ end
 local function listerTousLesObjets()
     for _, Object in pairs(game:GetChildren()) do
         ajouterObjetExplorateur(Object)
-updateCanvasSize(explorerContent)
     end
+    updateCanvasSize(explorerContent)
 end
 
 -- Fonction pour lister les objets petit à petit
@@ -169,7 +207,6 @@ local function listObjectsSlowly(service)
             index = index + 1
             task.wait(0.5) -- Ajoute 1 objet toutes les 0.5 secondes
             addNextObject()
-updateCanvasSize(explorerContent)
         end
     end
 
@@ -189,9 +226,10 @@ game.DescendantAdded:Connect(onDescendantAdded)
 
 -- Mise à jour lorsque des objets sont supprimés
 local function onDescendantRemoving(object)
-    for _, label in ipairs(explorerContent:GetChildren()) do
-        if label.Text == object.Name then
-            label:Destroy()
+    for i, button in ipairs(objectButtons) do
+        if button.Text == object.Name then
+            button:Destroy()
+            table.remove(objectButtons, i) -- Retirer le bouton de la table
             updateCanvasSize(explorerContent)  -- Mettre à jour la CanvasSize après suppression
             return
         end
