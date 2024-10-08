@@ -72,7 +72,7 @@ end
 -- Fonction pour mettre à jour l'affichage du timer
 local function updateTimer()
     while running do
-        wait(0.1)
+        wait(0.01)
         Miliseconds = Miliseconds + 1
         
         -- Si les secondes atteignent 60, on incrémente les minutes
@@ -93,7 +93,6 @@ end
 local function stopTimer()
     running = false
 seconds = seconds -1
-Miliseconds = 0
     stopButton.Text = "Timer Stopped!"
 end
 
