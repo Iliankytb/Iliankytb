@@ -28,7 +28,7 @@ timerLabel.Parent = screenGui
 -- Label "Created by"
 local ByIlianLabel = Instance.new("TextLabel")
 ByIlianLabel.Name = "ByIlian"
-ByIlianLabel.Size = UDim2.new(0, 200, 0, 25) -- Largeur et hauteur du label
+ByIlianLabel.Size = UDim2.new(0, 200, 0, 15) -- Largeur et hauteur du label
 ByIlianLabel.Position = UDim2.new(0, 0, 0.3, -25)
 ByIlianLabel.Text = "Created By Iliankytb"
 ByIlianLabel.TextScaled = true
