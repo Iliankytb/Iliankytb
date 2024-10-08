@@ -62,6 +62,15 @@ local propertiesContent = createUIElement("ScrollingFrame", {
     ScrollBarThickness = 8
 }, propertiesFrame)
 
+local explorerLayout = createUIElement("UIListLayout", {
+    SortOrder = Enum.SortOrder.LayoutOrder
+}, explorerContent)
+
+local propertiesLayout = createUIElement("UIListLayout", {
+    SortOrder = Enum.SortOrder.LayoutOrder
+}, propertiesContent)
+
+
 local WorkspaceButton = createUIElement("TextButton", {
         Size = UDim2.new(1, 0, 0.05, 0),
         Text = "Workspace",
@@ -118,10 +127,7 @@ toggleButton.MouseButton1Click:Connect(function()
 end)
 
 -- Ajouter des objets d'exemple à l'explorateur
-ajouterObjetExplorateur("Workspace")
-ajouterObjetExplorateur("Camera")
-ajouterObjetExplorateur("Lighting")
-ajouterObjetExplorateur("Terrain")
+ajouterObjetExplorateur("game")
 
 -- Fonction pour lister les objets petit à petit
 local function listObjectsSlowly(service)
@@ -141,25 +147,14 @@ local function listObjectsSlowly(service)
 end
 
 -- Lister les objets dans les services importants petit à petit
-listObjectsSlowly(workspace)
-listObjectsSlowly(game.Players)
-listObjectsSlowly(game.ReplicatedFirst)
-listObjectsSlowly(game.StarterPack)
-listObjectsSlowly(game.StarterPlayer)
-listObjectsSlowly(game.ServerStorage)
-listObjectsSlowly(game.StarterGui)
-listObjectsSlowly(game.ReplicatedStorage)
+listObjectsSlowly(game)
 
 -- Mettre à jour dynamiquement si de nouveaux objets sont ajoutés
 local function onDescendantAdded(object)
     ajouterObjetExplorateur(object.Name)
 end
 
-workspace.DescendantAdded:Connect(onDescendantAdded)
-game.StarterGui.DescendantAdded:Connect(onDescendantAdded)
-game.ReplicatedStorage.DescendantAdded:Connect(onDescendantAdded)
-game.ServerStorage.DescendantAdded:Connect(onDescendantAdded)
-game.Players.DescendantAdded:Connect(onDescendantAdded)
+game.DescendantAdded:Connect(onDescendantAdded)
 
 -- Mise à jour lorsque des objets sont supprimés
 local function onDescendantRemoving(object)
@@ -171,8 +166,4 @@ return
     end
 end
 
-workspace.DescendantRemoving:Connect(onDescendantRemoving)
-game.StarterGui.DescendantRemoving:Connect(onDescendantRemoving)
-game.ReplicatedStorage.DescendantRemoving:Connect(onDescendantRemoving)
-game.ServerStorage.DescendantRemoving:Connect(onDescendantRemoving)
-game.Players.DescendantRemoving:Connect(onDescendantRemoving)
+game.DescendantRemoving:Connect(onDescendantRemoving)
