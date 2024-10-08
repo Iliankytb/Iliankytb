@@ -25,6 +25,7 @@ FramMain.Parent = screenGui
 
 -- Variable pour verrouiller ou déverrouiller le déplacement
 local isLocked = false
+local isVisible = True
 
 -- Bouton pour verrouiller ou déverrouiller la FrameMain
 local lockButton = Instance.new("TextButton")
@@ -36,6 +37,16 @@ lockButton.TextScaled = true
 lockButton.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
 lockButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 lockButton.Parent = screenGui
+
+local VisibleFrameButton = Instance.new("TextButton")
+VisibleFrameButton.Name = "VisibleFrameButton"
+VisibleFrameButton.Size = UDim2.new(0, 15, 0, 15)
+VisibleFrameButton.Position = UDim2.new(0, 20, 0.45, 0) -- Deuxième ligne
+VisibleFrameButton.Text = "Close Frame"
+VisibleFrameButton.TextScaled = true
+VisibleFrameButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+VisibleFrameButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+VisibleFrameButton.Parent = screenGui
 
 -- Fonction pour activer ou désactiver le déplacement de la FrameMain
 local function toggleLock()
@@ -49,7 +60,20 @@ local function toggleLock()
     end
 end
 
+local function toggleVisible()
+    isVisible = not isVisible
+    if isVisible then
+        FramMain.Visible = false
+        VisibleFrameButton.Text = "Open Frame"
+    else
+        FramMain.Visible = true
+        VisibleFrameButton.Text = "Close Frame"
+    end
+end
+
 lockButton.MouseButton1Click:Connect(toggleLock)
+
+VisibleFrameButton.MouseButton1Click:Connect(toggleVisible)
 
 -- Créer le TextLabel pour le timer
 local timerLabel = Instance.new("TextLabel")
