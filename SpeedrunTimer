@@ -25,14 +25,14 @@ FramMain.Parent = screenGui
 
 -- Variable pour verrouiller ou déverrouiller le déplacement
 local isLocked = false
-local isVisible = True
+local isVisible = true -- Correction de True -> true
 
 -- Bouton pour verrouiller ou déverrouiller la FrameMain
 local lockButton = Instance.new("TextButton")
 lockButton.Name = "LockButton"
 lockButton.Size = UDim2.new(0, 50, 0, 50)
-lockButton.Position = UDim2.new(0, 0, 0.45, 0) -- Deuxième ligne
-lockButton.Text = "lock Frame"
+lockButton.Position = UDim2.new(0, 0, 0.45, 0)
+lockButton.Text = "Lock Frame"
 lockButton.TextScaled = true
 lockButton.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
 lockButton.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -41,7 +41,7 @@ lockButton.Parent = screenGui
 local VisibleFrameButton = Instance.new("TextButton")
 VisibleFrameButton.Name = "VisibleFrameButton"
 VisibleFrameButton.Size = UDim2.new(0, 50, 0, 50)
-VisibleFrameButton.Position = UDim2.new(0, 60, 0.45, 0) -- Deuxième ligne
+VisibleFrameButton.Position = UDim2.new(0, 60, 0.45, 0)
 VisibleFrameButton.Text = "Close Frame"
 VisibleFrameButton.TextScaled = true
 VisibleFrameButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
@@ -72,7 +72,6 @@ local function toggleVisible()
 end
 
 lockButton.MouseButton1Click:Connect(toggleLock)
-
 VisibleFrameButton.MouseButton1Click:Connect(toggleVisible)
 
 -- Créer le TextLabel pour le timer
@@ -101,7 +100,7 @@ ByIlianLabel.Parent = screenGui
 local stopButton = Instance.new("TextButton")
 stopButton.Name = "StopButton"
 stopButton.Size = UDim2.new(0, 50, 0, 50)
-stopButton.Position = UDim2.new(0, 0, 0.3, 0) -- Première ligne
+stopButton.Position = UDim2.new(0, 0, 0.3, 0)
 stopButton.Text = "Stop The Timer"
 stopButton.TextScaled = true
 stopButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
@@ -112,7 +111,7 @@ stopButton.Parent = screenGui
 local resumeButton = Instance.new("TextButton")
 resumeButton.Name = "ResumeButton"
 resumeButton.Size = UDim2.new(0, 50, 0, 50)
-resumeButton.Position = UDim2.new(0, 60, 0.3, 0) -- Première ligne
+resumeButton.Position = UDim2.new(0, 60, 0.3, 0)
 resumeButton.Text = "Start Timer"
 resumeButton.TextScaled = true
 resumeButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
@@ -123,7 +122,7 @@ resumeButton.Parent = screenGui
 local RemoveGuiButton = Instance.new("TextButton")
 RemoveGuiButton.Name = "RemoveTimerGui"
 RemoveGuiButton.Size = UDim2.new(0, 50, 0, 50)
-RemoveGuiButton.Position = UDim2.new(0, 120, 0.3, 0) -- Première ligne
+RemoveGuiButton.Position = UDim2.new(0, 120, 0.3, 0)
 RemoveGuiButton.Text = "Remove Timer"
 RemoveGuiButton.TextScaled = true
 RemoveGuiButton.BackgroundColor3 = Color3.fromRGB(0, 255, 255)
@@ -141,12 +140,12 @@ local function formatTime(mins, secs, millis)
     return string.format("%02d:%02d:%02d", mins, secs, millis)
 end
 
--- Fonction pour mettre à jour l'affichage du timer
-local function updateTimer()
-    while true do
-if runningTimer == true then
-        wait(0.0001)
-        milliseconds = milliseconds + 1
+-- Utilisation de RunService pour mettre à jour l'affichage du timer
+local runService = game:GetService("RunService")
+
+local function updateTimer(deltaTime)
+    if runningTimer then
+        milliseconds = milliseconds + deltaTime * 10 -- Ajuster selon la précision voulue
         
         if milliseconds >= 60 then
             milliseconds = 0
@@ -161,35 +160,30 @@ if runningTimer == true then
         timerLabel.Text = formatTime(minutes, seconds, milliseconds)
     end
 end
-end
+
+runService.Heartbeat:Connect(updateTimer)
 
 -- Fonction pour démarrer ou réinitialiser le timer
 local function startOrResetTimer()
     if runningTimer then
-        -- Réinitialiser le timer si déjà en cours
         runningTimer = false
         minutes = 0
         seconds = 0
         milliseconds = 0
         timerLabel.Text = formatTime(minutes, seconds, milliseconds)
         resumeButton.Text = "Start Timer"
-stopButton.Text = "Stop The Timer"
-milliseconds = milliseconds -1
-timerLabel.Text = formatTime(minutes, seconds, milliseconds)
     else
-        -- Reprendre le timer si arrêté
         runningTimer = true
         resumeButton.Text = "Reset Timer"
-        spawn(updateTimer)
     end
 end
 
 -- Fonction pour stopper le timer
 local function stopTimer()
-if runningTimer then
-    runningTimer = false
-    stopButton.Text = "Timer Stopped!"
-end
+    if runningTimer then
+        runningTimer = false
+        stopButton.Text = "Timer Stopped!"
+    end
 end
 
 -- Fonction pour enlever le GUI
