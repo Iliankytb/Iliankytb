@@ -1,10 +1,9 @@
--- Créer le ScreenGui
+
 local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 local character = player.Character or player.CharacterAdded:Wait() -- Attendre que le personnage soit disponible
 local humanoid = character:WaitForChild("Humanoid") -- Accéder à l'humanoïde du joueur
 
--- Supprimer l'ancien TimerGui s'il existe
 local existingGui = playerGui:FindFirstChild("TimerGui")
 if existingGui then
     existingGui:Destroy()
@@ -13,6 +12,14 @@ end
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "TimerGui"
 screenGui.Parent = playerGui -- Assurez-vous que cela se trouve dans le PlayerGui
+
+local FramMain = Instance.new("Frame")
+FramMain.Name = "FrameMain"
+FramMain.Size = UDim2.new(0, 250, 0, 250) -- Largeur et hauteur du label
+FramMain.Position = UDim2.new(0, 250, 0, 250) -- Positionnement du timer
+FramMain.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Couleur de fond noir
+FramMain.Parent = screenGui
+
 
 -- Créer le TextLabel pour le timer
 local timerLabel = Instance.new("TextLabel")
@@ -76,7 +83,7 @@ local function updateTimer()
         milliseconds = milliseconds + 1
         
         -- Si les millisecondes atteignent 100, on incrémente les secondes
-        if milliseconds >= 100 then
+        if milliseconds >= 60 then
             milliseconds = 0
             seconds = seconds + 1
             
