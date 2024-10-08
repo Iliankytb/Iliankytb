@@ -2,7 +2,7 @@ local function createUIElement(className, properties, parent)
     local element = Instance.new(className)
     for prop, value in pairs(properties) do
         -- Vérifie si la propriété existe pour cet élément
-        if element:FindFirstChild(prop) then
+        if element[prop] ~= nil then
             element[prop] = value
         else
             warn("La propriété " .. prop .. " n'existe pas pour " .. className)
