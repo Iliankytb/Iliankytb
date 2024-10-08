@@ -14,7 +14,7 @@ end
 
 -- Fonction pour ajuster la taille de la CanvasSize en fonction du contenu
 local function updateCanvasSize(frame)
-    local totalHeight = 0
+    local totalHeight = 500
 
     -- Calculer la hauteur totale des enfants
     for _, child in ipairs(frame:GetChildren()) do
