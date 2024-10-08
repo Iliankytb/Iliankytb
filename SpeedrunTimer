@@ -1,8 +1,7 @@
--- Créer le ScreenGui
 local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
-local character = player.Character or player.CharacterAdded:Wait() -- Attendre que le personnage soit disponible
-local humanoid = character:WaitForChild("Humanoid") -- Accéder à l'humanoïde du joueur
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
 
 -- Supprimer l'ancien TimerGui s'il existe
 local existingGui = playerGui:FindFirstChild("TimerGui")
@@ -12,16 +11,16 @@ end
 
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "TimerGui"
-screenGui.Parent = playerGui -- Assurez-vous que cela se trouve dans le PlayerGui
+screenGui.Parent = playerGui
 
 -- Créer la FrameMain déplaçable
 local FramMain = Instance.new("Frame")
 FramMain.Name = "FrameMain"
-FramMain.Size = UDim2.new(0, 500, 0, 500) -- Largeur et hauteur de la frame
-FramMain.Position = UDim2.new(0, 250, 0.3, -35) -- Positionnement initial
-FramMain.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Couleur de fond noir
-FramMain.Active = true -- Pour permettre le "drag"
-FramMain.Draggable = true -- Activer le déplacement de la Frame
+FramMain.Size = UDim2.new(0, 500, 0, 500)
+FramMain.Position = UDim2.new(0, 250, 0.3, -35)
+FramMain.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+FramMain.Active = true
+FramMain.Draggable = true
 FramMain.Parent = screenGui
 
 -- Variable pour verrouiller ou déverrouiller le déplacement
@@ -34,9 +33,9 @@ lockButton.Size = UDim2.new(0, 200, 0, 50)
 lockButton.Position = UDim2.new(0, 0, 0.6, 0)
 lockButton.Text = "Unlock Frame"
 lockButton.TextScaled = true
-lockButton.BackgroundColor3 = Color3.fromRGB(0, 0, 255) -- Couleur bleue pour le bouton
-lockButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- Texte blanc
-lockButton.Parent = FramMain
+lockButton.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
+lockButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+lockButton.Parent = screenGui
 
 -- Fonction pour activer ou désactiver le déplacement de la FrameMain
 local function toggleLock()
@@ -50,30 +49,29 @@ local function toggleLock()
     end
 end
 
--- Connecter le bouton pour verrouiller ou déverrouiller le déplacement
 lockButton.MouseButton1Click:Connect(toggleLock)
 
 -- Créer le TextLabel pour le timer
 local timerLabel = Instance.new("TextLabel")
 timerLabel.Name = "TimerLabel"
-timerLabel.Size = UDim2.new(0, 200, 0, 50) -- Largeur et hauteur du label
-timerLabel.Position = UDim2.new(0, 0, 0.2, -25) -- Positionnement du timer
+timerLabel.Size = UDim2.new(0, 200, 0, 50)
+timerLabel.Position = UDim2.new(0, 0, 0.2, -25)
 timerLabel.Text = "00:00:00"
-timerLabel.TextScaled = true -- Ajuster le texte à la taille du label
-timerLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Couleur de fond noir
-timerLabel.TextColor3 = Color3.fromRGB(255, 255, 255) -- Couleur du texte blanc
-timerLabel.Parent = FramMain
+timerLabel.TextScaled = true
+timerLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+timerLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+timerLabel.Parent = screenGui
 
 -- Label "Created by"
 local ByIlianLabel = Instance.new("TextLabel")
 ByIlianLabel.Name = "ByIlian"
-ByIlianLabel.Size = UDim2.new(0, 200, 0, 15) -- Largeur et hauteur du label
+ByIlianLabel.Size = UDim2.new(0, 200, 0, 15)
 ByIlianLabel.Position = UDim2.new(0, 0, 0.3, -25)
 ByIlianLabel.Text = "Created By Iliankytb"
 ByIlianLabel.TextScaled = true
-ByIlianLabel.BackgroundTransparency = 1 -- Pas de fond
-ByIlianLabel.TextColor3 = Color3.fromRGB(255, 255, 255) -- Couleur du texte blanc
-ByIlianLabel.Parent = FramMain
+ByIlianLabel.BackgroundTransparency = 1
+ByIlianLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+ByIlianLabel.Parent = screenGui
 
 -- Bouton pour arrêter le timer
 local stopButton = Instance.new("TextButton")
@@ -82,23 +80,34 @@ stopButton.Size = UDim2.new(0, 200, 0, 50)
 stopButton.Position = UDim2.new(0, 0, 0.3, 0)
 stopButton.Text = "Stop The Timer"
 stopButton.TextScaled = true
-stopButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- Couleur de fond rouge
-stopButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- Texte blanc
-stopButton.Parent = FramMain
+stopButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+stopButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+stopButton.Parent = screenGui
+
+-- Bouton pour reprendre ou réinitialiser le timer
+local resumeButton = Instance.new("TextButton")
+resumeButton.Name = "ResumeButton"
+resumeButton.Size = UDim2.new(0, 200, 0, 50)
+resumeButton.Position = UDim2.new(0, 0, 0.45, 0)
+resumeButton.Text = "Start Timer"
+resumeButton.TextScaled = true
+resumeButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+resumeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+resumeButton.Parent = screenGui
 
 -- Bouton pour enlever le GUI
 local RemoveGuiButton = Instance.new("TextButton")
 RemoveGuiButton.Name = "RemoveTimerGui"
 RemoveGuiButton.Size = UDim2.new(0, 200, 0, 50)
-RemoveGuiButton.Position = UDim2.new(0, 0, 0.45, 0)
+RemoveGuiButton.Position = UDim2.new(0, 0, 0.6, 0)
 RemoveGuiButton.Text = "Remove Timer"
 RemoveGuiButton.TextScaled = true
-RemoveGuiButton.BackgroundColor3 = Color3.fromRGB(0, 255, 255) -- Couleur verte
-RemoveGuiButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- Texte blanc
-RemoveGuiButton.Parent = FramMain
+RemoveGuiButton.BackgroundColor3 = Color3.fromRGB(0, 255, 255)
+RemoveGuiButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+RemoveGuiButton.Parent = screenGui
 
 -- Variables pour le timer
-local running = true -- Le timer démarre automatiquement
+local running = false
 local minutes = 0
 local seconds = 0
 local milliseconds = 0
@@ -111,23 +120,38 @@ end
 -- Fonction pour mettre à jour l'affichage du timer
 local function updateTimer()
     while running do
-        wait(0.0001) -- Changer la fréquence de mise à jour
+        wait(0.001)
         milliseconds = milliseconds + 1
         
-        -- Si les millisecondes atteignent 60, on incrémente les secondes
         if milliseconds >= 60 then
             milliseconds = 0
             seconds = seconds + 1
             
-            -- Si les secondes atteignent 60, on incrémente les minutes
             if seconds >= 60 then
                 seconds = 0
                 minutes = minutes + 1
             end
         end
         
-        -- Mettre à jour le label avec le temps formaté
         timerLabel.Text = formatTime(minutes, seconds, milliseconds)
+    end
+end
+
+-- Fonction pour démarrer ou réinitialiser le timer
+local function startOrResetTimer()
+    if running then
+        -- Réinitialiser le timer si déjà en cours
+        running = false
+        minutes = 0
+        seconds = 0
+        milliseconds = 0
+        timerLabel.Text = formatTime(minutes, seconds, milliseconds)
+        resumeButton.Text = "Start Timer"
+    else
+        -- Reprendre le timer si arrêté
+        running = true
+        resumeButton.Text = "Reset Timer"
+        spawn(updateTimer)
     end
 end
 
@@ -145,11 +169,7 @@ end
 -- Arrêter le timer si le joueur meurt
 humanoid.Died:Connect(stopTimer)
 
--- Lancer la fonction de mise à jour du timer dans un thread séparé
-spawn(updateTimer)
-
--- Connexion du bouton à l'arrêt du timer
+-- Connexion des boutons
 stopButton.MouseButton1Click:Connect(stopTimer)
-
--- Connexion du bouton pour retirer le GUI
+resumeButton.MouseButton1Click:Connect(startOrResetTimer)
 RemoveGuiButton.MouseButton1Click:Connect(RemoveUi)
