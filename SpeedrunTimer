@@ -26,7 +26,7 @@ FramMain.Parent = screenGui
 
 -- Variable pour verrouiller ou déverrouiller le déplacement
 local isLocked = false
-local isVisible = false -- Correction de True -> true
+local isVisible = false
 
 -- Bouton pour verrouiller ou déverrouiller la FrameMain
 local lockButton = Instance.new("TextButton")
@@ -61,6 +61,7 @@ local function toggleLock()
     end
 end
 
+-- Fonction pour gérer la visibilité de la FrameMain
 local function toggleVisible()
     isVisible = not isVisible
     if isVisible then
@@ -113,6 +114,7 @@ ByIlianLabel.Parent = timerLabel
 
 -- Appliquer l'effet arc-en-ciel au label
 rainbowEffect(ByIlianLabel)
+
 -- Bouton pour arrêter le timer
 local stopButton = Instance.new("TextButton")
 stopButton.Name = "StopButton"
@@ -162,9 +164,9 @@ local runService = game:GetService("RunService")
 
 local function updateTimer(deltaTime)
     if runningTimer then
-        milliseconds = milliseconds + deltaTime * 10000 -- Ajuster selon la précision voulue
+        milliseconds = milliseconds + deltaTime * 600
         
-        if milliseconds >= 60 then
+        if milliseconds >= 600 then
             milliseconds = 0
             seconds = seconds + 1
             
@@ -189,11 +191,11 @@ local function startOrResetTimer()
         milliseconds = 0
         timerLabel.Text = formatTime(minutes, seconds, milliseconds)
         resumeButton.Text = "Start Timer"
-stopButton.Text = "Stop The Timer"
+        stopButton.Text = "Stop The Timer"
     else
         runningTimer = true
-        resumeButton.Text = "Reset Timer Or Resume if First You Pressed Stop Timer "
-stopButton.Text = "Timer Stopped!"
+        resumeButton.Text = "Reset Timer Or Resume"
+        stopButton.Text = "Timer Stopped!"
     end
 end
 
