@@ -193,7 +193,6 @@ local function listerTousLesObjets()
     for _, Object in pairs(game:GetChildren()) do
         ajouterObjetExplorateur(Object)
     end
-    updateCanvasSize(explorerContent)
 end
 
 -- Fonction pour lister les objets petit à petit
