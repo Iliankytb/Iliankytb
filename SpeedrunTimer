@@ -16,8 +16,8 @@ screenGui.Parent = playerGui
 -- Créer la FrameMain déplaçable
 local FramMain = Instance.new("Frame")
 FramMain.Name = "FrameMain"
-FramMain.Size = UDim2.new(0, 500, 0, 500)
-FramMain.Position = UDim2.new(0, 250, 0.3, -35)
+FramMain.Size = UDim2.new(0, 500, 0, 250)
+FramMain.Position = UDim2.new(0, 2, 0, 0)
 FramMain.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 FramMain.Active = true
 FramMain.Draggable = true
@@ -29,8 +29,8 @@ local isLocked = false
 -- Bouton pour verrouiller ou déverrouiller la FrameMain
 local lockButton = Instance.new("TextButton")
 lockButton.Name = "LockButton"
-lockButton.Size = UDim2.new(0, 200, 0, 50)
-lockButton.Position = UDim2.new(0, 0, 0.6, 0)
+lockButton.Size = UDim2.new(0, 75, 0, 75)
+lockButton.Position = UDim2.new(0, 10, 0.45, 0) -- Deuxième ligne
 lockButton.Text = "Unlock Frame"
 lockButton.TextScaled = true
 lockButton.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
@@ -65,7 +65,7 @@ timerLabel.Parent = screenGui
 -- Label "Created by"
 local ByIlianLabel = Instance.new("TextLabel")
 ByIlianLabel.Name = "ByIlian"
-ByIlianLabel.Size = UDim2.new(0, 200, 0, 15)
+ByIlianLabel.Size = UDim2.new(0, 100, 0, 15)
 ByIlianLabel.Position = UDim2.new(0, 0, 0.3, -25)
 ByIlianLabel.Text = "Created By Iliankytb"
 ByIlianLabel.TextScaled = true
@@ -76,8 +76,8 @@ ByIlianLabel.Parent = screenGui
 -- Bouton pour arrêter le timer
 local stopButton = Instance.new("TextButton")
 stopButton.Name = "StopButton"
-stopButton.Size = UDim2.new(0, 200, 0, 50)
-stopButton.Position = UDim2.new(0, 0, 0.3, 0)
+stopButton.Size = UDim2.new(0, 75, 0, 75)
+stopButton.Position = UDim2.new(0, 10, 0.3, 0) -- Première ligne
 stopButton.Text = "Stop The Timer"
 stopButton.TextScaled = true
 stopButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
@@ -87,8 +87,8 @@ stopButton.Parent = screenGui
 -- Bouton pour reprendre ou réinitialiser le timer
 local resumeButton = Instance.new("TextButton")
 resumeButton.Name = "ResumeButton"
-resumeButton.Size = UDim2.new(0, 200, 0, 50)
-resumeButton.Position = UDim2.new(0, 0, 0.45, 0)
+resumeButton.Size = UDim2.new(0, 75, 0, 75)
+resumeButton.Position = UDim2.new(0, 90, 0.3, 0) -- Première ligne
 resumeButton.Text = "Start Timer"
 resumeButton.TextScaled = true
 resumeButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
@@ -98,8 +98,8 @@ resumeButton.Parent = screenGui
 -- Bouton pour enlever le GUI
 local RemoveGuiButton = Instance.new("TextButton")
 RemoveGuiButton.Name = "RemoveTimerGui"
-RemoveGuiButton.Size = UDim2.new(0, 200, 0, 50)
-RemoveGuiButton.Position = UDim2.new(0, 0, 0.6, 0)
+RemoveGuiButton.Size = UDim2.new(0, 75, 0, 75)
+RemoveGuiButton.Position = UDim2.new(0, 170, 0.3, 0) -- Première ligne
 RemoveGuiButton.Text = "Remove Timer"
 RemoveGuiButton.TextScaled = true
 RemoveGuiButton.BackgroundColor3 = Color3.fromRGB(0, 255, 255)
@@ -147,6 +147,10 @@ local function startOrResetTimer()
         milliseconds = 0
         timerLabel.Text = formatTime(minutes, seconds, milliseconds)
         resumeButton.Text = "Start Timer"
+        wait(0.1)
+        milliseconds = milliseconds - 1
+        timerLabel.Text = formatTime(minutes, seconds, milliseconds)
+stopButton.Text = "Stop The Timer"
     else
         -- Reprendre le timer si arrêté
         running = true
@@ -157,8 +161,10 @@ end
 
 -- Fonction pour stopper le timer
 local function stopTimer()
+if running then
     running = false
     stopButton.Text = "Timer Stopped!"
+end
 end
 
 -- Fonction pour enlever le GUI
