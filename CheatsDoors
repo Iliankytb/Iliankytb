@@ -468,37 +468,29 @@ local function BigDistancePrompt()
 end
 
 local function toggleNoLag()
-	NoLagV = not NoLagV 
+    NoLagV = not NoLagV 
 
-	if NoLagV then
-		NoLagButton.Text = "No Lag On"
-		for _, part in pairs(workspace:GetDescendants()) do
-			if part:IsA("BasePart") then
-					if not part:GetAttribute("OriginalMaterial") then
-						part:SetAttribute("OriginalMaterial", part.Material)
-					end
-					part.Material = Enum.Material.SmoothPlastic
-				else
-					local originalMaterial = part:GetAttribute("OriginalMaterial")
-					if originalMaterial then
-						part.Material = originalMaterial
-				
-				end
-			end
-		end
-	else
-		for _, part in pairs(workspace:GetDescendants()) do
-			if part:IsA("BasePart") then
-		local originalMaterial = part:GetAttribute("OriginalMaterial")
-		if originalMaterial then
-			part.Material = originalMaterial
-
-		end
-		NoLagButton.Text = "No Lag Off"
-
-			end
-		end
-		end
+    if NoLagV then
+        NoLagButton.Text = "No Lag On"
+        for _, part in pairs(workspace:GetDescendants()) do
+            if part:IsA("BasePart") then
+                if not part:GetAttribute("OriginalMaterial") then
+                    part:SetAttribute("OriginalMaterial", part.Material)
+                end
+                part.Material = Enum.Material.SmoothPlastic
+            end
+        end
+    else
+        for _, part in pairs(workspace:GetDescendants()) do
+            if part:IsA("BasePart") then
+                local originalMaterial = part:GetAttribute("OriginalMaterial")
+                if originalMaterial then
+                    part.Material = originalMaterial
+                end
+            end
+        end
+        NoLagButton.Text = "No Lag Off"
+    end
 end
 
 
