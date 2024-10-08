@@ -61,7 +61,7 @@ RemoveGuiButton.Size = UDim2.new(0, 200, 0, 50)
 RemoveGuiButton.Position = UDim2.new(0, 0, 0.45, 0)
 RemoveGuiButton.Text = "Remove Timer"
 RemoveGuiButton.TextScaled = true
-RemoveGuiButton.BackgroundColor3 = Color3.fromRGB(255, 255, 0) -- Couleur jaune
+RemoveGuiButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0) -- Couleur jaune
 RemoveGuiButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- Texte blanc
 RemoveGuiButton.Parent = screenGui
 
