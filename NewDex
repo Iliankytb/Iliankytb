@@ -8,6 +8,21 @@ local function createUIElement(className, properties, parent)
     return element
 end
 
+-- Fonction pour ajuster la taille de la CanvasSize en fonction du contenu
+local function updateCanvasSize(frame)
+    local totalHeight = 0
+
+    -- Calculer la hauteur totale des enfants
+    for _, child in ipairs(frame:GetChildren()) do
+        if child:IsA("GuiObject") then
+            totalHeight = totalHeight + child.Size.Y.Offset + frame.UIListLayout.Padding.Offset
+        end
+    end
+
+    -- Mettre à jour la CanvasSize
+    frame.CanvasSize = UDim2.new(0, 0, 0, totalHeight)
+end
+
 -- Création d'un ScreenGui pour contenir le GUI
 local player = game.Players.LocalPlayer
 local screenGui = createUIElement("ScreenGui", {}, player:WaitForChild("PlayerGui"))
@@ -70,14 +85,6 @@ local propertiesLayout = createUIElement("UIListLayout", {
     SortOrder = Enum.SortOrder.LayoutOrder
 }, propertiesContent)
 
-
-local WorkspaceButton = createUIElement("TextButton", {
-        Size = UDim2.new(1, 0, 0.05, 0),
-        Text = "Workspace",
-        TextColor3 = Color3.fromRGB(255, 255, 255),
-        BackgroundColor3 = Color3.fromRGB(60, 60, 60),
-    }, explorerContent)
-
 -- Fonction pour ajouter des objets à l'explorateur
 local function ajouterObjetExplorateur(nom)
     local objetLabel = createUIElement("TextButton", {
@@ -86,6 +93,9 @@ local function ajouterObjetExplorateur(nom)
         TextColor3 = Color3.fromRGB(255, 255, 255),
         BackgroundColor3 = Color3.fromRGB(60, 60, 60),
     }, explorerContent)
+
+    -- Mettre à jour la taille de la CanvasSize après l'ajout d'un objet
+    updateCanvasSize(explorerContent)
 
     -- Lorsque l'objet est cliqué, on affiche ses propriétés
     objetLabel.MouseButton1Click:Connect(function()
@@ -118,7 +128,7 @@ local toggleButton = createUIElement("TextButton", {
 }, screenGui)
 
 -- Fonction pour basculer l'affichage de l'Explorateur
-local isOpen = false
+local isOpen = true
 toggleButton.MouseButton1Click:Connect(function()
     isOpen = not isOpen
     explorerFrame.Visible = isOpen
@@ -138,7 +148,7 @@ local function listObjectsSlowly(service)
         if index <= #objects then
             ajouterObjetExplorateur(objects[index].Name)
             index = index + 1
-            task.wait(0.5) -- Ajoute 1 objet toutes les 0,5 secondes
+            task.wait(0.25) -- Ajoute 1 objet toutes les 0,5 secondes
             addNextObject()
         end
     end
@@ -152,6 +162,7 @@ listObjectsSlowly(game)
 -- Mettre à jour dynamiquement si de nouveaux objets sont ajoutés
 local function onDescendantAdded(object)
     ajouterObjetExplorateur(object.Name)
+    updateCanvasSize(explorerContent)  -- Mettre à jour la CanvasSize après l'ajout
 end
 
 game.DescendantAdded:Connect(onDescendantAdded)
@@ -161,7 +172,8 @@ local function onDescendantRemoving(object)
     for _, label in ipairs(explorerContent:GetChildren()) do
         if label.Text == object.Name then
             label:Destroy()
-return
+            updateCanvasSize(explorerContent)  -- Mettre à jour la CanvasSize après suppression
+            return
         end
     end
 end
