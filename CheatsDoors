@@ -343,11 +343,7 @@ end
 
 -- Connexion des boutons pour activer les fonctions (ajoute les boutons à ton interface graphique)
 -- Assure-toi d'avoir des boutons correspondants pour ces connexions
-EspClosetButton.MouseButton1Click:Connect(HighlightModelsCloset)
-EspDoorButton.MouseButton1Click:Connect(HighlightModelsDoor)
-EspMonstersButton.MouseButton1Click:Connect(HighlightModelsEntities)
-EspItemButton.MouseButton1Click:Connect(HighlightModelsItems)
-EspPlayersButton.MouseButton1Click:Connect(HighlightModelsPlayers)
+
 
 -- Surveiller les ajouts dans Workspace
 workspace.ChildAdded:Connect(function(child)
@@ -513,7 +509,11 @@ local function toggleFullBright()
 end
 
 
-
+EspClosetButton.MouseButton1Click:Connect(HighlightModelsCloset)
+EspDoorButton.MouseButton1Click:Connect(HighlightModelsDoor)
+EspMonstersButton.MouseButton1Click:Connect(HighlightModelsEntities)
+EspItemButton.MouseButton1Click:Connect(HighlightModelsItems)
+EspPlayersButton.MouseButton1Click:Connect(HighlightModelsPlayers)
 
 NoCooldownButton.MouseButton1Click:Connect(NoCooldownPrompt)
 
