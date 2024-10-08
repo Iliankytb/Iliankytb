@@ -41,7 +41,7 @@ lockButton.Parent = screenGui
 local VisibleFrameButton = Instance.new("TextButton")
 VisibleFrameButton.Name = "VisibleFrameButton"
 VisibleFrameButton.Size = UDim2.new(0, 50, 0, 50)
-VisibleFrameButton.Position = UDim2.new(0, 45, 0.45, 0) -- Deuxième ligne
+VisibleFrameButton.Position = UDim2.new(0, 60, 0.45, 0) -- Deuxième ligne
 VisibleFrameButton.Text = "Close Frame"
 VisibleFrameButton.TextScaled = true
 VisibleFrameButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
@@ -112,7 +112,7 @@ stopButton.Parent = screenGui
 local resumeButton = Instance.new("TextButton")
 resumeButton.Name = "ResumeButton"
 resumeButton.Size = UDim2.new(0, 50, 0, 50)
-resumeButton.Position = UDim2.new(0, 45, 0.3, 0) -- Première ligne
+resumeButton.Position = UDim2.new(0, 60, 0.3, 0) -- Première ligne
 resumeButton.Text = "Start Timer"
 resumeButton.TextScaled = true
 resumeButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
@@ -123,7 +123,7 @@ resumeButton.Parent = screenGui
 local RemoveGuiButton = Instance.new("TextButton")
 RemoveGuiButton.Name = "RemoveTimerGui"
 RemoveGuiButton.Size = UDim2.new(0, 50, 0, 50)
-RemoveGuiButton.Position = UDim2.new(0, 75, 0.3, 0) -- Première ligne
+RemoveGuiButton.Position = UDim2.new(0, 120, 0.3, 0) -- Première ligne
 RemoveGuiButton.Text = "Remove Timer"
 RemoveGuiButton.TextScaled = true
 RemoveGuiButton.BackgroundColor3 = Color3.fromRGB(0, 255, 255)
@@ -131,7 +131,7 @@ RemoveGuiButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 RemoveGuiButton.Parent = screenGui
 
 -- Variables pour le timer
-local running = false
+local runningTimer = false
 local minutes = 0
 local seconds = 0
 local milliseconds = 0
@@ -143,7 +143,7 @@ end
 
 -- Fonction pour mettre à jour l'affichage du timer
 local function updateTimer()
-    while running do
+    while runningTimer do
         wait(0.0001)
         milliseconds = milliseconds + 1
         
@@ -163,9 +163,9 @@ end
 
 -- Fonction pour démarrer ou réinitialiser le timer
 local function startOrResetTimer()
-    if running then
+    if runningTimer then
         -- Réinitialiser le timer si déjà en cours
-        running = false
+        runningTimer = false
         minutes = 0
         seconds = 0
         milliseconds = 0
@@ -176,7 +176,7 @@ milliseconds = milliseconds -1
 timerLabel.Text = formatTime(minutes, seconds, milliseconds)
     else
         -- Reprendre le timer si arrêté
-        running = true
+        runningTimer = true
         resumeButton.Text = "Reset Timer"
         spawn(updateTimer)
     end
@@ -184,8 +184,8 @@ end
 
 -- Fonction pour stopper le timer
 local function stopTimer()
-if running then
-    running = false
+if runningTimer then
+    runningTimer = false
     stopButton.Text = "Timer Stopped!"
 end
 end
