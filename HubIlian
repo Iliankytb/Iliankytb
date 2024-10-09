@@ -5,8 +5,8 @@ local Key = "IliankYTB"
 
 -- Création de la Frame
 local frame = Instance.new("Frame")
-frame.Size = UDim2.new(0, 200, 0, 100) -- Taille de la Frame
-frame.Position = UDim2.new(0.5, -100, 0.5, -50) -- Centrée
+frame.Size = UDim2.new(0, 200, 0, 200) -- Taille de la Frame
+frame.Position = UDim2.new(0.5, -100, 0.5, -100) -- Centrée
 frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Couleur noire
 frame.Parent = playerGui
 
@@ -34,7 +34,7 @@ loadingText.Position = UDim2.new(0, 0, 0.5, -25) -- Centré verticalement
 loadingText.TextColor3 = Color3.fromRGB(255, 255, 255) -- Couleur blanche
 loadingText.BackgroundTransparency = 1
 loadingText.TextTransparency = 1 -- Départ avec une transparence de 1
-loadingText.Parent = playerGui
+loadingText.Parent = frame
 
 -- Animation du texte "Loading Hub..."
 for i = 1, 500 do
@@ -46,8 +46,54 @@ end
 wait(5)
 loadingText:Destroy()
 
+-- Création du champ de texte pour entrer la clé
+local keyInput = Instance.new("TextBox")
+keyInput.Size = UDim2.new(1, -20, 0, 50) -- Ajuster la taille
+keyInput.Position = UDim2.new(0, 10, 0.75, 0) -- Placer en bas de la Frame
+keyInput.TextColor3 = Color3.fromRGB(255, 255, 255) -- Couleur blanche
+keyInput.BackgroundColor3 = Color3.fromRGB(50, 50, 50) -- Couleur de fond gris
+keyInput.PlaceholderText = "Enter Key"
+keyInput.Parent = frame
+
+-- Création du bouton de validation
+local submitButton = Instance.new("TextButton")
+submitButton.Size = UDim2.new(1, -20, 0, 50) -- Ajuster la taille
+submitButton.Position = UDim2.new(0, 10, 0.85, 0) -- Placer en dessous du champ de texte
+submitButton.Text = "Submit"
+submitButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- Couleur blanche
+submitButton.BackgroundColor3 = Color3.fromRGB(0, 128, 0) -- Couleur de fond verte
+submitButton.Parent = frame
+
+-- Fonction de validation de la clé
+submitButton.MouseButton1Click:Connect(function()
+    if keyInput.Text == Key then
+        -- La clé est correcte
+        print("Key Accepted!")
+        -- Ajouter ici le code pour ce qui se passe après l'acceptation de la clé
+    else
+        -- La clé est incorrecte
+        print("Invalid Key. Please try again.")
+    end
+end)
+
+-- Création du bouton de fermeture (X)
+local closeButton = Instance.new("TextButton")
+closeButton.Size = UDim2.new(0, 30, 0, 30) -- Taille du bouton
+closeButton.Position = UDim2.new(1, -40, 0, 10) -- Position en haut à droite
+closeButton.Text = "X"
+closeButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- Couleur rouge
+closeButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- Couleur de fond gris
+closeButton.Parent = frame
+
+-- Fonction pour fermer la Frame et détruire le script
+closeButton.MouseButton1Click:Connect(function()
+    frame:Destroy() -- Détruire la Frame
+    -- Si vous souhaitez également détruire le script, vous pouvez faire :
+    script:Destroy() -- Uncomment if you want to destroy the script
+end)
+
 -- Animation de l'agrandissement de la Frame
 for i = 1, 100 do
     wait(0.01)
-    frame.Size = UDim2.new(0, 200 + i * 2, 0, 100) -- Agrandissement progressif
+    frame.Size = UDim2.new(0, 200 + i * 2, 0, 200) -- Agrandissement progressif
 end
