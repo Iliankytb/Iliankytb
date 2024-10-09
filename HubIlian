@@ -3,16 +3,18 @@ local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 local Key = "IliankYTB"
 
-local HubGui = Instance.new("ScreeGui")
-HubGui.ResetOnSpawn = false
-HubGui.Parent = playerGui
+-- Création du ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "HubGui"
+screenGui.ResetOnSpawn = false  -- Désactiver le reset sur spawn
+screenGui.Parent = playerGui
 
 -- Création de la Frame
 local frame = Instance.new("Frame")
 frame.Size = UDim2.new(0, 200, 0, 200) -- Taille de la Frame
 frame.Position = UDim2.new(0.5, -100, 0.5, -100) -- Centrée
 frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Couleur noire
-frame.Parent = playerGui
+frame.Parent = screenGui
 
 -- Création du premier texte
 local titleText = Instance.new("TextLabel")
@@ -73,10 +75,16 @@ submitButton.MouseButton1Click:Connect(function()
     if keyInput.Text == Key then
         -- La clé est correcte
         print("Key Accepted!")
+for i = 1, 100 do
+    wait(0.01)
+    frame.Size = UDim2.new(0, 200 + i * 2, 0, 200) -- Agrandissement progressif
+end
+keyInput.Text = "Key Correct Loading Frame"
         -- Ajouter ici le code pour ce qui se passe après l'acceptation de la clé
     else
         -- La clé est incorrecte
         print("Invalid Key. Please try again.")
+keyInput.Text = "Invalid Key. Please try again."
     end
 end)
 
@@ -85,19 +93,16 @@ local closeButton = Instance.new("TextButton")
 closeButton.Size = UDim2.new(0, 30, 0, 30) -- Taille du bouton
 closeButton.Position = UDim2.new(1, -40, 0, 10) -- Position en haut à droite
 closeButton.Text = "X"
-closeButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- Couleur rouge
-closeButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- Couleur de fond gris
+closeButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- Couleur blanche
+closeButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- Couleur de fond rouge
 closeButton.Parent = frame
 
--- Fonction pour fermer la Frame et détruire le script
+-- Fonction pour fermer la Frame
 closeButton.MouseButton1Click:Connect(function()
-    frame:Destroy() -- Détruire la Frame
+ frame:Destroy() -- Détruire la Frame
     -- Si vous souhaitez également détruire le script, vous pouvez faire :
-    script:Destroy() -- Uncomment if you want to destroy the script
+script:Destroy() -- Décommentez si vous voulez détruire le script
 end)
 
 -- Animation de l'agrandissement de la Frame
-for i = 1, 100 do
-    wait(0.01)
-    frame.Size = UDim2.new(0, 200 + i * 2, 0, 200) -- Agrandissement progressif
-end
+
