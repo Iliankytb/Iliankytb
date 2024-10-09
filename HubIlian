@@ -3,6 +3,10 @@ local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 local Key = "IliankYTB"
 
+local HubGui = Instance.new("ScreeGui")
+HubGui.ResetOnSpawn = false
+HubGui.Parent = playerGui
+
 -- Création de la Frame
 local frame = Instance.new("Frame")
 frame.Size = UDim2.new(0, 200, 0, 200) -- Taille de la Frame
