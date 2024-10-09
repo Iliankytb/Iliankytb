@@ -92,7 +92,7 @@ keyInput:Destroy()
 submitButton:Destroy()
 for i = 1, 100 do
     wait(0.01)
-    frame.Size = UDim2.new(0, 200 + i * 2, 0, 200 + i * 1.25 -- Agrandissement progressif
+    frame.Size = UDim2.new(0, 200 + i * 2, 0, 200 + i * 1.25) -- Agrandissement progressif
 end
         -- Ajouter ici le code pour ce qui se passe après l'acceptation de la clé
     else
