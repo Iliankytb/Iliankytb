@@ -1,0 +1,53 @@
+-- Variables
+local player = game.Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+local Key = "IliankYTB"
+
+-- Création de la Frame
+local frame = Instance.new("Frame")
+frame.Size = UDim2.new(0, 200, 0, 100) -- Taille de la Frame
+frame.Position = UDim2.new(0.5, -100, 0.5, -50) -- Centrée
+frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Couleur noire
+frame.Parent = playerGui
+
+-- Création du premier texte
+local titleText = Instance.new("TextLabel")
+titleText.Text = "Hub Iliankytb"
+titleText.Size = UDim2.new(1, 0, 0, 50)
+titleText.Position = UDim2.new(0, 0, 0, 0)
+titleText.TextColor3 = Color3.fromRGB(255, 255, 255) -- Couleur blanche
+titleText.BackgroundTransparency = 1
+titleText.TextTransparency = 1 -- Départ avec une transparence de 1
+titleText.Parent = frame
+
+-- Animation du texte "Hub Iliankytb"
+for i = 1, 100 do
+    wait(0.01)
+    titleText.TextTransparency = titleText.TextTransparency - 0.01
+end
+
+-- Création du second texte
+local loadingText = Instance.new("TextLabel")
+loadingText.Text = "Loading Hub..."
+loadingText.Size = UDim2.new(1, 0, 0, 50)
+loadingText.Position = UDim2.new(0, 0, 0.5, -25) -- Centré verticalement
+loadingText.TextColor3 = Color3.fromRGB(255, 255, 255) -- Couleur blanche
+loadingText.BackgroundTransparency = 1
+loadingText.TextTransparency = 1 -- Départ avec une transparence de 1
+loadingText.Parent = playerGui
+
+-- Animation du texte "Loading Hub..."
+for i = 1, 500 do
+    wait(0.01)
+    loadingText.TextTransparency = loadingText.TextTransparency - 0.002
+end
+
+-- Attendre 5 secondes avant de détruire le texte de chargement
+wait(5)
+loadingText:Destroy()
+
+-- Animation de l'agrandissement de la Frame
+for i = 1, 100 do
+    wait(0.01)
+    frame.Size = UDim2.new(0, 200 + i * 2, 0, 100) -- Agrandissement progressif
+end
