@@ -27,10 +27,7 @@ titleText.TextTransparency = 1 -- Départ avec une transparence de 1
 titleText.Parent = frame
 
 -- Animation du texte "Hub Iliankytb"
-for i = 1, 100 do
-    wait(0.01)
-    titleText.TextTransparency = titleText.TextTransparency - 0.01
-end
+
 
 -- Création du second texte
 local loadingText = Instance.new("TextLabel")
@@ -42,8 +39,21 @@ loadingText.BackgroundTransparency = 1
 loadingText.TextTransparency = 1 -- Départ avec une transparence de 1
 loadingText.Parent = frame
 
+local closeButton = Instance.new("TextButton")
+closeButton.Size = UDim2.new(0, 30, 0, 30) -- Taille du bouton
+closeButton.Position = UDim2.new(1, -40, 0, 10) -- Position en haut à droite
+closeButton.Text = "X"
+closeButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- Couleur blanche
+closeButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- Couleur de fond rouge
+closeButton.Parent = frame
+
+for i = 1, 100 do
+    wait(0.01)
+    titleText.TextTransparency = titleText.TextTransparency - 0.01
+end
+
 -- Animation du texte "Loading Hub..."
-for i = 1, 500 do
+for i = 1, 100 do
     wait(0.01)
     loadingText.TextTransparency = loadingText.TextTransparency - 0.002
 end
@@ -55,17 +65,19 @@ loadingText:Destroy()
 -- Création du champ de texte pour entrer la clé
 local keyInput = Instance.new("TextBox")
 keyInput.Size = UDim2.new(1, -20, 0, 50) -- Ajuster la taille
-keyInput.Position = UDim2.new(0, 10, 0.75, 0) -- Placer en bas de la Frame
+keyInput.Position = UDim2.new(0, 10, 0.3, 0) -- Placer en bas de la Frame
 keyInput.TextColor3 = Color3.fromRGB(255, 255, 255) -- Couleur blanche
 keyInput.BackgroundColor3 = Color3.fromRGB(50, 50, 50) -- Couleur de fond gris
 keyInput.PlaceholderText = "Enter Key"
+keyInput.TextScaled = true 
 keyInput.Parent = frame
 
 -- Création du bouton de validation
 local submitButton = Instance.new("TextButton")
 submitButton.Size = UDim2.new(1, -20, 0, 50) -- Ajuster la taille
-submitButton.Position = UDim2.new(0, 10, 0.85, 0) -- Placer en dessous du champ de texte
+submitButton.Position = UDim2.new(0, 10, 0.5, 0) -- Placer en dessous du champ de texte
 submitButton.Text = "Submit"
+submitButton.TextScaled = true 
 submitButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- Couleur blanche
 submitButton.BackgroundColor3 = Color3.fromRGB(0, 128, 0) -- Couleur de fond verte
 submitButton.Parent = frame
@@ -75,11 +87,12 @@ submitButton.MouseButton1Click:Connect(function()
     if keyInput.Text == Key then
         -- La clé est correcte
         print("Key Accepted!")
+keyInput:Destroy()
+submitButton:Destroy()
 for i = 1, 100 do
     wait(0.01)
-    frame.Size = UDim2.new(0, 200 + i * 2, 0, 200) -- Agrandissement progressif
+    frame.Size = UDim2.new(0, 200 + i * 2, 0, 200 + i * 2) -- Agrandissement progressif
 end
-keyInput.Text = "Key Correct Loading Frame"
         -- Ajouter ici le code pour ce qui se passe après l'acceptation de la clé
     else
         -- La clé est incorrecte
@@ -89,13 +102,7 @@ keyInput.Text = "Invalid Key. Please try again."
 end)
 
 -- Création du bouton de fermeture (X)
-local closeButton = Instance.new("TextButton")
-closeButton.Size = UDim2.new(0, 30, 0, 30) -- Taille du bouton
-closeButton.Position = UDim2.new(1, -40, 0, 10) -- Position en haut à droite
-closeButton.Text = "X"
-closeButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- Couleur blanche
-closeButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- Couleur de fond rouge
-closeButton.Parent = frame
+
 
 -- Fonction pour fermer la Frame
 closeButton.MouseButton1Click:Connect(function()
