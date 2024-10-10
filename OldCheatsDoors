@@ -232,11 +232,10 @@ wait(1)
                     end
                 end
             end
-        end
+end
 wait(1)
         -- Écoute les nouveaux objets ajoutés dans le workspace
         
-            end
     else
         -- Supprime tous les surlignages si espActive est désactivé
         for _, target in ipairs(espTargets) do
