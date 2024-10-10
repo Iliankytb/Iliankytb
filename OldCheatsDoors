@@ -21,6 +21,13 @@ frame.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 frame.BackgroundTransparency = 0.25
 frame.Visible = false
 
+local frameNotifierMonster = Instance.new("Frame", screenGui)
+frameNotifierMonster.Size = UDim2.new(0.0.2, 0, 1, 0)
+frameNotifierMonster.Position = UDim2.new(0.8, 0, 0, 0)
+frameNotifierMonster.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+frameNotifierMonster.BackgroundTransparency = 1
+frameNotifierMonster.Visible = true
+
 -- Gradient sur le Frame
 local gradient = Instance.new("UIGradient", frame)
 gradient.Color = ColorSequence.new{
@@ -97,6 +104,7 @@ end
 
 -- Création des boutons
 local espButton = createButton("ESP Off", scrollingFrame)
+local MonsterNotifierButton = createButton("Monster Notifier Off", scrollingFrame)
 local noLagButton = createButton("No Lag Off", scrollingFrame)
 local noCooldownPromptButton = createButton("No Cooldown Prompt Off", scrollingFrame)
 local fullBrightButton = createButton("Full Bright Off", scrollingFrame)
