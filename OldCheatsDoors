@@ -126,6 +126,7 @@ local function updateEspTargets()
 end
 
 local function highlightModel(model)
+local function highlightModel(model)
     if not model:FindFirstChildOfClass("Highlight") then
         local highlight = Instance.new("Highlight", model)
         highlight.FillColor = highlightColor
@@ -145,8 +146,15 @@ local function highlightModel(model)
         textLabel.BackgroundTransparency = 1
         textLabel.Text = model.Name
         textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+        textLabel.Name = "ESPTextLabel" -- Nom pour la future référence
+
+        -- Si c'est une porte, on affiche door.Parent.Parent.Name
+        if model.Name:lower() == "door" then
+            textLabel.Text = "Door"..model.Parent.Parent.Name
+        end
     end
 end
+
 
 local function highlightModels()
     for _, model in pairs(espTargets) do
@@ -299,6 +307,23 @@ RunService.RenderStepped:Connect(function()
         end
     end
 
+    -- Boucle pour mettre à jour les distances dans l'ESP
+    for _, model in pairs(espTargets) do
+        local billboard = model:FindFirstChildOfClass("BillboardGui")
+        if billboard then
+            local textLabel = billboard:FindFirstChild("ESPTextLabel")
+            if textLabel then
+                local distance = (model.Position - player.Character.PrimaryPart.Position).Magnitude
+                textLabel.Text = model.Name .. " (" .. math.floor(distance) .. " studs)"
+                
+                -- Si c'est une porte, on met à jour avec son nom complet
+                if model.Name:lower() == "door" then
+                    textLabel.Text = "door "..model.Parent.Parent.Name.." .. math.floor(distance) .. " studs"
+                end
+            end
+        end
+    end
+
     if autoHealActive then
         -- Logique pour régénérer automatiquement la santé
     end
@@ -306,5 +331,5 @@ RunService.RenderStepped:Connect(function()
     if autoLootActive then
         -- Logique pour auto-loot
     end
-
 end)
+
