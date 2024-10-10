@@ -119,10 +119,10 @@ local itemColor = Color3.fromRGB(255, 165, 0) -- Orange pour les items
 local closetColor = Color3.fromRGB(0, 255, 0) -- Vert pour les closets, wardrobes, etc.
 
 -- Variables pour les éléments à surligner
-local espMonsters = {"figure_rig", "figure", "rush", "ambush", "Screech", "halt", "Rushed"}
+local espMonsters = {"figure_rig", "figure", "rushnew", "ambushmoving", "Screech", "haltmoving", "Rushemoving"}
 local espDoors = {"door", "sideroomdupe"}
 local espItems = {"gold", "goldpile", "MineGenerator", "fuse", "key", "key_holder", "rift", "Chest", "Lockpick", "Battery", "FlashLight"}
-local espClosets = {"locker_large", "locker_small", "wardrobe"}
+local espClosets = {"closet","locker_large", "locker_small", "wardrobe"}
 
 -- Fonction pour surligner un modèle
 local function highlightModel(model, color)
@@ -151,6 +151,9 @@ local function highlightModel(model, color)
         if model.Name:lower() == "door" then
             textLabel.Text = "Door " .. model.Parent.Parent.Name
         end
+if if model.Name:lower() == "locker_large" then
+textLabel.Text = "Closet"
+end
     end
 end
 
@@ -245,22 +248,28 @@ end)
 NoCooldownPromptButton.MouseButton1Click:Connect(function()
     noCooldownPromptActive = not noCooldownPromptActive
     NoCooldownPromptButton.Text = noCooldownPromptActive and "No Cooldown Prompt On" or "No Cooldown Prompt Off"
-    
+    if noCooldownPromptActive then
     for _, prompt in pairs(workspace:GetDescendants()) do
         if prompt:IsA("ProximityPrompt") then
             prompt.RequiresLineOfSight = not noCooldownPromptActive
-            prompt.HoldDuration = noCooldownPromptActive and 0 or 0.5
+            prompt.HoldDuration = 0
         end
+end
     end
 end)
+
+local function fullbright()
+if not game.Lighting.Brightness = fullBrightActive and 100 and game.Lighting.Ambient = fullBrightActive and Color3.new(1, 1, 1) or Color3.new(0.5, 0.5, 0.5) then
+game.Lighting.Brightness = fullBrightActive and 100 or 1
+    game.Lighting.Ambient = fullBrightActive and Color3.new(1, 1, 1) or Color3.new(0.5, 0.5, 0.5)
+end
+end
 
 FullBrightButton.MouseButton1Click:Connect(function()
     fullBrightActive = not fullBrightActive
     FullBrightButton.Text = fullBrightActive and "Full Bright On" or "Full Bright Off"
-    
-    game.Lighting.Brightness = fullBrightActive and 100 or 1
-    game.Lighting.Ambient = fullBrightActive and Color3.new(1, 1, 1) or Color3.new(0.5, 0.5, 0.5)
-end)
+    fullbright()
+    end)
 
 GodModeButton.MouseButton1Click:Connect(function()
     godModeActive = not godModeActive
@@ -306,6 +315,11 @@ end)
 
 -- Mise à jour des cibles ESP pour les descendants ajoutés
 workspace.DescendantAdded:Connect(function(descendant)
+if noLagActive then
+        setSmoothPlastic()
+    else
+        restoreMaterials()
+    end
     if descendant:IsA("Model") or descendant:IsA("Part") then
         local nameLower = descendant.Name:lower()
         if espActive then
@@ -325,8 +339,8 @@ RunService.RenderStepped:Connect(function()
             humanoid.WalkSpeed = 22
         end
     end
-
     -- Boucle pour mettre à jour les distances dans l'ESP
+if espActive then
     for _, model in pairs(espTargets) do
         local billboard = model:FindFirstChildOfClass("BillboardGui")
         if billboard then
@@ -340,6 +354,7 @@ RunService.RenderStepped:Connect(function()
                     textLabel.Text = "door " .. model.Parent.Parent.Name .. " (" .. math.floor(distance) .. " studs)"
                 end
             end
+end
         end
     end
 
@@ -350,4 +365,5 @@ RunService.RenderStepped:Connect(function()
     if autoLootActive then
         -- Logique pour auto-loot
     end
+fullbright()
 end)
