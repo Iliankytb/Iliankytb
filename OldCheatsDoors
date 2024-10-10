@@ -180,7 +180,7 @@ distanceLabel.Text = "[Coming Soon]"
        distanceLabel.TextColor3 = color
 
         -- Mettre à jour la distance toutes les fois que le rendu est mis à jour
-        end)
+        end
     end
 
     -- Ajoutez le modèle à la liste des éléments surlignés pour référence ultérieure
