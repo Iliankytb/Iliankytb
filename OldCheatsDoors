@@ -279,12 +279,13 @@ end)
 local function notifyMonsters()
     for _, monsterName in ipairs(espMonsters) do
         for _, monster in pairs(workspace:GetChildren()) do
-            if monster:IsA("Model") and monster:FindFirstChild(monsterName) and monster.PrimaryPart and monster.PrimaryPart.Position.Y > 0 then
+            if monster:FindFirstChild(monsterName)  then
                 local notification = Instance.new("TextLabel", frameNotifierMonster)
                 notification.Size = UDim2.new(1, 0, 0, 50)
                 notification.Text = monsterName .. " has Spawned!"
                 notification.TextColor3 = Color3.fromRGB(255, 0, 0)
                 notification.BackgroundTransparency = 1
+notification.Parent = frameNotifierMonster
                 wait(2) -- Délai avant de retirer la notification
                 notification:Destroy()
             end
