@@ -284,7 +284,11 @@ local function setupESPDetection()
 end
 
 -- Appeler cette fonction pour activer la détection ESP
-
+workspace.DescendantAdded:Connect(function()
+    if espActive then
+        setupESPDetection()  -- Réexécute la fonction seulement si espActive est vrai
+    end
+end)
 
 -- Gestion des boutons ESP
 espButton.MouseButton1Click:Connect(function()
