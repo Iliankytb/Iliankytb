@@ -264,12 +264,38 @@ speedBoostButton.MouseButton1Click:Connect(function()
     end
 end)
 
+-- Mise à jour des cibles ESP pour les descendants ajoutés et nommés dans updateEspTargets
+workspace.DescendantAdded:Connect(function(descendant)
+    if descendant:IsA("Model") or descendant:IsA("Part") then
+        local nameLower = descendant.Name:lower()
+if espActive then
+        if nameLower == "locker_large" or nameLower == "locker_small" or nameLower == "door" or 
+           nameLower == "sideroomdupe" or nameLower == "wardrobe" or nameLower == "gold" or 
+           nameLower == "goldpile" or nameLower == "MineGenerator" or nameLower == "fuse" or 
+           nameLower == "key" or nameLower == "key_holder" or nameLower == "rift" or 
+           nameLower == "Chest" or nameLower == "Lockpick" or nameLower == "Battery" or 
+           nameLower == "FlashLight" or nameLower == "figure_rig" or nameLower == "figure" or 
+           nameLower == "rush" or nameLower == "ambush" or nameLower == "Screech" or 
+           nameLower == "halt" or nameLower == "Rushed" or nameLower == "LiveHintBook" or 
+           nameLower == "drawercontainer" then
+            highlightModel(descendant)
+        end
+end
+    end
+if noLagActive then
+        setSmoothPlastic()
+    else
+        restoreMaterials()
+    end
+end)
+
+
 -- Boucle principale pour les fonctions activées
 RunService.RenderStepped:Connect(function()
     if speedBoostActive then
         local humanoid = player.Character and player.Character:FindFirstChildOfClass("Humanoid")
         if humanoid then
-            humanoid.WalkSpeed = 50
+            humanoid.WalkSpeed = 22
         end
     end
 
@@ -281,16 +307,4 @@ RunService.RenderStepped:Connect(function()
         -- Logique pour auto-loot
     end
 
-    if noLagActive then
-        setSmoothPlastic()
-    else
-        restoreMaterials()
-    end
-
-    if espActive then
-        updateEspTargets()
-        highlightModels()
-    else
-        clearHighlights()
-    end
 end)
