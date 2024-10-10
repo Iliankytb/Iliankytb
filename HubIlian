@@ -98,13 +98,27 @@ submitButton.BackgroundColor3 = Color3.fromRGB(0, 128, 0)
 submitButton.Parent = frame
 
 local DiscordButton = Instance.new("TextButton")
-DiscordButton.Size = UDim2.new(0, 0.3, 0, 25)
+DiscordButton.Size = UDim2.new(0, 300, 0, 25) -- Change le premier paramètre pour la largeur
 DiscordButton.Position = UDim2.new(0, 15, 0.8, 0)
-DiscordButton.Text = "Discord Server(Free Key)"
+DiscordButton.Text = "Discord Server (Free Key)"
 DiscordButton.TextScaled = true
 DiscordButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-DiscordButton.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
+DiscordButton.BackgroundColor3 = Color3.fromRGB(0, 0, 255) -- Couleur de fond bleue
 DiscordButton.Parent = frame
+
+local UserInputService = game:GetService("UserInputService")
+
+local function copyToClipboard(text)
+    -- Utilise la méthode SetClipboard pour copier du texte
+    setclipboard(text) -- setclipboard est une fonction de Roblox qui copie le texte donné dans le presse-papiers
+end
+
+DiscordButton.MouseButton1Click:Connect(function()
+    local discordLink = "https://discord.gg/mV2cqXZQ" -- Remplace par ton vrai lien Discord
+    copyToClipboard(discordLink)
+    print("Le lien Discord a été copié dans le presse-papiers : " .. discordLink) -- Pour vérification dans la console
+end)
+
 
 submitButton.MouseButton1Click:Connect(function()
     if keyInput.Text == Key then
