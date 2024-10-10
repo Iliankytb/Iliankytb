@@ -3,7 +3,7 @@ local playerGui = player:WaitForChild("PlayerGui")
 local character = player.Character or player.CharacterAdded:Wait()
 local humanoid = character:WaitForChild("Humanoid")
 
--- Supprimer l'ancien TimerGui s'il existe
+
 local existingGui = playerGui:FindFirstChild("TimerGui")
 if existingGui then
     existingGui:Destroy()
@@ -13,7 +13,7 @@ local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "TimerGui"
 screenGui.Parent = playerGui
 
--- Créer la FrameMain déplaçable
+
 local FramMain = Instance.new("Frame")
 FramMain.Name = "FrameMain"
 FramMain.Size = UDim2.new(0, 500, 0, 250)
@@ -24,7 +24,7 @@ FramMain.Draggable = true
 FramMain.Visible = false
 FramMain.Parent = screenGui
 
--- Ajouter le TextLabel "Settings" dans FrameMain
+
 local settingsLabel = Instance.new("TextLabel")
 settingsLabel.Name = "SettingsLabel"
 settingsLabel.Size = UDim2.new(1, 0, 0, 50)
@@ -46,14 +46,14 @@ scrollingFrame.CanvasSize = UDim2.new(0, 0, 2, 0) -- Ajuster la taille du canvas
 scrollingFrame.ScrollBarThickness = 5
 scrollingFrame.Parent = FramMain
 
--- Ajouter un UIGridLayout dans la ScrollingFrame
+
 local uiGridLayout = Instance.new("UIGridLayout")
 uiGridLayout.CellSize = UDim2.new(0, 100, 0, 50) -- Taille de chaque cellule dans la grille
 uiGridLayout.FillDirectionMaxCells = 2 -- Nombre de colonnes
 uiGridLayout.SortOrder = Enum.SortOrder.LayoutOrder
 uiGridLayout.Parent = scrollingFrame
 
--- Ajouter des boutons/fonctionnalités dans la ScrollingFrame
+
 for i = 1, 39 do
     local featureButton = Instance.new("TextButton")
     featureButton.Name = "FeatureButton"..i
@@ -64,11 +64,11 @@ for i = 1, 39 do
     featureButton.Parent = scrollingFrame
 end
 
--- Variable pour verrouiller ou déverrouiller le déplacement
+
 local isLocked = false
 local isVisible = false
 
--- Bouton pour verrouiller ou déverrouiller la FrameMain
+
 local lockButton = Instance.new("TextButton")
 lockButton.Name = "LockButton"
 lockButton.Size = UDim2.new(0, 50, 0, 50)
@@ -89,7 +89,6 @@ VisibleFrameButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 VisibleFrameButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 VisibleFrameButton.Parent = screenGui
 
--- Fonction pour activer ou désactiver le déplacement de la FrameMain
 local function toggleLock()
     isLocked = not isLocked
     if isLocked then
@@ -101,7 +100,7 @@ local function toggleLock()
     end
 end
 
--- Fonction pour gérer la visibilité de la FrameMain
+
 local function toggleVisible()
     isVisible = not isVisible
     if isVisible then
@@ -116,20 +115,17 @@ end
 lockButton.MouseButton1Click:Connect(toggleLock)
 VisibleFrameButton.MouseButton1Click:Connect(toggleVisible)
 
--- Ajout des autres éléments du timer, boutons, et fonctions comme dans ton script original...
-
--- Créer le TextLabel pour le timer
 local timerLabel = Instance.new("TextLabel")
 timerLabel.Name = "TimerLabel"
 timerLabel.Size = UDim2.new(0, 150, 0, 50)
 timerLabel.Position = UDim2.new(0, 0, 0.2, -25)
-timerLabel.Text = "00:00:00"
+timerLabel.Text = "00:00:00:000"
 timerLabel.TextScaled = true
 timerLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 timerLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 timerLabel.Parent = screenGui
 
--- Fonction pour créer un effet arc-en-ciel sur le texte
+
 local function rainbowEffect(label)
     local hue = 0
     local runService = game:GetService("RunService")
@@ -144,7 +140,7 @@ local function rainbowEffect(label)
     end)
 end
 
--- Label "Created by" avec effet arc-en-ciel
+
 local ByIlianLabel = Instance.new("TextLabel")
 ByIlianLabel.Name = "ByIlian"
 ByIlianLabel.Size = UDim2.new(1, 0, 0, 15)
@@ -154,10 +150,9 @@ ByIlianLabel.TextScaled = true
 ByIlianLabel.BackgroundTransparency = 1
 ByIlianLabel.Parent = timerLabel
 
--- Appliquer l'effet arc-en-ciel au label
 rainbowEffect(ByIlianLabel)
 
--- Bouton pour arrêter le timer
+
 local stopButton = Instance.new("TextButton")
 stopButton.Name = "StopButton"
 stopButton.Size = UDim2.new(0, 50, 0, 50)
@@ -168,7 +163,7 @@ stopButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 stopButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 stopButton.Parent = screenGui
 
--- Bouton pour reprendre ou réinitialiser le timer
+
 local resumeButton = Instance.new("TextButton")
 resumeButton.Name = "ResumeButton"
 resumeButton.Size = UDim2.new(0, 50, 0, 50)
@@ -179,7 +174,6 @@ resumeButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
 resumeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 resumeButton.Parent = screenGui
 
--- Bouton pour enlever le GUI
 local RemoveGuiButton = Instance.new("TextButton")
 RemoveGuiButton.Name = "RemoveTimerGui"
 RemoveGuiButton.Size = UDim2.new(0, 50, 0, 50)
@@ -190,24 +184,29 @@ RemoveGuiButton.BackgroundColor3 = Color3.fromRGB(0, 255, 255)
 RemoveGuiButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 RemoveGuiButton.Parent = screenGui
 
--- Variables pour le timer
 local runningTimer = false
+local hour = 0
 local minutes = 0
 local seconds = 0
 local milliseconds = 0
 
--- Fonction pour formater le temps
-local function formatTime(mins, secs, millis)
-    return string.format("%02d:%02d:%02d", mins, secs, millis)
+
+local function formatTime(hour,mins, secs, millis)
+    return string.format("%02d:%02d:%02d:%02d",hour, mins, secs, millis)
 end
 
--- Utilisation de RunService pour mettre à jour l'affichage du timer
 local runService = game:GetService("RunService")
 
 local function updateTimer(deltaTime)
     if runningTimer then
         milliseconds = milliseconds + deltaTime * 600
-        
+      --[[local SoundsTimer = Instance.new("Sound")
+SoundsTimer.SoundId = "rbxassets://0"
+SoundsTimer.Parent = timerLabel 
+SoundsTimer:Play()
+wait(3)
+SoundsTimer:Destroy()
+]]--
         if milliseconds >= 600 then
             milliseconds = 0
             seconds = seconds + 1
@@ -215,33 +214,38 @@ local function updateTimer(deltaTime)
             if seconds >= 60 then
                 seconds = 0
                 minutes = minutes + 1
+if minutes >= 60 then
+minutes = 0
+hour = hour + 1
+end
             end
         end
         
-        timerLabel.Text = formatTime(minutes, seconds, milliseconds)
+        timerLabel.Text = formatTime(hour,minutes, seconds, milliseconds)
     end
 end
 
 runService.Heartbeat:Connect(updateTimer)
 
--- Fonction pour démarrer ou réinitialiser le timer
+
 local function startOrResetTimer()
     if runningTimer then
         runningTimer = false
         minutes = 0
         seconds = 0
         milliseconds = 0
-        timerLabel.Text = formatTime(minutes, seconds, milliseconds)
+hour = 0
+        timerLabel.Text = formatTime(hour,minutes, seconds, milliseconds)
         resumeButton.Text = "Start Timer"
-        stopButton.Text = "Stop The Timer"
+        stopButton.Text = "Timer Stoped!"
     else
         runningTimer = true
         resumeButton.Text = "Reset Timer Or Resume"
-        stopButton.Text = "Timer Stopped!"
+        stopButton.Text = "Stop The Timer"
     end
 end
 
--- Fonction pour stopper le timer
+
 local function stopTimer()
     if runningTimer then
         runningTimer = false
@@ -249,15 +253,15 @@ local function stopTimer()
     end
 end
 
--- Fonction pour enlever le GUI
+
 local function RemoveUi()
     playerGui:FindFirstChild("TimerGui"):Destroy()
 end
 
--- Arrêter le timer si le joueur meurt
+
 humanoid.Died:Connect(stopTimer)
 
--- Connexion des boutons
+
 stopButton.MouseButton1Click:Connect(stopTimer)
 resumeButton.MouseButton1Click:Connect(startOrResetTimer)
 RemoveGuiButton.MouseButton1Click:Connect(RemoveUi)
