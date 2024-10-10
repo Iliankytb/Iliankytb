@@ -181,7 +181,6 @@ distanceLabel.Text = "[Coming Soon]"
 
         -- Mettre à jour la distance toutes les fois que le rendu est mis à jour
         end
-    end
 
     -- Ajoutez le modèle à la liste des éléments surlignés pour référence ultérieure
     table.insert(espTargets, model)
