@@ -4,9 +4,10 @@ local Key = "IliankYTB"
 
 local Cheats = {
     ["Doors Cheats(iliankytb(in rework))"] = "https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatsDoors",
-  --  ["Blox Fruit Cheat(Best and not mine)"] = "https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatsBloxFruits",
+  ["Blox Fruit Cheat(Best and not mine)"] = "https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatsBloxFruits",
     ["TimerSpeedrun(Best Timer)"] = "https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/SpeedRunTimer",
-["Doors Cheat(MSPaintV2)"] = "free script: "https://raw.githubusercontent.com/notpoiu/mspaint/main/main.lua",
+["Doors Cheat(MSPaintV2)"] = "https://raw.githubusercontent.com/notpoiu/mspaint/main/main.lua",
+["Doors Entities Spawner (not Mine)"] = "https://raw.githubusercontent.com/plamen6789/UtilitiesHub/main/UtilitiesGUI",
     ["ComingSoon"] = ""
 }
 
