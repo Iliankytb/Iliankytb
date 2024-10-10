@@ -105,6 +105,7 @@ local autoLootButton = createButton("Auto Loot Off", scrollingFrame)
 local flyButton = createButton("Fly Off", scrollingFrame)
 local autoHealButton = createButton("Auto Heal Off", scrollingFrame)
 local speedBoostButton = createButton("Speed Boost Off", scrollingFrame)
+local RemoveUiButton = createButton("Remove Ui", scrollingFrame)
 
 -- Variables de fonctionnalité
 local espActive, noLagActive, noCooldownPromptActive, fullBrightActive, godModeActive, autoLootActive, flyActive, autoHealActive, speedBoostActive = false, false, false, false, false, false, false, false, false
@@ -314,4 +315,13 @@ end)
 speedBoostButton.MouseButton1Click:Connect(function()
     speedBoostActive = not speedBoostActive
     speedBoostButton.Text = speedBoostActive and "Speed Boost On" or "Speed Boost Off"
+end)
+
+RemoveUiButton.MouseButton1Click:Connect(function()
+if player.PlayerGui:FindFirstChild("GuiPlayer") then
+    player.PlayerGui.GuiPlayer:Destroy()
+end
+if script then
+script:Destroy()
+end
 end)
