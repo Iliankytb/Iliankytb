@@ -1,70 +1,48 @@
--- Variables
 local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 local Key = "IliankYTB"
 
-local ButtonName = {
-    "Doors Cheat",
-    "Blox Fruit Cheat",
-    "TimerSpeedrun",
-    "None",
-    "None"
+local Cheats = {
+    ["Doors Cheat"] = "https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatDoors",
+    ["Blox Fruit Cheat"] = "https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatsBloxFruits",
+    ["TimerSpeedrun"] = "https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/SpeedRunTimer",
+    ["None"] = ""
 }
 
-local CheatName = {
-"loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatDoors"))()",
-"loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatsBloxFruits"))()",
-"loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/SpeedRunTimer"))()"
---"loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/None"))()"
-}
-
-local ServicesScrollingFrame = {
-    "Doors Cheat",
-    "Blox Fruit Cheat",
-    "TimerSpeedrun",
-    "None",
-    "None"
-}
-
-local ServicesButton = {
-    "Doors Cheat",
-    "Blox Fruit Cheat",
-    "TimerSpeedrun",
-    "None",
-    "None"
-}
+local ButtonNames = {"Doors Cheat", "Blox Fruit Cheat", "TimerSpeedrun", "None"}
+local ServicesScrollingFrame = ButtonNames
 
 -- Création du ScreenGui
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "HubGui"
-screenGui.ResetOnSpawn = false  -- Désactiver le reset sur spawn
+screenGui.ResetOnSpawn = false
 screenGui.Parent = playerGui
 
--- Création de la Frame
+-- Création de la Frame principale
 local frame = Instance.new("Frame")
-frame.Size = UDim2.new(0, 200, 0, 200) -- Taille de la Frame
-frame.Position = UDim2.new(0.5, -100, 0.5, -100) -- Centrée
-frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Couleur noire
+frame.Size = UDim2.new(0, 200, 0, 200)
+frame.Position = UDim2.new(0.5, -100, 0.5, -100)
+frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 frame.Parent = screenGui
 
--- Création du premier texte
+-- Création du titre
 local titleText = Instance.new("TextLabel")
 titleText.Text = "Hub Iliankytb"
 titleText.Size = UDim2.new(1, 0, 0, 50)
 titleText.Position = UDim2.new(0, 0, 0, 0)
-titleText.TextColor3 = Color3.fromRGB(255, 255, 255) -- Couleur blanche
+titleText.TextColor3 = Color3.fromRGB(255, 255, 255)
 titleText.BackgroundTransparency = 1
-titleText.TextTransparency = 1 -- Départ avec une transparence de 1
+titleText.TextTransparency = 1
 titleText.Parent = frame
 
--- Création du second texte
+-- Création du texte de chargement
 local loadingText = Instance.new("TextLabel")
 loadingText.Text = "Loading Hub..."
 loadingText.Size = UDim2.new(1, 0, 0, 50)
-loadingText.Position = UDim2.new(0, 0, 0.5, -25) -- Centré verticalement
-loadingText.TextColor3 = Color3.fromRGB(255, 255, 255) -- Couleur blanche
+loadingText.Position = UDim2.new(0, 0, 0.5, -25)
+loadingText.TextColor3 = Color3.fromRGB(255, 255, 255)
 loadingText.BackgroundTransparency = 1
-loadingText.TextTransparency = 1 -- Départ avec une transparence de 1
+loadingText.TextTransparency = 1
 loadingText.Parent = frame
 
 -- Bouton de fermeture
@@ -128,32 +106,39 @@ submitButton.MouseButton1Click:Connect(function()
         frame.Draggable = true
 
         -- Frame pour les boutons
-        local framebutton = Instance.new("Frame")
-        framebutton.Size = UDim2.new(0.5, 0, 0.7, 0)
-        framebutton.Position = UDim2.new(0, 0, 0.3, 0)
-        framebutton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-        framebutton.BackgroundTransparency = 1
-        framebutton.Parent = frame
+        local frameButton = Instance.new("Frame")
+        frameButton.Size = UDim2.new(0.5, 0, 0.7, 0)
+        frameButton.Position = UDim2.new(0, 0, 0.3, 0)
+        frameButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        frameButton.BackgroundTransparency = 1
+        frameButton.Parent = frame
 
-        local scrollingframebuttons = Instance.new("ScrollingFrame")
-        scrollingframebuttons.Size = UDim2.new(1, 0, 1, 0)
-        scrollingframebuttons.Position = UDim2.new(0, 0, 0, 0)
-        scrollingframebuttons.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-        scrollingframebuttons.BackgroundTransparency = 1
-        scrollingframebuttons.Parent = framebutton
+        local scrollingFrameButtons = Instance.new("ScrollingFrame")
+        scrollingFrameButtons.Size = UDim2.new(1, 0, 1, 0)
+        scrollingFrameButtons.Position = UDim2.new(0, 0, 0, 0)
+        scrollingFrameButtons.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        scrollingFrameButtons.BackgroundTransparency = 1
+        scrollingFrameButtons.Parent = frameButton
 
         -- UIListLayout pour les boutons
         local uiListLayout = Instance.new("UIListLayout")
-        uiListLayout.Parent = scrollingframebuttons
+        uiListLayout.Parent = scrollingFrameButtons
 
-        -- Création de plusieurs boutons avec des noms différents
-        for B, ButtonName in ipairs(scrollingframebuttons) do
+        -- Création des boutons
+        for _, buttonName in ipairs(ButtonNames) do
             local button = Instance.new("TextButton")
             button.Size = UDim2.new(1, -10, 0, 50)
-            button.Text = B
+            button.Text = buttonName
             button.TextColor3 = Color3.fromRGB(255, 255, 255)
             button.BackgroundColor3 = Color3.fromRGB(0, 128, 0)
-            button.Parent = scrollingframebuttons
+            button.Parent = scrollingFrameButtons
+
+            -- Ajout de la fonction pour exécuter le script
+            button.MouseButton1Click:Connect(function()
+                if Cheats[buttonName] and Cheats[buttonName] ~= "" then
+                    loadstring(game:HttpGet(Cheats[buttonName]))()
+                end
+            end)
         end
 
         -- Frame pour les services
@@ -164,21 +149,20 @@ submitButton.MouseButton1Click:Connect(function()
         frameService.BackgroundTransparency = 1
         frameService.Parent = frame
 
-        -- Création de plusieurs ScrollingFrames pour les services
-        for N, serviceName in ipairs(ServicesScrollingFrame) do
-            local scrollingframeservices = Instance.new("ScrollingFrame")
-            scrollingframeservices.Size = UDim2.new(1, 0, 1, 0)
-            scrollingframeservices.Position = UDim2.new(0, 0, 0, 0)
-            scrollingframeservices.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-            scrollingframeservices.BackgroundTransparency = 1
-scrollingframeservices.Name = N
-            scrollingframeservices.Parent = frameService
+        -- Création des ScrollingFrames pour les services
+        for _, serviceName in ipairs(ServicesScrollingFrame) do
+            local scrollingFrameService = Instance.new("ScrollingFrame")
+            scrollingFrameService.Size = UDim2.new(1, 0, 1, 0)
+            scrollingFrameService.Position = UDim2.new(0, 0, 0, 0)
+            scrollingFrameService.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+            scrollingFrameService.BackgroundTransparency = 1
+            scrollingFrameService.Name = serviceName
+            scrollingFrameService.Parent = frameService
 
-            -- Ajout de boutons dans chaque ScrollingFrame
-            local uiListLayoutServices = Instance.new("UIListLayout")
-            uiListLayoutServices.Parent = scrollingframeservices
+            -- Ajout du UIListLayout pour chaque ScrollingFrame de service
+            local uiListLayoutService = Instance.new("UIListLayout")
+            uiListLayoutService.Parent = scrollingFrameService
         end
-
     else
         print("Invalid Key. Please try again.")
         keyInput.Text = "Invalid Key. Please try again."
