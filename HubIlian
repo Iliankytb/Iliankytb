@@ -47,6 +47,12 @@ closeButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- Couleur blanche
 closeButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- Couleur de fond rouge
 closeButton.Parent = frame
 
+closeButton.MouseButton1Click:Connect(function()
+ frame:Destroy() -- Détruire la Frame
+    -- Si vous souhaitez également détruire le script, vous pouvez faire :
+script:Destroy() -- Décommentez si vous voulez détruire le script
+end)
+
 for i = 1, 100 do
     wait(0.01)
     titleText.TextTransparency = titleText.TextTransparency - 0.01
@@ -96,7 +102,7 @@ for i = 1, 100 do
 end
 frame.Draggable = true
 local framebutton = Instance.new("Frame")
-framebutton.Size = UDim2.new(0.5, 0, 1, 0) -- Taille de la Frame
+framebutton.Size = UDim2.new(0.5, 0, 0.85, 0) -- Taille de la Frame
 framebutton.Position = UDim2.new(0, 0, 0, 0) -- Centrée
 framebutton.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Couleur noire
 framebutton.BackgroundTransparency = 1
@@ -108,7 +114,7 @@ scrollingframebuttons.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Couleur noir
 scrollingframebuttons.BackgroundTransparency = 1
 scrollingframebuttons.Parent = framebutton
 local frameService = Instance.new("Frame")
-frameService.Size = UDim2.new(0.5, 0, 1, 0) -- Taille de la Frame
+frameService.Size = UDim2.new(0.5, 0, 0.85, 0) -- Taille de la Frame
 frameService.Position = UDim2.new(0.5, 0, 0, 0) -- Centrée
 frameService.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Couleur noire
 frameService.BackgroundTransparency = 1
@@ -133,11 +139,7 @@ end)
 
 
 -- Fonction pour fermer la Frame
-closeButton.MouseButton1Click:Connect(function()
- frame:Destroy() -- Détruire la Frame
-    -- Si vous souhaitez également détruire le script, vous pouvez faire :
-script:Destroy() -- Décommentez si vous voulez détruire le script
-end)
+
 
 -- Animation de l'agrandissement de la Frame
 
