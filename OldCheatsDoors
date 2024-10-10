@@ -162,6 +162,8 @@ local function highlightModelWithRetry(model, color)
             textLabel.Text = "Fuse"
         elseif model.Name:lower() == "keyobtain" then
             textLabel.Text = "Key"
+elseif model.Name:lower() == "sideroomdupe" then
+            textLabel.Text = "Dupe"
         end
 
         -- Créer un second BillboardGui pour afficher la distance
@@ -179,7 +181,12 @@ local function highlightModelWithRetry(model, color)
 
         -- Mettre à jour la distance toutes les fois que le rendu est mis à jour
         RunService.RenderStepped:Connect(function()
+if model:IsA("BasePart") or model:IsA("MeshPart") then
             distanceLabel.Text = "Distance: " .. tostring((model.Position - player.Character.HumanoidRootPart.Position).Magnitude)
+end
+if model:IsA("Model") then
+            distanceLabel.Text = "[" .. tostring((model:GetPivot().Position - player.Character.HumanoidRootPart.Position).Magnitude).."]"
+end
         end)
     end
 
@@ -249,15 +256,7 @@ espButton.MouseButton1Click:Connect(function()
 end)
 
 -- Fonction pour gérer le No Lag
-local function updateNoLag()
-    if noLagActive then
-        -- Exemple de gestion d'objet à supprimer pour le lag
-        local laggyObject = workspace:FindFirstChild("YourLaggyObjectName") -- Remplacez par le nom de votre objet
-        if laggyObject then
-            laggyObject.Parent = nil -- Supprimez-le du workspace pour réduire le lag
-        end
-    end
-end
+
 
 -- Gestion des boutons No Lag
 noLagButton.MouseButton1Click:Connect(function()
@@ -274,7 +273,7 @@ end)
 -- Gestion de Full Bright
 fullBrightButton.MouseButton1Click:Connect(function()
     fullBrightActive = not fullBrightActive
-    if fullBrightActive then
+    --[[if fullBrightActive then
         for _, v in pairs(workspace:GetDescendants()) do
             if v:IsA("Part") then
                 originalMaterials[v] = v.Material
@@ -288,7 +287,7 @@ fullBrightButton.MouseButton1Click:Connect(function()
         end
         originalMaterials = {} -- Réinitialiser
         fullBrightButton.Text = "Full Bright Off"
-    end
+    end]]--
 end)
 
 -- Similaire pour God Mode, Auto Loot, etc.
