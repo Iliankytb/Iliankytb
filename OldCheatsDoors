@@ -268,9 +268,6 @@ setupESPDetection()
 end
 end)
 
-local function toggleNotifieMonsters()
-NotifieMonsters = not NotifieMonsters
-end
 
 -- Gestion des boutons ESP
 espButton.MouseButton1Click:Connect(function()
@@ -279,34 +276,31 @@ espButton.MouseButton1Click:Connect(function()
 setupESPDetection()
 end)
 
--- Fonction pour gérer le No Lag
-local function notifyMonsterSpawn(monsterName)
-    local notificationFrame = Instance.new("Frame", frameNotifierMonster)
-    notificationFrame.Size = UDim2.new(1, 0, 0, 50) -- Taille de la notification
-    notificationFrame.BackgroundColor3 = Color3.fromRGB(100, 100, 100)
-    notificationFrame.BackgroundTransparency = 0.5
-    notificationFrame.LayoutOrder = #frameNotifierMonster:GetChildren() + 1 -- Ajouter à la fin
-
-    local textLabel = Instance.new("TextLabel", notificationFrame)
-    textLabel.Size = UDim2.new(1, 0, 1, 0)
-    textLabel.BackgroundTransparency = 1
-    textLabel.Text = monsterName .. " has spawned"
-    textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-    textLabel.Font = Enum.Font.GothamBold
-    textLabel.TextSize = 16
-
-    -- Animation pour disparaître après quelques secondes
-    delay(5, function()
-      notificationFrame:Destroy()
-end)
+local function notifyMonsters()
+    for _, monsterName in ipairs(espMonsters) do
+        for _, monster in pairs(workspace:GetChildren()) do
+            if monster:IsA("Model") and monster:FindFirstChild(monsterName and monster.PrimaryPart.Position.Y > 0) then
+                local notification = Instance.new("TextLabel", frameNotifierMonster)
+                notification.Size = UDim2.new(1, 0, 0, 50)
+                notification.Text = monsterName .. " has Spawned!"
+                notification.TextColor3 = Color3.fromRGB(255, 0, 0)
+                notification.BackgroundTransparency = 1
+                wait(2) -- Délai avant de retirer la notification
+                notification:Destroy()
+            end
+        end
+    end
 end
 
 workspace.DescendantAdded:Connect(function()
-for _, descendant in ipairs(workspace:GetDescendants()) do
-        local lowerName = descendant.Name:lower()
-    if lowerName == monsterName:lower() then 
-        notifyMonsterSpawn(monsterName) -- Notifiez l'apparition du monstre
-    end
+if NotifieMonsters then
+notifyMonsters()
+end
+end)
+
+MonsterNotifierButton.MouseButton1Click:Connect(function()
+    NotifieMonsters = not NotifieMonsters
+    MonsterNotifierButton.Text = NotifieMonsters and "Monster Notifier On" or "Monster Notifier Off"
 end)
 
 -- Gestion des boutons No Lag
