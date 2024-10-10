@@ -3,13 +3,14 @@ local playerGui = player:WaitForChild("PlayerGui")
 local Key = "IliankYTB"
 
 local Cheats = {
-    ["Doors Cheat"] = "https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatsDoors",
-  --  ["Blox Fruit Cheat"] = "https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatsBloxFruits",
-    ["TimerSpeedrun"] = "https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/SpeedRunTimer",
-    ["None"] = ""
+    ["Doors Cheats(iliankytb(in rework))"] = "https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatsDoors",
+  --  ["Blox Fruit Cheat(Best and not mine)"] = "https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatsBloxFruits",
+    ["TimerSpeedrun(Best Timer)"] = "https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/SpeedRunTimer",
+["Doors Cheat("MSPaintV2)"] =
+    ["ComingSoon"] = ""
 }
 
-local ButtonNames = {"Doors Cheat", "Blox Fruit Cheat", "TimerSpeedrun", "None"}
+local ButtonNames = {"Doors Cheats(iliankytb(in rework))", "Blox Fruit Cheat(Best and not mine)", "TimerSpeedrun(Best Timer)", "Doors Cheat("MSPaintV2)","ComingSoon"}
 local ServicesScrollingFrame = ButtonNames
 
 -- Création du ScreenGui
