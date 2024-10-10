@@ -3,6 +3,22 @@ local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 local Key = "IliankYTB"
 
+local ServicesScrollingFrame = {
+"name1",
+"name2",
+"name3",
+"name4",
+"name5",
+}
+
+local ServicesButton = {
+"name1",
+"name2",
+"name3",
+"name4",
+"name5",
+}
+
 -- Création du ScreenGui
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "HubGui"
@@ -26,9 +42,6 @@ titleText.BackgroundTransparency = 1
 titleText.TextTransparency = 1 -- Départ avec une transparence de 1
 titleText.Parent = frame
 
--- Animation du texte "Hub Iliankytb"
-
-
 -- Création du second texte
 local loadingText = Instance.new("TextLabel")
 loadingText.Text = "Loading Hub..."
@@ -39,20 +52,21 @@ loadingText.BackgroundTransparency = 1
 loadingText.TextTransparency = 1 -- Départ avec une transparence de 1
 loadingText.Parent = frame
 
+-- Bouton de fermeture
 local closeButton = Instance.new("TextButton")
-closeButton.Size = UDim2.new(0, 30, 0, 30) -- Taille du bouton
-closeButton.Position = UDim2.new(1, -40, 0, 10) -- Position en haut à droite
+closeButton.Size = UDim2.new(0, 30, 0, 30)
+closeButton.Position = UDim2.new(1, -40, 0, 10)
 closeButton.Text = "X"
-closeButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- Couleur blanche
-closeButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0) -- Couleur de fond rouge
+closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+closeButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 closeButton.Parent = frame
 
 closeButton.MouseButton1Click:Connect(function()
- frame:Destroy() -- Détruire la Frame
-    -- Si vous souhaitez également détruire le script, vous pouvez faire :
-script:Destroy() -- Décommentez si vous voulez détruire le script
+    frame:Destroy()
+    script:Destroy()
 end)
 
+-- Animation du texte "Hub Iliankytb"
 for i = 1, 75 do
     wait(0.01)
     titleText.TextTransparency = titleText.TextTransparency - 0.01
@@ -63,83 +77,105 @@ for i = 1, 50 do
     wait(0.01)
     loadingText.TextTransparency = loadingText.TextTransparency - 0.002
 end
-
--- Attendre 5 secondes avant de détruire le texte de chargement
-wait(math.random(1,10)
 loadingText:Destroy()
 
--- Création du champ de texte pour entrer la clé
+-- Champ de texte pour entrer la clé
 local keyInput = Instance.new("TextBox")
-keyInput.Size = UDim2.new(1, -20, 0, 50) -- Ajuster la taille
-keyInput.Position = UDim2.new(0, 10, 0.3, 0) -- Placer en bas de la Frame
-keyInput.TextColor3 = Color3.fromRGB(255, 255, 255) -- Couleur blanche
-keyInput.BackgroundColor3 = Color3.fromRGB(50, 50, 50) -- Couleur de fond gris
+keyInput.Size = UDim2.new(1, -20, 0, 50)
+keyInput.Position = UDim2.new(0, 10, 0.3, 0)
+keyInput.TextColor3 = Color3.fromRGB(255, 255, 255)
+keyInput.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
 keyInput.PlaceholderText = "Enter Key"
 keyInput.TextScaled = true
 keyInput.Text = ""
 keyInput.Parent = frame
 
--- Création du bouton de validation
+-- Bouton de validation
 local submitButton = Instance.new("TextButton")
-submitButton.Size = UDim2.new(1, -20, 0, 50) -- Ajuster la taille
-submitButton.Position = UDim2.new(0, 10, 0.6, 0) -- Placer en dessous du champ de texte
+submitButton.Size = UDim2.new(1, -20, 0, 50)
+submitButton.Position = UDim2.new(0, 10, 0.6, 0)
 submitButton.Text = "Submit"
-submitButton.TextScaled = true 
-submitButton.TextColor3 = Color3.fromRGB(255, 255, 255) -- Couleur blanche
-submitButton.BackgroundColor3 = Color3.fromRGB(0, 128, 0) -- Couleur de fond verte
+submitButton.TextScaled = true
+submitButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+submitButton.BackgroundColor3 = Color3.fromRGB(0, 128, 0)
 submitButton.Parent = frame
 
--- Fonction de validation de la clé
 submitButton.MouseButton1Click:Connect(function()
     if keyInput.Text == Key then
-        -- La clé est correcte
         print("Key Accepted!")
-keyInput:Destroy()
-submitButton:Destroy()
-for i = 1, 100 do
-    wait(0.01)
-    frame.Size = UDim2.new(0, 200 + i * 2, 0, 200 + i * 1.1) -- Agrandissement progressif
-end
-frame.Draggable = true
-local framebutton = Instance.new("Frame")
-framebutton.Size = UDim2.new(0.5, 0, 0.7, 0) -- Taille de la Frame
-framebutton.Position = UDim2.new(0, 0, 0, 0) -- Centrée
-framebutton.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Couleur noire
-framebutton.BackgroundTransparency = 1
-framebutton.Parent = frame
-local scrollingframebuttons = Instance.new("ScrollingFrame")
-scrollingframebuttons.Size = UDim2.new(1, 0, 1, 0) -- Taille de la Frame
-scrollingframebuttons.Position = UDim2.new(0, 0, 0, 0) -- Centrée
-scrollingframebuttons.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Couleur noire
-scrollingframebuttons.BackgroundTransparency = 1
-scrollingframebuttons.Parent = framebutton
-local frameService = Instance.new("Frame")
-frameService.Size = UDim2.new(0.5, 0, 0.7, 0) -- Taille de la Frame
-frameService.Position = UDim2.new(0.5, 0, 0, 0) -- Centrée
-frameService.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Couleur noire
-frameService.BackgroundTransparency = 1
-frameService.Parent = frame
-local scrollingframeservices = Instance.new("ScrollingFrame")
-scrollingframeservices.Size = UDim2.new(1, 0, 1, 0) -- Taille de la Frame
-scrollingframeservices.Position = UDim2.new(0, 0, 0, 0) -- Centrée
-scrollingframeservices.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Couleur noire
-scrollingframeservices.BackgroundTransparency = 1
-scrollingframeservices.Parent = frameService
-        -- Ajouter ici le code pour ce qui se passe après l'acceptation de la clé
+        keyInput:Destroy()
+        submitButton:Destroy()
+
+        for i = 1, 100 do
+            wait(0.01)
+            frame.Size = UDim2.new(0, 200 + i * 2, 0, 200 + i * 1.1)
+        end
+        frame.Draggable = true
+
+        -- Frame pour les boutons
+        local framebutton = Instance.new("Frame")
+        framebutton.Size = UDim2.new(0.5, 0, 0.7, 0)
+        framebutton.Position = UDim2.new(0, 0, 0, 0)
+        framebutton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        framebutton.BackgroundTransparency = 1
+        framebutton.Parent = frame
+
+        local scrollingframebuttons = Instance.new("ScrollingFrame")
+        scrollingframebuttons.Size = UDim2.new(1, 0, 1, 0)
+        scrollingframebuttons.Position = UDim2.new(0, 0, 0, 0)
+        scrollingframebuttons.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        scrollingframebuttons.BackgroundTransparency = 1
+        scrollingframebuttons.Parent = framebutton
+
+        -- UIListLayout pour les boutons
+        local uiListLayout = Instance.new("UIListLayout")
+        uiListLayout.Parent = scrollingframebuttons
+
+        -- Création de plusieurs boutons avec des noms différents
+        for i = 1, 10 do
+            local button = Instance.new("TextButton")
+            button.Size = UDim2.new(1, -10, 0, 50)
+            button.Text = "Button " .. i
+            button.TextColor3 = Color3.fromRGB(255, 255, 255)
+            button.BackgroundColor3 = Color3.fromRGB(0, 128, 0)
+            button.Parent = scrollingframebuttons
+        end
+
+        -- Frame pour les services
+        local frameService = Instance.new("Frame")
+        frameService.Size = UDim2.new(0.5, 0, 0.7, 0)
+        frameService.Position = UDim2.new(0.5, 0, 0, 0)
+        frameService.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        frameService.BackgroundTransparency = 1
+        frameService.Parent = frame
+
+        -- Création de plusieurs ScrollingFrames pour les services
+        for i = 1, 3 do
+            local scrollingframeservices = Instance.new("ScrollingFrame")
+            scrollingframeservices.Size = UDim2.new(1, 0, 1, 0)
+            scrollingframeservices.Position = UDim2.new(0, 0, 0, 0)
+            scrollingframeservices.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+            scrollingframeservices.BackgroundTransparency = 1
+            scrollingframeservices.Parent = frameService
+
+            -- Ajout de boutons dans chaque ScrollingFrame
+            local uiListLayoutServices = Instance.new("UIListLayout")
+            uiListLayoutServices.Parent = scrollingframeservices
+
+            for i,ServicesButton in ipairs(ServicesButton) do
+                local serviceButton = Instance.new("TextButton")
+                serviceButton.Size = UDim2.new(1, -10, 0, 50)
+                serviceButton.Text = "Service " .. i .. " - Button " .. j
+                serviceButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+                serviceButton.BackgroundColor3 = Color3.fromRGB(0, 128, 0)
+                serviceButton.Parent = scrollingframeservices
+            end
+        end
+
     else
-        -- La clé est incorrecte
         print("Invalid Key. Please try again.")
-keyInput.Text = "Invalid Key. Please try again."
-wait(5)
-keyInput.Text = ""
+        keyInput.Text = "Invalid Key. Please try again."
+        wait(1.5)
+        keyInput.Text = ""
     end
 end)
-
--- Création du bouton de fermeture (X)
-
-
--- Fonction pour fermer la Frame
-
-
--- Animation de l'agrandissement de la Frame
-
