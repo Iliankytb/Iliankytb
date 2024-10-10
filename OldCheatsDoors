@@ -1,58 +1,3 @@
-
--- UIListLayout pour les boutons
-local listLayout = Instance.new("UIListLayout", scrollingFrame)
-listLayout.SortOrder = Enum.SortOrder.LayoutOrder
-listLayout.Padding = UDim.new(0, 10)
-
--- Fonction d'aide pour créer des boutons
-local function createButton(text, parent)
-    local button = Instance.new("TextButton", parent)
-    button.Size = UDim2.new(1, 0, 0, 50)
-    button.Text = text
-    button.TextColor3 = Color3.fromRGB(255, 255, 255)
-    button.Font = Enum.Font.GothamBold
-    button.TextSize = 16
-    button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-
-    -- Gradient sur chaque bouton
-    local buttonGradient = Instance.new("UIGradient", button)
-    buttonGradient.Color = ColorSequence.new{
-        ColorSequenceKeypoint.new(0, Color3.fromRGB(70, 70, 70)),
-        ColorSequenceKeypoint.new(1, Color3.fromRGB(100, 100, 100))
-    }
-
-    uistroke:Clone().Parent = button
-    uicorner:Clone().Parent = button
-    return button
-end
-
--- Création des boutons
-local espButton = createButton("ESP Off", scrollingFrame)
-local NoLagButton = createButton("No Lag Off", scrollingFrame)
-local NoCooldownPromptButton = createButton("No Cooldown Prompt Off", scrollingFrame)
-local FullBrightButton = createButton("Full Bright Off", scrollingFrame)
-local GodModeButton = createButton("God Mode Off", scrollingFrame)
-local autoLootButton = createButton("Auto Loot Off", scrollingFrame)
-local flyButton = createButton("Fly Off", scrollingFrame)
-local autoHealButton = createButton("Auto Heal Off", scrollingFrame)
-local speedBoostButton = createButton("Speed Boost Off", scrollingFrame)
-
--- Variables de fonctionnalité
-local espActive, noLagActive, noCooldownPromptActive, fullBrightActive, godModeActive, autoLootActive, flyActive, autoHealActive, speedBoostActive = false, false, false, false, false, false, false, false, false
-local highlightColor = Color3.fromRGB(255, 0, 0)
-local highlightTransparency = 0.5
-local originalMaterials = {}
-local espTargets = {}
-
--- Variables pour les couleurs
-local monsterColor = Color3.fromRGB(255, 0, 0) -- Rouge pour les monstres
-local sideroomDupeColor = Color3.fromRGB(255, 0, 0) -- Rouge pour les portes "sideroomdupe"
-local itemColor = Color3.fromRGB(255, 165, 0) -- Orange pour les items
-local closetColor = Color3.fromRGB(0, 255, 0) -- Vert pour les closets, wardrobes, etc.
-
--- Variables pour les éléments à surligner
-local espMonsters = {"figure_rig", "figure", "rushnew", "ambushmoving", "Screech", "haltmoving", "Rushemoving"}
-local espDoors = {"door", "sideroomdupe"}
 -- Variables
 local player = game.Players.LocalPlayer
 local RunService = game:GetService("RunService")
@@ -152,10 +97,10 @@ end
 
 -- Création des boutons
 local espButton = createButton("ESP Off", scrollingFrame)
-local NoLagButton = createButton("No Lag Off", scrollingFrame)
-local NoCooldownPromptButton = createButton("No Cooldown Prompt Off", scrollingFrame)
-local FullBrightButton = createButton("Full Bright Off", scrollingFrame)
-local GodModeButton = createButton("God Mode Off", scrollingFrame)
+local noLagButton = createButton("No Lag Off", scrollingFrame)
+local noCooldownPromptButton = createButton("No Cooldown Prompt Off", scrollingFrame)
+local fullBrightButton = createButton("Full Bright Off", scrollingFrame)
+local godModeButton = createButton("God Mode Off", scrollingFrame)
 local autoLootButton = createButton("Auto Loot Off", scrollingFrame)
 local flyButton = createButton("Fly Off", scrollingFrame)
 local autoHealButton = createButton("Auto Heal Off", scrollingFrame)
@@ -229,247 +174,154 @@ local function highlightModelWithRetry(model, color)
         local distanceLabel = Instance.new("TextLabel", distanceBillboard)
         distanceLabel.Size = UDim2.new(1, 0, 1, 0)
         distanceLabel.BackgroundTransparency = 1
-        distanceLabel.TextColor3 = color -- Utilisez la même couleur que le Highlight
-        distanceLabel.Text = "Distance: " .. tostring((player.Character.HumanoidRootPart.Position - model.Position).Magnitude) .. " studs" -- Initialiser la distance
+        distanceLabel.Text = "Distance: " .. tostring((model.Position - player.Character.HumanoidRootPart.Position).Magnitude)
+        distanceLabel.TextColor3 = color
 
-        -- Met à jour la distance chaque fois que la position du joueur change
-        local function updateDistance()
-            local distance = (player.Character.HumanoidRootPart.Position - model.Position).Magnitude
-            distanceLabel.Text = "Distance: " .. math.floor(distance) .. " studs"
-        end
-
-        -- Connecter la fonction d'actualisation de la distance au RenderStepped
-        RunService.RenderStepped:Connect(updateDistance)
-    end
-end
-
--- Activer/Désactiver ESP
-local function toggleESP()
-    espActive = not espActive
-
-    if espActive then
-        espButton.Text = "ESP On"
-        for _, modelName in ipairs(espMonsters) do
-            for _, model in ipairs(workspace:GetChildren()) do
-                if model:IsA("Model") and model.Name:lower() == modelName:lower() then
-                    highlightModelWithRetry(model, monsterColor)
-                end
-            end
-        end
-
-        for _, modelName in ipairs(espDoors) do
-            for _, model in ipairs(workspace:GetChildren()) do
-                if model:IsA("Model") and model.Name:lower() == modelName:lower() then
-                    highlightModelWithRetry(model, sideroomDupeColor)
-                end
-            end
-        end
-
-        for _, modelName in ipairs(espItems) do
-            for _, model in ipairs(workspace:GetChildren()) do
-                if model:IsA("Model") and model.Name:lower() == modelName:lower() then
-                    highlightModelWithRetry(model, itemColor)
-                end
-            end
-        end
-
-        for _, modelName in ipairs(espClosets) do
-            for _, model in ipairs(workspace:GetChildren()) do
-                if model:IsA("Model") and model.Name:lower() == modelName:lower() then
-                    highlightModelWithRetry(model, closetColor)
-                end
-            end
-        end
-
-        -- Connexion à Workspace.DescendantAdded pour ESP
-        workspace.DescendantAdded:Connect(function(child)
-            if child:IsA("Model") then
-                if table.find(espMonsters, child.Name:lower()) then
-                    highlightModelWithRetry(child, monsterColor)
-                elseif table.find(espDoors, child.Name:lower()) then
-                    highlightModelWithRetry(child, sideroomDupeColor)
-                elseif table.find(espItems, child.Name:lower()) then
-                    highlightModelWithRetry(child, itemColor)
-                elseif table.find(espClosets, child.Name:lower()) then
-                    highlightModelWithRetry(child, closetColor)
-                end
-            end
+        -- Mettre à jour la distance toutes les fois que le rendu est mis à jour
+        RunService.RenderStepped:Connect(function()
+            distanceLabel.Text = "Distance: " .. tostring((model.Position - player.Character.HumanoidRootPart.Position).Magnitude)
         end)
+    end
 
-    else
-        espButton.Text = "ESP Off"
-        for _, model in ipairs(workspace:GetChildren()) do
-            if model:IsA("Model") and (model:FindFirstChildOfClass("Highlight") or model:FindFirstChildOfClass("BillboardGui")) then
-                model:FindFirstChildOfClass("Highlight"):Destroy()
-                for _, gui in ipairs(model:GetChildren()) do
-                    if gui:IsA("BillboardGui") then
-                        gui:Destroy()
-                    end
+    -- Ajoutez le modèle à la liste des éléments surlignés pour référence ultérieure
+    table.insert(espTargets, model)
+end
+
+-- Fonction pour le fonctionnement de l'ESP
+local function updateESP()
+    if espActive then
+        -- Surligner les monstres
+        for _, monsterName in ipairs(espMonsters) do
+            for _, monster in ipairs(workspace:GetDescendants()) do
+                if monster:IsA("Model") and monster.Name:lower() == monsterName:lower() then
+                    highlightModelWithRetry(monster, monsterColor)
                 end
             end
         end
-    end
-end
 
--- Fonction No Lag
-local function setSmoothPlastic()
-    for _, part in pairs(workspace:GetDescendants()) do
-        if part:IsA("Part") then
-            table.insert(originalMaterials, {part = part, material = part.Material})
-            part.Material = Enum.Material.SmoothPlastic
+        -- Surligner les portes
+        for _, doorName in ipairs(espDoors) do
+            for _, door in ipairs(workspace:GetDescendants()) do
+                if door:IsA("Model") and door.Name:lower() == doorName:lower() then
+                    highlightModelWithRetry(door, sideroomDupeColor)
+                end
+            end
         end
-    end
-end
 
-local function restoreMaterials()
-    for _, entry in pairs(originalMaterials) do
-        if entry.part and entry.material then
-            entry.part.Material = entry.material
+        -- Surligner les items
+        for _, itemName in ipairs(espItems) do
+            for _, item in ipairs(workspace:GetDescendants()) do
+                if item:IsA("Model") and item.Name:lower() == itemName:lower() then
+                    highlightModelWithRetry(item, itemColor)
+                end
+            end
         end
+
+        -- Surligner les placards
+        for _, closetName in ipairs(espClosets) do
+            for _, closet in ipairs(workspace:GetDescendants()) do
+                if closet:IsA("Model") and closet.Name:lower() == closetName:lower() then
+                    highlightModelWithRetry(closet, closetColor)
+                end
+            end
+        end
+    else
+        -- Supprimer les surlignages si l'ESP est désactivé
+        for _, target in ipairs(espTargets) do
+            local highlight = target:FindFirstChildOfClass("Highlight")
+            if highlight then
+                highlight:Destroy()
+            end
+        end
+        espTargets = {} -- Réinitialiser la liste des cibles ESP
     end
 end
 
--- Gestion des boutons
+-- Fonction de mise à jour
+RunService.RenderStepped:Connect(function()
+    updateESP()
+end)
+
+-- Gestion des boutons ESP
 espButton.MouseButton1Click:Connect(function()
     espActive = not espActive
     espButton.Text = espActive and "ESP On" or "ESP Off"
-    if espActive then
-        updateEspTargets()
-        highlightModels()
-    else
-        clearHighlights()
-    end
 end)
 
-NoLagButton.MouseButton1Click:Connect(function()
-    noLagActive = not noLagActive
-    NoLagButton.Text = noLagActive and "No Lag On" or "No Lag Off"
+-- Fonction pour gérer le No Lag
+local function updateNoLag()
     if noLagActive then
-        setSmoothPlastic()
-    else
-        restoreMaterials()
-    end
-end)
-
-NoCooldownPromptButton.MouseButton1Click:Connect(function()
-    noCooldownPromptActive = not noCooldownPromptActive
-    NoCooldownPromptButton.Text = noCooldownPromptActive and "No Cooldown Prompt On" or "No Cooldown Prompt Off"
-    if noCooldownPromptActive then
-    for _, prompt in pairs(workspace:GetDescendants()) do
-        if prompt:IsA("ProximityPrompt") then
-            prompt.RequiresLineOfSight = not noCooldownPromptActive
-            prompt.HoldDuration = 0
+        -- Exemple de gestion d'objet à supprimer pour le lag
+        local laggyObject = workspace:FindFirstChild("YourLaggyObjectName") -- Remplacez par le nom de votre objet
+        if laggyObject then
+            laggyObject.Parent = nil -- Supprimez-le du workspace pour réduire le lag
         end
-end
     end
+end
+
+-- Gestion des boutons No Lag
+noLagButton.MouseButton1Click:Connect(function()
+    noLagActive = not noLagActive
+    noLagButton.Text = noLagActive and "No Lag On" or "No Lag Off"
 end)
 
-local function fullbright()
-if not game.Lighting.Brightness == fullBrightActive and 100 and game.Lighting.Ambient == fullBrightActive and Color3.new(1, 1, 1) or Color3.new(0.5, 0.5, 0.5) then
-game.Lighting.Brightness = fullBrightActive and 100 or 1
-    game.Lighting.Ambient = fullBrightActive and Color3.new(1, 1, 1) or Color3.new(0.5, 0.5, 0.5)
-end
-end
+-- Similaire à No Cooldown Prompt
+noCooldownPromptButton.MouseButton1Click:Connect(function()
+    noCooldownPromptActive = not noCooldownPromptActive
+    noCooldownPromptButton.Text = noCooldownPromptActive and "No Cooldown Prompt On" or "No Cooldown Prompt Off"
+end)
 
-FullBrightButton.MouseButton1Click:Connect(function()
+-- Gestion de Full Bright
+fullBrightButton.MouseButton1Click:Connect(function()
     fullBrightActive = not fullBrightActive
-    FullBrightButton.Text = fullBrightActive and "Full Bright On" or "Full Bright Off"
-    fullbright()
-    end)
-
-GodModeButton.MouseButton1Click:Connect(function()
-    godModeActive = not godModeActive
-    GodModeButton.Text = godModeActive and "God Mode On" or "God Mode Off"
-    
-    local humanoid = player.Character and player.Character:FindFirstChildOfClass("Humanoid")
-    if humanoid then
-        humanoid.MaxHealth = godModeActive and math.huge or 100
-        humanoid.Health = godModeActive and humanoid.MaxHealth or humanoid.Health
+    if fullBrightActive then
+        for _, v in pairs(workspace:GetDescendants()) do
+            if v:IsA("Part") then
+                originalMaterials[v] = v.Material
+                v.Material = Enum.Material.Neon
+            end
+        end
+        fullBrightButton.Text = "Full Bright On"
+    else
+        for part, originalMaterial in pairs(originalMaterials) do
+            part.Material = originalMaterial
+        end
+        originalMaterials = {} -- Réinitialiser
+        fullBrightButton.Text = "Full Bright Off"
     end
 end)
 
+-- Similaire pour God Mode, Auto Loot, etc.
+godModeButton.MouseButton1Click:Connect(function()
+    godModeActive = not godModeActive
+    godModeButton.Text = godModeActive and "God Mode On" or "God Mode Off"
+end)
+
+-- Similaire pour Auto Loot
 autoLootButton.MouseButton1Click:Connect(function()
     autoLootActive = not autoLootActive
     autoLootButton.Text = autoLootActive and "Auto Loot On" or "Auto Loot Off"
-    
-    -- Fonctionnalité d'auto-loot (vous pouvez implémenter une logique spécifique ici)
 end)
 
+-- Gestion du Fly
 flyButton.MouseButton1Click:Connect(function()
     flyActive = not flyActive
     flyButton.Text = flyActive and "Fly On" or "Fly Off"
-    
-    -- Ajoutez ici la logique pour la fonction de vol
+    if flyActive then
+        -- Implémentez votre logique de vol ici
+    else
+        -- Arrêtez la logique de vol ici
+    end
 end)
 
+-- Gestion de l'Auto Heal
 autoHealButton.MouseButton1Click:Connect(function()
     autoHealActive = not autoHealActive
     autoHealButton.Text = autoHealActive and "Auto Heal On" or "Auto Heal Off"
-    
-    -- Ajouter la logique pour régénérer automatiquement la santé
 end)
 
+-- Gestion de la vitesse
 speedBoostButton.MouseButton1Click:Connect(function()
     speedBoostActive = not speedBoostActive
     speedBoostButton.Text = speedBoostActive and "Speed Boost On" or "Speed Boost Off"
-    
-    local humanoid = player.Character and player.Character:FindFirstChildOfClass("Humanoid")
-    if humanoid then
-        humanoid.WalkSpeed = speedBoostActive and 22 or 16
-    end
-end)
-
--- Mise à jour des cibles ESP pour les descendants ajoutés
-workspace.DescendantAdded:Connect(function(descendant)
-if noLagActive then
-        setSmoothPlastic()
-    else
-        restoreMaterials()
-    end
-    if descendant:IsA("Model") or descendant:IsA("Part") then
-        local nameLower = descendant.Name:lower()
-        if espActive then
-            if table.find(espMonsters, nameLower) or table.find(espDoors, nameLower) or
-               table.find(espItems, nameLower) or table.find(espClosets, nameLower) then
-                highlightModel(descendant, getHighlightColor(descendant))
-            end
-        end
-    end
-end)
-
--- Boucle principale pour les fonctions activées
-RunService.RenderStepped:Connect(function()
-    if speedBoostActive then
-        local humanoid = player.Character and player.Character:FindFirstChildOfClass("Humanoid")
-        if humanoid then
-            humanoid.WalkSpeed = 22
-        end
-    end
-    -- Boucle pour mettre à jour les distances dans l'ESP
-if espActive then
-    for _, model in pairs(espTargets) do
-        local billboard = model:FindFirstChildOfClass("BillboardGui")
-        if billboard then
-            local textLabel = billboard:FindFirstChild("ESPTextLabel")
-            if textLabel then
-                local distance = (model.Position - player.Character.PrimaryPart.Position).Magnitude
-                textLabel.Text = model.Name .. " (" .. math.floor(distance) .. " studs)"
-                
-                -- Si c'est une porte, on met à jour avec son nom complet
-                if model.Name:lower() == "door" then
-                    textLabel.Text = "door " .. model.Parent.Parent.Name .. " (" .. math.floor(distance) .. " studs)"
-                end
-            end
-end
-        end
-    end
-
-    if autoHealActive then
-        -- Logique pour régénérer automatiquement la santé
-    end
-
-    if autoLootActive then
-        -- Logique pour auto-loot
-    end
-fullbright()
 end)
