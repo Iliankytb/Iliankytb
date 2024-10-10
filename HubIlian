@@ -94,6 +94,31 @@ for i = 1, 100 do
     wait(0.01)
     frame.Size = UDim2.new(0, 200 + i * 2, 0, 200 + i * 1.25) -- Agrandissement progressif
 end
+frame.Draggable = true
+local framebutton = Instance.new("Frame")
+framebutton.Size = UDim2.new(0.5, 0, 1, 0) -- Taille de la Frame
+framebutton.Position = UDim2.new(0, 0, 0, 0) -- Centrée
+framebutton.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Couleur noire
+framebutton.BackgroundTransparency = 1
+framebutton.Parent = frame
+local scrollingframebuttons = Instance.new("ScrollingFrame")
+scrollingframebuttons.Size = UDim2.new(1, 0, 1, 0) -- Taille de la Frame
+scrollingframebuttons.Position = UDim2.new(0, 0, 0, 0) -- Centrée
+scrollingframebuttons.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Couleur noire
+scrollingframebuttons.BackgroundTransparency = 1
+scrollingframebuttons.Parent = framebutton
+local frameService = Instance.new("Frame")
+frameService.Size = UDim2.new(0.5, 0, 1, 0) -- Taille de la Frame
+frameService.Position = UDim2.new(0.5, 0, 0, 0) -- Centrée
+frameService.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Couleur noire
+frameService.BackgroundTransparency = 1
+frameService.Parent = frame
+local scrollingframeservices = Instance.new("ScrollingFrame")
+scrollingframeservices.Size = UDim2.new(1, 0, 1, 0) -- Taille de la Frame
+scrollingframeservices.Position = UDim2.new(0, 0, 0, 0) -- Centrée
+scrollingframeservices.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Couleur noire
+scrollingframeservices.BackgroundTransparency = 1
+scrollingframeservices.Parent = frameService
         -- Ajouter ici le code pour ce qui se passe après l'acceptation de la clé
     else
         -- La clé est incorrecte
