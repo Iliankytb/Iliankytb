@@ -3,8 +3,8 @@ local playerGui = player:WaitForChild("PlayerGui")
 local Key = "IliankYTB"
 
 local Cheats = {
-    ["Doors Cheat"] = "https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatDoors",
-    ["Blox Fruit Cheat"] = "https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatsBloxFruits",
+    ["Doors Cheat"] = "https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatsDoors",
+  --  ["Blox Fruit Cheat"] = "https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatsBloxFruits",
     ["TimerSpeedrun"] = "https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/SpeedRunTimer",
     ["None"] = ""
 }
