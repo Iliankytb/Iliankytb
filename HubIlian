@@ -98,7 +98,7 @@ submitButton.BackgroundColor3 = Color3.fromRGB(0, 128, 0)
 submitButton.Parent = frame
 
 local DiscordButton = Instance.new("TextButton")
-DiscordButton.Size = UDim2.new(0, 300, 0, 25) -- Change le premier paramètre pour la largeur
+DiscordButton.Size = UDim2.new(0, 50, 0, 25) -- Change le premier paramètre pour la largeur
 DiscordButton.Position = UDim2.new(0, 15, 0.8, 0)
 DiscordButton.Text = "Discord Server (Free Key)"
 DiscordButton.TextScaled = true
