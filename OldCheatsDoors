@@ -151,7 +151,7 @@ local function highlightModel(model, color)
         if model.Name:lower() == "door" then
             textLabel.Text = "Door " .. model.Parent.Parent.Name
         end
-if if model.Name:lower() == "locker_large" then
+if model.Name:lower() == "locker_large" then
 textLabel.Text = "Closet"
 end
     end
@@ -259,7 +259,7 @@ end
 end)
 
 local function fullbright()
-if not game.Lighting.Brightness = fullBrightActive and 100 and game.Lighting.Ambient = fullBrightActive and Color3.new(1, 1, 1) or Color3.new(0.5, 0.5, 0.5) then
+if not game.Lighting.Brightness == fullBrightActive and 100 and game.Lighting.Ambient == fullBrightActive and Color3.new(1, 1, 1) or Color3.new(0.5, 0.5, 0.5) then
 game.Lighting.Brightness = fullBrightActive and 100 or 1
     game.Lighting.Ambient = fullBrightActive and Color3.new(1, 1, 1) or Color3.new(0.5, 0.5, 0.5)
 end
