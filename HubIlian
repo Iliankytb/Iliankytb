@@ -185,7 +185,7 @@ frame.Draggable = true
             scrollingFrameService.Name = serviceName
             scrollingFrameService.Parent = frameService
 
-           
+           DiscordButton.Parent = scrollingFrameService
             local uiListLayoutService = Instance.new("UIListLayout")
             uiListLayoutService.Parent = scrollingFrameService
         end
