@@ -22,7 +22,7 @@ frame.BackgroundTransparency = 0.25
 frame.Visible = false
 
 local frameNotifierMonster = Instance.new("Frame", screenGui)
-frameNotifierMonster.Size = UDim2.new(0.0.2, 0, 1, 0)
+frameNotifierMonster.Size = UDim2.new(0.2, 0, 1, 0)
 frameNotifierMonster.Position = UDim2.new(0.8, 0, 0, 0)
 frameNotifierMonster.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
 frameNotifierMonster.BackgroundTransparency = 1
