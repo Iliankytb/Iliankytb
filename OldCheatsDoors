@@ -195,45 +195,84 @@ end
 end
 
 -- Fonction pour le fonctionnement de l'ESP
-local function updateESP()
+-- Fonction de surlignage d'un modèle si nécessaire
+local function highlightIfNeeded(model, color)
+    if not model:FindFirstChildOfClass("Highlight") then
+        highlightModelWithRetry(model, color)
+    end
+end
+
+-- Fonction pour configurer le surlignage avec la condition espActive
+local function setupESPDetection()
     if espActive then
-        -- Surligner les monstres
-        for _, monsterName in ipairs(espMonsters) do
-            for _, monster in ipairs(workspace:GetDescendants()) do
-                if monster:IsA("Model") and monster.Name:lower() == monsterName:lower() then
-                    highlightModelWithRetry(monster, monsterColor)
+        -- Surlignage des modèles déjà présents dans le workspace
+        for _, descendant in ipairs(workspace:GetDescendants()) do
+            if descendant:IsA("Model") then
+                local lowerName = descendant.Name:lower()
+
+                -- Surligner les monstres
+                for _, monsterName in ipairs(espMonsters) do
+                    if lowerName == monsterName:lower() then
+                        highlightIfNeeded(descendant, monsterColor)
+                    end
+                end
+
+                -- Surligner les portes
+                for _, doorName in ipairs(espDoors) do
+                    if lowerName == doorName:lower() then
+                        highlightIfNeeded(descendant, sideroomDupeColor)
+                    end
+                end
+
+                -- Surligner les items
+                for _, itemName in ipairs(espItems) do
+                    if lowerName == itemName:lower() then
+                        highlightIfNeeded(descendant, itemColor)
+                    end
+                end
+
+                -- Surligner les placards
+                for _, closetName in ipairs(espClosets) do
+                    if lowerName == closetName:lower() then
+                        highlightIfNeeded(descendant, closetColor)
+                    end
                 end
             end
         end
 
-        -- Surligner les portes
-        for _, doorName in ipairs(espDoors) do
-            for _, door in ipairs(workspace:GetDescendants()) do
-                if door:IsA("Model") and door.Name:lower() == doorName:lower() then
-                    highlightModelWithRetry(door, sideroomDupeColor)
-                end
-            end
-        end
+        -- Écoute les nouveaux objets ajoutés dans le workspace
+        workspace.ChildAdded:Connect(function(newChild)
+            if newChild:IsA("Model") then
+                local lowerName = newChild.Name:lower()
 
-        -- Surligner les items
-        for _, itemName in ipairs(espItems) do
-            for _, item in ipairs(workspace:GetDescendants()) do
-                if item:IsA("Model") and item.Name:lower() == itemName:lower() then
-                    highlightModelWithRetry(item, itemColor)
+                -- Vérifie et applique le surlignage selon le type du modèle
+                for _, monsterName in ipairs(espMonsters) do
+                    if lowerName == monsterName:lower() then
+                        highlightIfNeeded(newChild, monsterColor)
+                    end
                 end
-            end
-        end
 
-        -- Surligner les placards
-        for _, closetName in ipairs(espClosets) do
-            for _, closet in ipairs(workspace:GetDescendants()) do
-                if closet:IsA("Model") and closet.Name:lower() == closetName:lower() then
-                    highlightModelWithRetry(closet, closetColor)
+                for _, doorName in ipairs(espDoors) do
+                    if lowerName == doorName:lower() then
+                        highlightIfNeeded(newChild, sideroomDupeColor)
+                    end
+                end
+
+                for _, itemName in ipairs(espItems) do
+                    if lowerName == itemName:lower() then
+                        highlightIfNeeded(newChild, itemColor)
+                    end
+                end
+
+                for _, closetName in ipairs(espClosets) do
+                    if lowerName == closetName:lower() then
+                        highlightIfNeeded(newChild, closetColor)
+                    end
                 end
             end
-        end
+        end)
     else
-        -- Supprimer les surlignages si l'ESP est désactivé
+        -- Supprime tous les surlignages si espActive est désactivé
         for _, target in ipairs(espTargets) do
             local highlight = target:FindFirstChildOfClass("Highlight")
             if highlight then
@@ -244,10 +283,8 @@ local function updateESP()
     end
 end
 
--- Fonction de mise à jour
-RunService.RenderStepped:Connect(function()
-    updateESP()
-end)
+-- Appeler cette fonction pour activer la détection ESP
+
 
 -- Gestion des boutons ESP
 espButton.MouseButton1Click:Connect(function()
