@@ -11,7 +11,7 @@ local Cheats = {
     ["ComingSoon"] = ""
 }
 
-local ButtonNames = {"Doors Cheats(iliankytb(in rework))", "Blox Fruit Cheat(Best and not mine)", "TimerSpeedrun(Best Timer)", "Doors Cheat("MSPaintV2)","ComingSoon"}
+local ButtonNames = {"Doors Cheats(iliankytb(in rework))", "Blox Fruit Cheat(Best and not mine)", "TimerSpeedrun(Best Timer)", "Doors Cheat("MSPaintV2)","Doors Entities Spawner (not Mine)","ComingSoon"}
 local ServicesScrollingFrame = ButtonNames
 
 -- Création du ScreenGui
