@@ -3,20 +3,28 @@ local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 local Key = "IliankYTB"
 
+local ButtonName = {
+    "name1",
+    "name2",
+    "name3",
+    "name4",
+    "name5",
+}
+
 local ServicesScrollingFrame = {
-"name1",
-"name2",
-"name3",
-"name4",
-"name5",
+    "name1",
+    "name2",
+    "name3",
+    "name4",
+    "name5",
 }
 
 local ServicesButton = {
-"name1",
-"name2",
-"name3",
-"name4",
-"name5",
+    "name1",
+    "name2",
+    "name3",
+    "name4",
+    "name5",
 }
 
 -- Création du ScreenGui
@@ -75,7 +83,7 @@ end
 -- Animation du texte "Loading Hub..."
 for i = 1, 50 do
     wait(0.01)
-    loadingText.TextTransparency = loadingText.TextTransparency - 0.002
+    loadingText.TextTransparency = loadingText.TextTransparency - 0.02
 end
 loadingText:Destroy()
 
@@ -132,10 +140,10 @@ submitButton.MouseButton1Click:Connect(function()
         uiListLayout.Parent = scrollingframebuttons
 
         -- Création de plusieurs boutons avec des noms différents
-        for i = 1, 10 do
+        for B, ButtonName in ipairs(scrollingframebuttons) do
             local button = Instance.new("TextButton")
             button.Size = UDim2.new(1, -10, 0, 50)
-            button.Text = "Button " .. i
+            button.Text = B
             button.TextColor3 = Color3.fromRGB(255, 255, 255)
             button.BackgroundColor3 = Color3.fromRGB(0, 128, 0)
             button.Parent = scrollingframebuttons
@@ -150,22 +158,23 @@ submitButton.MouseButton1Click:Connect(function()
         frameService.Parent = frame
 
         -- Création de plusieurs ScrollingFrames pour les services
-        for i = 1, 3 do
+        for N, serviceName in ipairs(ServicesScrollingFrame) do
             local scrollingframeservices = Instance.new("ScrollingFrame")
             scrollingframeservices.Size = UDim2.new(1, 0, 1, 0)
             scrollingframeservices.Position = UDim2.new(0, 0, 0, 0)
             scrollingframeservices.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
             scrollingframeservices.BackgroundTransparency = 1
+scrollingframeservices.Name = N
             scrollingframeservices.Parent = frameService
 
             -- Ajout de boutons dans chaque ScrollingFrame
             local uiListLayoutServices = Instance.new("UIListLayout")
             uiListLayoutServices.Parent = scrollingframeservices
 
-            for i,ServicesButton in ipairs(ServicesButton) do
+            for j, buttonName in ipairs(ServicesButton) do
                 local serviceButton = Instance.new("TextButton")
                 serviceButton.Size = UDim2.new(1, -10, 0, 50)
-                serviceButton.Text = "Service " .. i .. " - Button " .. j
+                serviceButton.Text = j
                 serviceButton.TextColor3 = Color3.fromRGB(255, 255, 255)
                 serviceButton.BackgroundColor3 = Color3.fromRGB(0, 128, 0)
                 serviceButton.Parent = scrollingframeservices
