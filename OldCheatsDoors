@@ -286,9 +286,6 @@ end)
 espButton.MouseButton1Click:Connect(function()
     espActive = not espActive
     espButton.Text = espActive and "ESP On" or "ESP Off"
-if espActive then
-setupESPDetection()
-end
 end)
 
 -- Fonction pour gérer le No Lag
