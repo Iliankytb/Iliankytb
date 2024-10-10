@@ -177,7 +177,7 @@ elseif model.Name:lower() == "sideroomdupe" then
         distanceLabel.Size = UDim2.new(1, 0, 1, 0)
         distanceLabel.BackgroundTransparency = 1
 distanceLabel.Text = "[Coming Soon]"
-     --   distanceLabel.Text = "[" .. tostring((model.Position - player.Character.HumanoidRootPart.Position).Magnitude).."]"
+     --  [[ distanceLabel.Text = "[" .. tostring((model.Position - player.Character.HumanoidRootPart.Position).Magnitude).."]"]]--
         distanceLabel.TextColor3 = color
 
         -- Mettre à jour la distance toutes les fois que le rendu est mis à jour
@@ -295,6 +295,9 @@ end)
 espButton.MouseButton1Click:Connect(function()
     espActive = not espActive
     espButton.Text = espActive and "ESP On" or "ESP Off"
+if espActive then
+setupESPDetection()
+end
 end)
 
 -- Fonction pour gérer le No Lag
