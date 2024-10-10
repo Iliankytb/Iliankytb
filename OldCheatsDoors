@@ -121,18 +121,23 @@ local closetColor = Color3.fromRGB(0, 255, 0) -- Vert pour les closets, wardrobe
 -- Variables pour les éléments à surligner
 local espMonsters = {"figure_rig", "figure", "rushnew", "ambushmoving", "Screech", "haltmoving", "Rushemoving"}
 local espDoors = {"door", "sideroomdupe"}
-local espItems = {"gold", "goldpile", "MineGenerator", "fuse", "key", "key_holder", "rift", "Chest", "Lockpick", "Battery", "FlashLight"}
-local espClosets = {"closet","locker_large", "locker_small", "wardrobe"}
+local espItems = {"gold", "goldpile", "MineGenerator", "fuseobtain", "keyobtain", "rift", "Chest", "Crucifix","Lockpick", "Battery", "FlashLight"}
+local espClosets = {"closet","Backdoor_wardrobe","locker_large", "locker_small", "wardrobe"}
 
 -- Fonction pour surligner un modèle
-local function highlightModel(model, color)
-    if not model:FindFirstChildOfClass("Highlight") then
-        local highlight = Instance.new("Highlight", model)
+-- Fonction pour surligner un modèle avec répétition jusqu'à succès
+local function highlightModelWithRetry(model, color)
+    local highlight = model:FindFirstChildOfClass("Highlight")
+    if not highlight then
+        highlight = Instance.new("Highlight", model)
         highlight.FillColor = color
         highlight.FillTransparency = highlightTransparency
         highlight.OutlineTransparency = highlightTransparency
+    else
+        highlight.FillColor = color -- Mise à jour de la couleur si le Highlight existe déjà
     end
 
+    -- Vérifiez si le BillboardGui existe, sinon créez-en un
     if not model:FindFirstChildOfClass("BillboardGui") then
         local billboard = Instance.new("BillboardGui", model)
         billboard.Adornee = model
@@ -145,17 +150,30 @@ local function highlightModel(model, color)
         textLabel.BackgroundTransparency = 1
         textLabel.Text = model.Name
         textLabel.TextColor3 = color -- Texte en fonction de la couleur correspondante
-        textLabel.Name = "ESPTextLabel"
-
-        -- Si c'est une porte, on affiche door.Parent.Parent.Name
+        
+        -- Si c'est une porte, affichez son nom complet
         if model.Name:lower() == "door" then
             textLabel.Text = "Door " .. model.Parent.Parent.Name
         end
-if model.Name:lower() == "locker_large" then
-textLabel.Text = "Closet"
-end
+        if model.Name:lower() == "locker_large" or model.Name:lower() == "wardrobe" or model.Name:lower() == "Backdoor_wardrobe" then
+            textLabel.Text = "Closet"
+        end
+if model.Name:lower() == "locker_small" then
+            textLabel.Text = "Locker"
+        end
     end
+if model.Name:lower() == "fuseobtain" then
+textLabel.Text = "Fuse"
 end
+if model.Name:lower() == "keyobtain" then
+textLabel.Text = "Key"
+end
+end
+
+-- Fonction pour surligner tous les modèles ESP avec répétition
+
+
+-- Le reste de votre code reste inchangé
 
 -- Fonction pour déterminer la couleur en fonction du type d'objet
 local function getHighlightColor(model)
@@ -193,7 +211,7 @@ end
 local function highlightModels()
     for _, model in pairs(espTargets) do
         local color = getHighlightColor(model) -- Obtenir la couleur correspondante
-        highlightModel(model, color)
+        highlightModelWithRetry(model, color) -- Utilisez la fonction avec répétition
     end
 end
 
