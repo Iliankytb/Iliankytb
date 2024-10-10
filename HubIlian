@@ -11,6 +11,13 @@ local ButtonName = {
     "None"
 }
 
+local CheatName = {
+"loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatDoors"))()",
+"loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatsBloxFruits"))()",
+"loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/SpeedRunTimer"))()"
+--"loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/None"))()"
+}
+
 local ServicesScrollingFrame = {
     "Doors Cheat",
     "Blox Fruit Cheat",
