@@ -4,27 +4,27 @@ local playerGui = player:WaitForChild("PlayerGui")
 local Key = "IliankYTB"
 
 local ButtonName = {
-    "name1",
-    "name2",
-    "name3",
-    "name4",
-    "name5",
+    "Doors Cheat",
+    "Blox Fruit Cheat",
+    "TimerSpeedrun",
+    "None",
+    "None"
 }
 
 local ServicesScrollingFrame = {
-    "name1",
-    "name2",
-    "name3",
-    "name4",
-    "name5",
+    "Doors Cheat",
+    "Blox Fruit Cheat",
+    "TimerSpeedrun",
+    "None",
+    "None"
 }
 
 local ServicesButton = {
-    "name1",
-    "name2",
-    "name3",
-    "name4",
-    "name5",
+    "Doors Cheat",
+    "Blox Fruit Cheat",
+    "TimerSpeedrun",
+    "None",
+    "None"
 }
 
 -- Création du ScreenGui
@@ -123,7 +123,7 @@ submitButton.MouseButton1Click:Connect(function()
         -- Frame pour les boutons
         local framebutton = Instance.new("Frame")
         framebutton.Size = UDim2.new(0.5, 0, 0.7, 0)
-        framebutton.Position = UDim2.new(0, 0, 0, 0)
+        framebutton.Position = UDim2.new(0, 0, 0.3, 0)
         framebutton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
         framebutton.BackgroundTransparency = 1
         framebutton.Parent = frame
@@ -152,7 +152,7 @@ submitButton.MouseButton1Click:Connect(function()
         -- Frame pour les services
         local frameService = Instance.new("Frame")
         frameService.Size = UDim2.new(0.5, 0, 0.7, 0)
-        frameService.Position = UDim2.new(0.5, 0, 0, 0)
+        frameService.Position = UDim2.new(0.5, 0, 0.3, 0)
         frameService.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
         frameService.BackgroundTransparency = 1
         frameService.Parent = frame
@@ -170,15 +170,6 @@ scrollingframeservices.Name = N
             -- Ajout de boutons dans chaque ScrollingFrame
             local uiListLayoutServices = Instance.new("UIListLayout")
             uiListLayoutServices.Parent = scrollingframeservices
-
-            for j, buttonName in ipairs(ServicesButton) do
-                local serviceButton = Instance.new("TextButton")
-                serviceButton.Size = UDim2.new(1, -10, 0, 50)
-                serviceButton.Text = j
-                serviceButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-                serviceButton.BackgroundColor3 = Color3.fromRGB(0, 128, 0)
-                serviceButton.Parent = scrollingframeservices
-            end
         end
 
     else
