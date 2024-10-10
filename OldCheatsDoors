@@ -176,17 +176,18 @@ elseif model.Name:lower() == "sideroomdupe" then
         local distanceLabel = Instance.new("TextLabel", distanceBillboard)
         distanceLabel.Size = UDim2.new(1, 0, 1, 0)
         distanceLabel.BackgroundTransparency = 1
-        distanceLabel.Text = "Distance: " .. tostring((model.Position - player.Character.HumanoidRootPart.Position).Magnitude)
+distanceLabel.Text = "[Coming Soon]"
+     --   distanceLabel.Text = "[" .. tostring((model.Position - player.Character.HumanoidRootPart.Position).Magnitude).."]"
         distanceLabel.TextColor3 = color
 
         -- Mettre à jour la distance toutes les fois que le rendu est mis à jour
-        RunService.RenderStepped:Connect(function()
+      --[[  RunService.RenderStepped:Connect(function()
 if model:IsA("BasePart") or model:IsA("MeshPart") then
             distanceLabel.Text = "Distance: " .. tostring((model.Position - player.Character.HumanoidRootPart.Position).Magnitude)
 end
 if model:IsA("Model") then
             distanceLabel.Text = "[" .. tostring((model:GetPivot().Position - player.Character.HumanoidRootPart.Position).Magnitude).."]"
-end
+end]]--
         end)
     end
 
