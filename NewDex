@@ -1,7 +1,6 @@
 local function createUIElement(className, properties, parent)
     local element = Instance.new(className)
     for prop, value in pairs(properties) do
-        -- Vérifie si la propriété existe pour cet élément
         if element[prop] ~= nil then
             element[prop] = value
         else
@@ -12,31 +11,26 @@ local function createUIElement(className, properties, parent)
     return element
 end
 
--- Fonction pour ajuster la taille de la CanvasSize en fonction du contenu
 local function updateCanvasSize(frame)
     local totalHeight = 0
     local layout = frame:FindFirstChildOfClass("UIListLayout")
     local padding = layout and layout.Padding.Offset or 0
 
-    -- Calculer la hauteur totale des enfants
     for _, child in ipairs(frame:GetChildren()) do
         if child:IsA("GuiObject") then
             totalHeight = totalHeight + child.Size.Y.Offset + padding
         end
     end
 
-    -- Mettre à jour la CanvasSize
     frame.CanvasSize = UDim2.new(0, 0, 0, totalHeight)
 end
 
--- Création d'un ScreenGui pour contenir le GUI
 local player = game.Players.LocalPlayer
 local screenGui = createUIElement("ScreenGui", {}, player:WaitForChild("PlayerGui"))
 
--- Création d'une zone de recherche
 local searchFrame = createUIElement("Frame", {
     Size = UDim2.new(0.2, 0, 0.1, 0),
-    Position = UDim2.new(0.8, 0, 0.0, 0),
+    Position = UDim2.new(0.8, 0, 0, 0),
     BackgroundColor3 = Color3.fromRGB(45, 45, 45),
 }, screenGui)
 
@@ -46,13 +40,10 @@ local searchBox = createUIElement("TextBox", {
     TextColor3 = Color3.fromRGB(255, 255, 255),
     PlaceholderText = "Search...",
     TextScaled = true,
-    Text = "Search...",
 }, searchFrame)
 
--- Table pour stocker les objets ajoutés
 local objectButtons = {}
 
--- Fonction pour mettre à jour la visibilité des objets en fonction de la recherche
 local function updateObjectVisibility(query)
     for _, button in pairs(objectButtons) do
         if button.Text:lower():find(query:lower()) then
@@ -61,76 +52,67 @@ local function updateObjectVisibility(query)
             button.Visible = false
         end
     end
-    updateCanvasSize(explorerContent) -- Met à jour la taille de la CanvasSize après modification de la visibilité
+    updateCanvasSize(explorerContent)
 end
 
--- Événement pour le changement de texte dans la TextBox
 searchBox:GetPropertyChangedSignal("Text"):Connect(function()
     updateObjectVisibility(searchBox.Text)
 end)
 
--- Création de l'Explorateur
 local explorerFrame = createUIElement("Frame", {
     Size = UDim2.new(0.2, 0, 0.5, 0),
     Position = UDim2.new(0.8, 0, 0.1, 0),
     BackgroundColor3 = Color3.fromRGB(45, 45, 45),
 }, screenGui)
 
--- Titre de l'Explorateur
 local explorerTitle = createUIElement("TextLabel", {
     Size = UDim2.new(1, 0, 0.1, 0),
-    Position = UDim2.new(0, 0, 0, 0),
     BackgroundColor3 = Color3.fromRGB(35, 35, 35),
     Text = "Explorer",
     TextColor3 = Color3.fromRGB(255, 255, 255),
     TextScaled = true
 }, explorerFrame)
 
--- Zone de contenu de l'Explorateur (où les objets vont apparaître)
 local explorerContent = createUIElement("ScrollingFrame", {
     Size = UDim2.new(1, 0, 0.9, 0),
     Position = UDim2.new(0, 0, 0.1, 0),
     BackgroundColor3 = Color3.fromRGB(50, 50, 50),
     ScrollBarThickness = 8,
-CanvasSize = UDim2.new(0,0,5,0)
+    CanvasSize = UDim2.new(0, 0, 5, 0),
 }, explorerFrame)
 
--- Création du panneau de Propriétés
 local propertiesFrame = createUIElement("Frame", {
     Size = UDim2.new(0.2, 0, 0.4, 0),
     Position = UDim2.new(0.8, 0, 0.6, 0),
     BackgroundColor3 = Color3.fromRGB(45, 45, 45),
 }, screenGui)
 
--- Titre du panneau de Propriétés
 local propertiesTitle = createUIElement("TextLabel", {
     Size = UDim2.new(1, 0, 0.1, 0),
-    Position = UDim2.new(0, 0, 0, 0),
     BackgroundColor3 = Color3.fromRGB(35, 35, 35),
     Text = "Properties",
     TextColor3 = Color3.fromRGB(255, 255, 255),
     TextScaled = true
 }, propertiesFrame)
 
--- Zone de contenu du panneau de Propriétés
 local propertiesContent = createUIElement("ScrollingFrame", {
     Size = UDim2.new(1, 0, 0.9, 0),
     Position = UDim2.new(0, 0, 0.1, 0),
     BackgroundColor3 = Color3.fromRGB(50, 50, 50),
     ScrollBarThickness = 8,
-CanvasSize = UDim2.new(0,0,5,0)
+    CanvasSize = UDim2.new(0, 0, 5, 0),
 }, propertiesFrame)
 
--- Layouts
 local explorerLayout = createUIElement("UIListLayout", {
-    SortOrder = Enum.SortOrder.LayoutOrder
+    SortOrder = Enum.SortOrder.LayoutOrder,
+    Padding = UDim(0, 5)
 }, explorerContent)
 
 local propertiesLayout = createUIElement("UIListLayout", {
-    SortOrder = Enum.SortOrder.LayoutOrder
+    SortOrder = Enum.SortOrder.LayoutOrder,
+    Padding = UDim(0, 5)
 }, propertiesContent)
 
--- Fonction pour ajouter des objets à l'explorateur
 local function ajouterObjetExplorateur(objet)
     local objetLabel = createUIElement("TextButton", {
         Size = UDim2.new(1, 0, 0.05, 0),
@@ -139,17 +121,13 @@ local function ajouterObjetExplorateur(objet)
         BackgroundColor3 = Color3.fromRGB(60, 60, 60),
     }, explorerContent)
 
-    -- Ajouter le bouton à la table pour le filtrage
     table.insert(objectButtons, objetLabel)
 
-    -- Mettre à jour la taille de la CanvasSize après l'ajout d'un objet
     updateCanvasSize(explorerContent)
 
-    -- Lorsque l'objet est cliqué, on affiche ses propriétés
     objetLabel.MouseButton1Click:Connect(function()
         propertiesContent:ClearAllChildren()
 
-        -- Affichage du nom de l'objet
         createUIElement("TextLabel", {
             Size = UDim2.new(1, 0, 0.1, 0),
             Text = "Name: " .. objet.Name,
@@ -157,7 +135,6 @@ local function ajouterObjetExplorateur(objet)
             BackgroundColor3 = Color3.fromRGB(70, 70, 70),
         }, propertiesContent)
 
-        -- Affichage de la position si c'est un BasePart
         if objet:IsA("BasePart") or objet:IsA("MeshPart") then
             createUIElement("TextLabel", {
                 Size = UDim2.new(1, 0, 0.1, 0),
@@ -165,18 +142,16 @@ local function ajouterObjetExplorateur(objet)
                 TextColor3 = Color3.fromRGB(255, 255, 255),
                 BackgroundColor3 = Color3.fromRGB(70, 70, 70),
             }, propertiesContent)
-        elseif objet:IsA("TextLabel") or objet:IsA("TextButton") then
+        else
             createUIElement("TextLabel", {
                 Size = UDim2.new(1, 0, 0.1, 0),
                 Text = "Position: N/A",
                 TextColor3 = Color3.fromRGB(255, 255, 255),
                 BackgroundColor3 = Color3.fromRGB(70, 70, 70),
             }, propertiesContent)
-end
         end
 
-        -- Affichage de la catégorie (service parent)
-        local category = objet.Parent.ClassName or "Unknown"
+        local category = objet.ClassName or "Unknown"
         createUIElement("TextLabel", {
             Size = UDim2.new(1, 0, 0.1, 0),
             Text = "Category: " .. category,
@@ -184,25 +159,24 @@ end
             BackgroundColor3 = Color3.fromRGB(70, 70, 70),
         }, propertiesContent)
 
-        -- Affichage du parent de l'objet
+local ParentsObjet = objet.Parent.Name
         createUIElement("TextLabel", {
             Size = UDim2.new(1, 0, 0.1, 0),
-            Text = "Parent: " .. tostring(objet.Parent),
+            Text = "Parent: " .. ParentsObjet,
             TextColor3 = Color3.fromRGB(255, 255, 255),
             BackgroundColor3 = Color3.fromRGB(70, 70, 70),
         }, propertiesContent)
+
     end)
 end
 
--- Fonction pour lister les objets dans le jeu
 local function listerTousLesObjets(parent)
     for _, objet in ipairs(parent:GetChildren()) do
         ajouterObjetExplorateur(objet)
-        listerTousLesObjets(objet) -- Appel récursif pour les enfants
+        listerTousLesObjets(objet)
     end
 end
 
--- Événements pour gérer les objets ajoutés ou retirés
 workspace.DescendantAdded:Connect(function(objet)
     ajouterObjetExplorateur(objet)
 end)
@@ -212,11 +186,10 @@ workspace.DescendantRemoving:Connect(function(objet)
         if button.Text == objet.Name then
             button:Destroy()
             table.remove(objectButtons, index)
-            updateCanvasSize(explorerContent) -- Met à jour la taille après suppression
+            updateCanvasSize(explorerContent)
             break
         end
     end
 end)
 
--- Démarrer la liste des objets
 listerTousLesObjets(workspace)
