@@ -1,6 +1,62 @@
+
+-- UIListLayout pour les boutons
+local listLayout = Instance.new("UIListLayout", scrollingFrame)
+listLayout.SortOrder = Enum.SortOrder.LayoutOrder
+listLayout.Padding = UDim.new(0, 10)
+
+-- Fonction d'aide pour créer des boutons
+local function createButton(text, parent)
+    local button = Instance.new("TextButton", parent)
+    button.Size = UDim2.new(1, 0, 0, 50)
+    button.Text = text
+    button.TextColor3 = Color3.fromRGB(255, 255, 255)
+    button.Font = Enum.Font.GothamBold
+    button.TextSize = 16
+    button.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
+
+    -- Gradient sur chaque bouton
+    local buttonGradient = Instance.new("UIGradient", button)
+    buttonGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(70, 70, 70)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(100, 100, 100))
+    }
+
+    uistroke:Clone().Parent = button
+    uicorner:Clone().Parent = button
+    return button
+end
+
+-- Création des boutons
+local espButton = createButton("ESP Off", scrollingFrame)
+local NoLagButton = createButton("No Lag Off", scrollingFrame)
+local NoCooldownPromptButton = createButton("No Cooldown Prompt Off", scrollingFrame)
+local FullBrightButton = createButton("Full Bright Off", scrollingFrame)
+local GodModeButton = createButton("God Mode Off", scrollingFrame)
+local autoLootButton = createButton("Auto Loot Off", scrollingFrame)
+local flyButton = createButton("Fly Off", scrollingFrame)
+local autoHealButton = createButton("Auto Heal Off", scrollingFrame)
+local speedBoostButton = createButton("Speed Boost Off", scrollingFrame)
+
+-- Variables de fonctionnalité
+local espActive, noLagActive, noCooldownPromptActive, fullBrightActive, godModeActive, autoLootActive, flyActive, autoHealActive, speedBoostActive = false, false, false, false, false, false, false, false, false
+local highlightColor = Color3.fromRGB(255, 0, 0)
+local highlightTransparency = 0.5
+local originalMaterials = {}
+local espTargets = {}
+
+-- Variables pour les couleurs
+local monsterColor = Color3.fromRGB(255, 0, 0) -- Rouge pour les monstres
+local sideroomDupeColor = Color3.fromRGB(255, 0, 0) -- Rouge pour les portes "sideroomdupe"
+local itemColor = Color3.fromRGB(255, 165, 0) -- Orange pour les items
+local closetColor = Color3.fromRGB(0, 255, 0) -- Vert pour les closets, wardrobes, etc.
+
+-- Variables pour les éléments à surligner
+local espMonsters = {"figure_rig", "figure", "rushnew", "ambushmoving", "Screech", "haltmoving", "Rushemoving"}
+local espDoors = {"door", "sideroomdupe"}
 -- Variables
 local player = game.Players.LocalPlayer
 local RunService = game:GetService("RunService")
+local workspace = game:GetService("Workspace")
 
 -- Supprimer l'ancien GUI si présent
 if player.PlayerGui:FindFirstChild("GuiPlayer") then
@@ -124,7 +180,6 @@ local espDoors = {"door", "sideroomdupe"}
 local espItems = {"gold", "goldpile", "MineGenerator", "fuseobtain", "keyobtain", "rift", "Chest", "Crucifix","Lockpick", "Battery", "FlashLight"}
 local espClosets = {"closet","Backdoor_wardrobe","locker_large", "locker_small", "wardrobe"}
 
--- Fonction pour surligner un modèle
 -- Fonction pour surligner un modèle avec répétition jusqu'à succès
 local function highlightModelWithRetry(model, color)
     local highlight = model:FindFirstChildOfClass("Highlight")
@@ -150,75 +205,108 @@ local function highlightModelWithRetry(model, color)
         textLabel.BackgroundTransparency = 1
         textLabel.Text = model.Name
         textLabel.TextColor3 = color -- Texte en fonction de la couleur correspondante
-        
+
         -- Si c'est une porte, affichez son nom complet
         if model.Name:lower() == "door" then
             textLabel.Text = "Door " .. model.Parent.Parent.Name
-        end
-        if model.Name:lower() == "locker_large" or model.Name:lower() == "wardrobe" or model.Name:lower() == "Backdoor_wardrobe" then
+        elseif model.Name:lower() == "locker_large" or model.Name:lower() == "wardrobe" or model.Name:lower() == "Backdoor_wardrobe" then
             textLabel.Text = "Closet"
-        end
-if model.Name:lower() == "locker_small" then
+        elseif model.Name:lower() == "locker_small" then
             textLabel.Text = "Locker"
+        elseif model.Name:lower() == "fuseobtain" then
+            textLabel.Text = "Fuse"
+        elseif model.Name:lower() == "keyobtain" then
+            textLabel.Text = "Key"
         end
-    end
-if model.Name:lower() == "fuseobtain" then
-textLabel.Text = "Fuse"
-end
-if model.Name:lower() == "keyobtain" then
-textLabel.Text = "Key"
-end
-end
 
--- Fonction pour surligner tous les modèles ESP avec répétition
+        -- Créer un second BillboardGui pour afficher la distance
+        local distanceBillboard = Instance.new("BillboardGui", model)
+        distanceBillboard.Adornee = model
+        distanceBillboard.AlwaysOnTop = true
+        distanceBillboard.Size = UDim2.new(0, 100, 0, 50)
+        distanceBillboard.StudsOffset = Vector3.new(0, -2, 0) -- Positionné sous le premier BillboardGui
 
+        local distanceLabel = Instance.new("TextLabel", distanceBillboard)
+        distanceLabel.Size = UDim2.new(1, 0, 1, 0)
+        distanceLabel.BackgroundTransparency = 1
+        distanceLabel.TextColor3 = color -- Utilisez la même couleur que le Highlight
+        distanceLabel.Text = "Distance: " .. tostring((player.Character.HumanoidRootPart.Position - model.Position).Magnitude) .. " studs" -- Initialiser la distance
 
--- Le reste de votre code reste inchangé
+        -- Met à jour la distance chaque fois que la position du joueur change
+        local function updateDistance()
+            local distance = (player.Character.HumanoidRootPart.Position - model.Position).Magnitude
+            distanceLabel.Text = "Distance: " .. math.floor(distance) .. " studs"
+        end
 
--- Fonction pour déterminer la couleur en fonction du type d'objet
-local function getHighlightColor(model)
-    local nameLower = model.Name:lower()
-    if table.find(espMonsters, nameLower) then
-        return monsterColor
-    elseif table.find(espDoors, nameLower) then
-        return sideroomDupeColor
-    elseif table.find(espItems, nameLower) then
-        return itemColor
-    elseif table.find(espClosets, nameLower) then
-        return closetColor
-    else
-        return Color3.fromRGB(255, 255, 255) -- Blanc par défaut
+        -- Connecter la fonction d'actualisation de la distance au RenderStepped
+        RunService.RenderStepped:Connect(updateDistance)
     end
 end
 
--- Fonction mise à jour des cibles ESP
-local function updateEspTargets()
-    espTargets = {}
-    for _, model in pairs(workspace:GetDescendants()) do
-        if model:IsA("Model") or model:IsA("Part") then
-            local nameLower = model.Name:lower()
-            if table.find(espMonsters, nameLower) or table.find(espDoors, nameLower) or
-               table.find(espItems, nameLower) or table.find(espClosets, nameLower) then
-                table.insert(espTargets, model)
+-- Activer/Désactiver ESP
+local function toggleESP()
+    espActive = not espActive
+
+    if espActive then
+        espButton.Text = "ESP On"
+        for _, modelName in ipairs(espMonsters) do
+            for _, model in ipairs(workspace:GetChildren()) do
+                if model:IsA("Model") and model.Name:lower() == modelName:lower() then
+                    highlightModelWithRetry(model, monsterColor)
+                end
             end
         end
-    end
-end
 
--- Fonction pour surligner tous les modèles ESP
+        for _, modelName in ipairs(espDoors) do
+            for _, model in ipairs(workspace:GetChildren()) do
+                if model:IsA("Model") and model.Name:lower() == modelName:lower() then
+                    highlightModelWithRetry(model, sideroomDupeColor)
+                end
+            end
+        end
 
-    -- Fonction pour surligner tous les modèles ESP
-local function highlightModels()
-    for _, model in pairs(espTargets) do
-        local color = getHighlightColor(model) -- Obtenir la couleur correspondante
-        highlightModelWithRetry(model, color) -- Utilisez la fonction avec répétition
-    end
-end
+        for _, modelName in ipairs(espItems) do
+            for _, model in ipairs(workspace:GetChildren()) do
+                if model:IsA("Model") and model.Name:lower() == modelName:lower() then
+                    highlightModelWithRetry(model, itemColor)
+                end
+            end
+        end
 
-local function clearHighlights()
-    for _, obj in pairs(workspace:GetDescendants()) do
-        if obj:IsA("Highlight") or obj:IsA("BillboardGui") then
-            obj:Destroy()
+        for _, modelName in ipairs(espClosets) do
+            for _, model in ipairs(workspace:GetChildren()) do
+                if model:IsA("Model") and model.Name:lower() == modelName:lower() then
+                    highlightModelWithRetry(model, closetColor)
+                end
+            end
+        end
+
+        -- Connexion à Workspace.DescendantAdded pour ESP
+        workspace.DescendantAdded:Connect(function(child)
+            if child:IsA("Model") then
+                if table.find(espMonsters, child.Name:lower()) then
+                    highlightModelWithRetry(child, monsterColor)
+                elseif table.find(espDoors, child.Name:lower()) then
+                    highlightModelWithRetry(child, sideroomDupeColor)
+                elseif table.find(espItems, child.Name:lower()) then
+                    highlightModelWithRetry(child, itemColor)
+                elseif table.find(espClosets, child.Name:lower()) then
+                    highlightModelWithRetry(child, closetColor)
+                end
+            end
+        end)
+
+    else
+        espButton.Text = "ESP Off"
+        for _, model in ipairs(workspace:GetChildren()) do
+            if model:IsA("Model") and (model:FindFirstChildOfClass("Highlight") or model:FindFirstChildOfClass("BillboardGui")) then
+                model:FindFirstChildOfClass("Highlight"):Destroy()
+                for _, gui in ipairs(model:GetChildren()) do
+                    if gui:IsA("BillboardGui") then
+                        gui:Destroy()
+                    end
+                end
+            end
         end
     end
 end
