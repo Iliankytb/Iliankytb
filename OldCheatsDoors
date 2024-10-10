@@ -112,24 +112,23 @@ local highlightTransparency = 0.5
 local originalMaterials = {}
 local espTargets = {}
 
--- Fonction ESP
-local function updateEspTargets()
-    espTargets = {}
-    for _, model in pairs(workspace:GetDescendants()) do
-        if model:IsA("Model") or model:IsA("Part") then
-            local nameLower = model.Name:lower()
-            if nameLower == "locker_large" or nameLower == "locker_small" or nameLower == "door" or nameLower == "sideroomdupe" or nameLower == "wardrobe" or nameLower == "gold" or nameLower == "goldpile" or nameLower == "MineGenerator" or nameLower == "fuse" or nameLower == "key" or nameLower == "key_holder" or nameLower == "rift" or nameLower == "Chest" or nameLower == "Lockpick" or nameLower == "Battery" or nameLower == "FlashLight" or nameLower == "figure_rig" or nameLower == "figure" or nameLower == "rush" or nameLower == "ambush" or nameLower == "Screech" or nameLower == "halt" or nameLower == "Rushed" or nameLower == "LiveHintBook" or nameLower == "drawercontainer" then
-                table.insert(espTargets, model)
-            end
-        end
-    end
-end
+-- Variables pour les couleurs
+local monsterColor = Color3.fromRGB(255, 0, 0) -- Rouge pour les monstres
+local sideroomDupeColor = Color3.fromRGB(255, 0, 0) -- Rouge pour les portes "sideroomdupe"
+local itemColor = Color3.fromRGB(255, 165, 0) -- Orange pour les items
+local closetColor = Color3.fromRGB(0, 255, 0) -- Vert pour les closets, wardrobes, etc.
 
-local function highlightModel(model)
-local function highlightModel(model)
+-- Variables pour les éléments à surligner
+local espMonsters = {"figure_rig", "figure", "rush", "ambush", "Screech", "halt", "Rushed"}
+local espDoors = {"door", "sideroomdupe"}
+local espItems = {"gold", "goldpile", "MineGenerator", "fuse", "key", "key_holder", "rift", "Chest", "Lockpick", "Battery", "FlashLight"}
+local espClosets = {"locker_large", "locker_small", "wardrobe"}
+
+-- Fonction pour surligner un modèle
+local function highlightModel(model, color)
     if not model:FindFirstChildOfClass("Highlight") then
         local highlight = Instance.new("Highlight", model)
-        highlight.FillColor = highlightColor
+        highlight.FillColor = color
         highlight.FillTransparency = highlightTransparency
         highlight.OutlineTransparency = highlightTransparency
     end
@@ -145,20 +144,53 @@ local function highlightModel(model)
         textLabel.Size = UDim2.new(1, 0, 1, 0)
         textLabel.BackgroundTransparency = 1
         textLabel.Text = model.Name
-        textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-        textLabel.Name = "ESPTextLabel" -- Nom pour la future référence
+        textLabel.TextColor3 = color -- Texte en fonction de la couleur correspondante
+        textLabel.Name = "ESPTextLabel"
 
         -- Si c'est une porte, on affiche door.Parent.Parent.Name
         if model.Name:lower() == "door" then
-            textLabel.Text = "Door"..model.Parent.Parent.Name
+            textLabel.Text = "Door " .. model.Parent.Parent.Name
         end
     end
 end
 
+-- Fonction pour déterminer la couleur en fonction du type d'objet
+local function getHighlightColor(model)
+    local nameLower = model.Name:lower()
+    if table.find(espMonsters, nameLower) then
+        return monsterColor
+    elseif table.find(espDoors, nameLower) then
+        return sideroomDupeColor
+    elseif table.find(espItems, nameLower) then
+        return itemColor
+    elseif table.find(espClosets, nameLower) then
+        return closetColor
+    else
+        return Color3.fromRGB(255, 255, 255) -- Blanc par défaut
+    end
+end
 
+-- Fonction mise à jour des cibles ESP
+local function updateEspTargets()
+    espTargets = {}
+    for _, model in pairs(workspace:GetDescendants()) do
+        if model:IsA("Model") or model:IsA("Part") then
+            local nameLower = model.Name:lower()
+            if table.find(espMonsters, nameLower) or table.find(espDoors, nameLower) or
+               table.find(espItems, nameLower) or table.find(espClosets, nameLower) then
+                table.insert(espTargets, model)
+            end
+        end
+    end
+end
+
+-- Fonction pour surligner tous les modèles ESP
+
+    -- Fonction pour surligner tous les modèles ESP
 local function highlightModels()
     for _, model in pairs(espTargets) do
-        highlightModel(model)
+        local color = getHighlightColor(model) -- Obtenir la couleur correspondante
+        highlightModel(model, color)
     end
 end
 
@@ -268,35 +300,22 @@ speedBoostButton.MouseButton1Click:Connect(function()
     
     local humanoid = player.Character and player.Character:FindFirstChildOfClass("Humanoid")
     if humanoid then
-        humanoid.WalkSpeed = speedBoostActive and 50 or 16
+        humanoid.WalkSpeed = speedBoostActive and 22 or 16
     end
 end)
 
--- Mise à jour des cibles ESP pour les descendants ajoutés et nommés dans updateEspTargets
+-- Mise à jour des cibles ESP pour les descendants ajoutés
 workspace.DescendantAdded:Connect(function(descendant)
     if descendant:IsA("Model") or descendant:IsA("Part") then
         local nameLower = descendant.Name:lower()
-if espActive then
-        if nameLower == "locker_large" or nameLower == "locker_small" or nameLower == "door" or 
-           nameLower == "sideroomdupe" or nameLower == "wardrobe" or nameLower == "gold" or 
-           nameLower == "goldpile" or nameLower == "MineGenerator" or nameLower == "fuse" or 
-           nameLower == "key" or nameLower == "key_holder" or nameLower == "rift" or 
-           nameLower == "Chest" or nameLower == "Lockpick" or nameLower == "Battery" or 
-           nameLower == "FlashLight" or nameLower == "figure_rig" or nameLower == "figure" or 
-           nameLower == "rush" or nameLower == "ambush" or nameLower == "Screech" or 
-           nameLower == "halt" or nameLower == "Rushed" or nameLower == "LiveHintBook" or 
-           nameLower == "drawercontainer" then
-            highlightModel(descendant)
+        if espActive then
+            if table.find(espMonsters, nameLower) or table.find(espDoors, nameLower) or
+               table.find(espItems, nameLower) or table.find(espClosets, nameLower) then
+                highlightModel(descendant, getHighlightColor(descendant))
+            end
         end
-end
-    end
-if noLagActive then
-        setSmoothPlastic()
-    else
-        restoreMaterials()
     end
 end)
-
 
 -- Boucle principale pour les fonctions activées
 RunService.RenderStepped:Connect(function()
@@ -318,7 +337,7 @@ RunService.RenderStepped:Connect(function()
                 
                 -- Si c'est une porte, on met à jour avec son nom complet
                 if model.Name:lower() == "door" then
-                    textLabel.Text = "door "..model.Parent.Parent.Name.." .. math.floor(distance) .. " studs"
+                    textLabel.Text = "door " .. model.Parent.Parent.Name .. " (" .. math.floor(distance) .. " studs)"
                 end
             end
         end
@@ -332,4 +351,3 @@ RunService.RenderStepped:Connect(function()
         -- Logique pour auto-loot
     end
 end)
-
