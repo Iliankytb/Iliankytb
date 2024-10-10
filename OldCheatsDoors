@@ -44,6 +44,7 @@ closeopen.Text = "Toggle Menu"
 closeopen.TextColor3 = Color3.fromRGB(255, 255, 255)
 closeopen.Font = Enum.Font.GothamBold
 closeopen.TextSize = 18
+closeopen.Draggable = true
 closeopen.BackgroundColor3 = Color3.fromRGB(85, 170, 255)
 
 -- Gradient sur le bouton closeopen
