@@ -8,10 +8,10 @@ local Cheats = {
     ["TimerSpeedrun(Best Timer)"] = "https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/SpeedRunTimer",
 ["Doors Cheat(MSPaintV2)"] = "https://raw.githubusercontent.com/notpoiu/mspaint/main/main.lua",
 ["Doors Entities Spawner (not Mine)"] = "https://raw.githubusercontent.com/plamen6789/UtilitiesHub/main/UtilitiesGUI",
-    ["ComingSoon"] = ""
+    ["NewDew"] = "https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/NewDex"
 }
 
-local ButtonNames = {"Doors Cheats(iliankytb(in rework))", "Blox Fruit Cheat(Best and not mine)", "TimerSpeedrun(Best Timer)", "Doors Cheat(MSPaintV2)","Doors Entities Spawner (not Mine)","ComingSoon"}
+local ButtonNames = {"Doors Cheats(iliankytb(in rework))", "Blox Fruit Cheat(Best and not mine)", "TimerSpeedrun(Best Timer)", "Doors Cheat(MSPaintV2)","Doors Entities Spawner (not Mine)","NewDew"}
 local ServicesScrollingFrame = ButtonNames
 
 
