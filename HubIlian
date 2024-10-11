@@ -60,7 +60,7 @@ closeButton.Parent = frame
 
 local closeframeButton = Instance.new("TextButton")
 closeframeButton.Size = UDim2.new(0, 30, 0, 30)
-closeframeButton.Position = UDim2.new(1, -30, 0, 10)
+closeframeButton.Position = UDim2.new(1, 40, 0, 10)
 closeframeButton.Text = "-"
 closeframeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 closeframeButton.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
