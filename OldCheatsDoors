@@ -126,6 +126,7 @@ local highlightColor = Color3.fromRGB(255, 0, 0)
 local highlightTransparency = 0.5
 local originalMaterials = {}
 local espTargets = {}
+local MonsterNotiferTargets = {}
 
 -- Variables pour les couleurs
 local monsterColor = Color3.fromRGB(255, 0, 0) -- Rouge pour les monstres
@@ -222,6 +223,7 @@ local function setupESPDetection()
                         highlightIfNeeded(descendant, monsterColor)
 if NotifieMonsters then
 if lowerName == monsterName:lower() then
+table.insert(MonsterNotiferTargets, monsterName)
 local notification = Instance.new("TextLabel", frameNotifierMonster)
                 notification.Size = UDim2.new(1, 0, 0, 50)
                 notification.Text = monsterName .. " has Spawned!"
@@ -268,7 +270,8 @@ end
                 highlight:Destroy()
             end
         end
-        espTargets = {} -- Réinitialiser la liste des cibles ESP
+        espTargets = {}
+-- Réinitialiser la liste des cibles ESP
     end
 end
 
