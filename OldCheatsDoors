@@ -135,7 +135,7 @@ local itemColor = Color3.fromRGB(255, 165, 0) -- Orange pour les items
 local closetColor = Color3.fromRGB(0, 255, 0) -- Vert pour les closets, wardrobes, etc.
 
 -- Variables pour les éléments à surligner
-local espMonsters = {"figure_rig","figure","rushnew","giggle","grumble","giggleceiling", "ambushmoving", "Screech", "haltmoving", "Rushemoving"}
+local espMonsters = {"figure_rig","blitzmoving","lookman","figure","rushnew","giggle","grumble","giggleceiling", "ambushmoving", "Screech", "haltmoving", "Rushemoving"}
 local espDoors = {"door","sideroomdupe"}
 local espItems = {"gold","goldpile","MineGenerator", "fuseobtain", "keyobtain", "rift", "Chest", "Crucifix","Lockpick", "Battery", "FlashLight"}
 local espClosets = {"closet","Backdoor_wardrobe","locker_large", "locker_small", "wardrobe"}
