@@ -112,6 +112,7 @@ DiscordButton.TextScaled = true
 DiscordButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 DiscordButton.BackgroundColor3 = Color3.fromRGB(0, 0, 255) -- Couleur de fond bleue
 DiscordButton.Parent = frame
+
 closeButton.MouseButton1Click:Connect(function()
 IsFrameClose = not IsFrameClose
 frame.Visible = IsFrameClose
@@ -164,7 +165,6 @@ for i = 1, 75 do
     wait(0.01)
     titleText.TextTransparency = titleText.TextTransparency - 0.01
 end
-end)
 
 for i = 1, 50 do
     wait(0.01)
