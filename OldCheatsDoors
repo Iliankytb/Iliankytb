@@ -220,6 +220,15 @@ local function setupESPDetection()
                 for _, monsterName in ipairs(espMonsters) do
                     if lowerName == monsterName:lower() then
                         highlightIfNeeded(descendant, monsterColor)
+if NotifieMonsters then
+local notification = Instance.new("TextLabel", frameNotifierMonster)
+                notification.Size = UDim2.new(1, 0, 0, 50)
+                notification.Text = monsterName .. " has Spawned!"
+                notification.TextColor3 = Color3.fromRGB(255, 0, 0)
+                notification.BackgroundTransparency = 1
+                wait(2) -- Délai avant de retirer la notification
+                notification:Destroy()
+end
                     end
                 end
 
@@ -274,29 +283,6 @@ espButton.MouseButton1Click:Connect(function()
     espActive = not espActive
     espButton.Text = espActive and "ESP On" or "ESP Off"
 setupESPDetection()
-end)
-
-local function notifyMonsters()
-    for _, monsterName in ipairs(espMonsters) do
-        for _, monster in pairs(workspace:GetChildren()) do
-            if monster:FindFirstChild(monsterName)  then
-                local notification = Instance.new("TextLabel", frameNotifierMonster)
-                notification.Size = UDim2.new(1, 0, 0, 50)
-                notification.Text = monsterName .. " has Spawned!"
-                notification.TextColor3 = Color3.fromRGB(255, 0, 0)
-                notification.BackgroundTransparency = 1
-notification.Parent = frameNotifierMonster
-                wait(2) -- Délai avant de retirer la notification
-                notification:Destroy()
-            end
-        end
-    end
-end
-
-workspace.DescendantAdded:Connect(function()
-if NotifieMonsters then
-notifyMonsters()
-end
 end)
 
 MonsterNotifierButton.MouseButton1Click:Connect(function()
