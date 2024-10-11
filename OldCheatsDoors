@@ -129,6 +129,7 @@ local espTargets = {}
 local MonsterNotiferTargets = {}
 
 -- Variables pour les couleurs
+local doorColor = Color3.fromRGB(0, 0, 255)
 local monsterColor = Color3.fromRGB(255, 0, 0) -- Rouge pour les monstres
 local sideroomDupeColor = Color3.fromRGB(255, 0, 0) -- Rouge pour les portes "sideroomdupe"
 local itemColor = Color3.fromRGB(255, 165, 0) -- Orange pour les items
@@ -136,7 +137,8 @@ local closetColor = Color3.fromRGB(0, 255, 0) -- Vert pour les closets, wardrobe
 
 -- Variables pour les éléments à surligner
 local espMonsters = {"figure_rig","blitzmoving","lookman","figure","rushnew","giggle","grumble","giggleceiling", "ambushmoving", "Screech", "haltmoving", "Rushemoving"}
-local espDoors = {"door","sideroomdupe"}
+local espDoors = {"door"}
+local espDupe = {"sideroomdupe"}
 local espItems = {"gold","goldpile","MineGenerator", "fuseobtain", "keyobtain", "rift", "Chest", "Crucifix","Lockpick", "Battery", "FlashLight"}
 local espClosets = {"closet","Backdoor_wardrobe","locker_large", "locker_small", "wardrobe"}
 
@@ -168,7 +170,7 @@ local function highlightModelWithRetry(model, color)
 
         -- Si c'est une porte, affichez son nom complet
         if model.Name:lower() == "door" then
-            textLabel.Text = "Door " .. model.Parent.Parent.Name
+            textLabel.Text = "Door " .. model.Parent.Name
         elseif model.Name:lower() == "locker_large" or model.Name:lower() == "wardrobe" or model.Name:lower() == "Backdoor_wardrobe" then
             textLabel.Text = "Closet"
         elseif model.Name:lower() == "locker_small" then
@@ -209,6 +211,48 @@ local function highlightIfNeeded(model, color)
     end
 end
 
+local setupMonsterNotificationDetection()
+if NotifieMonsters then
+for _, descendant in ipairs(workspace:GetDescendants()) do
+            if descendant:IsA("Model") then
+                local lowerName = descendant.Name:lower()
+for _, monsterName in ipairs(espMonsters) do
+                    if lowerName == monsterName:lower() the
+if lowerName == monsterName:lower() then
+table.insert(MonsterNotiferTargets, monsterName)
+local notification = Instance.new("TextLabel", frameNotifierMonster)
+                notification.Size = UDim2.new(1, 0, 0, 50)
+                notification.Text = monsterName
+                notification.TextColor3 = Color3.fromRGB(0, 0, 255)
+                notification.BackgroundTransparency = 1
+if notification.Text == "ambushmoving" then
+notification.Text = "Ambush has spawned"
+elseif notification.Text == "rushmoving" then
+notification.Text = "Rush has spawned"
+elseif notification.Text == "giggle" or notification.Text == "giggleceiling" then
+notification.Text = "giggle has spawned"
+elseif notification.Text == "haltmoving" then
+notification.Text = "halt has spawned"
+elseif notification.Text == "seekmoving" then
+notification.Text = "seek has spawned"
+elseif notification.Text == "rushnew" then
+notification.Text = "Rush has spawned"
+elseif notification.Text == "grumble" then
+notification.Text = "Grumble has spawned"
+elseif notification.Text == "lookman" then
+notification.Text = "LookMan has spawned"
+elseif notification.Text == "blitzmoving" then
+notification.Text = "blitz has spawned"
+end
+                wait(3) -- Délai avant de retirer la notification
+                notification:Destroy()
+end
+end
+end
+end
+end
+end
+end
 -- Fonction pour configurer le surlignage avec la condition espActive
 local function setupESPDetection()
     if espActive then
@@ -221,20 +265,11 @@ local function setupESPDetection()
                 for _, monsterName in ipairs(espMonsters) do
                     if lowerName == monsterName:lower() then
                         highlightIfNeeded(descendant, monsterColor)
-if NotifieMonsters then
-if lowerName == monsterName:lower() then
-table.insert(MonsterNotiferTargets, monsterName)
-local notification = Instance.new("TextLabel", frameNotifierMonster)
-                notification.Size = UDim2.new(1, 0, 0, 50)
-                notification.Text = monsterName .. " has Spawned!"
-                notification.TextColor3 = Color3.fromRGB(0, 0, 255)
-                notification.BackgroundTransparency = 1
-                wait(3) -- Délai avant de retirer la notification
-                notification:Destroy()
-end
-end
+
                     end
                 end
+end
+end
 
             
 -- Surligner les portes
@@ -258,8 +293,6 @@ end
                         highlightIfNeeded(descendant, closetColor)
                     end
                 end
-            end
-end
         -- Écoute les nouveaux objets ajoutés dans le workspace
         
     else
@@ -277,6 +310,9 @@ end
 
 -- Appeler cette fonction pour activer la détection ESP
 workspace.DescendantAdded:Connect(function()
+if NotifieMonsters then
+setupMonsterNotificationDetection()
+end
 if espActive then
 setupESPDetection()
 end
