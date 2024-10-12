@@ -37,6 +37,7 @@ titleText.Position = UDim2.new(0, 0, 0, 0)
 titleText.TextColor3 = Color3.fromRGB(255, 255, 255)
 titleText.BackgroundTransparency = 1
 titleText.TextTransparency = 1
+titleText.TextScaled = true
 titleText.Parent = frame
 
 
@@ -47,6 +48,7 @@ loadingText.Position = UDim2.new(0, 0, 0.5, -25)
 loadingText.TextColor3 = Color3.fromRGB(255, 255, 255)
 loadingText.BackgroundTransparency = 1
 loadingText.TextTransparency = 1
+loadingText.TextScaled = true
 loadingText.Parent = frame
 
 
@@ -54,6 +56,7 @@ local closeButton = Instance.new("TextButton")
 closeButton.Size = UDim2.new(0, 30, 0, 30)
 closeButton.Position = UDim2.new(1, -40, 0, 10)
 closeButton.Text = "X"
+closeButton.TextScaled = true
 closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 closeButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 closeButton.Parent = frame
@@ -111,6 +114,7 @@ local closeframeButton = Instance.new("TextButton")
 closeframeButton.Size = UDim2.new(0, 30, 0, 30)
 closeframeButton.Position = UDim2.new(1, -80, 0, 10)
 closeframeButton.Text = "- (in work)"
+closeframeButton.TextScaled = true
 closeframeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 closeframeButton.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
 closeframeButton.Parent = frame
