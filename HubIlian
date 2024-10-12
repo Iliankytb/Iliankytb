@@ -58,13 +58,7 @@ closeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 closeButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
 closeButton.Parent = frame
 
-local closeframeButton = Instance.new("TextButton")
-closeframeButton.Size = UDim2.new(0, 30, 0, 30)
-closeframeButton.Position = UDim2.new(1, 40, 0, 10)
-closeframeButton.Text = "-"
-closeframeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-closeframeButton.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
-closeframeButton.Parent = frame
+
 
 closeButton.MouseButton1Click:Connect(function()
     screenGui:Destroy()
@@ -113,9 +107,16 @@ DiscordButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 DiscordButton.BackgroundColor3 = Color3.fromRGB(0, 0, 255) -- Couleur de fond bleue
 DiscordButton.Parent = frame
 
-closeButton.MouseButton1Click:Connect(function()
+local closeframeButton = Instance.new("TextButton")
+closeframeButton.Size = UDim2.new(0, 30, 0, 30)
+closeframeButton.Position = UDim2.new(1, -80, 0, 10)
+closeframeButton.Text = "- (in work)"
+closeframeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+closeframeButton.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
+closeframeButton.Parent = frame
+
+--[[closeButton.MouseButton1Click:Connect(function()
 IsFrameClose = not IsFrameClose
-frame.Visible = IsFrameClose
 if IsFrameClose then
 closeframeButton.Text = "+"
 if IsInKeyHub then
@@ -203,7 +204,7 @@ frame.Size = UDim2.new(0, 200 + i * 2, 0, 200 + i * 0.8)
 end
 end
 end
-end)
+end)]]--
 
 local UserInputService = game:GetService("UserInputService")
 
