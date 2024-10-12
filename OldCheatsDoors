@@ -218,7 +218,6 @@ for _, descendant in ipairs(workspace:GetDescendants()) do
                 local lowerName = descendant.Name:lower()
 for _, monsterName in ipairs(espMonsters) do
                     if lowerName == monsterName:lower() then
-if lowerName == monsterName:lower() then
 table.insert(MonsterNotiferTargets, monsterName)
 local notification = Instance.new("TextLabel", frameNotifierMonster)
                 notification.Size = UDim2.new(1, 0, 0, 50)
@@ -246,7 +245,6 @@ notification.Text = "blitz has spawned"
 end
                 wait(3) -- Délai avant de retirer la notification
                 notification:Destroy()
-end
 end
 end
 end
