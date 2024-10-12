@@ -211,7 +211,7 @@ local function highlightIfNeeded(model, color)
     end
 end
 
-local setupMonsterNotificationDetection()
+local function setupMonsterNotificationDetection()
 if NotifieMonsters then
 for _, descendant in ipairs(workspace:GetDescendants()) do
             if descendant:IsA("Model") then
@@ -315,21 +315,21 @@ for _, doorName in ipairs(espDupe) do
 end
 
 -- Appeler cette fonction pour activer la détection ESP
-workspace.DescendantAdded:Connect(function()
+workspace.DescendantAdded:Connect(function(descendant)
 if NotifieMonsters then
-setupMonsterNotificationDetection()
+setupMonsterNotificationDetection(descendant)
 end
 if espActive then
-setupESPDetection()
+setupESPDetection(descendant)
 end
 end)
 
 
 -- Gestion des boutons ESP
-espButton.MouseButton1Click:Connect(function()
+espButton.MouseButton1Click:Connect(function(descendant)
     espActive = not espActive
     espButton.Text = espActive and "ESP On" or "ESP Off"
-setupESPDetection()
+setupESPDetection(descendant)
 end)
 
 MonsterNotifierButton.MouseButton1Click:Connect(function()
