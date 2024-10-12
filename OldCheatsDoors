@@ -217,7 +217,7 @@ for _, descendant in ipairs(workspace:GetDescendants()) do
             if descendant:IsA("Model") then
                 local lowerName = descendant.Name:lower()
 for _, monsterName in ipairs(espMonsters) do
-                    if lowerName == monsterName:lower() the
+                    if lowerName == monsterName:lower() then
 if lowerName == monsterName:lower() then
 table.insert(MonsterNotiferTargets, monsterName)
 local notification = Instance.new("TextLabel", frameNotifierMonster)
@@ -274,6 +274,12 @@ end
             
 -- Surligner les portes
                 for _, doorName in ipairs(espDoors) do
+                    if lowerName == doorName:lower() then
+                        highlightIfNeeded(descendant, doorColor)
+                    end
+                end
+
+for _, doorName in ipairs(espDupe) do
                     if lowerName == doorName:lower() then
                         highlightIfNeeded(descendant, sideroomDupeColor)
                     end
