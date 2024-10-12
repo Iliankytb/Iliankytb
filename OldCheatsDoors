@@ -279,8 +279,8 @@ end
                     end
                 end
 
-for _, doorName in ipairs(espDupe) do
-                    if lowerName == doorName:lower() then
+for _, doorDupeName in ipairs(espDupe) do
+                    if lowerName == doorDupeName:lower() then
                         highlightIfNeeded(descendant, sideroomDupeColor)
                     end
                 end
@@ -315,12 +315,12 @@ for _, doorName in ipairs(espDupe) do
 end
 
 -- Appeler cette fonction pour activer la détection ESP
-workspace.DescendantAdded:Connect(function(descendant)
+workspace.DescendantAdded:Connect(function()
 if NotifieMonsters then
-setupMonsterNotificationDetection(descendant)
+setupMonsterNotificationDetection()
 end
 if espActive then
-setupESPDetection(descendant)
+setupESPDetection()
 end
 end)
 
@@ -329,7 +329,7 @@ end)
 espButton.MouseButton1Click:Connect(function(descendant)
     espActive = not espActive
     espButton.Text = espActive and "ESP On" or "ESP Off"
-setupESPDetection(descendant)
+setupESPDetection()
 end)
 
 MonsterNotifierButton.MouseButton1Click:Connect(function()
