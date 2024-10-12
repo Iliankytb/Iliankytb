@@ -37,7 +37,6 @@ titleText.Position = UDim2.new(0, 0, 0, 0)
 titleText.TextColor3 = Color3.fromRGB(255, 255, 255)
 titleText.BackgroundTransparency = 1
 titleText.TextTransparency = 1
-titleText.TextScaled = true
 titleText.Parent = frame
 
 
@@ -48,7 +47,6 @@ loadingText.Position = UDim2.new(0, 0, 0.5, -25)
 loadingText.TextColor3 = Color3.fromRGB(255, 255, 255)
 loadingText.BackgroundTransparency = 1
 loadingText.TextTransparency = 1
-loadingText.TextScaled = true
 loadingText.Parent = frame
 
 
