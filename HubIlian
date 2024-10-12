@@ -117,9 +117,8 @@ closeButton.MouseButton1Click:Connect(function()
 IsFrameClose = not IsFrameClose
 frame.Visible = IsFrameClose
 if IsFrameClose then
-closeframeButton.Text = "-"
-if IsInKeyHub then
 closeframeButton.Text = "+"
+if IsInKeyHub then
 for i = 1, 75 do
     wait(0.01)
     titleText.TextTransparency = titleText.TextTransparency + 0.01
@@ -128,32 +127,9 @@ end
 
 for i = 1, 50 do
     wait(0.01)
-    DiscordButton.TextTransparency = DiscordButton.TextTransparency + 0.02
-submitButton.TextTransparency = submitButton.TextTransparency + 0.02
-keyInput.TextTransparency = keyInput.TextTransparency + 0.02
 DiscordButton.BackgroundTransparency = DiscordButton.BackgroundTransparency + 0.02
 submitButton.BackgroundTransparency = submitButton.BackgroundTransparency + 0.02
 keyInput.BackgroundTransparency = keyInput.BackgroundTransparency + 0.02
-end
-DiscordButton.Visible = IsFrameClose
-submitButton.Visible = IsFrameClose
-keyInput.Visible = IsFrameClose
-frame.Size = UDim2.new(0, 200, 0, 200 + i * 0.7)
-else
-for i = 1, 75 do
-    wait(0.01)
-    titleText.TextTransparency = titleText.TextTransparency - 0.01
-end
-
-
-for i = 1, 50 do
-    wait(0.01)
-    DiscordButton.TextTransparency = DiscordButton.TextTransparency - 0.02
-submitButton.TextTransparency = submitButton.TextTransparency - 0.02
-keyInput.TextTransparency = keyInput.TextTransparency - 0.02
-DiscordButton.BackgroundTransparency = DiscordButton.BackgroundTransparency - 0.02
-submitButton.BackgroundTransparency = submitButton.BackgroundTransparency - 0.02
-keyInput.BackgroundTransparency = keyInput.BackgroundTransparency - 0.02
 end
 DiscordButton.Visible = IsFrameClose
 submitButton.Visible = IsFrameClose
@@ -179,7 +155,32 @@ DiscordButton.Visible = IsFrameClose
 submitButton.Visible = IsFrameClose
 keyInput.Visible = IsFrameClose
 frame.Size = UDim2.new(0, 200 - i * 2, 0, 200 - i * 0.8)
+
+end
 else
+if IsInKeyHub then
+for i = 1, 75 do
+    wait(0.01)
+    titleText.TextTransparency = titleText.TextTransparency - 0.01
+end
+
+
+for i = 1, 50 do
+    wait(0.01)
+    DiscordButton.TextTransparency = DiscordButton.TextTransparency - 0.02
+submitButton.TextTransparency = submitButton.TextTransparency - 0.02
+keyInput.TextTransparency = keyInput.TextTransparency - 0.02
+DiscordButton.BackgroundTransparency = DiscordButton.BackgroundTransparency - 0.02
+submitButton.BackgroundTransparency = submitButton.BackgroundTransparency - 0.02
+keyInput.BackgroundTransparency = keyInput.BackgroundTransparency - 0.02
+end
+DiscordButton.Visible = IsFrameClose
+submitButton.Visible = IsFrameClose
+keyInput.Visible = IsFrameClose
+frame.Size = UDim2.new(0, 200, 0, 200 + i * 0.7)
+end
+end
+if IsKeyEnteredAndCorrect then
 for i = 1, 75 do
     wait(0.01)
     titleText.TextTransparency = titleText.TextTransparency + 0.01
@@ -199,6 +200,7 @@ DiscordButton.Visible = IsFrameClose
 submitButton.Visible = IsFrameClose
 keyInput.Visible = IsFrameClose
 frame.Size = UDim2.new(0, 200 + i * 2, 0, 200 + i * 0.8)
+end
 end
 end
 end)
