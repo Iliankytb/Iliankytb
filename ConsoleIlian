@@ -51,6 +51,7 @@ local function addMessage(message)
     newLabel.Text = message
     newLabel.Size = UDim2.new(1, 0, 0, 50) -- Ajuste la taille du TextLabel
     newLabel.BackgroundColor3 = Color3.new(1, 1, 1) -- Couleur de fond blanche
+newLabel.BackgroundTransparency = 1
     newLabel.BorderSizePixel = 0
     newLabel.TextColor3 = Color3.new(0, 0, 0) -- Couleur du texte noire
     newLabel.Parent = scrollingFrame
