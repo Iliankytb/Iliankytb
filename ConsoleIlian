@@ -22,6 +22,29 @@ uiListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left
 uiListLayout.VerticalAlignment = Enum.VerticalAlignment.Top
 uiListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 
+local DiscordButton = Instance.new("TextButton")
+DiscordButton.Size = UDim2.new(1, -20, 0, 25) -- Change le premier paramètre pour la largeur
+DiscordButton.Position = UDim2.new(0, 10, 0.9, 0)
+DiscordButton.Text = "Discord Server (Free Key)"
+DiscordButton.TextScaled = true
+DiscordButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+DiscordButton.BackgroundColor3 = Color3.fromRGB(0, 0, 255) -- Couleur de fond bleue
+DiscordButton.Parent = scrollingFrame
+
+
+local UserInputService = game:GetService("UserInputService")
+
+local function copyToClipboard(text)
+    -- Utilise la méthode SetClipboard pour copier du texte
+    setclipboard(text) -- setclipboard est une fonction de Roblox qui copie le texte donné dans le presse-papiers
+end
+
+DiscordButton.MouseButton1Click:Connect(function()
+    local discordLink = "https://discord.gg/mV2cqXZQ" -- Remplace par ton vrai lien Discord
+    copyToClipboard(discordLink)
+    print("Le lien Discord a été copié dans le presse-papiers : " .. discordLink) -- Pour vérification dans la console
+end)
+
 -- Fonction pour ajouter un message au ScrollingFrame
 local function addMessage(message)
     local newLabel = Instance.new("TextLabel")
