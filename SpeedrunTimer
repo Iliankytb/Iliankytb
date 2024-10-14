@@ -200,16 +200,16 @@ local runService = game:GetService("RunService")
 local function updateTimer(deltaTime)
     if runningTimer then
         milliseconds = milliseconds + deltaTime * 1000
-      local SoundsTimer = Instance.new("Sound")
+      
+        if milliseconds >= 1000 then
+            milliseconds = 0
+            seconds = seconds + 1
+            local SoundsTimer = Instance.new("Sound")
 SoundsTimer.SoundId = "rbxassetid://160314400"
 SoundsTimer.Parent = timerLabel 
 SoundsTimer:Play()
 wait(3)
 SoundsTimer:Destroy()
-        if milliseconds >= 1000 then
-            milliseconds = 0
-            seconds = seconds + 1
-            
             if seconds >= 60 then
                 seconds = 0
                 minutes = minutes + 1
