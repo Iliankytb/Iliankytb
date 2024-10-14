@@ -1,0 +1,57 @@
+-- Créer un ScreenGui
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "ConsoleGui"
+screenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+
+-- Créer un ScrollingFrame
+local scrollingFrame = Instance.new("ScrollingFrame")
+scrollingFrame.Name = "ScrollingFrame"
+scrollingFrame.Size = UDim2.new(0.5, 0, 0.5, 0) -- 50% de la largeur et 50% de la hauteur de l'écran
+scrollingFrame.Position = UDim2.new(0.25, 0, 0.25, 0) -- Centré sur l'écran
+scrollingFrame.BackgroundColor3 = Color3.new(0, 0, 0) -- Couleur de fond noire
+scrollingFrame.BorderSizePixel = 0
+scrollingFrame.CanvasSize = UDim2.new(0, 0, 0, 0) -- Taille du canvas, sera mis à jour
+scrollingFrame.ScrollBarThickness = 10
+scrollingFrame.Parent = screenGui
+
+-- Créer un UIListLayout pour organiser les TextLabels
+local uiListLayout = Instance.new("UIListLayout")
+uiListLayout.Parent = scrollingFrame
+uiListLayout.FillDirection = Enum.FillDirection.Vertical
+uiListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left
+uiListLayout.VerticalAlignment = Enum.VerticalAlignment.Top
+uiListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+
+-- Fonction pour ajouter un message au ScrollingFrame
+local function addMessage(message)
+    local newLabel = Instance.new("TextLabel")
+    newLabel.Text = message
+    newLabel.Size = UDim2.new(1, 0, 0, 50) -- Ajuste la taille du TextLabel
+    newLabel.BackgroundColor3 = Color3.new(1, 1, 1) -- Couleur de fond blanche
+    newLabel.BorderSizePixel = 0
+    newLabel.TextColor3 = Color3.new(0, 0, 0) -- Couleur du texte noire
+    newLabel.Parent = scrollingFrame
+
+    -- Mettre à jour la taille du canvas pour accueillir le nouveau message
+    scrollingFrame.CanvasSize = UDim2.new(0, 0, 0, scrollingFrame.UIListLayout.AbsoluteContentSize.Y)
+
+    -- Optionnel : supprimer les messages après un certain temps
+    wait(5)
+    newLabel:Destroy()
+end
+
+-- Rediriger les messages de la console
+local function onOutputMessage(message, messageType)
+    if messageType == Enum.MessageType.Message or messageType == Enum.MessageType.Warning or messageType == Enum.MessageType.Error then
+        addMessage(message)
+    end
+end
+
+-- Écouter les messages de la console
+game:GetService("Chat").OnMessageDoneFiltering:Connect(function(messageData)
+    onOutputMessage(messageData.Message, Enum.MessageType.Message)
+end)
+
+-- Exemple de messages de la console
+print("I Think It Work")
+addMessage("So Pls Report If You don't see")
