@@ -71,9 +71,9 @@ local function onOutputMessage(message, messageType)
 end
 
 -- Écouter les messages de la console
-game:GetService("Chat").OnMessageDoneFiltering:Connect(function(messageData)
+--[[game:GetService("Chat").OnMessageDoneFiltering:Connect(function(messageData)
     onOutputMessage(messageData.Message, Enum.MessageType.Message)
-end)
+end)]]--
 
 -- Exemple de messages de la console
 print("I Think It Work")
