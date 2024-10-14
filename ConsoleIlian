@@ -59,8 +59,6 @@ local function addMessage(message)
     scrollingFrame.CanvasSize = UDim2.new(0, 0, 0, scrollingFrame.UIListLayout.AbsoluteContentSize.Y)
 
     -- Optionnel : supprimer les messages après un certain temps
-    wait(5)
-    newLabel:Destroy()
 end
 
 -- Rediriger les messages de la console
@@ -69,11 +67,6 @@ local function onOutputMessage(message, messageType)
         addMessage(message)
     end
 end
-
--- Écouter les messages de la console
---[[game:GetService("Chat").OnMessageDoneFiltering:Connect(function(messageData)
-    onOutputMessage(messageData.Message, Enum.MessageType.Message)
-end)]]--
 
 -- Exemple de messages de la console
 print("I Think It Work")
