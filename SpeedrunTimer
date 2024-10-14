@@ -205,7 +205,7 @@ local function updateTimer(deltaTime)
             milliseconds = 0
             seconds = seconds + 1
             local SoundsTimer = Instance.new("Sound")
-SoundsTimer.SoundId = "rbxassetid://456193917"
+SoundsTimer.SoundId = "rbxassetid://144368233"
 SoundsTimer.Parent = timerLabel 
 SoundsTimer:Play()
 task.wait()
