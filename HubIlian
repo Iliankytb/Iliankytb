@@ -105,50 +105,8 @@ closeframeButton.TextScaled = true
 closeframeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 closeframeButton.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
 
-closeframeButton.MouseButton1Click:Connect(function()
-    IsFrameClose = not IsFrameClose
-    
-    if IsFrameClose then
-        closeframeButton.Text = "+"
-    
-        for _, element in pairs({DiscordButton, submitButton, keyInput}) do
-            for i = 1, 50 do
-                wait(0.01)
-                element.BackgroundTransparency = element.BackgroundTransparency + 0.02
-                element.TextTransparency = element.TextTransparency + 0.02
-            end
-            element.Visible = false
-        end
-        frame:TweenSize(UDim2.new(0, 400, 0, 100), Enum.EasingDirection.Out, Enum.EasingStyle.Sine, 1, true)
-    else
-        closeframeButton.Text = "-"
-  
-        for _, element in pairs({DiscordButton, submitButton, keyInput}) do
-            element.Visible = true
-            frame:TweenSize(UDim2.new(0, 400, 0, 400), Enum.EasingDirection.Out, Enum.EasingStyle.Sine, 1, true)
-            for i = 1, 50 do
-                wait(0.01)
-                element.BackgroundTransparency = element.BackgroundTransparency - 0.02
-                element.TextTransparency = element.TextTransparency - 0.02
-            end
-        end
-    end
-end)
-
-local UserInputService = game:GetService("UserInputService")
-
-local function copyToClipboard(text)
-    setclipboard(text)
-end
-
-DiscordButton.MouseButton1Click:Connect(function()
-    local discordLink = "https://discord.gg/mV2cqXZQ"
-    copyToClipboard(discordLink)
-    print("The Link Discord Is On Your ClipBoard Now|Link : " .. discordLink)
-end)
-
-submitButton.MouseButton1Click:Connect(function()
-    if keyInput.Text == Key then
+local KeyEnteredIsCorrect()
+ if keyInput.Text == Key then
         print("Key Accepted!")
         keyInput:Destroy()
         IsKeyEnteredAndCorrect = true
@@ -193,4 +151,100 @@ submitButton.MouseButton1Click:Connect(function()
         wait(1.5)
         keyInput.Text = ""
     end
+end
+
+local function KeyStocked()
+if IsKeyEnteredAndCorrect == true then
+ print("Key Accepted!")
+        keyInput:Destroy()
+        IsKeyEnteredAndCorrect = true
+        IsInKeyHub = false
+        submitButton:Destroy()
+        frame.Draggable = true
+        
+        frame:TweenSize(UDim2.new(0, 750, 0, 400), Enum.EasingDirection.Out, Enum.EasingStyle.Sine, 1, true)
+        
+        local frameButton = Instance.new("Frame", frame)
+        frameButton.Size = UDim2.new(0.5, 0, 0.7, 0)
+        frameButton.Position = UDim2.new(0, 0, 0.3, 0)
+        frameButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        frameButton.BackgroundTransparency = 1
+
+        local scrollingFrameButtons = Instance.new("ScrollingFrame", frameButton)
+        scrollingFrameButtons.Size = UDim2.new(1, 0, 1, 0)
+        scrollingFrameButtons.Position = UDim2.new(0, 0, 0, 0)
+        scrollingFrameButtons.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+        scrollingFrameButtons.BackgroundTransparency = 1
+
+        local uiListLayout = Instance.new("UIListLayout", scrollingFrameButtons)
+
+        for _, buttonName in ipairs(ButtonNames) do
+            local button = Instance.new("TextButton", scrollingFrameButtons)
+            button.Size = UDim2.new(1, -10, 0, 50)
+            button.Text = buttonName
+            button.TextColor3 = Color3.fromRGB(255, 255, 255)
+            button.BackgroundColor3 = Color3.fromRGB(0, 128, 0)
+
+            button.MouseButton1Click:Connect(function()
+                if Cheats[buttonName] and Cheats[buttonName] ~= "" then
+                    loadstring(game:HttpGet(Cheats[buttonName]))()
+                end
+            end)
+        end
+    else
+        print("Invalid Key. Please try again.")
+        keyInput.Text = "Invalid Key. Please try again."
+        IsInKeyHub = true
+        IsKeyEnteredAndCorrect = false
+        wait(1.5)
+        keyInput.Text = ""
+end
+end
+
+KeyStocked()
+
+closeframeButton.MouseButton1Click:Connect(function()
+    IsFrameClose = not IsFrameClose
+    
+    if IsFrameClose then
+        closeframeButton.Text = "+"
+    
+        for _, element in pairs({DiscordButton, submitButton, keyInput}) do
+            for i = 1, 50 do
+                wait(0.01)
+                element.BackgroundTransparency = element.BackgroundTransparency + 0.02
+                element.TextTransparency = element.TextTransparency + 0.02
+            end
+            element.Visible = false
+        end
+        frame:TweenSize(UDim2.new(0, 400, 0, 100), Enum.EasingDirection.Out, Enum.EasingStyle.Sine, 1, true)
+    else
+        closeframeButton.Text = "-"
+  
+        for _, element in pairs({DiscordButton, submitButton, keyInput}) do
+            element.Visible = true
+            frame:TweenSize(UDim2.new(0, 400, 0, 400), Enum.EasingDirection.Out, Enum.EasingStyle.Sine, 1, true)
+            for i = 1, 50 do
+                wait(0.01)
+                element.BackgroundTransparency = element.BackgroundTransparency - 0.02
+                element.TextTransparency = element.TextTransparency - 0.02
+            end
+        end
+    end
+end)
+
+local UserInputService = game:GetService("UserInputService")
+
+local function copyToClipboard(text)
+    setclipboard(text)
+end
+
+DiscordButton.MouseButton1Click:Connect(function()
+    local discordLink = "https://discord.gg/mV2cqXZQ"
+    copyToClipboard(discordLink)
+    print("The Link Discord Is On Your ClipBoard Now|Link : " .. discordLink)
+end)
+
+submitButton.MouseButton1Click:Connect(function()
+   KeyEnteredIsCorrect()
 end)
