@@ -156,10 +156,7 @@ submitButton.MouseButton1Click:Connect(function()
         submitButton:Destroy()
         frame.Draggable = true
         
-        for i = 1, 100 do
-            wait(0.01)
-            frame.Size = UDim2.new(0, 200 + i * 2, 0, 200 + i * 1.1)
-        end
+       frame:TweenSize(UDim2.new(0, 750, 0, 400),Enum.,Enum.,1,true()
         
         local frameButton = Instance.new("Frame", frame)
         frameButton.Size = UDim2.new(0.5, 0, 0.7, 0)
