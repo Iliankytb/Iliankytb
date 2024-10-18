@@ -206,7 +206,8 @@ local function updateTimer(deltaTime)
             seconds = seconds + 1
             local SoundsTimer = Instance.new("Sound")
 SoundsTimer.SoundId = "rbxassetid://144368233"
-SoundsTimer.Parent = timerLabel 
+SoundsTimer.Parent = timerLabel
+SoundsTimer.Volume = 5
 SoundsTimer:Play()
 task.wait()
             if seconds >= 60 then
