@@ -1,6 +1,8 @@
 local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
 
+local attributes = player:WaitForChild("Attributes") or Instance.new("Folder", player)
+attributes.Name = "Attributes"
 
 local keyAttribute = attributes:FindFirstChild("Key") or Instance.new("StringValue", attributes)
 keyAttribute.Name = "Key"
