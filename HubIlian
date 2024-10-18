@@ -1,25 +1,17 @@
 local player = game.Players.LocalPlayer
-local playerGui = player:WaitForChild("PlayerGui")
+local attributes = player -- You can assign attributes to the player itself or another instance
 
--- Ajout du dossier Attributes sous le joueur s'il n'existe pas
-local attributes = player:FindFirstChild("Attributes") or Instance.new("Folder", player)
-attributes.Name = "Attributes"
+-- Setting attributes
+attributes:SetAttribute("Key", "IliankYTB")
+attributes:SetAttribute("IsKeyEntered", false)
+attributes:SetAttribute("IsInKeyHub", true)
+attributes:SetAttribute("IsFrameClose", false)
 
-local keyAttribute = attributes:FindFirstChild("Key") or Instance.new("StringValue", attributes)
-keyAttribute.Name = "Key"
-keyAttribute.Value = "IliankYTB"
-
-local isKeyEnteredAttribute = attributes:FindFirstChild("IsKeyEntered") or Instance.new("BoolValue", attributes)
-isKeyEnteredAttribute.Name = "IsKeyEntered"
-isKeyEnteredAttribute.Value = false
-
-local isInKeyHubAttribute = attributes:FindFirstChild("IsInKeyHub") or Instance.new("BoolValue", attributes)
-isInKeyHubAttribute.Name = "IsInKeyHub"
-isInKeyHubAttribute.Value = true
-
-local isFrameCloseAttribute = attributes:FindFirstChild("IsFrameClose") or Instance.new("BoolValue", attributes)
-isFrameCloseAttribute.Name = "IsFrameClose"
-isFrameCloseAttribute.Value = false
+-- Getting attributes (for validation later)
+local keyAttribute = attributes:GetAttribute("Key")
+local isKeyEnteredAttribute = attributes:GetAttribute("IsKeyEntered")
+local isInKeyHubAttribute = attributes:GetAttribute("IsInKeyHub")
+local isFrameCloseAttribute = attributes:GetAttribute("IsFrameClose")
 
 local Cheats = {
     ["Doors Cheats(iliankytb(in rework))"] = "https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatsDoors",
