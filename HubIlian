@@ -1,12 +1,16 @@
 local player = game.Players.LocalPlayer
 local attributes = player -- You can assign attributes to the player itself or another instance
+if not  attributes:GetAttribute("Key") and
+ attributes:GetAttribute("IsKeyEntered") and
+ attributes:GetAttribute("IsInKeyHub") and
+ attributes:GetAttribute("IsFrameClose") then
 
 -- Setting attributes
 attributes:SetAttribute("Key", "IliankYTB")
 attributes:SetAttribute("IsKeyEntered", false)
 attributes:SetAttribute("IsInKeyHub", true)
 attributes:SetAttribute("IsFrameClose", false)
-
+end
 -- Getting attributes (for validation later)
 local keyAttribute = attributes:GetAttribute("Key")
 local isKeyEnteredAttribute = attributes:GetAttribute("IsKeyEntered")
@@ -118,8 +122,8 @@ closeframeButton.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
 local function openHub()
     print("Key Accepted!")
     keyInput:Destroy()
-    isKeyEnteredAttribute.Value = true
-    isInKeyHubAttribute.Value = false
+    attributes:SetAttribute("IsKeyEntered", true)
+attributes:SetAttribute("IsInKeyHub", false)
     submitButton:Destroy()
     frame.Draggable = true
 
@@ -155,28 +159,27 @@ local function openHub()
 end
 
 local function validateKey()
-    if keyInput.Text == keyAttribute.Value then
+    if keyInput.Text == keyAttribute then
         openHub()
     else
         print("Invalid Key. Please try again.")
         keyInput.Text = "Invalid Key. Please try again."
-        isInKeyHubAttribute.Value = true
-        isKeyEnteredAttribute.Value = false
+        attributes:SetAttribute("IsKeyEntered", false)
+attributes:SetAttribute("IsInKeyHub", true)
         wait(1.5)
         keyInput.Text = ""
     end
 end
 
-if isKeyEnteredAttribute.Value then
+if isKeyEnteredAttribute then
     openHub()
 end
 
 submitButton.MouseButton1Click:Connect(validateKey)
 
 closeframeButton.MouseButton1Click:Connect(function()
-    isFrameCloseAttribute.Value = not isFrameCloseAttribute.Value
-    
-    if isFrameCloseAttribute.Value then
+  attributes:SetAttribute("IsFrameClose", false) or attributes:SetAttribute("IsFrameClose", true)
+    if isFrameCloseAttribute then
         closeframeButton.Text = "+"
     
         for _, element in pairs({DiscordButton, submitButton, keyInput}) do
