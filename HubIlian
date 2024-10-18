@@ -12,6 +12,7 @@ local Cheats = {
     ["NewDew"] = "https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/NewDex",
 ["Old Cheats Doors(Ilianytb)"] = "https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/OldCheatsDoors",
 ["OutPut Console(Ilianytb)"] = "https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/ConsoleIlian"
+--["Cheat Evade(Coming)"] = ".."
 }
 
 local ButtonNames = {"Doors Cheats(iliankytb(in rework))", "Blox Fruit Cheat(Best and not mine)","TimerSpeedrun(Best Timer)", "Doors Cheat(MSPaintV2)","Doors Entities Spawner (not Mine)","NewDew","Old Cheats Doors(Ilianytb)","OutPut Console(Ilianytb)"}
