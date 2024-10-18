@@ -1,24 +1,9 @@
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
-local TweenService = game:GetService("TweenService")
 
 local player = Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-
--- Fonction pour ajouter un surlignage et un affichage de distance à un objet
-
-
--- Fonction pour afficher la distance entre l'objet et le joueur
-
-
--- Fonction pour effacer les surlignages et les Billboards des objets
-
-
--- Fonction pour gérer le surlignage et l'affichage de distance
-
-
-
 
 -- Fonction pour créer un élément UI
 local function createUIElement(className, parent, properties)
@@ -84,13 +69,12 @@ ScrollingFrameMain.Size = UDim2.new(1, 0, 1, 0)
 ScrollingFrameMain.BackgroundTransparency = 1
 ScrollingFrameMain.CanvasSize = UDim2.new(0, 0, 0, 1000)
 
--- Création du bouton de téléportation
+-- Création des boutons
 local TeleportObjectButton = createButton("Auto Teleport Object Off", ScrollingFrameMain)
 local EspItemButton = createButton("Esp Item Off", ScrollingFrameMain)
 
-
 -- Liste des objets à téléporter
-local objectNames = {"lightbulb","gascanister"}
+local objectNames = {"lightbulb", "gascanister"}
 local teleportTargets = {}
 
 local function detectTargets()
@@ -115,11 +99,12 @@ local function TeleportToRandomObject()
 	end
 end
 
--- Gestion de la téléportation automatique
-local canTeleport,EspItem = false,false
+-- Variables pour gérer les fonctionnalités
+local canTeleport, EspItem = false, false
 
+-- Fonction pour ajouter un surlignage et un affichage de distance à un objet
 local function AddHighlightModelObject(object)
-	-- Check si l'objet a déjà un surlignage
+	-- Ajoute un surlignage si l'objet n'en a pas déjà un
 	if not object:FindFirstChildOfClass("Highlight") then
 		local highlight = Instance.new("Highlight")
 		highlight.FillColor = Color3.fromRGB(85, 170, 0)
@@ -130,7 +115,7 @@ local function AddHighlightModelObject(object)
 		highlight.Parent = object
 	end
 
-	-- Check si l'objet a déjà un BillboardGui
+	-- Ajoute un BillboardGui si l'objet n'en a pas déjà un
 	if not object:FindFirstChildOfClass("BillboardGui") then
 		local billboard = Instance.new("BillboardGui")
 		billboard.Size = UDim2.new(0.1, 0, 0.5, 0)
@@ -151,47 +136,51 @@ local function AddHighlightModelObject(object)
 	end
 end
 
+-- Fonction pour mettre à jour la distance à un objet
 local function UpdateDistanceToObject(object)
 	local textLabel = object:FindFirstChildOfClass("BillboardGui"):FindFirstChildOfClass("TextLabel")
 	if textLabel then
-		local distance
-		if object:IsA("BasePart") then
-			distance = (humanoidRootPart.Position - object.Position).Magnitude
-		elseif object:IsA("Tool") then
-			distance = (humanoidRootPart.Position - object:GetPivot().Position).Magnitude
-		end
+		local distance = (humanoidRootPart.Position - object.Position).Magnitude
 		textLabel.Text = object.Name .. " [Distance: " .. math.floor(distance) .. " Studs]"
 	end
 end
 
+-- Fonction pour effacer les surlignages et les Billboards
 local function ClearHighlights()
-	for _, name in ipairs(objectNames) do
-    if string.find(obj.Name:lower(), name:lower()) then
-        obj:Destroy()
-    end
-end
-
-end
-
-local function HighlightModelsItem()
-	EspItem = not EspItem
-	if EspItem then
-		EspItemButton.Text = "Esp Item On"
-		for _, name in ipairs(objectNames) do
-    if string.find(obj.Name:lower(), name:lower()) then
-        RunService.Heartbeat:Connect(function()
-            AddHighlightModelObject(obj)
-            UpdateDistanceToObject(obj)
-        end)
-    end
-end
-
-	else
-		ClearHighlights()
-		EspClosetButton.Text = "Esp Closet Off"
+	for _, obj in pairs(workspace:GetDescendants()) do
+		if table.find(objectNames, obj.Name) then
+			local highlight = obj:FindFirstChildOfClass("Highlight")
+			if highlight then
+				highlight:Destroy()
+			end
+			local billboard = obj:FindFirstChildOfClass("BillboardGui")
+			if billboard then
+				billboard:Destroy()
+			end
+		end
 	end
 end
 
+-- Fonction pour gérer le surlignage des objets
+local function HighlightModelsItem()
+	EspItem = not EspItem
+	EspItemButton.Text = EspItem and "Esp Item On" or "Esp Item Off"
+
+	if EspItem then
+		for _, name in ipairs(objectNames) do
+			for _, obj in pairs(workspace:GetDescendants()) do
+				if string.find(obj.Name:lower(), name:lower()) then
+					AddHighlightModelObject(obj)
+					UpdateDistanceToObject(obj)
+				end
+			end
+		end
+	else
+		ClearHighlights()
+	end
+end
+
+-- Fonction pour gérer la téléportation automatique
 local function toggleTeleport()
 	canTeleport = not canTeleport
 	TeleportObjectButton.Text = canTeleport and "Auto Teleport Object On" or "Auto Teleport Object Off"
@@ -207,6 +196,6 @@ local function toggleTeleport()
 	end
 end
 
+-- Connecter les événements des boutons
 TeleportObjectButton.MouseButton1Click:Connect(toggleTeleport)
 EspItemButton.MouseButton1Click:Connect(HighlightModelsItem)
-
