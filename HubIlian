@@ -1,11 +1,10 @@
 local player = game.Players.LocalPlayer
 local attributes = player -- You can assign attributes to the player itself or another instance
-if not  attributes:GetAttribute("Key") and
- attributes:GetAttribute("IsKeyEntered") and
- attributes:GetAttribute("IsInKeyHub") and
- attributes:GetAttribute("IsFrameClose") then
+if not attributes:GetAttribute("Key") and
+   attributes:GetAttribute("IsKeyEntered") ~= nil and
+   attributes:GetAttribute("IsInKeyHub") ~= nil and
+   attributes:GetAttribute("IsFrameClose") ~= nil then
 
--- Setting attributes
 attributes:SetAttribute("Key", "IliankYTB")
 attributes:SetAttribute("IsKeyEntered", false)
 attributes:SetAttribute("IsInKeyHub", true)
@@ -178,7 +177,11 @@ end
 submitButton.MouseButton1Click:Connect(validateKey)
 
 closeframeButton.MouseButton1Click:Connect(function()
-  attributes:SetAttribute("IsFrameClose", false) or attributes:SetAttribute("IsFrameClose", true)
+   if isFrameCloseAttribute then
+    attributes:SetAttribute("IsFrameClose", true)
+else
+    attributes:SetAttribute("IsFrameClose", false)
+end
     if isFrameCloseAttribute then
         closeframeButton.Text = "+"
     
