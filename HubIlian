@@ -233,6 +233,12 @@ closeframeButton.MouseButton1Click:Connect(function()
     end
 end)
 
+local function DestroyFrame()
+frame:Destroy()
+end
+
+closeButton.MouseButtton1Click:Connect(DestroyFrame)
+
 local UserInputService = game:GetService("UserInputService")
 
 local function copyToClipboard(text)
