@@ -62,7 +62,7 @@ closeButton.MouseButton1Click:Connect(function()
     screenGui:Destroy()
 end)
 
-for i = 1, 75 do
+for i = 1, 25 do
     wait(0.01)
     titleText.TextTransparency = titleText.TextTransparency - 0.01
 end
