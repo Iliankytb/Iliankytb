@@ -107,10 +107,10 @@ closeframeButton.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
 
 closeframeButton.MouseButton1Click:Connect(function()
     IsFrameClose = not IsFrameClose
-    -- Logique pour ouvrir/fermer le frame
+    
     if IsFrameClose then
         closeframeButton.Text = "+"
-        -- Réduire la transparence des éléments
+    
         for _, element in pairs({DiscordButton, submitButton, keyInput}) do
             for i = 1, 50 do
                 wait(0.01)
@@ -121,7 +121,7 @@ closeframeButton.MouseButton1Click:Connect(function()
         end
     else
         closeframeButton.Text = "-"
-        -- Réafficher les éléments
+  
         for _, element in pairs({DiscordButton, submitButton, keyInput}) do
             element.Visible = true
             for i = 1, 50 do
@@ -136,13 +136,13 @@ end)
 local UserInputService = game:GetService("UserInputService")
 
 local function copyToClipboard(text)
-    setclipboard(text) -- Fonction de Roblox pour copier dans le presse-papiers
+    setclipboard(text)
 end
 
 DiscordButton.MouseButton1Click:Connect(function()
     local discordLink = "https://discord.gg/mV2cqXZQ"
     copyToClipboard(discordLink)
-    print("Le lien Discord a été copié dans le presse-papiers : " .. discordLink)
+    print("The Link Discord Is On Your ClipBoard Now|Link : " .. discordLink)
 end)
 
 submitButton.MouseButton1Click:Connect(function()
