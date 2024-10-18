@@ -117,15 +117,15 @@ closeframeButton.MouseButton1Click:Connect(function()
                 element.BackgroundTransparency = element.BackgroundTransparency + 0.02
                 element.TextTransparency = element.TextTransparency + 0.02
             end
-frame:TweenSize(UDim2.new(0, 400, 0, 100),Enum.,Enum.,1,true()
             element.Visible = false
         end
+        frame:TweenSize(UDim2.new(0, 400, 0, 100), Enum.EasingDirection.Out, Enum.EasingStyle.Sine, 1, true)
     else
         closeframeButton.Text = "-"
   
         for _, element in pairs({DiscordButton, submitButton, keyInput}) do
             element.Visible = true
-frame:TweenSize(UDim2.new(0, 400, 0, 400),Enum.,Enum.,1,true()
+            frame:TweenSize(UDim2.new(0, 400, 0, 400), Enum.EasingDirection.Out, Enum.EasingStyle.Sine, 1, true)
             for i = 1, 50 do
                 wait(0.01)
                 element.BackgroundTransparency = element.BackgroundTransparency - 0.02
@@ -156,7 +156,7 @@ submitButton.MouseButton1Click:Connect(function()
         submitButton:Destroy()
         frame.Draggable = true
         
-       frame:TweenSize(UDim2.new(0, 750, 0, 400),Enum.,Enum.,1,true()
+        frame:TweenSize(UDim2.new(0, 750, 0, 400), Enum.EasingDirection.Out, Enum.EasingStyle.Sine, 1, true)
         
         local frameButton = Instance.new("Frame", frame)
         frameButton.Size = UDim2.new(0.5, 0, 0.7, 0)
