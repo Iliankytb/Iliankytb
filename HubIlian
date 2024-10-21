@@ -1,17 +1,28 @@
 local player = game.Players.LocalPlayer
 local attributes = player -- You can assign attributes to the player itself or another instance
+
+-- Vérification initiale des attributs
 if not attributes:GetAttribute("Key") and
    attributes:GetAttribute("IsKeyEntered") ~= nil and
    attributes:GetAttribute("IsInKeyHub") ~= nil and
    attributes:GetAttribute("IsFrameClose") ~= nil then
 
+    -- Définition des attributs
     attributes:SetAttribute("Key", "IliankYTB")
     attributes:SetAttribute("IsKeyEntered", false)
     attributes:SetAttribute("IsInKeyHub", true)
     attributes:SetAttribute("IsFrameClose", false)
+
+    print("Les attributs ont été définis correctement.")
+else
+    print("Condition non remplie, les attributs existants :")
+    print("Key:", attributes:GetAttribute("Key"))
+    print("IsKeyEntered:", attributes:GetAttribute("IsKeyEntered"))
+    print("IsInKeyHub:", attributes:GetAttribute("IsInKeyHub"))
+    print("IsFrameClose:", attributes:GetAttribute("IsFrameClose"))
 end
 
--- Getting attributes (for validation later)
+-- Récupération des attributs (pour validation plus tard)
 local keyAttribute = attributes:GetAttribute("Key")
 local isKeyEnteredAttribute = attributes:GetAttribute("IsKeyEntered")
 local isInKeyHubAttribute = attributes:GetAttribute("IsInKeyHub")
