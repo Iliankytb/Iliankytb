@@ -5,11 +5,12 @@ if not attributes:GetAttribute("Key") and
    attributes:GetAttribute("IsInKeyHub") ~= nil and
    attributes:GetAttribute("IsFrameClose") ~= nil then
 
-attributes:SetAttribute("Key", "IliankYTB")
-attributes:SetAttribute("IsKeyEntered", false)
-attributes:SetAttribute("IsInKeyHub", true)
-attributes:SetAttribute("IsFrameClose", false)
+    attributes:SetAttribute("Key", "IliankYTB")
+    attributes:SetAttribute("IsKeyEntered", false)
+    attributes:SetAttribute("IsInKeyHub", true)
+    attributes:SetAttribute("IsFrameClose", false)
 end
+
 -- Getting attributes (for validation later)
 local keyAttribute = attributes:GetAttribute("Key")
 local isKeyEnteredAttribute = attributes:GetAttribute("IsKeyEntered")
@@ -75,15 +76,22 @@ closeButton.MouseButton1Click:Connect(function()
     screenGui:Destroy()
 end)
 
-for i = 1, 25 do
-    wait(0.01)
-    titleText.TextTransparency = titleText.TextTransparency - 0.01
+local TweenService = game:GetService("TweenService")
+
+-- Fonction pour tweener la transparence d'un élément texte
+local function tweenTransparency(object, finalTransparency, duration)
+    local tweenInfo = TweenInfo.new(duration, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
+    local goal = {TextTransparency = finalTransparency, BackgroundTransparency = finalTransparency}
+    local tween = TweenService:Create(object, tweenInfo, goal)
+    tween:Play()
 end
 
-for i = 1, 50 do
-    wait(0.01)
-    loadingText.TextTransparency = loadingText.TextTransparency - 0.02
-end
+-- Tween pour le titre et le texte de chargement
+tweenTransparency(titleText, 0, 0.25)
+tweenTransparency(loadingText, 0, 0.5)
+
+-- Détruire le texte de chargement après l'animation
+wait(math.random(1,10))
 loadingText:Destroy()
 
 local keyInput = Instance.new("TextBox", frame)
@@ -122,7 +130,7 @@ local function openHub()
     print("Key Accepted!")
     keyInput:Destroy()
     attributes:SetAttribute("IsKeyEntered", true)
-attributes:SetAttribute("IsInKeyHub", false)
+    attributes:SetAttribute("IsInKeyHub", false)
     submitButton:Destroy()
     frame.Draggable = true
 
@@ -157,66 +165,19 @@ attributes:SetAttribute("IsInKeyHub", false)
     end
 end
 
+if isKeyEnteredAttribute then
+openHub()
+end
 local function validateKey()
     if keyInput.Text == keyAttribute then
         openHub()
     else
-        print("Invalid Key. Please try again.")
-        keyInput.Text = "Invalid Key. Please try again."
-        attributes:SetAttribute("IsKeyEntered", false)
-attributes:SetAttribute("IsInKeyHub", true)
-        wait(1.5)
-        keyInput.Text = ""
+        print("Key Incorrect!")
     end
-end
-
-if isKeyEnteredAttribute then
-    openHub()
 end
 
 submitButton.MouseButton1Click:Connect(validateKey)
 
-closeframeButton.MouseButton1Click:Connect(function()
-   if isFrameCloseAttribute then
-    attributes:SetAttribute("IsFrameClose", true)
-else
-    attributes:SetAttribute("IsFrameClose", false)
-end
-    if isFrameCloseAttribute then
-        closeframeButton.Text = "+"
-    
-        for _, element in pairs({DiscordButton, submitButton, keyInput}) do
-            for i = 1, 50 do
-                wait(0.01)
-                element.BackgroundTransparency = element.BackgroundTransparency + 0.02
-                element.TextTransparency = element.TextTransparency + 0.02
-            end
-            element.Visible = false
-        end
-        frame:TweenSize(UDim2.new(0, 400, 0, 100), Enum.EasingDirection.Out, Enum.EasingStyle.Sine, 1, true)
-    else
-        closeframeButton.Text = "-"
-  
-        for _, element in pairs({DiscordButton, submitButton, keyInput}) do
-            element.Visible = true
-            frame:TweenSize(UDim2.new(0, 400, 0, 400), Enum.EasingDirection.Out, Enum.EasingStyle.Sine, 1, true)
-            for i = 1, 50 do
-                wait(0.01)
-                element.BackgroundTransparency = element.BackgroundTransparency - 0.02
-                element.TextTransparency = element.TextTransparency - 0.02
-            end
-        end
-    end
-end)
-
-local UserInputService = game:GetService("UserInputService")
-
-local function copyToClipboard(text)
-    setclipboard(text)
-end
-
 DiscordButton.MouseButton1Click:Connect(function()
-    local discordLink = "https://discord.gg/mV2cqXZQ"
-    copyToClipboard(discordLink)
-    print("The Link Discord Is On Your ClipBoard Now|Link : " .. discordLink)
+    setclipboard("https://discord.gg/YrFm6jd4np")
 end)
