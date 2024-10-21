@@ -1,32 +1,11 @@
 local player = game.Players.LocalPlayer
-local attributes = player -- You can assign attributes to the player itself or another instance
+local playerGui = player:WaitForChild("PlayerGui")
 
--- Vérification initiale des attributs
-if not attributes:GetAttribute("Key") and
-   attributes:GetAttribute("IsKeyEntered") ~= nil and
-   attributes:GetAttribute("IsInKeyHub") ~= nil and
-   attributes:GetAttribute("IsFrameClose") ~= nil then
-
-    -- Définition des attributs
-    attributes:SetAttribute("Key", "IliankYTB")
-    attributes:SetAttribute("IsKeyEntered", false)
-    attributes:SetAttribute("IsInKeyHub", true)
-    attributes:SetAttribute("IsFrameClose", false)
-
-    print("Les attributs ont été définis correctement.")
-else
-    print("Condition non remplie, les attributs existants :")
-    print("Key:", attributes:GetAttribute("Key"))
-    print("IsKeyEntered:", attributes:GetAttribute("IsKeyEntered"))
-    print("IsInKeyHub:", attributes:GetAttribute("IsInKeyHub"))
-    print("IsFrameClose:", attributes:GetAttribute("IsFrameClose"))
-end
-
--- Récupération des attributs (pour validation plus tard)
-local keyAttribute = attributes:GetAttribute("Key")
-local isKeyEnteredAttribute = attributes:GetAttribute("IsKeyEntered")
-local isInKeyHubAttribute = attributes:GetAttribute("IsInKeyHub")
-local isFrameCloseAttribute = attributes:GetAttribute("IsFrameClose")
+-- Définition des variables locales au lieu des attributs
+local key = "IliankYTB"
+local isKeyEntered = false
+local isInKeyHub = true
+local isFrameClose = false
 
 local Cheats = {
     ["Doors Cheats(iliankytb(in rework))"] = "https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatsDoors",
@@ -50,6 +29,7 @@ local ButtonNames = {
     "OutPut Console(Ilianytb)"
 }
 
+-- Création de l'interface utilisateur
 local screenGui = Instance.new("ScreenGui", playerGui)
 screenGui.Name = "HubGui"
 screenGui.ResetOnSpawn = false
@@ -137,11 +117,12 @@ closeframeButton.TextScaled = true
 closeframeButton.TextColor3 = Color3.fromRGB(255, 255, 255)
 closeframeButton.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
 
+-- Fonction pour ouvrir le hub
 local function openHub()
     print("Key Accepted!")
+    isKeyEntered = true
+    isInKeyHub = false
     keyInput:Destroy()
-    attributes:SetAttribute("IsKeyEntered", true)
-    attributes:SetAttribute("IsInKeyHub", false)
     submitButton:Destroy()
     frame.Draggable = true
 
@@ -176,11 +157,9 @@ local function openHub()
     end
 end
 
-if isKeyEnteredAttribute then
-openHub()
-end
+-- Fonction pour valider la clé entrée
 local function validateKey()
-    if keyInput.Text == keyAttribute then
+    if keyInput.Text == key then
         openHub()
     else
         print("Key Incorrect!")
@@ -189,6 +168,12 @@ end
 
 submitButton.MouseButton1Click:Connect(validateKey)
 
+-- Copier le lien Discord dans le presse-papier
 DiscordButton.MouseButton1Click:Connect(function()
     setclipboard("https://discord.gg/YrFm6jd4np")
 end)
+
+-- Ouvrir le hub automatiquement si la clé est déjà entrée
+if isKeyEntered then
+    openHub()
+end
