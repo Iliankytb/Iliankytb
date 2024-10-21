@@ -127,8 +127,8 @@ local function openHub()
     submitButton:Destroy()
     frame.Draggable = true
 
-    frame:TweenSize(UDim2.new(0, 750, 0, 400), Enum.EasingDirection.Out, Enum.EasingStyle.Sine, 1, true)
-
+    frame:TweenSize(UDim2.new(0, 750, 0, 250), Enum.EasingDirection.Out, Enum.EasingStyle.Sine, 1, true)
+frame.TweenPosition(UDim2.new(0, 500, 0, 50, Enum.EasingDirection.Out, Enum.EasingStyle.Sine, 1, true)
     local frameButton = Instance.new("Frame", frame)
     frameButton.Size = UDim2.new(0.5, 0, 0.7, 0)
     frameButton.Position = UDim2.new(0, 0, 0.3, 0)
