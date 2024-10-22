@@ -39,7 +39,7 @@ local searchBox = createUIElement("TextBox", {
     BackgroundColor3 = Color3.fromRGB(60, 60, 60),
     TextColor3 = Color3.fromRGB(255, 255, 255),
     PlaceholderText = "Search...",
-Text = "",
+    Text = "",
     TextScaled = true,
 }, searchFrame)
 
@@ -160,14 +160,13 @@ local function ajouterObjetExplorateur(objet)
             BackgroundColor3 = Color3.fromRGB(70, 70, 70),
         }, propertiesContent)
 
-local ParentsObjet = objet.Parent.Name
+        local ParentsObjet = objet.Parent.Name
         createUIElement("TextLabel", {
             Size = UDim2.new(1, 0, 0.1, 0),
             Text = "Parent: " .. ParentsObjet,
             TextColor3 = Color3.fromRGB(255, 255, 255),
             BackgroundColor3 = Color3.fromRGB(70, 70, 70),
         }, propertiesContent)
-
     end)
 end
 
@@ -194,3 +193,78 @@ workspace.DescendantRemoving:Connect(function(objet)
 end)
 
 listerTousLesObjets(workspace)
+
+-- Fonction pour tweener la taille
+local function tweenFrame(frame, targetSize)
+    frame:TweenSize(targetSize, Enum.EasingDirection.Out, Enum.EasingStyle.Quad, 0.5, true)
+end
+
+-- Valeurs pour gérer l'état de fermeture/ouverture
+local explorerClosed = Instance.new("BoolValue")
+explorerClosed.Value = false
+
+local propertiesClosed = Instance.new("BoolValue")
+propertiesClosed.Value = false
+
+-- Créer les boutons
+local closeBothButton = createUIElement("TextButton", {
+    Size = UDim2.new(0.15, 0, 0.05, 0),
+    Position = UDim2.new(0.8, 0, 0.65, 0),
+    Text = "Fermer Explorer & Properties",
+    BackgroundColor3 = Color3.fromRGB(80, 80, 80),
+    TextColor3 = Color3.fromRGB(255, 255, 255),
+}, screenGui)
+
+local closeExplorerButton = createUIElement("TextButton", {
+    Size = UDim2.new(0.15, 0, 0.05, 0),
+    Position = UDim2.new(0.8, 0, 0.7, 0),
+    Text = "Fermer Explorer",
+    BackgroundColor3 = Color3.fromRGB(80, 80, 80),
+    TextColor3 = Color3.fromRGB(255, 255, 255),
+}, screenGui)
+
+local closePropertiesButton = createUIElement("TextButton", {
+    Size = UDim2.new(0.15, 0, 0.05, 0),
+    Position = UDim2.new(0.8, 0, 0.75, 0),
+    Text = "Fermer Properties",
+    BackgroundColor3 = Color3.fromRGB(80, 80, 80),
+    TextColor3 = Color3.fromRGB(255, 255, 255),
+}, screenGui)
+
+-- Bouton pour fermer les deux panneaux
+closeBothButton.MouseButton1Click:Connect(function()
+    if explorerClosed.Value then
+        tweenFrame(explorerFrame, UDim2.new(0.2, 0, 0.5, 0))
+    else
+        tweenFrame(explorerFrame, UDim2.new(0, 0, 0.5, 0))
+    end
+
+    if propertiesClosed.Value then
+        tweenFrame(propertiesFrame, UDim2.new(0.2, 0, 0.4, 0))
+    else
+        tweenFrame(propertiesFrame, UDim2.new(0, 0, 0.4, 0))
+    end
+
+    explorerClosed.Value = not explorerClosed.Value
+    propertiesClosed.Value = not propertiesClosed.Value
+end)
+
+-- Bouton pour fermer uniquement l'explorateur
+closeExplorerButton.MouseButton1Click:Connect(function()
+    if explorerClosed.Value then
+        tweenFrame(explorerFrame, UDim2.new(0.2, 0, 0.5, 0))
+    else
+        tweenFrame(explorerFrame, UDim2.new(0, 0, 0.5, 0))
+    end
+    explorerClosed.Value = not explorerClosed.Value
+end)
+
+-- Bouton pour fermer uniquement les propriétés
+closePropertiesButton.MouseButton1Click:Connect(function()
+    if propertiesClosed.Value then
+        tweenFrame(propertiesFrame, UDim2.new(0.2, 0, 0.4, 0))
+    else
+        tweenFrame(propertiesFrame, UDim2.new(0, 0, 0.4, 0))
+    end
+    propertiesClosed.Value = not propertiesClosed.Value
+end)
