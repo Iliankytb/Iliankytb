@@ -39,6 +39,7 @@ local searchBox = createUIElement("TextBox", {
     BackgroundColor3 = Color3.fromRGB(60, 60, 60),
     TextColor3 = Color3.fromRGB(255, 255, 255),
     PlaceholderText = "Search...",
+Text = "",
     TextScaled = true,
 }, searchFrame)
 
