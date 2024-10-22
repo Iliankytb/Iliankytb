@@ -15,7 +15,8 @@ local Cheats = {
     ["Doors Entities Spawner (not Mine)"] = "https://raw.githubusercontent.com/plamen6789/UtilitiesHub/main/UtilitiesGUI",
     ["NewDew"] = "https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/NewDex",
     ["Old Cheats Doors(Ilianytb)"] = "https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/OldCheatsDoors",
-    ["OutPut Console(Ilianytb)"] = "https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/ConsoleIlian"
+    ["OutPut Console(Ilianytb)"] = "https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/ConsoleIlian",
+["Pressure Cheat(Fire The The best)"] = "loadstring(game:HttpGet("https://raw.githubusercontent.com/InfernusScripts/Fire-Hub/main/Loader"))()"
 }
 
 local ButtonNames = {
@@ -26,7 +27,8 @@ local ButtonNames = {
     "Doors Entities Spawner (not Mine)", 
     "NewDew", 
     "Old Cheats Doors(Ilianytb)", 
-    "OutPut Console(Ilianytb)"
+    "OutPut Console(Ilianytb)",
+"Pressure Cheat(Fire The The best)"
 }
 
 -- Création de l'interface utilisateur
