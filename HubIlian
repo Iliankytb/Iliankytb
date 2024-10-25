@@ -13,12 +13,24 @@ local HubPressureTab = Window:MakeTab({
 	PremiumOnly = false
 })
 
+local HubRobuxSim2Tab = Window:MakeTab({
+	Name = "Cheat Robux Simulator 2",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
 local HubMiscTab = Window:MakeTab({
 	Name = "Other Cheat I Made And Still in Rework Too",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
 
+HubRobuxSim2Tab:AddButton({
+	Name = "Robux Simulator 2(iliankytb(in work but work))",
+	Callback = function()
+      		loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/RobuxSimulator2"))()
+  	end    
+})
 
 HubTab:AddButton({
 	Name = "Doors Cheats(iliankytb(in rework))",
