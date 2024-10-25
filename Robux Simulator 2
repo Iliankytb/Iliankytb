@@ -55,4 +55,41 @@ wait(.00000000000000000001)
 end
 end
 
+AutoTab:AddToggle({
+	Name = "Auto Unlock Area (Max 10 Area)",
+	Default = false,
+	Callback = function(Value)
+		_G.AutoUnlockArea = Value
+AutoUnlockArea()
+	end    
+})
+
+
+AutoTab:AddToggle({
+	Name = "Auto Hatch Egg (In Work)",
+	Default = false,
+	Callback = function(Value)
+		_G.AutoHatchEgg = Value
+AutoHatchEgg()
+	end    
+})
+
+AutoTab:AddToggle({
+	Name = "Auto Rebirth",
+	Default = false,
+	Callback = function(Value)
+		_G.AutoRebirth = Value
+AutoRebirth()
+	end    
+})
+
+AutoTab:AddToggle({
+	Name = "Auto Gifts",
+	Default = false,
+	Callback = function(Value)
+		_G.AutoGifts = Value
+AutoGifts()
+	end    
+})
+
 OrionLib:Init()
