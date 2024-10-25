@@ -200,3 +200,4 @@ end)
 if isKeyEntered then
     openHub()
 end]]--
+OrionLib:Init()
