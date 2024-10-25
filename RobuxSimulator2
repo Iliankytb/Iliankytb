@@ -1,4 +1,4 @@
-local player = game.Players.LocalPlayer 
+
 local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
 local Window = OrionLib:MakeWindow({Name = "Robux Simulator 2", HidePremium = false,IntroEnabled = false ,SaveConfig = true, ConfigFolder = "OrionTest"})
 
@@ -13,7 +13,7 @@ local _G.AutoRebirth = true
 local _G.AutoUnlockArea = true
 local _G.AutoHatchEgg = true
 local _G.SelectedEgg = "None"
-
+local player = game.Players.LocalPlayer 
 function AutoGifts()
 while _G.AutoGifts == true do
 game:GetService("ReplicatedStorage").Remotes.GetGifts:InvokeServer(player.Name)
