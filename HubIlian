@@ -6,6 +6,13 @@ local HubTab = Window:MakeTab({
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
+Tab:AddToggle({
+	Name = "This is a toggle!",
+	Default = false,
+	Callback = function(Value)
+		print(Value)
+	end    
+})
 
 --[[ Définition des variables locales au lieu des attributs
 local key = "IliankYTB"
