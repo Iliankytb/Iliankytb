@@ -78,7 +78,7 @@ HubMiscTab:AddButton({
 HubMiscTab:AddButton({
 	Name = "Simple Spy (by exxtremestuffs)",
 	Callback = function()
-      		loadstring(game:HttpGet("https://raw.githubusercontent.com/exxtremestuffs/exxtremestuffs/main/SimpleSpy.lua"))()
+      		loadstring(game:HttpGet("https://raw.githubusercontent.com/exxtremestuffs/main/SimpleSpy.lua"))()
   	end    
 })
 
