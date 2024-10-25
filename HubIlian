@@ -62,7 +62,7 @@ HubMiscTab:AddButton({
   	end    
 })
 HubMiscTab:AddButton({
-	Name = "NewDew",
+	Name = "New Dew",
 	Callback = function()
       		loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/NewDex"))()
   	end    
@@ -76,9 +76,9 @@ HubMiscTab:AddButton({
 })
 
 HubMiscTab:AddButton({
-	Name = "Simple Spy (by exxtremestuffs)",
+	Name = "Turtle Spy ",
 	Callback = function()
-      		loadstring(game:HttpGet("https://raw.githubusercontent.com/exxtremestuffs/main/SimpleSpy.lua"))()
+      		loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/TurtleSpy"))()
   	end    
 })
 
