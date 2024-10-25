@@ -1,0 +1,49 @@
+local player = game.Players.LocalPlayer 
+
+local _G.AutoGifts = true
+local _G.AutoRebirth = true
+local _G.AutoUnlockArea = true
+local _G.AutoHatchEgg = true
+local _G.SelectedEgg = "None"
+
+function AutoGifts()
+while _G.AutoGifts == true do
+game:GetService("ReplicatedStorage").Remotes.GetGifts:InvokeServer(player.Name)
+game:GetService("ReplicatedStorage").Remotes.ClaimFreeGift:FireServer("+100 Robux",1)
+game:GetService("ReplicatedStorage").Remotes.ClaimFreeGift:FireServer("+1 Bee",4)
+wait(.00000000000000000001)
+end
+end
+
+function AutoRebirth()
+while _G.AutoRebirth == true do
+game:GetService("ReplicatedStorage").Remotes.Rebirth:FireServer("3")
+game:GetService("ReplicatedStorage").Remotes.Rebirth:FireServer("2")
+game:GetService("ReplicatedStorage").Remotes.Rebirth:FireServer("1")
+wait(.00000000000000000001)
+end
+end
+
+function AutoUnlockArea()
+while _G.AutoUnlockArea == true do
+game:GetService("ReplicatedStorage").Remotes.UnlockArea:FireServer("1")
+game:GetService("ReplicatedStorage").Remotes.UnlockArea:FireServer("2")
+game:GetService("ReplicatedStorage").Remotes.UnlockArea:FireServer("3")
+game:GetService("ReplicatedStorage").Remotes.UnlockArea:FireServer("4")
+game:GetService("ReplicatedStorage").Remotes.UnlockArea:FireServer("5")
+game:GetService("ReplicatedStorage").Remotes.UnlockArea:FireServer("6")
+game:GetService("ReplicatedStorage").Remotes.UnlockArea:FireServer("7")
+game:GetService("ReplicatedStorage").Remotes.UnlockArea:FireServer("8")
+game:GetService("ReplicatedStorage").Remotes.UnlockArea:FireServer("9")
+game:GetService("ReplicatedStorage").Remotes.UnlockArea:FireServer("10")
+wait(.00000000000000000001)
+end
+end
+
+function AutoHatchEgg()
+while _G.AutoHatchEgg == true do
+game:GetService("ReplicatedStorage").Remotes.Egg:InvokeServer(1,_GSelectedEgg)
+wait(.00000000000000000001)
+end
+end
+
