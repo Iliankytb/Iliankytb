@@ -7,6 +7,73 @@ local HubTab = Window:MakeTab({
 	PremiumOnly = false
 })
 
+local HubPressureTab = Window:MakeTab({
+	Name = "Cheat Pressure",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local HubMiscTab = Window:MakeTab({
+	Name = "Other Cheat I Made And Still in Rework Too",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+
+HubTab:AddButton({
+	Name = "Doors Cheats(iliankytb(in rework))",
+	Callback = function()
+      		loadstring(game:HttpGet(https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatsDoors))()
+  	end    
+})
+
+HubTab:AddButton({
+	Name = "Doors Cheat(MSPaintV3)",
+	Callback = function()
+      		loadstring(game:HttpGet(https://raw.githubusercontent.com/notpoiu/mspaint/main/main.lua))()
+  	end    
+})
+
+HubTab:AddButton({
+	Name = "Old Cheats Doors(Ilianytb)",
+	Callback = function()
+      		loadstring(game:HttpGet(https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/OldCheatsDoors))()
+  	end    
+})
+
+HubTab:AddButton({
+	Name = "Doors Entities Spawner (not Mine)",
+	Callback = function()
+      		loadstring(game:HttpGet(https://raw.githubusercontent.com/plamen6789/UtilitiesHub/main/UtilitiesGUI))()
+  	end    
+})
+
+HubPressureTab:AddButton({
+	Name = "Pressure Cheat(Fire The The best)",
+	Callback = function()
+      		loadstring(game:HttpGet(https://raw.githubusercontent.com/InfernusScripts/Fire-Hub/main/Loader))()
+  	end    
+})
+
+HubMiscTab:AddButton({
+	Name = "TimerSpeedrun(Best Timer)",
+	Callback = function()
+      		loadstring(game:HttpGet(https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/SpeedrunTimer))()
+  	end    
+})
+HubMiscTab:AddButton({
+	Name = "NewDew",
+	Callback = function()
+      		loadstring(game:HttpGet(https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/NewDex))()
+  	end    
+})
+
+HubMiscTab:AddButton({
+	Name = "OutPut Console(Ilianytb)",
+	Callback = function()
+      		loadstring(game:HttpGet(https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/ConsoleIlian))()
+  	end    
+})
 --[[ Définition des variables locales au lieu des attributs
 local key = "IliankYTB"
 local isKeyEntered = false
@@ -14,15 +81,15 @@ local isInKeyHub = true
 local isFrameClose = false
 
 local Cheats = {
-    ["Doors Cheats(iliankytb(in rework))"] = "https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatsDoors",
+    [""] = "https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatsDoors",
     ["Blox Fruit Cheat(Best and not mine)"] = "https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatsBloxFruits",
     ["TimerSpeedrun(Best Timer)"] = "https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/SpeedrunTimer",
-    ["Doors Cheat(MSPaintV2)"] = "https://raw.githubusercontent.com/notpoiu/mspaint/main/main.lua",
+    [""] = "https://raw.githubusercontent.com/notpoiu/mspaint/main/main.lua",
     ["Doors Entities Spawner (not Mine)"] = "https://raw.githubusercontent.com/plamen6789/UtilitiesHub/main/UtilitiesGUI",
     ["NewDew"] = "https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/NewDex",
     ["Old Cheats Doors(Ilianytb)"] = "https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/OldCheatsDoors",
     ["OutPut Console(Ilianytb)"] = "https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/ConsoleIlian",
-["Pressure Cheat(Fire The The best)"] = "loadstring(game:HttpGet("https://raw.githubusercontent.com/InfernusScripts/Fire-Hub/main/Loader"))()"
+[""] = "loadstring(game:HttpGet("https://raw.githubusercontent.com/InfernusScripts/Fire-Hub/main/Loader"))()"
 }
 
 local ButtonNames = {
