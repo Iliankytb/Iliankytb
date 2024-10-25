@@ -1,4 +1,4 @@
-local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
+local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
 local Window = OrionLib:MakeWindow({Name = "IliankYTB Hub", HidePremium = false,IntroEnabled = false ,SaveConfig = false, ConfigFolder = "OrionTest"})
 
 local HubTab = Window:MakeTab({
@@ -23,55 +23,55 @@ local HubMiscTab = Window:MakeTab({
 HubTab:AddButton({
 	Name = "Doors Cheats(iliankytb(in rework))",
 	Callback = function()
-      		loadstring(game:HttpGet(https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatsDoors))()
+      		loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatsDoors"))()
   	end    
 })
 
 HubTab:AddButton({
 	Name = "Doors Cheat(MSPaintV3)",
 	Callback = function()
-      		loadstring(game:HttpGet(https://raw.githubusercontent.com/notpoiu/mspaint/main/main.lua))()
+      		loadstring(game:HttpGet("https://raw.githubusercontent.com/notpoiu/mspaint/main/main.lua"))()
   	end    
 })
 
 HubTab:AddButton({
 	Name = "Old Cheats Doors(Ilianytb)",
 	Callback = function()
-      		loadstring(game:HttpGet(https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/OldCheatsDoors))()
+      		loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/OldCheatsDoors"))()
   	end    
 })
 
 HubTab:AddButton({
 	Name = "Doors Entities Spawner (not Mine)",
 	Callback = function()
-      		loadstring(game:HttpGet(https://raw.githubusercontent.com/plamen6789/UtilitiesHub/main/UtilitiesGUI))()
+      		loadstring(game:HttpGet("https://raw.githubusercontent.com/plamen6789/UtilitiesHub/main/UtilitiesGUI"))()
   	end    
 })
 
 HubPressureTab:AddButton({
 	Name = "Pressure Cheat(Fire The The best)",
 	Callback = function()
-      		loadstring(game:HttpGet(https://raw.githubusercontent.com/InfernusScripts/Fire-Hub/main/Loader))()
+      		loadstring(game:HttpGet("https://raw.githubusercontent.com/InfernusScripts/Fire-Hub/main/Loader"))()
   	end    
 })
 
 HubMiscTab:AddButton({
 	Name = "TimerSpeedrun(Best Timer)",
 	Callback = function()
-      		loadstring(game:HttpGet(https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/SpeedrunTimer))()
+      		loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/SpeedrunTimer"))()
   	end    
 })
 HubMiscTab:AddButton({
 	Name = "NewDew",
 	Callback = function()
-      		loadstring(game:HttpGet(https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/NewDex))()
+      		loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/NewDex"))()
   	end    
 })
 
 HubMiscTab:AddButton({
 	Name = "OutPut Console(Ilianytb)",
 	Callback = function()
-      		loadstring(game:HttpGet(https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/ConsoleIlian))()
+      		loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/ConsoleIlian"))()
   	end    
 })
 
