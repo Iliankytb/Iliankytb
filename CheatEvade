@@ -8,6 +8,48 @@ local CandyName = {"Ticket1"}
 _G.AutoFarmCandysNoSecurity = false
 _G.AutoFarmCandysSecurity = false
 
+-- Fonction pour auto-farm avec sécurité
+local function AutoFarmCandysSecurity()
+    if HumanoidRootPart then
+        local foundCandy = false
+        for _, item in ipairs(game.Workspace:GetChildren()) do
+            if table.find(CandyName, item.Name) then
+                local targetCFrame
+                if item:IsA("Model") and item.PrimaryPart then
+                    targetCFrame = item.PrimaryPart.CFrame
+                elseif item:IsA("Model") then
+                    local part = item:FindFirstChildWhichIsA("Part")
+                    if part then
+                        targetCFrame = part.CFrame
+                    end
+                elseif item:IsA("Part") then
+                    targetCFrame = item.CFrame
+                end
+                
+                if targetCFrame then
+                    HumanoidRootPart.CFrame = targetCFrame
+                    foundCandy = true
+                    wait(0.1)
+                    return
+                end
+            end
+        end
+
+        -- Si aucun bonbon ou modèle n'est trouvé, crée une Part de sécurité
+        if not foundCandy then
+            local securityPart = game.Workspace:FindFirstChild("SecurityPart") or Instance.new("Part")
+            securityPart.Name = "SecurityPart"
+            securityPart.Size = Vector3.new(10, 1, 10)
+            securityPart.Position = Vector3.new(0, 500, 0)  -- Position en hauteur
+            securityPart.Anchored = true
+            securityPart.Parent = game.Workspace
+            HumanoidRootPart.CFrame = securityPart.CFrame + Vector3.new(0, 3, 0)  -- Téléporte le joueur au-dessus de la Part de sécurité
+wait(0.5)
+securityPart:Destroy()
+        end
+    end
+end
+
 -- Fonction pour auto-farm sans sécurité
 local function AutoFarmCandysNoSecurity()
     if HumanoidRootPart then
@@ -15,14 +57,14 @@ local function AutoFarmCandysNoSecurity()
             if table.find(CandyName, item.Name) then
                 local targetCFrame
                 if item:IsA("Model") and item.PrimaryPart then
-                    targetCFrame = item.PrimaryPart.CFrame  -- Utilise la PrimaryPart du modèle
+                    targetCFrame = item.PrimaryPart.CFrame
                 elseif item:IsA("Model") then
                     local part = item:FindFirstChildWhichIsA("Part")
                     if part then
-                        targetCFrame = part.CFrame  -- Utilise une Part trouvée dans le modèle
+                        targetCFrame = part.CFrame
                     end
                 elseif item:IsA("Part") then
-                    targetCFrame = item.CFrame  -- Si c'est une simple Part, utilise directement sa position
+                    targetCFrame = item.CFrame
                 end
                 
                 if targetCFrame then
@@ -34,7 +76,6 @@ local function AutoFarmCandysNoSecurity()
         end
     end
 end
-
 
 local MainTab = Window:MakeTab({
     Name = "Main",
@@ -68,15 +109,17 @@ MainTab:AddToggle({
     Callback = function(Value)
         _G.AutoFarmCandysSecurity = Value
         while _G.AutoFarmCandysSecurity do
-            AutoFarmCandysNoSecurity()
+            AutoFarmCandysSecurity()
             wait(0.5)
         end
     end    
 })
 
 game.Workspace.DescendantAdded:Connect(function(descendant)
-    if (_G.AutoFarmCandysNoSecurity or _G.AutoFarmCandysSecurity) and table.find(CandyName, descendant.Name) then
+    if _G.AutoFarmCandysNoSecurity and table.find(CandyName, descendant.Name) then
         AutoFarmCandysNoSecurity()
+    elseif _G.AutoFarmCandysSecurity and table.find(CandyName, descendant.Name) then
+        AutoFarmCandysSecurity()
     end
 end)
 
