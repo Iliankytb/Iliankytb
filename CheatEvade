@@ -44,8 +44,8 @@ local function AutoFarmCandysSecurity()
             securityPart.Anchored = true
             securityPart.Parent = game.Workspace
             HumanoidRootPart.CFrame = securityPart.CFrame + Vector3.new(0, 3, 0)  -- Téléporte le joueur au-dessus de la Part de sécurité
-wait(0.5)
-securityPart:Destroy()
+            wait(0.5)
+            securityPart:Destroy()
         end
     end
 end
@@ -115,12 +115,23 @@ MainTab:AddToggle({
     end    
 })
 
-game.Workspace.DescendantAdded:Connect(function(descendant)
-    if _G.AutoFarmCandysNoSecurity and table.find(CandyName, descendant.Name) then
-        AutoFarmCandysNoSecurity()
-    elseif _G.AutoFarmCandysSecurity and table.find(CandyName, descendant.Name) then
-        AutoFarmCandysSecurity()
+-- Vérifie les objets existants et ceux ajoutés dynamiquement
+local function CheckForCandy(child)
+    if (child:IsA("Model") or child:IsA("Part")) and table.find(CandyName, child.Name) then
+        if _G.AutoFarmCandysNoSecurity then
+            AutoFarmCandysNoSecurity()
+        elseif _G.AutoFarmCandysSecurity then
+            AutoFarmCandysSecurity()
+        end
     end
-end)
+end
+
+-- Parcourt les enfants actuels de Workspace
+for _, item in ipairs(game.Workspace:GetChildren()) do
+    CheckForCandy(item)
+end
+
+-- Surveille les nouveaux objets ajoutés dans Workspace
+game.Workspace.ChildAdded:Connect(CheckForCandy)
 
 OrionLib:Init()
