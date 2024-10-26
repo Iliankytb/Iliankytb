@@ -7,12 +7,11 @@ local AutoTab = Window:MakeTab({
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
-
-local _G.AutoGifts = true
-local _G.AutoRebirth = true
-local _G.AutoUnlockArea = true
-local _G.AutoHatchEgg = true
-local _G.SelectedEgg = "None"
+ _G.AutoGifts = true
+ _G.AutoRebirth = true
+_G.AutoUnlockArea = true
+ _G.AutoHatchEgg = true
+ _G.SelectedEgg = "None"
 local player = game.Players.LocalPlayer 
 function AutoGifts()
 while _G.AutoGifts == true do
