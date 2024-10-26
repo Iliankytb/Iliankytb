@@ -13,6 +13,18 @@ local HubPressureTab = Window:MakeTab({
 	PremiumOnly = false
 })
 
+local HubEvadeTab = Window:MakeTab({
+	Name = "Cheat Evade",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local HubBloxFruitTab = Window:MakeTab({
+	Name = "Cheat Blox Fruit",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
 local HubRobuxSim2Tab = Window:MakeTab({
 	Name = "Cheat Robux Simulator 2",
 	Icon = "rbxassetid://4483345998",
@@ -50,6 +62,13 @@ HubTab:AddButton({
 	Name = "Old Cheats Doors(Ilianytb)",
 	Callback = function()
       		loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/OldCheatsDoors"))()
+  	end    
+})
+
+HubEvadeTab:AddButton({
+	Name = "Cheats Evade(Ilianytb)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatEvade"))()
   	end    
 })
 
