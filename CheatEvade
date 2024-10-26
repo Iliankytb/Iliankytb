@@ -1,45 +1,80 @@
 local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
-local Window = OrionLib:MakeWindow({Name = "Cheat Evade", HidePremium = false,IntroEnabled = false ,SaveConfig = true, ConfigFolder = "OrionTest"})
-local HumanoidRootPart = game.Player.LocalPlayer.Character.HumanoidRootPart
-local CandyName = {
-"Ticket1"
-}
+local Window = OrionLib:MakeWindow({Name = "Cheat Evade", HidePremium = false, IntroEnabled = false, SaveConfig = true, ConfigFolder = "OrionTest"})
 
-_G.AutoFarmCandysNoSecurity = true
-_G.AutoFarmCandysSecurity = true
+local player = game.Players.LocalPlayer
+local HumanoidRootPart = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+local CandyName = {"Ticket1"}
 
+_G.AutoFarmCandysNoSecurity = false
+_G.AutoFarmCandysSecurity = false
+
+-- Fonction pour auto-farm sans sécurité
 local function AutoFarmCandysNoSecurity()
-for _, Candys in ipairs(Workspace:GetChildren())
-HumanoidRootPart.CFrame = Candys.CFrame
-Wait(.0000000001)
-end
+    if HumanoidRootPart then
+        local foundCandy = false
+        for _, candy in ipairs(game.Workspace:GetChildren()) do
+            if table.find(CandyName, candy.Name) then
+                HumanoidRootPart.CFrame = candy.CFrame
+                foundCandy = true
+                wait(0.1)
+                break
+            end
+        end
+        -- Si aucun bonbon n'a été trouvé, créer une part de sécurité
+        if not foundCandy then
+            local securityPart = Instance.new("Part")
+            securityPart.Name = "SecurityPart"
+            securityPart.Size = Vector3.new(10, 1, 10)
+            securityPart.Position = Vector3.new(0, 500, 0)  -- Position en hauteur
+            securityPart.Anchored = true
+            securityPart.Parent = game.Workspace
+            HumanoidRootPart.CFrame = securityPart.CFrame + Vector3.new(0, 3, 0)  -- Téléporte le joueur juste au-dessus de la part
+        end
+    end
 end
 
 local MainTab = Window:MakeTab({
-	Name = "Main",
-	Icon = "rbxassetid://4483345998",
-	PremiumOnly = false
+    Name = "Main",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
 })
 
 local SectionMain = MainTab:AddSection({
-	Name = "Auto Farm"
+    Name = "Auto Farm"
 })
 
 local SectionHalloweenevent = MainTab:AddSection({
-	Name = "Halloween Event"
+    Name = "Halloween Event"
 })
 
 MainTab:AddToggle({
-	Name = "Auto Farm Candy(with no security)",
-	Default = false,
-	Callback = function(Value)
-		_G.AutoFarmNoSecurity = Value
-	end    
+    Name = "Auto Farm Candy (with no security)",
+    Default = false,
+    Callback = function(Value)
+        _G.AutoFarmCandysNoSecurity = Value
+        while _G.AutoFarmCandysNoSecurity do
+            AutoFarmCandysNoSecurity()
+            wait(0.5)
+        end
+    end    
 })
 
-Workspace.DecendantsAdded:Connect(function()
-while _G.AutoFarmNoSecurity == true do
-end
+MainTab:AddToggle({
+    Name = "Auto Farm Candy (with security)",
+    Default = false,
+    Callback = function(Value)
+        _G.AutoFarmCandysSecurity = Value
+        while _G.AutoFarmCandysSecurity do
+            AutoFarmCandysNoSecurity()
+            wait(0.5)
+        end
+    end    
+})
+
+game.Workspace.DescendantAdded:Connect(function(descendant)
+    if (_G.AutoFarmCandysNoSecurity or _G.AutoFarmCandysSecurity) and table.find(CandyName, descendant.Name) then
+        AutoFarmCandysNoSecurity()
+    end
 end)
 
 OrionLib:Init()
