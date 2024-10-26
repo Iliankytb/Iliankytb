@@ -3,7 +3,7 @@ local Window = OrionLib:MakeWindow({Name = "Cheat Evade", HidePremium = false, I
 
 local player = game.Players.LocalPlayer
 local HumanoidRootPart = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
-local CandyName = {"CandyCorn"}
+local CandyName = {"CandyCorn","WrappedCandy"}
 
 _G.AutoFarmCandysNoSecurity = false
 _G.AutoFarmCandysSecurity = false
@@ -22,7 +22,7 @@ local function AutoFarmCandysSecurity()
                     if part then
                         targetCFrame = part.CFrame
                     end
-                elseif item:IsA("Part") then
+                elseif item:IsA("MeshPart") then
                     targetCFrame = item.CFrame
                 end
                 
@@ -63,7 +63,7 @@ local function AutoFarmCandysNoSecurity()
                     if part then
                         targetCFrame = part.CFrame
                     end
-                elseif item:IsA("Part") then
+                elseif item:IsA("MeshPart") then
                     targetCFrame = item.CFrame
                 end
                 
