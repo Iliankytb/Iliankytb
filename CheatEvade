@@ -1,9 +1,19 @@
 local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
 local Window = OrionLib:MakeWindow({Name = "Cheat Evade", HidePremium = false,IntroEnabled = false ,SaveConfig = true, ConfigFolder = "OrionTest"})
 
+
 local MainTab = Window:MakeTab({
-	Name = "Auto Farm",
+	Name = "Main",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
+
+local SectionMain = MainTab:AddSection({
+	Name = "Auto Farm"
+})
+
+local SectionHalloweenevent = MainTab:AddSection({
+	Name = "Halloween Event"
+})
+
 OrionLib:Init()
