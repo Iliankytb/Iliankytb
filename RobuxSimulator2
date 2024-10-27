@@ -76,6 +76,15 @@ AutoUnlockArea()
 	end    
 })
 
+AutoTab:AddDropdown({
+	Name = "Choose Egg",
+	Default =  _G.SelectedEgg,
+	Options = { _G.SelectedEgg},
+	Callback = function(Value)
+	end    
+})
+
+Dropdown:Set( _G.SelectedEgg)
 
 AutoTab:AddToggle({
 	Name = "Auto Hatch Egg (In Work)",
