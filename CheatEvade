@@ -12,6 +12,24 @@ _G.AutoRespawn = false
 _G.AutoFarmWins = false
 _G.foundCandy = false
 
+local function reloadGame()
+while wait(1) do
+if HumanoidRootPart == player.Character:FindFirstChild("HumanoidRootPart") then
+return
+else
+if player.Character:FindFirstChild("HumanoidRootPart") then
+HumanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
+end
+end
+if Humanoid = player.Character:FindFirstChild("Humanoid") then
+return
+else
+if player.Character:FindFirstChild("Humanoid") then
+Humanoid = player.Character:FindFirstChild("Humanoid")
+end
+end
+end
+
 local function AutoRespawn()
 if Humanoid.Health > 1 then
 game:GetService("ReplicatedStorage").Events.Player.ChangePlayerMode:FireServer(true)
@@ -185,3 +203,4 @@ Died()
 game.Workspace.ChildAdded:Connect(CheckForCandy)
 
 OrionLib:Init()
+reloadGame()
