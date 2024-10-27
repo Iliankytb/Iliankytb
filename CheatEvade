@@ -101,6 +101,8 @@ _G.foundCandy = false
     end
 end
 
+reloadGame()
+
 local MainTab = Window:MakeTab({
     Name = "Main",
     Icon = "rbxassetid://4483345998",
@@ -112,19 +114,19 @@ local EspTab = Window:MakeTab({
     Icon = "rbxassetid://4483345998",
     PremiumOnly = false
 })
-local SectionEspPlayers = MainTab:AddSection({
+local SectionEspPlayers = EspTab:AddSection({
     Name = "Esp Player"
 })
 
-local SectionEspBot = MainTab:AddSection({
+local SectionEspBot = EspTab:AddSection({
     Name = "Esp Bot"
 })
 
-local SectionEspCandys = MainTab:AddSection({
+local SectionEspCandys = EspTab:AddSection({
     Name = "Esp Candys"
 })
 
-local SectionMain = MainTab:AddSection({
+local SectionMain = EspTab:AddSection({
     Name = "Auto Farm"
 })
 
@@ -170,7 +172,7 @@ MainTab:AddToggle({
 
 -- Vérifie les objets existants et ceux ajoutés dynamiquement
 local function CheckForCandy(child)
-    if (child:IsA("Model") or child:IsA("MeshPart")) and table.find(CandyName, child.Name) then
+    if table.find(CandyName, child.Name) then
         if _G.AutoFarmCandysNoSecurity == true then
             AutoFarmCandysNoSecurity()
         elseif _G.AutoFarmCandysSecurity == true then
@@ -188,7 +190,7 @@ MainTab:AddToggle({
     Callback = function(Value)
         _G.AutoRespawn = Value
         while _G.AutoRespawn == true do
-            AutoFarmRespawn()
+            AutoRespawn()
         end
     end    
 })
@@ -203,4 +205,4 @@ Died()
 game.Workspace.ChildAdded:Connect(CheckForCandy)
 
 OrionLib:Init()
-reloadGame()
+
