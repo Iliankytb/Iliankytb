@@ -147,7 +147,7 @@ Configs:CreateConfigSystem()
 local TypeLabelC5 = FarmStats:AddLabel('Auto Farm Stats')
 local DurationLabelC5 = FarmStats:AddLabel('Duration: 0')
 local EarnedLabelC5 = FarmStats:AddLabel('Earned: 0')
---local TicketsLabelC5 = FarmStats:AddLabel('Total Tickets:'..localplayer:GetAttribute('Tickets'))
+local TicketsLabelC5 = FarmStats:AddLabel('Total Tickets:'..localplayer:GetAttribute('Tickets'))
 
 local FindAI = function()
     for _,v in pairs(WorkspacePlayers:GetChildren()) do
@@ -209,11 +209,11 @@ Esp:AddObjectListener(WorkspacePlayers, {
     IsEnabled = "NPCs",
 })
 
---[[Esp:AddObjectListener(game:GetService("Workspace").Game.Effects.Tickets, {
+Esp:AddObjectListener(game:GetService("Workspace").Game.Effects.Tickets, {
     CustomName = "Ticket",
     Color = Color3.fromRGB(41,180,255),
     IsEnabled = "TicketEsp"
-})]]
+})
 
 --Tysm CJStylesOrg
 Esp.Overrides.GetColor = function(char)
@@ -255,21 +255,21 @@ end
 
 task.spawn(function()
     while task.wait(1) do
-        --if Settings.TicketFarm then
-        --    Settings.stats.TicketFarm.duration += 1
-        --end
+        if Settings.TicketFarm then
+            Settings.stats.TicketFarm.duration += 1
+        end
         if Settings.moneyfarm then
             Settings.stats.TokenFarm.duration += 1
         end 
     end
 end)
 
---local gettickets = localplayer:GetAttribute('Tickets')
+local gettickets = localplayer:GetAttribute('Tickets')
 local GetTokens = localplayer:GetAttribute('Tokens')
 
 localplayer:GetAttributeChangedSignal('Tickets'):Connect(function()
-    --local tickets = tostring(gettickets - localplayer:GetAttribute('Tickets'))
-    --local cleanvalue = string.split(tickets, "-")
+    local tickets = tostring(gettickets - localplayer:GetAttribute('Tickets'))
+    local cleanvalue = string.split(tickets, "-")
     Settings.stats.TicketFarm.earned = cleanvalue[2]
 end)
 
@@ -293,7 +293,7 @@ task.spawn(function()
             TypeLabelC5:Set('Ticket Farm')
             DurationLabelC5:Set('Duration:'..convertToHMS(Settings.stats.TicketFarm.duration))
             EarnedLabelC5:Set('Earned:'.. formatNumber(Settings.stats.TicketFarm.earned))
-            --TicketsLabelC5:Set('Total Tickets: '..localplayer:GetAttribute('Tickets'))
+            TicketsLabelC5:Set('Total Tickets: '..localplayer:GetAttribute('Tickets'))
 
             if game.Players.LocalPlayer:GetAttribute('InMenu') ~= true and localplayer:GetAttribute('Dead') ~= true then
                 for i,v in pairs(game:GetService("Workspace").Game.Effects.Tickets:GetChildren()) do
@@ -327,7 +327,7 @@ task.spawn(function()
             TypeLabelC5:Set('Money Farm')
             DurationLabelC5:Set('Duration:'..convertToHMS(Settings.stats.TokenFarm.duration))
             EarnedLabelC5:Set('Earned:'.. formatNumber(Settings.stats.TokenFarm.earned))
-            --TicketsLabelC5:Set('Total Tokens: '..formatNumber(localplayer:GetAttribute('Tokens')))
+            TicketsLabelC5:Set('Total Tokens: '..formatNumber(localplayer:GetAttribute('Tokens')))
             
             if localplayer:GetAttribute("InMenu") and localplayer:GetAttribute("Dead") ~= true then
                 game:GetService("ReplicatedStorage").Events.Respawn:FireServer()
