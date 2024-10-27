@@ -12,31 +12,19 @@ _G.AutoRespawn = false
 _G.AutoFarmWins = false
 _G.foundCandy = false
 
-local function reloadGame()
-while wait(1) do
-if HumanoidRootPart == player.Character:FindFirstChild("HumanoidRootPart") then
-return
-else
-if player.Character:FindFirstChild("HumanoidRootPart") then
-HumanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
-end
-end
-if Humanoid == player.Character:FindFirstChild("Humanoid") then
-return
-else
-if player.Character:FindFirstChild("Humanoid") then
-Humanoid = player.Character:FindFirstChild("Humanoid")
-end
-end
-end
-
 local function AutoRespawn()
+local player = game.Players.LocalPlayer
+local HumanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
+local Humanoid = player.Character:FindFirstChild("Humanoid")
 if Humanoid.Health > 1 then
 game:GetService("ReplicatedStorage").Events.Player.ChangePlayerMode:FireServer(true)
 end
 end
 
 local function AutoFarmWins()
+local player = game.Players.LocalPlayer
+local HumanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
+local Humanoid = player.Character:FindFirstChild("Humanoid")
 local securityPart = game.Workspace:FindFirstChild("SecurityPart") or Instance.new("Part")
             securityPart.Name = "SecurityPart"
             securityPart.Size = Vector3.new(10, 1, 10)
@@ -54,6 +42,9 @@ game:GetService("ReplicatedStorage").Events.Player.ChangePlayerMode:FireServer(f
 end
 -- Fonction pour auto-farm avec sécurité
 local function AutoFarmCandysSecurity()
+local player = game.Players.LocalPlayer
+local HumanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
+local Humanoid = player.Character:FindFirstChild("Humanoid")
     if HumanoidRootPart then
         
         for _, item in ipairs(game.Workspace:GetDescendants()) do
@@ -86,6 +77,9 @@ end
 
 -- Fonction pour auto-farm sans sécurité
 local function AutoFarmCandysNoSecurity()
+local player = game.Players.LocalPlayer
+local HumanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
+local Humanoid = player.Character:FindFirstChild("Humanoid")
     if HumanoidRootPart then
         for _, item in ipairs(game.Workspace:GetDescendants()) do
             if table.find(CandyName, item.Name) then
@@ -100,8 +94,6 @@ _G.foundCandy = false
         end
     end
 end
-
-reloadGame()
 
 local MainTab = Window:MakeTab({
     Name = "Main",
