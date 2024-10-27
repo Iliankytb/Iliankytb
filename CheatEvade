@@ -15,7 +15,9 @@ local player = game.Players.LocalPlayer
 local HumanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
 local Humanoid = player.Character:FindFirstChild("Humanoid")
 if Humanoid.Health > 1 then
+game:GetService("ReplicatedStorage").Events.Player.Respawn:FireServer()
 game:GetService("ReplicatedStorage").Events.Player.ChangePlayerMode:FireServer(true)
+wait(.0000000001)
 end
 end
 
