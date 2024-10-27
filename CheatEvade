@@ -2,12 +2,37 @@ local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shle
 local Window = OrionLib:MakeWindow({Name = "Cheat Evade", HidePremium = false, IntroEnabled = false, SaveConfig = true, ConfigFolder = "OrionTest"})
 
 local player = game.Players.LocalPlayer
-local HumanoidRootPart = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+local HumanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
+local Humanoid = player.Character:FindFirstChild("Humanoid")
 local CandyName = {"CandyCorn","WrappedCandy"}
 
 _G.AutoFarmCandysNoSecurity = false
 _G.AutoFarmCandysSecurity = false
+_G.AutoRespawn = false
+_G.AutoFarmWins = false
 
+local function AutoRespawn()
+if Humanoid.Health > 1 then
+game:GetService("ReplicatedStorage").Events.Player.ChangePlayerMode:FireServer(true)
+end
+end
+
+local function AutoFarmWins()
+local securityPart = game.Workspace:FindFirstChild("SecurityPart") or Instance.new("Part")
+            securityPart.Name = "SecurityPart"
+            securityPart.Size = Vector3.new(10, 1, 10)
+            securityPart.Position = Vector3.new(0, 500, 0)  -- Position en hauteur
+            securityPart.Anchored = true
+            securityPart.Parent = game.Workspace
+            HumanoidRootPart.CFrame = securityPart.CFrame + Vector3.new(0, 3, 0)  -- Téléporte le joueur au-dessus de la Part de sécurité
+            wait(0.5)
+            securityPart:Destroy()
+end
+
+
+local function Died()
+game:GetService("ReplicatedStorage").Events.Player.ChangePlayerMode:FireServer(false)
+end
 -- Fonction pour auto-farm avec sécurité
 local function AutoFarmCandysSecurity()
     if HumanoidRootPart then
@@ -87,6 +112,18 @@ local SectionMain = MainTab:AddSection({
     Name = "Auto Farm"
 })
 
+MainTab:AddToggle({
+    Name = "Auto Farm Win",
+    Default = false,
+    Callback = function(Value)
+        _G.AutoFarmWins = Value
+        while _G.AutoFarmWins == true do
+            AutoFarmWins()
+wait()
+        end
+    end    
+})
+
 local SectionHalloweenevent = MainTab:AddSection({
     Name = "Halloween Event"
 })
@@ -96,7 +133,7 @@ MainTab:AddToggle({
     Default = false,
     Callback = function(Value)
         _G.AutoFarmCandysNoSecurity = Value
-        while _G.AutoFarmCandysNoSecurity do
+        while _G.AutoFarmCandysNoSecurity == true do
             AutoFarmCandysNoSecurity()
             wait(0.5)
         end
@@ -108,7 +145,7 @@ MainTab:AddToggle({
     Default = false,
     Callback = function(Value)
         _G.AutoFarmCandysSecurity = Value
-        while _G.AutoFarmCandysSecurity do
+        while _G.AutoFarmCandysSecurity == true do
             AutoFarmCandysSecurity()
             wait(0.5)
         end
@@ -117,20 +154,35 @@ MainTab:AddToggle({
 
 -- Vérifie les objets existants et ceux ajoutés dynamiquement
 local function CheckForCandy(child)
-    if (child:IsA("Model") or child:IsA("Part")) and table.find(CandyName, child.Name) then
-        if _G.AutoFarmCandysNoSecurity then
+    if (child:IsA("Model") or child:IsA("MeshPart")) and table.find(CandyName, child.Name) then
+        if _G.AutoFarmCandysNoSecurity == true then
             AutoFarmCandysNoSecurity()
-        elseif _G.AutoFarmCandysSecurity then
+        elseif _G.AutoFarmCandysSecurity == true then
             AutoFarmCandysSecurity()
         end
     end
 end
+local SectionMisc = MainTab:AddSection({
+    Name = "Misc"
+})
 
--- Parcourt les enfants actuels de Workspace
-for _, item in ipairs(game.Workspace:GetChildren()) do
-    CheckForCandy(item)
-end
+MainTab:AddToggle({
+    Name = "Auto Respawn",
+    Default = false,
+    Callback = function(Value)
+        _G.AutoRespawn = Value
+        while _G.AutoRespawn == true do
+            AutoFarmRespawn()
+        end
+    end    
+})
 
+MainTab:AddButton({
+    Name = "Died",
+    Callback = function()
+Died()
+    end    
+})
 -- Surveille les nouveaux objets ajoutés dans Workspace
 game.Workspace.ChildAdded:Connect(CheckForCandy)
 
