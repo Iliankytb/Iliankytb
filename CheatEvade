@@ -4,7 +4,7 @@ local Window = OrionLib:MakeWindow({Name = "Cheat Evade", HidePremium = false, I
 local player = game.Players.LocalPlayer
 local HumanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
 local Humanoid = player.Character:FindFirstChild("Humanoid")
-local CandyName = {"CandyCorn","WrappedCandy"}
+local CandyName = {"CandyCorn","WrappedCandy","Bag"}
 
 _G.AutoFarmCandysNoSecurity = false
 _G.AutoFarmCandysSecurity = false
