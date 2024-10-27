@@ -19,13 +19,13 @@ _G.AutoUnlockArea = true
  _G.AutoHatchEgg = true
  _G.SelectedEgg = "None"
 _G.AutoEquipBestPets = true
+_G.ValueOpenEggs = 0
 
 local player = game.Players.LocalPlayer 
 function AutoGifts()
 while _G.AutoGifts == true do
 game:GetService("ReplicatedStorage").Remotes.GetGifts:InvokeServer(player.Name)
 game:GetService("ReplicatedStorage").Remotes.ClaimFreeGift:FireServer("",tostring(math.min(1,10)
-
 wait(.00000000000000000001)
 end
 end
@@ -51,7 +51,7 @@ end
 
 function AutoHatchEgg()
 while _G.AutoHatchEgg == true do
-game:GetService("ReplicatedStorage").Remotes.Egg:InvokeServer(1,_GSelectedEgg)
+game:GetService("ReplicatedStorage").Remotes.Egg:InvokeServer(_G.ValueOpenEggs,_GSelectedEgg)
 wait(.00000000000000000001)
 end
 end
@@ -74,6 +74,15 @@ AutoTab:AddToggle({
 		_G.AutoUnlockArea = Value
 AutoUnlockArea()
 	end    
+})
+
+Tab:AddTextbox({
+	Name = "Number For Open Eggs",
+	Default = "Amount For Open Eggs",
+	TextDisappear = true,
+	Callback = function(Value)
+		_G.ValueOpenEggs = Value
+	end	  
 })
 
 AutoTab:AddDropdown({
