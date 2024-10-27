@@ -108,6 +108,23 @@ local MainTab = Window:MakeTab({
     PremiumOnly = false
 })
 
+local EspTab = Window:MakeTab({
+    Name = "Esp",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+local SectionEspPlayers = MainTab:AddSection({
+    Name = "Esp Player"
+})
+
+local SectionEspBot = MainTab:AddSection({
+    Name = "Esp Bot"
+})
+
+local SectionEspCandys = MainTab:AddSection({
+    Name = "Esp Candys"
+})
+
 local SectionMain = MainTab:AddSection({
     Name = "Auto Farm"
 })
