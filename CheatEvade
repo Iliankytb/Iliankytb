@@ -124,6 +124,14 @@ _G.EspPlayer = Value
     end    
 })
 
+EspTab:AddColorpicker({
+	Name = "ColorEspPlayer",
+	Default = Color3.fromRGB(255, 255, 0), --orange
+	Callback = function(Value)
+		print(Value)
+	end	  
+})
+
 local SectionEspBot = EspTab:AddSection({
     Name = "Esp Bot"
 })
