@@ -21,7 +21,7 @@ if player.Character:FindFirstChild("HumanoidRootPart") then
 HumanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
 end
 end
-if Humanoid = player.Character:FindFirstChild("Humanoid") then
+if Humanoid == player.Character:FindFirstChild("Humanoid") then
 return
 else
 if player.Character:FindFirstChild("Humanoid") then
