@@ -13,9 +13,9 @@ _G.EspPlayer = false
 _G.EspBot = false
 _G.EspCandys = false
 _G.EspMeter = false
+_G.AutoFarmMoney = false
 
 local playerColor = Color3.fromRGB(255, 255, 0) -- couleur par défaut (orange)
-
 local candyColor = Color3.fromRGB(255, 165, 0) -- couleur par défaut (orange)
 
 local function ToggleESPCandy()
@@ -82,11 +82,18 @@ local function AutoRespawn()
 local player = game.Players.LocalPlayer
 local HumanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
 local Humanoid = player.Character:FindFirstChild("Humanoid")
-if Humanoid.Health > 1 then
-game:GetService("ReplicatedStorage").Events.Player.Respawn:FireServer()
-game:GetService("ReplicatedStorage").Events.Player.ChangePlayerMode:FireServer(true)
+if Player.Character and Player.Character:GetAttribute("Downed") then
+game:GetService("ReplicatedStorage").Events.Respawn:FireServer()
 wait(.0000000001)
 end
+end
+
+local GetDownedPlr = function()
+    for i,v in pairs(WorkspacePlayers:GetChildren()) do
+        if v:GetAttribute("Downed") then
+            return v
+        end
+    end
 end
 
 local function AutoFarmWins()
@@ -103,7 +110,6 @@ local securityPart = game.Workspace:FindFirstChild("SecurityPart") or Instance.n
             wait(0.5)
             securityPart:Destroy()
 end
-
 
 local function Died()
 game:GetService("ReplicatedStorage").Events.Player.ChangePlayerMode:FireServer(false)
@@ -267,6 +273,17 @@ MainTab:AddToggle({
     end    
 })
 
+MainTab:AddToggle({
+    Name = "Auto Farm Money",
+    Default = false,
+    Callback = function(Value)
+        _G.AutoFarmMoney = Value
+        while _G.AutoFarmMoney == true do
+          --  AutoFarmWins()
+        end
+    end    
+})
+
 local SectionHalloweenevent = MainTab:AddSection({
     Name = "Halloween Event"
 })
@@ -329,6 +346,22 @@ Died()
 })
 -- Surveille les nouveaux objets ajoutés dans Workspace
 game.Workspace.ChildAdded:Connect(CheckForCandy,ToggleESPPlayer,ToggleESPCandy)
+local GC = getconnections or get_signal_cons
+	if GC then
+		for i,v in pairs(GC(localplayer.Idled)) do
+			if v["Disable"] then
+				v["Disable"](v)
+			elseif v["Disconnect"] then
+				v["Disconnect"](v)
+			end
+		end
+	else
+		localplayer.Idled:Connect(function()
+			local VirtualUser = game:GetService("VirtualUser")
+			VirtualUser:CaptureController()
+			VirtualUser:ClickButton2(Vector2.new())
+		end)
+	end
 
 OrionLib:Init()
 
