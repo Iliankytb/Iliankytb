@@ -95,6 +95,23 @@ local GetDownedPlr = function()
         end
     end
 end
+local function AutoFarmMoney()
+local player = game.Players.LocalPlayer
+local HumanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
+local Humanoid = player.Character:FindFirstChild("Humanoid")
+    local downedplr = GetDownedPlr()
+    if downedplr ~= nil and downedplr:FindFirstChild('HumanoidRootPart') then
+                if player.Character then
+workspace.Game.Settings:SetAttribute("ReviveTime", 2.2)
+                    player.Character:FindFirstChild('HumanoidRootPart').CFrame = CFrame.new(downedplr:FindFirstChild('HumanoidRootPart').Position.X, downedplr:FindFirstChild('HumanoidRootPart').Position.Y + 3, downedplr:FindFirstChild('HumanoidRootPart').Position.Z)
+                    game:GetService("ReplicatedStorage").Events.Revive.RevivePlayer:FireServer(tostring(downedplr), false)
+                    game:GetService("ReplicatedStorage").Events.Revive.RevivePlayer:FireServer(tostring(downedplr), true)
+                    game:GetService("ReplicatedStorage").Events.Revive.RevivePlayer:FireServer(tostring(downedplr), true)
+                    game:GetService("ReplicatedStorage").Events.Revive.RevivePlayer:FireServer(tostring(downedplr), true)
+wait(5)
+                end
+    end
+end
 
 local function AutoFarmWins()
 local player = game.Players.LocalPlayer
@@ -279,7 +296,7 @@ MainTab:AddToggle({
     Callback = function(Value)
         _G.AutoFarmMoney = Value
         while _G.AutoFarmMoney == true do
-          --  AutoFarmWins()
+          AutoFarmMoney()
         end
     end    
 })
@@ -346,9 +363,13 @@ Died()
 })
 -- Surveille les nouveaux objets ajoutés dans Workspace
 game.Workspace.ChildAdded:Connect(CheckForCandy,ToggleESPPlayer,ToggleESPCandy)
+local function AntiKick()
+local player = game.Players.LocalPlayer
+local HumanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
+local Humanoid = player.Character:FindFirstChild("Humanoid")
 local GC = getconnections or get_signal_cons
 	if GC then
-		for i,v in pairs(GC(localplayer.Idled)) do
+		for i,v in pairs(GC(player.Idled)) do
 			if v["Disable"] then
 				v["Disable"](v)
 			elseif v["Disconnect"] then
@@ -356,12 +377,15 @@ local GC = getconnections or get_signal_cons
 			end
 		end
 	else
-		localplayer.Idled:Connect(function()
+		player.Idled:Connect(function()
 			local VirtualUser = game:GetService("VirtualUser")
 			VirtualUser:CaptureController()
 			VirtualUser:ClickButton2(Vector2.new())
 		end)
 	end
-
+end
+while wait(1) do
+AntiKick()
+end
 OrionLib:Init()
 
