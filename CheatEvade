@@ -9,6 +9,10 @@ _G.AutoFarmCandysSecurity = false
 _G.AutoRespawn = false
 _G.AutoFarmWins = false
 _G.foundCandy = false
+_G.EspPlayer = false
+_G.EspBot = false
+_G.EspCandys = false
+_G.EspMeter = false
 
 local function AutoRespawn()
 local player = game.Players.LocalPlayer
@@ -110,6 +114,16 @@ local SectionEspPlayers = EspTab:AddSection({
     Name = "Esp Player"
 })
 
+EspTab:AddToggle({
+    Name = "Esp Player",
+    Default = false,
+    Callback = function(Value)
+_G.EspPlayer = Value
+        while _G.EspPlayer == true do
+        end
+    end    
+})
+
 local SectionEspBot = EspTab:AddSection({
     Name = "Esp Bot"
 })
@@ -129,7 +143,6 @@ MainTab:AddToggle({
         _G.AutoFarmWins = Value
         while _G.AutoFarmWins == true do
             AutoFarmWins()
-wait()
         end
     end    
 })
