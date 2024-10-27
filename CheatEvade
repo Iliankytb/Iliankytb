@@ -14,6 +14,70 @@ _G.EspBot = false
 _G.EspCandys = false
 _G.EspMeter = false
 
+local playerColor = Color3.fromRGB(255, 255, 0) -- couleur par défaut (orange)
+
+local candyColor = Color3.fromRGB(255, 165, 0) -- couleur par défaut (orange)
+
+local function ToggleESPCandy()
+    for _, item in ipairs(game.Workspace:GetDescendants()) do
+        if table.find(CandyName, item.Name) and item:IsA("MeshPart") then
+            -- Si l'ESP pour les bonbons est activé
+            if _G.EspCandys == true then
+                if not item:FindFirstChild("CandyBillboard") then
+                    local billboard = Instance.new("BillboardGui", item)
+                    billboard.Name = "CandyBillboard"
+                    billboard.Size = UDim2.new(0, 50, 0, 20)
+                    billboard.StudsOffset = Vector3.new(0, 2, 0)
+                    billboard.AlwaysOnTop = true
+
+                    local label = Instance.new("TextLabel", billboard)
+                    label.Size = UDim2.new(1, 0, 1, 0)
+                    label.BackgroundTransparency = 1
+                    label.Text = item.Name
+                    label.TextColor3 = candyColor
+                    label.TextScaled = true
+                elseif item:FindFirstChild("CandyBillboard") then
+                    item:FindFirstChild("CandyBillboard").TextLabel.TextColor3 = candyColor
+                end
+            -- Si l'ESP est désactivé, détruire le *BillboardGui*
+            elseif item:FindFirstChild("CandyBillboard") then
+                item:FindFirstChild("CandyBillboard"):Destroy()
+            end
+        end
+    end
+end
+
+local function ToggleESPPlayer()
+    for _, player in pairs(game.Players:GetPlayers()) do
+        if player ~= game.Players.LocalPlayer and player.Character then
+            local head = player.Character:FindFirstChild("Head")
+            
+            -- Si l'ESP est activé
+            if _G.EspPlayer == true then
+                if head and not head:FindFirstChild("PlayerBillboard") then
+                    local billboard = Instance.new("BillboardGui", head)
+                    billboard.Name = "PlayerBillboard"
+                    billboard.Size = UDim2.new(0, 100, 0, 20)
+                    billboard.StudsOffset = Vector3.new(0, 3, 0)
+                    billboard.AlwaysOnTop = true
+
+                    local label = Instance.new("TextLabel", billboard)
+                    label.Size = UDim2.new(1, 0, 1, 0)
+                    label.BackgroundTransparency = 1
+                    label.Text = player.Name
+                    label.TextColor3 = playerColor
+                    label.TextScaled = true
+                elseif head and head:FindFirstChild("PlayerBillboard") then
+                    head:FindFirstChild("PlayerBillboard").TextLabel.TextColor3 = playerColor
+                end
+            -- Si l'ESP est désactivé, détruire le *BillboardGui*
+            elseif head and head:FindFirstChild("PlayerBillboard") then
+                head:FindFirstChild("PlayerBillboard"):Destroy()
+            end
+        end
+    end
+end
+
 local function AutoRespawn()
 local player = game.Players.LocalPlayer
 local HumanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
@@ -118,19 +182,21 @@ EspTab:AddToggle({
     Name = "Esp Player",
     Default = false,
     Callback = function(Value)
-_G.EspPlayer = Value
-        while _G.EspPlayer == true do
-        end
+        _G.EspPlayer = Value
+        ToggleESPPlayer()
     end    
 })
 
-EspTab:AddColorpicker({
-	Name = "ColorEspPlayer",
-	Default = Color3.fromRGB(255, 255, 0), --orange
+Esp:AddColorpicker({
+	Name = "ColorpickerPlayer",
+	Default = playerColor,
 	Callback = function(Value)
-		print(Value)
+		playerColor = Value
 	end	  
 })
+
+
+
 
 local SectionEspBot = EspTab:AddSection({
     Name = "Esp Bot"
@@ -138,6 +204,24 @@ local SectionEspBot = EspTab:AddSection({
 
 local SectionEspCandys = EspTab:AddSection({
     Name = "Esp Candys"
+})
+
+EspTab:AddToggle({
+    Name = "Esp Candys",
+    Default = false,
+    Callback = function(Value)
+        _G.EspCandys = Value
+        ToggleESPCandy()
+    end    
+})
+
+EspTab:AddColorpicker({
+    Name = "ColorEspCandy",
+    Default = candyColor,
+    Callback = function(Value)
+        candyColor = Value
+        ToggleESPCandy() -- Mise à jour de l'ESP des bonbons avec la nouvelle couleur
+    end	  
 })
 
 local SectionMain = EspTab:AddSection({
