@@ -24,8 +24,8 @@ local player = game.Players.LocalPlayer
 function AutoGifts()
 while _G.AutoGifts == true do
 game:GetService("ReplicatedStorage").Remotes.GetGifts:InvokeServer(player.Name)
-game:GetService("ReplicatedStorage").Remotes.ClaimFreeGift:FireServer("+100 Robux",1)
-game:GetService("ReplicatedStorage").Remotes.ClaimFreeGift:FireServer("+1 Bee",4)
+game:GetService("ReplicatedStorage").Remotes.ClaimFreeGift:FireServer("",tostring(math.min(1,10)
+
 wait(.00000000000000000001)
 end
 end
@@ -40,20 +40,14 @@ end
 end
 
 function AutoUnlockArea()
-while _G.AutoUnlockArea == true do
-game:GetService("ReplicatedStorage").Remotes.UnlockArea:FireServer("1")
-game:GetService("ReplicatedStorage").Remotes.UnlockArea:FireServer("2")
-game:GetService("ReplicatedStorage").Remotes.UnlockArea:FireServer("3")
-game:GetService("ReplicatedStorage").Remotes.UnlockArea:FireServer("4")
-game:GetService("ReplicatedStorage").Remotes.UnlockArea:FireServer("5")
-game:GetService("ReplicatedStorage").Remotes.UnlockArea:FireServer("6")
-game:GetService("ReplicatedStorage").Remotes.UnlockArea:FireServer("7")
-game:GetService("ReplicatedStorage").Remotes.UnlockArea:FireServer("8")
-game:GetService("ReplicatedStorage").Remotes.UnlockArea:FireServer("9")
-game:GetService("ReplicatedStorage").Remotes.UnlockArea:FireServer("10")
-wait(.00000000000000000001)
+    while _G.AutoUnlockArea == true do
+        for area = 1, 40 do -- Débloque les zones de 1 à 10
+            game:GetService("ReplicatedStorage").Remotes.UnlockArea:FireServer(tostring(math.min(area, 40))) -- Assurez-vous que la zone ne dépasse pas 10
+        end
+        wait(0.0000000001) -- Utilisez un délai raisonnable
+    end
 end
-end
+
 
 function AutoHatchEgg()
 while _G.AutoHatchEgg == true do
