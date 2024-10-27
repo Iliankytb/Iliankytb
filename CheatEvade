@@ -2,8 +2,6 @@ local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shle
 local Window = OrionLib:MakeWindow({Name = "Cheat Evade", HidePremium = false, IntroEnabled = false, SaveConfig = true, ConfigFolder = "OrionTest"})
 
 local player = game.Players.LocalPlayer
-local HumanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
-local Humanoid = player.Character:FindFirstChild("Humanoid")
 local CandyName = {"CandyCorn","WrappedCandy","Bag"}
 
 _G.AutoFarmCandysNoSecurity = false
