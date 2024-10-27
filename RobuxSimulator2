@@ -42,8 +42,8 @@ end
 
 function AutoUnlockArea()
     while _G.AutoUnlockArea == true do
-        for area = 1, 10 do
-            game:GetService("ReplicatedStorage").Remotes.UnlockArea:FireServer(tostring(math.min(area, 10)))
+        for area = 1, 40 do
+            game:GetService("ReplicatedStorage").Remotes.UnlockArea:FireServer(tostring(math.min(area, 40)))
         end
         wait(0.1)
     end
