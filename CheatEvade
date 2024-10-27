@@ -187,16 +187,14 @@ EspTab:AddToggle({
     end    
 })
 
-EspTab:AddColorpicker({
-	Name = "ColorpickerPlayer",
+Tab:AddColorpicker({
+	Name = "Color Esp Player",
 	Default = playerColor,
 	Callback = function(Value)
 		playerColor = Value
+ToggleESPPlayer()
 	end	  
 })
-
-
-
 
 local SectionEspBot = EspTab:AddSection({
     Name = "Esp Bot"
@@ -216,7 +214,7 @@ EspTab:AddToggle({
 })
 
 EspTab:AddColorpicker({
-    Name = "ColorEspCandy",
+    Name = "Color Esp Candy",
     Default = candyColor,
     Callback = function(Value)
         candyColor = Value
