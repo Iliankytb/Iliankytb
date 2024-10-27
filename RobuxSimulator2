@@ -1,6 +1,5 @@
-
 local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
-local Window = OrionLib:MakeWindow({Name = "Robux Simulator 2", HidePremium = false,IntroEnabled = false ,SaveConfig = true, ConfigFolder = "OrionTest"})
+local Window = OrionLib:MakeWindow({Name = "Robux Simulator 2", HidePremium = false, IntroEnabled = false, SaveConfig = true, ConfigFolder = "OrionTest"})
 
 local AutoTab = Window:MakeTab({
 	Name = "Auto Farm",
@@ -13,70 +12,71 @@ local MiscTab = Window:MakeTab({
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
- _G.AutoGifts = true
- _G.AutoRebirth = true
+
+_G.AutoGifts = true
+_G.AutoRebirth = true
 _G.AutoUnlockArea = true
- _G.AutoHatchEgg = true
- _G.SelectedEgg = "None"
+_G.AutoHatchEgg = true
+_G.SelectedEgg = "None"
 _G.AutoEquipBestPets = true
 _G.ValueOpenEggs = 0
 
 local player = game.Players.LocalPlayer 
+
 function AutoGifts()
-while _G.AutoGifts == true do
-game:GetService("ReplicatedStorage").Remotes.GetGifts:InvokeServer(player.Name)
-game:GetService("ReplicatedStorage").Remotes.ClaimFreeGift:FireServer("",tostring(math.min(1,10)
-wait(.00000000000000000001)
-end
+    while _G.AutoGifts == true do
+        game:GetService("ReplicatedStorage").Remotes.GetGifts:InvokeServer(player.Name)
+        game:GetService("ReplicatedStorage").Remotes.ClaimFreeGift:FireServer("", tostring(math.min(1, 10)))
+        wait(0.1)
+    end
 end
 
 function AutoRebirth()
-while _G.AutoRebirth == true do
-game:GetService("ReplicatedStorage").Remotes.Rebirth:FireServer("3")
-game:GetService("ReplicatedStorage").Remotes.Rebirth:FireServer("2")
-game:GetService("ReplicatedStorage").Remotes.Rebirth:FireServer("1")
-wait(.00000000000000000001)
-end
+    while _G.AutoRebirth == true do
+        game:GetService("ReplicatedStorage").Remotes.Rebirth:FireServer("3")
+        game:GetService("ReplicatedStorage").Remotes.Rebirth:FireServer("2")
+        game:GetService("ReplicatedStorage").Remotes.Rebirth:FireServer("1")
+        wait(0.1)
+    end
 end
 
 function AutoUnlockArea()
     while _G.AutoUnlockArea == true do
-        for area = 1, 40 do -- Débloque les zones de 1 à 10
-            game:GetService("ReplicatedStorage").Remotes.UnlockArea:FireServer(tostring(math.min(area, 40))) -- Assurez-vous que la zone ne dépasse pas 10
+        for area = 1, 10 do
+            game:GetService("ReplicatedStorage").Remotes.UnlockArea:FireServer(tostring(math.min(area, 10)))
         end
-        wait(0.0000000001) -- Utilisez un délai raisonnable
+        wait(0.1)
     end
 end
 
-
 function AutoHatchEgg()
-while _G.AutoHatchEgg == true do
-game:GetService("ReplicatedStorage").Remotes.Egg:InvokeServer(_G.ValueOpenEggs,_GSelectedEgg)
-wait(.00000000000000000001)
-end
+    while _G.AutoHatchEgg == true do
+        game:GetService("ReplicatedStorage").Remotes.Egg:InvokeServer(_G.ValueOpenEggs, _G.SelectedEgg)
+        wait(0.1)
+    end
 end
 
 function EquipBestPets()
-game:GetService("ReplicatedStorage").Remotes.Pets.EquipBest:FireServer()
+    game:GetService("ReplicatedStorage").Remotes.Pets.EquipBest:FireServer()
 end
 
 function AutoEquipBestPets()
-while _G.AutoEquipBestPets == true do
-EquipBestPets()
+    while _G.AutoEquipBestPets == true do
+        EquipBestPets()
+        wait(0.1)
+    end
 end
-end
-
 
 AutoTab:AddToggle({
 	Name = "Auto Unlock Area (Max 10 Area)",
 	Default = false,
 	Callback = function(Value)
 		_G.AutoUnlockArea = Value
-AutoUnlockArea()
+		AutoUnlockArea()
 	end    
 })
 
-Tab:AddTextbox({
+AutoTab:AddTextbox({
 	Name = "Number For Open Eggs",
 	Default = "Amount For Open Eggs",
 	TextDisappear = true,
@@ -85,22 +85,23 @@ Tab:AddTextbox({
 	end	  
 })
 
-AutoTab:AddDropdown({
+local Dropdown = AutoTab:AddDropdown({
 	Name = "Choose Egg",
-	Default =  _G.SelectedEgg,
-	Options = { _G.SelectedEgg},
+	Default = _G.SelectedEgg,
+	Options = { _G.SelectedEgg },
 	Callback = function(Value)
+		_G.SelectedEgg = Value
 	end    
 })
 
-Dropdown:Set( _G.SelectedEgg)
+Dropdown:Set(_G.SelectedEgg)
 
 AutoTab:AddToggle({
 	Name = "Auto Hatch Egg (In Work)",
 	Default = false,
 	Callback = function(Value)
 		_G.AutoHatchEgg = Value
-AutoHatchEgg()
+		AutoHatchEgg()
 	end    
 })
 
@@ -109,7 +110,7 @@ AutoTab:AddToggle({
 	Default = false,
 	Callback = function(Value)
 		_G.AutoRebirth = Value
-AutoRebirth()
+		AutoRebirth()
 	end    
 })
 
@@ -118,7 +119,7 @@ AutoTab:AddToggle({
 	Default = false,
 	Callback = function(Value)
 		_G.AutoGifts = Value
-AutoGifts()
+		AutoGifts()
 	end
 })
 
@@ -127,14 +128,15 @@ AutoTab:AddToggle({
 	Default = false,
 	Callback = function(Value)
 		_G.AutoEquipBestPets = Value
-AutoEquipBestPets()
+		AutoEquipBestPets()
 	end    
 })
+
 MiscTab:AddButton({
 	Name = "Equip Best Pets",
 	Default = false,
 	Callback = function()
-EquipBestPets()
+		EquipBestPets()
 	end    
 })
 
