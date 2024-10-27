@@ -72,6 +72,13 @@ HubEvadeTab:AddButton({
   	end    
 })
 
+HubEvadeTab:AddButton({
+	Name = "Cheats Evade 2 (Not Mine)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatEvade2"))()
+  	end    
+})
+
 HubTab:AddButton({
 	Name = "Doors Entities Spawner (not Mine)",
 	Callback = function()
