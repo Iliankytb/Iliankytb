@@ -222,7 +222,7 @@ EspTab:AddColorpicker({
     end	  
 })
 
-local SectionMain = EspTab:AddSection({
+local SectionMain = MainTab:AddSection({
     Name = "Auto Farm"
 })
 
@@ -286,6 +286,7 @@ MainTab:AddToggle({
         _G.AutoRespawn = Value
         while _G.AutoRespawn == true do
             AutoRespawn()
+wait(.0001)
         end
     end    
 })
@@ -297,7 +298,7 @@ Died()
     end    
 })
 -- Surveille les nouveaux objets ajoutés dans Workspace
-game.Workspace.ChildAdded:Connect(CheckForCandy)
+game.Workspace.ChildAdded:Connect(CheckForCandy,ToggleESPPlayer,ToggleESPCandy)
 
 OrionLib:Init()
 
