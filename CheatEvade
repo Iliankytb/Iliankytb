@@ -222,6 +222,36 @@ EspTab:AddColorpicker({
     end	  
 })
 
+local SectionPlayer = MainTab:AddSection({
+    Name = "Player"
+})
+
+MainTab:AddSlider({
+	Name = "Player Speed",
+	Min = 0,
+	Max = 9999,
+	Default = 5,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	ValueName = "Speed",
+	Callback = function(Value)
+		
+	end    
+})
+
+MainTab:AddSlider({
+	Name = "Player Jump Power",
+	Min = 0,
+	Max = 1000,
+	Default = 5,
+	Color = Color3.fromRGB(255,255,255),
+	Increment = 1,
+	ValueName = "Jump Power",
+	Callback = function(Value)
+		
+	end    
+})
+
 local SectionMain = MainTab:AddSection({
     Name = "Auto Farm"
 })
