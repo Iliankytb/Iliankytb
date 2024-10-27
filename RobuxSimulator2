@@ -7,11 +7,19 @@ local AutoTab = Window:MakeTab({
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
+
+local MiscTab = Window:MakeTab({
+	Name = "Misc",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
  _G.AutoGifts = true
  _G.AutoRebirth = true
 _G.AutoUnlockArea = true
  _G.AutoHatchEgg = true
  _G.SelectedEgg = "None"
+_G.AutoEquipBestPets = true
+
 local player = game.Players.LocalPlayer 
 function AutoGifts()
 while _G.AutoGifts == true do
@@ -54,6 +62,17 @@ wait(.00000000000000000001)
 end
 end
 
+function EquipBestPets()
+game:GetService("ReplicatedStorage").Remotes.Pets.EquipBest:FireServer()
+end
+
+function AutoEquipBestPets()
+while _G.AutoEquipBestPets == true do
+EquipBestPets()
+end
+end
+
+
 AutoTab:AddToggle({
 	Name = "Auto Unlock Area (Max 10 Area)",
 	Default = false,
@@ -88,6 +107,22 @@ AutoTab:AddToggle({
 	Callback = function(Value)
 		_G.AutoGifts = Value
 AutoGifts()
+	end
+})
+
+AutoTab:AddToggle({
+	Name = "Auto Equip Best Pets",
+	Default = false,
+	Callback = function(Value)
+		_G.AutoEquipBestPets = Value
+AutoEquipBestPets()
+	end    
+})
+MiscTab:AddButton({
+	Name = "Equip Best Pets",
+	Default = false,
+	Callback = function()
+EquipBestPets()
 	end    
 })
 
