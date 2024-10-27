@@ -255,7 +255,7 @@ MainTab:AddSlider({
 	Name = "Player Speed",
 	Min = 0,
 	Max = 9999,
-	Default = 5,
+	Default = 100,
 	Color = Color3.fromRGB(255,255,255),
 	Increment = 1,
 	ValueName = "Speed",
@@ -268,7 +268,7 @@ MainTab:AddSlider({
 	Name = "Player Jump Power",
 	Min = 0,
 	Max = 1000,
-	Default = 5,
+	Default = 50,
 	Color = Color3.fromRGB(255,255,255),
 	Increment = 1,
 	ValueName = "Jump Power",
@@ -299,6 +299,7 @@ MainTab:AddToggle({
         _G.AutoFarmMoney = Value
         while _G.AutoFarmMoney == true do
           AutoFarmMoney()
+wait(.000000001)
         end
     end    
 })
