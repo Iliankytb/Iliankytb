@@ -89,12 +89,14 @@ end
 end
 
 local GetDownedPlr = function()
-    for i, v in ipairs(game:GetService("Players")) do
+local WorkspacePlayers = game:GetService("Workspace").Game.Players
+    for i,v in pairs(WorkspacePlayers:GetChildren()) do
         if v:GetAttribute("Downed") then
             return v
         end
     end
 end
+
 local function AutoFarmMoney()
 local player = game.Players.LocalPlayer
 local HumanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
@@ -362,7 +364,11 @@ Died()
     end    
 })
 -- Surveille les nouveaux objets ajoutés dans Workspace
-game.Workspace.ChildAdded:Connect(CheckForCandy,ToggleESPPlayer,ToggleESPCandy)
+game.Workspace.ChildAdded:Connect(function()
+CheckForCandy()
+ToggleESPPlayer()
+ToggleESPCandy()
+end)
 local function AntiKick()
 local player = game.Players.LocalPlayer
 local HumanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
