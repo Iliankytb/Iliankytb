@@ -1,4 +1,4 @@
-local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
+plocal OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
 local Window = OrionLib:MakeWindow({Name = "Cheat Evade", HidePremium = false, IntroEnabled = false, SaveConfig = true, ConfigFolder = "OrionTest"})
 
 local player = game.Players.LocalPlayer
@@ -187,7 +187,7 @@ EspTab:AddToggle({
     end    
 })
 
-Esp:AddColorpicker({
+EspTab:AddColorpicker({
 	Name = "ColorpickerPlayer",
 	Default = playerColor,
 	Callback = function(Value)
