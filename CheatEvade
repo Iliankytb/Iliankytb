@@ -15,6 +15,7 @@ _G.EspCandys = false
 _G.EspMeter = false
 _G.AutoFarmMoney = false
 _G.AutoBoomBox = false
+_G.IdsBoomBox = 0
 
 local playerColor = Color3.fromRGB(255, 255, 0) -- couleur par défaut (orange)
 local candyColor = Color3.fromRGB(255, 165, 0) -- couleur par défaut (orange)
@@ -355,13 +356,23 @@ end
 local SectionBoomBox = MainTab:AddSection({
     Name = "BoomBox"
 })
+
+MainTab:AddTextbox({
+	Name = "BoomBox",
+	Default = "Enter Number Ids",
+	TextDisappear = true,
+	Callback = function(Value)
+		_G.IdsBoomBox = Value
+	end	  
+})
+
 MainTab:AddToggle({
     Name = "Auto BoomBox Songs",
     Default = false,
     Callback = function(Value)
         _G.AutoBoomBox = Value
         while _G.AutoBoomBox == true do
-            AutoRespawn()
+            game:GetService("ReplicatedStorage").Events.Player.SetBoombox:FireServer(_G.IdsBoomBox)
 wait(1)
         end
     end    
