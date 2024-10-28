@@ -36,6 +36,8 @@ local function ToggleESPCandy()
                     label.Text = item.Name
                     label.TextColor3 = candyColor
                     label.TextScaled = true
+wait(1)
+billboard:Destroy()
                 elseif item:FindFirstChild("CandyBillboard") then
                     item:FindFirstChild("CandyBillboard").TextLabel.TextColor3 = candyColor
                 end
@@ -68,7 +70,7 @@ local function ToggleESPPlayer()
                     label.TextColor3 = playerColor
                     label.TextScaled = true
 wait(1)
-head:FindFirstChild("PlayerBillboard"):Destroy()
+billboard:Destroy()
 
                 elseif head and head:FindFirstChild("PlayerBillboard") then
                     head:FindFirstChild("PlayerBillboard").TextLabel.TextColor3 = playerColor
