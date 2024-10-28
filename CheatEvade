@@ -14,6 +14,7 @@ _G.EspBot = false
 _G.EspCandys = false
 _G.EspMeter = false
 _G.AutoFarmMoney = false
+_G.AutoBoomBox = false
 
 local playerColor = Color3.fromRGB(255, 255, 0) -- couleur par défaut (orange)
 local candyColor = Color3.fromRGB(255, 165, 0) -- couleur par défaut (orange)
@@ -351,6 +352,21 @@ local function CheckForCandy(child)
         end
     end
 end
+local SectionBoomBox = MainTab:AddSection({
+    Name = "BoomBox"
+})
+MainTab:AddToggle({
+    Name = "Auto BoomBox Songs",
+    Default = false,
+    Callback = function(Value)
+        _G.AutoBoomBox = Value
+        while _G.AutoBoomBox == true do
+            AutoRespawn()
+wait(1)
+        end
+    end    
+})
+
 local SectionMisc = MainTab:AddSection({
     Name = "Misc"
 })
