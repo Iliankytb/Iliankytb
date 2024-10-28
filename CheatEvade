@@ -67,6 +67,9 @@ local function ToggleESPPlayer()
                     label.Text = player.Name
                     label.TextColor3 = playerColor
                     label.TextScaled = true
+wait(1)
+head:FindFirstChild("PlayerBillboard"):Destroy()
+
                 elseif head and head:FindFirstChild("PlayerBillboard") then
                     head:FindFirstChild("PlayerBillboard").TextLabel.TextColor3 = playerColor
                 end
@@ -106,11 +109,8 @@ local Humanoid = player.Character:FindFirstChild("Humanoid")
                 if player.Character then
 workspace.Game.Settings:SetAttribute("ReviveTime", 2.2)
                     player.Character:FindFirstChild('HumanoidRootPart').CFrame = CFrame.new(downedplr:FindFirstChild('HumanoidRootPart').Position.X, downedplr:FindFirstChild('HumanoidRootPart').Position.Y + 3, downedplr:FindFirstChild('HumanoidRootPart').Position.Z)
-                    game:GetService("ReplicatedStorage").Events.Revive.RevivePlayer:FireServer(tostring(downedplr), false)
-                    game:GetService("ReplicatedStorage").Events.Revive.RevivePlayer:FireServer(tostring(downedplr), true)
-                    game:GetService("ReplicatedStorage").Events.Revive.RevivePlayer:FireServer(tostring(downedplr), true)
-                    game:GetService("ReplicatedStorage").Events.Revive.RevivePlayer:FireServer(tostring(downedplr), true)
-wait(5)
+                    game:GetService("ReplicatedStorage").Events.Revive.RevivePlayer:FireServer(downedplr, false)
+wait(1)
                 end
     end
 end
@@ -208,7 +208,10 @@ EspTab:AddToggle({
     Default = false,
     Callback = function(Value)
         _G.EspPlayer = Value
+while _G.EspPlayer == true do
         ToggleESPPlayer()
+wait(.001)
+end
     end    
 })
 
@@ -234,7 +237,10 @@ EspTab:AddToggle({
     Default = false,
     Callback = function(Value)
         _G.EspCandys = Value
+while _G.EspCandys == true do
         ToggleESPCandy()
+wait(.001)
+end
     end    
 })
 
@@ -243,7 +249,8 @@ EspTab:AddColorpicker({
     Default = candyColor,
     Callback = function(Value)
         candyColor = Value
-        ToggleESPCandy() -- Mise à jour de l'ESP des bonbons avec la nouvelle couleur
+      ToggleESPCandy() -- Mise à jour de l'ESP des bonbons avec la nouvelle couleur
+
     end	  
 })
 
