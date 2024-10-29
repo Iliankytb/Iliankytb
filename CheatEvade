@@ -68,7 +68,6 @@ end
             elseif head and head:FindFirstChild("PlayerBillboard") then
                 head:FindFirstChild("PlayerBillboard"):Destroy()
             end
-end
         end
     end
 end
