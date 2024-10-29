@@ -358,7 +358,7 @@ MainTab:AddToggle({
     local HumanoidRootPart = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
     local Humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
 Humanoid.JumpPower = _G.JumpPower
-wait(.0000000009oo01)
+wait(.0000000000001)
         end
     end    
 })
