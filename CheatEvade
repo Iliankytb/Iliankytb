@@ -29,24 +29,41 @@ local function ToggleESPPlayer()
     for _, player in ipairs(game.Players:GetPlayers()) do
         if player ~= game.Players.LocalPlayer and player.Character then
             local head = player.Character:FindFirstChild("Head")
+            local localPlayerPosition = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position
             
             if _G.EspPlayer == true then
                 if head and not head:FindFirstChild("PlayerBillboard") then
                     local billboard = Instance.new("BillboardGui", head)
                     billboard.Name = "PlayerBillboard"
-                    billboard.Size = UDim2.new(0, 100, 0, 20)
+                    billboard.Size = UDim2.new(0, 100, 0, 40) -- Augmenté pour inclure la distance
                     billboard.StudsOffset = Vector3.new(0, 3, 0)
                     billboard.AlwaysOnTop = true
 
                     local label = Instance.new("TextLabel", billboard)
-                    label.Size = UDim2.new(1, 0, 1, 0)
+                    label.Size = UDim2.new(1, 0, 0.5, 0)
                     label.BackgroundTransparency = 1
                     label.Text = player.Name
                     label.TextColor3 = playerColor
                     label.TextScaled = true
-
-                    -- Supprimer le texte après 0.1 seconde
                     
+                    if _G.EspMeter == true then
+                    local distanceLabel = Instance.new("TextLabel", billboard)
+                    distanceLabel.Size = UDim2.new(1, 0, 0.5, 0)
+                    distanceLabel.Position = UDim2.new(0, 0, 0.5, 0)
+                    distanceLabel.BackgroundTransparency = 1
+                    distanceLabel.TextColor3 = playerColor
+                    distanceLabel.TextScaled = true
+                    
+                    -- Mise à jour de la distance
+                    spawn(function()
+                        while _G.EspPlayer == true and billboard.Parent and _G.EspMeter == true do
+                            local distance = (localPlayerPosition - head.Position).Magnitude
+                            distanceLabel.Text = string.format("Distance: %.1f", distance)
+                            wait(0.1)
+                        end
+                    end)
+else
+end
                 end
             elseif head and head:FindFirstChild("PlayerBillboard") then
                 head:FindFirstChild("PlayerBillboard"):Destroy()
@@ -56,25 +73,41 @@ local function ToggleESPPlayer()
 end
 
 local function ToggleESPCandy()
+    local localPlayerPosition = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Position
+    
     for _, item in ipairs(game.Workspace:GetDescendants()) do
         if table.find(CandyName, item.Name) and item:IsA("MeshPart") then
             if _G.EspCandys == true then
                 if not item:FindFirstChild("CandyBillboard") then
                     local billboard = Instance.new("BillboardGui", item)
                     billboard.Name = "CandyBillboard"
-                    billboard.Size = UDim2.new(0, 50, 0, 20)
+                    billboard.Size = UDim2.new(0, 50, 0, 40) -- Augmenté pour inclure la distance
                     billboard.StudsOffset = Vector3.new(0, 2, 0)
                     billboard.AlwaysOnTop = true
 
                     local label = Instance.new("TextLabel", billboard)
-                    label.Size = UDim2.new(1, 0, 1, 0)
+                    label.Size = UDim2.new(1, 0, 0.5, 0)
                     label.BackgroundTransparency = 1
                     label.Text = item.Name
                     label.TextColor3 = candyColor
                     label.TextScaled = true
-
-                    -- Supprimer le texte après 0.1 seconde
                     
+                    -- Affiche la distance
+                    local distanceLabel = Instance.new("TextLabel", billboard)
+                    distanceLabel.Size = UDim2.new(1, 0, 0.5, 0)
+                    distanceLabel.Position = UDim2.new(0, 0, 0.5, 0)
+                    distanceLabel.BackgroundTransparency = 1
+                    distanceLabel.TextColor3 = candyColor
+                    distanceLabel.TextScaled = true
+                    
+                    -- Mise à jour de la distance
+                    spawn(function()
+                        while _G.EspCandys == true and billboard.Parent do
+                            local distance = (localPlayerPosition - item.Position).Magnitude
+                            distanceLabel.Text = string.format("Distance: %.1f", distance)
+                            wait(0.1)
+                        end
+                    end)
                 end
             elseif item:FindFirstChild("CandyBillboard") then
                 item:FindFirstChild("CandyBillboard"):Destroy()
