@@ -68,6 +68,7 @@ end
             elseif head and head:FindFirstChild("PlayerBillboard") then
                 head:FindFirstChild("PlayerBillboard"):Destroy()
             end
+end
         end
     end
 end
@@ -91,7 +92,7 @@ local function ToggleESPCandy()
                     label.Text = item.Name
                     label.TextColor3 = candyColor
                     label.TextScaled = true
-                    
+                    if _G.EspMeter == true then
                     -- Affiche la distance
                     local distanceLabel = Instance.new("TextLabel", billboard)
                     distanceLabel.Size = UDim2.new(1, 0, 0.5, 0)
@@ -108,6 +109,7 @@ local function ToggleESPCandy()
                             wait(0.1)
                         end
                     end)
+end 
                 end
             elseif item:FindFirstChild("CandyBillboard") then
                 item:FindFirstChild("CandyBillboard"):Destroy()
@@ -310,6 +312,15 @@ EspTab:AddColorpicker({
 
     end	  
 })
+
+EspTab:AddToggle({
+    Name = "Active Distance",
+    Default = false,
+    Callback = function(Value)
+        _G.EspMeter = Value
+    end    
+})
+
 
 local SectionPlayer = MainTab:AddSection({
     Name = "Player"
