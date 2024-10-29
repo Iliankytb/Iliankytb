@@ -87,8 +87,6 @@ end
 
 local function AutoRespawn()
 local player = game.Players.LocalPlayer
-local HumanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
-local Humanoid = player.Character:FindFirstChild("Humanoid")
 if player.Character:GetAttribute("Downed") then
 game:GetService("ReplicatedStorage").Events.Data.GetLives:FireServer()
 game:GetService("ReplicatedStorage").Events.Player.ChangePlayerMode:FireServer(true)
@@ -165,6 +163,18 @@ _G.foundCandy = false
             securityPart:Destroy()
         end
     end
+end
+
+local function AutoFarmWins()
+local securityPart = game.Workspace:FindFirstChild("SecurityPart") or Instance.new("Part")
+            securityPart.Name = "SecurityPart"
+            securityPart.Size = Vector3.new(10, 1, 10)
+            securityPart.Position = Vector3.new(0, 500, 0)  -- Position en hauteur
+            securityPart.Anchored = true
+            securityPart.Parent = game.Workspace
+            HumanoidRootPart.CFrame = securityPart.CFrame + Vector3.new(0, 3, 0)  -- Téléporte le joueur au-dessus de la Part de sécurité
+            wait(0.5)
+            securityPart:Destroy()
 end
 
 -- Fonction pour auto-farm sans sécurité
@@ -325,6 +335,7 @@ MainTab:AddToggle({
         _G.AutoFarmWins = Value
         while _G.AutoFarmWins == true do
             AutoFarmWins()
+wait(.00000001)
         end
     end    
 })
