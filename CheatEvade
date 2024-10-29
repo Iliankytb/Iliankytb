@@ -86,6 +86,7 @@ local function ToggleESPCandy()
 end
 
 local function AutoRespawn()
+while _G.AutoRespawn == true do
 local player = game.Players.LocalPlayer
 if player.Character:GetAttribute("Downed") then
 game:GetService("ReplicatedStorage").Events.Data.GetLives:FireServer()
@@ -95,8 +96,10 @@ else
 return
 end
 end
+end
 
 local function AutoFarmMoney()
+while _G.AutoFarmMoney == true do
  local player = game.Players.LocalPlayer
 local HumanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
 local Humanoid = player.Character:FindFirstChild("Humanoid")
@@ -126,6 +129,7 @@ local Humanoid = player.Character:FindFirstChild("Humanoid")
         else
             wait(0.1) -- Vérification plus rapide si le personnage n'est pas encore chargé
         end
+end
     end
 end
 
@@ -136,6 +140,7 @@ game:GetService("ReplicatedStorage").Events.Data.GetLives:FireServer()
 end
 -- Fonction pour auto-farm avec sécurité
 local function AutoFarmCandysSecurity()
+while _G.AutoFarmCandysSecurity == true do
 local player = game.Players.LocalPlayer
 local HumanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
 local Humanoid = player.Character:FindFirstChild("Humanoid")
@@ -168,8 +173,10 @@ _G.foundCandy = false
         end
     end
 end
+end
 
 local function AutoFarmWins()
+while _G.AutoFarmWins == true do
 local player = game.Players.LocalPlayer
 local HumanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
 local Humanoid = player.Character:FindFirstChild("Humanoid")
@@ -183,9 +190,11 @@ local securityPart = game.Workspace:FindFirstChild("SecurityPart") or Instance.n
             wait(0.5)
             securityPart:Destroy()
 end
+end
 
 -- Fonction pour auto-farm sans sécurité
 local function AutoFarmCandysNoSecurity()
+while AutoFarmCandysNoSecurity == true do
 local player = game.Players.LocalPlayer
 local HumanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
 local Humanoid = player.Character:FindFirstChild("Humanoid")
@@ -202,6 +211,7 @@ _G.foundCandy = false
             end
         end
     end
+end
 end
 
 local MainTab = Window:MakeTab({
