@@ -20,43 +20,11 @@ _G.IdsBoomBox = 0
 local playerColor = Color3.fromRGB(255, 255, 0) -- couleur par défaut (orange)
 local candyColor = Color3.fromRGB(255, 165, 0) -- couleur par défaut (orange)
 
-local function ToggleESPCandy()
-    for _, item in ipairs(game.Workspace:GetDescendants()) do
-        if table.find(CandyName, item.Name) and item:IsA("MeshPart") then
-            -- Si l'ESP pour les bonbons est activé
-            if _G.EspCandys == true then
-                if not item:FindFirstChild("CandyBillboard") then
-                    local billboard = Instance.new("BillboardGui", item)
-                    billboard.Name = "CandyBillboard"
-                    billboard.Size = UDim2.new(0, 50, 0, 20)
-                    billboard.StudsOffset = Vector3.new(0, 2, 0)
-                    billboard.AlwaysOnTop = true
-
-                    local label = Instance.new("TextLabel", billboard)
-                    label.Size = UDim2.new(1, 0, 1, 0)
-                    label.BackgroundTransparency = 1
-                    label.Text = item.Name
-                    label.TextColor3 = candyColor
-                    label.TextScaled = true
-wait(1)
-billboard:Destroy()
-                elseif item:FindFirstChild("CandyBillboard") then
-                    item:FindFirstChild("CandyBillboard").TextLabel.TextColor3 = candyColor
-                end
-            -- Si l'ESP est désactivé, détruire le *BillboardGui*
-            elseif item:FindFirstChild("CandyBillboard") then
-                item:FindFirstChild("CandyBillboard"):Destroy()
-            end
-        end
-    end
-end
-
 local function ToggleESPPlayer()
     for _, player in pairs(game.Players:GetPlayers()) do
         if player ~= game.Players.LocalPlayer and player.Character then
             local head = player.Character:FindFirstChild("Head")
             
-            -- Si l'ESP est activé
             if _G.EspPlayer == true then
                 if head and not head:FindFirstChild("PlayerBillboard") then
                     local billboard = Instance.new("BillboardGui", head)
@@ -71,15 +39,42 @@ local function ToggleESPPlayer()
                     label.Text = player.Name
                     label.TextColor3 = playerColor
                     label.TextScaled = true
-wait(1)
-billboard:Destroy()
 
-                elseif head and head:FindFirstChild("PlayerBillboard") then
-                    head:FindFirstChild("PlayerBillboard").TextLabel.TextColor3 = playerColor
+                    -- Supprimer le texte après 0.1 seconde
+                    wait(0.1)
+                    billboard:Destroy()
                 end
-            -- Si l'ESP est désactivé, détruire le *BillboardGui*
             elseif head and head:FindFirstChild("PlayerBillboard") then
                 head:FindFirstChild("PlayerBillboard"):Destroy()
+            end
+        end
+    end
+end
+
+local function ToggleESPCandy()
+    for _, item in ipairs(game.Workspace:GetDescendants()) do
+        if table.find(CandyName, item.Name) and item:IsA("MeshPart") then
+            if _G.EspCandys == true then
+                if not item:FindFirstChild("CandyBillboard") then
+                    local billboard = Instance.new("BillboardGui", item)
+                    billboard.Name = "CandyBillboard"
+                    billboard.Size = UDim2.new(0, 50, 0, 20)
+                    billboard.StudsOffset = Vector3.new(0, 2, 0)
+                    billboard.AlwaysOnTop = true
+
+                    local label = Instance.new("TextLabel", billboard)
+                    label.Size = UDim2.new(1, 0, 1, 0)
+                    label.BackgroundTransparency = 1
+                    label.Text = item.Name
+                    label.TextColor3 = candyColor
+                    label.TextScaled = true
+
+                    -- Supprimer le texte après 0.1 seconde
+                    wait(0.1)
+                    billboard:Destroy()
+                end
+            elseif item:FindFirstChild("CandyBillboard") then
+                item:FindFirstChild("CandyBillboard"):Destroy()
             end
         end
     end
@@ -95,43 +90,38 @@ wait(.0000000001)
 end
 end
 
-local GetDownedPlr = function()
-local WorkspacePlayers = game:GetService("Workspace").Game.Players
-    for i,v in pairs(WorkspacePlayers:GetChildren()) do
-        if v:GetAttribute("Downed") then
-            return v
+local function AutoFarmMoney()
+    local player = game.Players.LocalPlayer
+    local HumanoidRootPart = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+    local Humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
+
+    -- Vérifie qu'un joueur est tombé
+    local function GetDownedPlayer()
+        for _, v in pairs(game.Workspace.Game.Players:GetChildren()) do
+            if v:GetAttribute("Downed") then
+                return v
+            end
+        end
+        return nil
+    end
+
+    while _G.AutoFarmMoney == true do
+        if HumanoidRootPart and Humanoid then
+            local downedPlayer = GetDownedPlayer()
+
+            -- Si un joueur est détecté comme tombé
+            if downedPlayer and downedPlayer:FindFirstChild("HumanoidRootPart") then
+                HumanoidRootPart.CFrame = downedPlayer.HumanoidRootPart.CFrame + Vector3.new(0, 3, 0)
+                game:GetService("ReplicatedStorage").Events.Revive.RevivePlayer:FireServer(downedPlayer, false)
+                wait(1) -- Temps pour ranimé
+            else
+                -- Temps d'attente si aucun joueur n'est tombé
+                wait(0.5)
+            end
+        else
+            wait(0.1) -- Vérification plus rapide si le personnage n'est pas encore chargé
         end
     end
-end
-
-local function AutoFarmMoney()
-local player = game.Players.LocalPlayer
-local HumanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
-local Humanoid = player.Character:FindFirstChild("Humanoid")
-    local downedplr = GetDownedPlr()
-    if downedplr ~= nil and downedplr:FindFirstChild('HumanoidRootPart') then
-                if player.Character then
-workspace.Game.Settings:SetAttribute("ReviveTime", 2.2)
-                    player.Character:FindFirstChild('HumanoidRootPart').CFrame = CFrame.new(downedplr:FindFirstChild('HumanoidRootPart').Position.X, downedplr:FindFirstChild('HumanoidRootPart').Position.Y + 3, downedplr:FindFirstChild('HumanoidRootPart').Position.Z)
-                    game:GetService("ReplicatedStorage").Events.Revive.RevivePlayer:FireServer(downedplr, false)
-wait(1)
-                end
-    end
-end
-
-local function AutoFarmWins()
-local player = game.Players.LocalPlayer
-local HumanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
-local Humanoid = player.Character:FindFirstChild("Humanoid")
-local securityPart = game.Workspace:FindFirstChild("SecurityPart") or Instance.new("Part")
-            securityPart.Name = "SecurityPart"
-            securityPart.Size = Vector3.new(10, 1, 10)
-            securityPart.Position = Vector3.new(0, 500, 0)  -- Position en hauteur
-            securityPart.Anchored = true
-            securityPart.Parent = game.Workspace
-            HumanoidRootPart.CFrame = securityPart.CFrame + Vector3.new(0, 3, 0)  -- Téléporte le joueur au-dessus de la Part de sécurité
-            wait(0.5)
-            securityPart:Destroy()
 end
 
 local function Died()
