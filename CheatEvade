@@ -91,11 +91,15 @@ if player.Character:GetAttribute("Downed") then
 game:GetService("ReplicatedStorage").Events.Data.GetLives:FireServer()
 game:GetService("ReplicatedStorage").Events.Player.ChangePlayerMode:FireServer(true)
 wait(.0000000001)
+else
+return
 end
 end
 
 local function AutoFarmMoney()
-    
+ local player = game.Players.LocalPlayer
+local HumanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
+local Humanoid = player.Character:FindFirstChild("Humanoid")
     -- Vérifie qu'un joueur est tombé
     local function GetDownedPlayer()
         for _, v in pairs(game.Workspace.Game.Players:GetChildren()) do
@@ -166,6 +170,9 @@ _G.foundCandy = false
 end
 
 local function AutoFarmWins()
+local player = game.Players.LocalPlayer
+local HumanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
+local Humanoid = player.Character:FindFirstChild("Humanoid")
 local securityPart = game.Workspace:FindFirstChild("SecurityPart") or Instance.new("Part")
             securityPart.Name = "SecurityPart"
             securityPart.Size = Vector3.new(10, 1, 10)
