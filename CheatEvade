@@ -108,7 +108,6 @@ local function ToggleESPCandy()
                             wait(0.1)
                         end
                     end)
-end 
                 end
             elseif item:FindFirstChild("CandyBillboard") then
                 item:FindFirstChild("CandyBillboard"):Destroy()
