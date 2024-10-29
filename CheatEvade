@@ -46,8 +46,7 @@ local function ToggleESPPlayer()
                     label.TextScaled = true
 
                     -- Supprimer le texte après 0.1 seconde
-                    wait(0.00000001)
-                    billboard:Destroy()
+                    
                 end
             elseif head and head:FindFirstChild("PlayerBillboard") then
                 head:FindFirstChild("PlayerBillboard"):Destroy()
@@ -75,8 +74,7 @@ local function ToggleESPCandy()
                     label.TextScaled = true
 
                     -- Supprimer le texte après 0.1 seconde
-                    wait(0.000001)
-                    billboard:Destroy()
+                    
                 end
             elseif item:FindFirstChild("CandyBillboard") then
                 item:FindFirstChild("CandyBillboard"):Destroy()
