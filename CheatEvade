@@ -21,7 +21,7 @@ local playerColor = Color3.fromRGB(255, 255, 0) -- couleur par défaut (orange)
 local candyColor = Color3.fromRGB(255, 165, 0) -- couleur par défaut (orange)
 
 local function ToggleESPPlayer()
-    for _, player in pairs(game.Players:GetPlayers()) do
+    for _, player in ipairs(game.Players:GetPlayers()) do
         if player ~= game.Players.LocalPlayer and player.Character then
             local head = player.Character:FindFirstChild("Head")
             
@@ -112,7 +112,7 @@ local function AutoFarmMoney()
             -- Si un joueur est détecté comme tombé
             if downedPlayer and downedPlayer:FindFirstChild("HumanoidRootPart") then
                 HumanoidRootPart.CFrame = downedPlayer.HumanoidRootPart.CFrame + Vector3.new(0, 3, 0)
-                game:GetService("ReplicatedStorage").Events.Revive.RevivePlayer:FireServer(downedPlayer, false)
+             --game:GetService("ReplicatedStorage").Events.Revive.RevivePlayer:FireServer(downedPlayer, false)
                 wait(1) -- Temps pour ranimé
             else
                 -- Temps d'attente si aucun joueur n'est tombé
@@ -204,7 +204,7 @@ EspTab:AddToggle({
         _G.EspPlayer = Value
 while _G.EspPlayer == true do
         ToggleESPPlayer()
-wait(.001)
+wait(.0000000000000001)
 end
     end    
 })
@@ -233,7 +233,7 @@ EspTab:AddToggle({
         _G.EspCandys = Value
 while _G.EspCandys == true do
         ToggleESPCandy()
-wait(.001)
+wait(.00000000001)
 end
     end    
 })
