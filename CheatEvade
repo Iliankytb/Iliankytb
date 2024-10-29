@@ -292,22 +292,18 @@ MainTab:AddToggle({
     local HumanoidRootPart = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
     local Humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
 Humanoid.WalkSpeed = _G.Speed
-wait(.000000000001)
+wait(.0000000000001)
         end
     end    
 })
 
-MainTab:AddSlider({
+MainTab:AddTextbox({
 	Name = "Player Speed",
-	Min = 0,
-	Max = 10000,
-	Default = 100,
-	Color = Color3.fromRGB(255,255,255),
-	Increment = 1,
-	ValueName = "Speed",
+	Default = "Enter Number min 0 max 10000",
+	TextDisappear = false,
 	Callback = function(Value)
 		_G.Speed = Value
-	end    
+	end	  
 })
 
 
@@ -320,23 +316,19 @@ MainTab:AddToggle({
             local player = game.Players.LocalPlayer
     local HumanoidRootPart = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
     local Humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
---Humanoid.JumpPower = _G.JumpPower
-wait(.00001)
+Humanoid.JumpPower = _G.JumpPower
+wait(.0000000009oo01)
         end
     end    
 })
 
-MainTab:AddSlider({
-	Name = "Player Jump Power",
-	Min = 0,
-	Max = 1000,
-	Default = 50,
-	Color = Color3.fromRGB(255,255,255),
-	Increment = 1,
-	ValueName = "Jump Power",
+MainTab:AddTextbox({
+	Name = "Player JumpPower",
+	Default = "Enter Number min 0 max 1000",
+	TextDisappear = false,
 	Callback = function(Value)
 		_G.JumpPower = Value
-	end    
+	end	  
 })
 
 local SectionMain = MainTab:AddSection({
