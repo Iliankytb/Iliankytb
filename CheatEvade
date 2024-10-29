@@ -26,7 +26,7 @@ local playerColor = Color3.fromRGB(255, 255, 0) -- couleur par défaut (orange)
 local candyColor = Color3.fromRGB(255, 165, 0) -- couleur par défaut (orange)
 
 local function ToggleESPPlayer()
-    for _, player in pairs(game.Players:GetPlayers()) do
+    for _, player in ipairs(game.Players:GetPlayers()) do
         if player ~= game.Players.LocalPlayer and player.Character then
             local head = player.Character:FindFirstChild("Head")
             
@@ -57,7 +57,7 @@ local function ToggleESPPlayer()
 end
 
 local function ToggleESPCandy()
-    for _, item in pairs(game.Workspace:GetDescendants()) do
+    for _, item in ipairs(game.Workspace:GetDescendants()) do
         if table.find(CandyName, item.Name) and item:IsA("MeshPart") then
             if _G.EspCandys == true then
                 if not item:FindFirstChild("CandyBillboard") then
