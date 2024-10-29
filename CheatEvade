@@ -16,12 +16,17 @@ _G.EspMeter = false
 _G.AutoFarmMoney = false
 _G.AutoBoomBox = false
 _G.IdsBoomBox = 0
+_G.ActiveSpeed = false
+_G.ActiveJumpPower = false
+_G.Speed = 100
+_G.JumpPower = 50
+
 
 local playerColor = Color3.fromRGB(255, 255, 0) -- couleur par défaut (orange)
 local candyColor = Color3.fromRGB(255, 165, 0) -- couleur par défaut (orange)
 
 local function ToggleESPPlayer()
-    for _, player in ipairs(game.Players:GetPlayers()) do
+    for _, player in pairs(game.Players:GetPlayers()) do
         if player ~= game.Players.LocalPlayer and player.Character then
             local head = player.Character:FindFirstChild("Head")
             
@@ -41,7 +46,7 @@ local function ToggleESPPlayer()
                     label.TextScaled = true
 
                     -- Supprimer le texte après 0.1 seconde
-                    wait(0.1)
+                    wait(0.00000001)
                     billboard:Destroy()
                 end
             elseif head and head:FindFirstChild("PlayerBillboard") then
@@ -52,7 +57,7 @@ local function ToggleESPPlayer()
 end
 
 local function ToggleESPCandy()
-    for _, item in ipairs(game.Workspace:GetDescendants()) do
+    for _, item in pairs(game.Workspace:GetDescendants()) do
         if table.find(CandyName, item.Name) and item:IsA("MeshPart") then
             if _G.EspCandys == true then
                 if not item:FindFirstChild("CandyBillboard") then
@@ -70,7 +75,7 @@ local function ToggleESPCandy()
                     label.TextScaled = true
 
                     -- Supprimer le texte après 0.1 seconde
-                    wait(0.1)
+                    wait(0.000001)
                     billboard:Destroy()
                 end
             elseif item:FindFirstChild("CandyBillboard") then
@@ -85,16 +90,14 @@ local player = game.Players.LocalPlayer
 local HumanoidRootPart = player.Character:FindFirstChild("HumanoidRootPart")
 local Humanoid = player.Character:FindFirstChild("Humanoid")
 if player.Character:GetAttribute("Downed") then
-game:GetService("ReplicatedStorage").Events.Respawn:FireServer()
+game:GetService("ReplicatedStorage").Events.Data.GetLives:FireServer()
+game:GetService("ReplicatedStorage").Events.Player.ChangePlayerMode:FireServer(true)
 wait(.0000000001)
 end
 end
 
 local function AutoFarmMoney()
-    local player = game.Players.LocalPlayer
-    local HumanoidRootPart = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
-    local Humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
-
+    
     -- Vérifie qu'un joueur est tombé
     local function GetDownedPlayer()
         for _, v in pairs(game.Workspace.Game.Players:GetChildren()) do
@@ -112,8 +115,8 @@ local function AutoFarmMoney()
             -- Si un joueur est détecté comme tombé
             if downedPlayer and downedPlayer:FindFirstChild("HumanoidRootPart") then
                 HumanoidRootPart.CFrame = downedPlayer.HumanoidRootPart.CFrame + Vector3.new(0, 3, 0)
-             --game:GetService("ReplicatedStorage").Events.Revive.RevivePlayer:FireServer(downedPlayer, false)
-                wait(1) -- Temps pour ranimé
+             game:GetService("ReplicatedStorage").Events.Character.Interact:FireServer("Revive",true,downedPlayer)
+                wait(0.5) -- Temps pour ranimé
             else
                 -- Temps d'attente si aucun joueur n'est tombé
                 wait(0.5)
@@ -125,7 +128,9 @@ local function AutoFarmMoney()
 end
 
 local function Died()
+game:GetService("ReplicatedStorage").Events.Data.GetLives:FireServer()
 game:GetService("ReplicatedStorage").Events.Player.ChangePlayerMode:FireServer(false)
+game:GetService("ReplicatedStorage").Events.Data.GetLives:FireServer()
 end
 -- Fonction pour auto-farm avec sécurité
 local function AutoFarmCandysSecurity()
@@ -252,17 +257,46 @@ local SectionPlayer = MainTab:AddSection({
     Name = "Player"
 })
 
+MainTab:AddToggle({
+    Name = "Active Speed",
+    Default = false,
+    Callback = function(Value)
+        _G.ActiveSpeed = Value
+        while _G.ActiveSpeed == true do
+            local player = game.Players.LocalPlayer
+    local HumanoidRootPart = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+    local Humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
+Humanoid.WalkSpeed = _G.Speed
+        end
+    end    
+})
+
 MainTab:AddSlider({
 	Name = "Player Speed",
 	Min = 0,
-	Max = 9999,
+	Max = 10000,
 	Default = 100,
 	Color = Color3.fromRGB(255,255,255),
 	Increment = 1,
 	ValueName = "Speed",
 	Callback = function(Value)
-		
+		_G.Speed = Value
 	end    
+})
+
+
+MainTab:AddToggle({
+    Name = "Active JumpPower",
+    Default = false,
+    Callback = function(Value)
+        _G.ActiveJumpPower = Value
+        while _G.ActiveJumpPower == true do
+            local player = game.Players.LocalPlayer
+    local HumanoidRootPart = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+    local Humanoid = player.Character and player.Character:FindFirstChild("Humanoid")
+Humanoid.JumpPower = _G.JumpPower
+        end
+    end    
 })
 
 MainTab:AddSlider({
@@ -274,7 +308,7 @@ MainTab:AddSlider({
 	Increment = 1,
 	ValueName = "Jump Power",
 	Callback = function(Value)
-		
+		_G.JumpPower = Value
 	end    
 })
 
@@ -350,7 +384,7 @@ local SectionBoomBox = MainTab:AddSection({
 MainTab:AddTextbox({
 	Name = "BoomBox",
 	Default = "Enter Number Ids",
-	TextDisappear = true,
+	TextDisappear = false,
 	Callback = function(Value)
 		_G.IdsBoomBox = Value
 	end	  
@@ -385,14 +419,14 @@ wait(.0001)
 })
 
 MainTab:AddButton({
-    Name = "Go To Menu (You Can't Respawn After)",
+    Name = "Go To Menu (You Can't Respawn After I Think)",
     Callback = function()
 Died()
     end    
 })
 -- Surveille les nouveaux objets ajoutés dans Workspace
-game.Workspace.ChildAdded:Connect(function()
-CheckForCandy()
+game.Workspace.ChildAdded:Connect(function(child)
+CheckForCandy(child)
 ToggleESPPlayer()
 ToggleESPCandy()
 end)
