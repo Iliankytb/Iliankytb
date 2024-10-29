@@ -111,6 +111,7 @@ local function ToggleESPCandy()
             elseif item:FindFirstChild("CandyBillboard") then
                 item:FindFirstChild("CandyBillboard"):Destroy()
             end
+end
         end
     end
 end
