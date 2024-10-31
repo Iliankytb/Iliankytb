@@ -105,7 +105,13 @@ local HubApeirophobiaTab = Window:MakeTab({
 })
 
 local HubSolsRngTab = Window:MakeTab({
-	Name = "Cheats Sol's Rng",
+	Name = "Cheats Sol's Rng(Coming Soon)",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local HubMadCityTab = Window:MakeTab({
+	Name = "Cheats Mad City(Coming Soon)",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
