@@ -79,6 +79,19 @@ local HubWeirdStrictDadTab = Window:MakeTab({
 	PremiumOnly = false
 })
 
+local HubRainbowFriendsTab = Window:MakeTab({
+	Name = "Cheats Rainbow Friends(Coming Soon)",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local HubBuildABoatTab = Window:MakeTab({
+	Name = "Cheats Build A Boat(Coming Soon)",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+
 local HubMiscTab = Window:MakeTab({
 	Name = "Misc Cheats",
 	Icon = "rbxassetid://4483345998",
