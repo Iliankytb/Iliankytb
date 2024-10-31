@@ -318,11 +318,10 @@ end
 })
 
 HubRivalsTab:AddButton({
-	Name = "Others (I don't Have The Name) Hub Rivals Cheats(Need Key)",
+	Name = "Nicuse Scripts Rivals Cheats(Need Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/UPD-RIVALS-FREE-GUI-16266"))()
 end
 })
-
 
 OrionLib:Init()
