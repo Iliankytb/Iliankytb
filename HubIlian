@@ -2,37 +2,67 @@ local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shle
 local Window = OrionLib:MakeWindow({Name = "IliankYTB Hub", HidePremium = false,IntroEnabled = false ,SaveConfig = false, ConfigFolder = "OrionTest"})
 
 local HubTab = Window:MakeTab({
-	Name = "All Doors Cheat",
+	Name = "Cheats Doors",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
 
 local HubPressureTab = Window:MakeTab({
-	Name = "Cheat Pressure",
+	Name = "Cheats Pressure",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
 
 local HubEvadeTab = Window:MakeTab({
-	Name = "Cheat Evade",
+	Name = "Cheats Evade",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
 
 local HubBloxFruitTab = Window:MakeTab({
-	Name = "Cheat Blox Fruit",
+	Name = "Cheats Blox Fruit",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
 
 local HubRobuxSim2Tab = Window:MakeTab({
-	Name = "Cheat Robux Simulator 2",
+	Name = "Cheats Robux Simulator 2",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local HubBreakInTab = Window:MakeTab({
+	Name = "All Break In Cheats",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local HubRivalsTab = Window:MakeTab({
+	Name = "Cheats Rivals(Coming Soon)",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local HubBladeBallTab = Window:MakeTab({
+	Name = "Cheats Blade Ball(Coming Soon)",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local HubTSBTab = Window:MakeTab({
+	Name = "Cheats The Strongest Battlegrounds(Coming Soon)",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local HubComingTab = Window:MakeTab({
+	Name = "Coming Soon More!",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
 
 local HubMiscTab = Window:MakeTab({
-	Name = "Other Cheat I Made And Still in Rework Too",
+	Name = "Misc Cheats",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
