@@ -55,8 +55,14 @@ local HubTSBTab = Window:MakeTab({
 	PremiumOnly = false
 })
 
-local HubComingTab = Window:MakeTab({
-	Name = "Coming Soon More!",
+local HubPetsSim99Tab = Window:MakeTab({
+	Name = "Cheats Pets Sim 99(Coming Soon)",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local HubPetsGoTab = Window:MakeTab({
+	Name = "Cheats Pets Go(Coming Soon)",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
