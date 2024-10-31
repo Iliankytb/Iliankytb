@@ -38,7 +38,7 @@ local HubBreakInTab = Window:MakeTab({
 })
 
 local HubRivalsTab = Window:MakeTab({
-	Name = "Cheats Rivals(Coming Soon)",
+	Name = "Cheats Rivals",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
