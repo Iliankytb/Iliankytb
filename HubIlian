@@ -259,6 +259,14 @@ HubMiscTab:AddButton({
 end
 })
 
+local Section1 = HubBreakInTab:AddSection({
+	Name = "Break In 1"
+})
+
+local Section2 = HubBreakInTab:AddSection({
+	Name = "Break In 2"
+})
+
 HubBreakInTab:AddButton({
 	Name = "Op 160+ Features Break In 2 Cheats(No Key)",
 	Callback = function()
