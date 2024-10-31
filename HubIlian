@@ -122,6 +122,12 @@ local HubAdopteMeTab = Window:MakeTab({
 	PremiumOnly = false
 })
 
+local HubMM2Tab = Window:MakeTab({
+	Name = "Cheats Murder Mystery 2(Coling Soon)",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
 local HubMiscTab = Window:MakeTab({
 	Name = "Misc Cheats",
 	Icon = "rbxassetid://4483345998",
