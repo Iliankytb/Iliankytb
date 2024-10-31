@@ -217,4 +217,25 @@ HubMiscTab:AddButton({
   	end    
 })
 
+HubMM2Tab:AddButton({
+	Name = "Ather Hub MM2 Cheats(Need Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/Murder-Mystery-2-AtherHub-20826"))()
+end
+})
+
+HubMM2Tab:AddButton({
+	Name = "God Hub MM2 Cheats(Need Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/Murder-Mystery-2-OP-God-Hub-Unlock-Inventory-Break-Sheriff-Gun-Auto-Farm-Best-17997"))()
+end
+})
+
+HubMiscTab:AddButton({
+	Name = "Ez Game (No Key 150+ Games)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/Ez-Hub_168"))()
+end
+})
+
 OrionLib:Init()
