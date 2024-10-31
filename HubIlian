@@ -20,7 +20,7 @@ local HubEvadeTab = Window:MakeTab({
 })
 
 local HubBloxFruitTab = Window:MakeTab({
-	Name = "Cheats Blox Fruit",
+	Name = "Cheats Blox Fruit(Coming Soon)",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
