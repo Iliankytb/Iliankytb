@@ -44,7 +44,7 @@ local HubRivalsTab = Window:MakeTab({
 })
 
 local HubBladeBallTab = Window:MakeTab({
-	Name = "Cheats Blade Ball(Coming Soon)",
+	Name = "Cheats Blade Ball",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
@@ -271,6 +271,13 @@ HubBreakInTab:AddButton({
 	Name = "Op 160+ Features Break In 2 Cheats(No Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/Break-In-2-(Story)-Starry-OP-Script-Hub-160-Features-17869"))()
+end
+})
+
+HubBladeBallTab:AddButton({
+	Name = "ZapHub Blade Ball Cheats(Need Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/Blade-Ball-Very-Op-Auto-Parry-NEVER-FAILS-9325"))()
 end
 })
 
