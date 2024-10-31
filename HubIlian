@@ -295,4 +295,34 @@ HubBladeBallTab:AddButton({
 end
 })
 
+HubRivalsTab:AddButton({
+	Name = "God Hub Rivals Cheats(Need Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/UPD-RIVALS-OP-UPDATE-God-Hub-Silent-Aim-Chams-Undetected-Best-Script-17850"))()
+end
+})
+
+
+HubRivalsTab:AddButton({
+	Name = "Op Bypass Rivals Cheats(No Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/RIVALS-OP-bypassing-21245"))()
+end
+})
+
+HubRivalsTab:AddButton({
+	Name = "Sanity Wtf Hub Rivals Cheats(Need Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/RIVALS-sanityWtf-21288"))()
+end
+})
+
+HubRivalsTab:AddButton({
+	Name = "Others (I don't Have The Name) Hub Rivals Cheats(Need Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/UPD-RIVALS-FREE-GUI-16266"))()
+end
+})
+
+
 OrionLib:Init()
