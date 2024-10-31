@@ -56,7 +56,7 @@ local HubTSBTab = Window:MakeTab({
 })
 
 local HubPetsSim99Tab = Window:MakeTab({
-	Name = "Cheats Pets Sim 99(Coming Soon)",
+	Name = "Cheats Pets Sim 99",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
@@ -321,6 +321,34 @@ HubRivalsTab:AddButton({
 	Name = "Nicuse Scripts Rivals Cheats(Need Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/UPD-RIVALS-FREE-GUI-16266"))()
+end
+})
+
+HubPetsSim99Tab:AddButton({
+	Name = "ZapHub Pets Sim 99 Cheats(Need Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/Pet-Simulator-99!-The-Best-Free-PS99-Script-ZapHub-Halloween-Update-21153"))()
+end
+})
+
+HubPetsSim99Tab:AddButton({
+	Name = "ZetaHub Pets Sim 99 Cheats(Need Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/Pet-Simulator-99!-ZetaHub-Best-Ps99-Script-Updated-17721"))()
+end
+})
+
+HubPetsSim99Tab:AddButton({
+	Name = "Reaper Hub Pets Sim 99 Cheats(Need Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/Pet-Simulator-99!-Reaper-Hub-21267"))()
+end
+})
+
+HubPetsSim99Tab:AddButton({
+	Name = "6Scripts Pets Sim 99 Cheats(No Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/Pet-Simulator-99!-Cheat-Menu-17428"))()
 end
 })
 
