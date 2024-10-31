@@ -98,6 +98,24 @@ local HubADustyTripTab = Window:MakeTab({
 	PremiumOnly = false
 })
 
+local HubApeirophobiaTab = Window:MakeTab({
+	Name = "Cheats Apeirophobia(Coming Soon)",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local HubSolsRngTab = Window:MakeTab({
+	Name = "Cheats Sol's Rng",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local HubAdopteMeTab = Window:MakeTab({
+	Name = "Cheats Adopte Me(Coming Soon)",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
 local HubMiscTab = Window:MakeTab({
 	Name = "Misc Cheats",
 	Icon = "rbxassetid://4483345998",
