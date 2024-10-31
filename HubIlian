@@ -93,7 +93,7 @@ local HubBuildABoatTab = Window:MakeTab({
 
 
 local HubADustyTripTab = Window:MakeTab({
-	Name = "Cheats A Dusty Trips (Coming Soon)",
+	Name = "Cheats A Dusty Trips",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
@@ -228,6 +228,27 @@ HubMM2Tab:AddButton({
 	Name = "God Hub MM2 Cheats(Need Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/Murder-Mystery-2-OP-God-Hub-Unlock-Inventory-Break-Sheriff-Gun-Auto-Farm-Best-17997"))()
+end
+})
+
+HubADustyTripTab:AddButton({
+	Name = "Connect Hub Dusty Trip Cheats(Need Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/a-dusty-trip-BILLION-Connect-Hub-18411"))()
+end
+})
+
+HubADustyTripTab:AddButton({
+	Name = "TTYJ Dusty Trip Cheats(Need Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/a-dusty-trip-SUMMER-TTJY-Hub-15702"))()
+end
+})
+
+HubADustyTripTab:AddButton({
+	Name = "Nuke Hub Dusty Trip Cheats(Need Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/a-dusty-trip-ELECTRIC-dupe-V2-nurk-hub-14880"))()
 end
 })
 
