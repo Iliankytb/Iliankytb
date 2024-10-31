@@ -73,6 +73,12 @@ local HubPiggyTab = Window:MakeTab({
 	PremiumOnly = false
 })
 
+local HubWeirdStrictDadTab = Window:MakeTab({
+	Name = "Cheats Weird Strict Dad(Coming Soon)",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
 local HubMiscTab = Window:MakeTab({
 	Name = "Misc Cheats",
 	Icon = "rbxassetid://4483345998",
