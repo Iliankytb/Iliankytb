@@ -281,4 +281,18 @@ HubBladeBallTab:AddButton({
 end
 })
 
+HubBladeBallTab:AddButton({
+	Name = "Bt Project Blade Ball Cheats(Need Key)",
+	Callback = function()
+loadstring(game:HttpGet("https://rawscripts.net/raw/UPD-Blade-Ball-BT-Project-8688"))()
+end
+})
+
+HubBladeBallTab:AddButton({
+	Name = "Bedol Hub Blade Ball Cheats(Need Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/Blade-Ball-Autofarm-8968"))()
+end
+})
+
 OrionLib:Init()
