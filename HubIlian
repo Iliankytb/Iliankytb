@@ -346,7 +346,7 @@ end
 })
 
 HubPetsSim99Tab:AddButton({
-	Name = "6Scripts Pets Sim 99 Cheats(No Key)",
+	Name = "6FootScripts Pets Sim 99 Cheats(No Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/Pet-Simulator-99!-Cheat-Menu-17428"))()
 end
