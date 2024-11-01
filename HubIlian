@@ -80,7 +80,7 @@ local HubPiggyTab = Window:MakeTab({
 })
 
 local HubWeirdStrictDadTab = Window:MakeTab({
-	Name = "Cheats Weird Strict Dad(Coming Soon)",
+	Name = "Cheats Weird Strict Dad",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
@@ -432,6 +432,20 @@ HubTSBTab:AddButton({
 	Name = "Fly For TSB|TSB Cheats(No Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/The-Strongest-Battlegrounds-Tsb-BuilderFly-V1-made-by-valker038-on-roblox-also-buggy-21065"))()
+end
+})
+
+HubWeirdStrictDadTab:AddButton({
+	Name = "Goa Hub Weird Strict Dad Cheats(No Key All Chapters)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/weird-strict-dad-BOOK-2-GOA-HUB-21131"))()
+end
+})
+
+HubWeirdStrictDadTab:AddButton({
+	Name = "yBloodz Weird Strict Dad Cheats(No Key Chapter 1)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/weird-strict-dad-HALLOWEEN!-TP-Kitchen-ESP-OP-SCRIPT-9232"))()
 end
 })
 
