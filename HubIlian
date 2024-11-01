@@ -86,7 +86,7 @@ local HubWeirdStrictDadTab = Window:MakeTab({
 })
 
 local HubRainbowFriendsTab = Window:MakeTab({
-	Name = "Cheats Rainbow Friends(Coming Soon)",
+	Name = "Cheats Rainbow Friends",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
@@ -448,5 +448,21 @@ HubWeirdStrictDadTab:AddButton({
       		loadstring(game:HttpGet("https://rawscripts.net/raw/weird-strict-dad-HALLOWEEN!-TP-Kitchen-ESP-OP-SCRIPT-9232"))()
 end
 })
+
+HubRainbowFriendsTab:AddButton({
+	Name = "King Rainbow Friends Cheats(Need Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/Rainbow-Friends-the-best-free-GUI-script-lots-of-features-21152"))()
+end
+})
+
+HubRainbowFriendsTab:AddButton({
+	Name = "Rocks Hub Rainbow Friends Cheats(No Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/Rainbow-Friends-Rocks-hub-beta-15087"))()
+end
+})
+
+
 
 OrionLib:Init()
