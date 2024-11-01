@@ -1,6 +1,14 @@
 local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
 local Window = OrionLib:MakeWindow({Name = "IliankYTB Hub", HidePremium = false,IntroEnabled = false ,SaveConfig = false, ConfigFolder = "OrionTest"})
 
+local function copyToClipboard(text)
+    if setclipboard then
+        setclipboard(text)
+    else
+        warn("setclipboard n'est pas pris en charge dans cet environnement.")
+    end
+end
+
 local HubTab = Window:MakeTab({
 	Name = "Cheats Doors",
 	Icon = "rbxassetid://4483345998",
@@ -522,6 +530,11 @@ end
 HubMiscTab:AddButton({
 	Name = "My Discord (Please Join)",
 	Callback = function()
+
+
+-- Exemple d'appel
+copyToClipboard("https://discord.gg/Heje8He4")
+
       		end
 })
 
