@@ -374,7 +374,7 @@ end
 })
 
 HubPetsGoTab:AddButton({
-	Name = "None Hub Pets Go Cheats(Need Key)",
+	Name = "God Hub Pets Go Cheats(Need Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/PETS-GO!-NEW-Ultimate-Auto-Farm-Unlocker-AFK-Mode-Auto-Use-OP-Script-20782"))()
 end
