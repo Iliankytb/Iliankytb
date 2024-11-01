@@ -20,7 +20,7 @@ local HubEvadeTab = Window:MakeTab({
 })
 
 local HubBloxFruitTab = Window:MakeTab({
-	Name = "Cheats Blox Fruit(Coming Soon)",
+	Name = "Cheats Blox Fruits",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
@@ -499,9 +499,16 @@ loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-HoHo-Hub-+1
 })
 
 HubBloxFruitTab:AddButton({
-	Name = "Aurora Blox Fruits Cheats(Need Key)",
+	Name = "Min Gaming Blox Fruits Cheats(No Key)",
 	Callback = function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/LuaCrack/Min/refs/heads/main/MinMasEng"))()
+end
+})
+
+HubBloxFruitTab:AddButton({
+	Name = "Aurora Blox Fruits Cheats(Need Key)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Jadelly261/BloxFruits/main/Aurora", true))()
 end
 })
 
@@ -510,6 +517,12 @@ HubMiscTab:AddButton({
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-HoHo-Hub-+15-Games-2392"))()
 end
+})
+
+HubMiscTab:AddButton({
+	Name = "My Discord (Please Join)",
+	Callback = function()
+      		end
 })
 
 OrionLib:Init()
