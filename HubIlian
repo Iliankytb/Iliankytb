@@ -394,4 +394,32 @@ HubPetsGoTab:AddButton({
 end
 })
 
+HubTSBTab:AddButton({
+	Name = "Oblivion Guard TSB Cheats(No Key And Saitama Only)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/The-Strongest-Battlegrounds-Oblivion-guard-saitama-only-21180"))()
+end
+})
+
+HubTSBTab:AddButton({
+	Name = "KJ Animations TSB Cheats(No Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/The-Strongest-Battlegrounds-KJ-Animations-Hub-FE-Keyless-21099"))()
+end
+})
+
+HubTSBTab:AddButton({
+	Name = "KJ TSB Cheats(No Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/The-Strongest-Battlegrounds-Kj-for-TSB-21086"))()
+end
+})
+
+HubTSBTab:AddButton({
+	Name = "Nicus Scripts TSB Cheats(Need Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/The-Strongest-Battlegrounds-FREE-AND-BEST-GUI-15593"))()
+end
+})
+
 OrionLib:Init()
