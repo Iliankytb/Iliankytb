@@ -62,7 +62,7 @@ local HubPetsSim99Tab = Window:MakeTab({
 })
 
 local HubPetsGoTab = Window:MakeTab({
-	Name = "Cheats Pets Go(Coming Soon)",
+	Name = "Cheats Pets Go",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
@@ -356,6 +356,41 @@ HubPiggyTab:AddButton({
 	Name = "Imp Hub Piggy Cheats(Need Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/Piggy-BUILD-MODE-UPDATE-Imp-Hub-20946"))()
+end
+})
+
+HubPetsGoTab:AddButton({
+	Name = "ZapHub Pets Go Cheats(Need Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/PETS-GO!-NEW-The-Best-Free-Script-ZapHub-20119"))()
+end
+})
+
+HubPetsGoTab:AddButton({
+	Name = "Reaper Hub Pets Go Cheats(Need Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/PETS-GO!-NEW-Reaper-Hub-20879"))()
+end
+})
+
+HubPetsGoTab:AddButton({
+	Name = "None Hub Pets Go Cheats(Need Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/PETS-GO!-NEW-Ultimate-Auto-Farm-Unlocker-AFK-Mode-Auto-Use-OP-Script-20782"))()
+end
+})
+
+HubPetsGoTab:AddButton({
+	Name = "Banana Hub Pets Go Cheats(Need Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/PETS-GO!-NEW-UPDATED-KEYLESS-SCRIPT-BANANA-HUB-21033"))()
+end
+})
+
+HubPetsGoTab:AddButton({
+	Name = "Ather Hub Pets Go Cheats(No Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/PETS-GO!-NEW-AtherHub-20940"))()
 end
 })
 
