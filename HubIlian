@@ -182,6 +182,20 @@ HubEvadeTab:AddButton({
   	end    
 })
 
+HubEvadeTab:AddButton({
+	Name = "King Evade Cheats (Need Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/Evade-Evade-The-Best-Free-GUI-Script-lots-of-Features-20718"))()
+end    
+})
+
+HubEvadeTab:AddButton({
+	Name = "Tora Evade Candys Farm Cheats(No Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/VIP-Evade-Candy-Farm-21225"))()
+end    
+})
+
 HubTab:AddButton({
 	Name = "Doors Entities Spawner (not Mine)",
 	Callback = function()
