@@ -63,6 +63,12 @@ local HubDeathBallTab = Window:MakeTab({
 	PremiumOnly = false
 })
 
+local HubRaceClickerTab = Window:MakeTab({
+	Name = "Cheats Race Clicker(Coming Soon)",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
 local HubTSBTab = Window:MakeTab({
 	Name = "Cheats The Strongest Battlegrounds",
 	Icon = "rbxassetid://4483345998",
