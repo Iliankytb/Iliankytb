@@ -68,7 +68,7 @@ local HubPetsGoTab = Window:MakeTab({
 })
 
 local HubPiggyTab = Window:MakeTab({
-	Name = "Cheats Piggy(Coming Soon)",
+	Name = "Cheats Piggy",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
