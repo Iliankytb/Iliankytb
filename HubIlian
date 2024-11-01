@@ -111,7 +111,7 @@ local HubApeirophobiaTab = Window:MakeTab({
 })
 
 local HubSolsRngTab = Window:MakeTab({
-	Name = "Cheats Sol's Rng(Coming Soon)",
+	Name = "Cheats Sol's Rng",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
@@ -463,6 +463,18 @@ HubRainbowFriendsTab:AddButton({
 end
 })
 
+HubSolsRngTab:AddButton({
+	Name = "3ITX Scripts Sols Rng Cheats(Need Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/Sol's-RNG-Era8-BEST-SOLS-SCRIPT-15232"))()
+end
+})
 
+HubSolsRngTab:AddButton({
+	Name = "Legend Handle Sols Rng Cheats(Need Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/Sol's-RNG-Era-9-AUTOFARM-18264"))()
+end
+})
 
 OrionLib:Init()
