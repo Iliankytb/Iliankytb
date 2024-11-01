@@ -409,7 +409,7 @@ end
 })
 
 HubTSBTab:AddButton({
-	Name = "KJ TSB Cheats(No Key)",
+	Name = "KJ TSB Cheats(Need Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/The-Strongest-Battlegrounds-Kj-for-TSB-21086"))()
 end
@@ -419,6 +419,13 @@ HubTSBTab:AddButton({
 	Name = "Nicus Scripts TSB Cheats(Need Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/The-Strongest-Battlegrounds-FREE-AND-BEST-GUI-15593"))()
+end
+})
+
+HubTSBTab:AddButton({
+	Name = "Fly For TSB|TSB Cheats(No Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/The-Strongest-Battlegrounds-Tsb-BuilderFly-V1-made-by-valker038-on-roblox-also-buggy-21065"))()
 end
 })
 
