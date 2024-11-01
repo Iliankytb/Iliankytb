@@ -491,4 +491,25 @@ HubSolsRngTab:AddButton({
 end
 })
 
+HubBloxFruitTab:AddButton({
+	Name = "HoHo Hub Blox Fruits Cheats(Need Key)",
+	Callback = function()
+loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-HoHo-Hub-+15-Games-2392"))()
+      		end
+})
+
+HubBloxFruitTab:AddButton({
+	Name = "Aurora Blox Fruits Cheats(Need Key)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/LuaCrack/Min/refs/heads/main/MinMasEng"))()
+end
+})
+
+HubMiscTab:AddButton({
+	Name = "Universale HoHo Hub 150+ Games Cheats (Need Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-HoHo-Hub-+15-Games-2392"))()
+end
+})
+
 OrionLib:Init()
