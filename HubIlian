@@ -352,4 +352,11 @@ HubPetsSim99Tab:AddButton({
 end
 })
 
+HubPiggyTab:AddButton({
+	Name = "Imp Hub Piggy Cheats(Need Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/Piggy-BUILD-MODE-UPDATE-Imp-Hub-20946"))()
+end
+})
+
 OrionLib:Init()
