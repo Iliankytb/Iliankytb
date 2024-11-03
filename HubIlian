@@ -542,12 +542,14 @@ end
 HubMiscTab:AddButton({
 	Name = "My Discord (Please Join)",
 	Callback = function()
-
-
 -- Exemple d'appel
 copyToClipboard("https://discord.gg/Heje8He4")
 
       		end
 })
+
+HubKingLegacyTab:AddLabel("Thanks To Rip_Bijimix(xTiMox1801) For His Suggestion Of Cheats King Legacy")
+
+
 
 OrionLib:Init()
