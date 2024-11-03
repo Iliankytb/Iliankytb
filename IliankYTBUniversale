@@ -38,15 +38,17 @@ end
 
 -- Fonction pour viser la tête du joueur cible
 function aimAtHead(targetPlayer)
-    if AutoAimbot and not isSameTeam(localPlayer, targetPlayer) then
+while true do
+    if AutoAimbot == true and not isSameTeam(localPlayer, targetPlayer) then
         local head = targetPlayer.Character and targetPlayer.Character:FindFirstChild("Head")
 if head then
 localPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(localPlayer.Character.HumanoidRootPart.Position, head.Position)
-        if head and (not AutoWallCheck or not isWallBetween(localPlayer, targetPlayer)) then
+        elseif head and (not AutoWallCheck or not isWallBetween(localPlayer, targetPlayer)) then
             localPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(localPlayer.Character.HumanoidRootPart.Position, head.Position)
         end
-end
     end
+end
+wait(.0000000001)
 end
 
 -- Fonction pour vérifier s'il y a un mur entre les joueurs
@@ -106,7 +108,8 @@ function mainLoop()
     while true do
         for _, targetPlayer in pairs(game.Players:GetPlayers()) do
             if targetPlayer ~= localPlayer then
-                if AutoEspDistance and getDistance(localPlayer, targetPlayer) then
+if Auto
+                if AutoEspDistance == true and getDistance(localPlayer, targetPlayer) then
                     aimAtHead(targetPlayer)
                     drawESP(targetPlayer)
                 end
