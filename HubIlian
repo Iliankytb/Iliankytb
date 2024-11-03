@@ -9,6 +9,12 @@ local function copyToClipboard(text)
     end
 end
 
+local HubKingLegacyTab = Window:MakeTab({
+	Name = "Cheats King Legacy(Coming Soon)",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
 local HubTab = Window:MakeTab({
 	Name = "Cheats Doors",
 	Icon = "rbxassetid://4483345998",
