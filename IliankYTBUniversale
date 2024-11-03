@@ -101,7 +101,7 @@ function mainLoop()
     while true do
         for _, targetPlayer in pairs(game.Players:GetPlayers()) do
             if targetPlayer ~= localPlayer then
-                if AutoEspDistance and getDistance(localPlayer, targetPlayer) < 100 then
+                if AutoEspDistance and getDistance(localPlayer, targetPlayer) then
                     aimAtHead(targetPlayer)
                     drawESP(targetPlayer)
                 end
