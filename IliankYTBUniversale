@@ -40,9 +40,12 @@ end
 function aimAtHead(targetPlayer)
     if AutoAimbot and not isSameTeam(localPlayer, targetPlayer) then
         local head = targetPlayer.Character and targetPlayer.Character:FindFirstChild("Head")
+if head then
+localPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(localPlayer.Character.HumanoidRootPart.Position, head.Position)
         if head and (not AutoWallCheck or not isWallBetween(localPlayer, targetPlayer)) then
             localPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(localPlayer.Character.HumanoidRootPart.Position, head.Position)
         end
+end
     end
 end
 
@@ -60,7 +63,7 @@ end
 
 -- Fonction pour afficher l'ESP d'un joueur
 function drawESP(targetPlayer)
-    if AutoEspPlayer and not isSameTeam(localPlayer, targetPlayer) then
+    if AutoEspPlayer then
         local head = targetPlayer.Character and targetPlayer.Character:FindFirstChild("Head")
         if head then
             local team = playerTeam[targetPlayer.UserId] or "default"
@@ -85,14 +88,16 @@ function toggleFly(enabled)
     AutoFly = enabled
     if AutoFly then
         localPlayer.Character.Humanoid.PlatformStand = true
-        local flySpeed = 50
+        local flySpeed = 0
         game:GetService("RunService").Stepped:Connect(function()
             if AutoFly then
                 localPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0, flySpeed, 0)
+localPlayer.Character.Humanoid.WalkSpeed = 50
             end
         end)
     else
         localPlayer.Character.Humanoid.PlatformStand = false
+localPlayer.Character.Humanoid.WalkSpeed = 16
     end
 end
 
