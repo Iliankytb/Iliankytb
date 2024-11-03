@@ -4,6 +4,13 @@ local Window = OrionLib:MakeWindow({Name = "IliankYTB Universale", HidePremium =
 local playerTeam = {} -- Table pour les équipes des joueurs
 local players = {} -- Table pour tous les joueurs
 local localPlayer = {} -- Le joueur local
+local AutoAimbot = false
+local AutoTeamCheck = false
+local AutoEspPlayer = false
+local AutoEspDistance = false
+local AutoWallCheck = false
+local AutoFly = false
+
 
 -- Définir les couleurs des équipes
 local teamColors = {
@@ -67,6 +74,32 @@ function mainLoop()
         end
     end
 end
+
+local MainTab = Window:MakeTab({
+	Name = "Main",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local EspTab = Window:MakeTab({
+	Name = "Esp",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local MiscTab = Window:MakeTab({
+	Name = "Misc",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+MainTab:AddToggle({
+	Name = "Auto Aimbot Player",
+	Default = false,
+	Callback = function(Value)
+		
+	end    
+})
 
 MainTab:AddButton({
 	Name = "Rejoin",
