@@ -1,0 +1,69 @@
+-- Variables pour le jeu
+local playerTeam = {} -- Table pour les équipes des joueurs
+local players = {} -- Table pour tous les joueurs
+local localPlayer = {} -- Le joueur local
+
+-- Définir les couleurs des équipes
+local teamColors = {
+    red = {255, 0, 0},
+    blue = {0, 0, 255},
+    green = {0, 255, 0},
+    yellow = {255, 255, 0},
+    purple = {128, 0, 128},
+    orange = {255, 165, 0},
+    -- Ajoutez d'autres couleurs si nécessaire
+}
+
+-- Fonction pour vérifier la distance entre deux joueurs
+function getDistance(player1, player2)
+    local dx = player2.x - player1.x
+    local dy = player2.y - player1.y
+    return math.sqrt(dx * dx + dy * dy)
+end
+
+-- Fonction pour vérifier si un joueur est dans la même équipe
+function isSameTeam(player1, player2)
+    return playerTeam[player1.id] == playerTeam[player2.id]
+end
+
+-- Fonction pour aimboter sur la tête d'un joueur
+function aimAtHead(targetPlayer)
+    if not isSameTeam(localPlayer, targetPlayer) then
+        -- Logique pour aimboter sur la tête du joueur cible
+        if not isWallBetween(localPlayer, targetPlayer) then
+            -- Ajuster la visée vers la tête du joueur cible
+        end
+    end
+end
+
+-- Fonction pour vérifier s'il y a un mur entre deux joueurs
+function isWallBetween(player1, player2)
+    -- Logique pour vérifier les collisions avec des murs
+    return false -- Remplacez par la logique réelle
+end
+
+-- Fonction pour ESP des joueurs
+function drawESP(targetPlayer)
+    if isSameTeam(localPlayer, targetPlayer) then
+        return -- Ne rien faire pour les joueurs de la même équipe
+    end
+
+    -- Récupérer la couleur de l'équipe
+    local team = playerTeam[targetPlayer.id] or "default"
+    local color = teamColors[team] or {255, 255, 255} -- Couleur par défaut (blanc)
+
+    -- Dessiner le texte ESP avec la couleur choisie
+    -- Utilisez votre méthode pour afficher le texte avec la couleur
+end
+
+-- Main loop (boucle principale)
+function mainLoop()
+    for _, targetPlayer in pairs(players) do
+        if getDistance(localPlayer, targetPlayer) < 100 then -- Par exemple, 100 unités
+            aimAtHead(targetPlayer)
+            drawESP(targetPlayer)
+        end
+    end
+end
+
+-- Appel de la boucle principale dans le contexte de votre jeu
