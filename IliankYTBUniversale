@@ -1,4 +1,6 @@
--- Variables pour le jeu
+local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
+local Window = OrionLib:MakeWindow({Name = "IliankYTB Universale", HidePremium = false,IntroEnabled = false ,SaveConfig = true, ConfigFolder = "OrionTest"}
+
 local playerTeam = {} -- Table pour les équipes des joueurs
 local players = {} -- Table pour tous les joueurs
 local localPlayer = {} -- Le joueur local
@@ -66,4 +68,11 @@ function mainLoop()
     end
 end
 
+MainTab:AddButton({
+	Name = "Rejoin",
+	Callback = function()
+end
+})
+
+OrionLib:Init()
 -- Appel de la boucle principale dans le contexte de votre jeu
