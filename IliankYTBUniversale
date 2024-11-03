@@ -1,16 +1,15 @@
 local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
-local Window = OrionLib:MakeWindow({Name = "IliankYTB Universale", HidePremium = false,IntroEnabled = false ,SaveConfig = true, ConfigFolder = "OrionTest"}
+local Window = OrionLib:MakeWindow({Name = "IliankYTB Universale", HidePremium = false, IntroEnabled = false, SaveConfig = true, ConfigFolder = "OrionTest"})
 
 local playerTeam = {} -- Table pour les équipes des joueurs
 local players = {} -- Table pour tous les joueurs
-local localPlayer = {} -- Le joueur local
+local localPlayer = game.Players.LocalPlayer
 local AutoAimbot = false
 local AutoTeamCheck = false
 local AutoEspPlayer = false
 local AutoEspDistance = false
 local AutoWallCheck = false
 local AutoFly = false
-
 
 -- Définir les couleurs des équipes
 local teamColors = {
@@ -20,75 +19,101 @@ local teamColors = {
     yellow = {255, 255, 0},
     purple = {128, 0, 128},
     orange = {255, 165, 0},
-    -- Ajoutez d'autres couleurs si nécessaire
 }
 
--- Fonction pour vérifier la distance entre deux joueurs
+-- Fonction pour obtenir la distance entre deux joueurs
 function getDistance(player1, player2)
-    local dx = player2.x - player1.x
-    local dy = player2.y - player1.y
-    return math.sqrt(dx * dx + dy * dy)
+    local pos1 = player1.Character and player1.Character:FindFirstChild("HumanoidRootPart").Position
+    local pos2 = player2.Character and player2.Character:FindFirstChild("HumanoidRootPart").Position
+    if pos1 and pos2 then
+        return (pos1 - pos2).Magnitude
+    end
+    return math.huge
 end
 
--- Fonction pour vérifier si un joueur est dans la même équipe
+-- Fonction pour vérifier si les joueurs sont dans la même équipe
 function isSameTeam(player1, player2)
-    return playerTeam[player1.id] == playerTeam[player2.id]
+    return AutoTeamCheck and playerTeam[player1.UserId] == playerTeam[player2.UserId]
 end
 
--- Fonction pour aimboter sur la tête d'un joueur
+-- Fonction pour viser la tête du joueur cible
 function aimAtHead(targetPlayer)
-    if not isSameTeam(localPlayer, targetPlayer) then
-        -- Logique pour aimboter sur la tête du joueur cible
-        if not isWallBetween(localPlayer, targetPlayer) then
-            -- Ajuster la visée vers la tête du joueur cible
+    if AutoAimbot and not isSameTeam(localPlayer, targetPlayer) then
+        local head = targetPlayer.Character and targetPlayer.Character:FindFirstChild("Head")
+        if head and (not AutoWallCheck or not isWallBetween(localPlayer, targetPlayer)) then
+            localPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(localPlayer.Character.HumanoidRootPart.Position, head.Position)
         end
     end
 end
 
--- Fonction pour vérifier s'il y a un mur entre deux joueurs
+-- Fonction pour vérifier s'il y a un mur entre les joueurs
 function isWallBetween(player1, player2)
-    -- Logique pour vérifier les collisions avec des murs
-    return false -- Remplacez par la logique réelle
-end
-
--- Fonction pour ESP des joueurs
-function drawESP(targetPlayer)
-    if isSameTeam(localPlayer, targetPlayer) then
-        return -- Ne rien faire pour les joueurs de la même équipe
+    local origin = player1.Character and player1.Character:FindFirstChild("Head").Position
+    local target = player2.Character and player2.Character:FindFirstChild("Head").Position
+    if origin and target then
+        local ray = Ray.new(origin, (target - origin).Unit * getDistance(player1, player2))
+        local part = workspace:FindPartOnRayWithIgnoreList(ray, {player1.Character, player2.Character})
+        return part ~= nil
     end
-
-    -- Récupérer la couleur de l'équipe
-    local team = playerTeam[targetPlayer.id] or "default"
-    local color = teamColors[team] or {255, 255, 255} -- Couleur par défaut (blanc)
-
-    -- Dessiner le texte ESP avec la couleur choisie
-    -- Utilisez votre méthode pour afficher le texte avec la couleur
+    return false
 end
 
--- Main loop (boucle principale)
-function mainLoop()
-    for _, targetPlayer in pairs(players) do
-        if getDistance(localPlayer, targetPlayer) < 100 then -- Par exemple, 100 unités
-            aimAtHead(targetPlayer)
-            drawESP(targetPlayer)
+-- Fonction pour afficher l'ESP d'un joueur
+function drawESP(targetPlayer)
+    if AutoEspPlayer and not isSameTeam(localPlayer, targetPlayer) then
+        local head = targetPlayer.Character and targetPlayer.Character:FindFirstChild("Head")
+        if head then
+            local team = playerTeam[targetPlayer.UserId] or "default"
+            local color = teamColors[team] or {255, 255, 255} -- Blanc par défaut
+            -- Créer un esp avec un tag au-dessus de la tête
+            local espTag = Instance.new("BillboardGui", head)
+            espTag.Size = UDim2.new(1, 0, 1, 0)
+            espTag.StudsOffset = Vector3.new(0, 2, 0)
+            espTag.AlwaysOnTop = true
+            
+            local espText = Instance.new("TextLabel", espTag)
+            espText.Size = UDim2.new(1, 0, 1, 0)
+            espText.BackgroundTransparency = 1
+            espText.Text = targetPlayer.Name
+            espText.TextColor3 = Color3.new(color[1]/255, color[2]/255, color[3]/255)
         end
     end
 end
 
+-- Fonction pour activer/désactiver le vol
+function toggleFly(enabled)
+    AutoFly = enabled
+    if AutoFly then
+        localPlayer.Character.Humanoid.PlatformStand = true
+        local flySpeed = 50
+        game:GetService("RunService").Stepped:Connect(function()
+            if AutoFly then
+                localPlayer.Character.HumanoidRootPart.Velocity = Vector3.new(0, flySpeed, 0)
+            end
+        end)
+    else
+        localPlayer.Character.Humanoid.PlatformStand = false
+    end
+end
+
+-- Boucle principale
+function mainLoop()
+    while true do
+        for _, targetPlayer in pairs(game.Players:GetPlayers()) do
+            if targetPlayer ~= localPlayer then
+                if AutoEspDistance and getDistance(localPlayer, targetPlayer) < 100 then
+                    aimAtHead(targetPlayer)
+                    drawESP(targetPlayer)
+                end
+            end
+        end
+        wait(0.1) -- Délai pour limiter la fréquence de vérification
+    end
+end
+
+-- Création des Tabs et Toggles dans l'interface
 local MainTab = Window:MakeTab({
 	Name = "Main",
-	Icon = "rbxassetid://4483345998",
-	PremiumOnly = false
-})
-
-local EspTab = Window:MakeTab({
-	Name = "Esp",
-	Icon = "rbxassetid://4483345998",
-	PremiumOnly = false
-})
-
-local MiscTab = Window:MakeTab({
-	Name = "Misc",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
@@ -97,15 +122,68 @@ MainTab:AddToggle({
 	Name = "Auto Aimbot Player",
 	Default = false,
 	Callback = function(Value)
-		
+		AutoAimbot = Value
 	end    
 })
 
 MainTab:AddButton({
 	Name = "Rejoin",
 	Callback = function()
-end
+		game:GetService("TeleportService"):Teleport(game.PlaceId, game.Players.LocalPlayer)
+	end
+})
+
+local EspTab = Window:MakeTab({
+	Name = "Esp",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+EspTab:AddToggle({
+	Name = "ESP Player",
+	Default = false,
+	Callback = function(Value)
+		AutoEspPlayer = Value
+	end    
+})
+
+EspTab:AddToggle({
+	Name = "ESP Distance Check",
+	Default = false,
+	Callback = function(Value)
+		AutoEspDistance = Value
+	end    
+})
+
+EspTab:AddToggle({
+	Name = "Team Check",
+	Default = false,
+	Callback = function(Value)
+		AutoTeamCheck = Value
+	end    
+})
+
+EspTab:AddToggle({
+	Name = "Wall Check",
+	Default = false,
+	Callback = function(Value)
+		AutoWallCheck = Value
+	end    
+})
+
+local MiscTab = Window:MakeTab({
+	Name = "Misc",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+MiscTab:AddToggle({
+	Name = "Fly",
+	Default = false,
+	Callback = function(Value)
+		toggleFly(Value)
+	end    
 })
 
 OrionLib:Init()
--- Appel de la boucle principale dans le contexte de votre jeu
+spawn(mainLoop)
