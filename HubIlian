@@ -550,6 +550,39 @@ copyToClipboard("https://discord.gg/Heje8He4")
 
 HubKingLegacyTab:AddLabel("Thanks To Rip_Bijimix(xTiMox1801) For His Suggestion Of Cheats King Legacy")
 
+HubKingLegacyTab:AddButton({
+	Name = "Legends Handle King Legacy Cheats(Need Key)",
+	Callback = function()
+loadstring(game:HttpGet("https://rawscripts.net/raw/(UPDATE-7)-King-Legacy-Auto-Farm-And-More-21150"))()
+end
+})
 
+HubKingLegacyTab:AddButton({
+	Name = "Matheuzxs Hub King Legacy Cheats(Need Key)",
+	Callback = function()
+loadstring(game:HttpGet("https://rawscripts.net/raw/(UPDATE-7)-King-Legacy-Matheuzxs-Hub-NEW-HALLOWEEN-UPdate-21380"))()
+end
+})
+
+HubKingLegacyTab:AddButton({
+	Name = "Storyshift King Legacy Cheats(Need Key)",
+	Callback = function()
+loadstring(game:HttpGet("https://rawscripts.net/raw/(UPDATE-7)-King-Legacy-Storyshift-scriptd-not-owned-by-me-21546"))()
+end
+})
+
+HubKingLegacyTab:AddButton({
+	Name = "BLACKTRAP King Legacy Cheats(Need Key)",
+	Callback = function()
+loadstring(game:HttpGet("https://rawscripts.net/raw/UPDATE-6-King-Legacy-BLACKTRAP-12339"))()
+end
+})
+
+HubKingLegacyTab:AddButton({
+	Name = "YikiGui King Legacy Cheats(Need Key)",
+	Callback = function()
+loadstring(game:HttpGet("https://rawscripts.net/raw/(UPDATE-7)-King-Legacy-YikiGui-AUTOFARM-21584"))()
+end
+})
 
 OrionLib:Init()
