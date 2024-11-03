@@ -585,4 +585,11 @@ loadstring(game:HttpGet("https://rawscripts.net/raw/(UPDATE-7)-King-Legacy-YikiG
 end
 })
 
+HubKingLegacyTab:AddButton({
+	Name = "Zee Hub King Legacy Cheats(No Key)",
+	Callback = function()
+loadstring(game:HttpGet('https://zuwz.me/Ls-Zee-Hub-KL'))()
+end
+})
+
 OrionLib:Init()
