@@ -257,7 +257,6 @@ local function RemoveUi()
     playerGui:FindFirstChild("TimerGui"):Destroy()
 end
 
-
 humanoid.Died:Connect(stopTimer)
 
 
