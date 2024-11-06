@@ -48,13 +48,13 @@ scrollingFrame.Parent = FramMain
 
 local FrameAllFeatures = Instance.new("Frame")
 FrameAllFeatures.Name = "FrameAllFeatures"
-FrameAllFeatures.Size = UDim2.new(1, 0, 0, 250)
+FrameAllFeatures.Size = UDim2.new(1, 0, 0, 50)
 FrameAllFeatures.Position = UDim2.new(0, 0, 0, 100)
 FrameAllFeatures.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 FrameAllFeatures.Active = true
 FrameAllFeatures.Visible = true
 FrameAllFeatures.BackgroundTransparency = 1
-FrameAllFeatures.Parent = scrollingFrame
+FrameAllFeatures.Parent = FramMain
 
 local uiLayout = Instance.new("UIListLayout")
  -- Nombre de colonnes
