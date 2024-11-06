@@ -46,24 +46,51 @@ scrollingFrame.CanvasSize = UDim2.new(0, 0, 2, 0) -- Ajuster la taille du canvas
 scrollingFrame.ScrollBarThickness = 5
 scrollingFrame.Parent = FramMain
 
+local FrameAllFeatures = Instance.new("Frame")
+FrameAllFeatures.Name = "FrameAllFeatures"
+FrameAllFeatures.Size = UDim2.new(1, 0, 0, 250)
+FrameAllFeatures.Position = UDim2.new(0, 0, 0, 100)
+FrameAllFeatures.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+FrameAllFeatures.Active = true
+FrameAllFeatures.Visible = true
+FrameAllFeatures.BackgroundTransparency = 1
+FrameAllFeatures.Parent = scrollingFrame
 
-local uiGridLayout = Instance.new("UIGridLayout")
-uiGridLayout.CellSize = UDim2.new(0, 100, 0, 50) -- Taille de chaque cellule dans la grille
-uiGridLayout.FillDirectionMaxCells = 2 -- Nombre de colonnes
-uiGridLayout.SortOrder = Enum.SortOrder.LayoutOrder
-uiGridLayout.Parent = scrollingFrame
+local uiLayout = Instance.new("UIListLayout")
+uiLayout.CellSize = UDim2.new(0, 100, 0, 50) -- Taille de chaque cellule dans la grille
+uiLayout.FillDirectionMaxCells = 2 -- Nombre de colonnes
+uiLayout.SortOrder = Enum.SortOrder.LayoutOrder
+uiLayout.Parent = FrameAllFeatures
 
+local ButtonGame = Instance.new("TextButton")
+ButtonGame.Name = "TimerSetting"
+ButtonGame.Size = UDim2.new(1, 0, 0, 50)
+ButtonGame.Position = UDim2.new(0, 0, 0, 0)
+ButtonGame.Text = "Timer Setting"
+ButtonGame.TextScaled = true
+ButtonGame.BackgroundColor3 = Color3.fromRGB(233, 233, 233)
+ButtonGame.TextColor3 = Color3.fromRGB(255, 255, 255)
+ButtonGame.Parent = FrameAllFeatures
 
-for i = 1, 39 do
-    local featureButton = Instance.new("TextButton")
-    featureButton.Name = "FeatureButton"..i
-    featureButton.Size = UDim2.new(0, 100, 0, 50)
-    featureButton.Text = "Feature " .. i
-    featureButton.BackgroundColor3 = Color3.fromRGB(80, 80, 80)
-    featureButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    featureButton.Parent = scrollingFrame
-end
+local ButtonCustomTimer = Instance.new("TextButton")
+ButtonCustomTimer.Name = "CustomTimer"
+ButtonCustomTimer.Size = UDim2.new(1, 0, 0, 50)
+ButtonCustomTimer.Position = UDim2.new(0, 0, 0, 0)
+ButtonCustomTimer.Text = "Custom Timer"
+ButtonCustomTimer.TextScaled = true
+ButtonCustomTimer.BackgroundColor3 = Color3.fromRGB(233, 233, 233)
+ButtonCustomTimer.TextColor3 = Color3.fromRGB(255, 255, 255)
+ButtonCustomTimer.Parent = FrameAllFeatures
 
+local ButtonVersion = Instance.new("TextLabel")
+ButtonVersion.Name = "TimerVersion"
+ButtonVersion.Size = UDim2.new(1, 0, 0, 50)
+ButtonVersion.Position = UDim2.new(0, 0, 0, 0)
+ButtonVersion.Text = "Timer Version:1.3"
+ButtonVersion.TextScaled = true
+ButtonVersion.BackgroundColor3 = Color3.fromRGB(233, 233, 233)
+ButtonVersion.TextColor3 = Color3.fromRGB(255, 255, 255)
+ButtonVersion.Parent = FrameAllFeatures
 
 local isLocked = false
 local isVisible = false
