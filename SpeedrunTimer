@@ -57,8 +57,7 @@ FrameAllFeatures.BackgroundTransparency = 1
 FrameAllFeatures.Parent = scrollingFrame
 
 local uiLayout = Instance.new("UIListLayout")
-uiLayout.CellSize = UDim2.new(0, 100, 0, 50) -- Taille de chaque cellule dans la grille
-uiLayout.FillDirectionMaxCells = 2 -- Nombre de colonnes
+ -- Nombre de colonnes
 uiLayout.SortOrder = Enum.SortOrder.LayoutOrder
 uiLayout.Parent = FrameAllFeatures
 
@@ -86,7 +85,7 @@ local ButtonVersion = Instance.new("TextLabel")
 ButtonVersion.Name = "TimerVersion"
 ButtonVersion.Size = UDim2.new(1, 0, 0, 50)
 ButtonVersion.Position = UDim2.new(0, 0, 0, 0)
-ButtonVersion.Text = "Timer Version:1.3"
+ButtonVersion.Text = "Timer Version:1.31"
 ButtonVersion.TextScaled = true
 ButtonVersion.BackgroundColor3 = Color3.fromRGB(233, 233, 233)
 ButtonVersion.TextColor3 = Color3.fromRGB(255, 255, 255)
