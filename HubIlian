@@ -160,6 +160,12 @@ local HubMiscTab = Window:MakeTab({
 	PremiumOnly = false
 })
 
+local HubSettingsTab = Window:MakeTab({
+	Name = "Settings",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
 HubRobuxSim2Tab:AddButton({
 	Name = "Robux Simulator 2(iliankytb(in work but work))",
 	Callback = function()
