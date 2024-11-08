@@ -598,4 +598,19 @@ loadstring(game:HttpGet('https://zuwz.me/Ls-Zee-Hub-KL'))()
 end
 })
 
+HubKingLegacyTab:AddButton({
+	Name = "Nilhub King Legacy Cheats(No Key)",
+	Callback = function()
+loadstring(game:HttpGet("https://rawscripts.net/raw/UPD-King-Legacy-Nilhub-Free-21643"))()
+end
+})
+
+HubKingLegacyTab:AddButton({
+	Name = "Arc Hub King Legacy Cheats(Need Key)",
+	Callback = function()
+getgenv().CustomDistance = 10 -- For Bug Can't Swipe Distance
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ChopLoris/ArcHub/main/main.lua"))()
+end
+})
+
 OrionLib:Init()
