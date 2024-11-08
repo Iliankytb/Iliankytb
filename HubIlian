@@ -592,7 +592,7 @@ end
 })
 
 HubKingLegacyTab:AddButton({
-	Name = "Zee Hub King Legacy Cheats(No Key)",
+	Name = "Zee Hub King Legacy Cheats(Need Key)",
 	Callback = function()
 loadstring(game:HttpGet('https://zuwz.me/Ls-Zee-Hub-KL'))()
 end
