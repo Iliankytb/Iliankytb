@@ -634,5 +634,6 @@ Save = true,
 	end    
 })
 
+print(OrionLib.Flags["AutoDestroy"].Value)
 
 OrionLib:Init()
