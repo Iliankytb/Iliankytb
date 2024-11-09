@@ -627,9 +627,12 @@ end
 HubSettingsTab:AddToggle({
 	Name = "Destriy The Hub Whdn Press The A Cheat And If Active",
 	Default = false,
+Save = true,
+    Flag = "AutoDestroy"
 	Callback = function(Value)
 		AutoDestroy = Value
 	end    
 })
+
 
 OrionLib:Init()
