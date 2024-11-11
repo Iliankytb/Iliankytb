@@ -625,17 +625,16 @@ end
 })
 
 HubSettingsTab:AddToggle({
-	Name = "Destriy The Hub Whdn Press The A Cheat And If Active",
+	Name = "Destroy The Hub When Press The A Cheat And If Active(Coming Soon)",
 	Default = false,
-Save = true,
-    Flag = "AutoDestroy"
+--Save = true,
+  --Flag = "AutoDestroy"
 	Callback = function(Value)
-		AutoDestroyV = Value
-Flag = Value
+		--AutoDestroyV = Value
 	end    
 })
 
 
 OrionLib:Init()
 
-print(OrionLib.Flags["AutoDestroy"].Value)
+--print(OrionLib.Flags["AutoDestroy"].Value)
