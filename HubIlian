@@ -18,7 +18,7 @@ local HubKingLegacyTab = Window:MakeTab({
 })
 
 local HubAotrTab = Window:MakeTab({
-	Name = "AOTR",
+	Name = "Cheats AOTR",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
