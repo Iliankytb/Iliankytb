@@ -17,6 +17,12 @@ local HubKingLegacyTab = Window:MakeTab({
 	PremiumOnly = false
 })
 
+local HubAotrTab = Window:MakeTab({
+	Name = "AOTR",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
 local HubTab = Window:MakeTab({
 	Name = "Cheats Doors",
 	Icon = "rbxassetid://4483345998",
@@ -208,6 +214,27 @@ HubEvadeTab:AddButton({
 	Callback = function()
       		loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatEvade2"))()
   	end    
+})
+
+HubAotrTab:AddButton({
+	Name = "Cheat Tekkit (Need Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/UPDATE-1-Attack-on-Titan-Revolution-AotR-Tekkit-Hub-AutoFarm-18984"))()
+end    
+})
+
+HubAotrTab:AddButton({
+	Name = "Cheat Tekkit 2 Free Premuim(No Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/Attack-on-Titan-Revolution-Tekkit-aotr-Free-Premium-21381"))()
+end    
+})
+
+HubAotrTab:AddButton({
+	Name = "Cheat Tekkit v2 The Best(No Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/UPDATE-1-Attack-on-Titan-Revolution-aotr-script-op-17537"))()
+end    
 })
 
 HubEvadeTab:AddButton({
