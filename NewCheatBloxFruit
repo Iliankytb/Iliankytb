@@ -8,14 +8,15 @@ local TimerChestTeleport
 
 local NameChest = {"Chest1", "Chest2", "Chest3"}
 
+
+-- Fonction pour trouver le coffre le plus proche
+local function findNearestChest()
 local TweenService = game:GetService("TweenService")
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
 
--- Fonction pour trouver le coffre le plus proche
-local function findNearestChest()
     local closestChest = nil
     local shortestDistance = math.huge
 
@@ -36,6 +37,12 @@ end
 
 -- Fonction pour tweener vers le coffre
 local function tweenToChest()
+local TweenService = game:GetService("TweenService")
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+
     if not ChestTween then
         print("ChestTween est désactivé.")
         return
