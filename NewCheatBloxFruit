@@ -42,9 +42,10 @@ local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-
+humanoidRootPart.Anchored = true
     if not ChestTween then
         print("ChestTween est désactivé.")
+humanoidRootPart.Anchored = false
         return
     end
 
@@ -53,6 +54,21 @@ local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
         print("Aucun coffre trouvé.")
         return
     end
+local function toggleNoclip()
+    noclipEnabled = not noclipEnabled
+    if noclipEnabled then
+        game:GetService("RunService").Stepped:Connect(function()
+            if noclipEnabled then
+                for _, part in pairs(Player.Character:GetDescendants()) do
+                    if part:IsA("BasePart") then
+                        part.CanCollide = false
+                    end
+                end
+            end
+        end)
+    end
+end
+toggleNoclip()
 
     local tweenInfo = TweenInfo.new(
         5, -- Temps du tween
