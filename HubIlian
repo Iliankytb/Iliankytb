@@ -560,6 +560,13 @@ loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-HoHo-Hub-+1
 })
 
 HubBloxFruitTab:AddButton({
+	Name = "Cheat Blox Fruits IliankYTB(No Key,in developement)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/NewCheatBloxFruit"))()
+end
+})
+
+HubBloxFruitTab:AddButton({
 	Name = "Min Gaming Blox Fruits Cheats(No Key)",
 	Callback = function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/LuaCrack/Min/refs/heads/main/MinMasEng"))()
