@@ -25,7 +25,18 @@ local function HandleChestEsp()
                     local textLabel = Instance.new("TextLabel", billboard)
                     textLabel.Size = UDim2.new(1, 0, 1, 0)
                     textLabel.BackgroundTransparency = 1
-                    textLabel.TextColor3 = Color3.new(1, 1, 1) -- Blanc
+
+                    -- Applique une couleur spécifique au texte selon le nom du chest
+                    if object.Name == "Chest1" then
+                        textLabel.TextColor3 = Color3.fromRGB(139, 69, 19) -- Marron
+                    elseif object.Name == "Chest2" then
+                        textLabel.TextColor3 = Color3.fromRGB(255, 255, 0) -- Jaune
+                    elseif object.Name == "Chest3" then
+                        textLabel.TextColor3 = Color3.fromRGB(0, 0, 255) -- Bleu
+                    else
+                        textLabel.TextColor3 = Color3.new(1, 1, 1) -- Par défaut : Blanc
+                    end
+
                     textLabel.TextScaled = true
                     textLabel.Text = object.Name -- Affiche le nom du chest (Chest1, Chest2, etc.)
 
@@ -36,6 +47,18 @@ local function HandleChestEsp()
         end
         -- Attente pour éviter les surcharges
         task.wait(0.5)
+    end
+
+    -- Si EspChest devient false, détruire les BillboardGui existants
+    if not EspChest then
+        for _, object in pairs(workspace:GetChildren()) do
+            if table.find(NameChest, object.Name) then
+                local billboard = object:FindFirstChild("BillboardGui")
+                if billboard then
+                    billboard:Destroy()
+                end
+            end
+        end
     end
 end
 
