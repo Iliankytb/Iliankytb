@@ -1,53 +1,109 @@
 local OrionLib = loadstring(jeu:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
 local Window = OrionLib:MakeWindow({Name = "Cheat Blox Fruit", HidePremium = false,IntroEnabled = false ,SaveConfig = false, ConfigFolder = ""})
 
+Local EspChest = false
+
+local NameChest = {"Chest1","Chest2","Chest3"}
+
+local function EspChest()
+while EspChest == true do
+end
+end
+
+
 local HubAutoFarmTab = Window:MakeTab({
 Name = "Auto Farm",
 Icon = "rbxassetid://4483345998",
 PremiumOnly = false
 })
 
-HubAutoFarmTab({
-Name = "Prochainement",
-Callback = function()
-end
+OrionLib:MakeNotification({
+	Name = "Alert!",
+	Content = "I Will Adds Some Features Don't Worry BUDDY!",
+	Image = "rbxassetid://4483345998",
+	Time = 7.5
 })
 
-HubAutoFarmTab({
-Name = "Prochainement",
-Callback = function()
-end
+HubAutoFarmTab:AddToggle({
+	Name = "Coming Soon",
+	Default = false,
+	Callback = function(Value)
+		
+	end    
 })
 
-HubAutoFarmTab({
-Name = "Prochainement",
-Callback = function()
-end
-})HubAutoFarmTab({
-Name = "Prochainement",
-Callback = function()
-end
-})HubAutoFarmTab({
-Name = "Prochainement",
-Callback = function()
-end
-})HubAutoFarmTab({
-Name = "Prochainement",
-Callback = function()
-end
-})HubAutoFarmTab({
-Name = "Prochainement",
-Callback = function()
-end
-})HubAutoFarmTab({
-Name = "Prochainement",
-Callback = function()
-end
-})HubAutoFarmTab({
-Name = "Prochainement",
-Callback = function()
-end
+
+HubAutoFarmTab:AddToggle({
+	Name = "Coming Soon",
+	Default = false,
+	Callback = function(Value)
+		
+	end    
 })
+HubAutoFarmTab:AddToggle({
+	Name = "Coming Soon",
+	Default = false,
+	Callback = function(Value)
+		
+	end    
+})
+HubAutoFarmTab:AddToggle({
+	Name = "Coming Soon",
+	Default = false,
+	Callback = function(Value)
+		
+	end    
+})
+HubAutoFarmTab:AddToggle({
+	Name = "Coming Soon",
+	Default = false,
+	Callback = function(Value)
+		
+	end    
+})
+HubAutoFarmTab:AddToggle({
+	Name = "Coming Soon",
+	Default = false,
+	Callback = function(Value)
+		
+	end    
+})
+HubAutoFarmTab:AddToggle({
+	Name = "Coming Soon",
+	Default = false,
+	Callback = function(Value)
+		
+	end    
+})
+HubAutoFarmTab:AddToggle({
+	Name = "Coming Soon",
+	Default = false,
+	Callback = function(Value)
+		
+	end    
+})
+HubAutoFarmTab:AddToggle({
+	Name = "Coming Soon",
+	Default = false,
+	Callback = function(Value)
+		
+	end    
+})
+HubAutoFarmTab:AddToggle({
+	Name = "Coming Soon",
+	Default = false,
+	Callback = function(Value)
+		
+	end    
+})
+HubAutoFarmTab:AddToggle({
+	Name = "Coming Soon",
+	Default = false,
+	Callback = function(Value)
+		
+	end    
+})
+
 
 local HubEspTab = Window:MakeTab({
 Name = "Esp",
@@ -55,11 +111,22 @@ Icon = "rbxassetid://4483345998",
 PremiumOnly = false
 })
 
-HubEspTab({
-	Name = "Chest",
-	Callback = function()
-end
+HubEspTab:AddToggle({
+	Name = "Esp Player(Coming Very Soon)",
+	Default = false,
+	Callback = function(Value)
+		
+	end    
 })
+
+HubEspTab:AddToggle({
+	Name = "Esp Chest",
+	Default = false,
+	Callback = function(Value)
+		
+	end    
+})
+
 
 OrionLib:Init()
  
