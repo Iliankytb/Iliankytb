@@ -36,53 +36,63 @@ local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
 end
 
 -- Fonction pour tweener vers le coffre
-local function tweenToChest()
-local TweenService = game:GetService("TweenService")
-local Players = game:GetService("Players")
-local player = Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
-humanoidRootPart.Anchored = true
+local function moveToChest()
+    local Players = game:GetService("Players")
+    local RunService = game:GetService("RunService")
+    local player = Players.LocalPlayer
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+
+    humanoidRootPart.Anchored = true
     if not ChestTween then
         print("ChestTween est désactivé.")
-humanoidRootPart.Anchored = false
+        humanoidRootPart.Anchored = false
         return
     end
 
     local nearestChest = findNearestChest()
     if not nearestChest then
         print("Aucun coffre trouvé.")
+        humanoidRootPart.Anchored = false
         return
     end
-local function toggleNoclip()
-    noclipEnabled = not noclipEnabled
-    if noclipEnabled then
-        game:GetService("RunService").Stepped:Connect(function()
-            if noclipEnabled then
-                for _, part in pairs(Player.Character:GetDescendants()) do
-                    if part:IsA("BasePart") then
-                        part.CanCollide = false
-                    end
-                end
+
+    local targetPosition = nearestChest.Position + Vector3.new(0, 3, 0) -- Élévation
+    local stepSize = 0.5 -- Distance parcourue à chaque étape
+    local moveSpeed = 20 -- Vitesse en studs/seconde
+
+    -- Fonction pour activer le noclip
+    local function toggleNoclip()
+        for _, part in pairs(character:GetDescendants()) do
+            if part:IsA("BasePart") then
+                part.CanCollide = false
             end
-        end)
+        end
     end
+    toggleNoclip()
+
+    -- Calcul de la direction
+    local function calculateDirection()
+        return (targetPosition - humanoidRootPart.Position).Unit
+    end
+
+    -- Déplacement progressif
+    local connection
+    connection = RunService.Heartbeat:Connect(function(deltaTime)
+        local direction = calculateDirection()
+        local distance = (targetPosition - humanoidRootPart.Position).Magnitude
+
+        if distance > stepSize then
+            humanoidRootPart.Position += direction * moveSpeed * deltaTime
+        else
+            humanoidRootPart.Position = targetPosition
+            print("Déplacement terminé.")
+            connection:Disconnect()
+            humanoidRootPart.Anchored = false
+        end
+    end)
 end
-toggleNoclip()
 
-    local tweenInfo = TweenInfo.new(
-        5, -- Temps du tween
-        Enum.EasingStyle.Linear, -- Style d'interpolation
-        Enum.EasingDirection.Out -- Direction
-    )
-    local tweenGoal = {Position = nearestChest.Position + Vector3.new(0, 3, 0)} -- Légère élévation au-dessus du coffre
-
-    local tween = TweenService:Create(humanoidRootPart, tweenInfo, tweenGoal)
-    tween:Play()
-
-    tween.Completed:Wait()
-    print("Tween terminé.")
-end
 
 -- Exemple d'utilisation
 
@@ -170,7 +180,7 @@ HubAutoFarmTab:AddToggle({
 	Default = false,
 	Callback = function(Value)
 		ChestTween = Value
-tweenToChest()
+moveToChest()
 	end    
 })
 
