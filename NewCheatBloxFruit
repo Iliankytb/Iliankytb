@@ -73,12 +73,6 @@ workspace.ChildAdded:Connect(function(child)
     end
 end)
 
--- Activer ou désactiver le système
-
-
-
-
-
 local HubAutoFarmTab = Window:MakeTab({
 Name = "Auto Farm",
 Icon = "rbxassetid://4483345998",
@@ -93,16 +87,16 @@ OrionLib:MakeNotification({
 })
 
 HubAutoFarmTab:AddToggle({
-	Name = "Coming Soon",
+	Name = "Auto Farm Chest By Tweening(no kick)",
 	Default = false,
 	Callback = function(Value)
-		
+		ChestTween = Value
 	end    
 })
 
 
 HubAutoFarmTab:AddToggle({
-	Name = "Coming Soon",
+	Name = "Auto Farm Chest By Teleport(U Risk The Security kick)",
 	Default = false,
 	Callback = function(Value)
 		
