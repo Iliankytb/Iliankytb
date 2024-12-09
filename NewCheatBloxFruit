@@ -1,14 +1,56 @@
 local OrionLib = loadstring(jeu:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
 local Window = OrionLib:MakeWindow({Name = "Cheat Blox Fruit", HidePremium = false,IntroEnabled = false ,SaveConfig = false, ConfigFolder = ""})
 
-Local EspChest = false
+local EspChest = false
 
-local NameChest = {"Chest1","Chest2","Chest3"}
+local NameChest = {"Chest1", "Chest2", "Chest3"}
 
-local function EspChest()
-while EspChest == true do
+-- Fonction unique pour gérer l'ajout de texte aux chests
+local function HandleChestEsp()
+    while EspChest do
+        -- Parcourt les enfants du Workspace
+        for _, object in pairs(workspace:GetChildren()) do
+            if table.find(NameChest, object.Name) then
+                -- Vérifie si l'objet n'a pas déjà un BillboardGui
+                if not object:FindFirstChild("BillboardGui") then
+                    -- Crée un BillboardGui pour afficher le texte
+                    local billboard = Instance.new("BillboardGui")
+                    billboard.Name = "BillboardGui"
+                    billboard.Adornee = object
+                    billboard.Size = UDim2.new(0, 100, 0, 50)
+                    billboard.StudsOffset = Vector3.new(0, 3, 0)
+                    billboard.AlwaysOnTop = true
+
+                    -- Ajouter un label de texte
+                    local textLabel = Instance.new("TextLabel", billboard)
+                    textLabel.Size = UDim2.new(1, 0, 1, 0)
+                    textLabel.BackgroundTransparency = 1
+                    textLabel.TextColor3 = Color3.new(1, 1, 1) -- Blanc
+                    textLabel.TextScaled = true
+                    textLabel.Text = object.Name -- Affiche le nom du chest (Chest1, Chest2, etc.)
+
+                    -- Attacher le BillboardGui à l'objet
+                    billboard.Parent = object
+                end
+            end
+        end
+        -- Attente pour éviter les surcharges
+        task.wait(0.5)
+    end
 end
-end
+
+-- Détecte les nouveaux objets ajoutés au Workspace
+workspace.ChildAdded:Connect(function(child)
+    if EspChest == true and table.find(NameChest, child.Name) then
+        -- Ajoute directement l'affichage au nouvel objet
+        HandleChestEsp()
+    end
+end)
+
+-- Activer ou désactiver le système
+
+
+
 
 
 local HubAutoFarmTab = Window:MakeTab({
@@ -123,7 +165,8 @@ HubEspTab:AddToggle({
 	Name = "Esp Chest",
 	Default = false,
 	Callback = function(Value)
-		
+		EspChest = Value
+HandleChestEsp()
 	end    
 })
 
