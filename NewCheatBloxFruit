@@ -8,6 +8,62 @@ local TimerChestTeleport
 
 local NameChest = {"Chest1", "Chest2", "Chest3"}
 
+local TweenService = game:GetService("TweenService")
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+
+-- Fonction pour trouver le coffre le plus proche
+local function findNearestChest()
+    local closestChest = nil
+    local shortestDistance = math.huge
+
+    for _, name in ipairs(NameChest) do
+        for _, chest in pairs(workspace:GetChildren()) do
+            if chest:IsA("BasePart") and chest.Name == name then
+                local distance = (humanoidRootPart.Position - chest.Position).Magnitude
+                if distance < shortestDistance then
+                    closestChest = chest
+                    shortestDistance = distance
+                end
+            end
+        end
+    end
+
+    return closestChest
+end
+
+-- Fonction pour tweener vers le coffre
+local function tweenToChest()
+    if not ChestTween then
+        print("ChestTween est désactivé.")
+        return
+    end
+
+    local nearestChest = findNearestChest()
+    if not nearestChest then
+        print("Aucun coffre trouvé.")
+        return
+    end
+
+    local tweenInfo = TweenInfo.new(
+        5, -- Temps du tween
+        Enum.EasingStyle.Linear, -- Style d'interpolation
+        Enum.EasingDirection.Out -- Direction
+    )
+    local tweenGoal = {Position = nearestChest.Position + Vector3.new(0, 3, 0)} -- Légère élévation au-dessus du coffre
+
+    local tween = TweenService:Create(humanoidRootPart, tweenInfo, tweenGoal)
+    tween:Play()
+
+    tween.Completed:Wait()
+    print("Tween terminé.")
+end
+
+-- Exemple d'utilisation
+
+
 -- Fonction unique pour gérer l'ajout de texte aux chests
 local function HandleChestEsp()
     while EspChest do
@@ -91,6 +147,7 @@ HubAutoFarmTab:AddToggle({
 	Default = false,
 	Callback = function(Value)
 		ChestTween = Value
+tweenToChest()
 	end    
 })
 
