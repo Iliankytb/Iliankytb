@@ -195,7 +195,7 @@ HubAutoFarmTab:AddToggle({
 	end    
 })
 HubAutoFarmTab:AddToggle({
-	Name = V,
+	Name = "V1",
 	Default = false,
 	Callback = function(Value)
 		
