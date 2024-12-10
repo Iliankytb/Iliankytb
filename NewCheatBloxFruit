@@ -6,6 +6,7 @@ local EspChest = false
 local ChestTeleport = false
 local ChestTween = false
 local TimerChestTeleport
+local noclipEnabled = false
 
 local NameChest = {"Chest1", "Chest2", "Chest3"}
 
@@ -53,10 +54,25 @@ local function moveToChest()
             humanoidRootPart.Anchored = false
             break
         end
+local function toggleNoclip()
+    noclipEnabled = not noclipEnabled
+    if noclipEnabled then
+        game:GetService("RunService").Stepped:Connect(function()
+            if noclipEnabled then
+                for _, part in pairs(Player.Character:GetDescendants()) do
+                    if part:IsA("BasePart") then
+                        part.CanCollide = false
+                    end
+                end
+            end
+        end)
+    end
+end
 
+toggleNoclip()
         -- Calcule la position cible (au-dessus du coffre)
         local targetPosition = nearestChest.Position + Vector3.new(0, 3, 0)
-        local stepSize = 1 -- Distance parcourue par étape
+        local stepSize = 2.5 -- Distance parcourue par étape
         local moveSpeed = 50 -- Vitesse (studs/seconde)
 
         -- Déplace progressivement vers le coffre
