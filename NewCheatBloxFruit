@@ -1,14 +1,16 @@
 
 local OrionLib = loadstring(Game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
 local Window = OrionLib:MakeWindow({Name = "New Cheat Blox Fruit(IliankYTB)", HidePremium = false, IntroEnabled = false,SaveConfig = true, ConfigFolder = "OrionTest"})
+local Place = Game:GetService("Place")
 
+local SecondSea = 4442272183
 local EspChest = false
 local EspFlower = false
 local ChestTeleport = false
 local ChestTween = false
 local TimerChestTeleport
 local noclipEnabled = false
-local V ="V2.21"
+local V ="V2.22"
 print(V)
 
 local NameChest = {"Chest1", "Chest2", "Chest3"}
