@@ -8,7 +8,7 @@ local ChestTeleport = false
 local ChestTween = false
 local TimerChestTeleport
 local noclipEnabled = false
-local V ="V2.2"
+local V ="V2.21"
 print(V)
 
 local NameChest = {"Chest1", "Chest2", "Chest3"}
@@ -97,6 +97,20 @@ end
 local EspPlayer = false
 
 local function HandlePlayerEsp()
+for _, player in pairs(game.Players:GetPlayers()) do
+            local character = player.Character
+            if character then
+                local highlight = character:FindFirstChild("Highlight")
+                if highlight then
+                    highlight:Destroy()
+                end
+
+                local billboard = character:FindFirstChild("BillboardGui")
+                if billboard then
+                    billboard:Destroy()
+                end
+            end
+        end
     while EspPlayer do
         -- Parcourt les joueurs dans le jeu
         for _, player in pairs(game.Players:GetPlayers()) do
@@ -293,16 +307,23 @@ end
 
 -- Détecte les nouveaux objets ajoutés au Workspace
 workspace.ChildAdded:Connect(function(child)
+    -- Gestion des coffres
     if EspChest == true and table.find(NameChest, child.Name) then
         -- Ajoute directement l'affichage au nouvel objet
         HandleChestEsp()
     end
-if EspFlower == true and table.find(NameFlower, child.Name) then
+
+    -- Gestion des fleurs
+    if EspFlower == true and table.find(NameFlower, child.Name) then
         -- Ajoute directement l'affichage au nouvel objet
         HandleFlowerEsp()
     end
-if EspPlayer == true then
-end
+    -- Gestion des joueurs
+    if EspPlayer == true and child:IsA("Player") then
+        -- Ajoute l'affichage pour le joueur qui vient de rejoindre
+        print(child.Name .. " a rejoint le jeu.") -- Exemple de log
+        HandlePlayerEsp()
+    end
 end)
 
 local HubAutoFarmTab = Window:MakeTab({
