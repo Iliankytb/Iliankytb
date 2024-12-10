@@ -5,6 +5,7 @@ local EspChest = false
 local ChestTeleport = false
 local ChestTween = false
 local TimerChestTeleport
+local V = "V1)
 
 local NameChest = {"Chest1", "Chest2", "Chest3"}
 
@@ -193,7 +194,7 @@ HubAutoFarmTab:AddToggle({
 	end    
 })
 HubAutoFarmTab:AddToggle({
-	Name = "Coming Soon",
+	Name = V,
 	Default = false,
 	Callback = function(Value)
 		
