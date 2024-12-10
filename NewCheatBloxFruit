@@ -1,4 +1,4 @@
-print("V1.5")
+print("V1.6")
 local OrionLib = loadstring(Game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
 local Window = OrionLib:MakeWindow({Name = "New Cheat Blox Fruit(IliankYTB)", HidePremium = false, IntroEnabled = false,SaveConfig = true, ConfigFolder = "OrionTest"})
 
@@ -56,16 +56,12 @@ local function moveToChest()
         end
 local function toggleNoclip()
     noclipEnabled = not noclipEnabled
-    if noclipEnabled then
-        game:GetService("RunService").Stepped:Connect(function()
             if noclipEnabled then
                 for _, part in pairs(Player.Character:GetDescendants()) do
                     if part:IsA("BasePart") then
                         part.CanCollide = false
                     end
                 end
-            end
-        end)
     end
 end
 
@@ -194,7 +190,7 @@ HubAutoFarmTab:AddToggle({
 	end    
 })
 HubAutoFarmTab:AddToggle({
-	Name = "V1.4",
+	Name = "V1.6",
 	Default = false,
 	Callback = function(Value)
 		
