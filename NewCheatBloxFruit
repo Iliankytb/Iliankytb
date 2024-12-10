@@ -83,7 +83,7 @@ toggleNoclip()
         -- Position finale
         humanoidRootPart.Position = targetPosition
         print("Coffre atteint.")
-
+humanoidRootPart.Anchored = true
         -- Petite pause avant de chercher le coffre suivant
         task.wait(0.5)
     end
