@@ -1,4 +1,4 @@
-print("V1.7")
+print("V1.8")
 local OrionLib = loadstring(Game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
 local Window = OrionLib:MakeWindow({Name = "New Cheat Blox Fruit(IliankYTB)", HidePremium = false, IntroEnabled = false,SaveConfig = true, ConfigFolder = "OrionTest"})
 
@@ -254,7 +254,7 @@ HubAutoFarmTab:AddToggle({
 	end    
 })
 HubAutoFarmTab:AddToggle({
-	Name = "V1.7",
+	Name = "V1.8",
 	Default = false,
 	Callback = function(Value)
 		
