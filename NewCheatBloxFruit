@@ -5,7 +5,7 @@ local EspChest = false
 local ChestTeleport = false
 local ChestTween = false
 local TimerChestTeleport
-local V = "V1)
+local V = "V1"
 
 local NameChest = {"Chest1", "Chest2", "Chest3"}
 
