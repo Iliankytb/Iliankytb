@@ -1,16 +1,37 @@
 
 local OrionLib = loadstring(Game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
 local Window = OrionLib:MakeWindow({Name = "New Cheat Blox Fruit(IliankYTB)", HidePremium = false, IntroEnabled = false,SaveConfig = true, ConfigFolder = "OrionTest"})
-local Place = Game:GetService("Place")
+-- Obtenir le service et l'ID du lieu actuel
+local placeId = game.PlaceId
 
-local SecondSea = 4442272183
+-- ID du lieu que vous voulez vérifier
+local secondSeaId = 4442272183
+
+-- Vérifier si le joueur est dans ce lieu
+if placeId == secondSeaId then
+OrionLib:MakeNotification({
+	Name = "Checking Place",
+	Content = "You Are in second sea",
+	Image = "rbxassetid://4483345998",
+	Time = 5
+})
+
+    else
+OrionLib:MakeNotification({
+	Name = "Checking Place",
+	Content = "You Are not in blox fruit game but don't worry u can have too",
+	Image = "rbxassetid://4483345998",
+	Time = 5
+})
+    end
+
 local EspChest = false
 local EspFlower = false
 local ChestTeleport = false
 local ChestTween = false
 local TimerChestTeleport
 local noclipEnabled = false
-local V ="V2.22"
+local V ="V2.23"
 print(V)
 
 local NameChest = {"Chest1", "Chest2", "Chest3"}
@@ -273,11 +294,11 @@ local function HandleChestEsp()
 
                     -- Applique une couleur spécifique au texte selon le nom du chest
                     if object.Name == "Chest1" then
-                        textLabel.TextColor3 = Color3.fromRGB(235, 235, 235) -- Marron
+                        textLabel.TextColor3 = Color3.fromRGB(205, 205, 205) -- Marron
                     elseif object.Name == "Chest2" then
                         textLabel.TextColor3 = Color3.fromRGB(255, 255, 0) -- Jaune
                     elseif object.Name == "Chest3" then
-                        textLabel.TextColor3 = Color3.fromRGB(139, 69, 19) -- Bleu
+                        textLabel.TextColor3 = Color3.fromRGB(0, 0, 255) -- Bleu
                     else
                         textLabel.TextColor3 = Color3.new(1, 1, 1) -- Par défaut : Blanc
                     end
