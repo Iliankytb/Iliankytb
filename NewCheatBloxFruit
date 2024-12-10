@@ -27,6 +27,7 @@ local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
                 if distance < shortestDistance then
                     closestChest = chest
                     shortestDistance = distance
+humanoidRootPart.Anchored = false
                 end
             end
         end
