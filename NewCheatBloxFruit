@@ -1,9 +1,8 @@
-print("V1.8")
+print("V2")
 local OrionLib = loadstring(Game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
 local Window = OrionLib:MakeWindow({Name = "New Cheat Blox Fruit(IliankYTB)", HidePremium = false, IntroEnabled = false,SaveConfig = true, ConfigFolder = "OrionTest"})
 
 local EspChest = false
-local EspPlayer = false
 local EspFlower = false
 local ChestTeleport = false
 local ChestTween = false
@@ -93,52 +92,81 @@ humanoidRootPart.Anchored = true
     humanoidRootPart.Anchored = false
 end
 
+local EspPlayer = false
+
 local function HandlePlayerEsp()
     while EspPlayer do
-        -- Parcourt les enfants du Workspace
-        for _, object in pairs(workspace:GetChildren()) do
-            if table.find(NameFlower, object.Name) then
-                -- Vérifie si l'objet n'a pas déjà un BillboardGui
-                if not object:FindFirstChild("BillboardGui") then
-                    -- Crée un BillboardGui pour afficher le texte
-                    local billboard = Instance.new("BillboardGui")
-                    billboard.Name = "BillboardGui"
-                    billboard.Adornee = object
-                    billboard.Size = UDim2.new(0, 100, 0, 50)
-                    billboard.StudsOffset = Vector3.new(0, 3, 0)
-                    billboard.AlwaysOnTop = true
+        -- Parcourt les joueurs dans le jeu
+        for _, player in pairs(game.Players:GetPlayers()) do
+            local character = player.Character
+            if character and character:FindFirstChild("HumanoidRootPart") then
+                -- Vérifie si le personnage n'a pas déjà un Highlight
+                if not character:FindFirstChild("Highlight") then
+                    -- Crée un Highlight pour le joueur
+                    local highlight = Instance.new("Highlight")
+                    highlight.Name = "Highlight"
+                    highlight.Parent = character
+                    highlight.Adornee = character
+                    highlight.Enabled = true
 
-                    -- Ajouter un label de texte
-                    local textLabel = Instance.new("TextLabel", billboard)
-                    textLabel.Size = UDim2.new(1, 0, 1, 0)
-                    textLabel.BackgroundTransparency = 1
-
-                    -- Applique une couleur spécifique au texte selon le nom du chest
-                    if object.Name == "Flower1" then
-                        textLabel.TextColor3 = Color3.fromRGB(255, 0, 0) -- Marron
-                    elseif object.Name == "Flower2" then
-                        textLabel.TextColor3 = Color3.fromRGB(0, 0, 255) -- Jaune
+                    -- Applique une couleur spécifique selon l'équipe
+                    if player.Team and player.Team.Name == "Pirate" then
+                        highlight.FillColor = Color3.fromRGB(255, 0, 0) -- Rouge
+                        highlight.OutlineColor = Color3.fromRGB(255, 85, 85) -- Rouge clair
+                    elseif player.Team and player.Team.Name == "Marine" then
+                        highlight.FillColor = Color3.fromRGB(0, 0, 128) -- Bleu marine
+                        highlight.OutlineColor = Color3.fromRGB(0, 85, 255) -- Bleu clair
                     else
-                        textLabel.TextColor3 = Color3.new(1, 1, 1) -- Par défaut : Blanc
+                        highlight.FillColor = Color3.new(1, 1, 1) -- Par défaut : Blanc
+                        highlight.OutlineColor = Color3.new(0.8, 0.8, 0.8) -- Gris clair
                     end
 
-                    textLabel.TextScaled = true
-                    textLabel.Text = object.Name -- Affiche le nom du chest (Chest1, Chest2, etc.)
+                    -- Crée un BillboardGui pour afficher le nom
+                    if not character:FindFirstChild("BillboardGui") then
+                        local billboard = Instance.new("BillboardGui")
+                        billboard.Name = "BillboardGui"
+                        billboard.Adornee = character:FindFirstChild("HumanoidRootPart")
+                        billboard.Size = UDim2.new(0, 100, 0, 50)
+                        billboard.StudsOffset = Vector3.new(0, 3, 0)
+                        billboard.AlwaysOnTop = true
 
-                    -- Attacher le BillboardGui à l'objet
-                    billboard.Parent = object
+                        local textLabel = Instance.new("TextLabel", billboard)
+                        textLabel.Size = UDim2.new(1, 0, 1, 0)
+                        textLabel.BackgroundTransparency = 1
+                        textLabel.TextScaled = true
+                        textLabel.Text = player.Name
+
+                        -- Applique une couleur au texte en fonction de l'équipe
+                        if player.Team and player.Team.Name == "Pirate" then
+                            textLabel.TextColor3 = Color3.fromRGB(255, 0, 0) -- Rouge
+                        elseif player.Team and player.Team.Name == "Marine" then
+                            textLabel.TextColor3 = Color3.fromRGB(0, 0, 128) -- Bleu marine
+                        else
+                            textLabel.TextColor3 = Color3.new(1, 1, 1) -- Blanc
+                        end
+
+                        -- Attacher le BillboardGui
+                        billboard.Parent = character
+                    end
                 end
             end
         end
+
         -- Attente pour éviter les surcharges
         task.wait(0.5)
     end
 
-    -- Si EspChest devient false, détruire les BillboardGui existants
+    -- Si EspPlayer devient false, supprimer les Highlights et BillboardGui
     if not EspPlayer then
-        for _, object in pairs(workspace:GetChildren()) do
-            if table.find(NameFlower, object.Name) then
-                local billboard = object:FindFirstChild("BillboardGui")
+        for _, player in pairs(game.Players:GetPlayers()) do
+            local character = player.Character
+            if character then
+                local highlight = character:FindFirstChild("Highlight")
+                if highlight then
+                    highlight:Destroy()
+                end
+
+                local billboard = character:FindFirstChild("BillboardGui")
                 if billboard then
                     billboard:Destroy()
                 end
@@ -146,6 +174,7 @@ local function HandlePlayerEsp()
         end
     end
 end
+
 
 
 local function HandleFlowerEsp()
@@ -309,7 +338,7 @@ HubAutoFarmTab:AddToggle({
 	end    
 })
 HubAutoFarmTab:AddToggle({
-	Name = "V1.8",
+	Name = "V2",
 	Default = false,
 	Callback = function(Value)
 		
@@ -380,10 +409,11 @@ PremiumOnly = false
 })
 
 HubEspTab:AddToggle({
-	Name = "Esp Player(Coming Very Soon)",
+	Name = "Esp Player",
 	Default = false,
 	Callback = function(Value)
-		
+		EspPlayer = Value
+HandlePlayerEsp()
 	end    
 })
 
@@ -402,6 +432,15 @@ HubEspTab:AddToggle({
 	Callback = function(Value)
 		EspFlower = Value
 HandleFlowerEsp()
+	end    
+})
+
+HubEspTab:AddToggle({
+	Name = "Esp Sea Hunter(Coming Soon)",
+	Default = false,
+	Callback = function(Value)
+		--EspFlower = Value
+--HandleFlowerEsp()
 	end    
 })
 
