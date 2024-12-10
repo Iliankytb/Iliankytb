@@ -31,7 +31,7 @@ local ChestTeleport = false
 local ChestTween = false
 local TimerChestTeleport
 local noclipEnabled = false
-local V ="V1.44"
+local V ="V1.45"
 print(V)
 
 local NameChest = {"Chest1", "Chest2", "Chest3"}
@@ -147,7 +147,7 @@ highlight.Name = "Highlight"
 highlight.Parent = character
 highlight.Adornee = character
 highlight.Enabled = true
-highlight.DepthMode = Enum.HighlightDepthMode.Always -- Permet de voir à travers les murs
+highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop -- Permet de voir à travers les murs
 
 
                     -- Applique une couleur spécifique selon l'équipe
