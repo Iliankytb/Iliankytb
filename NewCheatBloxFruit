@@ -36,65 +36,48 @@ humanoidRootPart.Anchored = false
     return closestChest
 end
 
--- Fonction pour tweener vers le coffre
 local function moveToChest()
-while ChestTween do
+    -- Initialisation des services
     local Players = game:GetService("Players")
     local RunService = game:GetService("RunService")
     local player = Players.LocalPlayer
     local character = player.Character or player.CharacterAdded:Wait()
     local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
 
-    humanoidRootPart.Anchored = true
-    if not ChestTween then
-        print("ChestTween est désactivé.")
-        humanoidRootPart.Anchored = false
-        return
-    end
-
-    local nearestChest = findNearestChest()
-    if not nearestChest then
-        print("Aucun coffre trouvé.")
-        humanoidRootPart.Anchored = false
-        return
-    end
-
-    local targetPosition = nearestChest.Position + Vector3.new(0, 3, 0) -- Élévation
-    local stepSize = 0.5 -- Distance parcourue à chaque étape
-    local moveSpeed = 50 -- Vitesse en studs/seconde
-
-    -- Fonction pour activer le noclip
-    local function toggleNoclip()
-        for _, part in pairs(character:GetDescendants()) do
-            if part:IsA("BasePart") then
-                part.CanCollide = false
-            end
-        end
-    end
-  --  toggleNoclip()
-
-    -- Calcul de la direction
-    local function calculateDirection()
-        return (targetPosition - humanoidRootPart.Position).Unit
-    end
-
-    -- Déplacement progressif
-    local connection
-    connection = RunService.Heartbeat:Connect(function(deltaTime)
-        local direction = calculateDirection()
-        local distance = (targetPosition - humanoidRootPart.Position).Magnitude
-
-        if distance > stepSize then
-            humanoidRootPart.Position += direction * moveSpeed * deltaTime
-        else
-            humanoidRootPart.Position = targetPosition
-            print("Déplacement terminé.")
-            connection:Disconnect()
+    -- Vérifie que la fonctionnalité est activée
+    while ChestTween do
+        -- Trouve le coffre le plus proche
+        local nearestChest = findNearestChest()
+        if not nearestChest then
+            print("Aucun coffre trouvé.")
             humanoidRootPart.Anchored = false
+            break
         end
-    end)
+
+        -- Calcule la position cible (au-dessus du coffre)
+        local targetPosition = nearestChest.Position + Vector3.new(0, 3, 0)
+        local stepSize = 1 -- Distance parcourue par étape
+        local moveSpeed = 50 -- Vitesse (studs/seconde)
+
+        -- Déplace progressivement vers le coffre
+        while ChestTween and (humanoidRootPart.Position - targetPosition).Magnitude > stepSize do
+            local direction = (targetPosition - humanoidRootPart.Position).Unit -- Direction vers le coffre
+            humanoidRootPart.Position += direction * stepSize -- Déplacement progressif
+            task.wait(stepSize / moveSpeed) -- Pause pour simuler une vitesse réaliste
+        end
+
+        -- Position finale
+        humanoidRootPart.Position = targetPosition
+        print("Coffre atteint.")
+
+        -- Petite pause avant de chercher le coffre suivant
+        task.wait(0.5)
+    end
+
+    -- Désancrage du personnage après le déplacement
+    humanoidRootPart.Anchored = false
 end
-end
+
 
 
 
