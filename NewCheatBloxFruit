@@ -8,7 +8,6 @@ local TimerChestTeleport
 
 local NameChest = {"Chest1", "Chest2", "Chest3"}
 
-
 -- Fonction pour trouver le coffre le plus proche
 local function findNearestChest()
 local TweenService = game:GetService("TweenService")
@@ -37,6 +36,7 @@ end
 
 -- Fonction pour tweener vers le coffre
 local function moveToChest()
+While ChestTween do
     local Players = game:GetService("Players")
     local RunService = game:GetService("RunService")
     local player = Players.LocalPlayer
@@ -59,7 +59,7 @@ local function moveToChest()
 
     local targetPosition = nearestChest.Position + Vector3.new(0, 3, 0) -- Élévation
     local stepSize = 0.5 -- Distance parcourue à chaque étape
-    local moveSpeed = 20 -- Vitesse en studs/seconde
+    local moveSpeed = 50 -- Vitesse en studs/seconde
 
     -- Fonction pour activer le noclip
     local function toggleNoclip()
@@ -69,7 +69,7 @@ local function moveToChest()
             end
         end
     end
-    toggleNoclip()
+  --  toggleNoclip()
 
     -- Calcul de la direction
     local function calculateDirection()
@@ -92,9 +92,9 @@ local function moveToChest()
         end
     end)
 end
+end
 
 
--- Exemple d'utilisation
 
 
 -- Fonction unique pour gérer l'ajout de texte aux chests
