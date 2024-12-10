@@ -31,7 +31,7 @@ local ChestTeleport = false
 local ChestTween = false
 local TimerChestTeleport
 local noclipEnabled = false
-local V ="V2.23"
+local V ="V1.44"
 print(V)
 
 local NameChest = {"Chest1", "Chest2", "Chest3"}
@@ -143,10 +143,12 @@ for _, player in pairs(game.Players:GetPlayers()) do
                 if not character:FindFirstChild("Highlight") then
                     -- Crée un Highlight pour le joueur
                     local highlight = Instance.new("Highlight")
-                    highlight.Name = "Highlight"
-                    highlight.Parent = character
-                    highlight.Adornee = character
-                    highlight.Enabled = true
+highlight.Name = "Highlight"
+highlight.Parent = character
+highlight.Adornee = character
+highlight.Enabled = true
+highlight.DepthMode = Enum.HighlightDepthMode.Always -- Permet de voir à travers les murs
+
 
                     -- Applique une couleur spécifique selon l'équipe
                     if player.Team and player.Team.Name == "Pirates" then
