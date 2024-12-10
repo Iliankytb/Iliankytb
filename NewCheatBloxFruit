@@ -1,4 +1,4 @@
-print("V2")
+
 local OrionLib = loadstring(Game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
 local Window = OrionLib:MakeWindow({Name = "New Cheat Blox Fruit(IliankYTB)", HidePremium = false, IntroEnabled = false,SaveConfig = true, ConfigFolder = "OrionTest"})
 
@@ -8,6 +8,8 @@ local ChestTeleport = false
 local ChestTween = false
 local TimerChestTeleport
 local noclipEnabled = false
+local V ="V2.1"
+print(V)
 
 local NameChest = {"Chest1", "Chest2", "Chest3"}
 local NameFlower = {"Flower1", "Flower2",}
@@ -110,10 +112,10 @@ local function HandlePlayerEsp()
                     highlight.Enabled = true
 
                     -- Applique une couleur spécifique selon l'équipe
-                    if player.Team and player.Team.Name == "Pirate" then
+                    if player.Team and player.Team.Name == "pirate" then
                         highlight.FillColor = Color3.fromRGB(255, 0, 0) -- Rouge
                         highlight.OutlineColor = Color3.fromRGB(255, 85, 85) -- Rouge clair
-                    elseif player.Team and player.Team.Name == "Marine" then
+                    elseif player.Team and player.Team.Name == "marine" then
                         highlight.FillColor = Color3.fromRGB(0, 0, 128) -- Bleu marine
                         highlight.OutlineColor = Color3.fromRGB(0, 85, 255) -- Bleu clair
                     else
@@ -137,9 +139,9 @@ local function HandlePlayerEsp()
                         textLabel.Text = player.Name
 
                         -- Applique une couleur au texte en fonction de l'équipe
-                        if player.Team and player.Team.Name == "Pirate" then
+                        if player.Team and player.Team.Name == "pirate" then
                             textLabel.TextColor3 = Color3.fromRGB(255, 0, 0) -- Rouge
-                        elseif player.Team and player.Team.Name == "Marine" then
+                        elseif player.Team and player.Team.Name == "marine" then
                             textLabel.TextColor3 = Color3.fromRGB(0, 0, 128) -- Bleu marine
                         else
                             textLabel.TextColor3 = Color3.new(1, 1, 1) -- Blanc
@@ -199,9 +201,9 @@ local function HandleFlowerEsp()
 
                     -- Applique une couleur spécifique au texte selon le nom du chest
                     if object.Name == "Flower1" then
-                        textLabel.TextColor3 = Color3.fromRGB(255, 0, 0) -- Marron
+                        textLabel.TextColor3 = Color3.fromRGB(0, 0, 255) -- Marron
                     elseif object.Name == "Flower2" then
-                        textLabel.TextColor3 = Color3.fromRGB(0, 0, 255) -- Jaune
+                        textLabel.TextColor3 = Color3.fromRGB(255, 0, 0) -- Jaune
                     else
                         textLabel.TextColor3 = Color3.new(1, 1, 1) -- Par défaut : Blanc
                     end
@@ -255,11 +257,11 @@ local function HandleChestEsp()
 
                     -- Applique une couleur spécifique au texte selon le nom du chest
                     if object.Name == "Chest1" then
-                        textLabel.TextColor3 = Color3.fromRGB(139, 69, 19) -- Marron
+                        textLabel.TextColor3 = Color3.fromRGB(0, 0, 255) -- Marron
                     elseif object.Name == "Chest2" then
                         textLabel.TextColor3 = Color3.fromRGB(255, 255, 0) -- Jaune
                     elseif object.Name == "Chest3" then
-                        textLabel.TextColor3 = Color3.fromRGB(0, 0, 255) -- Bleu
+                        textLabel.TextColor3 = Color3.fromRGB(139, 69, 19) -- Bleu
                     else
                         textLabel.TextColor3 = Color3.new(1, 1, 1) -- Par défaut : Blanc
                     end
@@ -338,7 +340,7 @@ HubAutoFarmTab:AddToggle({
 	end    
 })
 HubAutoFarmTab:AddToggle({
-	Name = "V2",
+	Name = V,
 	Default = false,
 	Callback = function(Value)
 		
