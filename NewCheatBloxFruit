@@ -26,6 +26,7 @@ OrionLib:MakeNotification({
     end
 
 local EspChest = false
+local EspIsland = false
 local EspFlower = false
 local ChestTeleport = false
 local ChestTween = false
@@ -330,6 +331,52 @@ local function HandleChestEsp()
     end
 end
 
+local function HandleIslandEsp()
+    while EspIsland do
+        -- Parcourt les enfants du Workspace
+        for _, object in pairs(workspace:FindFirstChild("_WorldOrigin"):FindFirstChild("Locations"):GetChildren()) do
+                -- Vérifie si l'objet n'a pas déjà un BillboardGui
+                if not object:FindFirstChild("BillboardGui") then
+                    -- Crée un BillboardGui pour afficher le texte
+                    local billboard = Instance.new("BillboardGui")
+                    billboard.Name = "BillboardGui"
+                    billboard.Adornee = object
+                    billboard.Size = UDim2.new(0, 100, 0, 50)
+                    billboard.StudsOffset = Vector3.new(0, 3, 0)
+                    billboard.AlwaysOnTop = true
+
+                    -- Ajouter un label de texte
+                    local textLabel = Instance.new("TextLabel", billboard)
+                    textLabel.Size = UDim2.new(1, 0, 1, 0)
+                    textLabel.BackgroundTransparency = 1
+
+                    -- Applique une couleur spécifique au texte selon le nom du chest
+                    if object.Name then
+                        textLabel.TextColor3 = Color3.new(1, 1, 1) -- Par défaut : Blanc
+                    end
+
+                    textLabel.TextScaled = true
+                    textLabel.Text = object.Name -- Affiche le nom du chest (Chest1, Chest2, etc.)
+
+                    -- Attacher le BillboardGui à l'objet
+                    billboard.Parent = object
+                end
+        end
+        -- Attente pour éviter les surcharges
+        task.wait(0.5)
+    end
+
+    -- Si EspChest devient false, détruire les BillboardGui existants
+    if not EspIsland then
+       for _, object in pairs(workspace:FindFirstChild("_WorldOrigin"):FindFirstChild("Locations"):GetChildren()) do
+                local billboard = object:FindFirstChild("BillboardGui")
+                if billboard then
+                    billboard:Destroy()
+                end
+        end
+    end
+end
+
 -- Détecte les nouveaux objets ajoutés au Workspace
 workspace.ChildAdded:Connect(function(child)
     -- Gestion des coffres
@@ -491,6 +538,14 @@ HubEspTab:AddToggle({
 	Callback = function(Value)
 		--EspFlower = Value
 --HandleFlowerEsp()
+	end    
+})
+HubEspTab:AddToggle({
+	Name = "Esp Island",
+	Default = false,
+	Callback = function(Value)
+		EspIsland = Value
+HandleIslandEsp()
 	end    
 })
 
