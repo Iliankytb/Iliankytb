@@ -32,7 +32,7 @@ local ChestTeleport = false
 local ChestTween = false
 local TimerChestTeleport
 local noclipEnabled = false
-local V ="V1.45"
+local V ="V1.5"
 print(V)
 
 local NameChest = {"Chest1", "Chest2", "Chest3"}
