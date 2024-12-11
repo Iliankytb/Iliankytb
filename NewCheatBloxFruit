@@ -3,15 +3,22 @@ local OrionLib = loadstring(Game:HttpGet("https://raw.githubusercontent.com/shle
 local Window = OrionLib:MakeWindow({Name = "New Cheat Blox Fruit(IliankYTB)", HidePremium = false, IntroEnabled = false,SaveConfig = true, ConfigFolder = "OrionTest"})
 -- Obtenir le service et l'ID du lieu actuel
 local placeId = game.PlaceId
-
+local FirstSeaId = 4442272183
 -- ID du lieu que vous voulez vérifier
 local secondSeaId = 4442272183
-
+local ThirdSeaId = 7449423635
 -- Vérifier si le joueur est dans ce lieu
 if placeId == secondSeaId then
 OrionLib:MakeNotification({
 	Name = "Checking Place",
 	Content = "You Are in second sea",
+	Image = "rbxassetid://4483345998",
+	Time = 5
+})
+elseif placeId == ThirdSeaId then
+OrionLib:MakeNotification({
+	Name = "Checking Place",
+	Content = "You Are in Third sea",
 	Image = "rbxassetid://4483345998",
 	Time = 5
 })
@@ -24,6 +31,7 @@ OrionLib:MakeNotification({
 	Time = 5
 })
     end
+local EspRealFruit = false
 local EspBoats = false
 local EspSeaEvents = false
 local EspChest = false
@@ -33,12 +41,14 @@ local ChestTeleport = false
 local ChestTween = false
 local TimerChestTeleport
 local noclipEnabled = false
-local V ="V1.62"
+local V ="V1.7"
 print(V)
 
 local NameChest = {"Chest1", "Chest2", "Chest3"}
-local NameFlower = {"Flower1", "Flower2",}
-local NameEnemyBoats = {"PirateBrigade", "PirateBrigade",}
+local NameFlower = {"Flower1", "Flower2"}
+local NameEnemyBoats = {"PirateBrigade", "PirateBrigade"}
+local NameRealFruits = {"PineappleSpawner", "AppleSpawner","BananaSpawner"}
+
 
 -- Fonction pour trouver le coffre le plus proche
 local function findNearestChest()
@@ -288,7 +298,7 @@ local function HandleChestEsp()
                     local billboard = Instance.new("BillboardGui")
                     billboard.Name = "BillboardGui"
                     billboard.Adornee = object
-                    billboard.Size = UDim2.new(0, 100, 0, 50)
+                    billboard.Size = UDim2.new(0, 50, 0, 50)
                     billboard.StudsOffset = Vector3.new(0, 3, 0)
                     billboard.AlwaysOnTop = true
 
@@ -324,6 +334,65 @@ local function HandleChestEsp()
     if not EspChest then
         for _, object in pairs(workspace:GetChildren()) do
             if table.find(NameChest, object.Name) then
+                local billboard = object:FindFirstChild("BillboardGui")
+                if billboard then
+                    billboard:Destroy()
+                end
+            end
+        end
+    end
+end
+
+local function HandleRealFruitEsp()
+    while EspRealFruit do
+        -- Parcourt les enfants du Workspace
+        for _, object in pairs(workspace:GetChildren()) do
+            if table.find(NameRealFruits, object.Name) then
+                -- Vérifie si l'objet n'a pas déjà un BillboardGui
+                if not object:FindFirstChild("BillboardGui") then
+                    -- Crée un BillboardGui pour afficher le texte
+                    local billboard = Instance.new("BillboardGui")
+                    billboard.Name = "BillboardGui"
+                    billboard.Adornee = object
+                    billboard.Size = UDim2.new(0, 50, 0, 50)
+                    billboard.StudsOffset = Vector3.new(0, 3, 0)
+                    billboard.AlwaysOnTop = true
+
+                    -- Ajouter un label de texte
+                    local textLabel = Instance.new("TextLabel", billboard)
+                    textLabel.Size = UDim2.new(1, 0, 1, 0)
+                    textLabel.BackgroundTransparency = 1
+
+                    -- Applique une couleur spécifique au texte selon le nom du chest
+                    if object.Name == "PineappleSpawner" then
+                        textLabel.TextColor3 = Color3.fromRGB(205, 30, 0) -- Marron
+textLabel.Text = "Pineapple"
+                    elseif object.Name == "AppleSpawner" then
+                        textLabel.TextColor3 = Color3.fromRGB(255, 0, 0) -- Jaune
+textLabel.Text = "Apple"
+                    elseif object.Name == "BananaSpawner" then
+                        textLabel.TextColor3 = Color3.fromRGB(255, 255, 0) -- Bleu
+textLabel.Text = "Banana"
+                    else
+                        textLabel.TextColor3 = Color3.new(1, 1, 1) -- Par défaut : Blanc
+textLabel.Text = object.Name -- Affiche le nom du chest (Chest1, Chest2, etc.)
+                    end
+
+                    textLabel.TextScaled = true
+                    
+                    -- Attacher le BillboardGui à l'objet
+                    billboard.Parent = object
+                end
+            end
+        end
+        -- Attente pour éviter les surcharges
+        task.wait(0.5)
+    end
+
+    -- Si EspChest devient false, détruire les BillboardGui existants
+    if not EspRealFruit then
+        for _, object in pairs(workspace:GetChildren()) do
+            if table.find(NameRealFruits, object.Name) then
                 local billboard = object:FindFirstChild("BillboardGui")
                 if billboard then
                     billboard:Destroy()
@@ -735,6 +804,14 @@ HandleBoatsEsp()
 	end    
 })
 
+HubEspTab:AddToggle({
+	Name = "Esp Real Fruit",
+	Default = false,
+	Callback = function(Value)
+		EspRealFruit = Value
+HandleRealFruitEsp()
+	end    
+})
 
 OrionLib:Init()
  
