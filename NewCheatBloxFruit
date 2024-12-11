@@ -41,7 +41,7 @@ local ChestTeleport = false
 local ChestTween = false
 local TimerChestTeleport
 local noclipEnabled = false
-local V ="V1.72"
+local V ="V1.73"
 print(V)
 
 local NameChest = {"Chest1", "Chest2", "Chest3"}
@@ -348,7 +348,7 @@ local function HandleRealFruitEsp()
         -- Parcourt les enfants du Workspace
         for _, object in pairs(workspace:GetChildren()) do
             if table.find(NameRealFruits, object.Name) then
-                
+               if object.Banana or object.Apple or object.Pineapple then 
                 if not object:FindFirstChild("BillboardGui") then
                     -- Crée un BillboardGui pour afficher le texte
                     local billboard = Instance.new("BillboardGui")
@@ -387,6 +387,7 @@ billboard.Parent = object
                     -- Attacher le BillboardGui à l'objet
                     
                 end
+end
             end
         end
         -- Attente pour éviter les surcharges
@@ -397,10 +398,12 @@ billboard.Parent = object
     if not EspRealFruit then
         for _, object in pairs(workspace:GetChildren()) do
             if table.find(NameRealFruits, object.Name) then
+if object.Banana or object.Apple or object.Pineapple then 
                 local billboard = object.Banana:FindFirstChild("BillboardGui") or object.Pineapple:FindFirstChild("BillboardGui") or object.Apple:FindFirstChild("BillboardGui")
                 if billboard then
                     billboard:Destroy()
                 end
+end
             end
         end
     end
