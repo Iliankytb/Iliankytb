@@ -33,7 +33,7 @@ local ChestTeleport = false
 local ChestTween = false
 local TimerChestTeleport
 local noclipEnabled = false
-local V ="V1.61"
+local V ="V1.62"
 print(V)
 
 local NameChest = {"Chest1", "Chest2", "Chest3"}
@@ -383,7 +383,7 @@ local function HandleSeaEventsEsp()
     while EspSeaEvents do
         -- Parcourt les enfants du Workspace
 for _, object in pairs(workspace:FindFirstChild("SeaBeasts"):GetChildren()) do
-                if not character:FindFirstChild("Highlight") then
+                if not object:FindFirstChild("Highlight") then
                     -- Crée un Highlight pour le joueur
                     local highlight = Instance.new("Highlight")
 highlight.Name = "Hightlight"
@@ -421,7 +421,7 @@ end
                 end
         end
 for _, object in pairs(workspace:FindFirstChild("SeaEvents"):GetChildren()) do
-                if not character:FindFirstChild("Highlight") then
+                if not object:FindFirstChild("Highlight") then
                     -- Crée un Highlight pour le joueur
                     local highlight = Instance.new("Highlight")
 highlight.Name = "Hightlight"
@@ -493,7 +493,7 @@ local function HandleBoatsEsp()
     while EspBoats do
         -- Parcourt les enfants du Workspace
 for _, object in pairs(workspace:FindFirstChild("Boats"):GetChildren()) do
-                if not character:FindFirstChild("Highlight") then
+                if not object:FindFirstChild("Highlight") then
                     -- Crée un Highlight pour le joueur
                     local highlight = Instance.new("Highlight")
 highlight.Name = "Hightlight"
@@ -570,6 +570,9 @@ workspace.ChildAdded:Connect(function(child)
     end
 if EspSeaEvents == true and child.Parent == workspace:FindFirstChild("SeaEvents") or EspSeaEvents == true and child.Parent == workspace:FindFirstChild("Enemies") or EspSeaEvents == true and child.Parent == workspace:FindFirstChild("SeaBeasts") then
      HandleSeaEventsEsp()
+    end
+if EspBoats == true and child.Parent == workspace:FindFirstChild("Boats") then
+     HandleBoatsEsp()
     end
 end)
 
