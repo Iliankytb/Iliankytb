@@ -41,7 +41,7 @@ local ChestTeleport = false
 local ChestTween = false
 local TimerChestTeleport
 local noclipEnabled = false
-local V ="V1.71"
+local V ="V1.72"
 print(V)
 
 local NameChest = {"Chest1", "Chest2", "Chest3"}
@@ -334,8 +334,8 @@ local function HandleChestEsp()
     if not EspChest then
         for _, object in pairs(workspace:GetChildren()) do
             if table.find(NameChest, object.Name) then
-                local billboard = object.Banana:FindFirstChild("BillboardGui") or object.Apple:FindFirstChild("BillboardGui") or object.Pineapple:FindFirstChild("BillboardGui")
-                if billboard then
+                local billboard = object:FindFirstChild("BillboardGui")
+if billboard then
                     billboard:Destroy()
                 end
             end
@@ -397,7 +397,7 @@ billboard.Parent = object
     if not EspRealFruit then
         for _, object in pairs(workspace:GetChildren()) do
             if table.find(NameRealFruits, object.Name) then
-                local billboard = object:FindFirstChild("BillboardGui")
+                local billboard = object.Banana:FindFirstChild("BillboardGui") or object.Pineapple:FindFirstChild("BillboardGui") or object.Apple:FindFirstChild("BillboardGui")
                 if billboard then
                     billboard:Destroy()
                 end
