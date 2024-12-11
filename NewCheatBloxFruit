@@ -24,7 +24,8 @@ OrionLib:MakeNotification({
 	Time = 5
 })
     end
-
+local EspBoats = false
+local EspSeaEvents = false
 local EspChest = false
 local EspIsland = false
 local EspFlower = false
@@ -32,11 +33,12 @@ local ChestTeleport = false
 local ChestTween = false
 local TimerChestTeleport
 local noclipEnabled = false
-local V ="V1.5"
+local V ="V1.6"
 print(V)
 
 local NameChest = {"Chest1", "Chest2", "Chest3"}
 local NameFlower = {"Flower1", "Flower2",}
+local NameEnemyBoats = {"PirateBrigade", "PirateBrigade",}
 
 -- Fonction pour trouver le coffre le plus proche
 local function findNearestChest()
@@ -377,6 +379,66 @@ local function HandleIslandEsp()
     end
 end
 
+local function HandleBoatsEsp()
+    while EspBoats do
+        -- Parcourt les enfants du Workspace
+for _, object in pairs(workspace:FindFirstChild("Boats"):GetChildren()) do
+                if not character:FindFirstChild("Highlight") then
+                    -- Crée un Highlight pour le joueur
+                    local highlight = Instance.new("Highlight")
+highlight.Name = "Hightlight"
+highlight.Parent = object
+highlight.Adornee = object
+highlight.Enabled = true
+highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop -- Permet de voir à travers les murs
+highlight.FillColor = Color3.fromRGB(255, 0, 0) -- Rouge
+                        highlight.OutlineColor = Color3.fromRGB(255, 105, 105)
+end
+                if not object:FindFirstChild("BillboardGui") then
+                    -- Crée un BillboardGui pour afficher le texte
+                    local billboard = Instance.new("BillboardGui")
+                    billboard.Name = "BillboardGui"
+                    billboard.Adornee = object
+                    billboard.Size = UDim2.new(0, 100, 0, 50)
+                    billboard.StudsOffset = Vector3.new(0, 3, 0)
+                    billboard.AlwaysOnTop = true
+
+                    -- Ajouter un label de texte
+                    local textLabel = Instance.new("TextLabel", billboard)
+                    textLabel.Size = UDim2.new(1, 0, 1, 0)
+                    textLabel.BackgroundTransparency = 1
+
+                    -- Applique une couleur spécifique au texte selon le nom du chest
+                    if object.Name then
+                        textLabel.TextColor3 = Color3.new(255, 0, 0) -- Par défaut : Blanc
+                    end
+
+                    textLabel.TextScaled = true
+                    textLabel.Text = object.Name -- Affiche le nom du chest (Chest1, Chest2, etc.)
+
+                    -- Attacher le BillboardGui à l'objet
+                    billboard.Parent = object
+                end
+        end
+        -- Attente pour éviter les surcharges
+        task.wait(0.5)
+    end
+
+    -- Si EspChest devient false, détruire les BillboardGui existants
+    if not EspBoats then
+       for _, object in pairs(workspace:FindFirstChild("Boats"):GetChildren()) do
+                local billboard = object:FindFirstChild("BillboardGui")
+local HightLight = object:FindFirstChild("Hightlight")
+                if billboard then
+                    billboard:Destroy()
+                end
+if HightLight then
+                    HightLight:Destroy()
+                end
+        end
+    end
+end
+
 -- Détecte les nouveaux objets ajoutés au Workspace
 workspace.ChildAdded:Connect(function(child)
     -- Gestion des coffres
@@ -395,6 +457,9 @@ workspace.ChildAdded:Connect(function(child)
         -- Ajoute l'affichage pour le joueur qui vient de rejoindre
         print(child.Name .. " a rejoint le jeu.") -- Exemple de log
         HandlePlayerEsp()
+    end
+if EspSeaEvents == true and child.Parent == workspace:FindFirstChild("SeaEvents") or EspSeaEvents == true and child.Parent == workspace:FindFirstChild("Enemies") or EspSeaEvents == true and child.Parent == workspace:FindFirstChild("SeaBeasts") then
+     HandleSeaEventsEsp()
     end
 end)
 
@@ -533,11 +598,11 @@ HandleFlowerEsp()
 })
 
 HubEspTab:AddToggle({
-	Name = "Esp Sea Hunter(Coming Soon)",
+	Name = "Esp Sea Event",
 	Default = false,
 	Callback = function(Value)
-		--EspFlower = Value
---HandleFlowerEsp()
+		EspSeaEvents = Value
+HandleSeaEventsEsp()
 	end    
 })
 HubEspTab:AddToggle({
@@ -546,6 +611,14 @@ HubEspTab:AddToggle({
 	Callback = function(Value)
 		EspIsland = Value
 HandleIslandEsp()
+	end    
+})
+HubEspTab:AddToggle({
+	Name = "Esp Players Boats",
+	Default = false,
+	Callback = function(Value)
+		EspBoats = Value
+HandleBoatsEsp()
 	end    
 })
 
