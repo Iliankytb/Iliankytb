@@ -49,8 +49,14 @@ local ChestTeleport = false
 local ChestTween = false
 local TimerChestTeleport
 local noclipEnabled = false
-local V ="V1.8"
+local V ="V1.8.2"
 print(V)
+OrionLib:MakeNotification({
+	Name = "Version Of The Cheat",
+	Content = "Version: "..V,
+	Image = "rbxassetid://4483345998",
+	Time = 10
+})
 
 local NameChest = {"Chest1", "Chest2", "Chest3"}
 local NameFlower = {"Flower1", "Flower2"}
