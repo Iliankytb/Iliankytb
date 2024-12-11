@@ -334,7 +334,7 @@ local function HandleChestEsp()
     if not EspChest then
         for _, object in pairs(workspace:GetChildren()) do
             if table.find(NameChest, object.Name) then
-                local billboard = object:FindFirstChild("BillboardGui")
+                local billboard = object.Banana:FindFirstChild("BillboardGui") or object.Apple:FindFirstChild("BillboardGui") or object.Pineapple:FindFirstChild("BillboardGui")
                 if billboard then
                     billboard:Destroy()
                 end
@@ -348,7 +348,7 @@ local function HandleRealFruitEsp()
         -- Parcourt les enfants du Workspace
         for _, object in pairs(workspace:GetChildren()) do
             if table.find(NameRealFruits, object.Name) then
-                -- Vérifie si l'objet n'a pas déjà un BillboardGui
+                
                 if not object:FindFirstChild("BillboardGui") then
                     -- Crée un BillboardGui pour afficher le texte
                     local billboard = Instance.new("BillboardGui")
@@ -367,21 +367,25 @@ local function HandleRealFruitEsp()
                     if object.Name == "PineappleSpawner" then
                         textLabel.TextColor3 = Color3.fromRGB(205, 30, 0) -- Marron
 textLabel.Text = "Pineapple"
+billboard.Parent = object.Pineapple
                     elseif object.Name == "AppleSpawner" then
                         textLabel.TextColor3 = Color3.fromRGB(255, 0, 0) -- Jaune
 textLabel.Text = "Apple"
+billboard.Parent = object.Apple
                     elseif object.Name == "BananaSpawner" then
                         textLabel.TextColor3 = Color3.fromRGB(255, 255, 0) -- Bleu
 textLabel.Text = "Banana"
+billboard.Parent = object.Banana
                     else
                         textLabel.TextColor3 = Color3.new(1, 1, 1) -- Par défaut : Blanc
 textLabel.Text = object.Name -- Affiche le nom du chest (Chest1, Chest2, etc.)
+billboard.Parent = object
                     end
 
                     textLabel.TextScaled = true
                     
                     -- Attacher le BillboardGui à l'objet
-                    billboard.Parent = object
+                    
                 end
             end
         end
