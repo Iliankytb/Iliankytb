@@ -295,7 +295,8 @@ end
 HubMiscTab:AddButton({
 	Name = "IliankYTB Universale(No Key)",
 	Callback = function()
-      		loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/IliankYTBUniversale"))()  	end    
+      		loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/IliankYTBUniversale"))()  	
+end    
 })
 
 HubMiscTab:AddButton({
@@ -547,8 +548,8 @@ HubTSBTab:AddButton({
 	Name = "KJ TSB Cheats(Need Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/The-Strongest-Battlegrounds-Kj-for-TSB-21086"))()
-
-endAutoDestroy()
+AutoDestroy()
+end
 })
 
 HubTSBTab:AddButton({
