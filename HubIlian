@@ -4,9 +4,9 @@ local Window = OrionLib:MakeWindow({Name = "IliankYTB Hub", HidePremium = false,
 local AutoDestroyV = false
 
 local function AutoDestroy()
-if AutoDestroyV == true then
+--[[if AutoDestroyV == true then
 OrionLib:Destroy()
-end
+end]]
 end
 
 local function copyToClipboard(text)
