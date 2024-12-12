@@ -212,6 +212,14 @@ HubTab:AddButton({
 end    
 })
 
+HubTab:AddButton({
+	Name = "New Cheats Doors(Ilianytb(No Key))",
+	Callback = function()
+      		loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/NewCheatsDoors"))()
+  	AutoDestroy()
+end    
+})
+
 HubEvadeTab:AddButton({
 	Name = "Cheats Evade(Ilianytb(No Key))",
 	Callback = function()
