@@ -1,179 +1,30 @@
--- Créer un nouvel écran GUI
-local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "CustomGUI"
-ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
+local Window = OrionLib:MakeWindow({Name = "New Cheat Doors(IliankYTB)", HidePremium = false,IntroEnabled = false ,SaveConfig = true, ConfigFolder = "Test1"})
 
--- Créer un Frame principal
-local MainFrame = Instance.new("Frame")
-MainFrame.Size = UDim2.new(0, 400, 0, 500)
-MainFrame.Position = UDim2.new(0.5, -200, 0.5, -250)
-MainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-MainFrame.BorderSizePixel = 0
-MainFrame.Parent = ScreenGui
+local V = "Version Of The Game:0.01"
 
--- Ajouter un titre
-local Title = Instance.new("TextLabel")
-Title.Text = "mspaint v2"
-Title.Size = UDim2.new(1, 0, 0, 50)
-Title.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-Title.TextColor3 = Color3.fromRGB(255, 255, 255)
-Title.Font = Enum.Font.SourceSansBold
-Title.TextSize = 24
-Title.Parent = MainFrame
+local HubAutoFarmTab = Window:MakeTab({
+	Name = "AutoFarm(Coming)",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
 
--- Créer les onglets (Main, Exploits, etc.)
-local TabHolder = Instance.new("Frame")
-TabHolder.Size = UDim2.new(1, 0, 0, 30)
-TabHolder.Position = UDim2.new(0, 0, 0, 50)
-TabHolder.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-TabHolder.Parent = MainFrame
+local HubEspTab = Window:MakeTab({
+	Name = "Esp(Coming)",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
 
-local Tabs = {"Main", "Exploits", "Visuals", "Floor", "UI", "Settings"}
+local HubMiscTab = Window:MakeTab({
+	Name = "Misc(Coming)",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
 
-for i, tab in ipairs(Tabs) do
-    local TabButton = Instance.new("TextButton")
-    TabButton.Text = tab
-    TabButton.Size = UDim2.new(0, 60, 1, 0)
-    TabButton.Position = UDim2.new(0, (i - 1) * 65, 0, 0)
-    TabButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-    TabButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-    TabButton.Font = Enum.Font.SourceSans
-    TabButton.TextSize = 18
-    TabButton.Parent = TabHolder
-end
+local HubVersionTab = Window:MakeTab({
+	Name = V,
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
 
--- Créer un bouton Speed Boost
-local SpeedBoostLabel = Instance.new("TextLabel")
-SpeedBoostLabel.Text = "Speed Boost"
-SpeedBoostLabel.Size = UDim2.new(0, 150, 0, 30)
-SpeedBoostLabel.Position = UDim2.new(0, 20, 0, 90)
-SpeedBoostLabel.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-SpeedBoostLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-SpeedBoostLabel.Font = Enum.Font.SourceSans
-SpeedBoostLabel.TextSize = 18
-SpeedBoostLabel.Parent = MainFrame
-
-local SpeedBoostSlider = Instance.new("TextBox")
-SpeedBoostSlider.Text = "0/7"
-SpeedBoostSlider.Size = UDim2.new(0, 100, 0, 30)
-SpeedBoostSlider.Position = UDim2.new(0, 180, 0, 90)
-SpeedBoostSlider.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
-SpeedBoostSlider.TextColor3 = Color3.fromRGB(255, 255, 255)
-SpeedBoostSlider.Font = Enum.Font.SourceSans
-SpeedBoostSlider.TextSize = 18
-SpeedBoostSlider.Parent = MainFrame
-
--- Comportement du Speed Boost
-local speedBoostValue = 0
-SpeedBoostSlider.FocusLost:Connect(function(enterPressed)
-    local value = tonumber(SpeedBoostSlider.Text)
-    if value then
-        speedBoostValue = math.clamp(value, 0, 7)
-        local player = game.Players.LocalPlayer
-        local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
-        if humanoid then
-            humanoid.WalkSpeed = 16 + (speedBoostValue * 5) -- Ajuster la vitesse
-        end
-    end
-end)
-
--- Bouton pour Fly (Vol)
-local FlyButton = Instance.new("TextButton")
-FlyButton.Text = "Fly"
-FlyButton.Size = UDim2.new(0, 150, 0, 30)
-FlyButton.Position = UDim2.new(0, 20, 0, 130)
-FlyButton.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-FlyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-FlyButton.Font = Enum.Font.SourceSans
-FlyButton.TextSize = 18
-FlyButton.Parent = MainFrame
-
--- Comportement du vol
-local flying = false
-FlyButton.MouseButton1Click:Connect(function()
-    local player = game.Players.LocalPlayer
-    local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
-    
-    if humanoid then
-        if flying then
-            humanoid.PlatformStand = false -- Désactiver le vol
-            FlyButton.Text = "Fly"
-        else
-            humanoid.PlatformStand = true -- Activer le vol
-            FlyButton.Text = "Disable Fly"
-        end
-        flying = not flying
-    end
-end)
-
--- Création des autres boutons (Noclip, etc.)
-local NoclipButton = Instance.new("TextButton")
-NoclipButton.Text = "Noclip"
-NoclipButton.Size = UDim2.new(0, 150, 0, 30)
-NoclipButton.Position = UDim2.new(0, 20, 0, 170)
-NoclipButton.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-NoclipButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-NoclipButton.Font = Enum.Font.SourceSans
-NoclipButton.TextSize = 18
-NoclipButton.Parent = MainFrame
-
-local noclipActive = false
-NoclipButton.MouseButton1Click:Connect(function()
-    local player = game.Players.LocalPlayer
-    local character = player.Character
-    
-    if character then
-        noclipActive = not noclipActive
-        if noclipActive then
-            -- Activer le noclip
-            for _, part in pairs(character:GetDescendants()) do
-                if part:IsA("BasePart") then
-                    part.CanCollide = false
-                end
-            end
-            NoclipButton.Text = "Disable Noclip"
-        else
-            -- Désactiver le noclip
-            for _, part in pairs(character:GetDescendants()) do
-                if part:IsA("BasePart") then
-                    part.CanCollide = true
-                end
-            end
-            NoclipButton.Text = "Noclip"
-        end
-    end
-end)
-
--- Création des autres éléments de GUI (Revive, Play Again, etc.)
-local ReviveButton = Instance.new("TextButton")
-ReviveButton.Text = "Revive"
-ReviveButton.Size = UDim2.new(0, 150, 0, 30)
-ReviveButton.Position = UDim2.new(0, 20, 0, 210)
-ReviveButton.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-ReviveButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-ReviveButton.Font = Enum.Font.SourceSans
-ReviveButton.TextSize = 18
-ReviveButton.Parent = MainFrame
-
-local PlayAgainButton = Instance.new("TextButton")
-PlayAgainButton.Text = "Play Again"
-PlayAgainButton.Size = UDim2.new(0, 150, 0, 30)
-PlayAgainButton.Position = UDim2.new(0, 20, 0, 250)
-PlayAgainButton.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-PlayAgainButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-PlayAgainButton.Font = Enum.Font.SourceSans
-PlayAgainButton.TextSize = 18
-PlayAgainButton.Parent = MainFrame
-
-local LobbyButton = Instance.new("TextButton")
-LobbyButton.Text = "Lobby"
-LobbyButton.Size = UDim2.new(0, 150, 0, 30)
-LobbyButton.Position = UDim2.new(0, 20, 0, 290)
-LobbyButton.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-LobbyButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-LobbyButton.Font = Enum.Font.SourceSans
-LobbyButton.TextSize = 18
-LobbyButton.Parent = MainFrame
-
--- Comportements pour Revive, Play Again, Lobby à implémenter selon ton jeu
-0
+OrionLib:Init()
