@@ -1,4 +1,4 @@
-local OrionLib = loadstring(Game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 local V = "Version: 1.3"
 local Window = OrionLib:MakeWindow({Name = "IliankYTB Hub "..V, HidePremium = false,IntroEnabled = false ,SaveConfig = true, ConfigFolder = "AutoDestroy"})
 
@@ -781,10 +781,11 @@ Save = true,
   Flag = "AutoDestroy"
 	Callback = function(Value)
 		AutoDestroyV = Value
+Flag.Value = Value
 	end    
 })
 
 
 OrionLib:Init()
 
-print(OrionLib.Flags["AutoDestroy"])
+print(OrionLib.Flags["AutoDestroy"].Value)
