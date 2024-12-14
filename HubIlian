@@ -668,9 +668,7 @@ copyToClipboard("https://discord.gg/Heje8He4")
 HubMiscTab:AddButton({
 	Name = "The Loadingstring of this cheat(hub)",
 	Callback = function()
--- Exemple d'appel
 copyToClipboard("loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/HubIlian"))()")
-
       		end
 })
 
@@ -744,7 +742,7 @@ HubSettingsTab:AddToggle({
 	Name = "Destroy The Hub When Press The A Cheat And If Active(Coming Soon)",
 	Default = false,
 Save = true,
-  --Flag = "AutoDestroy"
+  Flag = "AutoDestroy"
 	Callback = function(Value)
 		AutoDestroyV = Value
 	end    
@@ -753,4 +751,4 @@ Save = true,
 
 OrionLib:Init()
 
---print(OrionLib.Flags["AutoDestroy"].Value)
+print(OrionLib.Flags["AutoDestroy"])
