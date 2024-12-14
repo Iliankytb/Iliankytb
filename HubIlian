@@ -1,13 +1,13 @@
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
-local V = "Version: 1.3"
+local V = "Version: 1.32"
 local Window = OrionLib:MakeWindow({Name = "IliankYTB Hub "..V, HidePremium = false,IntroEnabled = false ,SaveConfig = true, ConfigFolder = "AutoDestroy"})
 
-local AutoDestroyV = false
+local AutoDestroy = false
 
 local function AutoDestroy()
-if AutoDestroyV == true then
-OrionLib:Destroy()
-end
+--if AutoDestroy == true then
+--OrionLib:Destroy()
+--end
 end
 
 local function copyToClipboard(text)
@@ -777,15 +777,15 @@ end
 HubSettingsTab:AddToggle({
 	Name = "Destroy The Hub When Press The A Cheat And If Active(Coming Soon)",
 	Default = false,
-Save = true,
-  Flag = "AutoDestroy"
+--Save = true,
+  --Flag = "AutoDestroy"
 	Callback = function(Value)
 		AutoDestroyV = Value
-Flag.Value = Value
+--Flag.Value = Value
 	end    
 })
 
 
 OrionLib:Init()
 
-print(OrionLib.Flags["AutoDestroy"].Value)
+--print(OrionLib.Flags["AutoDestroy"].Value)
