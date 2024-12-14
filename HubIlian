@@ -1,4 +1,4 @@
-local V = "Version: 1.32"
+local V = "Version: 1.3.2"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
@@ -697,7 +697,7 @@ copyToClipboard("https://discord.gg/Heje8He4")
 HubMiscTab:AddButton({
 	Name = "The Loadingstring of this cheat(hub)",
 	Callback = function()
-copyToClipboard("loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/HubIlian"))()")
+--copyToClipboard("loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/HubIlian"))()")
       		end
 })
 
