@@ -1,6 +1,6 @@
 local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
 local V = "Version: 1.25"
-local Window = OrionLib:MakeWindow({Name = "IliankYTB Hub"..V, HidePremium = false,IntroEnabled = false ,SaveConfig = true, ConfigFolder = "AutoDestroy"})
+local Window = OrionLib:MakeWindow({Name = "IliankYTB Hub "..V, HidePremium = false,IntroEnabled = false ,SaveConfig = true, ConfigFolder = "AutoDestroy"})
 
 local AutoDestroyV = false
 
