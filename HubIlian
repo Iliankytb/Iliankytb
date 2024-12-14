@@ -4,9 +4,9 @@ local Window = OrionLib:MakeWindow({Name = "IliankYTB Hub", HidePremium = false,
 local AutoDestroyV = false
 
 local function AutoDestroy()
---[[if AutoDestroyV == true then
+if AutoDestroyV == true then
 OrionLib:Destroy()
-end]]
+end
 end
 
 local function copyToClipboard(text)
@@ -453,8 +453,8 @@ HubPetsSim99Tab:AddButton({
 	Name = "ZapHub Pets Sim 99 Cheats(Need Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/Pet-Simulator-99!-The-Best-Free-PS99-Script-ZapHub-Halloween-Update-21153"))()
-
-endAutoDestroy()
+AutoDestroy()
+end
 })
 
 HubPetsSim99Tab:AddButton({
@@ -485,7 +485,8 @@ HubPiggyTab:AddButton({
 	Name = "Imp Hub Piggy Cheats(Need Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/Piggy-BUILD-MODE-UPDATE-Imp-Hub-20946"))()
-AutoDestroy() end
+AutoDestroy()
+end
 })
 
 HubPetsGoTab:AddButton({
@@ -694,6 +695,7 @@ HubKingLegacyTab:AddButton({
 	Name = "Storyshift King Legacy Cheats(Need Key)",
 	Callback = function()
 loadstring(game:HttpGet("https://rawscripts.net/raw/(UPDATE-7)-King-Legacy-Storyshift-scriptd-not-owned-by-me-21546"))()
+AutoDestroy()
 end
 })
 
