@@ -6,11 +6,6 @@ local Window = OrionLib:MakeWindow({Name = "IliankYTB Hub "..V, HidePremium = fa
 
 local AutoDestroy = false
 
-local function AutoDestroy()
---if AutoDestroy == true then
---OrionLib:Destroy()
---end
-end
 
 local function copyToClipboard(text)
     if setclipboard then
@@ -220,7 +215,6 @@ HubRobuxSim2Tab:AddButton({
 	Name = "Robux Simulator 2(iliankytb(in work but work))",
 	Callback = function()
       		loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/RobuxSimulator2"))()
-  	AutoDestroy()
 end    
 })
 
@@ -228,7 +222,7 @@ HubTab:AddButton({
 	Name = "Doors Cheats(iliankytb(in rework(No Key)))",
 	Callback = function()
       		loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatsDoors"))()
-  	AutoDestroy()
+
 end    
 })
 
@@ -236,7 +230,7 @@ HubTab:AddButton({
 	Name = "Doors Cheat(Old MSPaintV3(No Key))",
 	Callback = function()
       		loadstring(game:HttpGet("https://raw.githubusercontent.com/notpoiu/mspaint/main/main.lua"))()
-  	AutoDestroy()
+  
 end    
 })
 
@@ -244,7 +238,7 @@ HubTab:AddButton({
 	Name = "Old Cheats Doors(Ilianytb(No Key))",
 	Callback = function()
       		loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/OldCheatsDoors"))()
-  	AutoDestroy()
+  	
 end    
 })
 
@@ -252,7 +246,7 @@ HubTab:AddButton({
 	Name = "New Cheats Doors(Ilianytb(No Key))",
 	Callback = function()
       		loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/NewCheatsDoors"))()
-  	AutoDestroy()
+  
 end    
 })
 
@@ -260,7 +254,7 @@ HubEvadeTab:AddButton({
 	Name = "Cheats Evade(Ilianytb(No Key))",
 	Callback = function()
       		loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatEvade"))()
-  	AutoDestroy()
+  	
 end    
 })
 
@@ -268,7 +262,7 @@ HubEvadeTab:AddButton({
 	Name = "Cheats Evade 2 (Not Mine And No Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatEvade2"))()
-  	AutoDestroy()
+  	
 end    
 })
 
@@ -276,7 +270,7 @@ HubAotrTab:AddButton({
 	Name = "Cheat Tekkit (Need Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/UPDATE-1-Attack-on-Titan-Revolution-AotR-Tekkit-Hub-AutoFarm-18984"))()
-AutoDestroy()
+
 end    
 })
 
@@ -284,7 +278,7 @@ HubAotrTab:AddButton({
 	Name = "Cheat Tekkit 2 Free Premuim(No Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/Attack-on-Titan-Revolution-Tekkit-aotr-Free-Premium-21381"))()
-AutoDestroy()
+
 end    
 })
 
@@ -292,7 +286,7 @@ HubAotrTab:AddButton({
 	Name = "Cheat Tekkit v2 The Best(No Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/UPDATE-1-Attack-on-Titan-Revolution-aotr-script-op-17537"))()
-AutoDestroy()
+
 end    
 })
 
@@ -300,7 +294,7 @@ HubEvadeTab:AddButton({
 	Name = "King Evade Cheats(Need Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/Evade-Evade-The-Best-Free-GUI-Script-lots-of-Features-20718"))()
-AutoDestroy()
+
 end    
 })
 
@@ -308,7 +302,7 @@ HubEvadeTab:AddButton({
 	Name = "Tora Evade Candys Farm Cheats(No Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/VIP-Evade-Candy-Farm-21225"))()
-AutoDestroy()
+
 end    
 })
 
@@ -316,7 +310,7 @@ HubTab:AddButton({
 	Name = "Doors Entities Spawner(not Mine And No Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://raw.githubusercontent.com/plamen6789/UtilitiesHub/main/UtilitiesGUI"))()
-  	AutoDestroy()
+  	
 end    
 })
 
@@ -324,7 +318,7 @@ HubPressureTab:AddButton({
 	Name = "Pressure Cheat(Fire The The best And No Key)",
 	Callback = function()
       		AutoDestroy()(game:HttpGet("https://raw.githubusercontent.com/InfernusScripts/Fire-Hub/main/Loader"))()
-  	AutoDestroy()
+  	
 end    
 })
 
@@ -367,7 +361,7 @@ HubMM2Tab:AddButton({
 	Name = "Ather Hub MM2 Cheats(Need Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/Murder-Mystery-2-AtherHub-20826"))()
-AutoDestroy()
+
 end
 })
 
@@ -375,7 +369,7 @@ HubMM2Tab:AddButton({
 	Name = "God Hub MM2 Cheats(Need Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/Murder-Mystery-2-OP-God-Hub-Unlock-Inventory-Break-Sheriff-Gun-Auto-Farm-Best-17997"))()
-AutoDestroy()
+
 end
 })
 
@@ -383,7 +377,7 @@ HubADustyTripTab:AddButton({
 	Name = "Connect Hub Dusty Trip Cheats(Need Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/a-dusty-trip-BILLION-Connect-Hub-18411"))()
-AutoDestroy()
+
 end
 })
 
@@ -391,7 +385,7 @@ HubADustyTripTab:AddButton({
 	Name = "TTYJ Dusty Trip Cheats(Need Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/a-dusty-trip-SUMMER-TTJY-Hub-15702"))()
-AutoDestroy()
+
 end
 })
 
@@ -399,7 +393,7 @@ HubADustyTripTab:AddButton({
 	Name = "Nuke Hub Dusty Trip Cheats(Need Key)",
 	Callback = function()
   loadstring(game:HttpGet("https://rawscripts.net/raw/a-dusty-trip-ELECTRIC-dupe-V2-nurk-hub-14880"))()
-AutoDestroy()
+
 end
 })
 
@@ -407,7 +401,7 @@ HubMiscTab:AddButton({
 	Name = "Ez Game (No Key 150+ Games)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/Ez-Hub_168"))()
-AutoDestroy()
+
 end
 })
 
@@ -423,7 +417,7 @@ HubBreakInTab:AddButton({
 	Name = "Op 160+ Features Break In 2 Cheats(No Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/Break-In-2-(Story)-Starry-OP-Script-Hub-160-Features-17869"))()
-AutoDestroy()
+
 end
 })
 
@@ -431,7 +425,7 @@ HubBladeBallTab:AddButton({
 	Name = "ZapHub Blade Ball Cheats(Need Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/Blade-Ball-Very-Op-Auto-Parry-NEVER-FAILS-9325"))()
-AutoDestroy()
+
 end
 })
 
@@ -439,7 +433,7 @@ HubBladeBallTab:AddButton({
 	Name = "Bt Project Blade Ball Cheats(Need Key)",
 	Callback = function()
 loadstring(game:HttpGet("https://rawscripts.net/raw/UPD-Blade-Ball-BT-Project-8688"))()
-AutoDestroy()
+
 end
 })
 
@@ -447,7 +441,7 @@ HubBladeBallTab:AddButton({
 	Name = "Bedol Hub Blade Ball Cheats(Need Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/Blade-Ball-Autofarm-8968"))()
-AutoDestroy()
+
 
 end
 })
@@ -456,7 +450,7 @@ HubRivalsTab:AddButton({
 	Name = "God Hub Rivals Cheats(Need Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/UPD-RIVALS-OP-UPDATE-God-Hub-Silent-Aim-Chams-Undetected-Best-Script-17850"))()
-AutoDestroy()
+
 end
 })
 
@@ -465,7 +459,7 @@ HubRivalsTab:AddButton({
 	Name = "Op Bypass Rivals Cheats(No Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/RIVALS-OP-bypassing-21245"))()
-AutoDestroy()
+
 end
 })
 
@@ -473,7 +467,7 @@ HubRivalsTab:AddButton({
 	Name = "Sanity Wtf Hub Rivals Cheats(Need Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/RIVALS-sanityWtf-21288"))()
-AutoDestroy()
+
 end
 })
 
@@ -481,7 +475,7 @@ HubRivalsTab:AddButton({
 	Name = "Nicuse Scripts Rivals Cheats(Need Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/UPD-RIVALS-FREE-GUI-16266"))()
-AutoDestroy()
+
 end
 })
 
@@ -489,7 +483,7 @@ HubPetsSim99Tab:AddButton({
 	Name = "ZapHub Pets Sim 99 Cheats(Need Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/Pet-Simulator-99!-The-Best-Free-PS99-Script-ZapHub-Halloween-Update-21153"))()
-AutoDestroy()
+
 end
 })
 
@@ -497,7 +491,7 @@ HubPetsSim99Tab:AddButton({
 	Name = "ZetaHub Pets Sim 99 Cheats(Need Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/Pet-Simulator-99!-ZetaHub-Best-Ps99-Script-Updated-17721"))()
-AutoDestroy()
+
 end
 })
 
@@ -505,7 +499,7 @@ HubPetsSim99Tab:AddButton({
 	Name = "Reaper Hub Pets Sim 99 Cheats(Need Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/Pet-Simulator-99!-Reaper-Hub-21267"))()
-AutoDestroy()
+
 end
 })
 
@@ -513,7 +507,7 @@ HubPetsSim99Tab:AddButton({
 	Name = "6FootScripts Pets Sim 99 Cheats(No Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/Pet-Simulator-99!-Cheat-Menu-17428"))()
-AutoDestroy()
+
 end
 })
 
@@ -521,7 +515,7 @@ HubPiggyTab:AddButton({
 	Name = "Imp Hub Piggy Cheats(Need Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/Piggy-BUILD-MODE-UPDATE-Imp-Hub-20946"))()
-AutoDestroy()
+
 end
 })
 
@@ -529,7 +523,7 @@ HubPetsGoTab:AddButton({
 	Name = "ZapHub Pets Go Cheats(Need Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/PETS-GO!-NEW-The-Best-Free-Script-ZapHub-20119"))()
-AutoDestroy()
+
 end
 })
 
@@ -537,7 +531,7 @@ HubPetsGoTab:AddButton({
 	Name = "Reaper Hub Pets Go Cheats(Need Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/PETS-GO!-NEW-Reaper-Hub-20879"))()
-AutoDestroy()
+
 end
 })
 
@@ -545,7 +539,7 @@ HubPetsGoTab:AddButton({
 	Name = "God Hub Pets Go Cheats(Need Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/PETS-GO!-NEW-Ultimate-Auto-Farm-Unlocker-AFK-Mode-Auto-Use-OP-Script-20782"))()
-AutoDestroy()
+
 end
 })
 
@@ -553,7 +547,7 @@ HubPetsGoTab:AddButton({
 	Name = "Banana Hub Pets Go Cheats(Need Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/PETS-GO!-NEW-UPDATED-KEYLESS-SCRIPT-BANANA-HUB-21033"))()
-AutoDestroy()
+
 end
 })
 
@@ -561,7 +555,7 @@ HubPetsGoTab:AddButton({
 	Name = "Ather Hub Pets Go Cheats(No Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/PETS-GO!-NEW-AtherHub-20940"))()
-AutoDestroy()
+
 end
 })
 
@@ -569,7 +563,7 @@ HubTSBTab:AddButton({
 	Name = "Oblivion Guard TSB Cheats(No Key And Saitama Only)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/The-Strongest-Battlegrounds-Oblivion-guard-saitama-only-21180"))()
-AutoDestroy()
+
 end
 })
 
@@ -577,7 +571,7 @@ HubTSBTab:AddButton({
 	Name = "KJ Animations TSB Cheats(No Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/The-Strongest-Battlegrounds-KJ-Animations-Hub-FE-Keyless-21099"))()
-AutoDestroy()
+
 end
 })
 
@@ -585,7 +579,7 @@ HubTSBTab:AddButton({
 	Name = "KJ TSB Cheats(Need Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/The-Strongest-Battlegrounds-Kj-for-TSB-21086"))()
-AutoDestroy()
+
 end
 })
 
@@ -593,7 +587,7 @@ HubTSBTab:AddButton({
 	Name = "Nicus Scripts TSB Cheats(Need Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/The-Strongest-Battlegrounds-FREE-AND-BEST-GUI-15593"))()
-AutoDestroy()
+
 end
 })
 
@@ -601,7 +595,7 @@ HubTSBTab:AddButton({
 	Name = "Fly For TSB|TSB Cheats(No Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/The-Strongest-Battlegrounds-Tsb-BuilderFly-V1-made-by-valker038-on-roblox-also-buggy-21065"))()
-AutoDestroy()
+
 end
 })
 
@@ -609,7 +603,6 @@ HubWeirdStrictDadTab:AddButton({
 	Name = "Goa Hub Weird Strict Dad Cheats(No Key All Chapters)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/weird-strict-dad-BOOK-2-GOA-HUB-21131"))()
-AutoDestroy()
 end
 })
 
@@ -617,7 +610,7 @@ HubWeirdStrictDadTab:AddButton({
 	Name = "yBloodz Weird Strict Dad Cheats(No Key Chapter 1)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/weird-strict-dad-HALLOWEEN!-TP-Kitchen-ESP-OP-SCRIPT-9232"))()
-AutoDestroy()
+
 end
 })
 
@@ -625,7 +618,6 @@ HubRainbowFriendsTab:AddButton({
 	Name = "King Rainbow Friends Cheats(Need Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/Rainbow-Friends-the-best-free-GUI-script-lots-of-features-21152"))()
-AutoDestroy()
 end
 })
 
@@ -633,7 +625,7 @@ HubRainbowFriendsTab:AddButton({
 	Name = "Rocks Hub Rainbow Friends Cheats(No Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/Rainbow-Friends-Rocks-hub-beta-15087"))()
-AutoDestroy()
+
 end
 })
 
@@ -641,7 +633,7 @@ HubSolsRngTab:AddButton({
 	Name = "3ITX Scripts Sols Rng Cheats(Need Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/Sol's-RNG-Era8-BEST-SOLS-SCRIPT-15232"))()
-AutoDestroy()
+
 end
 })
 
@@ -649,7 +641,7 @@ HubSolsRngTab:AddButton({
 	Name = "Legend Handle Sols Rng Cheats(Need Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/Sol's-RNG-Era-9-AUTOFARM-18264"))()
-AutoDestroy()
+
 end
 })
 
@@ -657,7 +649,7 @@ HubBloxFruitTab:AddButton({
 	Name = "HoHo Hub Blox Fruits Cheats(Need Key)",
 	Callback = function()
 loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-HoHo-Hub-+15-Games-2392"))()
-    AutoDestroy()
+   
 end
 })
 
@@ -666,7 +658,7 @@ HubBloxFruitTab:AddButton({
 	Callback = function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/NewCheatBloxFruit"))()
 
-AutoDestroy()
+
 end
 })
 
@@ -674,7 +666,7 @@ HubBloxFruitTab:AddButton({
 	Name = "Min Gaming Blox Fruits Cheats(No Key)",
 	Callback = function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/LuaCrack/Min/refs/heads/main/MinMasEng"))()
-AutoDestroy()
+
 end
 })
 
@@ -682,7 +674,7 @@ HubBloxFruitTab:AddButton({
 	Name = "Aurora Blox Fruits Cheats(Need Key)",
 	Callback = function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Jadelly261/BloxFruits/main/Aurora", true))()
-AutoDestroy()
+
 end
 })
 
@@ -690,7 +682,7 @@ HubMiscTab:AddButton({
 	Name = "Universale HoHo Hub 150+ Games Cheats (Need Key)",
 	Callback = function() 		
 loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-HoHo-Hub-+15-Games-2392"))()
-AutoDestroy()
+
 end
 })
 
@@ -715,7 +707,7 @@ HubKingLegacyTab:AddButton({
 	Name = "Legends Handle King Legacy Cheats(Need Key)",
 	Callback = function()
 loadstring(game:HttpGet("https://rawscripts.net/raw/(UPDATE-7)-King-Legacy-Auto-Farm-And-More-21150"))()
-AutoDestroy()
+
 end
 })
 
@@ -723,7 +715,7 @@ HubKingLegacyTab:AddButton({
 	Name = "Matheuzxs Hub King Legacy Cheats(Need Key)",
 	Callback = function()
 loadstring(game:HttpGet("https://rawscripts.net/raw/(UPDATE-7)-King-Legacy-Matheuzxs-Hub-NEW-HALLOWEEN-UPdate-21380"))()
-AutoDestroy()
+
 end
 })
 
@@ -731,7 +723,7 @@ HubKingLegacyTab:AddButton({
 	Name = "Storyshift King Legacy Cheats(Need Key)",
 	Callback = function()
 loadstring(game:HttpGet("https://rawscripts.net/raw/(UPDATE-7)-King-Legacy-Storyshift-scriptd-not-owned-by-me-21546"))()
-AutoDestroy()
+
 end
 })
 
@@ -739,7 +731,6 @@ HubKingLegacyTab:AddButton({
 	Name = "BLACKTRAP King Legacy Cheats(Need Key)",
 	Callback = function()
 loadstring(game:HttpGet("https://rawscripts.net/raw/UPDATE-6-King-Legacy-BLACKTRAP-12339"))()
-AutoDestroy()
 end
 })
 
@@ -747,7 +738,7 @@ HubKingLegacyTab:AddButton({
 	Name = "YikiGui King Legacy Cheats(Need Key)",
 	Callback = function()
 loadstring(game:HttpGet("https://rawscripts.net/raw/(UPDATE-7)-King-Legacy-YikiGui-AUTOFARM-21584"))()
-AutoDestroy()
+
 end
 })
 
@@ -755,7 +746,7 @@ HubKingLegacyTab:AddButton({
 	Name = "Zee Hub King Legacy Cheats(Need Key)",
 	Callback = function()
 loadstring(game:HttpGet('https://zuwz.me/Ls-Zee-Hub-KL'))()
-AutoDestroy()
+
 end
 })
 
@@ -763,7 +754,7 @@ HubKingLegacyTab:AddButton({
 	Name = "Nilhub King Legacy Cheats(No Key)",
 	Callback = function()
 loadstring(game:HttpGet("https://rawscripts.net/raw/UPD-King-Legacy-Nilhub-Free-21643"))()
-AutoDestroy()
+
 end
 })
 
@@ -772,7 +763,7 @@ HubKingLegacyTab:AddButton({
 	Callback = function()
 getgenv().CustomDistance = 10 -- For Bug Can't Swipe Distance
 loadstring(game:HttpGet("https://raw.githubusercontent.com/ChopLoris/ArcHub/main/main.lua"))()
-AutoDestroy()
+
 end
 })
 
