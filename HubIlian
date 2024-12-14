@@ -1,5 +1,5 @@
 local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
-local V = "Version: 1.25"
+local V = "Version: 1.3"
 local Window = OrionLib:MakeWindow({Name = "IliankYTB Hub "..V, HidePremium = false,IntroEnabled = false ,SaveConfig = true, ConfigFolder = "AutoDestroy"})
 
 local AutoDestroyV = false
@@ -17,6 +17,39 @@ local function copyToClipboard(text)
         warn("setclipboard n'est pas pris en charge dans cet environnement.")
     end
 end
+local HubFischTab = Window:MakeTab({
+	Name = "Cheats Fisch(Coming)",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+local HubBlueLockRivalsTab = Window:MakeTab({
+	Name = "Cheats Blue Lock Rivals(Coming)",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+local HubFBGTab = Window:MakeTab({
+	Name = "Cheats Fruit Battleground(Coming)",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local HubOneFruitTab = Window:MakeTab({
+	Name = "Cheats One Fruit(Coming)",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local HubGPTab = Window:MakeTab({
+	Name = "Cheats Grand Piece(Coming)",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+local HubNinjaLgendTab = Window:MakeTab({
+	Name = "Cheats Ninja Legend(Coming)",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
 
 local HubKingLegacyTab = Window:MakeTab({
 	Name = "Cheats King Legacy",
