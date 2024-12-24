@@ -1,4 +1,4 @@
-local V = "Version: 1.3.2"
+local V = "Version: 1.4.0"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
@@ -665,8 +665,14 @@ end
 HubBloxFruitTab:AddButton({
 	Name = "Min Gaming Blox Fruits Cheats(No Key)",
 	Callback = function()
-loadstring(game:HttpGet("https://raw.githubusercontent.com/LuaCrack/Min/refs/heads/main/MinMasEng"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/LuaCrack/Min/refs/heads/main/MinVeVn"))()
+end
+})
 
+HubBloxFruitTab:AddButton({
+	Name = "Redz Hub Hub Blox Fruits Cheats(No Key)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/realredz/BloxFruits/refs/heads/main/Source.lua"))()
 end
 })
 
