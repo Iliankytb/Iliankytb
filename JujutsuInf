@@ -1,4 +1,4 @@
-local V = "Version: 0.0.6"
+local V = "Version: 0.0.7"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
@@ -11,9 +11,10 @@ while AutoMissions do
 game:GetService("ReplicatedStorage").Remotes.Server.Data.AcceptQuest:InvokeServer({["subtitle"] = "",["set"] = "Yuki Fortress Set",["rewards"] = {["essence"] = 12,["chestMeter"] = 10,["exp"] = 8507568,["cash"] = 42100},["rewardsText"] = "$42100| 8507568 EXP",["difficulty"] = 10,["title"] = "QUEST.",["level"] = 421,["grade"] = "Grade 3",["type"] = "Kill"})
 game:GetService("ReplicatedStorage").Remotes.Server.Dialogue.GetResponse:InvokeServer("Clan Head Jujutsu High","Promote")
 game:GetService("ReplicatedStorage").Remotes.Server.Data.ChestMeterReward:FireServer("Yuki Fortress Set")
-game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(2,{workspace.Objects.Mobs["Kazetani Furuse"].Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1,{workspace.Objects.Mobs["Kazetani Furuse"].Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1,{workspace.Objects.Mobs["Maiko Teruyo"].Humanoid})
 game:GetService("ReplicatedStorage").Remotes.Server.Combat.ChangeWeapon:FireServer("Fists")
-wait(0.01)
+wait(0.000001)
 end
 end
 
