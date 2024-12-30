@@ -1,4 +1,4 @@
-local V = "Version: 1.4.0"
+local V = "Version: 1.5.0"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
@@ -14,6 +14,12 @@ local function copyToClipboard(text)
         warn("setclipboard n'est pas pris en charge dans cet environnement.")
     end
 end
+local HubJujutsuInfTab = Window:MakeTab({
+	Name = "Cheats Jujutsu Infinite",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
 local HubFischTab = Window:MakeTab({
 	Name = "Cheats Fisch(Coming)",
 	Icon = "rbxassetid://4483345998",
@@ -215,6 +221,27 @@ HubRobuxSim2Tab:AddButton({
 	Name = "Robux Simulator 2(iliankytb(in work but work))",
 	Callback = function()
       		loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/RobuxSimulator2"))()
+end    
+})
+
+HubJujutsuInfTab:AddButton({
+	Name = "Jujutsu Infinite Cheats(iliankytb(No Key))",
+	Callback = function()
+      		loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/JujutsuInf"))()
+end    
+})
+
+HubJujutsuInfTab:AddButton({
+	Name = "Jujutsu Infinite Cheats 2 (No Key)",
+	Callback = function()
+      		
+loadstring(game:HttpGet("https://raw.githubusercontent.com/AhmadV99/Script-Games/refs/heads/main/Jujutsu%20Infinite.lua"))()
+end    
+})
+HubJujutsuInfTab:AddButton({
+	Name = "Jujutsu Infinite Cheats 3 (Need Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://raw.githubusercontent.com/meobeo8/elgato/a/Loader"))()
 end    
 })
 
