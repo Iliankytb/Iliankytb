@@ -1,1 +1,32 @@
+local V = "Version: 0.0.1"
+print(V)
+local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
+local Window = OrionLib:MakeWindow({Name = "Jujutsu Inf Cheat "..V, HidePremium = false,IntroEnabled = false ,SaveConfig = true, ConfigFolder = "AutoDestroy"})
+
+local AutoMissions = false
+
+local function AutoMissions()
+While AutoMissions do
+game:GetService("ReplicatedStorage").Remotes.Server.Data.AcceptQuest:InvokeServer({["subtitle"] = "",["set"] = "Yuki Fortress Set",["rewards"] = {["essence"] = 99999999999999999,["chestMeter"] = 100,["exp"] = 999999999999999999,["cash"] = 99999999989899},["rewardsText"] = "$9999999999999999| 99999999999 EXP",["difficulty"] = 1,["title"] = "QUEST.",["level"] = 1,["grade"] = "Grade 4",["type"] = "Kill"})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(99999999,{})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.ChangeWeapon:FireServer("Fists")
+wait(1)
+end
+end
+
+local HubAutoFarmTab = Window:MakeTab({
+	Name = "Auto Farm",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+HubAutoFarmTab:AddToggle({
+	Name = "Auto Missions",
+	Default = false,
+	Callback = function(Value)
+		AutoMissions = Value
+	end    
+})
+
+OrionLib:Init()
