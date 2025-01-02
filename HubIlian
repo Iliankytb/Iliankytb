@@ -1,4 +1,4 @@
-local V = "Version: 1.5.0"
+local V = "Version: 1.6.0"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
@@ -21,7 +21,7 @@ local HubJujutsuInfTab = Window:MakeTab({
 })
 
 local HubFischTab = Window:MakeTab({
-	Name = "Cheats Fisch(Coming)",
+	Name = "Cheats Fisch",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
@@ -242,6 +242,12 @@ HubJujutsuInfTab:AddButton({
 	Name = "Jujutsu Infinite Cheats 3 (Need Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://raw.githubusercontent.com/meobeo8/elgato/a/Loader"))()
+end    
+})
+HubJujutsuInfTab:AddButton({
+	Name = "Jujutsu Infinite Cheats Rinns Hub(Need Key)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/SkibidiCen/MainMenu/main/Code"))()
 end    
 })
 
@@ -639,6 +645,20 @@ HubWeirdStrictDadTab:AddButton({
       		loadstring(game:HttpGet("https://rawscripts.net/raw/weird-strict-dad-HALLOWEEN!-TP-Kitchen-ESP-OP-SCRIPT-9232"))()
 
 end
+})
+
+HubFischTab:AddButton({
+	Name = "Fish Cheats 1(Need Key)",
+	Callback = function()      		
+loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/c019f214a19894b50f0b8e817b70d25f.lua"))()
+end    
+})
+
+HubFischTab:AddButton({
+	Name = "Fish Cheats 2(No Key)",
+	Callback = function()      		
+loadstring(game:HttpGet("https://raw.githubusercontent.com/HutaoHubs/Hutaohubs2.0/refs/heads/main/FischV2.lua"))()
+end    
 })
 
 HubRainbowFriendsTab:AddButton({
