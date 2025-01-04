@@ -1,4 +1,4 @@
-local V = "Version: 0.0.8"
+local V = "Version: 0.0.9"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
@@ -6,22 +6,45 @@ local Window = OrionLib:MakeWindow({Name = "Jujutsu Inf Cheat "..V, HidePremium 
 
 local AutoMissions = false
 local BlocksPlayers = false
+local BlocksMobs = false
 
 local function AutoMissionsFarm()
 while AutoMissions do
 game:GetService("ReplicatedStorage").Remotes.Server.Data.AcceptQuest:InvokeServer({["subtitle"] = "",["set"] = "Yuki Fortress Set",["rewards"] = {["essence"] = 12,["chestMeter"] = 10,["exp"] = 8507568,["cash"] = 42100},["rewardsText"] = "$42100| 8507568 EXP",["difficulty"] = 10,["title"] = "QUEST.",["level"] = 421,["grade"] = "Grade 3",["type"] = "Kill"})
 game:GetService("ReplicatedStorage").Remotes.Server.Dialogue.GetResponse:InvokeServer("Clan Head Jujutsu High","Promote")
 game:GetService("ReplicatedStorage").Remotes.Server.Data.ChestMeterReward:FireServer("Yuki Fortress Set")
-game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1,{workspace.Objects.Mobs["Kazetani Furuse"].Humanoid})
-game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1,{workspace.Objects.Mobs["Maiko Teruyo"].Humanoid})
+local PlayersFolder = workspace.Objects.Mobs
+ for _, playerModel in pairs(PlayersFolder:GetChildren()) do
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1,{playerModel.Humanoid})
+end
 game:GetService("ReplicatedStorage").Remotes.Server.Combat.ChangeWeapon:FireServer("Fists")
-wait(0.000001)
+wait(0.000000000001)
 end
 end
 
 local function BlocksAllPlayers()
-local PlayersFolder = workspace.Objects.Characters
+while BlocksPlayers do
+    local PlayersFolder = workspace.Objects.Characters
+
+    for _, playerModel in pairs(PlayersFolder:GetChildren()) do
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.Rush:FireServer(playerModel.Humanoid,false)
+    end
+wait(0.000000000000000000001)
 end
+end
+
+local function BlocksAllMobs()
+while BlocksMobs do
+    local PlayersFolder = workspace.Objects.Mobs
+
+
+    for _, playerModel in pairs(PlayersFolder:GetChildren()) do
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.Rush:FireServer(playerModel.Humanoid,false)
+    end
+wait(0.000000000000000000001)
+end
+end
+
 
 local HubAutoFarmTab = Window:MakeTab({
 	Name = "Auto Farm",
@@ -44,7 +67,18 @@ HubAutoFarmTab:AddToggle({
 	Default = false,
 	Callback = function(Value)
 		BlocksPlayers = Value
+BlocksAllPlayers()
 	end    
 })
+
+HubAutoFarmTab:AddToggle({
+	Name = "Block All Mobs",
+	Default = false,
+	Callback = function(Value)
+		BlocksMobs = Value
+BlocksAllMobs()
+	end    
+})
+
 
 OrionLib:Init()
