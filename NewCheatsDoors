@@ -1,12 +1,12 @@
 local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
 local Window = OrionLib:MakeWindow({Name = "New Cheat Doors(IliankYTB)", HidePremium = false,IntroEnabled = false ,SaveConfig = true, ConfigFolder = "Test1"})
 
-local V = "Version:0.0.3"
+local V = "Version:0.0.4"
 
 local EspMonster = false
-local NameMonsterTable = {"AmbushMoving", "FigureRig", "Eyes", "RushMoving", "SeekMovingNewClone", "Screech"}
+local NameMonsterTable = {"AmbushMoving", "FigureRig", "Eyes", "RushMoving", "SeekMovingNewClone", "Screech","Halt"}
 local EspItems = false
-local NameItemsTable = {"Crucifix", "LeverForGate", "KeyHitbox", "Gold", "Candle", "Lockpick", "LockPick", "Flashlight", "BigFlashlight"}
+local NameItemsTable = {"Crucifix", "LeverForGate", "KeyHitbox", "Gold", "Candle", "Lockpick", "LockPick", "Flashlight", "BigFlashlight","Gold"}
 
 -- Fonction pour créer un BillboardGui
 local function createBillboard(part, name)
@@ -30,28 +30,46 @@ local function createBillboard(part, name)
     -- Personnalisation selon le nom
     if name == "SeekMovingNewClone" then
         textLabel.Text = "Seek"
+textLabel.TextColor3 = Color3.new(1, 0, 0) -- Rouge par défaut
+        highlight.FillColor = Color3.new(1, 0, 0)
     elseif name == "Screech" then
         textLabel.Text = "Screech"
+textLabel.TextColor3 = Color3.new(1, 0, 0) -- Rouge par défaut
+        highlight.FillColor = Color3.new(1, 0, 0)
     elseif name == "RushMoving" then
         textLabel.Text = "Rush"
+textLabel.TextColor3 = Color3.new(1, 0, 0) -- Rouge par défaut
+        highlight.FillColor = Color3.new(1, 0, 0)
+elseif name == "Halt" then
+        textLabel.Text = "Halt"
+textLabel.TextColor3 = Color3.new(1, 0, 0) -- Rouge par défaut
+        highlight.FillColor = Color3.new(1, 0, 0)
     elseif name == "FigureRig" then
         textLabel.Text = "Figure"
+textLabel.TextColor3 = Color3.new(1, 0, 0) -- Rouge par défaut
+        highlight.FillColor = Color3.new(1, 0, 0)
     elseif name == "AmbushMoving" then
         textLabel.Text = "Ambush"
+textLabel.TextColor3 = Color3.new(1, 0, 0) -- Rouge par défaut
+        highlight.FillColor = Color3.new(1, 0, 0)
     elseif name == "Gold" then
         textLabel.Text = "Gold"
         textLabel.TextColor3 = Color3.new(1, 1, 0)
         highlight.FillColor = Color3.new(1, 1, 0)
+elseif name == "LeverForGate" then
+        textLabel.Text = "Lever"
+textLabel.TextColor3 = Color3.new(0, 1, 0) -- Rouge par défaut
+        highlight.FillColor = Color3.new(0, 1, 0)
     elseif name == "KeyHitbox" then
         textLabel.Text = "Key"
         textLabel.TextColor3 = Color3.new(1, 1, 0)
         highlight.FillColor = Color3.new(1, 1, 0)
-    else
-        textLabel.TextColor3 = Color3.new(1, 0, 0) -- Rouge par défaut
-        highlight.FillColor = Color3.new(1, 0, 0)
+else
+textLabel.TextColor3 = Color3.new(1, 1, 1) -- Rouge par défaut
+        highlight.FillColor = Color3.new(1, 1, 1)
     end
 
-    textLabel.TextColor3 = textLabel.TextColor3 or Color3.new(1, 0, 0)
+    
     highlight.FillTransparency = 0
     highlight.OutlineTransparency = 0
     billboard.Parent = part
