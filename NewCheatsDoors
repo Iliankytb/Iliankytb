@@ -1,7 +1,7 @@
 local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
 local Window = OrionLib:MakeWindow({Name = "New Cheat Doors(IliankYTB)", HidePremium = false,IntroEnabled = false ,SaveConfig = true, ConfigFolder = "Test1"})
 
-local V = "Version:0.0.4"
+local V = "Version:0.0.5"
 
 local EspMonster = false
 local NameMonsterTable = {"AmbushMoving", "FigureRig", "Eyes", "RushMoving", "SeekMovingNewClone", "Screech","Halt"}
@@ -73,6 +73,7 @@ textLabel.TextColor3 = Color3.new(1, 1, 1) -- Rouge par défaut
     highlight.FillTransparency = 0
     highlight.OutlineTransparency = 0
     billboard.Parent = part
+highlight.DepthMode = Enum.HighlightDepthMode.Always
 end
 
 -- Fonction pour activer les ESP
