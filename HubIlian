@@ -10,7 +10,7 @@ local teleportService = game:GetService("TeleportService")
 
 -- Fonction de téléportation
 local function teleportPlayer(placeId)
-    teleportService:Teleport(placeId, game.Player.LocalPlayer)
+    teleportService:Teleport(placeId, game.player.LocalPlayer)
 end
 
 
