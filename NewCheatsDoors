@@ -7,7 +7,8 @@ local EspMonster = false
 local NameMonsterTable = {"AmbushMoving", "FigureRig", "Eyes", "RushMoving", "SeekMovingNewClone", "Screech","Halt"}
 local EspItems = false
 local NameItemsTable = {"Crucifix", "LeverForGate", "KeyHitbox", "Gold", "Candle", "Lockpick", "LockPick", "Flashlight", "BigFlashlight","Gold"}
-
+local NoFigureHearing = false 
+local LibraryCodeFinder = false
 -- Fonction pour créer un BillboardGui
 local function createBillboard(part, name)
     local billboard = Instance.new("BillboardGui")
@@ -164,6 +165,12 @@ end
 -- Écoute des nouveaux objets ajoutés
 workspace.DescendantAdded:Connect(onChildAdded)
 
+local HubMainTab = Window:MakeTab({
+	Name = "Main",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
 local HubAutoFarmTab = Window:MakeTab({
 	Name = "AutoFarm(Coming)",
 	Icon = "rbxassetid://4483345998",
@@ -226,9 +233,33 @@ HubEspTab:AddToggle({
 	end    
 })
 
+HubMainTab:AddToggle({
+	Name = "No Figure Hearing",
+	Default = false,
+	Callback = function(Value)
+	NoFigureHearing = Value
+while NoFigureHearing do
+wait(0.0000000000000000000000001)
+game:GetService("ReplicatedStorage").RemotesFolder.Crouch:FireServer(true)
+end
+	end    
+})
+
+HubMainTab:AddToggle({
+	Name = "Auto Library Code (Code Finder)",
+	Default = false,
+	Callback = function(Value)
+	LibraryCodeFinder = Value
+while LibraryCodeFinder do
+wait(0.00000000000000000000000001)
+game:GetService("ReplicatedStorage").RemotesFolder.PL:FireServer(math.Random(0.9)math.Random(0.9)math.Random(0.9)math.Random(0.9)math.Random(0,9)math.Random(0,9))
+end
+	end    
+})
+
 local HubMiscTab = Window:MakeTab({
 	Name = "Misc(Coming)",
-	Icon = "rbxassetid://4483345998",
+	icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
 
@@ -239,5 +270,7 @@ local HubVersionTab = Window:MakeTab({
 })
 
 
-
 OrionLib:Init()
+
+ 
+ 
