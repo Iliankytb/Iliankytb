@@ -1,4 +1,4 @@
-local V = "Version: 1.7.2"
+local V = "Version: 1.7.3"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
@@ -10,7 +10,7 @@ local teleportService = game:GetService("TeleportService")
 
 -- Fonction de téléportation
 local function teleportPlayer(placeId)
-    teleportService:Teleport(placeId, game.player.LocalPlayer)
+    teleportService:Teleport(placeId, game.Players.LocalPlayer)
 end
 
 
