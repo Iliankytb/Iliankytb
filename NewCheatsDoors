@@ -3,6 +3,112 @@ local Window = OrionLib:MakeWindow({Name = "New Cheat Doors(IliankYTB)", HidePre
 
 local V = "Version:0.0.1"
 
+local EspMonster = false
+local NameMonsterTable = {"AmbushMoving", "FigureRig", "Eyes", "RushMoving", "SeekMovingNewClone", "Screech"}
+
+-- Fonction pour créer un BillboardGui
+local function createBillboard(part, name)
+    local billboard = Instance.new("BillboardGui")
+    billboard.Adornee = part
+    billboard.Size = UDim2.new(0, 200, 0, 50)
+    billboard.StudsOffset = Vector3.new(0, 3, 0)
+    billboard.AlwaysOnTop = true
+
+    local textLabel = Instance.new("TextLabel")
+    textLabel.Size = UDim2.new(1, 0, 1, 0)
+    textLabel.BackgroundTransparency = 1
+    textLabel.Text = name
+    textLabel.TextColor3 = Color3.new(1, 0, 0) -- Rouge
+    textLabel.TextScaled = true
+    textLabel.Font = Enum.Font.GothamBold
+    textLabel.Parent = billboard
+
+    billboard.Name = "MonsterBillboard"
+    billboard.Parent = part
+end
+
+-- Fonction pour ajouter un Highlight
+local function addHighlight(part)
+    local highlight = Instance.new("Highlight")
+    highlight.FillColor = Color3.new(1, 0, 0) -- Rouge
+    highlight.FillTransparency = 0.5
+    highlight.OutlineTransparency = 0
+    highlight.Name = "MonsterHighlight"
+    highlight.Parent = part
+end
+
+-- Fonction pour activer les ESP
+local function activateESP()
+    for _, descendant in ipairs(workspace:GetDescendants()) do
+        if descendant:IsA("Model") or descendant:IsA("Part") or descendant:IsA("BasePart") then
+            for _, name in ipairs(NameMonsterTable) do
+                if descendant.Name == name then
+                    if descendant:IsA("Model") then
+                        local primaryPart = descendant.PrimaryPart or descendant:FindFirstChildWhichIsA("BasePart")
+                        if primaryPart and not primaryPart:FindFirstChild("MonsterBillboard") then
+                            addHighlight(primaryPart)
+                            createBillboard(primaryPart, name)
+                        end
+                    elseif descendant:IsA("BasePart") and not descendant:FindFirstChild("MonsterBillboard") then
+                        addHighlight(descendant)
+                        createBillboard(descendant, name)
+                    end
+                end
+            end
+        end
+    end
+end
+
+-- Fonction pour désactiver les ESP
+local function deactivateESP()
+    for _, descendant in ipairs(workspace:GetDescendants()) do
+        if descendant:IsA("Model") or descendant:IsA("BasePart") then
+            if descendant:FindFirstChild("MonsterHighlight") then
+                descendant.MonsterHighlight:Destroy()
+            end
+            if descendant:FindFirstChild("MonsterBillboard") then
+                descendant.MonsterBillboard:Destroy()
+            end
+        end
+    end
+end
+
+-- Fonction pour gérer les nouveaux objets ajoutés
+local function onChildAdded(child)
+    if EspMonster then
+        for _, name in ipairs(NameMonsterTable) do
+            if child.Name == name then
+                if child:IsA("Model") then
+                    local primaryPart = child.PrimaryPart or child:FindFirstChildWhichIsA("BasePart")
+                    if primaryPart and not primaryPart:FindFirstChild("MonsterBillboard") then
+                        addHighlight(primaryPart)
+                        createBillboard(primaryPart, name)
+                    end
+                elseif child:IsA("BasePart") and not child:FindFirstChild("MonsterBillboard") then
+                    addHighlight(child)
+                    createBillboard(child, name)
+                end
+            end
+        end
+    end
+end
+
+-- Activation/désactivation dynamique
+local function toggleESPMonsters(enabled)
+    EspMonster = enabled
+    if EspMonster then
+        activateESP()
+    else
+        deactivateESP()
+    end
+end
+
+-- Écoute des nouveaux objets ajoutés au Workspace
+workspace.ChildAdded:Connect(onChildAdded)
+
+
+
+
 local HubAutoFarmTab = Window:MakeTab({
 	Name = "AutoFarm(Coming)",
 	Icon = "rbxassetid://4483345998",
@@ -27,7 +133,7 @@ HubEspTab:AddToggle({
 	Name = "Esp Monsters",
 	Default = false,
 	Callback = function(Value)
-	
+	toggleESPMonsters(Value)
 	end    
 })
 
