@@ -1,10 +1,12 @@
 local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
 local Window = OrionLib:MakeWindow({Name = "New Cheat Doors(IliankYTB)", HidePremium = false,IntroEnabled = false ,SaveConfig = true, ConfigFolder = "Test1"})
 
-local V = "Version:0.0.1"
+local V = "Version:0.0.2"
 
 local EspMonster = false
 local NameMonsterTable = {"AmbushMoving", "FigureRig", "Eyes", "RushMoving", "SeekMovingNewClone", "Screech"}
+local EspItems = false
+local NameItemsTable = {"Crucifix", "LeverForGate", "KeyHitbox", "LeverForGate"}
 
 -- Fonction pour créer un BillboardGui
 local function createBillboard(part, name)
@@ -22,23 +24,65 @@ local function createBillboard(part, name)
     textLabel.TextScaled = true
     textLabel.Font = Enum.Font.GothamBold
     textLabel.Parent = billboard
-
-    billboard.Name = "MonsterBillboard"
-    billboard.Parent = part
-end
-
--- Fonction pour ajouter un Highlight
-local function addHighlight(part)
-    local highlight = Instance.new("Highlight")
+local highlight = Instance.new("Highlight")
     highlight.FillColor = Color3.new(1, 0, 0) -- Rouge
-    highlight.FillTransparency = 0.5
+    highlight.FillTransparency = 0
     highlight.OutlineTransparency = 0
-    highlight.Name = "MonsterHighlight"
+    
     highlight.Parent = part
+if textLabel.Text == "SeekMovingNewClone" then
+textLabel.Text = "Seek"
+textLabel.TextColor3 = Color3.new(1, 0, 0)
+highlight.FillColor = Color3.new(1, 0, 0)
+billboard.Name = "MonsterBillboard"
+highlight.Name = "MonsterHighlight"
+elseif textLabel.Text == "Screech" then
+textLabel.Text = "Screech"
+textLabel.TextColor3 = Color3.new(1, 0, 0)
+highlight.FillColor = Color3.new(1, 0, 0)
+billboard.Name = "MonsterBillboard"
+highlight.Name = "MonsterHighlight"
+elseif textLabel.Text == "RushMoving" then
+textLabel.Text = "Rush"
+textLabel.TextColor3 = Color3.new(1, 0, 0)
+highlight.FillColor = Color3.new(1, 0, 0)
+billboard.Name = "MonsterBillboard"
+highlight.Name = "MonsterHighlight"
+elseif textLabel.Text == "FigureRig" then
+textLabel.Text = "Figure"
+textLabel.TextColor3 = Color3.new(1, 0, 0)
+highlight.FillColor = Color3.new(1, 0, 0)
+billboard.Name = "MonsterBillboard"
+highlight.Name = "MonsterHighlight"
+elseif textLabel.Text == "AmbushMoving" then
+textLabel.Text = "Ambush"
+textLabel.TextColor3 = Color3.new(1, 0, 0)
+billboard.Name = "MonsterBillboard"
+highlight.Name = "MonsterHighlight"
+elseif textLabel.Text == "Gold" then
+textLabel.Text = "Gold"
+textLabel.TextColor3 = Color3.new(1, 1, 0)
+highlight.FillColor = Color3.new(1, 1, 0)
+billboard.Name = "ItemsBillboard"
+highlight.Name = "ItemsHighlight"
+elseif textLabel.Text == "KeyHitbox" then
+highlight.Name = "ItemsHighlight"
+textLabel.Text = "Key"
+textLabel.TextColor3 = Color3.new(1, 1, 0)
+highlight.FillColor = Color3.new(1, 1, 0)
+billboard.Name = "ItemsBillboard"
 end
+    
+    billboard.Parent = part
+
+end
+
+
+    
 
 -- Fonction pour activer les ESP
 local function activateESP()
+if EspMonster then
     for _, descendant in ipairs(workspace:GetDescendants()) do
         if descendant:IsA("Model") or descendant:IsA("Part") or descendant:IsA("BasePart") then
             for _, name in ipairs(NameMonsterTable) do
@@ -46,11 +90,11 @@ local function activateESP()
                     if descendant:IsA("Model") then
                         local primaryPart = descendant.PrimaryPart or descendant:FindFirstChildWhichIsA("BasePart")
                         if primaryPart and not primaryPart:FindFirstChild("MonsterBillboard") then
-                            addHighlight(primaryPart)
+                            
                             createBillboard(primaryPart, name)
                         end
                     elseif descendant:IsA("BasePart") and not descendant:FindFirstChild("MonsterBillboard") then
-                        addHighlight(descendant)
+                        
                         createBillboard(descendant, name)
                     end
                 end
@@ -58,9 +102,31 @@ local function activateESP()
         end
     end
 end
+if EspItems then
+    for _, descendant in ipairs(workspace:GetDescendants()) do
+        if descendant:IsA("Model") or descendant:IsA("Part") or descendant:IsA("BasePart") then
+            for _, name in ipairs(NameItemsTable) do
+                if descendant.Name == name then
+                    if descendant:IsA("Model") then
+                        local primaryPart = descendant.PrimaryPart or descendant:FindFirstChildWhichIsA("BasePart")
+                        if primaryPart and not primaryPart:FindFirstChild("MonsterBillboard") then
+                            
+                            createBillboard(primaryPart, name)
+                        end
+                    elseif descendant:IsA("BasePart") and not descendant:FindFirstChild("MonsterBillboard") then
+                        
+                        createBillboard(descendant, name)
+                    end
+                end
+            end
+        end
+    end
+end
+end
 
 -- Fonction pour désactiver les ESP
 local function deactivateESP()
+if EspMonster == false then
     for _, descendant in ipairs(workspace:GetDescendants()) do
         if descendant:IsA("Model") or descendant:IsA("BasePart") then
             if descendant:FindFirstChild("MonsterHighlight") then
@@ -72,6 +138,19 @@ local function deactivateESP()
         end
     end
 end
+if EspItems == false then
+    for _, descendant in ipairs(workspace:GetDescendants()) do
+        if descendant:IsA("Model") or descendant:IsA("BasePart") then
+            if descendant:FindFirstChild("ItemsHighlight") then
+                descendant.ItemsHighlight:Destroy()
+            end
+            if descendant:FindFirstChild("ItemsBillboard") then
+                descendant.ItemsBillboard:Destroy()
+            end
+        end
+    end
+end
+end
 
 -- Fonction pour gérer les nouveaux objets ajoutés
 local function onChildAdded(child)
@@ -81,11 +160,27 @@ local function onChildAdded(child)
                 if child:IsA("Model") then
                     local primaryPart = child.PrimaryPart or child:FindFirstChildWhichIsA("BasePart")
                     if primaryPart and not primaryPart:FindFirstChild("MonsterBillboard") then
-                        addHighlight(primaryPart)
+                        
                         createBillboard(primaryPart, name)
                     end
                 elseif child:IsA("BasePart") and not child:FindFirstChild("MonsterBillboard") then
-                    addHighlight(child)
+                    
+                    createBillboard(child, name)
+                end
+            end
+        end
+    end
+if EspItems then
+        for _, name in ipairs(NameItemsTable) do
+            if child.Name == name then
+                if child:IsA("Model") then
+                    local primaryPart = child.PrimaryPart or child:FindFirstChildWhichIsA("BasePart")
+                    if primaryPart and not primaryPart:FindFirstChild("ItemsBillboard") then
+                        
+                        createBillboard(primaryPart, name)
+                    end
+                elseif child:IsA("BasePart") and not child:FindFirstChild("ItemsBillboard") then
+                    
                     createBillboard(child, name)
                 end
             end
@@ -94,13 +189,10 @@ local function onChildAdded(child)
 end
 
 -- Activation/désactivation dynamique
-local function toggleESPMonsters(enabled)
-    EspMonster = enabled
-    if EspMonster then
+local function toggleESP(enabled,EspName)
+    EspName = enabled
         activateESP()
-    else
         deactivateESP()
-    end
 end
 
 -- Écoute des nouveaux objets ajoutés au Workspace
@@ -133,7 +225,7 @@ HubEspTab:AddToggle({
 	Name = "Esp Monsters",
 	Default = false,
 	Callback = function(Value)
-	toggleESPMonsters(Value)
+	toggleESP(Value,"EspMonster")
 	end    
 })
 
@@ -158,7 +250,7 @@ HubEspTab:AddToggle({
 	Name = "Esp Items",
 	Default = false,
 	Callback = function(Value)
-	
+	toggleESP(Value,"EspItems")
 	end    
 })
 
