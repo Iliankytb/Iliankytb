@@ -1,7 +1,7 @@
 local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
 local Window = OrionLib:MakeWindow({Name = "New Cheat Doors(IliankYTB)", HidePremium = false,IntroEnabled = false ,SaveConfig = true, ConfigFolder = "Test1"})
 
-local V = "Version Of The Game:0.01"
+local V = "Version:0.0.1"
 
 local HubAutoFarmTab = Window:MakeTab({
 	Name = "AutoFarm(Coming)",
@@ -10,9 +10,59 @@ local HubAutoFarmTab = Window:MakeTab({
 })
 
 local HubEspTab = Window:MakeTab({
-	Name = "Esp(Coming)",
+	Name = "Esp",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
+})
+
+HubEspTab:AddToggle({
+	Name = "Esp Player",
+	Default = false,
+	Callback = function(Value)
+	
+	end    
+})
+
+HubEspTab:AddToggle({
+	Name = "Esp Monsters",
+	Default = false,
+	Callback = function(Value)
+	
+	end    
+})
+
+HubEspTab:AddToggle({
+	Name = "Esp Wardrobe",
+	Default = false,
+	Callback = function(Value)
+	
+	end    
+})
+
+HubEspTab:AddToggle({
+	Name = "Esp Candy",
+	Default = false,
+	Callback = function(Value)
+	
+	end    
+})
+
+
+HubEspTab:AddToggle({
+	Name = "Esp Items",
+	Default = false,
+	Callback = function(Value)
+	
+	end    
+})
+
+
+HubEspTab:AddToggle({
+	Name = "Esp Door",
+	Default = false,
+	Callback = function(Value)
+	
+	end    
 })
 
 local HubMiscTab = Window:MakeTab({
@@ -26,5 +76,7 @@ local HubVersionTab = Window:MakeTab({
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
+
+
 
 OrionLib:Init()
