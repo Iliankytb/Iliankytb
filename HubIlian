@@ -1,4 +1,4 @@
-local V = "Version: 1.7.1"
+local V = "Version: 1.7.2"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
