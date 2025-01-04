@@ -1,7 +1,7 @@
 local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
 local Window = OrionLib:MakeWindow({Name = "New Cheat Doors(IliankYTB)", HidePremium = false,IntroEnabled = false ,SaveConfig = true, ConfigFolder = "Test1"})
 
-local V = "Version:0.0.5"
+local V = "Version:0.0.6"
 
 local EspMonster = false
 local NameMonsterTable = {"AmbushMoving", "FigureRig", "Eyes", "RushMoving", "SeekMovingNewClone", "Screech","Halt"}
