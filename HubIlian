@@ -1,4 +1,4 @@
-local V = "Version: 1.7.3"
+local V = "Version: 1.8.0"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
@@ -259,6 +259,14 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/SkibidiCen/MainMenu/m
 end    
 })
 
+HubJujutsuInfTab:AddButton({
+	Name = "Teleportation to Jujutsu Infinite",
+	Callback = function()
+teleportPlayer(10450270085) 
+--Roblox.GameLauncher.joinGameInstance(, "5cea2548-1f2a-4d21-9c20-a2719a177b70")
+end    
+})
+
 HubTab:AddButton({
 	Name = "Doors Cheats(iliankytb(in rework(No Key)))",
 	Callback = function()
@@ -288,6 +296,13 @@ HubTab:AddButton({
 	Callback = function()
       		loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/NewCheatsDoors"))()
   
+end    
+})
+
+HubTab:AddButton({
+	Name = "Teleportation to Doors",
+	Callback = function()
+teleportPlayer(6516141723)
 end    
 })
 
@@ -346,6 +361,15 @@ HubEvadeTab:AddButton({
 
 end    
 })
+
+HubEvadeTab:AddButton({
+	Name = "Teleportation to Evade",
+	Callback = function()
+      		teleportPlayer(7991339063) 
+--Roblox.GameLauncher.joinGameInstance(7991339063, "fe53125b-7049-40ec-b66c-f2c83a189a43")
+end    
+})
+
 
 HubTab:AddButton({
 	Name = "Doors Entities Spawner(not Mine And No Key)",
@@ -411,6 +435,14 @@ HubMM2Tab:AddButton({
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/Murder-Mystery-2-OP-God-Hub-Unlock-Inventory-Break-Sheriff-Gun-Auto-Farm-Best-17997"))()
 
+end
+})
+
+HubMM2Tab:AddButton({
+	Name = "Teleportation to MM2",
+	Callback = function()
+      		teleportPlayer(6516141723) 
+--Roblox.GameLauncher.joinGameInstance(, "9430227b-6086-405e-b458-722283e8722f")
 end
 })
 
@@ -640,6 +672,14 @@ HubTSBTab:AddButton({
 end
 })
 
+HubTSBTab:AddButton({
+	Name = "Teleportation to TSB",
+	Callback = function()
+      		teleportPlayer(10449761463) 
+--Roblox.GameLauncher.joinGameInstance(, "ef1d07d1-3c38-470d-9f16-420f88d6dbc2")
+end
+})
+
 HubWeirdStrictDadTab:AddButton({
 	Name = "Goa Hub Weird Strict Dad Cheats(No Key All Chapters)",
 	Callback = function()
@@ -669,6 +709,14 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/HutaoHubs/Hutaohubs2.
 end    
 })
 
+HubFischTab:AddButton({
+	Name = "Teleportation to Fisch",
+	Callback = function()      		
+teleportPlayer(16732694052) 
+--Roblox.GameLauncher.joinGameInstance(, "235cc80b-c414-4f25-a12d-66ef66f10ecc")
+end    
+})
+
 HubRainbowFriendsTab:AddButton({
 	Name = "King Rainbow Friends Cheats(Need Key)",
 	Callback = function()
@@ -681,6 +729,14 @@ HubRainbowFriendsTab:AddButton({
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/Rainbow-Friends-Rocks-hub-beta-15087"))()
 
+end
+})
+
+HubRainbowFriendsTab:AddButton({
+	Name = "Teleportation to rainbow friend",
+	Callback = function()
+      		teleportPlayer(7991339063) 
+--Roblox.GameLauncher.joinGameInstance(, "fe53125b-7049-40ec-b66c-f2c83a189a43")
 end
 })
 
@@ -718,7 +774,7 @@ end
 })
 
 HubBloxFruitTab:AddButton({
-	Name = "Min Gaming Blox Fruits Cheats(No Key)",
+	Name = "Old Min Gaming Blox Fruits Cheats(No Key)",
 	Callback = function()
 loadstring(game:HttpGet("https://raw.githubusercontent.com/LuaCrack/Min/refs/heads/main/MinVeVn"))()
 end
@@ -740,7 +796,37 @@ end
 })
 
 HubBloxFruitTab:AddButton({
-	Name = "Teleportation To Sea 3(In Testing)",
+	Name = "Min Gaming V16 Blox Fruits Cheats(No Key)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/LuaCrack/Min/refs/heads/main/MinVeEng"))()
+end
+})
+
+HubBloxFruitTab:AddButton({
+	Name = "Min Gaming V18 Blox Fruits Cheats(No Key)",
+	Callback = function()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/LuaCrack/Min/refs/heads/main/MinSeHub"))()
+end
+})
+
+HubBloxFruitTab:AddButton({
+	Name = "Teleportation to Blox Fruit Sea 1",
+	Callback = function()
+teleportPlayer(2753915549) 
+--Roblox.GameLauncher.joinGameInstance(, "1dbba2e5-b353-4ace-9516-1b573072a19c")
+end
+})
+
+HubBloxFruitTab:AddButton({
+	Name = "Teleportation to Blox Fruit Sea 2",
+	Callback = function()
+teleportPlayer(4442272183)  
+--Roblox.GameLauncher.joinGameInstance(4442272183, "d1c5b544-fa64-4094-9386-6d71f5da3aeb")
+end
+})
+
+HubBloxFruitTab:AddButton({
+	Name = "Teleportation to Blox Fruit Sea 3",
 	Callback = function()
 teleportPlayer(7449423635)   
 end
@@ -765,7 +851,7 @@ copyToClipboard("https://discord.gg/Heje8He4")
 HubMiscTab:AddButton({
 	Name = "The Loadingstring of this cheat(hub)",
 	Callback = function()
---copyToClipboard("loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/HubIlian"))()")
+copyToClipboard("loadstring(game:HttpGet('https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/HubIlian'))()")
       		end
 })
 
