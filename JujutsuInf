@@ -1,10 +1,11 @@
-local V = "Version: 0.0.7"
+local V = "Version: 0.0.8"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
 local Window = OrionLib:MakeWindow({Name = "Jujutsu Inf Cheat "..V, HidePremium = false,IntroEnabled = false ,SaveConfig = false, ConfigFolder = "Tester"})
 
 local AutoMissions = false
+local BlocksPlayers = false
 
 local function AutoMissionsFarm()
 while AutoMissions do
@@ -16,6 +17,10 @@ game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1,{work
 game:GetService("ReplicatedStorage").Remotes.Server.Combat.ChangeWeapon:FireServer("Fists")
 wait(0.000001)
 end
+end
+
+local function BlocksAllPlayers()
+local PlayersFolder = workspace.Objects.Characters
 end
 
 local HubAutoFarmTab = Window:MakeTab({
@@ -31,6 +36,14 @@ HubAutoFarmTab:AddToggle({
 	Callback = function(Value)
 		AutoMissions = Value
 AutoMissionsFarm()
+	end    
+})
+
+HubAutoFarmTab:AddToggle({
+	Name = "Block All Players",
+	Default = false,
+	Callback = function(Value)
+		BlocksPlayers = Value
 	end    
 })
 
