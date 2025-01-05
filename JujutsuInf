@@ -17,6 +17,30 @@ local UseAllGourd = false
 local UseAllCat = false
 local UseAllFood = false
 local SktDivesAlrUsed = false
+local ContextActionService = game:GetService("ContextActionService")
+
+-- Fonction pour simuler un appui sur la touche 'J'
+local function simulateJPress(actionName, inputState, inputObject)
+    if inputState == Enum.UserInputState.Begin then
+        -- Action à exécuter lors de l'appui sur "J"
+        print("La touche 'J' a été simulée!")
+        -- Vous pouvez ajouter ici l'action spécifique que vous souhaitez
+    end
+end
+
+-- Lier l'action de la touche 'J' à une fonction
+ContextActionService:BindAction("SimulateJ", simulateJPress, false, Enum.KeyCode.J)
+
+-- Fonction pour simuler directement un appui sur 'J' sans interaction de bouton
+local function triggerJPress()
+    -- Simuler l'appui sur la touche "J"
+    ContextActionService:InputBegan(Enum.KeyCode.J, false)
+    wait(0.1) -- Petite pause pour simuler le relâchement
+    ContextActionService:InputEnded(Enum.KeyCode.J)
+end
+
+-- Appel direct de la fonction pour simuler 'J'
+ -- Ceci appelle la fonction et simule l'appui de la touche 'J'
 
 local function AutoMissionsFarm()
 game:GetService("ReplicatedStorage").Remotes.Server.Combat.ChangeWeapon:FireServer("Fists")
@@ -34,9 +58,9 @@ for _, playerModel in pairs(PlayersFolder:GetChildren()) do
       if distance >= 1000 and not SktDivesAlrUsed then
 SktDivesAlrUsed = true
 wait(1)
-game:GetService("ReplicatedStorage").Remotes.Server.Combat.Skydive:FireServer(game:GetService("Players").LocalPlayer.ReplicatedTempData.quest)
+triggerJPress()
 end
-if distance <= 100 then
+if distance <= 250 then
 Hum.CFrame = targetRootPart.CFrame
 end
 if distance <= 25 then
@@ -114,7 +138,7 @@ for _, playerModel in pairs(PlayersFolder:GetChildren()) do
     if playerModel:FindFirstChild("Humanoid") and playerModel:FindFirstChild("HumanoidRootPart") then
         local targetRootPart = playerModel.HumanoidRootPart
         local distance = (Hum.Position - targetRootPart.Position).Magnitude
-        if distance <= 100 then
+        if distance <= 250 then
 Hum.CFrame = targetRootPart.CFrame
 end
 if distance <= 25 then
