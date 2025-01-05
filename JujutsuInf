@@ -1,4 +1,4 @@
-local V = "Version: 0.0.36"
+local V = "Version: 0.0.37"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
@@ -9,6 +9,7 @@ local BlocksMobs = false
 local godmode = false
 local AlwaysBF = false
 local AutoAuraKill = false
+local AutoAuraKill2 = false
 local NoCooldownValue = false
 local Player = game.Players.LocalPlayer
 local SkillsFolder = game:GetService("ReplicatedStorage").Skills
