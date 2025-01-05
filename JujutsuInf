@@ -1,4 +1,4 @@
-local V = "Version: 0.0.42"
+local V = "Version: 0.0.43"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
@@ -125,6 +125,30 @@ if distance <= 25 then
  
         end
     end
+end
+wait(0.1)
+end
+end
+
+local function AuraKill2()
+while AutoAuraKill2 do
+local PlayersFolder = workspace.Objects.Character
+local Hum = Player.Character:WaitForChild("HumanoidRootPart")
+
+for _, playerModel in pairs(PlayersFolder:GetChildren()) do
+    if playerModel:FindFirstChild("Humanoid") and playerModel:FindFirstChild("HumanoidRootPart") then
+        local targetRootPart = playerModel.HumanoidRootPart
+        local distance = (Hum.Position - targetRootPart.Position).Magnitude
+        
+if distance <= 25 then
+        
+            game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(4, {playerModel.Humanoid})
+ 
+        end
+    end
+end
+wait(0.1)
+end
 end
 
 local function RedeemAllCodes()
@@ -258,7 +282,8 @@ HubAutoFarmTab:AddToggle({
 	Name = "Aura Kill Players(Coming Because Its glitched)",
 	Default = false,
 	Callback = function(Value)
-		--AutoAuraKill2 = Value
+		AutoAuraKill2 = Value
+AuraKill2()
 	end    
 })
 
