@@ -1,4 +1,4 @@
-local V = "Version: 0.0.37"
+local V = "Version: 0.0.38"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
@@ -19,7 +19,6 @@ local UseAllCat = false
 local UseAllFood = false
 local SktDivesAlrUsed = false
 local ContextActionService = game:GetService("ContextActionService")
-local redeemedFolders = Player.ReplicatedData.redeemed
 
 local function AutoMissionsFarm()
 game:GetService("ReplicatedStorage").Remotes.Server.Combat.ChangeWeapon:FireServer("Fists")
@@ -152,9 +151,11 @@ end
 end
 
 local function RedeemAllCodes()
-for _, redeemedFolders2 in pairs(redeemedFolders:GetChildren()) do
-game:GetService("ReplicatedStorage").Remotes.Server.Data.RedeemCode:InvokeServer(redeemedFolders2.Name)
-end
+game:GetService("ReplicatedStorage").Remotes.Server.Data.RedeemCode:InvokeServer("HAPPY_2025")
+game:GetService("ReplicatedStorage").Remotes.Server.Data.RedeemCode:InvokeServer("50K_FOLLOWERS")
+game:GetService("ReplicatedStorage").Remotes.Server.Data.RedeemCode:InvokeServer("MERRY_CHRISTMAS")
+game:GetService("ReplicatedStorage").Remotes.Server.Data.RedeemCode:InvokeServer("RELEASE")
+--game:GetService("ReplicatedStorage").Remotes.Server.Data.RedeemCode:InvokeServer("")
 end
 
 local function BlocksAllPlayers()
