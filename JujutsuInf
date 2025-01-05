@@ -1,4 +1,4 @@
-local V = "Version: 0.0.40"
+local V = "Version: 0.0.41"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
@@ -127,7 +127,7 @@ if distance <= 25 then
     end
 end
 
-local function AuraKill2()
+--[[local function AuraKill2()
     while AutoAuraKill2 do
         local PlayersFolder = workspace.Objects.Character
         local Hum = Player.Character:WaitForChild("HumanoidRootPart")
@@ -147,7 +147,7 @@ local function AuraKill2()
         
         wait(0.001)
     end
-end
+end]]
 
 
 local function RedeemAllCodes()
@@ -281,8 +281,8 @@ HubAutoFarmTab:AddToggle({
 	Name = "Aura Kill Players",
 	Default = false,
 	Callback = function(Value)
-		AutoAuraKill2 = Value
-AuraKill2()
+		--AutoAuraKill2 = Value
+--AuraKill2()
 	end    
 })
 
