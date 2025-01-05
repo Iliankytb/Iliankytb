@@ -1,4 +1,4 @@
-local V = "Version: 0.0.19"
+local V = "Version: 0.0.20"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
@@ -34,7 +34,7 @@ while NoCooldownValue do
 for _, SkillsFolder2 in pairs(SkillsFolder:GetChildren()) do
 SkillsFolder2.Cooldown.Value = 0
 end
-Player.Character:WaitForChild("Humanoid").CombatAgent.Multipliers.Cooldown = 0.1
+Player.Character:WaitForChild("Humanoid").CombatAgent.Multipliers.Cooldown.Value = 0.1
 wait(0.0000001)
 end
 end
@@ -54,7 +54,7 @@ local Hum = Player.Character:WaitForChild("HumanoidRootPart")
 game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(4,{playerModel.Humanoid})
 --HumanoidRootPart.CFrame = playerModel.HumanoidRootPart.CFrame
 end
-Player.Character:WaitForChild("Humanoid").CombatAgent.Multipliers.Hitbox = 50
+Player.Character:WaitForChild("Humanoid").CombatAgent.Multipliers.Hitbox.Value = 50
 wait(0.01)
 end
 end
