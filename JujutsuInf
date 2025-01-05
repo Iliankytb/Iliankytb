@@ -1,4 +1,4 @@
-local V = "Version: 0.0.16"
+local V = "Version: 0.0.18"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
@@ -9,7 +9,9 @@ local BlocksMobs = false
 local godmode = false
 local AlwaysBF = false
 local AutoAuraKill = false
+local NoCooldownValue = false
 local Player = game.Players.LocalPlayer
+local SkillsFolder = game:GetService("ReplicatedStorage").Skills
 
 local function AutoMissionsFarm()
 game:GetService("ReplicatedStorage").Remotes.Server.Combat.ChangeWeapon:FireServer("Fists")
@@ -24,6 +26,15 @@ game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(4,{play
 --HumanoidRootPart.CFrame = playerModel.HumanoidRootPart.CFrame
 end
 wait(0.01)
+end
+end
+
+local function NoCooldown()
+while NoCooldownValue do
+for _, SkillsFolder2 in pairs(SkillsFolder:GetChildren()) do
+SkillsFolder2.Cooldown.Value = 0
+end
+wait(0.0000001)
 end
 end
 
@@ -120,6 +131,15 @@ HubAutoFarmTab:AddToggle({
 	Callback = function(Value)
 		AutoAuraKill = Value
 AuraKill()
+	end    
+})
+
+HubAutoFarmTab:AddToggle({
+	Name = "No Cooldown Skills",
+	Default = false,
+	Callback = function(Value)
+		NoCooldownValue = Value
+NoCooldown()
 	end    
 })
 
