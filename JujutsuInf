@@ -1,4 +1,4 @@
-local V = "Version: 0.0.43"
+local V = "Version: 0.0.44"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
@@ -132,7 +132,7 @@ end
 
 local function AuraKill2()
 while AutoAuraKill2 do
-local PlayersFolder = workspace.Objects.Character
+local PlayersFolder = workspace.Objects.Characters
 local Hum = Player.Character:WaitForChild("HumanoidRootPart")
 
 for _, playerModel in pairs(PlayersFolder:GetChildren()) do
@@ -279,7 +279,7 @@ AuraKill()
 	end    
 })
 HubAutoFarmTab:AddToggle({
-	Name = "Aura Kill Players(Coming Because Its glitched)",
+	Name = "Aura Kill Players",
 	Default = false,
 	Callback = function(Value)
 		AutoAuraKill2 = Value
