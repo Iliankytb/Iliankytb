@@ -127,29 +127,6 @@ if distance <= 25 then
     end
 end
 
-local function AuraKill2()
-    while AutoAuraKill2 do
-        local PlayersFolder = workspace.Objects.Character
-        local Hum = Player.Character:WaitForChild("HumanoidRootPart")
-
-     for _, playerModel in pairs(PlayersFolder:GetChildren()) do
-            if playerModel:FindFirstChild("Humanoid") and playerModel:FindFirstChild("HumanoidRootPart") then
-                local targetRootPart = playerModel.HumanoidRootPart
-                local distance = (Hum.Position - targetRootPart.Position).Magnitude
-
-                 if distance <= 25 then
-                    game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(4, {playerModel.Humanoid})
-                end
-            end
-        end
-
-           Player.Character:WaitForChild("Humanoid").CombatAgent.Multipliers.Hitbox.Value = 50
-        
-        wait(0.001)
-    end
-end
-
-
 local function RedeemAllCodes()
 game:GetService("ReplicatedStorage").Remotes.Server.Data.RedeemCode:InvokeServer("HAPPY_2025")
 game:GetService("ReplicatedStorage").Remotes.Server.Data.RedeemCode:InvokeServer("50K_FOLLOWERS")
@@ -278,11 +255,10 @@ AuraKill()
 	end    
 })
 HubAutoFarmTab:AddToggle({
-	Name = "Aura Kill Players",
+	Name = "Aura Kill Players(Coming Because Its glitched)",
 	Default = false,
 	Callback = function(Value)
-		AutoAuraKill2 = Value
-AuraKill2()
+		--AutoAuraKill2 = Value
 	end    
 })
 
