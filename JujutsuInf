@@ -1,4 +1,4 @@
-local V = "Version: 0.0.14"
+local V = "Version: 0.0.15"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
@@ -10,6 +10,7 @@ local godmode = false
 local Player = game.Players.LocalPlayer
 
 local function AutoMissionsFarm()
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.ChangeWeapon:FireServer("Fists")
 while AutoMissions do
 game:GetService("ReplicatedStorage").Remotes.Server.Data.TakeQuest:InvokeServer({["subtitle"] = "a Curse User",["set"] = "Yuki Fortress Set",["rewards"] = {["essence"] = 40,["chestMeter"] = 79,["exp"] = 8850000,["cash"] = 51000},["rewardsText"] = "8.85 Mi EXP | ILIANKYTB The best",["difficulty"] = 3,["title"] = "Defeat",["level"] = 430,["grade"] = "Non Sorcerer",["type"] = "Kill"})
 --game:GetService("ReplicatedStorage").Remotes.Server.Dialogue.GetResponse:InvokeServer("Clan Head Jujutsu High","Promote")
@@ -17,11 +18,10 @@ game:GetService("ReplicatedStorage").Remotes.Server.Data.ChestMeterReward:FireSe
 local PlayersFolder = workspace.Objects.Mobs
 local Hum = Player.Character:WaitForChild("HumanoidRootPart")
  for _, playerModel in pairs(PlayersFolder:GetChildren()) do
-game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(2,{playerModel.Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(4,{playerModel.Humanoid})
 --HumanoidRootPart.CFrame = playerModel.HumanoidRootPart.CFrame
 end
-game:GetService("ReplicatedStorage").Remotes.Server.Combat.ChangeWeapon:FireServer("Fists")
-wait(0.1)
+wait(0.0000000000001)
 end
 end
 
