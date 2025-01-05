@@ -1,4 +1,4 @@
-local V = "Version: 0.0.30"
+local V = "Version: 0.0.31"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
@@ -33,6 +33,7 @@ for _, playerModel in pairs(PlayersFolder:GetChildren()) do
         local distance = (Hum.Position - targetRootPart.Position).Magnitude
       if distance >= 1000 and not SktDivesAlrUsed then
 SktDivesAlrUsed = true
+wait(1)
 game:GetService("ReplicatedStorage").Remotes.Server.Combat.Skydive:FireServer(game:GetService("Players").LocalPlayer.ReplicatedTempData.quest)
 end
 if distance <= 100 then
