@@ -1,4 +1,4 @@
-local V = "Version: 1.8.0"
+local V = "Version: 1.8.1"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
@@ -22,6 +22,12 @@ local function copyToClipboard(text)
         warn("setclipboard n'est pas pris en charge dans cet environnement.")
     end
 end
+local HubMainTab = Window:MakeTab({
+	Name = "Main(In Work)",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
 local HubJujutsuInfTab = Window:MakeTab({
 	Name = "Cheats Jujutsu Infinite",
 	Icon = "rbxassetid://4483345998",
@@ -837,6 +843,13 @@ HubMiscTab:AddButton({
 	Callback = function() 		
 loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-HoHo-Hub-+15-Games-2392"))()
 
+end
+})
+
+HubMiscTab:AddButton({
+	Name = "Simple Spy (No Key)",
+	Callback = function() 		
+loadstring(game:HttpGet("https://raw.githubusercontent.com/realredz/SimpleSpy/refs/heads/main/Mobile.lua"))()
 end
 })
 
