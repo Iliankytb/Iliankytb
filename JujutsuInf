@@ -33,6 +33,7 @@ for _, playerModel in pairs(PlayersFolder:GetChildren()) do
         local distance = (Hum.Position - targetRootPart.Position).Magnitude
       if distance >= 1000 and not SktDivesAlrUsed then
 SktDivesAlrUsed = true
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.Skydive:FireServer(true)
 end
 if distance <= 100 then
 Hum.CFrame = targetRootPart.CFrame
@@ -224,6 +225,8 @@ if godmode then
 game:GetService("ReplicatedStorage").Remotes.Server.Combat.Skill:FireServer("Domain Expansion: Idle Death Gamble")
 wait(3)
 game:GetService("ReplicatedStorage").Remotes.Server.Combat.ToggleMenu:FireServer(true)
+wait()
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.Skydive:FireServer(true)
 end
 	end    
 })
