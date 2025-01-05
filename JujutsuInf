@@ -1,4 +1,4 @@
-local V = "Version: 0.0.21"
+local V = "Version: 0.0.22"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
@@ -27,7 +27,7 @@ game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(4,{play
 end
 --HumanoidRootPart.CFrame = playerModel.HumanoidRootPart.CFrame
 end
-wait(0.01)
+wait(0.1)
 end
 end
 
@@ -59,7 +59,7 @@ end
 --HumanoidRootPart.CFrame = playerModel.HumanoidRootPart.CFrame
 end
 Player.Character:WaitForChild("Humanoid").CombatAgent.Multipliers.Hitbox.Value = 50
-wait(0.01)
+wait(0.1)
 end
 end
 
