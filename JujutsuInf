@@ -1,4 +1,4 @@
-local V = "Version: 0.0.38"
+local V = "Version: 0.0.39"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
@@ -143,7 +143,6 @@ if distance <= 25 then
  
         end
     end
-end
 
 Player.Character:WaitForChild("Humanoid").CombatAgent.Multipliers.Hitbox.Value = 50
 wait(0.001)
