@@ -1,4 +1,4 @@
-local V = "Version: 0.0.24"
+local V = "Version: 0.0.25"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
@@ -36,6 +36,7 @@ SktDivesAlrUsed = true
 end
 if distance <= 100 then
 Hum.CFrame = targetRootPart.CFrame
+end
 if distance <= 25 then
         
             game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(4, {playerModel.Humanoid})
@@ -113,6 +114,7 @@ for _, playerModel in pairs(PlayersFolder:GetChildren()) do
         local distance = (Hum.Position - targetRootPart.Position).Magnitude
         if distance <= 100 then
 Hum.CFrame = targetRootPart.CFrame
+end
 if distance <= 25 then
         
             game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(4, {playerModel.Humanoid})
