@@ -1,4 +1,4 @@
-local V = "Version: 0.0.44"
+local V = "Version: 0.0.45"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
@@ -33,16 +33,13 @@ for _, playerModel in pairs(PlayersFolder:GetChildren()) do
     if playerModel:FindFirstChild("Humanoid") and playerModel:FindFirstChild("HumanoidRootPart") then
         local targetRootPart = playerModel.HumanoidRootPart
         local distance = (Hum.Position - targetRootPart.Position).Magnitude
-      if distance >= 1000 and not SktDivesAlrUsed then
+      if distance >= 5000 and not SktDivesAlrUsed then
 SktDivesAlrUsed = true
-wait(1)
-game:GetService("ReplicatedStorage").Remotes.Server.Combat.Skydive:FireServer(game:GetService("Players").LocalPlayer.ReplicatedTempData.quest)
 end
-if distance <= 250 then
-Hum.CFrame = targetRootPart.CFrame
+if distance <= 5000 then
+Hum.CFrame = targetRootPart.CFrame+ Vector3.New(0,5,0)
 end
-if distance <= 25 then
-        
+if distance <= 25 then        
             game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(4, {playerModel.Humanoid})
  if playerModel.Humanoid.Health == 0 and  SktDivesAlrUsed then
 SktDivesAlrUsed = false
