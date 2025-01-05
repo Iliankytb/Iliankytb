@@ -1,4 +1,4 @@
-local V = "Version: 0.0.23"
+local V = "Version: 0.0.24"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
@@ -12,6 +12,11 @@ local AutoAuraKill = false
 local NoCooldownValue = false
 local Player = game.Players.LocalPlayer
 local SkillsFolder = game:GetService("ReplicatedStorage").Skills
+local UseAllPotion = false
+local UseAllGourd = false
+local UseAllCat = false
+local UseAllFood = false
+local SktDivesAlrUsed = false
 
 local function AutoMissionsFarm()
 game:GetService("ReplicatedStorage").Remotes.Server.Combat.ChangeWeapon:FireServer("Fists")
@@ -26,12 +31,17 @@ for _, playerModel in pairs(PlayersFolder:GetChildren()) do
     if playerModel:FindFirstChild("Humanoid") and playerModel:FindFirstChild("HumanoidRootPart") then
         local targetRootPart = playerModel.HumanoidRootPart
         local distance = (Hum.Position - targetRootPart.Position).Magnitude
-        if distance <= 10 then
-            -- Attaque l'entité
+      if distance >= 1000 and not SktDivesAlrUsed then
+SktDivesAlrUsed = true
+end
+if distance <= 100 then
+Hum.CFrame = targetRootPart.CFrame
+if distance <= 25 then
+        
             game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(4, {playerModel.Humanoid})
-            
-            -- Téléporte le joueur à l'entité
-            Hum.CFrame = targetRootPart.CFrame
+ if playerModel.Humanoid.Health == 0 then
+SktDivesAlrUsed == false
+end
         end
     end
 end
@@ -47,6 +57,41 @@ SkillsFolder2.Cooldown.Value = 0
 end
 Player.Character:WaitForChild("Humanoid").CombatAgent.Multipliers.Cooldown.Value = 0.1
 wait(0.0000001)
+end
+end
+
+local function AutoUseAllPotions()
+while UseAllPotion do
+game:GetService("ReplicatedStorage").Remotes.Server.Data.EquipItem:InvokeServer("Luck Vial")
+game:GetService("ReplicatedStorage").Remotes.Server.Data.EquipItem:InvokeServer("Health Vial")
+game:GetService("ReplicatedStorage").Remotes.Server.Data.EquipItem:InvokeServer("Damage Vial")
+game:GetService("ReplicatedStorage").Remotes.Server.Data.EquipItem:InvokeServer("Focus Vial")
+game:GetService("ReplicatedStorage").Remotes.Server.Data.EquipItem:InvokeServer("Agility Vial")
+wait(1)
+end
+end
+
+local function AutoUseAllGourd()
+while UseAllGourd do
+game:GetService("ReplicatedStorage").Remotes.Server.Data.EquipItem:InvokeServer("Focus Gourd")
+game:GetService("ReplicatedStorage").Remotes.Server.Data.EquipItem:InvokeServer("Damage Gourd")
+game:GetService("ReplicatedStorage").Remotes.Server.Data.EquipItem:InvokeServer("Rage Gourd")
+wait(1)
+end
+end
+
+local function AutoUseAllCat()
+while UseAllCat do
+game:GetService("ReplicatedStorage").Remotes.Server.Data.EquipItem:InvokeServer("Withered Beckoning Cat")
+wait(300)
+end
+end
+
+local function AutoUseAllFood()
+while UseAllFood do
+game:GetService("ReplicatedStorage").Remotes.Server.Data.EquipItem:InvokeServer("Dorayaki")
+game:GetService("ReplicatedStorage").Remotes.Server.Data.EquipItem:InvokeServer("Takoyaki")
+wait(60)
 end
 end
 
@@ -66,12 +111,12 @@ for _, playerModel in pairs(PlayersFolder:GetChildren()) do
     if playerModel:FindFirstChild("Humanoid") and playerModel:FindFirstChild("HumanoidRootPart") then
         local targetRootPart = playerModel.HumanoidRootPart
         local distance = (Hum.Position - targetRootPart.Position).Magnitude
-        if distance <= 10 then
-            -- Attaque l'entité
+        if distance <= 100 then
+Hum.CFrame = targetRootPart.CFrame
+if distance <= 25 then
+        
             game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(4, {playerModel.Humanoid})
-            
-            -- Téléporte le joueur à l'entité
-            Hum.CFrame = targetRootPart.CFrame
+ 
         end
     end
 end
@@ -108,6 +153,47 @@ local HubAutoFarmTab = Window:MakeTab({
 	PremiumOnly = false
 })
 
+local HubItemsTab = Window:MakeTab({
+	Name = "Items",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
+HubItemsTab:AddToggle({
+	Name = "Auto Use All Potions(Every Second)",
+	Default = false,
+	Callback = function(Value)
+		UseAllPotion = Value
+AutoUseAllPotions()
+	end    
+})
+
+HubItemsTab:AddToggle({
+	Name = "Auto Use All Foods(Every 60 Seconds)",
+	Default = false,
+	Callback = function(Value)
+		UseAllFood = Value
+AutoUseAllFood()
+	end    
+})
+
+HubItemsTab:AddToggle({
+	Name = "Auto Use All Cat(Every 5 Minute,300 Seconds)",
+	Default = false,
+	Callback = function(Value)
+		UseAllCat = Value
+AutoUseAllCat()
+	end    
+})
+
+HubItemsTab:AddToggle({
+	Name = "Auto Use All Gourd(Every Second)",
+	Default = false,
+	Callback = function(Value)
+		UseAllGourd = Value
+AutoUseAllGourd()
+	end    
+})
 
 HubAutoFarmTab:AddToggle({
 	Name = "Auto Missions",
