@@ -23,14 +23,14 @@ local Hum = Player.Character:WaitForChild("HumanoidRootPart")
 game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(4,{playerModel.Humanoid})
 --HumanoidRootPart.CFrame = playerModel.HumanoidRootPart.CFrame
 end
-wait(0.0000000000001)
+wait(0.01)
 end
 end
 
 local function AlwaysBFFunction()
 while AlwaysBF do
 game:GetService("ReplicatedStorage").Remotes.Server.Combat.ApplyBlackFlashToNextHitbox:FireServer()
-wait(0.1)
+wait(0.01)
 end
 end
 
@@ -42,7 +42,7 @@ local Hum = Player.Character:WaitForChild("HumanoidRootPart")
 game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(4,{playerModel.Humanoid})
 --HumanoidRootPart.CFrame = playerModel.HumanoidRootPart.CFrame
 end
-wait(0.0000001)
+wait(0.01)
 end
 end
 
