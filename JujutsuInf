@@ -18,7 +18,7 @@ local PlayersFolder = workspace.Objects.Mobs
 local Hum = Player.Character:WaitForChild("HumanoidRootPart")
  for _, playerModel in pairs(PlayersFolder:GetChildren()) do
 game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(2,{playerModel.Humanoid})
-HumanoidRootPart.CFrame = playerModel.HumanoidRootPart.CFrame
+--HumanoidRootPart.CFrame = playerModel.HumanoidRootPart.CFrame
 end
 game:GetService("ReplicatedStorage").Remotes.Server.Combat.ChangeWeapon:FireServer("Fists")
 wait(0.1)
