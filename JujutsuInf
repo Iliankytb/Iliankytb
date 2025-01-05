@@ -1,4 +1,4 @@
-local V = "Version: 0.0.35"
+local V = "Version: 0.0.36"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
@@ -36,7 +36,7 @@ for _, playerModel in pairs(PlayersFolder:GetChildren()) do
       if distance >= 1000 and not SktDivesAlrUsed then
 SktDivesAlrUsed = true
 wait(1)
-game:GetService("ReplicatedStorage").Remotes.Server.Combat.Skydive:FireServer(game:GetService("Players").LocalPlayer.ReplicatedTempData.quest)
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.Skydive:FireServer(true,game:GetService("Players").LocalPlayer.ReplicatedTempData.quest)
 end
 if distance <= 250 then
 Hum.CFrame = targetRootPart.CFrame
@@ -118,6 +118,24 @@ for _, playerModel in pairs(PlayersFolder:GetChildren()) do
         local distance = (Hum.Position - targetRootPart.Position).Magnitude
         if distance <= 250 then
 Hum.CFrame = targetRootPart.CFrame
+end
+if distance <= 25 then
+        
+            game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(4, {playerModel.Humanoid})
+ 
+        end
+    end
+end
+
+local function AuraKill2()
+while AutoAuraKill2 do
+local PlayersFolder = workspace.Objects.Character
+local Hum = Player.Character:WaitForChild("HumanoidRootPart")
+
+for _, playerModel in pairs(PlayersFolder:GetChildren()) do
+    if playerModel:FindFirstChild("Humanoid") and playerModel:FindFirstChild("HumanoidRootPart") then
+        local targetRootPart = playerModel.HumanoidRootPart
+        local distance = (Hum.Position - targetRootPart.Position).Magnitude
 end
 if distance <= 25 then
         
@@ -232,10 +250,10 @@ HubAutoFarmTab:AddToggle({
 		godmode = Value
 if godmode then
 game:GetService("ReplicatedStorage").Remotes.Server.Combat.Skill:FireServer("Domain Expansion: Idle Death Gamble")
-wait(3)
+wait(1)
 game:GetService("ReplicatedStorage").Remotes.Server.Combat.ToggleMenu:FireServer(true)
 wait()
-game:GetService("ReplicatedStorage").Remotes.Server.Combat.Skydive:FireServer(true)
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.Skydive:FireServer(false)
 end
 	end    
 })
@@ -255,6 +273,14 @@ HubAutoFarmTab:AddToggle({
 	Callback = function(Value)
 		AutoAuraKill = Value
 AuraKill()
+	end    
+})
+HubAutoFarmTab:AddToggle({
+	Name = "Aura Kill Players",
+	Default = false,
+	Callback = function(Value)
+		AutoAuraKill2 = Value
+AuraKill2()
 	end    
 })
 
