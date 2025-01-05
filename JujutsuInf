@@ -1,4 +1,4 @@
-local V = "Version: 0.0.15"
+local V = "Version: 0.0.16"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
@@ -7,6 +7,8 @@ local AutoMissions = false
 local BlocksPlayers = false
 local BlocksMobs = false
 local godmode = false
+local AlwaysBF = false
+local AutoAuraKill = false
 local Player = game.Players.LocalPlayer
 
 local function AutoMissionsFarm()
@@ -25,6 +27,25 @@ wait(0.0000000000001)
 end
 end
 
+local function AlwaysBFFunction()
+while AlwaysBF do
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.ApplyBlackFlashToNextHitbox:FireServer()
+wait(0.1)
+end
+end
+
+local function AuraKill()
+while AutoAuraKill do
+local PlayersFolder = workspace.Objects.Mobs
+local Hum = Player.Character:WaitForChild("HumanoidRootPart")
+ for _, playerModel in pairs(PlayersFolder:GetChildren()) do
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(4,{playerModel.Humanoid})
+--HumanoidRootPart.CFrame = playerModel.HumanoidRootPart.CFrame
+end
+wait(0.0000001)
+end
+end
+
 local function BlocksAllPlayers()
 while BlocksPlayers do
     local PlayersFolder = workspace.Objects.Characters
@@ -32,19 +53,17 @@ while BlocksPlayers do
     for _, playerModel in pairs(PlayersFolder:GetChildren()) do
 game:GetService("ReplicatedStorage").Remotes.Server.Combat.Rush:FireServer(playerModel.Humanoid,false)
     end
-wait(0.000000000000000000001)
+wait(0.0000000000001)
 end
 end
 
 local function BlocksAllMobs()
 while BlocksMobs do
     local PlayersFolder = workspace.Objects.Mobs
-
-
     for _, playerModel in pairs(PlayersFolder:GetChildren()) do
 game:GetService("ReplicatedStorage").Remotes.Server.Combat.Rush:FireServer(playerModel.Humanoid,false)
     end
-wait(0.000000000000000000001)
+wait(0.000000000001)
 end
 end
 
@@ -92,6 +111,25 @@ HubAutoFarmTab:AddToggle({
 	Callback = function(Value)
 		BlocksMobs = Value
 BlocksAllMobs()
+	end    
+})
+
+HubAutoFarmTab:AddToggle({
+	Name = "Aura Kill",
+	Default = false,
+	Callback = function(Value)
+		AutoAuraKill = Value
+AuraKill()
+	end    
+})
+
+
+HubAutoFarmTab:AddToggle({
+	Name = "Always Black Flash",
+	Default = false,
+	Callback = function(Value)
+		AlwaysBF = Value
+AlwaysBFFunction()
 	end    
 })
 
