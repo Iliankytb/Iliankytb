@@ -1,4 +1,4 @@
-local V = "Version: 0.0.33"
+local V = "Version: 0.0.34"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
@@ -18,7 +18,7 @@ local UseAllCat = false
 local UseAllFood = false
 local SktDivesAlrUsed = false
 local ContextActionService = game:GetService("ContextActionService")
-
+local redeemedFolders = Player.redeemed
 
 local function AutoMissionsFarm()
 game:GetService("ReplicatedStorage").Remotes.Server.Combat.ChangeWeapon:FireServer("Fists")
@@ -36,7 +36,6 @@ for _, playerModel in pairs(PlayersFolder:GetChildren()) do
       if distance >= 1000 and not SktDivesAlrUsed then
 SktDivesAlrUsed = true
 wait(1)
---triggerJPress()
 end
 if distance <= 250 then
 Hum.CFrame = targetRootPart.CFrame
@@ -129,6 +128,12 @@ end
 
 Player.Character:WaitForChild("Humanoid").CombatAgent.Multipliers.Hitbox.Value = 50
 wait(0.001)
+end
+end
+
+local function RedeemAllCodes()
+for _, redeemedFolders2 in pairs(redeemedFolders:GetChildren()) do
+game:GetService("ReplicatedStorage").Remotes.Server.Data.RedeemCode:InvokeServer(redeemedFolders2.Name)
 end
 end
 
@@ -268,6 +273,14 @@ HubAutoFarmTab:AddToggle({
 	Callback = function(Value)
 		AlwaysBF = Value
 AlwaysBFFunction()
+	end    
+})
+
+HubAutoFarmTab:AddToggle({
+	Name = "Redeem All Code",
+	Default = false,
+	Callback = function(Value)		
+RedeemAllCodes()
 	end    
 })
 
