@@ -1,4 +1,4 @@
-local V = "Version: 0.0.41"
+local V = "Version: 0.0.42"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
@@ -36,7 +36,7 @@ for _, playerModel in pairs(PlayersFolder:GetChildren()) do
       if distance >= 1000 and not SktDivesAlrUsed then
 SktDivesAlrUsed = true
 wait(1)
-game:GetService("ReplicatedStorage").Remotes.Server.Combat.Skydive:FireServer(true,game:GetService("Players").LocalPlayer.ReplicatedTempData.quest)
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.Skydive:FireServer(game:GetService("Players").LocalPlayer.ReplicatedTempData.quest)
 end
 if distance <= 250 then
 Hum.CFrame = targetRootPart.CFrame
@@ -127,7 +127,7 @@ if distance <= 25 then
     end
 end
 
---[[local function AuraKill2()
+local function AuraKill2()
     while AutoAuraKill2 do
         local PlayersFolder = workspace.Objects.Character
         local Hum = Player.Character:WaitForChild("HumanoidRootPart")
@@ -147,7 +147,7 @@ end
         
         wait(0.001)
     end
-end]]
+end
 
 
 local function RedeemAllCodes()
@@ -281,8 +281,8 @@ HubAutoFarmTab:AddToggle({
 	Name = "Aura Kill Players",
 	Default = false,
 	Callback = function(Value)
-		--AutoAuraKill2 = Value
---AuraKill2()
+		AutoAuraKill2 = Value
+AuraKill2()
 	end    
 })
 
