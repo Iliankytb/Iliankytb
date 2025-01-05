@@ -1,4 +1,4 @@
-local V = "Version: 0.0.20"
+local V = "Version: 0.0.21"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
@@ -22,7 +22,9 @@ game:GetService("ReplicatedStorage").Remotes.Server.Data.ChestMeterReward:FireSe
 local PlayersFolder = workspace.Objects.Mobs
 local Hum = Player.Character:WaitForChild("HumanoidRootPart")
  for _, playerModel in pairs(PlayersFolder:GetChildren()) do
+if playerModel:FindFirstChild("Humanoid") then
 game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(4,{playerModel.Humanoid})
+end
 --HumanoidRootPart.CFrame = playerModel.HumanoidRootPart.CFrame
 end
 wait(0.01)
@@ -51,7 +53,9 @@ while AutoAuraKill do
 local PlayersFolder = workspace.Objects.Mobs
 local Hum = Player.Character:WaitForChild("HumanoidRootPart")
  for _, playerModel in pairs(PlayersFolder:GetChildren()) do
+if playerModel:FindFirstChild("Humanoid") then
 game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(4,{playerModel.Humanoid})
+end
 --HumanoidRootPart.CFrame = playerModel.HumanoidRootPart.CFrame
 end
 Player.Character:WaitForChild("Humanoid").CombatAgent.Multipliers.Hitbox.Value = 50
