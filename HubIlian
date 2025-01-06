@@ -1,25 +1,23 @@
-local V = "Version: 1.8.1"
+local V = "Version: 1.8.2"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
-local Window = OrionLib:MakeWindow({Name = "IliankYTB Hub "..V, HidePremium = false,IntroEnabled = false ,SaveConfig = true, ConfigFolder = "AutoDestroy"})
+local Window = OrionLib:MakeWindow({Name = "IliankYTB Hub"..V, HidePremium = false,IntroEnabled = false ,SaveConfig = true, ConfigFolder = "AutoDestroy"})
 
-local AutoDestroy = false
+localAutoDestroy=false
 -- Variables
 local teleportService = game:GetService("TeleportService")
 
--- Fonction de téléportation
+-- Teleport function
 local function teleportPlayer(placeId)
     teleportService:Teleport(placeId, game.Players.LocalPlayer)
 end
-
-
 
 local function copyToClipboard(text)
     if setclipboard then
         setclipboard(text)
     else
-        warn("setclipboard n'est pas pris en charge dans cet environnement.")
+        warn("setclipboard is not supported in this environment.")
     end
 end
 local HubMainTab = Window:MakeTab({
@@ -28,19 +26,23 @@ local HubMainTab = Window:MakeTab({
 	PremiumOnly = false
 })
 
+HubMainTab:AddLabel("Hello,Thanks to using my Free script,if you want yo suggest some features you can on scriptblox.com and search 'IliankYTB Hub' and some teleportation and Some games come")
+HubMainTab:AddLabel("I will put some cheats on tsb because some cheats doesn't Works so don't worry")
+HubMainTab:AddLabel("and have fun,and don't forget to comments on 'scriptblox.com' and put some suggestion thank you!")
+
 local HubJujutsuInfTab = Window:MakeTab({
-	Name = "Cheats Jujutsu Infinite",
-	Icon = "rbxassetid://4483345998",
+	Name = "Jujutsu Infinite Cheats",
+	icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
 
 local HubFischTab = Window:MakeTab({
-	Name = "Cheats Fisch",
+	Name = "Fisch Cheats",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
 local HubBlueLockRivalsTab = Window:MakeTab({
-	Name = "Cheats Blue Lock Rivals(Coming)",
+	Name = "Blue Lock Rivals Cheats(Coming)",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
@@ -58,7 +60,7 @@ local HubOneFruitTab = Window:MakeTab({
 
 local HubGPTab = Window:MakeTab({
 	Name = "Cheats Grand Piece(Coming)",
-	Icon = "rbxassetid://4483345998",
+	icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
 
@@ -72,14 +74,14 @@ local HubKingLegacyTab = Window:MakeTab({
 	Name = "Cheats King Legacy",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
-})
+ })
 
 local HubAotrTab = Window:MakeTab({
-	Name = "Cheats AOTR",
+	Name = “AOTR Cheats”,
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
-
+ 
 local HubTab = Window:MakeTab({
 	Name = "Cheats Doors",
 	Icon = "rbxassetid://4483345998",
@@ -88,7 +90,7 @@ local HubTab = Window:MakeTab({
 
 local HubPressureTab = Window:MakeTab({
 	Name = "Cheats Pressure",
-	Icon = "rbxassetid://4483345998",
+ 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
 
@@ -129,7 +131,7 @@ local HubBladeBallTab = Window:MakeTab({
 })
 
 local HubDeathBallTab = Window:MakeTab({
-	Name = "Cheats Death Ball(Coming Soon)",
+	Name = "Cheats Death Ball",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
@@ -343,6 +345,20 @@ HubAotrTab:AddButton({
 
 end    
 })
+
+HubDeathBallTab:AddButton({
+	Name = "Cheat Death Ball Only Auto Parry(No Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/Death-Ball-Auto-Parry-25772"))()
+end    
+})
+HubDeathBallTab:AddButton({
+	Name = "Cheat Death Ball Rayfields(No Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/Death-Ball-GxG-25707"))()
+end    
+})
+
 
 HubAotrTab:AddButton({
 	Name = "Cheat Tekkit v2 The Best(No Key)",
