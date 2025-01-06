@@ -1,4 +1,4 @@
-local V = "Version: 0.0.46"
+local V = "Version: 0.0.47"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
@@ -36,8 +36,8 @@ for _, playerModel in pairs(PlayersFolder:GetChildren()) do
       if distance >= 5000 and not SktDivesAlrUsed then
 SktDivesAlrUsed = true
 end
-if distance <= 5000 then
-Hum.CFrame = targetRootPart.CFrame + Vector3.new(0,5,0)
+if distance <= 80 then
+Hum.CFrame = targetRootPart.CFrame + Vector3.new(0,10,0)
 end
 if distance <= 25 then        
             game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(4, {playerModel.Humanoid})
