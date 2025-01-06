@@ -1,4 +1,4 @@
-local V = "Version: 0.0.47"
+local V = "Version: 0.0.48"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
@@ -354,7 +354,7 @@ RedeemAllCodes()
 
 HubAutoFarmTab:AddToggle({
 	Name = "Instant Kills",
-	Default = false,
+	Default = true,
 	Callback = function(Value)		
 InstantKill = Value
 	end    
