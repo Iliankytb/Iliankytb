@@ -1,10 +1,10 @@
-local V = "Version: 1.8.2"
+local V = "Version: 1.8.3"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
 local Window = OrionLib:MakeWindow({Name = "IliankYTB Hub"..V, HidePremium = false,IntroEnabled = false ,SaveConfig = true, ConfigFolder = "AutoDestroy"})
 
-localAutoDestroy=false
+local AutoDestroy=false
 -- Variables
 local teleportService = game:GetService("TeleportService")
 
