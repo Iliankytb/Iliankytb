@@ -4,7 +4,7 @@ local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shl
 
 local Window = OrionLib:MakeWindow({Name = "IliankYTB Hub"..V, HidePremium = false,IntroEnabled = false ,SaveConfig = true, ConfigFolder = "AutoDestroy"})
 
-local AutoDestroy=false
+local AutoDestroy = false
 -- Variables
 local teleportService = game:GetService("TeleportService")
 
