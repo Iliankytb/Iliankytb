@@ -11,6 +11,7 @@ local AlwaysBF = false
 local AutoAuraKill = false
 local AutoAuraKill2 = false
 local NoCooldownValue = false
+Local InstantKill = false
 local Player = game.Players.LocalPlayer
 local SkillsFolder = game:GetService("ReplicatedStorage").Skills
 local UseAllPotion = false
@@ -39,8 +40,47 @@ end
 if distance <= 80 then
 Hum.CFrame = targetRootPart.CFrame + Vector3.new(0,10,0)
 end
-if distance <= 25 then        
-            game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(4, {playerModel.Humanoid})
+if distance <= 25 then
+if InstantKill then
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1, {playerModel.Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1, {playerModel.Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1, {playerModel.Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1, {playerModel.Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1, {playerModel.Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1, {playerModel.Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1, {playerModel.Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1, {playerModel.Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1, {playerModel.Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1, {playerModel.Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1, {playerModel.Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1, {playerModel.Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1, {playerModel.Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1, {playerModel.Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1, {playerModel.Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1, {playerModel.Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1, {playerModel.Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1, {playerModel.Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1, {playerModel.Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1, {playerModel.Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1, {playerModel.Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1, {playerModel.Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1, {playerModel.Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1, {playerModel.Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1, {playerModel.Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1, {playerModel.Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1, {playerModel.Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1, {playerModel.Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1, {playerModel.Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1, {playerModel.Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1, {playerModel.Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1, {playerModel.Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1, {playerModel.Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1, {playerModel.Humanoid})
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(1, {playerModel.Humanoid})
+else
+game:GetService("ReplicatedStorage").Remotes.Server.Combat.M1:FireServer(4, {playerModel.Humanoid})
+end
+            
  if playerModel.Humanoid.Health == 0 and  SktDivesAlrUsed then
 SktDivesAlrUsed = false
 end
@@ -48,7 +88,7 @@ end
     end
 end
 
-wait(0.001)
+wait(0.01)
 end
 end
 
@@ -153,7 +193,8 @@ game:GetService("ReplicatedStorage").Remotes.Server.Data.RedeemCode:InvokeServer
 game:GetService("ReplicatedStorage").Remotes.Server.Data.RedeemCode:InvokeServer("50K_FOLLOWERS")
 game:GetService("ReplicatedStorage").Remotes.Server.Data.RedeemCode:InvokeServer("MERRY_CHRISTMAS")
 game:GetService("ReplicatedStorage").Remotes.Server.Data.RedeemCode:InvokeServer("RELEASE")
---game:GetService("ReplicatedStorage").Remotes.Server.Data.RedeemCode:InvokeServer("")
+game:GetService("ReplicatedStorage").Remotes.Server.Data.RedeemCode:InvokeServer("BACK_UP_AGAIN")
+game:GetService("ReplicatedStorage").Remotes.Server.Data.RedeemCode:InvokeServer("LUCK_REAL")
 end
 
 local function BlocksAllPlayers()
@@ -308,6 +349,14 @@ HubAutoFarmTab:AddToggle({
 	Default = false,
 	Callback = function(Value)		
 RedeemAllCodes()
+	end    
+})
+
+HubAutoFarmTab:AddToggle({
+	Name = "Instant Kills",
+	Default = false,
+	Callback = function(Value)		
+InstantKill = Value
 	end    
 })
 
