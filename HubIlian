@@ -1,4 +1,4 @@
-local V = "Version: 1.8.5"
+local V = "Version: 1.8.6"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
@@ -29,6 +29,7 @@ local HubMainTab = Window:MakeTab({
 HubMainTab:AddLabel("Hello,Thanks to using my Free script,if you want yo suggest some features you can on scriptblox.com and search 'IliankYTB Hub' and some teleportation and Some games come")
 HubMainTab:AddLabel("I will put some cheats on tsb because some cheats doesn't Works so don't worry")
 HubMainTab:AddLabel("and have fun,and don't forget to comments on 'scriptblox.com' and put some suggestion thank you!")
+HubMainTab:AddLabel("Update Log(Coming Soon)")
 
 local HubJujutsuInfTab = Window:MakeTab({
 	Name = "Jujutsu Infinite Cheats",
@@ -260,6 +261,27 @@ HubJujutsuInfTab:AddButton({
       		loadstring(game:HttpGet("https://raw.githubusercontent.com/meobeo8/elgato/a/Loader"))()
 end    
 })
+
+HubBlueLockRivalsTab:AddButton({
+	Name = "Blue Lock rivals NS Hub Cheats(Need Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/UPD-Blue-Lock:-Rivals-GET-FREE-CAPE-AND-EFFECTS-26260"))()
+end    
+})
+
+HubBlueLockRivalsTab:AddButton({
+	Name = "Blue Lock rivals Auto Farm Cheats(Need Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/UPD-Blue-Lock:-Rivals-Auto-Farm-More-24604"))()
+end    
+})
+
+HubBlueLockRivalsTab:AddButton({
+	Name = "Blue Lock rivals Sandox Hub Cheats(Need Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/Blue-Lock:-Rivals-Sandox-Hub-KeyLess-25543"))()
+end    
+})
 HubJujutsuInfTab:AddButton({
 	Name = "Jujutsu Infinite Cheats Rinns Hub(Need Key)",
 	Callback = function()
@@ -306,6 +328,15 @@ HubTab:AddButton({
   
 end    
 })
+
+HubTab:AddButton({
+	Name = "Doors Cheats Sensation(No Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/FLOOR-2-DOORS-Sensation-V2-20105"))()
+
+end    
+})
+
 
 HubTab:AddButton({
 	Name = "Teleportation to Doors",
