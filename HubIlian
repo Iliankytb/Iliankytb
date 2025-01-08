@@ -1,4 +1,4 @@
-local V = "Version: 1.8.4"
+local V = "Version: 1.8.5"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
@@ -77,7 +77,7 @@ local HubKingLegacyTab = Window:MakeTab({
  })
 
 local HubAotrTab = Window:MakeTab({
-	Name = “AOTR Cheats”,
+	Name ="AOTR Cheats",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
