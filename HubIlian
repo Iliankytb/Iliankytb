@@ -1,4 +1,4 @@
-local V = "Version: 1.8.8"
+local V = "Version: 1.8.9"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
@@ -66,7 +66,7 @@ local HubGPTab = Window:MakeTab({
 })
 
 local HubNinjaLgendTab = Window:MakeTab({
-	Name = "Cheats Ninja Legend(Coming)",
+	Name = "Cheats Ninja Legend",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
@@ -470,6 +470,13 @@ HubTab:AddButton({
 	Callback = function()
       		loadstring(game:HttpGet("https://raw.githubusercontent.com/plamen6789/UtilitiesHub/main/UtilitiesGUI"))()
   	
+end    
+})
+
+HubNinjaLgendTab:AddButton({
+	Name = "Ninja Legends Bt Project Cheats(need Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/Ninja-Legends-BT-Project-9463"))()  	
 end    
 })
 
