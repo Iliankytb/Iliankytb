@@ -1,4 +1,4 @@
-local V = "Version: 1.8.7"
+local V = "Version: 1.8.8"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
@@ -48,7 +48,7 @@ local HubBlueLockRivalsTab = Window:MakeTab({
 	PremiumOnly = false
 })
 local HubFBGTab = Window:MakeTab({
-	Name = "Cheats Fruit Battleground(Coming)",
+	Name = "Cheats Fruit Battleground",
 	Icon = "rbxassetid://4483345998",
 	PremiumOnly = false
 })
@@ -252,6 +252,33 @@ HubOneFruitTab:AddButton({
 	Name = "One Fruit Nexus hub Cheats(Need Key)",
 	Callback = function()
       		loadstring(game:HttpGet("https://rawscripts.net/raw/Universal-Script-Nuke-Hub-V4-SOLARA-Support-KEYLESS-16495"))()
+end    
+})
+
+HubFBGTab:AddButton({
+	Name = "Fruit Battleground Turtle Z Cheats(Need Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/DOUGH-V2-Fruit-Battlegrounds-Turtle-Z-Read-desc-for-key-24179"))()
+end    
+})
+HubFBGTab:AddButton({
+	Name = "Fruit Battleground Imp Hub Cheats(Need Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/MYTHICAL-WOLF-Fruit-Battlegrounds-Imp-Hub-20656"))()
+end    
+})
+
+HubFBGTab:AddButton({
+	Name = "Fruit Battleground Imp hub + Demonic hub Cheats(Need Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/LIGHT-V2-+-RANKED-Fruit-Battlegrounds-Auto-skills-and-auto-boss-server-hop-gui-13173"))()
+end    
+})
+
+HubFBGTab:AddButton({
+	Name = "Fruit Battleground Askien script Cheats(Need Key)",
+	Callback = function()
+      		loadstring(game:HttpGet("https://rawscripts.net/raw/DARKXQUAKE-Fruit-Battlegrounds-Askien-script-13143"))()
 end    
 })
 
