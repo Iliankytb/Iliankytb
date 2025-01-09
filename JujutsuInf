@@ -1,4 +1,4 @@
-local V = "Version: 0.0.49"
+local V = "Version: 0.0.50"
 print(V)
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 
@@ -12,6 +12,7 @@ local AutoAuraKill = false
 local AutoAuraKill2 = false
 local NoCooldownValue = false
 local InstantKill = false
+local TPPlayer = false
 local Player = game.Players.LocalPlayer
 local SkillsFolder = game:GetService("ReplicatedStorage").Skills
 local UseAllPotion = false
@@ -19,8 +20,8 @@ local UseAllGourd = false
 local UseAllCat = false
 local UseAllFood = false
 local SktDivesAlrUsed = false
+local AutoSpawnBossesV = false
 local ContextActionService = game:GetService("ContextActionService")
-
 local function AutoMissionsFarm()
 game:GetService("ReplicatedStorage").Remotes.Server.Combat.ChangeWeapon:FireServer("Fists")
 while AutoMissions do
@@ -37,7 +38,7 @@ for _, playerModel in pairs(PlayersFolder:GetChildren()) do
       if distance >= 5000 and not SktDivesAlrUsed then
 SktDivesAlrUsed = true
 end
-if distance <= 80 then
+if distance <= 100000 and TPPlayer then
 Hum.CFrame = targetRootPart.CFrame + Vector3.new(0,10,0)
 end
 if distance <= 25 then
@@ -153,8 +154,8 @@ for _, playerModel in pairs(PlayersFolder:GetChildren()) do
     if playerModel:FindFirstChild("Humanoid") and playerModel:FindFirstChild("HumanoidRootPart") then
         local targetRootPart = playerModel.HumanoidRootPart
         local distance = (Hum.Position - targetRootPart.Position).Magnitude
-        if distance <= 250 then
-Hum.CFrame = targetRootPart.CFrame
+        if distance <= 250 and TPPlayer then
+Hum.CFrame = targetRootPart.CFrame + Vector3.new(0,10,0)
 end
 if distance <= 25 then
         
@@ -164,6 +165,14 @@ if distance <= 25 then
     end
 end
 wait(0.1)
+end
+end
+
+local function AutoSpawnBosses()
+if AutoSpawnBossesV then
+local CubeSpawnBosses = workspace.Objects.Spawns.BossSpawn
+local Hum = Player.Character:WaitForChild("HumanoidRootPart")
+Hum.CFrame = CubeSpawnBosses.CFrame
 end
 end
 
@@ -191,7 +200,7 @@ end
 local function RedeemAllCodes()
 game:GetService("ReplicatedStorage").Remotes.Server.Data.RedeemCode:InvokeServer("HAPPY_2025")
 game:GetService("ReplicatedStorage").Remotes.Server.Data.RedeemCode:InvokeServer("50K_FOLLOWERS")
-game:GetService("ReplicatedStorage").Remotes.Server.Data.RedeemCode:InvokeServer("MERRY_CHRISTMAS")
+game:GetService("ReplicatedStorage").Remotes.Server.Data.RedeemCode:InvokeServer("MERRY_CHRI STMAS")
 game:GetService("ReplicatedStorage").Remotes.Server.Data.RedeemCode:InvokeServer("RELEASE")
 game:GetService("ReplicatedStorage").Remotes.Server.Data.RedeemCode:InvokeServer("BACK_UP_AGAIN")
 game:GetService("ReplicatedStorage").Remotes.Server.Data.RedeemCode:InvokeServer("LUCK_REAL")
@@ -202,13 +211,14 @@ while BlocksPlayers do
     local PlayersFolder = workspace.Objects.Characters
 
     for _, playerModel in pairs(PlayersFolder:GetChildren()) do
+if playerModel.Name == Player.Name then return end
 game:GetService("ReplicatedStorage").Remotes.Server.Combat.Rush:FireServer(playerModel.Humanoid,false)
     end
 wait(0.0000000000001)
 end
 end
 
-local function BlocksAllMobs()
+ local function BlocksAllMobs()
 while BlocksMobs do
     local PlayersFolder = workspace.Objects.Mobs
     for _, playerModel in pairs(PlayersFolder:GetChildren()) do
@@ -230,12 +240,27 @@ local HubItemsTab = Window:MakeTab({
 	PremiumOnly = false
 })
 
+local HubBossesTab = Window:MakeTab({
+	Name = "Bosses",
+	Icon = "rbxassetid://4483345998",
+	PremiumOnly = false
+})
+
 HubItemsTab:AddToggle({
 	Name = "Auto Use All Potions(Every Second)",
 	Default = false,
 	Callback = function(Value)
 		UseAllPotion = Value
 AutoUseAllPotions()
+	end    
+})
+
+HubBossesTab:AddToggle({
+	Name = "Auto Spawn Bosses",
+	Default = false,
+	Callback = function(Value)
+		AutoSpawnBossesV = Value
+AutoSpawnBosses()
 	end    
 })
 
@@ -276,11 +301,19 @@ AutoMissionsFarm()
 })
 
 HubAutoFarmTab:AddToggle({
-	Name = "Block All Players",
+	Name = "Auto Missions",
 	Default = false,
 	Callback = function(Value)
-		BlocksPlayers = Value
-BlocksAllPlayers()
+		AutoMissions = Value
+AutoMissionsFarm()
+	end    
+})
+
+HubAutoFarmTab:AddToggle({
+	Name = "TP Player on mobs for auto missions and aura kills",
+	Default = false,
+	Callback = function(Value)
+		TPPlayer = Value
 	end    
 })
 
@@ -354,7 +387,7 @@ RedeemAllCodes()
 
 HubAutoFarmTab:AddToggle({
 	Name = "Instant Kills",
-	Default = true,
+	Default = false,
 	Callback = function(Value)		
 InstantKill = Value
 	end    
