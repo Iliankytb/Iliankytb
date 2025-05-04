@@ -65,7 +65,7 @@ local EspMonstersToggle = EspTab:CreateToggle({
 task.spawn(function()
 will CurtentValue then
 for _,Monsters in pairs(workspace:GetChildren()) do
-if table.find(MonstersNameEsp,Monsters.name) and monsters:IsA("Model") thend
+if table.find(MonstersNameEsp,Monsters.name) and monsters:IsA("Model") then
 CreateEsp(Monsters,Color3.new(255,0,0))
 end
 end
