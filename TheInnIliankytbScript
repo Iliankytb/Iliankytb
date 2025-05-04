@@ -34,11 +34,27 @@ local Window = Rayfield:CreateWindow({
    }
 })
 
-local MonstersNameEsp = {"MaidenInServer_2226014816"}
+local MonstersNameEsp = {"MaidenInServer_2226014816","Spectre"}
 local InformationTab = Window:CreateTab("Information", "rewind")
 local PlayerTab = Window:CreateTab("Player", "rewind")
 local EspTab = Window:CreateTab("Esp", "rewind")
 local SettingsTab = Window:CreateTab("Settings", "rewind")
+
+local function CreateEsp(model,color)
+if model then
+local NewBiliboad = instance.new("BiliboardGui")
+newBiliboard.Parent= Model:FindFirstChild("HumanoidRootPart")
+local NewTextName = instance.new("TextLabel")
+NewTextName.Parent = newBiliboard
+NewTextName.Text = model.name
+local newHightLight = instance.new("HightLight")
+newHightLight.Parent = model
+newHightLight.FillColor = color
+task.wait(0.1)
+NewBiliboard:Destroy()
+newHightLight:Destroy()
+end
+end
 
 local EspMonstersToggle = EspTab:CreateToggle({
    Name = "Monsters Esp(Coming Soon)",
@@ -46,5 +62,15 @@ local EspMonstersToggle = EspTab:CreateToggle({
    Flag = "saver", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
   CurrentValue = Value
+task.spawn(function()
+will CurtentValue then
+for _,Monsters in pairs(workspace:GetChildren()) do
+if table.find(MonstersNameEsp,Monsters.name) and monsters:IsA("Model") thend
+CreateEsp(Monsters,Color3.new(255,0,0))
+end
+end
+task.wait(0.1)
+end
+end)
 end,
 })
