@@ -38,12 +38,12 @@ local Window = Rayfield:CreateWindow({
 local EspTab = Window:CreateTab("Esp", "rewind")
 local SettingsTab = Window:CreateTab("Settings", "rewind")
 
-local function CreateEsp(Char,Color)
+--[[local function CreateEsp(Char,Color)
 if Char and not Char:FindFirstChildOfClass("HighLight") then
 local NewHighlight = Instance.new("HighLight",Char)
 NewHighLight.OutlineColor = Color
 end
-end
+end]]
 
 local EspMonstersToggle = EspTab:CreateToggle({
    Name = "Monsters Esp",
@@ -54,13 +54,13 @@ local EspMonstersToggle = EspTab:CreateToggle({
 task.spawn(function()
 while CurrentValue then
 for _,Players in pairs(Game:GetService("Players"):GetPlayers()) do
-if Players:IsA("Players") then
-CreateEsp(Players.Character,Color3.new(255,0,0))
+if Players:IsA("players") then
+--CreateEsp(Players.Character,Color3.new(255,0,0))
 end
 end
 task.wait(0.1)
 end
 end)
-end,
+end
 })
 
