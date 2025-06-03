@@ -39,28 +39,65 @@ local EspTab = Window:CreateTab("Esp", "rewind")
 local SettingsTab = Window:CreateTab("Settings", "rewind")
 
 local function CreateEsp(Char,Color)
-if Char and not Char:FindFirstChildOfClass("HighLight") then
-local NewHighlight = Instance.new("HighLight",Char)
-NewHighLight.OutlineColor = Color
+if Char then
+local NewHighlight = Instance.new("Highlight",Char)
+--NewHighLight.OutlineColor = Color
 end
 end
-
-local EspMonstersToggle = EspTab:CreateToggle({
-   Name = "Monsters Esp",
+local function KeepHighlight(Char)
+if Char and Char:FindFirstChildOfClass("Highlight") then
+Char:FindFirstChildOfClass("Highlight"):Destroy()
+end
+end
+local EspPlayerToggle = EspTab:CreateToggle({
+   Name = "Players Esp",
    CurrentValue = false,
    Flag = nil, -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
   CurrentValue = Value
---[[task.spawn(function()
-while CurrentValue then
-for _,Players in pairs(Game:GetService("Players"):GetPlayers()) do
-if Players:IsA("players") then
---CreateEsp(Players.Character,Color3.new(255,0,0))
+while CurrentValue do
+for _,Players in pairs(Game:GetService("Players"):GetPlayers()) do 
+if Players:isA("Player") then
+CreateEsp(Players.Character,Color3.new(255,0,0))
+end
+end
+task.wait(0.1)
+end task.wait(1)
+for _,Players in pairs(Game:GetService("Players"):GetPlayers()) do 
+if Players:isA("Player") then
+KeepHighlight(Players.Character)
+end end
+end,
+})
+local EspComputerToggle = EspTab:CreateToggle({
+   Name = "Computer Esp",
+   CurrentValue = false,
+   Flag = nil, -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  CurrentValue = Value
+while CurrentValue do
+for _,Folders in pairs(Game.Workspace:GetChildren()) do 
+if Folders:isA("Folder") then 
+if Folders:FindFirstChild("Map") then if Folders:FindFirstChild("Map"):FindFirstChild("Tasks") then for _,Computers in pairs(Folders:FindFirstChild("Map"):FindFirstChild("Tasks"):GetChildren()) do if Computers:isA("Model") then CreateEsp(Computers) end end end end
 end
 end
 task.wait(0.1)
 end
-end)]]
 end,
 })
-
+local EspLockerToggle = EspTab:CreateToggle({
+   Name = "Locker Esp(Coming Soon)",
+   CurrentValue = false,
+   Flag = nil, -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  CurrentValue = Value
+while CurrentValue do
+for _,Folders in pairs(Game.Workspace:GetChildren()) do 
+if Folders:isA("Folder") then 
+if Folders:FindFirstChild("Map") then if Folders:FindFirstChild("Map"):FindFirstChild("Lockers") then for _,Computers in pairs(Folders:FindFirstChild("Map"):FindFirstChild("Lockers"):GetChildren()) do if Computers:isA("Model") then CreateEsp(Computers) end end end end
+end
+end
+task.wait(0.1)
+end
+end,
+})
