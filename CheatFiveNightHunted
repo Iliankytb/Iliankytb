@@ -4,7 +4,7 @@ local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local Window = Rayfield:CreateWindow({
    Name = "Five Nights:Hunted - Script By Iliankytb",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "The Inn",
+   LoadingTitle = "Five Nights:Hunted",
    LoadingSubtitle = "Script By Iliankytb",
    Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -37,7 +37,7 @@ local Window = Rayfield:CreateWindow({
 
 local EspTab = Window:CreateTab("Esp", "rewind")
 local SettingsTab = Window:CreateTab("Settings", "rewind")
---[[
+
 local function CreateEsp(Char,Color)
 if Char and not Char:FindFirstChildOfClass("HighLight") then
 local NewHighlight = Instance.new("HighLight",Char)
@@ -51,7 +51,6 @@ local EspMonstersToggle = EspTab:CreateToggle({
    Flag = nil, -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
   CurrentValue = Value
-print(Value)
 task.spawn(function()
 while CurrentValue then
 for _,Players in pairs(Game:GetService("Players"):GetPlayers()) do
@@ -63,5 +62,5 @@ task.wait(0.1)
 end
 end)
 end,
-})]]
+})
 
