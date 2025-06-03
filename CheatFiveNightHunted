@@ -37,7 +37,7 @@ local Window = Rayfield:CreateWindow({
 
 local EspTab = Window:CreateTab("Esp", "rewind")
 local SettingsTab = Window:CreateTab("Settings", "rewind")
-
+--[[
 local function CreateEsp(Char,Color)
 if Char and not Char:FindFirstChildOfClass("HighLight") then
 local NewHighlight = Instance.new("HighLight",Char)
@@ -63,5 +63,5 @@ task.wait(0.1)
 end
 end)
 end,
-})
+})]]
 
