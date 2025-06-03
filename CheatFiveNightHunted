@@ -41,7 +41,7 @@ local SettingsTab = Window:CreateTab("Settings", "rewind")
 local function CreateEsp(Char,Color)
 if Char then
 local NewHighlight = Instance.new("Highlight",Char)
---NewHighLight.OutlineColor = Color
+NewHighlight.OutlineColor = Color
 end
 end
 local function KeepHighlight(Char)
@@ -58,11 +58,11 @@ local EspPlayerToggle = EspTab:CreateToggle({
 while CurrentValue do
 for _,Players in pairs(Game:GetService("Players"):GetPlayers()) do 
 if Players:isA("Player") then
-CreateEsp(Players.Character,Color3.new(255,0,0))
+CreateEsp(Players.Character,Color3.FromRGB(255,0,0))
 end
 end
 task.wait(0.1)
-end task.wait(1)
+end
 for _,Players in pairs(Game:GetService("Players"):GetPlayers()) do 
 if Players:isA("Player") then
 KeepHighlight(Players.Character)
@@ -78,7 +78,7 @@ local EspComputerToggle = EspTab:CreateToggle({
 while CurrentValue do
 for _,Folders in pairs(Game.Workspace:GetChildren()) do 
 if Folders:isA("Folder") then 
-if Folders:FindFirstChild("Map") then if Folders:FindFirstChild("Map"):FindFirstChild("Tasks") then for _,Computers in pairs(Folders:FindFirstChild("Map"):FindFirstChild("Tasks"):GetChildren()) do if Computers:isA("Model") then CreateEsp(Computers) end end end end
+if Folders:FindFirstChild("Map") then if Folders:FindFirstChild("Map"):FindFirstChild("Tasks") then for _,Computers in pairs(Folders:FindFirstChild("Map"):FindFirstChild("Tasks"):GetChildren()) do if Computers:isA("Model") then CreateEsp(Computers,Color3.FromRGB(0,255,0)) end end end end
 end
 end
 task.wait(0.1)
@@ -94,7 +94,7 @@ local EspLockerToggle = EspTab:CreateToggle({
 while CurrentValue do
 for _,Folders in pairs(Game.Workspace:GetChildren()) do 
 if Folders:isA("Folder") then 
-if Folders:FindFirstChild("Map") then if Folders:FindFirstChild("Map"):FindFirstChild("Lockers") then for _,Computers in pairs(Folders:FindFirstChild("Map"):FindFirstChild("Lockers"):GetChildren()) do if Computers:isA("Model") then CreateEsp(Computers) end end end end
+if Folders:FindFirstChild("Map") then if Folders:FindFirstChild("Map"):FindFirstChild("Lockers") then for _,Computers in pairs(Folders:FindFirstChild("Map"):FindFirstChild("Lockers"):GetChildren()) do if Computers:isA("Model") then CreateEsp(Computers,Color3.FromRGB(0,0,255)) end end end end
 end
 end
 task.wait(0.1)
