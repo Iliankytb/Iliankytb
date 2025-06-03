@@ -38,6 +38,13 @@ local Window = Rayfield:CreateWindow({
 local EspTab = Window:CreateTab("Esp", "rewind")
 local SettingsTab = Window:CreateTab("Settings", "rewind")
 
+local function CreateEsp(Char,Color)
+if Char and not Char:FindFirstChildOfClass("HighLight") then
+local NewHighlight = Instance.new("HighLight",Char)
+NewHighLight.OutlineColor = Color
+end
+end
+
 local EspMonstersToggle = EspTab:CreateToggle({
    Name = "Monsters Esp",
    CurrentValue = false,
