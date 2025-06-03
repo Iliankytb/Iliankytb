@@ -43,7 +43,7 @@ if Char and not Char:FindFirstChildOfClass("HighLight") then
 local NewHighlight = Instance.new("HighLight",Char)
 NewHighLight.OutlineColor = Color
 end
-end]]
+end
 
 local EspMonstersToggle = EspTab:CreateToggle({
    Name = "Monsters Esp",
@@ -61,6 +61,6 @@ end
 task.wait(0.1)
 end
 end)
-end
-})
+end,
+})]]
 
