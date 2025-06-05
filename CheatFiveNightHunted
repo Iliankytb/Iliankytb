@@ -34,7 +34,7 @@ local Window = Rayfield:CreateWindow({
       Key = {"Hello"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
    }
 })
-
+local PlayerTab = Window:CreateTab("Player", "rewind")
 local EspTab = Window:CreateTab("Esp", "rewind")
 local SettingsTab = Window:CreateTab("Settings", "rewind")
 
@@ -89,6 +89,22 @@ end
 end,
 })
 local EspLockerToggle = EspTab:CreateToggle({
+   Name = "Locker Esp",
+   CurrentValue = false,
+   Flag = nil, -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  CurrentValue = Value
+while CurrentValue do
+for _,Folders in pairs(Game.Workspace:GetChildren()) do 
+if Folders:isA("Folder") then 
+if Folders:FindFirstChild("Map") then if Folders:FindFirstChild("Map"):FindFirstChild("Lockers") then for _,Computers in pairs(Folders:FindFirstChild("Map"):FindFirstChild("Lockers"):GetChildren()) do if Computers:isA("Model") then CreateEsp(Computers,Color3.fromRGB(0,0,255),"Locker",Computers) end end end end
+end
+end
+task.wait(0.1)
+end
+end,
+})
+local PlayerSpeedToggle = EspTab:CreateToggle({
    Name = "Locker Esp",
    CurrentValue = false,
    Flag = nil, -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
