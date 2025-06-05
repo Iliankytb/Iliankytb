@@ -156,7 +156,6 @@ local PlayerSpeedSlider = PlayerTab:CreateSlider({
 CurrentValue = Value
 ValueSpeed = Value
 end,
-ValueSpeed = CurrentValue,
 })
 
 local PlayerActiveModifyingSpeedToggle = PlayerTab:CreateToggle({
