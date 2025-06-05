@@ -62,7 +62,7 @@ end
 end
 
 local EspPlayerToggle = EspTab:CreateToggle({
-   Name = "Players Esp(Don't Work Ingame Sometimes)",
+   Name = "Players Esp",
    CurrentValue = false,
    Flag = "EspPlayer", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
@@ -156,7 +156,7 @@ local PlayerSpeedSlider = PlayerTab:CreateSlider({
 CurrentValue = Value
 ValueSpeed = Value
 end,
-ValueSpeed = CurrentValue
+ValueSpeed = CurrentValue,
 })
 
 local PlayerActiveModifyingSpeedToggle = PlayerTab:CreateToggle({
