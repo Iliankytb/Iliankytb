@@ -42,21 +42,14 @@ local function CreateEsp(Char,Color,Text,Parent)
 if Char then
 local NewHighlight = Instance.new("Highlight",Char)
 NewHighlight.OutlineColor = Color NewHighlight.FillColor = Color
-local NewBiliboard = Instance.new("BillboardGui",Char:FindFirstChildOfClass("Part")
-local NewText = Instance.new("TextLabel",NewBiliboard)
-NewText.Text = Text
 end
 end
 
-local function KeepHighlight(Char)
+local function KeepHighlight(Char,Parent)
 if Char and Char:FindFirstChildOfClass("Highlight") then
 Char:FindFirstChildOfClass("Highlight"):Destroy()
-for _,Parts in pairs(Char:GetChildren()) do
-if Parts:isA("Part") then
-if Parts:FindFirstChildOfClass("BillboardGui") then
-Parts:FindFirstChildOfClass("BillboardGui"):Destroy()
-end
-end
+if Parent:FindFirstChild("BillboardGui") then
+Parent:FindFirstChild("BillboardGui"):Destroy()
 end
 end
 end
@@ -66,19 +59,19 @@ local EspPlayerToggle = EspTab:CreateToggle({
    CurrentValue = false,
    Flag = "EspPlayer", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
-  CurrentValue = Value
+  CurrentValue = Value task.spawn(function()
 while CurrentValue do
 for _,Players in pairs(Game:GetService("Players"):GetPlayers()) do 
 if Players:isA("Player") and not Players.Character:FindFirstChildOfClass("Highlight") then
-CreateEsp(Players.Character,Color3.fromRGB(255,0,0),"Player: "..Players.Name,Players.Character:FindFirstChild("HumanoidRootPart"))
+CreateEsp(Players.Character,Color3.fromRGB(255,0,0))
 end
 end
 task.wait(0.1)
 end
 for _,Players in pairs(Game:GetService("Players"):GetPlayers()) do 
 if Players:isA("Player") and  Players.Character:FindFirstChildOfClass("Highlight") then
-KeepHighlight(Players.Character)
-end end
+KeepHighlight(Players.Character,Players.Character:FindFirstChild("Head"))
+end end end)
 end,
 })
 
@@ -87,7 +80,7 @@ local EspComputerToggle = EspTab:CreateToggle({
    CurrentValue = false,
    Flag = "EspComputer", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
-  CurrentValue = Value
+  CurrentValue = Value task.spawn(function()
 while CurrentValue do
 for _,Folders in pairs(Game.Workspace:GetChildren()) do 
 if Folders:isA("Folder") then 
@@ -97,9 +90,9 @@ end
 task.wait(0.1)
 end for _,Folders in pairs(Game.Workspace:GetChildren()) do 
 if Folders:isA("Folder") then 
-if Folders:FindFirstChild("Map") then if Folders:FindFirstChild("Map"):FindFirstChild("Tasks") then for _,Computers in pairs(Folders:FindFirstChild("Map"):FindFirstChild("Tasks"):GetChildren()) do if Computers:isA("Model") and not Computers:FindFirstChildOfClass("Highlight") then KeepHighlight(Computers) end end end end
+if Folders:FindFirstChild("Map") then if Folders:FindFirstChild("Map"):FindFirstChild("Tasks") then for _,Computers in pairs(Folders:FindFirstChild("Map"):FindFirstChild("Tasks"):GetChildren()) do if Computers:isA("Model") and not Computers:FindFirstChildOfClass("Highlight") then KeepHighlight(Computers,Computers:FindFirstChild("Screen")) end end end end
 end
-end
+end end)
 end,
 })
 
@@ -108,7 +101,7 @@ local EspLockerToggle = EspTab:CreateToggle({
    CurrentValue = false,
    Flag = "EspLocker", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
-  CurrentValue = Value
+  CurrentValue = Value task.spawn(function()
 while CurrentValue do
 for _,Folders in pairs(Game.Workspace:GetChildren()) do 
 if Folders:isA("Folder") then 
@@ -118,9 +111,9 @@ end
 task.wait(0.1)
 end for _,Folders in pairs(Game.Workspace:GetChildren()) do 
 if Folders:isA("Folder") then 
-if Folders:FindFirstChild("Map") then if Folders:FindFirstChild("Map"):FindFirstChild("Lockers") then for _,Computers in pairs(Folders:FindFirstChild("Map"):FindFirstChild("Lockers"):GetChildren()) do if Computers:isA("Model") and Computers:FindFirstChildOfClass("Highlight") then KeepHighlight(Computers) end end end end
+if Folders:FindFirstChild("Map") then if Folders:FindFirstChild("Map"):FindFirstChild("Lockers") then for _,Computers in pairs(Folders:FindFirstChild("Map"):FindFirstChild("Lockers"):GetChildren()) do if Computers:isA("Model") and Computers:FindFirstChildOfClass("Highlight") then KeepHighlight(Computers,Computers) end end end end
 end
-end
+end end)
 end,
 })
 
@@ -129,7 +122,7 @@ local EspBallPitToggle = EspTab:CreateToggle({
    CurrentValue = false,
    Flag = "EspBallPit", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
-  CurrentValue = Value
+  CurrentValue = Value task.spawn(function()
 while CurrentValue do
 for _,Folders in pairs(Game.Workspace:GetChildren()) do 
 if Folders:isA("Folder") then 
@@ -139,9 +132,9 @@ end
 task.wait(0.1)
 end for _,Folders in pairs(Game.Workspace:GetChildren()) do 
 if Folders:isA("Folder") then 
-if Folders:FindFirstChild("Map") then if Folders:FindFirstChild("Map"):FindFirstChild("Hooks") then for _,Computers in pairs(Folders:FindFirstChild("Map"):FindFirstChild("Hooks"):GetChildren()) do if Computers:isA("Model") and Computers:FindFirstChildOfClass("Highlight") then KeepHighlight(Computers) end end end end
+if Folders:FindFirstChild("Map") then if Folders:FindFirstChild("Map"):FindFirstChild("Hooks") then for _,Computers in pairs(Folders:FindFirstChild("Map"):FindFirstChild("Hooks"):GetChildren()) do if Computers:isA("Model") and Computers:FindFirstChildOfClass("Highlight") then KeepHighlight(Computers,Computers) end end end end
 end
-end
+end end)
 end,
 })
 local ValueSpeed = 16
@@ -155,7 +148,7 @@ local PlayerSpeedSlider = PlayerTab:CreateSlider({
    Callback = function(Value)
 CurrentValue = Value
 ValueSpeed = Value
-end,
+end,  ValueSpeed = CurrentValue,
 })
 
 local PlayerActiveModifyingSpeedToggle = PlayerTab:CreateToggle({
@@ -163,10 +156,10 @@ local PlayerActiveModifyingSpeedToggle = PlayerTab:CreateToggle({
    CurrentValue = false,
    Flag = "ButtonSpeed", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
-  CurrentValue = Value
+  CurrentValue = Value task.spawn(function()
 while CurrentValue do
 Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = ValueSpeed
 task.wait(0.1)
-end
+end end)
 end,
 })
