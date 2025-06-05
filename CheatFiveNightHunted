@@ -104,17 +104,29 @@ task.wait(0.1)
 end
 end,
 })
-local PlayerSpeedToggle = EspTab:CreateToggle({
-   Name = "Locker Esp",
+local ValueSpeed = 16
+local PlayerSpeedSlider = PlayerTab:CreateSlider({
+   Name = "Player Speed(max 21 for not be a exploiter) ",
+   Range = {0, 21},
+   Increment = 1,
+   Suffix = "Bananas",
+   CurrentValue = 16,
+   Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+CurrentValue = Value
+ValueSpeed = Value
+end,
+})
+
+local PlayerActiveModifyingSpeedToggle = EspTab:CreateToggle({
+   Name = "Active Modifying Player Speed",
    CurrentValue = false,
    Flag = nil, -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
   CurrentValue = Value
 while CurrentValue do
-for _,Folders in pairs(Game.Workspace:GetChildren()) do 
-if Folders:isA("Folder") then 
-if Folders:FindFirstChild("Map") then if Folders:FindFirstChild("Map"):FindFirstChild("Lockers") then for _,Computers in pairs(Folders:FindFirstChild("Map"):FindFirstChild("Lockers"):GetChildren()) do if Computers:isA("Model") then CreateEsp(Computers,Color3.fromRGB(0,0,255),"Locker",Computers) end end end end
-end
+if Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed ~= ValueSpeed and CurrentValue and ValueSpeed >= Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed then
+Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = ValueSpeed
 end
 task.wait(0.1)
 end
