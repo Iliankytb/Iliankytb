@@ -109,7 +109,7 @@ local PlayerSpeedSlider = PlayerTab:CreateSlider({
    Name = "Player Speed(max 21 for not be a exploiter) ",
    Range = {0, 21},
    Increment = 1,
-   Suffix = "Bananas",
+   Suffix = "Speeds",
    CurrentValue = 16,
    Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
@@ -118,14 +118,14 @@ ValueSpeed = Value
 end,
 })
 
-local PlayerActiveModifyingSpeedToggle = EspTab:CreateToggle({
+local PlayerActiveModifyingSpeedToggle = PlayerTab:CreateToggle({
    Name = "Active Modifying Player Speed",
    CurrentValue = false,
    Flag = nil, -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
   CurrentValue = Value
 while CurrentValue do
-if Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed ~= ValueSpeed and CurrentValue and ValueSpeed >= Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed then
+if ValueSpeed >= Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed then
 Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = ValueSpeed
 end
 task.wait(0.1)
