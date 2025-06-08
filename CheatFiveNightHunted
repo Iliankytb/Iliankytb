@@ -34,9 +34,16 @@ local Window = Rayfield:CreateWindow({
       Key = {"Hello"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
    }
 })
+Rayfield:Notify({
+   Title = "Cheat Version",
+   Content = "V.0.4",
+   Duration = 2.5,
+   Image = "rewind",
+})
 local PlayerTab = Window:CreateTab("Player", "rewind")
 local EspTab = Window:CreateTab("Esp", "rewind")
 local SettingsTab = Window:CreateTab("Settings", "rewind")
+
 
 local EspPlayers,EspComputer,EspLocker,EspBallPit,ActiveSpeedBoost = false,false,false,false,false
 
@@ -165,3 +172,10 @@ task.wait(0.1)
 end end)
 end,
 })
+local ButtonUnloadCheat = SettingsTab:CreateButton({
+   Name = "Unload Cheat",
+   Callback = function()
+  Rayfield:Destroy()
+end,
+})
+Rayfield:LoadConfiguration()
