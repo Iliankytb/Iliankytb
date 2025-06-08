@@ -38,6 +38,13 @@ local PlayerTab = Window:CreateTab("Player")
 local EspTab = Window:CreateTab("Esp")
 local SettingsTab = Window:CreateTab("Settings")
 local ActiveSpeedBoost,ActiveEspSurvivors,ActiveEspKillers,ActiveEspGenerator,ActiveEspItems,ActiveInfiniteStamina,ActiveAutoGenerator = false,false,false,false,false,false,false
+Rayfield:Notify({
+   Title = "Cheat Version",
+   Content = "V.0.7",
+   Duration = 2.5,
+   Image = "rewind",
+})
+
 local function CreateEsp(Char,Color,Text,Parent)
 if Char then
 local NewHighlight = Instance.new("Highlight",Char)
@@ -187,3 +194,10 @@ task.wait(2.5)
 end end)]]
 end,
 })
+local ButtonUnloadCheat = SettingsTab:CreateButton({
+   Name = "Unload Cheat",
+   Callback = function()
+  Rayfield:Destroy()
+end,
+})
+Rayfield:LoadConfiguration()
