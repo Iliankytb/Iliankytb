@@ -185,21 +185,23 @@ task.wait(2.5)
 end end)
 end,
 }) 
+
 local PlayerActiveInfStaminaToggle = PlayerTab:CreateToggle({
-   Name = "Infinite Stamina(Coming Soon)",
+   Name = "Infinite Stamina(not verified!)",
    CurrentValue = false,
    Flag = "ButtonInfiniteStamina", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
-  --[[ActiveAutoGenerator = Value task.spawn(function()
-while ActiveAutoGenerator do task.spawn(function()
-for _,Players in pairs(Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildren()) do 
-if Players:isA("Model") and Players.name == "Generator"  then if Players:FindFirstChild("Remotes"):FindFirstChild("RE") then Players:FindFirstChild("Remotes"):FindFirstChild("RE"):FireServer() end
- end
+  ActiveInfiniteStamina = Value task.spawn(function()
+while ActiveInfiniteStamina do task.spawn(function()
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local UnreliableRemoteEvent = ReplicatedStorage.Modules.Network.UnreliableRemoteEvent
+UnreliableRemoteEvent:FireServer("FootstepPlayed",100)
+end)
+task.wait(0.1)
 end end)
-task.wait(2.5)
-end end)]]
 end,
 })
+
 local ButtonUnloadCheat = SettingsTab:CreateButton({
    Name = "Unload Cheat",
    Callback = function()
