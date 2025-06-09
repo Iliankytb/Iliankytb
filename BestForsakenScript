@@ -230,6 +230,7 @@ end,
 local PlayerActiveTeleportRGenButton = PlayerTab:CreateButton({
    Name = "Teleport To Random Generator(Unverfied!)",
    Callback = function(Value)
+task.spawn(function()
 if Game.Workspace.Map.Ingame:FindFirstChild("Map") then
 local folder1 = Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildren()
 local Gen = folder1[math.random(1,#folder1)
@@ -237,6 +238,7 @@ if Gen and Gen.name == Generator then
 Game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = Gens.Main.CFrame
 end
 end
+end)
 end,
 })
 
