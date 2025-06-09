@@ -41,7 +41,7 @@ local ActiveSpeedBoost,ActiveEspSurvivors,ActiveEspKillers,ActiveEspGenerator,Ac
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.12",
+   Content = "V.0.13",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -232,10 +232,10 @@ end,
 })
 
 local PlayerActiveTeleportRGenButton = PlayerTab:CreateButton({
-   Name = "Teleport To Random Generator(Unverified!)",
+   Name = "Teleport To Random Generator(don't work!)",
    Callback = function(Value)
 task.spawn(function()
-    local mapFolder = workspace:FindFirstChild("Map") and workspace.Map.Ingame:FindFirstChild("Map")
+    -[[local mapFolder = workspace:FindFirstChild("Map") and workspace.Map.Ingame:FindFirstChild("Map")
     if not mapFolder then return end
 
     local children = mapFolder:GetChildren()
@@ -252,7 +252,7 @@ task.spawn(function()
         if hrp and main then
             hrp.CFrame = main.CFrame
         end
-    end
+    end]]
 end)
 
 end,
