@@ -168,9 +168,13 @@ local PlayerActiveModifyingSpeedToggle = PlayerTab:CreateToggle({
    CurrentValue = false,
    Flag = "ButtonSpeed", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
-  ActiveSpeedBoost = Value task.spawn(function()
-while ActiveSpeedBoost do task.spawn(function()
-Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = ValueSpeed Game.Players.LocalPlayer.Character.Humanoid:SetAttribute("BaseSpeed",ValueSpeed)
+  ActiveSpeedBoost = Value 
+task.spawn(function()
+while ActiveSpeedBoost do 
+task.spawn(function()
+Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = ValueSpeed 
+Game.Players.LocalPlayer.Character.Humanoid:SetAttribute("BaseSpeed",ValueSpeed)
+Game.Players.LocalPlayer.Character.Humanoid
 end)
 task.wait(0.1)
 end end)
@@ -231,14 +235,26 @@ local PlayerActiveTeleportRGenButton = PlayerTab:CreateButton({
    Name = "Teleport To Random Generator(Unverified!)",
    Callback = function(Value)
 task.spawn(function()
-if Game.Workspace.Map.Ingame:FindFirstChild("Map") then
-local folder1 = Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildren()
-local Gen = folder1[math.random(1,#folder1)]
-if Gen and Gen.name == Generator then
-Game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = Gens.Main.CFrame
-end
-end
+    local mapFolder = workspace:FindFirstChild("Map") and workspace.Map.Ingame:FindFirstChild("Map")
+    if not mapFolder then return end
+
+    local children = mapFolder:GetChildren()
+    if #children == 0 then return end
+
+    local randomChild = children[math.random(1, #children)]
+    if not randomChild then return end
+
+    -- Vérifie si le nom correspond au nom du générateur recherché
+    if randomChild.Name == Generator then
+        local hrp = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+        local main = Gens and Gens:FindFirstChild("Main")
+
+        if hrp and main then
+            hrp.CFrame = main.CFrame
+        end
+    end
 end)
+
 end,
 })
 
