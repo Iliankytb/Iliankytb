@@ -37,11 +37,11 @@ local Window = Rayfield:CreateWindow({
 local PlayerTab = Window:CreateTab("Player")
 local EspTab = Window:CreateTab("Esp")
 local SettingsTab = Window:CreateTab("Settings")
-local ActiveSpeedBoost,ActiveEspSurvivors,ActiveEspKillers,ActiveEspGenerator,ActiveEspItems,ActiveInfiniteStamina,ActiveAutoGenerator = false,false,false,false,false,false,false
+local ActiveSpeedBoost,ActiveEspSurvivors,ActiveEspKillers,ActiveEspGenerator,ActiveEspItems,ActiveInfiniteStamina,ActiveAutoGenerator,AutoKillSurvivors = false,false,false,false,false,false,false
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.9",
+   Content = "V.1.0",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -65,12 +65,13 @@ local EspSurvivorsToggle = EspTab:CreateToggle({
    Flag = "EspSurvivors", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
   ActiveEspSurvivors = Value task.spawn(function()
-while ActiveEspSurvivors do
+while ActiveEspSurvivors do task.spawn(function()
 for _,Players in pairs(Game.Workspace.Players.Survivors:GetChildren()) do 
 if Players:isA("Model") and not Players:FindFirstChildOfClass("Highlight") then
 CreateEsp(Players,Color3.fromRGB(0,255,0))
 end
 end
+end)
 task.wait(0.1)
 end for _,Players in pairs(Game.Workspace.Players.Survivors:GetChildren()) do 
 if Players:isA("Model") and Players:FindFirstChildOfClass("Highlight") then
@@ -80,18 +81,20 @@ end
  end)
 end,
 })
+
 local EspKillersToggle = EspTab:CreateToggle({
    Name = "Killers Esp",
    CurrentValue = false,
    Flag = "EspKiller", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
   ActiveEspKillers = Value task.spawn(function()
-while ActiveEspKillers do
+while ActiveEspKillers do task.spawn(function()
 for _,Players in pairs(Game.Workspace.Players.Killers:GetChildren()) do 
 if Players:isA("Model") and not Players:FindFirstChildOfClass("Highlight") then
 CreateEsp(Players,Color3.fromRGB(255,0,0))
 end
 end
+end)
 task.wait(0.1)
 end for _,Players in pairs(Game.Workspace.Players.Killers:GetChildren()) do 
 if Players:isA("Model") and Players:FindFirstChildOfClass("Highlight") then
@@ -148,8 +151,8 @@ end,
 
 local ValueSpeed = 16
 local PlayerSpeedSlider = PlayerTab:CreateSlider({
-   Name = "Player Speed(max 26 for not be a exploiter) ",
-   Range = {0, 26},
+   Name = "Player Speed(max 30 for not be a exploiter) ",
+   Range = {0, 30},
    Increment = 1,
    Suffix = "Speeds",
    CurrentValue = 16,
@@ -166,8 +169,9 @@ local PlayerActiveModifyingSpeedToggle = PlayerTab:CreateToggle({
    Flag = "ButtonSpeed", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
   ActiveSpeedBoost = Value task.spawn(function()
-while ActiveSpeedBoost do
+while ActiveSpeedBoost do task.spawn(function()
 Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = ValueSpeed Game.Players.LocalPlayer.Character.Humanoid:SetAttribute("BaseSpeed",ValueSpeed)
+end)
 task.wait(0.1)
 end end)
 end,
@@ -198,37 +202,40 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local UnreliableRemoteEvent = ReplicatedStorage.Modules.Network.UnreliableRemoteEvent
 UnreliableRemoteEvent:FireServer("FootstepPlayed",100)
 end)
-task.wait(0.01)
+task.wait(0.00000001)
 end end)
 end,
 })
 
 local PlayerActiveAutoKillSurvivorsToggle = PlayerTab:CreateToggle({
-   Name = "Auto Kill Survivors(Coming Soon)",
+   Name = "Auto Kill Survivors(Not Verfied Give Me Your Feedback!)",
    CurrentValue = false,
    Flag = "ButtonAutoKillSurvivors", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
- --[[ ActiveInfiniteStamina = Value task.spawn(function()
-while ActiveInfiniteStamina do task.spawn(function()
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local UnreliableRemoteEvent = ReplicatedStorage.Modules.Network.UnreliableRemoteEvent
-UnreliableRemoteEvent:FireServer("FootstepPlayed",100)
+  ActiveAutoKillSurvivors = Value task.spawn(function()
+while ActiveAutoKillSurvivors do 
+task.spawn(function()
+for _,Players in pairs(Game.Workspace.Players.Survivors:GetChildren()) do 
+if Players:isA("Model") then
+Game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = Players.HumanoidRootPart.CFrame
+end
+end
 end)
 task.wait(0.1)
-end end)]]
+end end)
 end,
 })
 
 local PlayerActiveTeleportRGenButton = PlayerTab:CreateButton({
-   Name = "Teleport To Random Generator(Coming Soon)",
+   Name = "Teleport To Random Generator(not verified!)",
    Callback = function(Value)
- --[[ ActiveInfiniteStamina = Value task.spawn(function()
-while ActiveInfiniteStamina do task.spawn(function()
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local UnreliableRemoteEvent = ReplicatedStorage.Modules.Network.UnreliableRemoteEvent
-UnreliableRemoteEvent:FireServer("FootstepPlayed",100)
-end)
-end end)]]
+if Game.Workspace.Map.Ingame:FindFirstChild("Map") then
+for _,Players in pairs(Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildren()) do 
+if Players:isA("Model") and Players.name == "Generator" then
+if Players:FindFirstChild("Main") then Game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = Players.Main.CFrame end
+end
+end
+end
 end,
 })
 
