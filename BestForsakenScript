@@ -41,7 +41,7 @@ local ActiveSpeedBoost,ActiveEspSurvivors,ActiveEspKillers,ActiveEspGenerator,Ac
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.10",
+   Content = "V.0.11",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -193,7 +193,7 @@ end,
 }) 
 
 local PlayerActiveInfStaminaToggle = PlayerTab:CreateToggle({
-   Name = "Infinite Stamina(Don't work!)",
+   Name = "Infinite Stamina(Don't really work!)",
    CurrentValue = false,
    Flag = "ButtonInfiniteStamina", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
@@ -228,13 +228,13 @@ end,
 })
 
 local PlayerActiveTeleportRGenButton = PlayerTab:CreateButton({
-   Name = "Teleport To Random Generator(Not Good!)",
+   Name = "Teleport To Random Generator(Unverfied!)",
    Callback = function(Value)
 if Game.Workspace.Map.Ingame:FindFirstChild("Map") then
-for _,Players in pairs(Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildren()) do 
-if Players:isA("Model") and Players.name == "Generator" then
-if Players:FindFirstChild("Main") then Game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = Players.Main.CFrame end
-end
+local folder1 = Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildren()
+local Gen = folder1[math.random(1,#folder1)
+if Gen and Gen.name == Generator then
+Game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = Gens.Main.CFrame
 end
 end
 end,
