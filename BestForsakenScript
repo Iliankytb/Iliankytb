@@ -174,7 +174,6 @@ while ActiveSpeedBoost do
 task.spawn(function()
 Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = ValueSpeed 
 Game.Players.LocalPlayer.Character.Humanoid:SetAttribute("BaseSpeed",ValueSpeed)
-Game.Players.LocalPlayer.Character.Humanoid
 end)
 task.wait(0.1)
 end end)
@@ -235,7 +234,7 @@ local PlayerActiveTeleportRGenButton = PlayerTab:CreateButton({
    Name = "Teleport To Random Generator(don't work!)",
    Callback = function(Value)
 task.spawn(function()
-    -[[local mapFolder = workspace:FindFirstChild("Map") and workspace.Map.Ingame:FindFirstChild("Map")
+    local mapFolder = workspace:FindFirstChild("Map") and workspace.Map.Ingame:FindFirstChild("Map")
     if not mapFolder then return end
 
     local children = mapFolder:GetChildren()
@@ -252,7 +251,7 @@ task.spawn(function()
         if hrp and main then
             hrp.CFrame = main.CFrame
         end
-    end]]
+    end
 end)
 
 end,
