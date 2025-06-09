@@ -41,7 +41,7 @@ local ActiveSpeedBoost,ActiveEspSurvivors,ActiveEspKillers,ActiveEspGenerator,Ac
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.1.0",
+   Content = "V.0.10",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -151,8 +151,8 @@ end,
 
 local ValueSpeed = 16
 local PlayerSpeedSlider = PlayerTab:CreateSlider({
-   Name = "Player Speed(max 30 for not be a exploiter) ",
-   Range = {0, 30},
+   Name = "Player Speed(max 25 for not be a exploiter) ",
+   Range = {0, 25},
    Increment = 1,
    Suffix = "Speeds",
    CurrentValue = 16,
@@ -175,7 +175,8 @@ end)
 task.wait(0.1)
 end end)
 end,
-})local PlayerActiveAutoGeneratorToggle = PlayerTab:CreateToggle({
+})
+local PlayerActiveAutoGeneratorToggle = PlayerTab:CreateToggle({
    Name = "Auto Generator(every 2.5 second)",
    CurrentValue = false,
    Flag = "ButtonAutoGen", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
@@ -192,7 +193,7 @@ end,
 }) 
 
 local PlayerActiveInfStaminaToggle = PlayerTab:CreateToggle({
-   Name = "Infinite Stamina(not verified!)",
+   Name = "Infinite Stamina(Don't work!)",
    CurrentValue = false,
    Flag = "ButtonInfiniteStamina", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
@@ -208,7 +209,7 @@ end,
 })
 
 local PlayerActiveAutoKillSurvivorsToggle = PlayerTab:CreateToggle({
-   Name = "Auto Kill Survivors(Not Verfied Give Me Your Feedback!)",
+   Name = "Auto Kill Survivors(Will Upgrade!)",
    CurrentValue = false,
    Flag = "ButtonAutoKillSurvivors", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
@@ -227,7 +228,7 @@ end,
 })
 
 local PlayerActiveTeleportRGenButton = PlayerTab:CreateButton({
-   Name = "Teleport To Random Generator(not verified!)",
+   Name = "Teleport To Random Generator(Not Good!)",
    Callback = function(Value)
 if Game.Workspace.Map.Ingame:FindFirstChild("Map") then
 for _,Players in pairs(Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildren()) do 
