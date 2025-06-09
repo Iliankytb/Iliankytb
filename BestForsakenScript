@@ -38,9 +38,10 @@ local PlayerTab = Window:CreateTab("Player")
 local EspTab = Window:CreateTab("Esp")
 local SettingsTab = Window:CreateTab("Settings")
 local ActiveSpeedBoost,ActiveEspSurvivors,ActiveEspKillers,ActiveEspGenerator,ActiveEspItems,ActiveInfiniteStamina,ActiveAutoGenerator = false,false,false,false,false,false,false
+
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.8",
+   Content = "V.0.9",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -147,8 +148,8 @@ end,
 
 local ValueSpeed = 16
 local PlayerSpeedSlider = PlayerTab:CreateSlider({
-   Name = "Player Speed(max 21 for not be a exploiter) ",
-   Range = {0, 21},
+   Name = "Player Speed(max 26 for not be a exploiter) ",
+   Range = {0, 26},
    Increment = 1,
    Suffix = "Speeds",
    CurrentValue = 16,
@@ -197,10 +198,40 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local UnreliableRemoteEvent = ReplicatedStorage.Modules.Network.UnreliableRemoteEvent
 UnreliableRemoteEvent:FireServer("FootstepPlayed",100)
 end)
-task.wait(0.1)
+task.wait(0.01)
 end end)
 end,
 })
+
+local PlayerActiveAutoKillSurvivorsToggle = PlayerTab:CreateToggle({
+   Name = "Auto Kill Survivors(Coming Soon)",
+   CurrentValue = false,
+   Flag = "ButtonAutoKillSurvivors", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+ --[[ ActiveInfiniteStamina = Value task.spawn(function()
+while ActiveInfiniteStamina do task.spawn(function()
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local UnreliableRemoteEvent = ReplicatedStorage.Modules.Network.UnreliableRemoteEvent
+UnreliableRemoteEvent:FireServer("FootstepPlayed",100)
+end)
+task.wait(0.1)
+end end)]]
+end,
+})
+
+local PlayerActiveTeleportRGenButton = PlayerTab:CreateButton({
+   Name = "Teleport To Random Generator(Coming Soon)",
+   Callback = function(Value)
+ --[[ ActiveInfiniteStamina = Value task.spawn(function()
+while ActiveInfiniteStamina do task.spawn(function()
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local UnreliableRemoteEvent = ReplicatedStorage.Modules.Network.UnreliableRemoteEvent
+UnreliableRemoteEvent:FireServer("FootstepPlayed",100)
+end)
+end end)]]
+end,
+})
+
 
 local ButtonUnloadCheat = SettingsTab:CreateButton({
    Name = "Unload Cheat",
