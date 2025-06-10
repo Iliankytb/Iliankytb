@@ -41,7 +41,7 @@ local ActiveSpeedBoost,ActiveEspSurvivors,ActiveEspKillers,ActiveEspGenerator,Ac
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.13",
+   Content = "V.0.14",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -212,7 +212,7 @@ end,
 })
 
 local PlayerActiveAutoKillSurvivorsToggle = PlayerTab:CreateToggle({
-   Name = "Auto Kill Survivors(Will Upgrade!)",
+   Name = "Auto Kill Survivors(Unverified!)",
    CurrentValue = false,
    Flag = "ButtonAutoKillSurvivors", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
@@ -222,6 +222,18 @@ task.spawn(function()
 for _,Players in pairs(Game.Workspace.Players.Survivors:GetChildren()) do 
 if Players:isA("Model") then
 Game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = Players.HumanoidRootPart.CFrame
+task.spawn(function()
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local RemoteEvent = ReplicatedStorage.Modules.Network.RemoteEvent -- RemoteEvent 
+
+RemoteEvent:FireServer(
+    "UseActorAbility",
+    "Slash"
+)
+
+wait(2.5)
+end)
 end
 end
 end)
