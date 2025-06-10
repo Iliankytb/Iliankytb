@@ -39,7 +39,7 @@ local SettingsTab = Window:CreateTab("Settings")
 
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.1",
+   Content = "V.0.2",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -58,12 +58,34 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/m
 end,
 })
 
---[[
-local ButtonLoadsecretCheat = GameTab:CreateButton({
-   Name = "??? Cheat Iliankytb",
+
+local ButtonLoadRFTwoCheat = GameTab:CreateButton({
+   Name = "Rainbow Friends 2 Cheat Iliankytb",
      Callback = function(Value)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/BestRainbowFriendsTwo"))()
+end,
+})
+
+local ButtonLoadBloxFruitCheat = GameTab:CreateButton({
+   Name = "Blox Fruit Cheat Iliankytb(Coming Soon)",
+     Callback = function(Value)
+--loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/BestRainbowFriendsTwo"))()
+end,
+})
+local ButtonLoadDoorsCheat = GameTab:CreateButton({
+   Name = "Doors Cheat Iliankytb(Coming Soon)",
+     Callback = function(Value)
+--loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/BestRainbowFriendsTwo"))()
+end,
+})
+--[[local ButtonLoadsecretCheat = GameTab:CreateButton({
+   Name = "Rainbow Friends 2 Cheat Iliankytb",
+     Callback = function(Value)
+--loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/BestRainbowFriendsTwo"))()
 end,
 })]]
+
+
 
 local ButtonUnloadCheat = SettingsTab:CreateButton({
    Name = "Unload Cheat",
