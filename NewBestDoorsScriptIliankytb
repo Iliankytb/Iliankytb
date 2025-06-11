@@ -38,16 +38,19 @@ local PlayerTab = Window:CreateTab("Player")
 local EspTab = Window:CreateTab("Esp")
 local SettingsTab = Window:CreateTab("Settings")
 local ActiveEspDoor,ActiveSpeedBoost = false,false
+
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.1",
+   Content = "V.0.2",
    Duration = 2.5,
    Image = "rewind",
 })
 
 local function CreateEsp(Char,Color,Text,parent)
 if Char and not Char:FindFirstChildOfClass("BillboardGui") and not parent:FindFirstChildOfClass("Highlight") then
-local NewHighlight = Instance.new("Highlight",parent) NewHighlight.FillColor = Color local B = Instance.new("BillboardGui",Char)
+local NewHighlight = Instance.new("Highlight",parent) 
+NewHighlight.FillColor = Color 
+local B = Instance.new("BillboardGui",Char)
  local T = Instance.new("TextLabel",B) 
 T.Text = Text 
 T.TextColor = Color
@@ -56,7 +59,8 @@ end
 
 local function KeepEsp(Char,parent)
 if Char and parent:FindFirstChildOfClass("Highlight") and Char:FindFirstChildOfClass("BillboardGui") then
-Parent:FindFirstChildOfClass("Highlight"):Destroy() Char:FindFirstChildOfClass("BillboardGui"):Destroy()
+Parent:FindFirstChildOfClass("Highlight"):Destroy() 
+Char:FindFirstChildOfClass("BillboardGui"):Destroy()
 end
 end
 
@@ -65,7 +69,29 @@ local EspDoorToggle = EspTab:CreateToggle({
    CurrentValue = false,
    Flag = "EspDoor", 
    Callback = function(Value)
-ActiveEspDoor = Value task.spawn(function() will ActiveEspDoor do if Game.Workspace:FindFirstChild("CurrentRooms") then for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) if Rooms:isA("Model") then if Rooms:FindFirstChild("Door") then CreateEsp(Rooms:FindFirstChild("Door").PrimaryPart,Color3.fromRGB(0,255,0),Rooms:FindFirstChild("Door").Sign.Stinker.Text,Rooms:FindFirstChild("Door")) end end end end end) if Game.Workspace:FindFirstChild("CurrentRooms") then for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) if Rooms:isA("Model") then if Rooms:FindFirstChild("Door") then KeepEsp(Rooms:FindFirstChild("Door").PrimaryPart,Rooms:FindFirstChild("Door")) end end end end
+ActiveEspDoor = Value 
+task.spawn(function() 
+will ActiveEspDoor do 
+if Game.Workspace:FindFirstChild("CurrentRooms") then 
+for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) 
+if Rooms:isA("Model") then 
+if Rooms:FindFirstChild("Door") then 
+CreateEsp(Rooms:FindFirstChild("Door").PrimaryPart,Color3.fromRGB(0,255,0),Rooms:FindFirstChild("Door").Sign.Stinker.Text,Rooms:FindFirstChild("Door")) 
+end 
+end 
+end
+wait(0.1)
+end 
+if Game.Workspace:FindFirstChild("CurrentRooms") then
+for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) 
+if Rooms:isA("Model") then
+if Rooms:FindFirstChild("Door") then 
+KeepEsp(Rooms:FindFirstChild("Door").PrimaryPart,Rooms:FindFirstChild("Door")) 
+end 
+end
+end
+end
+end)
 end,
 })
 local ValueSpeed = 16
