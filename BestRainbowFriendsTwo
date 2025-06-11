@@ -41,7 +41,7 @@ local ActiveEspItems,ActiveEspMonsters,ActiveAutoPickupItems = false,false,false
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.3",
+   Content = "V.0.4",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -90,7 +90,7 @@ KeepEsp(Light) end end
  end)
 end,
 })
-local AutoPickupItemsToggle = EspTab:CreateToggle({
+local AutoPickupItemsToggle = PlayerTab:CreateToggle({
    Name = "Auto Pickup Items",
    CurrentValue = false,
    Flag = "AutoPickupItems",
@@ -102,6 +102,17 @@ while ActiveAutoPickupItems do task.spawn(function()
 end)
 task.wait(0.25)
 end 
+ end)
+end,
+})
+local PickupItems = PlayerTab:CreateButton({
+   Name = "Pickup Random Item",
+   Callback = function(Value)
+  task.spawn(function()
+ for _,Light in pairs(Game.Workspace:GetChildren()) do 
+if Light and Light:isA("Model") and (Light.name == "LightBulb"or Light.name == "GasCanister" or Light.name == "CakeMix")   then 
+Game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = Light.PrimaryPart.CFrame
+ end end 
  end)
 end,
 })
