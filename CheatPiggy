@@ -40,7 +40,7 @@ local SettingsTab = Window:CreateTab("Settings")
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.1",
+   Content = "V.0.2",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -57,3 +57,37 @@ if Char and Char:FindFirstChildOfClass("Highlight") then
 Char:FindFirstChildOfClass("Highlight"):Destroy()
 end
 end
+
+local ValueSpeed = 16
+local PlayerSpeedSlider = PlayerTab:CreateSlider({
+   Name = "Player Speed(max 21 for not be a exploiter) ",
+   Range = {0, 21},
+   Increment = 1,
+   Suffix = "Speeds",
+   CurrentValue = 16,
+   Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+CurrentValue = Value
+ValueSpeed = Value
+end,  ValueSpeed = CurrentValue,
+})
+
+local PlayerActiveModifyingSpeedToggle = PlayerTab:CreateToggle({
+   Name = "Active Modifying Player Speed",
+   CurrentValue = false,
+   Flag = "ButtonSpeed", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  ActiveSpeedBoost = Value task.spawn(function()
+while ActiveSpeedBoost do
+Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = ValueSpeed
+task.wait(0.1)
+end end)
+end,
+})
+local ButtonUnloadCheat = SettingsTab:CreateButton({
+   Name = "Unload Cheat",
+   Callback = function()
+  Rayfield:Destroy()
+end,
+})
+Rayfield:LoadConfiguration()
