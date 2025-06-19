@@ -36,11 +36,11 @@ local Window = Rayfield:CreateWindow({
 local PlayerTab = Window:CreateTab("Player")
 local EspTab = Window:CreateTab("Esp")
 local SettingsTab = Window:CreateTab("Settings")
---local ActiveEspItems,ActiveEspMonsters,ActiveAutoPickupItems = false,false,false
+local ActiveSpeedBoost,ActiveEspMonster,ActiveEspItems = false,false,false
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.2",
+   Content = "V.0.3",
    Duration = 2.5,
    Image = "rewind",
 })
