@@ -38,11 +38,11 @@ local PlayerTab = Window:CreateTab("Player")
 local EspTab = Window:CreateTab("Esp")
 local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
-local ActiveSpeedBoost,,ActiveAutoUseCoinFlip,ActiveEspSurvivors,ActiveNoStun,ActiveEspKillers,ActiveEspGenerator,ActiveEspItems,ActiveInfiniteStamina,ActiveAutoGenerator,AutoKillSurvivors = false,false,false,false,false,false,false,false,false
+local ActiveSpeedBoost,ActiveAutoUseCoinFlip,ActiveEspSurvivors,ActiveNoStun,ActiveEspKillers,ActiveEspGenerator,ActiveEspItems,ActiveInfiniteStamina,ActiveAutoGenerator,AutoKillSurvivors = false,false,false,false,false,false,false,false,false
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.16",
+   Content = "V.0.17",
    Duration = 2.5,
    Image = "rewind",
 })
