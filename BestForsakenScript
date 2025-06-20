@@ -38,11 +38,11 @@ local PlayerTab = Window:CreateTab("Player")
 local EspTab = Window:CreateTab("Esp")
 local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
-local ActiveSpeedBoost,ActiveAutoUseCoinFlip,ActiveEspSurvivors,ActiveNoStun,ActiveEspKillers,ActiveEspGenerator,ActiveEspItems,ActiveInfiniteStamina,ActiveAutoGenerator,AutoKillSurvivors = false,false,false,false,false,false,false,false,false
+local ActiveSpeedBoost,ActiveAutoUseCoinFlip,ActiveEspSurvivors,ActiveNoStun,ActiveEspKillers,ActiveEspGenerator,ActiveEspItems,ActiveInfiniteStamina,ActiveEspRagdolls,ActiveAutoGenerator,AutoKillSurvivors = false,false,false,false,false,false,false,false,false,false
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.17",
+   Content = "V.0.18",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -314,7 +314,28 @@ task.spawn(function()
 end)
 end,
 })
-
+local EspRagdollsToggle = EspTab:CreateToggle({
+   Name = "Ragdolls & Enemy Rig Killer Esp",
+   CurrentValue = false,
+   Flag = "EspRagdolls", 
+   Callback = function(Value)
+  ActiveEspRagdolls = Value task.spawn(function()
+while ActiveEspRagdolls do task.spawn(function()
+for _,Players in pairs(Game.Workspace.Ragdolls:GetChildren()) do 
+if Players:isA("Model") and not Players:FindFirstChildOfClass("Highlight") then
+CreateEsp(Players,Color3.fromRGB(47,47,47))
+end
+end
+end)
+task.wait(0.1)
+end for _,Players in pairs(Game.Workspace.Ragdolls:GetChildren()) do 
+if Players:isA("Model") and Players:FindFirstChildOfClass("Highlight") then
+KeepEsp(Players)
+end
+end 
+ end)
+end,
+})
 
 local ButtonUnloadCheat = SettingsTab:CreateButton({
    Name = "Unload Cheat",
