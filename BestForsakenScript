@@ -38,11 +38,11 @@ local PlayerTab = Window:CreateTab("Player")
 local EspTab = Window:CreateTab("Esp")
 local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
-local ActiveSpeedBoost,ActiveEspSurvivors,ActiveNoStun,ActiveEspKillers,ActiveEspGenerator,ActiveEspItems,ActiveInfiniteStamina,ActiveAutoGenerator,AutoKillSurvivors = false,false,false,false,false,false,false,false
+local ActiveSpeedBoost,,ActiveAutoUseCoinFlip,ActiveEspSurvivors,ActiveNoStun,ActiveEspKillers,ActiveEspGenerator,ActiveEspItems,ActiveInfiniteStamina,ActiveAutoGenerator,AutoKillSurvivors = false,false,false,false,false,false,false,false,false
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.15",
+   Content = "V.0.16",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -224,7 +224,7 @@ end end)
 end,
 })
 local PlayerNoStunToggle = PlayerTab:CreateToggle({
-   Name = "No Stun(UnVerfied!)",
+   Name = "No Stun",
    CurrentValue = false,
    Flag = "NoStunButton", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
@@ -233,6 +233,27 @@ while ActiveNoStun do task.spawn(function()
 Game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
 end)
 task.wait(0.001)
+end end)
+end,
+})
+local PlayerAutoUseCoinFlipToggle = PlayerTab:CreateToggle({
+   Name = "Auto Use Coin Flip",
+   CurrentValue = false,
+   Flag = "AutoUseCoinFlipbutton", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  ActiveAutoUseCoinFlip = Value task.spawn(function()
+while ActiveAutoUseCoinFlip do task.spawn(function()
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RemoteEvent = ReplicatedStorage.Modules.Network.RemoteEvent -- RemoteEvent 
+
+RemoteEvent:FireServer(
+    "UseActorAbility",
+    "CoinFlip"
+)
+
+end)
+task.wait(1)
 end end)
 end,
 })
