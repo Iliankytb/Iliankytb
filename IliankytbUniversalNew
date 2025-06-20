@@ -35,14 +35,29 @@ local Window = Rayfield:CreateWindow({
    }
 })
 local GameTab = Window:CreateTab("Game")
+local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
 
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.3",
+   Content = "V.0.4",
    Duration = 2.5,
    Image = "rewind",
 })
+local function copyToClipboard(text)
+    if setclipboard then
+        setclipboard(text)
+    else
+        warn("setclipboard is not supported in this environment.")
+    end
+end
+local DiscordLink = DiscordTab:CreateButton({
+   Name = "Discord Link",
+   Callback = function()
+copyToClipboard("https://discord.gg/E2TqYRsRP4")
+end,
+})
+
 
 local ButtonLoadForsakenCheat = GameTab:CreateButton({
    Name = "Forsaken Cheat Iliankytb",
