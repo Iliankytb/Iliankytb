@@ -35,12 +35,13 @@ local Window = Rayfield:CreateWindow({
 })
 local PlayerTab = Window:CreateTab("Player")
 local EspTab = Window:CreateTab("Esp")
+local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
 local ActiveSpeedBoost,ActiveEspMonster,ActiveEspItems = false,false,false
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.3",
+   Content = "V.0.0.35",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -57,6 +58,19 @@ if Char and Char:FindFirstChildOfClass("Highlight") then
 Char:FindFirstChildOfClass("Highlight"):Destroy()
 end
 end
+local function copyToClipboard(text)
+    if setclipboard then
+        setclipboard(text)
+    else
+        warn("setclipboard is not supported in this environment.")
+    end
+end
+local DiscordLink = DiscordTab:CreateButton({
+   Name = "Discord Link",
+   Callback = function()
+copyToClipboard("https://discord.gg/E2TqYRsRP4")
+end,
+})
 
 local ValueSpeed = 16
 local PlayerSpeedSlider = PlayerTab:CreateSlider({
