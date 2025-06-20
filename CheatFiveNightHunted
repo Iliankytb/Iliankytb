@@ -36,12 +36,13 @@ local Window = Rayfield:CreateWindow({
 })
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.4",
+   Content = "V.0.5",
    Duration = 2.5,
    Image = "rewind",
 })
 local PlayerTab = Window:CreateTab("Player", "rewind")
 local EspTab = Window:CreateTab("Esp", "rewind")
+local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings", "rewind")
 
 
@@ -62,7 +63,19 @@ Parent:FindFirstChild("BillboardGui"):Destroy()
 end
 end
 end
-
+local function copyToClipboard(text)
+    if setclipboard then
+        setclipboard(text)
+    else
+        warn("setclipboard is not supported in this environment.")
+    end
+end
+local DiscordLink = DiscordTab:CreateButton({
+   Name = "Discord Link",
+   Callback = function()
+copyToClipboard("https://discord.gg/E2TqYRsRP4")
+end,
+})
 local EspPlayerToggle = EspTab:CreateToggle({
    Name = "Players Esp",
    CurrentValue = false,
