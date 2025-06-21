@@ -42,7 +42,7 @@ local ActiveSpeedBoost,ActiveAutoUseCoinFlip,ActiveEspSurvivors,ActiveNoStun,Act
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.18",
+   Content = "V.0.19",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -287,30 +287,32 @@ end)
 task.wait(0.1)
 end end)
 end,
+}) local Choosed = "nothings"
+local DropdownTpGen = PlayerTab:CreateDropdown({
+   Name = "Dropdown TP To Generators(Unverified!)",
+   Options = {},
+   CurrentOption = {"Nothings"},
+   MultipleOptions = false,
+   Flag = nil,
+   Callback = function(Options)   task.spawn(function()
+for _,Players in pairs(Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildren()) do 
+if Players:isA("Model") and Players.name == "Generator"  then 
+if Players:FindFirstChild("GeneratorTP") then 
+if Players:FindFirstChild("GeneratorTP").Value == DropdownTpGen.CurrentOption then 
+Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Players.PrimaryPart.CFrame 
+end  end 
+ end
+end  end)
+   end,
 })
-
-local PlayerActiveTeleportRGenButton = PlayerTab:CreateButton({
-   Name = "Teleport To Random Generator(Maybe it Work!)",
-   Callback = function(Value)
-task.spawn(function()
-    local mapFolder = workspace.Map.Ingame:FindFirstChild("Map")
-    if not mapFolder then return end
-
-    local children = mapFolder:GetChildren()
-    if #children == 0 then return end
-
-    local randomChild = children[math.random(1, #children)]
-    if not randomChild then return end
-
-    
-    if randomChild.Name == "Generator" then
-        local hrp = game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-        local main = Gens and Gens:FindFirstChild("Main")
-
-        if hrp and main then
-            hrp.CFrame = main.CFrame
-        end
-    end
+local PlayerRefreshGenButton = PlayerTab:CreateButton({
+   Name = "Refresh Dropdown Generator",
+   Callback = function(Value) local num = 1
+task.spawn(function() local GenTable = {} for _,Players in pairs(Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildren()) do 
+if Players:isA("Model") and Players.name == "Generator"  then table.insert(GenTable,"Generator ".. num) if not  Players:FindFirstChild("GeneratorTP") then task.spawn(function() local NewValue = Instance.new("StringValue",Players) NewValue.Name = "GeneratorTP" NewValue.Value = "Generator "..num end) end num = num +1
+ end
+end 
+    DropdownTpGen:Refresh(GenTable)
 end)
 end,
 })
