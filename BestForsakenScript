@@ -279,7 +279,7 @@ RemoteEvent:FireServer(
     "Slash"
 )
 
-end)
+
 end
 end
 end)
