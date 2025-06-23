@@ -43,7 +43,7 @@ local ActiveSpeedBoost,ActiveAutoUseCoinFlip,ActiveEspSurvivors,ActiveNoStun,Act
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.20",
+   Content = "V.0.22",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -337,31 +337,40 @@ end
  end)
 end,
 })
-local ValueFieldOfView = 90
+local ValueFieldOfView = 80
 local PlayerFieldOfViewSlider = PlayerTab:CreateSlider({
    Name = "Field Of View (Coming Soon)",
-   Range = {70, 120},
+   Range = {80, 120},
    Increment = 1,
    Suffix = "FOV",
-   CurrentValue = 70,
-   Flag = "FOV1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   CurrentValue = 80,
+   Flag = "FOV1",
    Callback = function(Value)
 CurrentValue = Value
 ValueFieldOfView = Value
 end,  ValueFieldOfView = CurrentValue,
-})
-local ValueBright = 0
-local PlayerSpeedSlider = PlayerTab:CreateSlider({
-   Name = "Change Bright(Coming Soon) ",
-   Range = {0, 0},
-   Increment = 1,
-   Suffix = "Bright Level",
-   CurrentValue = 16,
-   Flag = "BrightLevel1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+}) local ActiveModifiedFieldOfView = false local PlayerActiveModifyingFOVToggle = PlayerTab:CreateToggle({
+   Name = "Active Modifying Player FOV(i will upgrade this function it work but the game reput the normal fov!)",
+   CurrentValue = false,
+   Flag = "ButtonFOV", 
    Callback = function(Value)
-CurrentValue = Value
-ValueBright = Value
-end,  ValueBright = CurrentValue,
+  ActiveModifiedFieldOfView = Value 
+task.spawn(function()
+while ActiveModifiedFieldOfView do 
+task.spawn(function()
+Game.Workspace.Camera.FieldOfView = ValueFieldOfView end)
+task.wait(0.1)
+end end)
+end,
+}) 
+local ActiveFullBright = false
+local PlayerFullBright = PlayerTab:CreateToggle({
+   Name = "Full Bright",
+   CurrentValue = false,
+   Flag = "FullBright",
+   Callback = function(Value)
+ActiveFullBright = Value task.spawn(function() while ActiveFullBright do if Game.Lighting:FindFirstChildOfClass("Sky") then Game.Lighting:FindFirstChildOfClass("Sky"):Destroy() end if Game.Lighting then Game.Lighting.Brightness = 10 Game.Lighting.ClockTime = 0 end  wait(0.1) end end)
+end,  
 })
 
 local ButtonUnloadCheat = SettingsTab:CreateButton({
