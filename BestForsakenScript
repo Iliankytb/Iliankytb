@@ -34,6 +34,7 @@ local Window = Rayfield:CreateWindow({
       Key = {"Hello"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
    }
 })
+local InfoTab = Window:CreateTab("Info")
 local PlayerTab = Window:CreateTab("Player")
 local EspTab = Window:CreateTab("Esp")
 local DiscordTab = Window:CreateTab("Discord")
@@ -42,11 +43,11 @@ local ActiveSpeedBoost,ActiveAutoUseCoinFlip,ActiveEspSurvivors,ActiveNoStun,Act
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.19",
+   Content = "V.0.20",
    Duration = 2.5,
    Image = "rewind",
 })
-
+local Paragraph1 = InfoTab:CreateParagraph({Title = "TP To Gen", Content = "This Function Work Now And If You Got Kicked I Guess Sorry!"})
 local function CreateEsp(Char,Color,Text,Parent)
 if Char then
 local NewHighlight = Instance.new("Highlight",Char)
@@ -269,7 +270,6 @@ task.spawn(function()
 for _,Players in pairs(Game.Workspace.Players.Survivors:GetChildren()) do 
 if Players:isA("Model") then
 Game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = Players.HumanoidRootPart.CFrame
-task.spawn(function()
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local RemoteEvent = ReplicatedStorage.Modules.Network.RemoteEvent -- RemoteEvent 
@@ -279,17 +279,16 @@ RemoteEvent:FireServer(
     "Slash"
 )
 
-wait(2.5)
 end)
 end
 end
 end)
-task.wait(0.1)
+task.wait(0.05)
 end end)
 end,
-}) local Choosed = "nothings"
+})
 local DropdownTpGen = PlayerTab:CreateDropdown({
-   Name = "Dropdown TP To Generators(Unverified!)",
+   Name = "Dropdown TP To Generators",
    Options = {},
    CurrentOption = {"Nothings"},
    MultipleOptions = false,
@@ -298,8 +297,8 @@ local DropdownTpGen = PlayerTab:CreateDropdown({
 for _,Players in pairs(Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildren()) do 
 if Players:isA("Model") and Players.name == "Generator"  then 
 if Players:FindFirstChild("GeneratorTP") then 
-if Players:FindFirstChild("GeneratorTP").Value == DropdownTpGen.CurrentOption then 
-Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Players.PrimaryPart.CFrame 
+if Players:FindFirstChild("GeneratorTP").Value == Options[1] then 
+Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Players.PrimaryPart.CFrame + Vector3.new(0,5,0)
 end  end 
  end
 end  end)
@@ -337,6 +336,32 @@ end
 end 
  end)
 end,
+})
+local ValueFieldOfView = 90
+local PlayerFieldOfViewSlider = PlayerTab:CreateSlider({
+   Name = "Field Of View (Coming Soon)",
+   Range = {70, 120},
+   Increment = 1,
+   Suffix = "FOV",
+   CurrentValue = 70,
+   Flag = "FOV1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+CurrentValue = Value
+ValueFieldOfView = Value
+end,  ValueFieldOfView = CurrentValue,
+})
+local ValueBright = 0
+local PlayerSpeedSlider = PlayerTab:CreateSlider({
+   Name = "Change Bright(Coming Soon) ",
+   Range = {0, 0},
+   Increment = 1,
+   Suffix = "Bright Level",
+   CurrentValue = 16,
+   Flag = "BrightLevel1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+CurrentValue = Value
+ValueBright = Value
+end,  ValueBright = CurrentValue,
 })
 
 local ButtonUnloadCheat = SettingsTab:CreateButton({
