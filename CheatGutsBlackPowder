@@ -1,0 +1,107 @@
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local Window = Rayfield:CreateWindow({
+   Name = "Guts & Blackpowder - Script By Iliankytb",
+   Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
+   LoadingTitle = "Guts & BlackPowder",
+   LoadingSubtitle = "Script By Iliankytb",
+   Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
+
+   DisableRayfieldPrompts = false,
+   DisableBuildWarnings = false, -- Prevents Rayfield from warning when the script has a version mismatch with the interface
+
+   ConfigurationSaving = {
+      Enabled = true,
+      FolderName = "saver", -- Create a custom folder for your hub/game
+      FileName = "K"
+   },
+
+   Discord = {
+      Enabled = false, -- Prompt the user to join your Discord server if their executor supports it
+      Invite = "noinvitelink", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ ABCD would be ABCD
+      RememberJoins = true -- Set this to false to make them join the discord every time they load it up
+   },
+
+   KeySystem = false, -- Set this to true to use our key system
+   KeySettings = {
+      Title = "Untitled",
+      Subtitle = "Key System",
+      Note = "No method of obtaining the key is provided", -- Use this to tell the user how to get a key
+      FileName = "Key", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
+      SaveKey = true, -- The user's key will be saved, but if you change the key, they will be unable to use your script
+      GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+      Key = {"Hello"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
+   }
+})
+local PlayerTab = Window:CreateTab("Player")
+local EspTab = Window:CreateTab("Esp")
+local DiscordTab = Window:CreateTab("Discord")
+local SettingsTab = Window:CreateTab("Settings")
+local ActiveSpeedBoost = false
+
+Rayfield:Notify({
+   Title = "Cheat Version",
+   Content = "V.0.1",
+   Duration = 2.5,
+   Image = "rewind",
+})
+
+local function CreateEsp(Char,Color,Text,Parent)
+if Char then
+local NewHighlight = Instance.new("Highlight",Char)
+NewHighlight.OutlineColor = Color NewHighlight.FillColor = Color
+end
+end
+
+local function KeepEsp(Char)
+if Char and Char:FindFirstChildOfClass("Highlight") then
+Char:FindFirstChildOfClass("Highlight"):Destroy()
+end
+end
+local function copyToClipboard(text)
+    if setclipboard then
+        setclipboard(text)
+    else
+        warn("setclipboard is not supported in this environment.")
+    end
+end
+local DiscordLink = DiscordTab:CreateButton({
+   Name = "Discord Link",
+   Callback = function()
+copyToClipboard("https://discord.gg/E2TqYRsRP4")
+end,
+})
+
+local ValueSpeed = 16
+local PlayerSpeedSlider = PlayerTab:CreateSlider({
+   Name = "Player Speed(max 21 for not be a exploiter) ",
+   Range = {0, 21},
+   Increment = 1,
+   Suffix = "Speeds",
+   CurrentValue = 16,
+   Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+CurrentValue = Value
+ValueSpeed = Value
+end,  ValueSpeed = CurrentValue,
+})
+
+local PlayerActiveModifyingSpeedToggle = PlayerTab:CreateToggle({
+   Name = "Active Modifying Player Speed",
+   CurrentValue = false,
+   Flag = "ButtonSpeed", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  ActiveSpeedBoost = Value task.spawn(function()
+while ActiveSpeedBoost do
+Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = ValueSpeed
+task.wait(0.1)
+end end)
+end,
+})
+local ButtonUnloadCheat = SettingsTab:CreateButton({
+   Name = "Unload Cheat",
+   Callback = function()
+  Rayfield:Destroy()
+end,
+})
+Rayfield:LoadConfiguration()
