@@ -46,22 +46,36 @@ Rayfield:Notify({
    Image = "rewind",
 })
 
-local function CreateEsp(Char,Color,Text,parent)
-if Char and not Char:FindFirstChildOfClass("BillboardGui") and not parent:FindFirstChildOfClass("Highlight") then
-local NewHighlight = Instance.new("Highlight",parent) 
-NewHighlight.FillColor = Color 
-local B = Instance.new("BillboardGui",Char)
- local T = Instance.new("TextLabel",B) 
-T.Text = Text 
-T.TextColor = Color
-end
+local function CreateEsp(Char, Color, Text, parent)
+	if Char and Char:FindFirstChild("Head") and not Char:FindFirstChild("ESP") and not parent:FindFirstChildOfClass("Highlight") then
+		local NewHighlight = Instance.new("Highlight")
+		NewHighlight.FillColor = Color
+		NewHighlight.Parent = parent
+
+		local B = Instance.new("BillboardGui")
+		B.Name = "ESP"
+		B.Size = UDim2.new(0, 100, 0, 40)
+		B.AlwaysOnTop = true
+		B.StudsOffset = Vector3.new(0, 2, 0)
+		B.Adornee = Char:FindFirstChild("Head")
+		B.Parent = Char
+
+		local T = Instance.new("TextLabel")
+		T.Size = UDim2.new(1, 0, 1, 0)
+		T.BackgroundTransparency = 1
+		T.Text = Text
+		T.TextColor3 = Color
+		T.TextScaled = true
+		T.Font = Enum.Font.SourceSansBold
+		T.Parent = B
+	end
 end
 
-local function KeepEsp(Char,parent)
-if Char and parent:FindFirstChildOfClass("Highlight") and Char:FindFirstChildOfClass("BillboardGui") then
-Parent:FindFirstChildOfClass("Highlight"):Destroy() 
-Char:FindFirstChildOfClass("BillboardGui"):Destroy()
-end
+local function KeepEsp(Char, parent)
+	if Char and parent:FindFirstChildOfClass("Highlight") and Char:FindFirstChild("ESP") then
+		parent:FindFirstChildOfClass("Highlight"):Destroy()
+		Char:FindFirstChild("ESP"):Destroy()
+	end
 end
 
 local EspDoorToggle = EspTab:CreateToggle({
