@@ -71,7 +71,7 @@ local EspDoorToggle = EspTab:CreateToggle({
    Callback = function(Value)
 ActiveEspDoor = Value 
 task.spawn(function() 
-will ActiveEspDoor do 
+while ActiveEspDoor do 
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) 
 if Rooms:isA("Model") then 
@@ -79,6 +79,7 @@ if Rooms:FindFirstChild("Door") then
 CreateEsp(Rooms:FindFirstChild("Door").PrimaryPart,Color3.fromRGB(0,255,0),Rooms:FindFirstChild("Door").Sign.Stinker.Text,Rooms:FindFirstChild("Door")) 
 end 
 end 
+end
 end
 wait(0.1)
 end 
