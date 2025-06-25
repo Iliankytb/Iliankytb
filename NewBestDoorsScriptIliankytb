@@ -46,18 +46,18 @@ Rayfield:Notify({
    Image = "rewind",
 })
 
-local function CreateEsp(Char, Color, Text, parent)
-	if Char and Char:FindFirstChild("Head") and not Char:FindFirstChild("ESP") and not parent:FindFirstChildOfClass("Highlight") then
+local function CreateEsp(Char, Color, Text)
+	if Char  and not Char:FindFirstChild("BillboardGui") and not Char:FindFirstChildOfClass("Highlight") then
 		local NewHighlight = Instance.new("Highlight")
 		NewHighlight.FillColor = Color
-		NewHighlight.Parent = parent
+		NewHighlight.Parent = Char
 
 		local B = Instance.new("BillboardGui")
 		B.Name = "ESP"
 		B.Size = UDim2.new(0, 100, 0, 40)
 		B.AlwaysOnTop = true
 		B.StudsOffset = Vector3.new(0, 2, 0)
-		B.Adornee = Char:FindFirstChild("Head")
+		B.Adornee = Char
 		B.Parent = Char
 
 		local T = Instance.new("TextLabel")
@@ -71,10 +71,10 @@ local function CreateEsp(Char, Color, Text, parent)
 	end
 end
 
-local function KeepEsp(Char, parent)
-	if Char and parent:FindFirstChildOfClass("Highlight") and Char:FindFirstChild("ESP") then
-		parent:FindFirstChildOfClass("Highlight"):Destroy()
-		Char:FindFirstChild("ESP"):Destroy()
+local function KeepEsp(Char)
+	if Char and Char:FindFirstChildOfClass("Highlight") and Char:FindFirstChildOfClass("BillboardGui") then
+		Char:FindFirstChildOfClass("Highlight"):Destroy()
+		Char:FindFirstChildOfClass("BillboardGui"):Destroy()
 	end
 end
 
@@ -87,10 +87,10 @@ ActiveEspDoor = Value
 task.spawn(function() 
 while ActiveEspDoor do 
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
-for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) 
-if Rooms:isA("Model") then 
-if Rooms:FindFirstChild("Door") then 
-CreateEsp(Rooms:FindFirstChild("Door").PrimaryPart,Color3.fromRGB(0,255,0),Rooms:FindFirstChild("Door").Sign.Stinker.Text,Rooms:FindFirstChild("Door")) 
+for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
+if Rooms:isA("Model") then
+if Rooms:FindFirstChild("Door") and not Rooms:FindFirstChild("Door").PrimaryPart:FindFirstChildOfClass("Highlight") and not Rooms:FindFirstChild("Door").PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
+CreateEsp(Rooms:FindFirstChild("Door").PrimaryPart,Color3.fromRGB(0,255,0),Rooms:FindFirstChild("Door").Sign.Stinker.Text) 
 end 
 end 
 end
@@ -98,10 +98,10 @@ end
 wait(0.1)
 end 
 if Game.Workspace:FindFirstChild("CurrentRooms") then
-for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) 
+for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do
 if Rooms:isA("Model") then
-if Rooms:FindFirstChild("Door") then 
-KeepEsp(Rooms:FindFirstChild("Door").PrimaryPart,Rooms:FindFirstChild("Door")) 
+if Rooms:FindFirstChild("Door") and Rooms:FindFirstChild("Door").PrimaryPart:FindFirstChildOfClass("Highlight") then 
+KeepEsp(Rooms:FindFirstChild("Door").PrimaryPart) 
 end 
 end
 end
