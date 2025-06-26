@@ -92,7 +92,7 @@ local DiscordLink = DiscordTab:CreateButton({
 copyToClipboard("https://discord.gg/E2TqYRsRP4")
 end,
 })
-local DropdownMonsterSpawnAlert = PlayerTab:CreateDropdown({
+--[[local DropdownMonsterSpawnAlert = PlayerTab:CreateDropdown({
    Name = "Monster Spawn Alert Dropdown(Coming Soon)",
    Options = {"Rush","Ambush","Giggle","Figure","Grumble",Screech","Halt","Seek"},
    CurrentOption = {""},
@@ -100,7 +100,7 @@ local DropdownMonsterSpawnAlert = PlayerTab:CreateDropdown({
    Flag = "MonsterSpawnAlertDropdown", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Options)
    end,
-})
+})]]
 local EspDoorToggle = EspTab:CreateToggle({
    Name = "Door Esp",
    CurrentValue = false,
