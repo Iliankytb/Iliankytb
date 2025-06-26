@@ -43,7 +43,7 @@ local ActiveEspDoor,ActiveSpeedBoost,ActiveEspHidingSpots,ActiveEspItems,ActiveE
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.9",
+   Content = "V.0.10",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -163,7 +163,7 @@ end end end
 end)
 end,
 })
-local ActiveMonsterSpawnAlertToggle = PlayerTab:CreateToggle({
+--[[local ActiveMonsterSpawnAlertToggle = PlayerTab:CreateToggle({
    Name = "Active Monster Spawn Alert(Coming Soon)",
    CurrentValue = false,
    Flag = "ActiveMonsterSpawnAlert1", 
@@ -202,7 +202,7 @@ wait(0.1)
 end  
 end)
 end,
-})
+})]]
 local EspItemsToggle = EspTab:CreateToggle({
    Name = "Items Esp",
    CurrentValue = false,
