@@ -34,6 +34,7 @@ local Window = Rayfield:CreateWindow({
       Key = {"Hello"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
    }
 })
+local InfoTab = Window:CreateTab("Info")
 local PlayerTab = Window:CreateTab("Player")
 local EspTab = Window:CreateTab("Esp")
 local SettingsTab = Window:CreateTab("Settings")
@@ -45,7 +46,7 @@ Rayfield:Notify({
    Duration = 2.5,
    Image = "rewind",
 })
-
+local Paragraph1 = InfoTab:CreateParagraph({Title = "Released", Content = "The Script Is Released It Has Only Some Esp And Speed Boost,I Will Add More Things In The Future!"})
 local function CreateEsp(Char, Color, Text)
 	if Char  and not Char:FindFirstChild("BillboardGui") and not Char:FindFirstChildOfClass("Highlight") then
 		local NewHighlight = Instance.new("Highlight")
