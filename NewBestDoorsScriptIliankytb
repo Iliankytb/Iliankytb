@@ -37,11 +37,11 @@ local Window = Rayfield:CreateWindow({
 local PlayerTab = Window:CreateTab("Player")
 local EspTab = Window:CreateTab("Esp")
 local SettingsTab = Window:CreateTab("Settings")
-local ActiveEspDoor,ActiveSpeedBoost,ActiveEspHidingSpots = false,false,false
+local ActiveEspDoor,ActiveSpeedBoost,ActiveEspHidingSpots,ActiveEspItems = false,false,false,false
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.3",
+   Content = "V.0.4",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -132,6 +132,36 @@ if Game.Workspace:FindFirstChild("CurrentRooms") then
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
 if Rooms:FindFirstChild("Assets") then  for _,Assets in pairs(Rooms:FindFirstChild("Assets"):GetChildren()) do  if Assets:isA("Model")  and (Assets.Name == "Bed" or Assets.Name == "Wardrobe") and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
+KeepEsp(Assets.PrimaryPart) 
+end 
+end 
+end 
+end end end 
+end)
+end,
+}) local EspItemsToggle = EspTab:CreateToggle({
+   Name = "Items Esp",
+   CurrentValue = false,
+   Flag = "EspItems", 
+   Callback = function(Value)
+ActiveEspItems = Value 
+task.spawn(function() 
+while ActiveEspItems do 
+if Game.Workspace:FindFirstChild("CurrentRooms") then 
+for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
+if Rooms:isA("Model") then
+if Rooms:FindFirstChild("Assets") then  for _,Assets in pairs(Rooms:GetDescendants()) do  if Assets:isA("Model") and (Assets.Name == "KeyObtain" or Assets.Name == "LeverForGate")  and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
+CreateEsp(Assets.PrimaryPart,Color3.fromRGB(0,255,255),Assets.Name) 
+end 
+end 
+end 
+end end end
+wait(0.1)
+end 
+if Game.Workspace:FindFirstChild("CurrentRooms") then 
+for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
+if Rooms:isA("Model") then
+if Rooms:FindFirstChild("Assets") then  for _,Assets in pairs(Rooms:GetDescendants()) do  if Assets:isA("Model")  and (Assets.Name == "KeyObtain" or Assets.Name == "LeverForGate") and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
 KeepEsp(Assets.PrimaryPart) 
 end 
 end 
