@@ -41,7 +41,7 @@ local ActiveEspDoor,ActiveSpeedBoost = false,false
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.2",
+   Content = "V.0.3",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -53,10 +53,9 @@ local function CreateEsp(Char, Color, Text)
 		NewHighlight.Parent = Char
 
 		local B = Instance.new("BillboardGui")
-		B.Name = "ESP"
-		B.Size = UDim2.new(0, 100, 0, 40)
+		
 		B.AlwaysOnTop = true
-		B.StudsOffset = Vector3.new(0, 2, 0)
+		B.StudsOffset = Vector3.new(0, 0, 0)
 		B.Adornee = Char
 		B.Parent = Char
 
@@ -66,7 +65,7 @@ local function CreateEsp(Char, Color, Text)
 		T.Text = Text
 		T.TextColor3 = Color
 		T.TextScaled = true
-		T.Font = Enum.Font.SourceSansBold
+		
 		T.Parent = B
 	end
 end
@@ -90,7 +89,7 @@ if Game.Workspace:FindFirstChild("CurrentRooms") then
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
 if Rooms:FindFirstChild("Door") and not Rooms:FindFirstChild("Door").PrimaryPart:FindFirstChildOfClass("Highlight") and not Rooms:FindFirstChild("Door").PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
-CreateEsp(Rooms:FindFirstChild("Door").PrimaryPart,Color3.fromRGB(0,255,0),Rooms:FindFirstChild("Door").Sign.Stinker.Text) 
+CreateEsp(Rooms:FindFirstChild("Door").PrimaryPart,Color3.fromRGB(0,255,0),"Door "..Rooms:FindFirstChild("Door").Sign.Stinker.Text) 
 end 
 end 
 end
