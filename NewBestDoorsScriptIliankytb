@@ -43,7 +43,7 @@ local ActiveEspDoor,ActiveSpeedBoost,ActiveEspHidingSpots,ActiveEspItems,ActiveE
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.10",
+   Content = "V.0.11",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -92,15 +92,15 @@ local DiscordLink = DiscordTab:CreateButton({
 copyToClipboard("https://discord.gg/E2TqYRsRP4")
 end,
 })
---[[local DropdownMonsterSpawnAlert = PlayerTab:CreateDropdown({
+local DropdownMonsterSpawnAlert = PlayerTab:CreateDropdown({
    Name = "Monster Spawn Alert Dropdown(Coming Soon)",
-   Options = {"Rush","Ambush","Giggle","Figure","Grumble",Screech","Halt","Seek"},
+   Options = {"Rush","Ambush"},
    CurrentOption = {""},
    MultipleOptions = true,
-   Flag = "MonsterSpawnAlertDropdown", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Flag = "MonsterSpawnAlertDropdown", 
    Callback = function(Options)
    end,
-})]]
+})
 local EspDoorToggle = EspTab:CreateToggle({
    Name = "Door Esp",
    CurrentValue = false,
@@ -163,7 +163,7 @@ end end end
 end)
 end,
 })
---[[local ActiveMonsterSpawnAlertToggle = PlayerTab:CreateToggle({
+local ActiveMonsterSpawnAlertToggle = PlayerTab:CreateToggle({
    Name = "Active Monster Spawn Alert(Coming Soon)",
    CurrentValue = false,
    Flag = "ActiveMonsterSpawnAlert1", 
@@ -202,7 +202,7 @@ wait(0.1)
 end  
 end)
 end,
-})]]
+})
 local EspItemsToggle = EspTab:CreateToggle({
    Name = "Items Esp",
    CurrentValue = false,
