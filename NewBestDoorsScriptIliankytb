@@ -39,11 +39,11 @@ local PlayerTab = Window:CreateTab("Player")
 local EspTab = Window:CreateTab("Esp")
 local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
-local ActiveEspDoor,ActiveSpeedBoost,ActiveEspHidingSpots,ActiveEspItems,ActiveEspCoins,ActiveMonsterSpawnAlert,ActiveNoCooldownPrompt = false,false,false,false,false,false,false
+local ActiveEspDoor,ActiveSpeedBoost,ActiveEspHidingSpots,ActiveEspItems,ActiveEspCoins,ActiveMonsterSpawnAlert,ActiveNoCooldownPrompt,ActiveFullBright,ActiveModifiedFieldOfView = false,false,false,false,false,false,false,false,false
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.11",
+   Content = "V.0.12",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -99,7 +99,8 @@ local DropdownMonsterSpawnAlert = PlayerTab:CreateDropdown({
    MultipleOptions = true,
    Flag = "MonsterSpawnAlertDropdown", 
    Callback = function(Options)
-   end,
+--   print(Options[1])
+end,
 })
 local EspDoorToggle = EspTab:CreateToggle({
    Name = "Door Esp",
@@ -283,6 +284,41 @@ Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = ValueSpeed
 task.wait(0.1)
 end end)
 end,
+})
+local ValueFieldOfView = 80
+local PlayerFieldOfViewSlider = PlayerTab:CreateSlider({
+   Name = "Field Of View(Unverified!)",
+   Range = {80, 120},
+   Increment = 1,
+   Suffix = "FOV",
+   CurrentValue = 80,
+   Flag = "FOV1",
+   Callback = function(Value)
+CurrentValue = Value
+ValueFieldOfView = Value
+end,  ValueFieldOfView = CurrentValue,
+}) local ActiveModifiedFieldOfView = false local PlayerActiveModifyingFOVToggle = PlayerTab:CreateToggle({
+   Name = "Active Modifying Player FOV(Unverified!)",
+   CurrentValue = false,
+   Flag = "ButtonFOV", 
+   Callback = function(Value)
+  ActiveModifiedFieldOfView = Value 
+task.spawn(function()
+while ActiveModifiedFieldOfView do 
+task.spawn(function()
+Game.Workspace.Camera.FieldOfView = ValueFieldOfView end)
+task.wait(0.1)
+end end)
+end,
+}) 
+local ActiveFullBright = false
+local PlayerFullBright = PlayerTab:CreateToggle({
+   Name = "Full Bright(unverified!)",
+   CurrentValue = false,
+   Flag = "FullBright",
+   Callback = function(Value)
+ActiveFullBright = Value task.spawn(function() while ActiveFullBright do if Game.Lighting:FindFirstChildOfClass("Sky") then Game.Lighting:FindFirstChildOfClass("Sky"):Destroy() end if Game.Lighting then Game.Lighting.Brightness = 10 Game.Lighting.ClockTime = 0 end  wait(0.1) end end)
+end,  
 })
 local ButtonUnloadCheat = SettingsTab:CreateButton({
    Name = "Unload Cheat",
