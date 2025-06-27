@@ -43,7 +43,7 @@ local ActiveEspDoor,ActiveSpeedBoost,ActiveEspHidingSpots,ActiveEspItems,ActiveE
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.13",
+   Content = "V.0.14",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -65,7 +65,13 @@ local function CreateEsp(Char, Color, Text)
 		local T = Instance.new("TextLabel")
 		T.Size = UDim2.new(1, 0, 1, 0)
 		T.BackgroundTransparency = 1
-		T.Text = Text
+		if Text == "LeverForGate" then
+T.Text = "Lever"
+elseif Text == "KeyObtain"
+T.Text = "Key"
+else
+T.Text = Text
+end
 		T.TextColor3 = Color
 		T.TextScaled = true
 		
@@ -185,7 +191,7 @@ end)
 end,
 })
 local NoCooldownpromptToggle = PlayerTab:CreateToggle({
-   Name = "No Cooldown Prompt(Coming Soon)",
+   Name = "No Cooldown Prompt",
    CurrentValue = false,
    Flag = "NoCooldownPrompt1", 
    Callback = function(Value)
@@ -225,7 +231,7 @@ ActiveEspItems = Value
 task.spawn(function() 
 while ActiveEspItems do 
   for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
-if Assets:isA("Model") and (Assets.Name == "KeyObtain" or Assets.Name == "LeverForGate" or Assets.Name == "Battery" or Assets.Name == "Flashlight")  and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") 
+if Assets:isA("Model") and (Assets.Name == "KeyObtain" or Assets.Name == "LeverForGate" or Assets.Name == "Battery" or Assets.Name == "Flashlight" or Assets.Name == "Lighter" or Assets.Name == "Bandage")  and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") 
 and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
 task.spawn(function()
 CreateEsp(Assets.PrimaryPart,Color3.fromRGB(255,255,0),Assets.Name) 
@@ -234,7 +240,8 @@ end
 end  
 wait(0.1)
 end 
-  for _,Assets in pairs(Game.Workspace:GetDescendants()) do  if Assets:isA("Model")  and (Assets.Name == "KeyObtain" or Assets.Name == "LeverForGate" or  Assets.Name == "Battery" or Assets.Name == "Flashlight") and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
+  for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
+if Assets:isA("Model")  and (Assets.Name == "KeyObtain" or Assets.Name == "LeverForGate" or  Assets.Name == "Battery" or Assets.Name == "Flashlight" or Assets.Name == "Bandage" or Assets.Name == "Lighter") and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
 KeepEsp(Assets.PrimaryPart) 
 end 
 end 
@@ -318,7 +325,8 @@ end,  ValueFieldOfView = CurrentValue,
 task.spawn(function()
 while ActiveModifiedFieldOfView do 
 task.spawn(function()
-Game.Workspace.Camera.FieldOfView = ValueFieldOfView end)
+Game.Workspace.Camera.FieldOfView = ValueFieldOfView 
+end)
 task.wait(0.1)
 end end)
 end,
@@ -329,7 +337,19 @@ local PlayerFullBright = PlayerTab:CreateToggle({
    CurrentValue = false,
    Flag = "FullBright",
    Callback = function(Value)
-ActiveFullBright = Value task.spawn(function() while ActiveFullBright do if Game.Lighting:FindFirstChildOfClass("Sky") then Game.Lighting:FindFirstChildOfClass("Sky"):Destroy() end if Game.Lighting then Game.Lighting.Brightness = 10 Game.Lighting.ClockTime = 0 end  wait(0.1) end end)
+ActiveFullBright = Value 
+task.spawn(function() 
+while ActiveFullBright do 
+if Game.Lighting:FindFirstChildOfClass("Sky") then 
+Game.Lighting:FindFirstChildOfClass("Sky"):Destroy() 
+end 
+if Game.Lighting then 
+Game.Lighting.Brightness = 500
+--Game.Lighting.ClockTime = 0
+end  
+wait(0.1)
+end 
+end)
 end,  
 })
 local ButtonUnloadCheat = SettingsTab:CreateButton({
