@@ -43,7 +43,7 @@ local ActiveEspDoor,ActiveSpeedBoost,ActiveEspHidingSpots,ActiveEspItems,ActiveE
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.17",
+   Content = "V.0.18",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -90,7 +90,7 @@ local function CreateEsp(Char, Color, Text)
 				local root = character.HumanoidRootPart
 				local distance = (root.Position - Char.Position).Magnitude
 
-				local withinRange = distance <= 25
+				local withinRange = distance <= 100
 				highlight.Enabled = withinRange
 				billboard.Enabled = withinRange
 			end
