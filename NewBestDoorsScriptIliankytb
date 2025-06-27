@@ -43,7 +43,7 @@ local ActiveEspDoor,ActiveSpeedBoost,ActiveEspHidingSpots,ActiveEspItems,ActiveE
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.19",
+   Content = "V.0.20",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -120,12 +120,11 @@ end,
 })
 local DropdownMonsterSpawnAlert = PlayerTab:CreateDropdown({
    Name = "Monster Spawn Alert Dropdown(Coming Soon)",
-   Options = {"Rush","Ambush"},
+   Options = {"Rush","Ambush","Screech","Figure","Giggle","Seek","Grumble"},
    CurrentOption = {""},
    MultipleOptions = true,
    Flag = "MonsterSpawnAlertDropdown", 
    Callback = function(Options)
---print(Options[1])
 end,
 })
 local EspDoorToggle = EspTab:CreateToggle({
