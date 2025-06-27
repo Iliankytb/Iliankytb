@@ -43,7 +43,7 @@ local ActiveEspDoor,ActiveSpeedBoost,ActiveEspHidingSpots,ActiveEspItems,ActiveE
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.14",
+   Content = "V.0.15",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -65,13 +65,13 @@ local function CreateEsp(Char, Color, Text)
 		local T = Instance.new("TextLabel")
 		T.Size = UDim2.new(1, 0, 1, 0)
 		T.BackgroundTransparency = 1
-		if Text == "LeverForGate" then
+		--[[if Text == "LeverForGate" then
 T.Text = "Lever"
 elseif Text == "KeyObtain"
 T.Text = "Key"
 else
 T.Text = Text
-end
+end]] T.Text = Text
 		T.TextColor3 = Color
 		T.TextScaled = true
 		
