@@ -43,7 +43,7 @@ local ActiveEspDoor,ActiveSpeedBoost,ActiveEspHidingSpots,ActiveEspItems,ActiveE
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.12",
+   Content = "V.0.13",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -99,7 +99,7 @@ local DropdownMonsterSpawnAlert = PlayerTab:CreateDropdown({
    MultipleOptions = true,
    Flag = "MonsterSpawnAlertDropdown", 
    Callback = function(Options)
---   print(Options[1])
+--print(Options[1])
 end,
 })
 local EspDoorToggle = EspTab:CreateToggle({
@@ -195,11 +195,23 @@ while ActiveNoCooldownPrompt do
 for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
 if Assets:isA("ProximityPrompt") then 
 task.spawn(function()
-
+if Assets.HoldDuration ~= 0 then
+Assets:SetAttribute("HoldDurationOld",Assets.HoldDuration)
+Assets.HoldDuration = 0
+end
 end)
 end 
 end  
 wait(0.1)
+end 
+for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
+if Assets:isA("ProximityPrompt") then 
+task.spawn(function()
+if Assets:GetAttribute("HoldDurationOld") and Assets:GetAttribute("HoldDurationOld") ~= 0 then
+Assets.HoldDuration = Assets:GetAttribute("HoldDurationOld")
+end
+end)
+end 
 end  
 end)
 end,
