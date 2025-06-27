@@ -43,40 +43,60 @@ local ActiveEspDoor,ActiveSpeedBoost,ActiveEspHidingSpots,ActiveEspItems,ActiveE
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.16",
+   Content = "V.0.17",
    Duration = 2.5,
    Image = "rewind",
 })
 local Paragraph1 = InfoTab:CreateParagraph({Title = "Released", Content = "The Script Is Released It Has Only Some Esp And Speed Boost,I Will Add More Things In The Future!"})
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local RunService = game:GetService("RunService")
+
 local function CreateEsp(Char, Color, Text)
-	if Char  and not Char:FindFirstChild("BillboardGui") and not Char:FindFirstChildOfClass("Highlight") then
-		local NewHighlight = Instance.new("Highlight")
-		NewHighlight.FillColor = Color
-		NewHighlight.Parent = Char
+	if not Char then return end
+	if Char:FindFirstChild("ESP") and Char:FindFirstChildOfClass("Highlight") then return end
 
-		local B = Instance.new("BillboardGui")
-		B.Name = "ESP"
-		B.Size = UDim2.new(5, 0, 1, 0)
-		B.AlwaysOnTop = true
-		B.StudsOffset = Vector3.new(0, -2, 0)
-		B.Adornee = Char
-		B.Parent = Char
+	
+	local highlight = Char:FindFirstChildOfClass("Highlight") or Instance.new("Highlight")
+	highlight.Name = "ESP_Highlight"
+	highlight.FillColor = Color
+	highlight.Enabled = false
+	highlight.Parent = Char
 
-		local T = Instance.new("TextLabel")
-		T.Size = UDim2.new(1, 0, 1, 0)
-		T.BackgroundTransparency = 1
-		--[[if Text == "LeverForGate" then
-T.Text = "Lever"
-elseif Text == "KeyObtain"
-T.Text = "Key"
-else
-T.Text = Text
-end]] T.Text = Text
-		T.TextColor3 = Color
-		T.TextScaled = true
-		
-		T.Parent = B
-	end
+	
+	local billboard = Char:FindFirstChild("ESP") or Instance.new("BillboardGui")
+	billboard.Name = "ESP"
+	billboard.Size = UDim2.new(5, 0, 1, 0)
+	billboard.AlwaysOnTop = true
+	billboard.StudsOffset = Vector3.new(0, -2, 0)
+	billboard.Adornee = Char
+	billboard.Enabled = false
+	billboard.Parent = Char
+
+	
+	local label = billboard:FindFirstChildOfClass("TextLabel") or Instance.new("TextLabel")
+	label.Size = UDim2.new(1, 0, 1, 0)
+	label.BackgroundTransparency = 1
+	label.Text = Text
+	label.TextColor3 = Color
+	label.TextScaled = true
+	label.Parent = billboard
+
+	
+	task.spawn(function()
+		while Char and Char.Parent and highlight and billboard do
+			local character = LocalPlayer.Character
+			if character and character:FindFirstChild("HumanoidRootPart") then
+				local root = character.HumanoidRootPart
+				local distance = (root.Position - Char.Position).Magnitude
+
+				local withinRange = distance <= 25
+				highlight.Enabled = withinRange
+				billboard.Enabled = withinRange
+			end
+			RunService.Heartbeat:Wait()
+		end
+	end)
 end
 
 local function KeepEsp(Char)
