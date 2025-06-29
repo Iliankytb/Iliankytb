@@ -128,3 +128,4 @@ local Dropdown = SettingsTab:CreateDropdown({
       Window.ModifyTheme(ident)  -- <— Applique le thème en direct
    end, selectedTheme = CurrentOption,
 })
+Rayfield:LoadConfiguration()
