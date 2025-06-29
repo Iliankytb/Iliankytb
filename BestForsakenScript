@@ -399,6 +399,6 @@ local Dropdown = SettingsTab:CreateDropdown({
    Callback = function(Selected)
       local ident = Themes[Selected[1]]
       Window.ModifyTheme(ident)  -- <— Applique le thème en direct
-   end, selectedTheme = CurrentOption,
+   end, 
 })
 Rayfield:LoadConfiguration()
