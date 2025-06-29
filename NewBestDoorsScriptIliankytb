@@ -43,12 +43,13 @@ local ActiveEspDoor,ActiveSpeedBoost,ActiveEspHidingSpots,ActiveEspItems,ActiveE
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.21",
+   Content = "V.0.22",
    Duration = 2.5,
    Image = "rewind",
 })
 local Paragraph1 = InfoTab:CreateParagraph({Title = "Released(V.0.8)", Content = "The Script Is Released It Has Only Some Esp And Speed Boost,I Will Add More Things In The Future!"})
 local Paragraph2 = InfoTab:CreateParagraph({Title = "Notify Monster Spawning(V.0.21)", Content = "New Things Added Monsters Esp(Uncompleted!) and Notify Monster Spawning is Uncompleted Too I Will Try To get monster from floor 2 and ambush & halt!"})
+local Paragraph3 = InfoTab:CreateParagraph({Title = "Theme Changer In Settings(V.0.22)", Content = "Added Themes Changer In Settings"})
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local RunService = game:GetService("RunService")
@@ -519,4 +520,28 @@ local ButtonUnloadCheat = SettingsTab:CreateButton({
   Rayfield:Destroy()
 end,
 })
+
+local Themes = {
+   ["Default"] = "Default",
+   ["Amber Glow"] = "AmberGlow",
+   ["Amethyst"] = "Amethyst",
+   ["Bloom"] = "Bloom",
+   ["Dark Blue"] = "DarkBlue",
+   ["Green"] = "Green",
+   ["Light"] = "Light",
+   ["Ocean"] = "Ocean",
+   ["Serenity"] = "Serenity"
+}
+
+SettingsTab:CreateDropdown({
+   Name = "Change Theme",
+   Options = {"Default", "Amber Glow", "Amethyst", "Bloom", "Dark Blue", "Green", "Light", "Ocean", "Serenity"},
+   CurrentOption = "Default",
+   Flag = "ThemeSelection",
+   Callback = function(Selected)
+      local ThemeIdentifier = Themes[Selected]
+      Rayfield:ChangeTheme(ThemeIdentifier)
+   end,
+})
+
 Rayfield:LoadConfiguration()
