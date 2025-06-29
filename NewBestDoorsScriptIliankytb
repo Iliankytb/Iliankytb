@@ -43,13 +43,14 @@ local ActiveEspDoor,ActiveSpeedBoost,ActiveEspHidingSpots,ActiveEspItems,ActiveE
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.24",
+   Content = "V.0.25",
    Duration = 2.5,
    Image = "rewind",
 })
 local Paragraph1 = InfoTab:CreateParagraph({Title = "Released(V.0.8)", Content = "The Script Is Released It Has Only Some Esp And Speed Boost,I Will Add More Things In The Future!"})
 local Paragraph2 = InfoTab:CreateParagraph({Title = "Notify Monster Spawning(V.0.21)", Content = "New Things Added Monsters Esp(Uncompleted!) and Notify Monster Spawning is Uncompleted Too I Will Try To get monster from floor 2 and ambush & halt!"})
 local Paragraph3 = InfoTab:CreateParagraph({Title = "Theme Changer In Settings(V.0.22)", Content = "Added Themes Changer In Settings"})
+local Paragraph4 = InfoTab:CreateParagraph({Title = "Theme Changer In Settings(V.0.25)", Content = "Fixed Themes Changer In Settings,Now It Work Enjoy With My Script!"})
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local RunService = game:GetService("RunService")
@@ -539,9 +540,9 @@ local Dropdown = SettingsTab:CreateDropdown({
    CurrentOption = selectedTheme,  -- pour afficher ce qui est réellement chargé
    Flag = "ThemeSelection",
    Callback = function(Selected)
-      local ident = Themes[Selected]
+      local ident = Themes[Selected[1]] print(ident)
       Window.ModifyTheme(ident)  -- <— Applique le thème en direct
-   end, selectedTheme = CurrentOption,
+   end,
 })
 
 Rayfield:LoadConfiguration()
