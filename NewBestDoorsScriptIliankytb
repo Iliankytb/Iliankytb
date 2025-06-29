@@ -43,7 +43,7 @@ local ActiveEspDoor,ActiveSpeedBoost,ActiveEspHidingSpots,ActiveEspItems,ActiveE
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.20",
+   Content = "V.0.20-21",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -52,6 +52,15 @@ local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local RunService = game:GetService("RunService")
 
+--[[local function NotifMonsterSpawned(NameMonster,Time)
+Rayfield:Notify({
+   Title = "Monster Spawned!",
+   Content = NameMonster.." Has Spawned!",
+   Duration = Time,
+   Image = "rewind",
+})
+end
+local OptionNotif = {}]]
 local function CreateEsp(Char, Color, Text)
 	if not Char then return end
 	if Char:FindFirstChild("ESP") and Char:FindFirstChildOfClass("Highlight") then return end
@@ -119,12 +128,21 @@ copyToClipboard("https://discord.gg/E2TqYRsRP4")
 end,
 })
 local DropdownMonsterSpawnAlert = PlayerTab:CreateDropdown({
-   Name = "Monster Spawn Alert Dropdown(Coming Soon)",
-   Options = {"Rush","Ambush","Screech","Figure","Giggle","Seek","Grumble"},
+   Name = "Monster Spawn Alert Dropdown(Coming Very Very Soon)",
+   Options = {"Rush","Seek"},
    CurrentOption = {""},
    MultipleOptions = true,
    Flag = "MonsterSpawnAlertDropdown", 
    Callback = function(Options)
+--[[if table.find(Options,"Rush") and not table.find(OptionNotif,"RushMoving") then
+table.insert(OptionNotif,"RushMoving")
+elseif not table.find(Options,"Rush") and table.find(OptionNotif,"RushMoving") then
+table.Remove(OptionNotif,"RushMoving")
+if table.find(Options,"Seek") and not table.find(OptionNotif,"SeekMovingNewClone") then
+table.insert(OptionNotif,"SeekMovingNewClone")
+elseif not table.find(Options,"Seek") and table.find(OptionNotif,"SeekMovingNewClone") then
+table.Remove(OptionNotif,"SeekMovingNewClone")
+end]]
 end,
 })
 local EspDoorToggle = EspTab:CreateToggle({
@@ -190,23 +208,11 @@ end)
 end,
 })
 local ActiveMonsterSpawnAlertToggle = PlayerTab:CreateToggle({
-   Name = "Active Monster Spawn Alert(Coming Soon)",
+   Name = "Active Monster Spawn Alert(Coming Very Soon! Its uncompleted!)",
    CurrentValue = false,
    Flag = "ActiveMonsterSpawnAlert1", 
    Callback = function(Value)
 ActiveMonsterSpawnAlert = Value 
-task.spawn(function() 
-while ActiveMonsterSpawnAlert do 
-for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
-if Assets:isA("ProximityPrompt") then 
-task.spawn(function()
-
-end)
-end 
-end  
-wait(0.1)
-end  
-end)
 end,
 })
 local NoCooldownpromptToggle = PlayerTab:CreateToggle({
@@ -433,6 +439,18 @@ end
 end)
 end,  
 })
+--[[workspace.ChildAdded:Connect(function(child)
+if ActiveMonsterSpawnAlert then
+if table.find(OptionNotif,child.Name) then
+if child.Name == "RushMoving" then 
+NotifMonsterSpawned("Rush",3)
+elseif child.Name == "SeekMovingNewClone" then
+NotifMonsterSpawned("Seek",3)
+end
+end
+end
+end)]]
+
 local ButtonUnloadCheat = SettingsTab:CreateButton({
    Name = "Unload Cheat",
    Callback = function()
