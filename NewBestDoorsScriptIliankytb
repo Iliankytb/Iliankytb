@@ -1,12 +1,6 @@
 
-local selectedTheme = "Default"
-task.spawn(function()
-if isfile("saver/ThemeConfig.txt") then
-    selectedTheme = readfile("saver/ThemeConfig.txt")
-end
-end)
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
-
+local selectedTheme = "Default"
 local Window = Rayfield:CreateWindow({
    Name = "Doors - Script By Iliankytb",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
@@ -49,7 +43,7 @@ local ActiveEspDoor,ActiveSpeedBoost,ActiveEspHidingSpots,ActiveEspItems,ActiveE
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.23",
+   Content = "V.0.24",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -546,9 +540,8 @@ local Dropdown = SettingsTab:CreateDropdown({
    Flag = "ThemeSelection",
    Callback = function(Selected)
       local ident = Themes[Selected]
-      writefile("saver/ThemeConfig.txt", ident)
       Window.ModifyTheme(ident)  -- <— Applique le thème en direct
-   end,
+   end, selectedTheme = CurrentOption,
 })
 
 Rayfield:LoadConfiguration()
