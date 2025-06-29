@@ -44,7 +44,7 @@ local ActiveEspDoor,ActiveSpeedBoost,ActiveEspHidingSpots,ActiveEspItems,ActiveE
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.26",
+   Content = "V.0.27",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -191,6 +191,14 @@ if table.find(Options, "LookMan") and not table.find(OptionNotif, "BackdoorLookm
                 table.remove(OptionNotif, index)
             end
         end
+if table.find(Options, "BackdoorRush") and not table.find(OptionNotif, "BackdoorRush") then
+            table.insert(OptionNotif, "BackdoorRush")
+        elseif not table.find(Options, "BackdoorRush") then
+            local index = table.find(OptionNotif, "BackdoorRush")
+            if index then
+                table.remove(OptionNotif, index)
+            end
+        end
     end,
 })
 
@@ -236,7 +244,7 @@ while ActiveEspHidingSpots do
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
-if Rooms:FindFirstChild("Assets") then  for _,Assets in pairs(Rooms:FindFirstChild("Assets"):GetChildren()) do  if Assets:isA("Model") and (Assets.Name == "Bed" or Assets.Name == "Wardrobe")  and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
+if Rooms:FindFirstChild("Assets") then  for _,Assets in pairs(Rooms:FindFirstChild("Assets"):GetChildren()) do  if Assets:isA("Model") and (Assets.Name == "Bed" or Assets.Name == "Wardrobe" or Assets.Name == "Backdoor_Wardrobe")  and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
 CreateEsp(Assets.PrimaryPart,Color3.fromRGB(0,255,255),Assets.Name) 
 end 
 end 
@@ -247,7 +255,7 @@ end
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
-if Rooms:FindFirstChild("Assets") then  for _,Assets in pairs(Rooms:FindFirstChild("Assets"):GetChildren()) do  if Assets:isA("Model")  and (Assets.Name == "Bed" or Assets.Name == "Wardrobe") and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
+if Rooms:FindFirstChild("Assets") then  for _,Assets in pairs(Rooms:FindFirstChild("Assets"):GetChildren()) do  if Assets:isA("Model")  and (Assets.Name == "Bed" or Assets.Name == "Wardrobe" or Assets.Name == "Backdoor_Wardrobe") and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
 KeepEsp(Assets.PrimaryPart) 
 end 
 end 
@@ -522,7 +530,7 @@ if Game.Workspace:FindFirstChild("CurrentRooms") then
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
 if Rooms:FindFirstChild("Assets") then  for _,Assets in pairs(Rooms:GetDescendants()) do  if Assets:isA("Model") and Assets.Name == "TimerLever"  and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
-CreateEsp(Assets.PrimaryPart,Color3.fromRGB(0,150,150),"Books") 
+CreateEsp(Assets.PrimaryPart,Color3.fromRGB(0,150,150),"Timer Lever") 
 end 
 end 
 end
