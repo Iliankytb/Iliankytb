@@ -40,7 +40,7 @@ local SettingsTab = Window:CreateTab("Settings")
 
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.5.5",
+   Content = "V.0.6",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -124,8 +124,8 @@ local Dropdown = SettingsTab:CreateDropdown({
    CurrentOption = selectedTheme,  -- pour afficher ce qui est réellement chargé
    Flag = "ThemeSelection",
    Callback = function(Selected)
-      local ident = Themes[Selected]
+      local ident = Themes[Selected[1]]
       Window.ModifyTheme(ident)  -- <— Applique le thème en direct
-   end, selectedTheme = CurrentOption,
+   end, 
 })
 Rayfield:LoadConfiguration()
