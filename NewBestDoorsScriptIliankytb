@@ -44,7 +44,7 @@ local ActiveEspDoor,ActiveSpeedBoost,ActiveEspHidingSpots,ActiveEspItems,ActiveE
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.28",
+   Content = "V.0.29",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -136,7 +136,7 @@ local Section1 = GameTab:CreateSection("General")
 local Section2 = EspTab:CreateSection("General")
 local DropdownMonsterSpawnAlert = GameTab:CreateDropdown({
     Name = "Monster Spawn Alert Dropdown",
-    Options = {"Rush","Seek","Figure","Sally","Eyes","LookMan","BackdoorRush"},
+    Options = {"Rush","Seek","Figure","Sally","Eyes","LookMan","BackdoorRush","Giggle","GloombatSwarm"},
     CurrentOption = {""},
     MultipleOptions = true,
     Flag = "MonsterSpawnAlertDropdown",
@@ -195,6 +195,22 @@ if table.find(Options, "BackdoorRush") and not table.find(OptionNotif, "Backdoor
             table.insert(OptionNotif, "BackdoorRush")
         elseif not table.find(Options, "BackdoorRush") then
             local index = table.find(OptionNotif, "BackdoorRush")
+            if index then
+                table.remove(OptionNotif, index)
+            end
+        end
+if table.find(Options, "Giggle") and not table.find(OptionNotif, "GiggleCeiling") then
+            table.insert(OptionNotif, "GiggleCeiling")
+        elseif not table.find(Options, "Giggle") then
+            local index = table.find(OptionNotif, "GiggleCeiling")
+            if index then
+                table.remove(OptionNotif, index)
+            end
+        end
+if table.find(Options, "GloombatSwarm") and not table.find(OptionNotif, "GloombatSwarm") then
+            table.insert(OptionNotif, "GloombatSwarm")
+        elseif not table.find(Options, "GloombatSwarm") then
+            local index = table.find(OptionNotif, "GloombatSwarm")
             if index then
                 table.remove(OptionNotif, index)
             end
@@ -313,17 +329,19 @@ ActiveEspItems = Value
 task.spawn(function() 
 while ActiveEspItems do 
   for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
-if Assets:isA("Model") and (Assets.Name == "KeyObtain" or Assets.Name == "LeverForGate" or Assets.Name == "Battery" or Assets.Name == "Flashlight" or Assets.Name == "Lighter" or Assets.Name == "Bandage" or Assets.Name == "Crucifix" or Assets.Name == "Vitamins" or Assets.Name == "Lockpick" or Assets.Name == "Candle" or Assets.Name == "AlarmClock" or Assets.Name == "LibraryHintPaper" or Assets.Name == "Smoothie" or Assets.Name == "FuseObtain")  and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") 
+task.spawn(function()
+if Assets:isA("Model") and (Assets.Name == "KeyObtain" or Assets.Name == "LeverForGate" or Assets.Name == "Battery" or Assets.Name == "Flashlight" or Assets.Name == "Lighter" or Assets.Name == "Bandage" or Assets.Name == "Crucifix" or Assets.Name == "Vitamins" or Assets.Name == "Lockpick" or Assets.Name == "Candle" or Assets.Name == "AlarmClock" or Assets.Name == "LibraryHintPaper" or Assets.Name == "Smoothie" or Assets.Name == "FuseObtain" or Assets.Name == "BatteryPack" or Assets.Name == "Glowsticks")  and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") 
 and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
 task.spawn(function()
 CreateEsp(Assets.PrimaryPart,Color3.fromRGB(255,255,0),Assets.Name) 
 end)
 end 
+end)
 end  
 wait(0.1)
 end 
   for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
-if Assets:isA("Model")  and (Assets.Name == "KeyObtain" or Assets.Name == "LeverForGate" or  Assets.Name == "Battery" or Assets.Name == "Flashlight" or Assets.Name == "Bandage" or Assets.Name == "Lighter" or Assets.Name == "Crucifix" or Assets.Name == "Candle" or Assets.Name == "Lockpick" or Assets.Name == "AlarmClock" or Assets.Name == "LibraryHintPaper" or Assets.Name == "Smoothie" or Assets.Name == "FuseObtain") and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
+if Assets:isA("Model")  and (Assets.Name == "KeyObtain" or Assets.Name == "LeverForGate" or  Assets.Name == "Battery" or Assets.Name == "Flashlight" or Assets.Name == "Bandage" or Assets.Name == "Lighter" or Assets.Name == "Crucifix" or Assets.Name == "Candle" or Assets.Name == "Lockpick" or Assets.Name == "AlarmClock" or Assets.Name == "LibraryHintPaper" or Assets.Name == "Smoothie" or Assets.Name == "FuseObtain" or Assets.Name == "Glowsticks" or Assets.Name == "BatteryPack") and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
 KeepEsp(Assets.PrimaryPart) 
 end 
 end 
@@ -430,13 +448,15 @@ local EspMonstersToggle = EspTab:CreateToggle({
 ActiveEspMonster = Value 
 task.spawn(function() 
 while ActiveEspMonster do 
- for _,Assets in pairs(Workspace:GetDescendants()) do  if Assets:isA("Model") and (Assets.Name == "FigureRig" or Assets.Name == "SallyMoving" or Assets.Name == "RushMoving" or Assets.Name == "Eyes" or Assets.Name == "SeekMovingNewClone" or Assets.Name == "BackdoorLookman" or Assets.Name == "BackdoorRush")  and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
+task.spawn(function()
+for _,Assets in pairs(Workspace:GetDescendants()) do  if Assets:isA("Model") and (Assets.Name == "FigureRig" or Assets.Name == "SallyMoving" or Assets.Name == "RushMoving" or Assets.Name == "Eyes" or Assets.Name == "SeekMovingNewClone" or Assets.Name == "BackdoorLookman" or Assets.Name == "BackdoorRush" or Assets.Name == "GloombatSwarm" or Assets.Name == "GiggleCeiling")  and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
 CreateEsp(Assets.PrimaryPart,Color3.fromRGB(255,0,0),Assets.Name) 
 end 
 end 
+end)
 wait(0.1)
 end 
-for _,Assets in pairs(Workspace:GetDescendants()) do  if Assets:isA("Model")  and (Assets.Name == "FigureRig" or Assets.Name == "SallyMoving" or Assets.Name == "Eyes" or Assets.Name == "RushMoving" or Assets.Name == "SeekMovingNewClone" or Assets.Name == "BackdoorRush" or Assets.Name == "BackdoorLookman") and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
+for _,Assets in pairs(Workspace:GetDescendants()) do  if Assets:isA("Model")  and (Assets.Name == "FigureRig" or Assets.Name == "SallyMoving" or Assets.Name == "Eyes" or Assets.Name == "RushMoving" or Assets.Name == "SeekMovingNewClone" or Assets.Name == "BackdoorRush" or Assets.Name == "BackdoorLookman" or Assets.Name == "GiggleCeiling" or Assets.Name == "GloombatSwarm") and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
 KeepEsp(Assets.PrimaryPart) 
 end 
 end 
@@ -598,6 +618,10 @@ elseif child.Name == "BackdoorLookman" then
 NotifMonsterSpawned("LookMan",3)
 elseif child.Name == "BackdoorRush" then
 NotifMonsterSpawned("Backdoor Rush",3)
+elseif child.Name == "GloombatSwarm" then
+NotifMonsterSpawned("Gloombat Swarm",3)
+elseif child.Name == "GiggleCeiling" then
+NotifMonsterSpawned("Giggle",3)
 end
 end
 end
