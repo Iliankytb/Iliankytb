@@ -40,11 +40,11 @@ local GameTab = Window:CreateTab("Game")
 local EspTab = Window:CreateTab("Esp")
 local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
-local ActiveEspDoor,ActiveSpeedBoost,ActiveEspHidingSpots,ActiveEspItems,ActiveEspCoins,ActiveMonsterSpawnAlert,ActiveNoCooldownPrompt,ActiveFullBright,ActiveModifiedFieldOfView,ActiveEspChest,ActiveEspBooks,ActiveEspMonster,ActiveEspTimerLever,ActiveEspGen = false,false,false,false,false,false,false,false,false,false,false,false,false,false
-
+local ActiveEspDoor,ActiveSpeedBoost,ActiveEspHidingSpots,ActiveEspItems,ActiveEspCoins,ActiveMonsterSpawnAlert,ActiveNoCooldownPrompt,ActiveFullBright,ActiveModifiedFieldOfView,ActiveEspChest,ActiveEspBooks,ActiveEspMonster,ActiveEspTimerLever,ActiveEspGen,DisableLimitRangerEsp = false,false,false,false,false,false,false,false,false,false,false,false,false,false,false
+local LimitRangerEsp = 100
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.29",
+   Content = "V.0.30",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -53,6 +53,7 @@ local Paragraph2 = InfoTab:CreateParagraph({Title = "Notify Monster Spawning(V.0
 local Paragraph3 = InfoTab:CreateParagraph({Title = "Theme Changer In Settings(V.0.22)", Content = "Added Themes Changer In Settings"})
 local Paragraph4 = InfoTab:CreateParagraph({Title = "Theme Changer In Settings(V.0.25)", Content = "Fixed Themes Changer In Settings,Now It Work Enjoy With My Script!"})
 local Paragraph5 = InfoTab:CreateParagraph({Title = "Upgraded And Added Things(V.0.26)", Content = "Added Section And Game Button,Upgrade Esp Monster And Monster Spawning Alert,Added Esp Timer Lever"})
+local Paragraph6 = InfoTab:CreateParagraph({Title = "Upgraded Limit Ranger Esp(V.0.30)", Content = "Added  A Slider To Change The Limit Ranger Esp Or A Toggle To Disable A Limit Ranger Esp In Settings!"})
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local RunService = game:GetService("RunService")
@@ -100,13 +101,13 @@ local function CreateEsp(Char, Color, Text)
 	task.spawn(function()
 		while Char and Char.Parent and highlight and billboard do
 			local character = LocalPlayer.Character
-			if character and character:FindFirstChild("HumanoidRootPart") then
+			if character and character:FindFirstChild("HumanoidRootPart") then if not DisableLimitRangerEsp then
 				local root = character.HumanoidRootPart
 				local distance = (root.Position - Char.Position).Magnitude
 
-				local withinRange = distance <= 100
+				local withinRange = distance <= LimitRangerEsp
 				highlight.Enabled = withinRange
-				billboard.Enabled = withinRange
+				billboard.Enabled = withinRange else billboard.Enabled = true highlight.Enabled = true end
 			end
 			RunService.Heartbeat:Wait()
 		end
@@ -633,7 +634,25 @@ local ButtonUnloadCheat = SettingsTab:CreateButton({
   Rayfield:Destroy()
 end,
 })
-
+local LimitRangerEspSlider = SettingsTab:CreateSlider({
+   Name = "Field Of View(Unverified!)",
+   Range = {25,1000},
+   Increment = 1,
+   Suffix = "Ranger",
+   CurrentValue = 100,
+   Flag = "LimitRangerEsp1",
+   Callback = function(Value)
+CurrentValue = Value
+LimitRangerEsp = Value
+end,  LimitRangerEsp = CurrentValue,
+})  local DisableLimitRangerEspToggle = SettingsTab:CreateToggle({
+   Name = "Disable Limit Ranger Esp",
+   CurrentValue = false,
+   Flag = "ButtonDLRE", 
+   Callback = function(Value)
+  DisableLimitRangerEsp = Value 
+end,
+}) 
 local Themes = {
    ["Default"] = "Default",
    ["Amber Glow"] = "AmberGlow",
