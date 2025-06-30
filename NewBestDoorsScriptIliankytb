@@ -44,7 +44,7 @@ local ActiveEspDoor,ActiveSpeedBoost,ActiveEspHidingSpots,ActiveEspItems,ActiveE
 local LimitRangerEsp = 100
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.30",
+   Content = "V.0.31",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -54,6 +54,7 @@ local Paragraph3 = InfoTab:CreateParagraph({Title = "Theme Changer In Settings(V
 local Paragraph4 = InfoTab:CreateParagraph({Title = "Theme Changer In Settings(V.0.25)", Content = "Fixed Themes Changer In Settings,Now It Work Enjoy With My Script!"})
 local Paragraph5 = InfoTab:CreateParagraph({Title = "Upgraded And Added Things(V.0.26)", Content = "Added Section And Game Button,Upgrade Esp Monster And Monster Spawning Alert,Added Esp Timer Lever"})
 local Paragraph6 = InfoTab:CreateParagraph({Title = "Upgraded Limit Ranger Esp(V.0.30)", Content = "Added  A Slider To Change The Limit Ranger Esp Or A Toggle To Disable A Limit Ranger Esp In Settings!"})
+local Paragraph7 = InfoTab:CreateParagraph({Title = "Fixed Esp Door For Mines(V.0.31)", Content = "Just Try it! nirmally it work"})
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local RunService = game:GetService("RunService")
@@ -231,8 +232,18 @@ if Game.Workspace:FindFirstChild("CurrentRooms") then
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
 if Rooms:FindFirstChild("Door") and not Rooms:FindFirstChild("Door").PrimaryPart:FindFirstChildOfClass("Highlight") and not Rooms:FindFirstChild("Door").PrimaryPart:FindFirstChildOfClass("BillboardGui") and not Rooms:FindFirstChild("Door"):FindFirstChild("Lock") then 
-CreateEsp(Rooms:FindFirstChild("Door").PrimaryPart,Color3.fromRGB(0,255,0),"Doors "..Rooms:FindFirstChild("Door").Sign.Stinker.Text) elseif Rooms:FindFirstChild("Door") and not Rooms:FindFirstChild("Door").PrimaryPart:FindFirstChildOfClass("Highlight") and not Rooms:FindFirstChild("Door").PrimaryPart:FindFirstChildOfClass("BillboardGui") and  Rooms:FindFirstChild("Door"):FindFirstChild("Lock") then 
-CreateEsp(Rooms:FindFirstChild("Door").PrimaryPart,Color3.fromRGB(0,255,0),"Doors "..Rooms:FindFirstChild("Door").Sign.Stinker.Text.." (Lock)") 
+local signText = (Rooms:FindFirstChild("Door") and Rooms.Door:FindFirstChild("Sign") and 
+                 ((Rooms.Door.Sign:FindFirstChild("Stinker") and Rooms.Door.Sign.Stinker.Text ~= "" and Rooms.Door.Sign.Stinker.Text)
+               or (Rooms.Door.Sign:FindFirstChild("SignText") and Rooms.Door.Sign.SignText.Text)))
+               or "Unknown"
+CreateEsp(Rooms.Door.PrimaryPart, Color3.fromRGB(0,255,0), "Doors " .. signText) 
+elseif Rooms:FindFirstChild("Door") and not Rooms:FindFirstChild("Door").PrimaryPart:FindFirstChildOfClass("Highlight") and not Rooms:FindFirstChild("Door").PrimaryPart:FindFirstChildOfClass("BillboardGui") and  Rooms:FindFirstChild("Door"):FindFirstChild("Lock") then 
+local signText = (Rooms:FindFirstChild("Door") and Rooms.Door:FindFirstChild("Sign") and 
+                 ((Rooms.Door.Sign:FindFirstChild("Stinker") and Rooms.Door.Sign.Stinker.Text ~= "" and Rooms.Door.Sign.Stinker.Text)
+               or (Rooms.Door.Sign:FindFirstChild("SignText") and Rooms.Door.Sign.SignText.Text)))
+               or "Unknown"
+
+CreateEsp(Rooms.Door.PrimaryPart, Color3.fromRGB(0,255,0), "Doors " .. signText.."(Lock)")
 end 
 end 
 end 
