@@ -43,11 +43,12 @@ local ActiveSpeedBoost,ActiveAutoUseCoinFlip,ActiveEspSurvivors,ActiveNoStun,Act
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.22",
+   Content = "V.0.23",
    Duration = 2.5,
    Image = "rewind",
 })
 local Paragraph1 = InfoTab:CreateParagraph({Title = "TP To Gen", Content = "This Function Work Now And If You Got Kicked I Guess Sorry!"})
+local Paragraph2 = InfoTab:CreateParagraph({Title = "Fixed Full Bright(V.0.23)", Content = "Normally Full Bright Is Fixed Try It!"})
 local function CreateEsp(Char,Color,Text,Parent)
 if Char then
 local NewHighlight = Instance.new("Highlight",Char)
@@ -369,7 +370,16 @@ local PlayerFullBright = PlayerTab:CreateToggle({
    CurrentValue = false,
    Flag = "FullBright",
    Callback = function(Value)
-ActiveFullBright = Value task.spawn(function() while ActiveFullBright do if Game.Lighting:FindFirstChildOfClass("Sky") then Game.Lighting:FindFirstChildOfClass("Sky"):Destroy() end if Game.Lighting then Game.Lighting.Brightness = 10 Game.Lighting.ClockTime = 0 end  wait(0.1) end end)
+ActiveFullBright = Value
+task.spawn(function()
+while ActiveFullBright do
+if Game.Lighting then 
+Game.Lighting.Brightness = 5
+Game.Lighting.Ambient = Color3.fromRGB(255, 255, 255)
+end  
+wait(0.1) 
+end 
+end)
 end,  
 })
 
