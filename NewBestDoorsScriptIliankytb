@@ -44,7 +44,7 @@ local ActiveEspDoor,ActiveSpeedBoost,ActiveEspHidingSpots,ActiveEspItems,ActiveE
 local LimitRangerEsp = 100
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.32",
+   Content = "V.0.33",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -56,6 +56,7 @@ local Paragraph5 = InfoTab:CreateParagraph({Title = "Upgraded And Added Things(V
 local Paragraph6 = InfoTab:CreateParagraph({Title = "Upgraded Limit Ranger Esp(V.0.30)", Content = "Added  A Slider To Change The Limit Ranger Esp Or A Toggle To Disable A Limit Ranger Esp In Settings!"})
 local Paragraph7 = InfoTab:CreateParagraph({Title = "Fixed Esp Door For Mines(V.0.31)", Content = "Just Try it! normally it work"})
 local Paragraph8 = InfoTab:CreateParagraph({Title = "Auto Interact(V.0.32)", Content = "Working Good But I Will Work On The Auto Interact Settings! btw its in Game tab."})
+local Paragraph9 = InfoTab:CreateParagraph({Title = "Fixed Full Bright(V.0.33)", Content = "Normally Full Bright Is Fixed Try It!"})
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local RunService = game:GetService("RunService")
@@ -312,7 +313,7 @@ ActiveMonsterSpawnAlert = Value
 end,
 })
 local NoCooldownpromptToggle = GameTab:CreateToggle({
-   Name = "No Cooldown Prompt",
+   Name = "Instant Prompt",
    CurrentValue = false,
    Flag = "NoCooldownPrompt1", 
    Callback = function(Value)
@@ -550,7 +551,7 @@ task.spawn(function()
 while ActiveFullBright do 
 if Game.Lighting then 
 Game.Lighting.Brightness = 5
---Game.Lighting.Ambiant = Color3.New(255,255,255)
+Game.Lighting.Ambient = Color3.fromRGB(255, 255, 255) 
 end  
 wait(0.1)
 end 
