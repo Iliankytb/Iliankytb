@@ -548,12 +548,9 @@ local PlayerFullBright = GameTab:CreateToggle({
 ActiveFullBright = Value 
 task.spawn(function() 
 while ActiveFullBright do 
-if Game.Lighting:FindFirstChildOfClass("Sky") then 
-Game.Lighting:FindFirstChildOfClass("Sky"):Destroy() 
-end 
 if Game.Lighting then 
-Game.Lighting.Brightness = 100
---Game.Lighting.ClockTime = 0
+Game.Lighting.Brightness = 5
+--Game.Lighting.Ambiant = Color3.New(255,255,255)
 end  
 wait(0.1)
 end 
