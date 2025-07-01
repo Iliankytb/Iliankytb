@@ -44,7 +44,7 @@ local ActiveEspDoor,ActiveSpeedBoost,ActiveEspHidingSpots,ActiveEspItems,ActiveE
 local LimitRangerEsp = 100
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.33",
+   Content = "V.0.34",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -243,6 +243,7 @@ while ActiveEspDoor do
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
+task.spawn(function()
 if Rooms:FindFirstChild("Door") and not Rooms:FindFirstChild("Door").PrimaryPart:FindFirstChildOfClass("Highlight") and not Rooms:FindFirstChild("Door").PrimaryPart:FindFirstChildOfClass("BillboardGui") and not Rooms:FindFirstChild("Door"):FindFirstChild("Lock") then 
 local signText = (Rooms:FindFirstChild("Door") and Rooms.Door:FindFirstChild("Sign") and 
                  ((Rooms.Door.Sign:FindFirstChild("Stinker") and Rooms.Door.Sign.Stinker.Text ~= "" and Rooms.Door.Sign.Stinker.Text)
@@ -257,6 +258,7 @@ local signText = (Rooms:FindFirstChild("Door") and Rooms.Door:FindFirstChild("Si
 
 CreateEsp(Rooms.Door.PrimaryPart, Color3.fromRGB(0,255,0), "Doors " .. signText.."(Lock)")
 end 
+end)
 end 
 end 
 end
@@ -284,9 +286,11 @@ while ActiveEspHidingSpots do
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
+task.spawn(function()
 if Rooms:FindFirstChild("Assets") then  for _,Assets in pairs(Rooms:FindFirstChild("Assets"):GetChildren()) do  if Assets:isA("Model") and (Assets.Name == "Bed" or Assets.Name == "Wardrobe" or Assets.Name == "Backdoor_Wardrobe" or Assets.Name == "Locker_Large")  and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
 CreateEsp(Assets.PrimaryPart,Color3.fromRGB(0,255,255),Assets.Name) 
 end 
+end)
 end 
 end 
 end end end
@@ -525,7 +529,8 @@ local PlayerFieldOfViewSlider = PlayerTab:CreateSlider({
 CurrentValue = Value
 ValueFieldOfView = Value
 end,  ValueFieldOfView = CurrentValue,
-}) local ActiveModifiedFieldOfView = false local PlayerActiveModifyingFOVToggle = PlayerTab:CreateToggle({
+}) 
+local ActiveModifiedFieldOfView = false local PlayerActiveModifyingFOVToggle = PlayerTab:CreateToggle({
    Name = "Active Modifying Player FOV(Unverified!)",
    CurrentValue = false,
    Flag = "ButtonFOV", 
@@ -553,7 +558,7 @@ if Game.Lighting then
 Game.Lighting.Brightness = 5
 Game.Lighting.Ambient = Color3.fromRGB(255, 255, 255) 
 end  
-wait(0.1)
+wait(0.01)
 end 
 end)
 end,  
@@ -570,9 +575,11 @@ while ActiveEspTimerLever do
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
+task.spawn(function()
 if Rooms:FindFirstChild("Assets") then  for _,Assets in pairs(Rooms:GetDescendants()) do  if Assets:isA("Model") and Assets.Name == "TimerLever"  and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
 CreateEsp(Assets.PrimaryPart,Color3.fromRGB(0,150,150),"Timer Lever") 
 end 
+end)
 end 
 end
 end end end
@@ -699,7 +706,35 @@ end,  LimitRangerEsp = CurrentValue,
    Callback = function(Value)
   DisableLimitRangerEsp = Value 
 end,
-}) 
+}) local CanJumpToggle = PlayerTab:CreateToggle({
+   Name = "Can Jump",
+   CurrentValue = false,
+   Flag = "CanJump1", 
+   Callback = function(Value)
+ActiveCanJump = Value 
+task.spawn(function() 
+while ActiveCanJump do 
+Game.Players.LocalPlayer.Character:SetAttribute("CanJump",true)
+wait(0.1)
+end 
+Game.Players.LocalPlayer.Character:SetAttribute("CanJump",false)
+end)
+end,
+}) local InfOxygenToggle = PlayerTab:CreateToggle({
+   Name = "Inf Oxygen(Unverified!)",
+   CurrentValue = false,
+   Flag = "Inf1", 
+   Callback = function(Value)
+ActiveInfOxygen = Value 
+task.spawn(function() 
+while ActiveInfOxygen do 
+Game.Players.LocalPlayer.Character:SetAttribute("Oxygen",9999999)
+wait(0.1)
+end
+Game.Players.LocalPlayer.Character:SetAttribute("Oxygen",100)
+end)
+end,
+})
 local Themes = {
    ["Default"] = "Default",
    ["Amber Glow"] = "AmberGlow",
