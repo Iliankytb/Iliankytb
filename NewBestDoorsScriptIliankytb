@@ -317,7 +317,7 @@ ActiveMonsterSpawnAlert = Value
 end,
 })
 local NoCooldownpromptToggle = GameTab:CreateToggle({
-   Name = "Instant Prompt",
+   Name = "Instant Interact",
    CurrentValue = false,
    Flag = "NoCooldownPrompt1", 
    Callback = function(Value)
@@ -658,7 +658,8 @@ local DropdownAutoInteract = GameTab:CreateDropdown({
    Name = "Auto Interact Settings(Coming Soon)",
    Options = {"Drawer", "Pickup Items", "???"},
    CurrentOption = "Nothings",  -- pour afficher ce qui est réellement chargé
-   Flag = "AIS",
+  MultipleOptions = true,
+Flag = "AIS",
    Callback = function(Selected)
  end,
 })
