@@ -44,7 +44,7 @@ local ActiveEspDoor,ActiveSpeedBoost,ActiveEspHidingSpots,ActiveEspItems,ActiveE
 local LimitRangerEsp = 100
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.34",
+   Content = "V.0.35",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -57,6 +57,7 @@ local Paragraph6 = InfoTab:CreateParagraph({Title = "Upgraded Limit Ranger Esp(V
 local Paragraph7 = InfoTab:CreateParagraph({Title = "Fixed Esp Door For Mines(V.0.31)", Content = "Just Try it! normally it work"})
 local Paragraph8 = InfoTab:CreateParagraph({Title = "Auto Interact(V.0.32)", Content = "Working Good But I Will Work On The Auto Interact Settings! btw its in Game tab."})
 local Paragraph9 = InfoTab:CreateParagraph({Title = "Fixed Full Bright(V.0.33)", Content = "Normally Full Bright Is Fixed Try It!"})
+local Paragraph10 = InfoTab:CreateParagraph({Title = "Fixed And Added(V.0.35)", Content = "Normally Full Bright Is Fixed Again,fixed Esp Hidding Spots And Esp Door Sometimes It Disapear and added Can Jump And Inf Oxygen!"})
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local RunService = game:GetService("RunService")
@@ -242,8 +243,7 @@ task.spawn(function()
 while ActiveEspDoor do 
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
-if Rooms:isA("Model") then
-task.spawn(function()
+if Rooms:isA("Model") then task.spawn(function()
 if Rooms:FindFirstChild("Door") and not Rooms:FindFirstChild("Door").PrimaryPart:FindFirstChildOfClass("Highlight") and not Rooms:FindFirstChild("Door").PrimaryPart:FindFirstChildOfClass("BillboardGui") and not Rooms:FindFirstChild("Door"):FindFirstChild("Lock") then 
 local signText = (Rooms:FindFirstChild("Door") and Rooms.Door:FindFirstChild("Sign") and 
                  ((Rooms.Door.Sign:FindFirstChild("Stinker") and Rooms.Door.Sign.Stinker.Text ~= "" and Rooms.Door.Sign.Stinker.Text)
@@ -257,8 +257,7 @@ local signText = (Rooms:FindFirstChild("Door") and Rooms.Door:FindFirstChild("Si
                or "Unknown"
 
 CreateEsp(Rooms.Door.PrimaryPart, Color3.fromRGB(0,255,0), "Doors " .. signText.."(Lock)")
-end 
-end)
+end end)
 end 
 end 
 end
@@ -286,11 +285,9 @@ while ActiveEspHidingSpots do
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
-task.spawn(function()
-if Rooms:FindFirstChild("Assets") then  for _,Assets in pairs(Rooms:FindFirstChild("Assets"):GetChildren()) do  if Assets:isA("Model") and (Assets.Name == "Bed" or Assets.Name == "Wardrobe" or Assets.Name == "Backdoor_Wardrobe" or Assets.Name == "Locker_Large")  and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
+if Rooms:FindFirstChild("Assets") then  for _,Assets in pairs(Rooms:FindFirstChild("Assets"):GetChildren()) do  task.spawn(function() if Assets:isA("Model") and (Assets.Name == "Bed" or Assets.Name == "Wardrobe" or Assets.Name == "Backdoor_Wardrobe" or Assets.Name == "Locker_Large")  and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
 CreateEsp(Assets.PrimaryPart,Color3.fromRGB(0,255,255),Assets.Name) 
-end 
-end)
+end end)
 end 
 end 
 end end end
@@ -317,7 +314,7 @@ ActiveMonsterSpawnAlert = Value
 end,
 })
 local NoCooldownpromptToggle = GameTab:CreateToggle({
-   Name = "Instant Interact",
+   Name = "Instant Prompt",
    CurrentValue = false,
    Flag = "NoCooldownPrompt1", 
    Callback = function(Value)
@@ -529,8 +526,7 @@ local PlayerFieldOfViewSlider = PlayerTab:CreateSlider({
 CurrentValue = Value
 ValueFieldOfView = Value
 end,  ValueFieldOfView = CurrentValue,
-}) 
-local ActiveModifiedFieldOfView = false local PlayerActiveModifyingFOVToggle = PlayerTab:CreateToggle({
+}) local ActiveModifiedFieldOfView = false local PlayerActiveModifyingFOVToggle = PlayerTab:CreateToggle({
    Name = "Active Modifying Player FOV(Unverified!)",
    CurrentValue = false,
    Flag = "ButtonFOV", 
@@ -575,11 +571,9 @@ while ActiveEspTimerLever do
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
-task.spawn(function()
 if Rooms:FindFirstChild("Assets") then  for _,Assets in pairs(Rooms:GetDescendants()) do  if Assets:isA("Model") and Assets.Name == "TimerLever"  and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
 CreateEsp(Assets.PrimaryPart,Color3.fromRGB(0,150,150),"Timer Lever") 
 end 
-end)
 end 
 end
 end end end
@@ -658,8 +652,7 @@ local DropdownAutoInteract = GameTab:CreateDropdown({
    Name = "Auto Interact Settings(Coming Soon)",
    Options = {"Drawer", "Pickup Items", "???"},
    CurrentOption = "Nothings",  -- pour afficher ce qui est réellement chargé
-  MultipleOptions = true,
-Flag = "AIS",
+   Flag = "AIS",
    Callback = function(Selected)
  end,
 })
@@ -717,22 +710,20 @@ task.spawn(function()
 while ActiveCanJump do 
 Game.Players.LocalPlayer.Character:SetAttribute("CanJump",true)
 wait(0.1)
-end 
-Game.Players.LocalPlayer.Character:SetAttribute("CanJump",false)
+end Game.Players.LocalPlayer.Character:SetAttribute("CanJump",false)
 end)
 end,
-}) local InfOxygenToggle = PlayerTab:CreateToggle({
-   Name = "Inf Oxygen(Unverified!)",
+}) local InfOToggle = PlayerTab:CreateToggle({
+   Name = "Inf Oxygen",
    CurrentValue = false,
-   Flag = "Inf1", 
+   Flag = "InfO1", 
    Callback = function(Value)
 ActiveInfOxygen = Value 
 task.spawn(function() 
 while ActiveInfOxygen do 
-Game.Players.LocalPlayer.Character:SetAttribute("Oxygen",9999999)
+Game.Players.LocalPlayer.Character:SetAttribute("Oxygen",99999)
 wait(0.1)
-end
-Game.Players.LocalPlayer.Character:SetAttribute("Oxygen",100)
+end Game.Players.LocalPlayer.Character:SetAttribute("Oxygen",100)
 end)
 end,
 })
