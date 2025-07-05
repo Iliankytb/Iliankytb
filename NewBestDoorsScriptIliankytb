@@ -44,7 +44,7 @@ local ActiveEspDoor,ActiveSpeedBoost,ActiveEspHidingSpots,ActiveEspItems,ActiveE
 local LimitRangerEsp = 100
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.35",
+   Content = "V.0.36",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -58,6 +58,7 @@ local Paragraph7 = InfoTab:CreateParagraph({Title = "Fixed Esp Door For Mines(V.
 local Paragraph8 = InfoTab:CreateParagraph({Title = "Auto Interact(V.0.32)", Content = "Working Good But I Will Work On The Auto Interact Settings! btw its in Game tab."})
 local Paragraph9 = InfoTab:CreateParagraph({Title = "Fixed Full Bright(V.0.33)", Content = "Normally Full Bright Is Fixed Try It!"})
 local Paragraph10 = InfoTab:CreateParagraph({Title = "Fixed And Added(V.0.35)", Content = "Normally Full Bright Is Fixed Again,fixed Esp Hidding Spots And Esp Door Sometimes It Disapear and added Can Jump And Inf Oxygen!"})
+local Paragraph11 = InfoTab:CreateParagraph({Title = "Lag(V.0.36)", Content = "Normally there no lag for esp or etc i will upgrade again the full bright and somethings!"})
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local RunService = game:GetService("RunService")
@@ -240,7 +241,7 @@ local EspDoorToggle = EspTab:CreateToggle({
    Callback = function(Value)
 ActiveEspDoor = Value 
 task.spawn(function() 
-while ActiveEspDoor do 
+if ActiveEspDoor then
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then task.spawn(function()
@@ -261,8 +262,7 @@ end end)
 end 
 end 
 end
-wait(0.1)
-end 
+else 
 if Game.Workspace:FindFirstChild("CurrentRooms") then
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do
 if Rooms:isA("Model") then
@@ -271,7 +271,7 @@ KeepEsp(Rooms:FindFirstChild("Door").PrimaryPart)
 end 
 end 
 end
-end
+end end
 end)
 end,
 }) local EspHidingSpotsToggle = EspTab:CreateToggle({
@@ -281,7 +281,7 @@ end,
    Callback = function(Value)
 ActiveEspHidingSpots = Value 
 task.spawn(function() 
-while ActiveEspHidingSpots do 
+if ActiveEspHidingSpots then
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
@@ -291,8 +291,7 @@ end end)
 end 
 end 
 end end end
-wait(0.1)
-end 
+else
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
@@ -301,7 +300,7 @@ KeepEsp(Assets.PrimaryPart)
 end 
 end 
 end 
-end end end 
+end end end end 
 end)
 end,
 })
@@ -319,8 +318,8 @@ local NoCooldownpromptToggle = GameTab:CreateToggle({
    Flag = "NoCooldownPrompt1", 
    Callback = function(Value)
 ActiveNoCooldownPrompt = Value 
-task.spawn(function() 
-while ActiveNoCooldownPrompt do 
+task.spawn(function()  
+if ActiveNoCooldownPrompt then
 for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
 if Assets:isA("ProximityPrompt") then 
 task.spawn(function()
@@ -331,8 +330,7 @@ end
 end)
 end 
 end  
-wait(0.1)
-end 
+else 
 for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
 if Assets:isA("ProximityPrompt") then 
 task.spawn(function()
@@ -341,7 +339,7 @@ Assets.HoldDuration = Assets:GetAttribute("HoldDurationOld")
 end
 end)
 end 
-end  
+end end  
 end)
 end,
 })
@@ -352,7 +350,7 @@ local EspItemsToggle = EspTab:CreateToggle({
    Callback = function(Value)
 ActiveEspItems = Value 
 task.spawn(function() 
-while ActiveEspItems do 
+if ActiveEspItems then
   for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
 task.spawn(function()
 if Assets:isA("Model") and (Assets.Name == "KeyObtain" or Assets.Name == "LeverForGate" or Assets.Name == "Battery" or Assets.Name == "Flashlight" or Assets.Name == "Lighter" or Assets.Name == "Bandage" or Assets.Name == "Crucifix" or Assets.Name == "Vitamins" or Assets.Name == "Lockpick" or Assets.Name == "Candle" or Assets.Name == "AlarmClock" or Assets.Name == "LibraryHintPaper" or Assets.Name == "Smoothie" or Assets.Name == "FuseObtain" or Assets.Name == "BatteryPack" or Assets.Name == "Glowsticks")  and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") 
@@ -363,13 +361,12 @@ end)
 end 
 end)
 end  
-wait(0.1)
-end 
+else
   for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
 if Assets:isA("Model")  and (Assets.Name == "KeyObtain" or Assets.Name == "LeverForGate" or  Assets.Name == "Battery" or Assets.Name == "Flashlight" or Assets.Name == "Bandage" or Assets.Name == "Lighter" or Assets.Name == "Crucifix" or Assets.Name == "Candle" or Assets.Name == "Lockpick" or Assets.Name == "AlarmClock" or Assets.Name == "LibraryHintPaper" or Assets.Name == "Smoothie" or Assets.Name == "FuseObtain" or Assets.Name == "Glowsticks" or Assets.Name == "BatteryPack") and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
 KeepEsp(Assets.PrimaryPart) 
 end 
-end 
+end end
 end)
 end,
 }) local EspCoinsToggle = EspTab:CreateToggle({
@@ -379,7 +376,7 @@ end,
    Callback = function(Value)
 ActiveEspCoins = Value 
 task.spawn(function() 
-while ActiveEspCoins do 
+if ActiveEspCoins then
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
@@ -389,8 +386,7 @@ end
 end 
 end
 end end end
-wait(0.1)
-end 
+else 
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
@@ -399,7 +395,7 @@ KeepEsp(Assets.PrimaryPart)
 end 
 end 
 end 
-end end end 
+end end end end
 end)
 end,
 })
@@ -410,7 +406,7 @@ local EspChestToggle = EspTab:CreateToggle({
    Callback = function(Value)
 ActiveEspChest = Value 
 task.spawn(function() 
-while ActiveEspChest do 
+if ActiveEspChest then
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
@@ -420,8 +416,7 @@ end
 end 
 end
 end end end
-wait(0.1)
-end 
+else 
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
@@ -430,7 +425,7 @@ KeepEsp(Assets.PrimaryPart)
 end 
 end 
 end 
-end end end 
+end end end end 
 end)
 end,
 })
@@ -441,27 +436,30 @@ end,
    Callback = function(Value)
 ActiveEspBooks = Value 
 task.spawn(function() 
-while ActiveEspBooks do 
+if ActiveEspBooks then
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
-if Rooms:FindFirstChild("Assets") then  for _,Assets in pairs(Rooms:GetDescendants()) do  if Assets:isA("Model") and Assets.Name == "LiveHintBook"  and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
+if Rooms:FindFirstChild("Assets") then  
+for _,Assets in pairs(Rooms:GetDescendants()) do 
+if Assets:isA("Model") and Assets.Name == "LiveHintBook"  and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
 CreateEsp(Assets.PrimaryPart,Color3.fromRGB(0,150,150),"Books") 
 end 
 end 
 end
 end end end
-wait(0.1)
-end 
+else
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
-if Rooms:FindFirstChild("Assets") then  for _,Assets in pairs(Rooms:GetDescendants()) do  if Assets:isA("Model")  and Assets.Name == "LiveHintBook"  and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
+if Rooms:FindFirstChild("Assets") then 
+for _,Assets in pairs(Rooms:GetDescendants()) do 
+if Assets:isA("Model")  and Assets.Name == "LiveHintBook"  and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
 KeepEsp(Assets.PrimaryPart) 
 end 
 end 
 end 
-end end end 
+end end end end
 end)
 end,
 })
@@ -472,19 +470,18 @@ local EspMonstersToggle = EspTab:CreateToggle({
    Callback = function(Value)
 ActiveEspMonster = Value 
 task.spawn(function() 
-while ActiveEspMonster do 
+if ActiveEspMonster then
 task.spawn(function()
 for _,Assets in pairs(Workspace:GetDescendants()) do  if Assets:isA("Model") and (Assets.Name == "FigureRig" or Assets.Name == "SallyMoving" or Assets.Name == "RushMoving" or Assets.Name == "Eyes" or Assets.Name == "SeekMovingNewClone" or Assets.Name == "BackdoorLookman" or Assets.Name == "BackdoorRush" or Assets.Name == "GloombatSwarm" or Assets.Name == "GiggleCeiling")  and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
 CreateEsp(Assets.PrimaryPart,Color3.fromRGB(255,0,0),Assets.Name) 
 end 
 end 
 end)
-wait(0.1)
-end 
+else 
 for _,Assets in pairs(Workspace:GetDescendants()) do  if Assets:isA("Model")  and (Assets.Name == "FigureRig" or Assets.Name == "SallyMoving" or Assets.Name == "Eyes" or Assets.Name == "RushMoving" or Assets.Name == "SeekMovingNewClone" or Assets.Name == "BackdoorRush" or Assets.Name == "BackdoorLookman" or Assets.Name == "GiggleCeiling" or Assets.Name == "GloombatSwarm") and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
 KeepEsp(Assets.PrimaryPart) 
 end 
-end 
+end end
 end)
 end,
 })
@@ -566,8 +563,7 @@ local EspTimerLeverToggle = EspTab:CreateToggle({
    Flag = "EspTimerLever", 
    Callback = function(Value)
 ActiveEspTimerLever = Value 
-task.spawn(function() 
-while ActiveEspTimerLever do 
+task.spawn(function() if ActiveEspTimerLever then
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
@@ -577,8 +573,7 @@ end
 end 
 end
 end end end
-wait(0.1)
-end 
+else
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
@@ -587,7 +582,7 @@ KeepEsp(Assets.PrimaryPart)
 end 
 end 
 end 
-end end end 
+end end end end
 end)
 end,
 })
@@ -598,8 +593,7 @@ local EspGeneratorToggle = EspTab:CreateToggle({
    Flag = "EspGen", 
    Callback = function(Value)
 ActiveEspGen = Value 
-task.spawn(function() 
-while ActiveEspGen do 
+task.spawn(function() if ActiveEspGen then
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
@@ -609,8 +603,7 @@ end
 end 
 end 
 end end end
-wait(0.1)
-end 
+else
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
@@ -619,12 +612,12 @@ KeepEsp(Assets.PrimaryPart)
 end 
 end 
 end 
-end end end 
+end end end end
 end)
 end,
 })
 workspace.ChildAdded:Connect(function(child)
-if ActiveMonsterSpawnAlert then
+task.spawn(function() if ActiveMonsterSpawnAlert then
 if table.find(OptionNotif,child.Name) then
 if child.Name == "RushMoving" then 
 NotifMonsterSpawned("Rush",3)
@@ -646,7 +639,127 @@ elseif child.Name == "GiggleCeiling" then
 NotifMonsterSpawned("Giggle",3)
 end
 end
+end end) task.spawn(function() if ActiveEspGen then
+if Game.Workspace:FindFirstChild("CurrentRooms") then 
+for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
+if Rooms:isA("Model") then
+if Rooms:FindFirstChild("Assets") then  for _,Assets in pairs(Rooms:FindFirstChild("Assets"):GetChildren()) do  if Assets:isA("Model") and Assets.Name == "MinesGenerator"  and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
+CreateEsp(Assets.PrimaryPart,Color3.fromRGB(255,255,0),Assets.Name) 
+end 
+end 
+end 
+end end end end end)
+task.spawn(function() if ActiveEspTimerLever then
+if Game.Workspace:FindFirstChild("CurrentRooms") then 
+for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
+if Rooms:isA("Model") then
+if Rooms:FindFirstChild("Assets") then  for _,Assets in pairs(Rooms:GetDescendants()) do  if Assets:isA("Model") and Assets.Name == "TimerLever"  and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
+CreateEsp(Assets.PrimaryPart,Color3.fromRGB(0,150,150),"Timer Lever") 
+end 
+end 
 end
+end end end end end)
+task.spawn(function() 
+if ActiveEspMonster then
+task.spawn(function()
+for _,Assets in pairs(Workspace:GetDescendants()) do  
+if Assets:isA("Model") and (Assets.Name == "FigureRig" or Assets.Name == "SallyMoving" or Assets.Name == "RushMoving" or Assets.Name == "Eyes" or Assets.Name == "SeekMovingNewClone" or Assets.Name == "BackdoorLookman" or Assets.Name == "BackdoorRush" or Assets.Name == "GloombatSwarm" or Assets.Name == "GiggleCeiling")  and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
+CreateEsp(Assets.PrimaryPart,Color3.fromRGB(255,0,0),Assets.Name) 
+end 
+end 
+end) end end)
+task.spawn(function() 
+if ActiveEspBooks then
+if Game.Workspace:FindFirstChild("CurrentRooms") then 
+for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
+if Rooms:isA("Model") then
+if Rooms:FindFirstChild("Assets") then  
+for _,Assets in pairs(Rooms:GetDescendants()) do 
+if Assets:isA("Model") and Assets.Name == "LiveHintBook"  and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
+CreateEsp(Assets.PrimaryPart,Color3.fromRGB(0,150,150),"Books") 
+end 
+end 
+end
+end end end end end)
+task.spawn(function() 
+if ActiveEspChest then
+if Game.Workspace:FindFirstChild("CurrentRooms") then 
+for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
+if Rooms:isA("Model") then
+if Rooms:FindFirstChild("Assets") then  for _,Assets in pairs(Rooms:GetDescendants()) do  if Assets:isA("Model") and (Assets.Name == "ChestBoxLocked" or Assets.Name == "ChestBox")  and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
+CreateEsp(Assets.PrimaryPart,Color3.fromRGB(255,255,0),Assets.Name) 
+end 
+end 
+end
+end end end end end)
+task.spawn(function() 
+if ActiveEspCoins then
+if Game.Workspace:FindFirstChild("CurrentRooms") then 
+for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
+if Rooms:isA("Model") then
+if Rooms:FindFirstChild("Assets") then  for _,Assets in pairs(Rooms:GetDescendants()) do  if Assets:isA("Model") and (Assets.Name == "GoldPile" or Assets.Name == "")  and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
+CreateEsp(Assets.PrimaryPart,Color3.fromRGB(255,255,0),"Gold") 
+end 
+end 
+end
+end end end end end)
+task.spawn(function() 
+if ActiveEspItems then
+  for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
+task.spawn(function()
+if Assets:isA("Model") and (Assets.Name == "KeyObtain" or Assets.Name == "LeverForGate" or Assets.Name == "Battery" or Assets.Name == "Flashlight" or Assets.Name == "Lighter" or Assets.Name == "Bandage" or Assets.Name == "Crucifix" or Assets.Name == "Vitamins" or Assets.Name == "Lockpick" or Assets.Name == "Candle" or Assets.Name == "AlarmClock" or Assets.Name == "LibraryHintPaper" or Assets.Name == "Smoothie" or Assets.Name == "FuseObtain" or Assets.Name == "BatteryPack" or Assets.Name == "Glowsticks")  and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") 
+and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
+task.spawn(function()
+CreateEsp(Assets.PrimaryPart,Color3.fromRGB(255,255,0),Assets.Name) 
+end)
+end 
+end)
+end end end)
+task.spawn(function()  
+if ActiveNoCooldownPrompt then
+for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
+if Assets:isA("ProximityPrompt") then 
+task.spawn(function()
+if Assets.HoldDuration ~= 0 then
+Assets:SetAttribute("HoldDurationOld",Assets.HoldDuration)
+Assets.HoldDuration = 0
+end
+end)
+end 
+end  end end)
+task.spawn(function() 
+if ActiveEspHidingSpots then
+if Game.Workspace:FindFirstChild("CurrentRooms") then 
+for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
+if Rooms:isA("Model") then
+if Rooms:FindFirstChild("Assets") then  for _,Assets in pairs(Rooms:FindFirstChild("Assets"):GetChildren()) do  task.spawn(function() if Assets:isA("Model") and (Assets.Name == "Bed" or Assets.Name == "Wardrobe" or Assets.Name == "Backdoor_Wardrobe" or Assets.Name == "Locker_Large")  and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
+CreateEsp(Assets.PrimaryPart,Color3.fromRGB(0,255,255),Assets.Name) 
+end end)
+end 
+end 
+end end end end end)
+task.spawn(function() 
+if ActiveEspDoor then
+if Game.Workspace:FindFirstChild("CurrentRooms") then 
+for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
+if Rooms:isA("Model") then task.spawn(function()
+if Rooms:FindFirstChild("Door") and not Rooms:FindFirstChild("Door").PrimaryPart:FindFirstChildOfClass("Highlight") and not Rooms:FindFirstChild("Door").PrimaryPart:FindFirstChildOfClass("BillboardGui") and not Rooms:FindFirstChild("Door"):FindFirstChild("Lock") then 
+local signText = (Rooms:FindFirstChild("Door") and Rooms.Door:FindFirstChild("Sign") and 
+                 ((Rooms.Door.Sign:FindFirstChild("Stinker") and Rooms.Door.Sign.Stinker.Text ~= "" and Rooms.Door.Sign.Stinker.Text)
+               or (Rooms.Door.Sign:FindFirstChild("SignText") and Rooms.Door.Sign.SignText.Text)))
+               or "Unknown"
+CreateEsp(Rooms.Door.PrimaryPart, Color3.fromRGB(0,255,0), "Doors " .. signText) 
+elseif Rooms:FindFirstChild("Door") and not Rooms:FindFirstChild("Door").PrimaryPart:FindFirstChildOfClass("Highlight") and not Rooms:FindFirstChild("Door").PrimaryPart:FindFirstChildOfClass("BillboardGui") and  Rooms:FindFirstChild("Door"):FindFirstChild("Lock") then 
+local signText = (Rooms:FindFirstChild("Door") and Rooms.Door:FindFirstChild("Sign") and 
+                 ((Rooms.Door.Sign:FindFirstChild("Stinker") and Rooms.Door.Sign.Stinker.Text ~= "" and Rooms.Door.Sign.Stinker.Text)
+               or (Rooms.Door.Sign:FindFirstChild("SignText") and Rooms.Door.Sign.SignText.Text)))
+               or "Unknown"
+
+CreateEsp(Rooms.Door.PrimaryPart, Color3.fromRGB(0,255,0), "Doors " .. signText.."(Lock)")
+end end)
+end 
+end 
+end end end)
 end)
 local DropdownAutoInteract = GameTab:CreateDropdown({
    Name = "Auto Interact Settings(Coming Soon)",
