@@ -731,7 +731,8 @@ end)
 end,
 })
 RunService.RenderStepped:Connect(function(dt)
-    task.spawn(function() if ActiveEspGen then
+wait(dt)
+task.spawn(function() if ActiveEspGen then
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
