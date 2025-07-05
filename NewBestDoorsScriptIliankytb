@@ -44,7 +44,7 @@ local ActiveEspDoor,ActiveSpeedBoost,ActiveEspHidingSpots,ActiveEspItems,ActiveE
 local LimitRangerEsp = 100
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.36",
+   Content = "V.0.37",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -152,7 +152,7 @@ local Section1 = GameTab:CreateSection("General")
 local Section2 = EspTab:CreateSection("General")
 local DropdownMonsterSpawnAlert = GameTab:CreateDropdown({
     Name = "Monster Spawn Alert Dropdown",
-    Options = {"Rush","Seek","Figure","Sally","Eyes","LookMan","BackdoorRush","Giggle","GloombatSwarm"},
+    Options = {"Rush","Seek","Figure","Sally","Eyes","LookMan","BackdoorRush","Giggle","GloombatSwarm","Ambush"},
     CurrentOption = {""},
     MultipleOptions = true,
     Flag = "MonsterSpawnAlertDropdown",
@@ -227,6 +227,14 @@ if table.find(Options, "GloombatSwarm") and not table.find(OptionNotif, "Gloomba
             table.insert(OptionNotif, "GloombatSwarm")
         elseif not table.find(Options, "GloombatSwarm") then
             local index = table.find(OptionNotif, "GloombatSwarm")
+            if index then
+                table.remove(OptionNotif, index)
+            end
+        end
+if table.find(Options, "Ambush") and not table.find(OptionNotif, "AmbushMoving") then
+            table.insert(OptionNotif, "AmbushMoving")
+        elseif not table.find(Options, "Ambush") then
+            local index = table.find(OptionNotif, "AmbushMoving")
             if index then
                 table.remove(OptionNotif, index)
             end
@@ -637,9 +645,93 @@ elseif child.Name == "GloombatSwarm" then
 NotifMonsterSpawned("Gloombat Swarm",3)
 elseif child.Name == "GiggleCeiling" then
 NotifMonsterSpawned("Giggle",3)
+elseif child.Name == "AmbushMoving" then
+NotifMonsterSpawned("Ambush",3)
 end
 end
-end end) task.spawn(function() if ActiveEspGen then
+end end) 
+end)
+local DropdownAutoInteract = GameTab:CreateDropdown({
+   Name = "Auto Interact Settings(Coming Soon)",
+   Options = {"Drawer", "Pickup Items", "???"},
+   CurrentOption = "Nothings",  -- pour afficher ce qui est réellement chargé
+   Flag = "AIS",
+   Callback = function(Selected)
+ end,
+})
+local AutoInteractToggle = GameTab:CreateToggle({
+   Name = "Auto Interact",
+   CurrentValue = false,
+   Flag = "AutoInter1", 
+   Callback = function(Value)
+ActiveAutoInteract = Value 
+task.spawn(function() 
+while ActiveAutoInteract do 
+for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
+if Assets:isA("ProximityPrompt") then 
+task.spawn(function()
+onPromptShown(Assets)
+end)
+end 
+end  
+wait(0.1)
+end 
+end)
+end,
+})
+local ButtonUnloadCheat = SettingsTab:CreateButton({
+   Name = "Unload Cheat",
+   Callback = function()
+  Rayfield:Destroy()
+end,
+})
+local LimitRangerEspSlider = SettingsTab:CreateSlider({
+   Name = "Field Of View(Unverified!)",
+   Range = {25,1000},
+   Increment = 1,
+   Suffix = "Ranger",
+   CurrentValue = 100,
+   Flag = "LimitRangerEsp1",
+   Callback = function(Value)
+CurrentValue = Value
+LimitRangerEsp = Value
+end,  LimitRangerEsp = CurrentValue,
+})  local DisableLimitRangerEspToggle = SettingsTab:CreateToggle({
+   Name = "Disable Limit Ranger Esp",
+   CurrentValue = false,
+   Flag = "ButtonDLRE", 
+   Callback = function(Value)
+  DisableLimitRangerEsp = Value 
+end,
+}) local CanJumpToggle = PlayerTab:CreateToggle({
+   Name = "Can Jump",
+   CurrentValue = false,
+   Flag = "CanJump1", 
+   Callback = function(Value)
+ActiveCanJump = Value 
+task.spawn(function() 
+while ActiveCanJump do 
+Game.Players.LocalPlayer.Character:SetAttribute("CanJump",true)
+wait(0.1)
+end Game.Players.LocalPlayer.Character:SetAttribute("CanJump",false)
+end)
+end,
+}) local InfOToggle = PlayerTab:CreateToggle({
+   Name = "Inf Oxygen",
+   CurrentValue = false,
+   Flag = "InfO1", 
+   Callback = function(Value)
+ActiveInfOxygen = Value 
+task.spawn(function() 
+while ActiveInfOxygen do 
+Game.Players.LocalPlayer.Character:SetAttribute("Oxygen",99999)
+wait(0.1)
+end Game.Players.LocalPlayer.Character:SetAttribute("Oxygen",100)
+end)
+end,
+})
+RunService.RenderStepped:Connect(function(dt)
+    task.spawn(function() if ActiveEspGen then
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
@@ -761,85 +853,6 @@ end
 end 
 end end end)
 end)
-local DropdownAutoInteract = GameTab:CreateDropdown({
-   Name = "Auto Interact Settings(Coming Soon)",
-   Options = {"Drawer", "Pickup Items", "???"},
-   CurrentOption = "Nothings",  -- pour afficher ce qui est réellement chargé
-   Flag = "AIS",
-   Callback = function(Selected)
- end,
-})
-local AutoInteractToggle = GameTab:CreateToggle({
-   Name = "Auto Interact",
-   CurrentValue = false,
-   Flag = "AutoInter1", 
-   Callback = function(Value)
-ActiveAutoInteract = Value 
-task.spawn(function() 
-while ActiveAutoInteract do 
-for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
-if Assets:isA("ProximityPrompt") then 
-task.spawn(function()
-onPromptShown(Assets)
-end)
-end 
-end  
-wait(0.1)
-end 
-end)
-end,
-})
-local ButtonUnloadCheat = SettingsTab:CreateButton({
-   Name = "Unload Cheat",
-   Callback = function()
-  Rayfield:Destroy()
-end,
-})
-local LimitRangerEspSlider = SettingsTab:CreateSlider({
-   Name = "Field Of View(Unverified!)",
-   Range = {25,1000},
-   Increment = 1,
-   Suffix = "Ranger",
-   CurrentValue = 100,
-   Flag = "LimitRangerEsp1",
-   Callback = function(Value)
-CurrentValue = Value
-LimitRangerEsp = Value
-end,  LimitRangerEsp = CurrentValue,
-})  local DisableLimitRangerEspToggle = SettingsTab:CreateToggle({
-   Name = "Disable Limit Ranger Esp",
-   CurrentValue = false,
-   Flag = "ButtonDLRE", 
-   Callback = function(Value)
-  DisableLimitRangerEsp = Value 
-end,
-}) local CanJumpToggle = PlayerTab:CreateToggle({
-   Name = "Can Jump",
-   CurrentValue = false,
-   Flag = "CanJump1", 
-   Callback = function(Value)
-ActiveCanJump = Value 
-task.spawn(function() 
-while ActiveCanJump do 
-Game.Players.LocalPlayer.Character:SetAttribute("CanJump",true)
-wait(0.1)
-end Game.Players.LocalPlayer.Character:SetAttribute("CanJump",false)
-end)
-end,
-}) local InfOToggle = PlayerTab:CreateToggle({
-   Name = "Inf Oxygen",
-   CurrentValue = false,
-   Flag = "InfO1", 
-   Callback = function(Value)
-ActiveInfOxygen = Value 
-task.spawn(function() 
-while ActiveInfOxygen do 
-Game.Players.LocalPlayer.Character:SetAttribute("Oxygen",99999)
-wait(0.1)
-end Game.Players.LocalPlayer.Character:SetAttribute("Oxygen",100)
-end)
-end,
-})
 local Themes = {
    ["Default"] = "Default",
    ["Amber Glow"] = "AmberGlow",
