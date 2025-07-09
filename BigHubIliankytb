@@ -2,10 +2,7 @@ local PlaceService = Game
 
 --Doors--
 local PlaceIdDoorsLobby = 6516141723
-local PlaceIdDoors1 = 6839171747
-local PlaceIdDoorsMines = 6839171747
-local PlaceIdBackdoors = 6839171747
-local PlaceIdTheRooms = 6839171747
+local PlaceIdDoorsGame = 6839171747
 
 --Hunted--
 local PlaceIdFNAFHuntedGame =74161468227974
@@ -36,16 +33,24 @@ textLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 textLabel.Font = Enum.Font.GothamBold
 textLabel.TextScaled = true
-textLabel.Text = "Loading Cheat(It Take only 3 seconds)"
-task.wait(3)
+textLabel.Text = "Loading Cheat(It Take only 1 seconds)"
+task.wait(1)
 if PlaceService.PlaceId == PlaceIdForsaken then
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/BestForsakenScript"))()
 elseif PlaceService.PlaceId == PlaceIdFNAFHuntedGame then
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatFiveNightHunted"))()
-elseif PlaceService.PlaceId == (PlaceIdDoorsLobby or PlaceIdDoors1 or PlaceIdDoorsMines or PlaceIdBackdoors) then
+elseif PlaceService.PlaceId == PlaceIdDoorsGame then
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/NewBestDoorsScriptIliankytb"))()
-elseif PlaceService.PlaceId == (PlaceIdRainbowFriend2Lobby or PlaceIdRainbowFriend2Game) then
+elseif PlaceService.PlaceId == PlaceIdDoorsLobby then
+textLabel.Text = "Loading Universale Cheat Because you're not ingame(it take Some Times)"
+task.wait(3)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/IliankytbUniversalNew"))()   
+elseif PlaceService.PlaceId == PlaceIdRainbowFriend2Game then
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/BestRainbowFriendsTwo"))()
+elseif PlaceService.PlaceId == PlaceIdRainbowFriend2Lobby then
+textLabel.Text = "Loading Universale Cheat Because you're not ingame(it take Some Times)"
+task.wait(3)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/IliankytbUniversalNew"))()   
 else
  loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/IliankytbUniversalNew"))()   
 end
