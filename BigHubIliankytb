@@ -1,1 +1,27 @@
-local PlaceService = Game:GetService("")
+local PlaceService = game:GetService("PlaceService")
+
+--Doors--
+local PlaceIdDoorsLobby
+local PlaceIdDoors1
+local PlaceIdDoorsMines
+local PlaceIdBackdoors
+
+--Hunted--
+local PlaceIdFNAFHuntedLobby
+local PlaceIdFNAFHunted14
+local PlaceIdFNAFHunted28
+local PlaceIdFNAFHunted11
+local PlaceIdFNAFPro
+
+--Forsaken--
+local PlaceIdForsaken
+
+--RainbowFriend2--
+local PlaceIdRainbowFriend2Lobby
+local PlaceIdRainbowFriend2Game
+
+--[[if PlaceService.PlaceId == targetPlaceId then
+
+else
+    
+end]]
