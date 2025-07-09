@@ -45,7 +45,7 @@ local LimitRangerEsp = 100
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.40",
+   Content = "V.0.41",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -116,7 +116,7 @@ highlight.Enabled = false
 			local character = LocalPlayer.Character
 			if character and character:FindFirstChild("HumanoidRootPart") then if not DisableLimitRangerEsp then
 				local root = character.HumanoidRootPart
-				local distance = (root.Position - Char.Position).Magnitude
+				local distance = (root.Position - Parent.Position).Magnitude
 
 				local withinRange = distance <= LimitRangerEsp
 				highlight.Enabled = withinRange
