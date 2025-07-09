@@ -45,7 +45,7 @@ local LimitRangerEsp = 100
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.39",
+   Content = "V.0.40",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -82,12 +82,12 @@ local function CreateEsp(Char, Color, Text,Parent)
 	
 	local highlight = Char:FindFirstChildOfClass("Highlight") or Instance.new("Highlight")
 	highlight.Name = "ESP_Highlight"
-	highlight.FillColor = Color
+highlight.Adornee = Char
+highlight.FillColor = Color
 highlight.FillTransparency = 1
 highlight.OutlineColor = Color
 highlight.OutlineTransparency = 0
 highlight.DepthMode = Enum.HighlightDepthMode.Always
-highlight.Adornee = Char	
 highlight.Enabled = false
 	highlight.Parent = Char
 
