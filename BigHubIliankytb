@@ -16,6 +16,29 @@ local PlaceIdForsaken = 18687417158
 local PlaceIdRainbowFriend2Lobby
 local PlaceIdRainbowFriend2Game
 
+local player = game.Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+
+
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "CenterTextGui"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = playerGui
+
+m
+local textLabel = Instance.new("TextLabel")
+textLabel.Name = "CenterText"
+textLabel.Parent = screenGui
+textLabel.AnchorPoint = Vector2.new(0.5, 0.5)
+textLabel.Position = UDim2.new(0.5, 0, 0.5, 0) -- Milieu de l'écran
+textLabel.Size = UDim2.new(0.6, 0, 0.1, 0)
+textLabel.BackgroundTransparency = 0.3
+textLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+textLabel.Font = Enum.Font.GothamBold
+textLabel.TextScaled = true
+textLabel.Text = "Loading Cheat(It Take only 3 seconds)"
+task.wait(3)
 if PlaceService.PlaceId == PlaceIdForsaken then
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/BestForsakenScript"))()
 elseif PlaceService.PlaceId == PlaceIdFNAFHuntedGame then
@@ -27,3 +50,4 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/m
 else
  loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/IliankytbUniversalNew"))()   
 end
+screenGui:Destroy()
