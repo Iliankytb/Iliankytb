@@ -1,4 +1,4 @@
-local PlaceService = game:GetService("PlaceService")
+local PlaceService = Game
 
 --Doors--
 local PlaceIdDoorsLobby = 6516141723
