@@ -7,11 +7,7 @@ local PlaceIdDoorsMines
 local PlaceIdBackdoors
 
 --Hunted--
-local PlaceIdFNAFHuntedLobby
-local PlaceIdFNAFHunted14
-local PlaceIdFNAFHunted28
-local PlaceIdFNAFHunted11
-local PlaceIdFNAFPro
+local PlaceIdFNAFHuntedGame =74161468227974
 
 --Forsaken--
 local PlaceIdForsaken
