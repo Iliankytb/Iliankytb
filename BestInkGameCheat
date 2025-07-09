@@ -65,7 +65,7 @@ local PlayerSpeedSlider = PlayerTab:CreateSlider({
    Increment = 1,
    Suffix = "Speeds",
    CurrentValue = 16,
-   Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Flag = "Slider2", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
 CurrentValue = Value
 ValueSpeed = Value
@@ -75,7 +75,7 @@ end,  ValueSpeed = CurrentValue,
 local PlayerActiveModifyingSpeedToggle = PlayerTab:CreateToggle({
    Name = "Active Modifying Player Speed",
    CurrentValue = false,
-   Flag = "ButtonSpeed", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Flag = "ButtonSpeed2", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
   ActiveSpeedBoost = Value 
 task.spawn(function()
@@ -130,4 +130,5 @@ local Dropdown = SettingsTab:CreateDropdown({
       Window.ModifyTheme(ident)  -- <— Applique le thème en direct
    end, 
 })
+
 Rayfield:LoadConfiguration()
