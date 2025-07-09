@@ -61,7 +61,7 @@ end,
 local ValueSpeed = 16
 local PlayerSpeedSlider = PlayerTab:CreateSlider({
    Name = "Player Speed",
-   Range = {0, 50},
+   Range = {0, 100},
    Increment = 1,
    Suffix = "Speeds",
    CurrentValue = 16,
@@ -82,7 +82,6 @@ task.spawn(function()
 while ActiveSpeedBoost do 
 task.spawn(function()
 Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = ValueSpeed 
-Game.Players.LocalPlayer.Character.Humanoid:SetAttribute("BaseSpeed",ValueSpeed)
 end)
 task.wait(0.1)
 end end)
@@ -92,7 +91,13 @@ local GameFinishRedLightGreenLight = GameTab:CreateButton({
    Name = "Finish RedLight,GreenLight",
    Callback = function(Value) 
 task.spawn(function()
-Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Vector3.new(-39.7584915, 1027.2583, 123.181976, 0.400850087, 3.88652932e-09, 0.916143656, 1.25406912e-08, 1, -9.72933289e-09, -0.916143656, 1.53890785e-08, 0.400850087)
+Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
+    -39.7584915, 1027.2583, 123.181976,
+     0.400850087, 3.88652932e-09, 0.916143656,
+     1.25406912e-08, 1, -9.72933289e-09,
+    -0.916143656, 1.53890785e-08, 0.400850087
+)
+
 end)
 end,
 })
