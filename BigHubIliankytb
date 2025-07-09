@@ -13,12 +13,11 @@ local PlaceIdFNAFHuntedGame =74161468227974
 local PlaceIdForsaken = 18687417158
 
 --RainbowFriend2--
-local PlaceIdRainbowFriend2Lobby
-local PlaceIdRainbowFriend2Game
+local PlaceIdRainbowFriend2Lobby = 7991339063
+local PlaceIdRainbowFriend2Game = 13622981808
 
 local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
-
 
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "CenterTextGui"
