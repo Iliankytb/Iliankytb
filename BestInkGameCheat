@@ -41,7 +41,7 @@ local SettingsTab = Window:CreateTab("Settings")
 local ActiveSpeedBoost = false
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.2",
+   Content = "V.0.3",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -91,13 +91,14 @@ local GameFinishRedLightGreenLight = GameTab:CreateButton({
    Name = "Finish RedLight,GreenLight",
    Callback = function(Value) 
 task.spawn(function()
+if Game.Workspace:FindFirstChild("RedLightGreenLight") then
 Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
     -39.7584915, 1027.2583, 123.181976,
      0.400850087, 3.88652932e-09, 0.916143656,
      1.25406912e-08, 1, -9.72933289e-09,
     -0.916143656, 1.53890785e-08, 0.400850087
 )
-
+end
 end)
 end,
 })
