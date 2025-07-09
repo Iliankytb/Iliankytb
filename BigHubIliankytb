@@ -1,10 +1,11 @@
 local PlaceService = game:GetService("PlaceService")
 
 --Doors--
-local PlaceIdDoorsLobby
-local PlaceIdDoors1
+local PlaceIdDoorsLobby = 6516141723
+local PlaceIdDoors1 = 6839171747
 local PlaceIdDoorsMines
 local PlaceIdBackdoors
+local PlaceIdTheRooms
 
 --Hunted--
 local PlaceIdFNAFHuntedGame =74161468227974
