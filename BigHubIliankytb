@@ -43,13 +43,13 @@ elseif PlaceService.PlaceId == PlaceIdDoorsGame then
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/NewBestDoorsScriptIliankytb"))()
 elseif PlaceService.PlaceId == PlaceIdDoorsLobby then
 textLabel.Text = "Loading Universale Cheat Because you're not ingame(it take Some Times)"
-task.wait(3)
+task.wait(1)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/IliankytbUniversalNew"))()   
 elseif PlaceService.PlaceId == PlaceIdRainbowFriend2Game then
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/BestRainbowFriendsTwo"))()
 elseif PlaceService.PlaceId == PlaceIdRainbowFriend2Lobby then
 textLabel.Text = "Loading Universale Cheat Because you're not ingame(it take Some Times)"
-task.wait(3)
+task.wait(1)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/IliankytbUniversalNew"))()   
 else
  loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/IliankytbUniversalNew"))()   
