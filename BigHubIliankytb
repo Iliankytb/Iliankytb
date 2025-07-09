@@ -10,7 +10,7 @@ local PlaceIdBackdoors
 local PlaceIdFNAFHuntedGame =74161468227974
 
 --Forsaken--
-local PlaceIdForsaken
+local PlaceIdForsaken = 18687417158
 
 --RainbowFriend2--
 local PlaceIdRainbowFriend2Lobby
