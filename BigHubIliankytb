@@ -25,7 +25,6 @@ screenGui.Name = "CenterTextGui"
 screenGui.ResetOnSpawn = false
 screenGui.Parent = playerGui
 
-m
 local textLabel = Instance.new("TextLabel")
 textLabel.Name = "CenterText"
 textLabel.Parent = screenGui
