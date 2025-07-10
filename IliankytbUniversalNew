@@ -12,7 +12,7 @@ local Window = Rayfield:CreateWindow({
    DisableBuildWarnings = false, -- Prevents Rayfield from warning when the script has a version mismatch with the interface
 
    ConfigurationSaving = {
-      Enabled = false,
+      Enabled = true,
       FolderName = "saver", -- Create a custom folder for your hub/game
       FileName = "K"
    },
@@ -41,7 +41,7 @@ local SettingsTab = Window:CreateTab("Settings")
 local ActiveSpeedBoost = false
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.7",
+   Content = "V.0.8",
    Duration = 2.5,
    Image = "rewind",
 })
