@@ -562,7 +562,8 @@ task.wait(0.1)
 end Game:GetService("ReplicatedStorage").GameData.EntityDisableScreech.Value = false
 end)
 end,
-}local ActiveNoDupe = false
+})
+local ActiveNoDupe = false
 local NoDupeToggle = MonstersTab:CreateToggle({
    Name = "No Dupe(Unverified!)",
    CurrentValue = false,
