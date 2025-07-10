@@ -12,7 +12,7 @@ local Window = Rayfield:CreateWindow({
    DisableBuildWarnings = false, -- Prevents Rayfield from warning when the script has a version mismatch with the interface
 
    ConfigurationSaving = {
-      Enabled = false,
+      Enabled = true,
       FolderName = "saver", -- Create a custom folder for your hub/game
       FileName = "K"
    },
@@ -41,7 +41,7 @@ local SettingsTab = Window:CreateTab("Settings")
 local ActiveSpeedBoost = false
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.3",
+   Content = "V.0.4",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -65,7 +65,7 @@ local PlayerSpeedSlider = PlayerTab:CreateSlider({
    Increment = 1,
    Suffix = "Speeds",
    CurrentValue = 16,
-   Flag = "Slider2", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
 CurrentValue = Value
 ValueSpeed = Value
@@ -75,7 +75,7 @@ end,  ValueSpeed = CurrentValue,
 local PlayerActiveModifyingSpeedToggle = PlayerTab:CreateToggle({
    Name = "Active Modifying Player Speed",
    CurrentValue = false,
-   Flag = "ButtonSpeed2", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Flag = "ButtonSpeed1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
   ActiveSpeedBoost = Value 
 task.spawn(function()
@@ -102,7 +102,34 @@ end
 end)
 end,
 })
-
+local AutoTugWarToggle = GameTab:CreateToggle({
+   Name = "Auto Tug Of War",
+   CurrentValue = false,
+   Flag = "ButtonATW", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+--[[  ActiveSpeedBoost = Value 
+task.spawn(function()
+while ActiveSpeedBoost do 
+task.spawn(function()
+Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = ValueSpeed 
+end)
+task.wait(0.1)
+end end)]]
+end,
+})
+local FinishGlassbridgeToggle = GameTab:CreateButton({
+   Name = "Finish Glass Bridge",
+   Callback = function(Value)
+--[[  ActiveSpeedBoost = Value 
+task.spawn(function()
+while ActiveSpeedBoost do 
+task.spawn(function()
+Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = ValueSpeed 
+end)
+task.wait(0.1)
+end end)]]
+end,
+})
 local ButtonUnloadCheat = SettingsTab:CreateButton({
    Name = "Unload Cheat",
    Callback = function()
