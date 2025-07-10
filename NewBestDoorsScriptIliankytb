@@ -46,7 +46,7 @@ local LimitRangerEsp = 100
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.47",
+   Content = "V.0.48",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -66,6 +66,7 @@ local Paragraph12 = InfoTab:CreateParagraph({Title = "Highlight(V.0.39)", Conten
 local Paragraph13 = InfoTab:CreateParagraph({Title = "Lag(V.0.42)", Content = "Using Heartbeat methode instead of renderstepped!"})
 local Paragraph14 = InfoTab:CreateParagraph({Title = "Esp(V.0.43)", Content = "Fixed Esp now!"})
 local Paragraph15 = InfoTab:CreateParagraph({Title = "Esp(V.0.47)", Content = "Fixed Esp again, it use the cframe of the camera instead of the rootpart cframe,bcause with the spectate it don't work!"})
+local Paragraph16 = InfoTab:CreateParagraph({Title = "Added More Monsters(V.0.48)", Content = "Added A60 and A120 in Esp Monsters and Monster spawn alert."})
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local RunService = game:GetService("RunService")
@@ -178,7 +179,7 @@ local Section1 = GameTab:CreateSection("General")
 local Section2 = EspTab:CreateSection("General")
 local DropdownMonsterSpawnAlert = GameTab:CreateDropdown({
     Name = "Monster Spawn Alert Dropdown",
-    Options = {"Rush","Seek","Figure","Sally","Eyes","LookMan","BackdoorRush","Giggle","GloombatSwarm","Ambush"},
+    Options = {"Rush","Seek","Figure","Sally","Eyes","LookMan","BackdoorRush","Giggle","GloombatSwarm","Ambush","A-60","A-120"},
     CurrentOption = {""},
     MultipleOptions = true,
     Flag = "MonsterSpawnAlertDropdown",
@@ -261,6 +262,22 @@ if table.find(Options, "Ambush") and not table.find(OptionNotif, "AmbushMoving")
             table.insert(OptionNotif, "AmbushMoving")
         elseif not table.find(Options, "Ambush") then
             local index = table.find(OptionNotif, "AmbushMoving")
+            if index then
+                table.remove(OptionNotif, index)
+            end
+        end
+if table.find(Options, "A-60") and not table.find(OptionNotif, "A60") then
+            table.insert(OptionNotif, "A60")
+        elseif not table.find(Options, "A-60") then
+            local index = table.find(OptionNotif, "A60")
+            if index then
+                table.remove(OptionNotif, index)
+            end
+        end
+if table.find(Options, "A-120") and not table.find(OptionNotif, "A120") then
+            table.insert(OptionNotif, "A120")
+        elseif not table.find(Options, "A-120") then
+            local index = table.find(OptionNotif, "A120")
             if index then
                 table.remove(OptionNotif, index)
             end
@@ -387,17 +404,18 @@ task.spawn(function()
 while ActiveEspItems do
   for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
 task.spawn(function()
-if Assets:isA("Model") and (Assets.Name == "KeyObtain" or Assets.Name == "LeverForGate" or Assets.Name == "Battery" or Assets.Name == "Flashlight" or Assets.Name == "Lighter" or Assets.Name == "Bandage" or Assets.Name == "Crucifix" or Assets.Name == "Vitamins" or Assets.Name == "Lockpick" or Assets.Name == "Candle" or Assets.Name == "AlarmClock" or Assets.Name == "LibraryHintPaper" or Assets.Name == "Smoothie" or Assets.Name == "FuseObtain" or Assets.Name == "BatteryPack" or Assets.Name == "Glowsticks" or Assets.Name == "StarVial")  and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") 
+if Assets:isA("Model") and (Assets.Name == "KeyObtain" or Assets.Name == "LeverForGate" or Assets.Name == "Battery" or Assets.Name == "Flashlight" or Assets.Name == "Lighter" or Assets.Name == "Bandage" or Assets.Name == "Crucifix" or Assets.Name == "Vitamins" or Assets.Name == "Lockpick" or Assets.Name == "Candle" or Assets.Name == "AlarmClock" or Assets.Name == "LibraryHintPaper" or Assets.Name == "Smoothie" or Assets.Name == "FuseObtain" or Assets.Name == "BatteryPack" or Assets.Name == "Glowsticks" or Assets.Name == "StarVial" or Assets.Name == "Shakelight" or Assets.Name == "SkeletonKey")  and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") 
 and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
 task.spawn(function()
 CreateEsp(Assets,Color3.fromRGB(255,255,0),Assets.Name,Assets.PrimaryPart) 
 end)
-end 
+end
 end)
+wait(0.1)
 end  
 wait(0.1) end
   for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
-if Assets:isA("Model")  and (Assets.Name == "KeyObtain" or Assets.Name == "LeverForGate" or  Assets.Name == "Battery" or Assets.Name == "Flashlight" or Assets.Name == "Bandage" or Assets.Name == "Lighter" or Assets.Name == "Crucifix" or Assets.Name == "Candle" or Assets.Name == "Lockpick" or Assets.Name == "AlarmClock" or Assets.Name == "LibraryHintPaper" or Assets.Name == "Smoothie" or Assets.Name == "FuseObtain" or Assets.Name == "Glowsticks" or Assets.Name == "BatteryPack" or Assets.Name == "StarVial") and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
+if Assets:isA("Model")  and (Assets.Name == "KeyObtain" or Assets.Name == "LeverForGate" or  Assets.Name == "Battery" or Assets.Name == "Flashlight" or Assets.Name == "Bandage" or Assets.Name == "Lighter" or Assets.Name == "Crucifix" or Assets.Name == "Candle" or Assets.Name == "Lockpick" or Assets.Name == "AlarmClock" or Assets.Name == "LibraryHintPaper" or Assets.Name == "Smoothie" or Assets.Name == "FuseObtain" or Assets.Name == "Glowsticks" or Assets.Name == "BatteryPack" or Assets.Name == "StarVial" or Assets.Name == "SkeletonKey" or Assets.Name == "Shakelight") and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
 KeepEsp(Assets,Assets.PrimaryPart) 
 end 
 end 
@@ -723,13 +741,17 @@ NotifMonsterSpawned("Eyes",3)
 elseif child.Name == "BackdoorLookman" then
 NotifMonsterSpawned("LookMan",3)
 elseif child.Name == "BackdoorRush" then
-NotifMonsterSpawned("Backdoor Rush",3)
+NotifMonsterSpawned("Blitz",3)
 elseif child.Name == "GloombatSwarm" then
 NotifMonsterSpawned("Gloombat Swarm",3)
 elseif child.Name == "GiggleCeiling" then
 NotifMonsterSpawned("Giggle",3)
 elseif child.Name == "AmbushMoving" then
 NotifMonsterSpawned("Ambush",3)
+elseif child.Name == "A60" then
+NotifMonsterSpawned("A60",3)
+elseif child.Name == "A120" then
+NotifMonsterSpawned("A120",3)
 end
 end
 end end) 
@@ -751,7 +773,7 @@ ActiveAutoInteract = Value
 task.spawn(function() 
 while ActiveAutoInteract do 
 for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
-if Assets:isA("ProximityPrompt") and not Assets.Name == "HidePrompt" then 
+if Assets:isA("ProximityPrompt") and  then 
 task.spawn(function()
 onPromptShown(Assets)
 end)
