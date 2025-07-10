@@ -41,7 +41,7 @@ local SettingsTab = Window:CreateTab("Settings")
 local ActiveSpeedBoost = false
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.5",
+   Content = "V.0.6",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -103,7 +103,7 @@ end)
 end,
 })
 local AutoTugWarToggle = GameTab:CreateToggle({
-   Name = "Auto Tug Of War",
+   Name = "Auto Tug Of War(Coming)",
    CurrentValue = false,
    Flag = "ButtonATW", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
@@ -120,9 +120,11 @@ end,
 local FinishGlassbridgeToggle = GameTab:CreateButton({
    Name = "Finish Glass Bridge",
    Callback = function(Value)
+if Game.Workspace:FindFirstChild("GlassBridge") then
 Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
     -214.541122, 520.731689, -1535.03003, -0.855300546, 0, -0.518132925, 0, 1, 0, 0.518132925, 0, -0.855300546
 )
+end
 end,
 })
 local ButtonUnloadCheat = SettingsTab:CreateButton({
