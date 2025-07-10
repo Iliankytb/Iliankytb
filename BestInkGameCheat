@@ -40,7 +40,7 @@ local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
 local ActiveSpeedBoost = false
 Rayfield:Notify({
-   Title = "Universal Version",
+   Title = "script Version",
    Content = "V.0.6",
    Duration = 2.5,
    Image = "rewind",
