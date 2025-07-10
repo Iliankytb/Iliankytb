@@ -46,7 +46,7 @@ local LimitRangerEsp = 100
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.45",
+   Content = "V.0.46",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -372,7 +372,7 @@ task.spawn(function()
 while ActiveEspItems do
   for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
 task.spawn(function()
-if Assets:isA("Model") and (Assets.Name == "KeyObtain" or Assets.Name == "LeverForGate" or Assets.Name == "Battery" or Assets.Name == "Flashlight" or Assets.Name == "Lighter" or Assets.Name == "Bandage" or Assets.Name == "Crucifix" or Assets.Name == "Vitamins" or Assets.Name == "Lockpick" or Assets.Name == "Candle" or Assets.Name == "AlarmClock" or Assets.Name == "LibraryHintPaper" or Assets.Name == "Smoothie" or Assets.Name == "FuseObtain" or Assets.Name == "BatteryPack" or Assets.Name == "Glowsticks")  and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") 
+if Assets:isA("Model") and (Assets.Name == "KeyObtain" or Assets.Name == "LeverForGate" or Assets.Name == "Battery" or Assets.Name == "Flashlight" or Assets.Name == "Lighter" or Assets.Name == "Bandage" or Assets.Name == "Crucifix" or Assets.Name == "Vitamins" or Assets.Name == "Lockpick" or Assets.Name == "Candle" or Assets.Name == "AlarmClock" or Assets.Name == "LibraryHintPaper" or Assets.Name == "Smoothie" or Assets.Name == "FuseObtain" or Assets.Name == "BatteryPack" or Assets.Name == "Glowsticks" or Assets.Name == "StarVial")  and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") 
 and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
 task.spawn(function()
 CreateEsp(Assets,Color3.fromRGB(255,255,0),Assets.Name,Assets.PrimaryPart) 
@@ -382,7 +382,7 @@ end)
 end  
 wait(0.1) end
   for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
-if Assets:isA("Model")  and (Assets.Name == "KeyObtain" or Assets.Name == "LeverForGate" or  Assets.Name == "Battery" or Assets.Name == "Flashlight" or Assets.Name == "Bandage" or Assets.Name == "Lighter" or Assets.Name == "Crucifix" or Assets.Name == "Candle" or Assets.Name == "Lockpick" or Assets.Name == "AlarmClock" or Assets.Name == "LibraryHintPaper" or Assets.Name == "Smoothie" or Assets.Name == "FuseObtain" or Assets.Name == "Glowsticks" or Assets.Name == "BatteryPack") and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
+if Assets:isA("Model")  and (Assets.Name == "KeyObtain" or Assets.Name == "LeverForGate" or  Assets.Name == "Battery" or Assets.Name == "Flashlight" or Assets.Name == "Bandage" or Assets.Name == "Lighter" or Assets.Name == "Crucifix" or Assets.Name == "Candle" or Assets.Name == "Lockpick" or Assets.Name == "AlarmClock" or Assets.Name == "LibraryHintPaper" or Assets.Name == "Smoothie" or Assets.Name == "FuseObtain" or Assets.Name == "Glowsticks" or Assets.Name == "BatteryPack" or Assets.Name == "StarVial") and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
 KeepEsp(Assets,Assets.PrimaryPart) 
 end 
 end 
@@ -618,7 +618,7 @@ if Game.Lighting then
 Game.Lighting.Brightness = 5
 Game.Lighting.Ambient = Color3.fromRGB(255, 255, 255) 
 end  
-wait(0.01)
+wait(0.00001)
 end 
 end)
 end,  
@@ -635,9 +635,13 @@ while ActiveEspTimerLever do
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
-if Rooms:FindFirstChild("Assets") then  for _,Assets in pairs(Rooms:GetDescendants()) do  if Assets:isA("Model") and Assets.Name == "TimerLever"  and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
+if Rooms:FindFirstChild("Assets") then 
+for _,Assets in pairs(Rooms:GetDescendants()) do  
+task.spawn(function()
+if Assets:isA("Model") and Assets.Name == "TimerLever"  and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
 CreateEsp(Assets,Color3.fromRGB(0,150,150),"Timer Lever",Assets.PrimaryPart) 
 end 
+end)
 end 
 end
 end end end
