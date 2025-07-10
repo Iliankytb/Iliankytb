@@ -42,7 +42,7 @@ local ActiveEspItems,ActiveEspMonsters,ActiveAutoPickupItems = false,false,false
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.10",
+   Content = "V.0.11",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -121,7 +121,7 @@ local AutoPickupItemsToggle = PlayerTab:CreateToggle({
   ActiveAutoPickupItems = Value 
 task.spawn(function()
 while ActiveAutoPickupItems do
-task.spawn(function()
+
  for _,Light in pairs(Game.Workspace:GetChildren()) do 
 if Light and Light:isA("Model") and (Light.name == "LightBulb"or Light.name == "GasCanister" or Light.name == "CakeMix")   then
 Game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = Light.PrimaryPart.CFrame
@@ -131,8 +131,7 @@ Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
 )
 end 
 end
-end)
-task.spawn(function()
+
  for _,Light in pairs(Game.Workspace.ignore:GetChildren()) do 
 if Light and Light:isA("Model") and Light.name == "Looky" then 
 Game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = Light.PrimaryPart.CFrame
@@ -141,7 +140,6 @@ Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
 57.9840851, 137.597931, -8.2745142, -0.0595626235, -1.30958966e-07, 0.998224556, -5.83236304e-09, 1, 1.30843873e-07, -0.998224556, 1.97139616e-09, -0.0595626235
 )
 end end
-end)
 task.wait(0.25)
 end 
  end)
