@@ -41,7 +41,7 @@ local SettingsTab = Window:CreateTab("Settings")
 local ActiveSpeedBoost = false
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.8",
+   Content = "V.0.9",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -114,6 +114,12 @@ local ButtonLoadDoorsCheat = GameTab:CreateButton({
    Name = "Doors Cheat Iliankytb",
      Callback = function(Value)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/NewBestDoorsScriptIliankytb"))()
+end,
+})
+local ButtonLoadInkGameCheat = GameTab:CreateButton({
+   Name = "Ink Game Cheat Iliankytb",
+     Callback = function(Value)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/BestInkGameCheat"))()
 end,
 })
 local ButtonLoadBloxFruitCheat = GameTab:CreateButton({
