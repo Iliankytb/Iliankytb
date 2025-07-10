@@ -41,7 +41,7 @@ local SettingsTab = Window:CreateTab("Settings")
 local ActiveSpeedBoost = false
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.4",
+   Content = "V.0.5",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -120,14 +120,9 @@ end,
 local FinishGlassbridgeToggle = GameTab:CreateButton({
    Name = "Finish Glass Bridge",
    Callback = function(Value)
---[[  ActiveSpeedBoost = Value 
-task.spawn(function()
-while ActiveSpeedBoost do 
-task.spawn(function()
-Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = ValueSpeed 
-end)
-task.wait(0.1)
-end end)]]
+Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
+    -214.541122, 520.731689, -1535.03003, -0.855300546, 0, -0.518132925, 0, 1, 0, 0.518132925, 0, -0.855300546
+)
 end,
 })
 local ButtonUnloadCheat = SettingsTab:CreateButton({
