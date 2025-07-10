@@ -38,6 +38,7 @@ local InfoTab = Window:CreateTab("Info")
 local PlayerTab = Window:CreateTab("Player")
 local GameTab = Window:CreateTab("Game")
 local EspTab = Window:CreateTab("Esp")
+local MonstersTab = Window:CreateTab("Monsters")
 local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
 local ActiveEspDoor,ActiveSpeedBoost,ActiveEspHidingSpots,ActiveEspItems,ActiveEspCoins,ActiveMonsterSpawnAlert,ActiveNoCooldownPrompt,ActiveFullBright,ActiveModifiedFieldOfView,ActiveEspChest,ActiveEspBooks,ActiveEspMonster,ActiveEspTimerLever,ActiveEspGen,DisableLimitRangerEsp,ActiveAutoInteract,ActiveCanJump,ActiveInfOxygen,ActiveHMOxygen,ActiveSpeedBypassing = false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false
@@ -45,7 +46,7 @@ local LimitRangerEsp = 100
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.44",
+   Content = "V.0.45",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -530,6 +531,50 @@ while ActiveSpeedBoost do
 Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = ValueSpeed
 task.wait(0.1)
 end end)
+end,
+})
+local ActiveNoEyes = false
+local NoEyesToggle = MonstersTab:CreateToggle({
+   Name = "No Eyes(Unverified!)",
+   CurrentValue = false,
+   Flag = "ButtonNoEyes", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  ActiveNoEyes = Value
+task.spawn(function()
+while ActiveNoEyes do
+ Game:GetService("ReplicatedStorage").GameData.EntityDisableEyes.Value = true
+task.wait(0.1)
+end Game:GetService("ReplicatedStorage").GameData.EntityDisableEyes.Value = false
+end)
+end,
+})
+local ActiveNoScreech = false
+local NoScreechToggle = MonstersTab:CreateToggle({
+   Name = "No Screech(Unverified!)",
+   CurrentValue = false,
+   Flag = "ButtonNoScreech", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  ActiveNoScreech = Value
+task.spawn(function()
+while ActiveNoScreech do
+ Game:GetService("ReplicatedStorage").GameData.EntityDisableScreech.Value = true
+task.wait(0.1)
+end Game:GetService("ReplicatedStorage").GameData.EntityDisableScreech.Value = false
+end)
+end,
+}local ActiveNoDupe = false
+local NoDupeToggle = MonstersTab:CreateToggle({
+   Name = "No Dupe(Unverified!)",
+   CurrentValue = false,
+   Flag = "ButtonNoDupe", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  ActiveNoDupe = Value
+task.spawn(function()
+while ActiveNoDupe do
+ Game:GetService("ReplicatedStorage").GameData.EntityDisableDupe.Value = true
+task.wait(0.1)
+end Game:GetService("ReplicatedStorage").GameData.EntityDisableDupe.Value = false
+end)
 end,
 })
 local ValueFieldOfView = 80
