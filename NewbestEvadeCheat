@@ -38,10 +38,10 @@ local PlayerTab = Window:CreateTab("Player")
 local GameTab = Window:CreateTab("Game") local EspTab = Window:CreateTab("Esp")
 local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
-local ActiveSpeedBoost,ActiveEspPlayers,ActiveEspBots = false,false,false
+local ActiveSpeedBoost,ActiveEspPlayers,ActiveEspBots,ActiveAutoWin,ActiveAutoFarmMoney,InReviving = false,false,false,false,false,false
 Rayfield:Notify({
    Title = "Evade Version",
-   Content = "V.0.4",
+   Content = "V.0.5",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -99,6 +99,14 @@ local DiscordLink = DiscordTab:CreateButton({
 copyToClipboard("https://discord.gg/E2TqYRsRP4")
 end,
 })
+local function GetDownedPlayer()
+        for _, v in pairs(game.Workspace.Game.Players:GetChildren()) do
+            if v:GetAttribute("Downed") then
+                return v
+            end
+        end
+        return nil
+    end
 local EspPlayersToggle = EspTab:CreateToggle({
    Name = "Players Esp",
    CurrentValue = false,
@@ -117,6 +125,52 @@ for _,Assets in pairs(Game.Players:GetChildren()) do
 if Assets and Assets.Character and Assets.Character:FindFirstChild("Head") and Assets.Character:FindFirstChildOfClass("Highlight") and Assets.Character.Head:FindFirstChildOfClass("BillboardGui") then 
 KeepEsp(Assets.Character,Assets.Character.Head) 
 end 
+end   
+end)
+end,
+})
+local AutoWinToggle = GameTab:CreateToggle({
+   Name = "Auto Win",
+   CurrentValue = false,
+   Flag = "AutoWinToggle1", 
+   Callback = function(Value)
+ActiveAutoWin = Value 
+task.spawn(function() 
+while ActiveAutoWin do
+ if Game.Players.LocalPlayer.Character and Game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and not InReviving then
+local securityPart = game.Workspace:FindFirstChild("SecurityPart") or Instance.new("Part")
+            securityPart.Name = "SecurityPart"
+            securityPart.Size = Vector3.new(10, 1, 10)
+            securityPart.Position = Vector3.new(0, 500, 0)  -- Position en hauteur
+            securityPart.Anchored = true
+            securityPart.Parent = game.Workspace
+            Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = securityPart.CFrame + Vector3.new(0, 3, 0)  -- Téléporte le joueur au-dessus de la Part de sécurité
+            wait(0.5)
+            securityPart:Destroy()
+end 
+wait(0.1)
+end   
+end)
+end,
+})
+local AutoFarmMoneyToggle = GameTab:CreateToggle({
+   Name = "Auto Farm Money",
+   CurrentValue = false,
+   Flag = "AutoFarmMoneyToggle1", 
+   Callback = function(Value)
+ActiveAutoFarmMoney = Value 
+task.spawn(function() 
+while ActiveAutoFarmMoney do
+ if Game.Players.LocalPlayer.Character and Game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+local downedPlayer = GetDownedPlayer()
+          if downedPlayer and downedPlayer:FindFirstChild("HumanoidRootPart") then
+                HumanoidRootPart.CFrame = downedPlayer.HumanoidRootPart.CFrame + Vector3.new(0, 3, 0)
+             game:GetService("ReplicatedStorage").Events.Character.Interact:FireServer("Revive",true,downedPlayer)
+                wait(0.5)
+        
+            end
+end 
+wait(0.1)
 end   
 end)
 end,
