@@ -176,12 +176,11 @@ while true do
 	task.wait(1)
 	local updatedInfo = getServerInfo()
 	local updatedContent = string.format(
-		"📌 PlaceId: %s\n🔑 JobId: %s\n👤 CreatorId: %s (%s)\n👥 Players: %d/%d",
+		"📌 PlaceId: %s\n🔑 JobId: %s\n👥 Players: %d/%d",
 		updatedInfo.PlaceId,
 		
 		updatedInfo.JobId,
-		updatedInfo.CreatorId,
-		updatedInfo.CreatorType,
+		
 		
 		updatedInfo.CurrentPlayers,
 		updatedInfo.MaxPlayers
