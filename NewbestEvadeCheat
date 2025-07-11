@@ -35,13 +35,13 @@ local Window = Rayfield:CreateWindow({
    }
 })
 local PlayerTab = Window:CreateTab("Player")
-local GameTab = Window:CreateTab("Game")
+local GameTab = Window:CreateTab("Game") local EspTab = Window:CreateTab("Esp")
 local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
 local ActiveSpeedBoost,ActiveEspPlayers,ActiveEspBots = false,false,false
 Rayfield:Notify({
    Title = "Evade Version",
-   Content = "V.0.3",
+   Content = "V.0.4",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -102,13 +102,13 @@ ActiveEspPlayers = Value
 task.spawn(function() 
 while ActiveEspPlayers do
 for _,Assets in pairs(Game.Players:GetChildren()) do  
-if Assets and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
+if Assets and Assets.Character and  not Assets.Character:FindFirstChildOfClass("Highlight") and not Assets.Character.Head:FindFirstChildOfClass("BillboardGui") then 
 CreateEsp(Assets.Character,Color3.fromRGB(255,255,255),Assets.Name,Assets.Character.Head,1) 
 end 
 end  
 wait(0.1) end
 for _,Assets in pairs(Game.Players:GetChildren()) do  
-if Assets and  not Assets.PrimaryPart:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
+if Assets and and Assets.Character and not Assets.Character:FindFirstChildOfClass("Highlight") and not Assets.Character.Head:FindFirstChildOfClass("BillboardGui") then 
 KeepEsp(Assets.Character,Assets.Character.Head) 
 end 
 end   
@@ -164,14 +164,14 @@ local AutoTugWarToggle = GameTab:CreateToggle({
    CurrentValue = false,
    Flag = "ButtonATW", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
---[[  ActiveSpeedBoost = Value 
+  ActiveSpeedBoost = Value 
 task.spawn(function()
 while ActiveSpeedBoost do 
 task.spawn(function()
 Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = ValueSpeed 
 end)
 task.wait(0.1)
-end end)]]
+end end)
 end,
 })
 local FinishGlassbridgeToggle = GameTab:CreateButton({
