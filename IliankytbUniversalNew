@@ -44,7 +44,7 @@ local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "
 
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.10",
+   Content = "V.0.11",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -66,26 +66,29 @@ local RunService = game:GetService("RunService")
 
 local function getServerInfo()
 	local info = {
-		PlaceId = game.PlaceId,
-		GameId = game.GameId,
-		JobId = game.JobId,
-		CreatorId = game.CreatorId,
-		CreatorType = game.CreatorType.Name,
-		VIPServerId = game.PrivateServerId,
-		IsVIPServer = game.PrivateServerOwnerId ~= 0,
-		PrivateServerOwnerId = game.PrivateServerOwnerId,
-		IsStudio = RunService:IsStudio(),
-		CurrentPlayers = #Players:GetPlayers(),
-		MaxPlayers = Players.MaxPlayers
-	}
-	
-	return info
+while true do
+	task.wait(1) -- toutes les 10 secondes
+	local updatedInfo = getServerInfo()
+	local updatedContent = string.format(
+		"📌 PlaceId: %s\n🧾 GameId: %s\n🔑 JobId: %s\n👤 CreatorId: %s (%s)\n🔒 PrivateServerId: %s\n🛡️ Is VIP Server: %s\n🏠 PrivateServerOwnerId: %s\n🧪 IsStudio: %s\n👥 Players: %d/%d",
+		updatedInfo.PlaceId,
+		updatedInfo.GameId,
+		updatedInfo.JobId,
+		updatedInfo.CreatorId,
+		updatedInfo.CreatorType,
+		updatedInfo.VIPServerId ~= "" and updatedInfo.VIPServerId or "N/A",
+		tostring(updatedInfo.IsVIPServer),
+		updatedInfo.PrivateServerOwnerId ~= 0 and updatedInfo.PrivateServerOwnerId or "N/A",
+		tostring(updatedInfo.IsStudio),
+		updatedInfo.CurrentPlayers,
+		updatedInfo.MaxPlayers
+	)
+
+	ParagraphInfo:Set({
+		Title = "🧠 Informations du Serveur",
+		Content = updatedContent
+	})
 end
-
-
-local serverInfo = getServerInfo()
-
---ParagraphInfo:Set({Title = "Info", Content = "Paragraph Example"})
 
 local ValueSpeed = 16
 local PlayerSpeedSlider = PlayerTab:CreateSlider({
@@ -194,3 +197,4 @@ local Dropdown = SettingsTab:CreateDropdown({
    end, 
 })
 Rayfield:LoadConfiguration()
+getServerInfo()
