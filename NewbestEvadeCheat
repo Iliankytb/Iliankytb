@@ -184,7 +184,7 @@ local AutoRespawnToggle = GameTab:CreateToggle({
 ActiveAutoRespawn = Value 
 task.spawn(function() 
 while ActiveAutoRespawn do
- if Game.Players.LocalPlayer.Character and Game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and Game.Players.LocalPlayer.Character:GetAttribute("State") == "Downed" then
+ if Game.Players.LocalPlayer.Character and Game.Players.LocalPlayer.Character:GetAttribute("Downed") then
                 game:GetService("ReplicatedStorage").Events.Respawn:FireServer()
              
 end 
