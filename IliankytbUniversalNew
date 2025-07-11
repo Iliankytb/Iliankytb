@@ -34,14 +34,17 @@ local Window = Rayfield:CreateWindow({
       Key = {"Hello"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
    }
 })
+local InfoTab = Window:CreateTab("Info")
 local PlayerTab = Window:CreateTab("Player")
 local GameTab = Window:CreateTab("Game")
 local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
 local ActiveSpeedBoost = false
+local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "Coming Very Soon!"})
+
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.9",
+   Content = "V.0.10",
    Duration = 2.5,
    Image = "rewind",
 })
