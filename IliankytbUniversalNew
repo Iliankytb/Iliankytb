@@ -40,28 +40,25 @@ local GameTab = Window:CreateTab("Game")
 local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
 local ActiveSpeedBoost = false
-local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "Coming Very Soon!"})
+local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "Loading"})
 
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.14",
+   Content = "V.0.15",
    Duration = 2.5,
    Image = "rewind",
 })
 local function getServerInfo()
 	local Players = game:GetService("Players")
 	local playerCount = #Players:GetPlayers()
-	local vipServerId = game.PrivateServerId or ""
-	local isVIPServer = game.PrivateServerId ~= ""
+--local MaxPlayer = Game.MaxPlayers
 	local isStudio = game:GetService("RunService"):IsStudio()
 
 	return {
 		PlaceId = game.PlaceId,
 		JobId = game.JobId,
-		VIPServerId = vipServerId,
-		IsVIPServer = isVIPServer,
 		IsStudio = isStudio,
-		CurrentPlayers = playerCount
+		CurrentPlayers = playerCount.."/Coming Very Soon"
 	}
 end
 
@@ -138,6 +135,12 @@ local ButtonLoadDoorsCheat = GameTab:CreateButton({
    Name = "Doors Cheat Iliankytb",
      Callback = function(Value)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/NewBestDoorsScriptIliankytb"))()
+end,
+})
+local PlaceId = InfoTab:CreateButton({
+   Name = "Copy PlaceId",
+   Callback = function()
+copyToClipboard(Game.PlaceId)
 end,
 })
 local ButtonLoadInkGameCheat = GameTab:CreateButton({
