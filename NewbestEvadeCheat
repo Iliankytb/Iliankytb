@@ -41,7 +41,7 @@ local SettingsTab = Window:CreateTab("Settings")
 local ActiveSpeedBoost,ActiveEspPlayers,ActiveEspBots,ActiveAutoWin,ActiveAutoFarmMoney,InReviving = false,false,false,false,false,false
 Rayfield:Notify({
    Title = "Evade Version",
-   Content = "V.0.5",
+   Content = "V.0.6",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -130,7 +130,7 @@ end)
 end,
 })
 local AutoWinToggle = GameTab:CreateToggle({
-   Name = "Auto Win",
+   Name = "Auto Farm Win",
    CurrentValue = false,
    Flag = "AutoWinToggle1", 
    Callback = function(Value)
@@ -164,10 +164,11 @@ while ActiveAutoFarmMoney do
  if Game.Players.LocalPlayer.Character and Game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 local downedPlayer = GetDownedPlayer()
           if downedPlayer and downedPlayer:FindFirstChild("HumanoidRootPart") then
-                HumanoidRootPart.CFrame = downedPlayer.HumanoidRootPart.CFrame + Vector3.new(0, 3, 0)
+          InReviving = true    
+Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = downedPlayer.HumanoidRootPart.CFrame + Vector3.new(0, 3, 0)
              game:GetService("ReplicatedStorage").Events.Character.Interact:FireServer("Revive",true,downedPlayer)
                 wait(0.5)
-        
+        InReviving = false
             end
 end 
 wait(0.1)
