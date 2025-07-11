@@ -44,7 +44,7 @@ local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "
 
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.18",
+   Content = "V.0.19",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -138,12 +138,12 @@ local ButtonLoadDoorsCheat = GameTab:CreateButton({
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/NewBestDoorsScriptIliankytb"))()
 end,
 })
-local PlaceId = InfoTab:CreateButton({
+--[[local PlaceId = InfoTab:CreateButton({
    Name = "Copy PlaceId",
    Callback = function()
 copyToClipboard(game.PlaceId)
 end,
-})
+})]]
 local ButtonLoadInkGameCheat = GameTab:CreateButton({
    Name = "Ink Game Cheat Iliankytb",
      Callback = function(Value)
