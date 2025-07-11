@@ -80,6 +80,12 @@ highlight.Enabled = true
 	label.TextScaled = true
 	label.Parent = billboard
 end
+local function KeepEsp(Char,Parent)
+	if Char and Char:FindFirstChildOfClass("Highlight") and Parent:FindFirstChildOfClass("BillboardGui") then
+		Char:FindFirstChildOfClass("Highlight"):Destroy()
+		Parent:FindFirstChildOfClass("BillboardGui"):Destroy()
+	end
+end
 local function copyToClipboard(text)
     if setclipboard then
         setclipboard(text)
@@ -108,7 +114,7 @@ end
 end  
 wait(0.1) end
 for _,Assets in pairs(Game.Players:GetChildren()) do  
-if Assets and and Assets.Character and Assets.Character:FindFirstChild("Head") and not Assets.Character:FindFirstChildOfClass("Highlight") and not Assets.Character.Head:FindFirstChildOfClass("BillboardGui") then 
+if Assets and Assets.Character and Assets.Character:FindFirstChild("Head") and not Assets.Character:FindFirstChildOfClass("Highlight") and not Assets.Character.Head:FindFirstChildOfClass("BillboardGui") then 
 KeepEsp(Assets.Character,Assets.Character.Head) 
 end 
 end   
