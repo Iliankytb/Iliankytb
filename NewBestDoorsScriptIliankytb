@@ -359,7 +359,7 @@ end
 end end end 
 end)
 end,
-})]]
+})
 local ActiveMonsterSpawnAlertToggle = GameTab:CreateToggle({
    Name = "Active Monster Spawn Alert(Its uncompleted!)",
    CurrentValue = false,
@@ -399,7 +399,7 @@ end
 end)
 end,
 })
---[[local EspItemsToggle = EspTab:CreateToggle({
+local EspItemsToggle = EspTab:CreateToggle({
    Name = "Items Esp",
    CurrentValue = false,
    Flag = "EspItems", 
@@ -553,7 +553,7 @@ end
 end
 end)
 end,
-})]]
+})
 local ValueSpeed = 16
 local PlayerSpeedSlider = PlayerTab:CreateSlider({
    Name = "Player Speed(max 21 for not be a exploiter) ",
@@ -672,7 +672,7 @@ end)
 end,  
 })
 local Section3 = EspTab:CreateSection("Backdoor")
---[[local EspTimerLeverToggle = EspTab:CreateToggle({
+local EspTimerLeverToggle = EspTab:CreateToggle({
    Name = "Timer Lever Esp",
    CurrentValue = false,
    Flag = "EspTimerLever", 
