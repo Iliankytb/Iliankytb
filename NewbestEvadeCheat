@@ -38,13 +38,15 @@ local PlayerTab = Window:CreateTab("Player")
 local GameTab = Window:CreateTab("Game") local EspTab = Window:CreateTab("Esp")
 local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
-local ActiveSpeedBoost,ActiveEspPlayers,ActiveEspBots,ActiveAutoWin,ActiveAutoFarmMoney,InReviving,ActiveAutoRespawn = false,false,false,false,false,false,false
+local ActiveSpeedBoost,ActiveEspPlayers,ActiveEspBots,ActiveAutoWin,ActiveAutoFarmMoney,InReviving = false,false,false,false,false,false
+
 Rayfield:Notify({
    Title = "Evade Version",
-   Content = "V.0.7",
+   Content = "V.0.8",
    Duration = 2.5,
    Image = "rewind",
 })
+
 local function CreateEsp(Char, Color, Text,Parent,Number)
 	if not Char then return end
 	if Char:FindFirstChild("ESP") and Char:FindFirstChildOfClass("Highlight") then return end
@@ -129,6 +131,28 @@ end
 end)
 end,
 })
+local EspBotsToggle = EspTab:CreateToggle({
+   Name = "Bots Esp",
+   CurrentValue = false,
+   Flag = "EspBots", 
+   Callback = function(Value)
+ActiveEspBots = Value 
+task.spawn(function() 
+while ActiveEspBots do
+for _,Assets in pairs(Game.Workspace.Game.Players:GetChildren()) do  
+if Assets and Assets:FindFirstChild("Hitbox") and not Assets:FindFirstChildOfClass("Highlight") and not Assets:FindFirstChild("Hitbox"):FindFirstChildOfClass("BillboardGui") then 
+CreateEsp(Assets,Color3.fromRGB(255,0,0),Assets.Name,Assets.Hitbox,-2) 
+end 
+end  
+wait(0.1) end
+for _,Assets in pairs(Game.Workspace.Game.Players:GetChildren()) do  
+if Assets and Assets:FindFirstChild("Hitbox")  and Assets:FindFirstChildOfClass("Highlight") and Assets:FindFirstChild("Hitbox"):FindFirstChildOfClass("BillboardGui") then 
+KeepEsp(Assets,Assets.Hitbox) 
+end 
+end   
+end)
+end,
+})
 local AutoWinToggle = GameTab:CreateToggle({
    Name = "Auto Farm Win",
    CurrentValue = false,
@@ -161,7 +185,7 @@ local AutoFarmMoneyToggle = GameTab:CreateToggle({
 ActiveAutoFarmMoney = Value 
 task.spawn(function() 
 while ActiveAutoFarmMoney do
- if Game.Players.LocalPlayer.Character and Game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+ if Game.Players.LocalPlayer.Character and Game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and not Game.Players.LocalPlayer.Character:GetAttribute("Downed") then
 local downedPlayer = GetDownedPlayer()
           if downedPlayer and downedPlayer:FindFirstChild("HumanoidRootPart") then
           InReviving = true    
@@ -170,23 +194,6 @@ Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = downedPlayer.Humano
                 wait(0.5)
         InReviving = false
             end
-end 
-wait(0.1)
-end   
-end)
-end,
-})
-local AutoRespawnToggle = GameTab:CreateToggle({
-   Name = "Auto Respawn",
-   CurrentValue = false,
-   Flag = "AutoRespawnToggle1", 
-   Callback = function(Value)
-ActiveAutoRespawn = Value 
-task.spawn(function() 
-while ActiveAutoRespawn do
- if Game.Players.LocalPlayer.Character and Game.Players.LocalPlayer.Character:GetAttribute("Downed") then
-                game:GetService("ReplicatedStorage").Events.Respawn:FireServer()
-             
 end 
 wait(0.1)
 end   
