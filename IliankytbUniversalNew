@@ -61,6 +61,32 @@ local DiscordLink = DiscordTab:CreateButton({
 copyToClipboard("https://discord.gg/E2TqYRsRP4")
 end,
 })
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+local function getServerInfo()
+	local info = {
+		PlaceId = game.PlaceId,
+		GameId = game.GameId,
+		JobId = game.JobId,
+		CreatorId = game.CreatorId,
+		CreatorType = game.CreatorType.Name,
+		VIPServerId = game.PrivateServerId,
+		IsVIPServer = game.PrivateServerOwnerId ~= 0,
+		PrivateServerOwnerId = game.PrivateServerOwnerId,
+		IsStudio = RunService:IsStudio(),
+		CurrentPlayers = #Players:GetPlayers(),
+		MaxPlayers = Players.MaxPlayers
+	}
+	
+	return info
+end
+
+
+local serverInfo = getServerInfo()
+
+--ParagraphInfo:Set({Title = "Info", Content = "Paragraph Example"})
+
 local ValueSpeed = 16
 local PlayerSpeedSlider = PlayerTab:CreateSlider({
    Name = "Player Speed",
