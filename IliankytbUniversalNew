@@ -44,21 +44,21 @@ local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "
 
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.15",
+   Content = "V.0.16",
    Duration = 2.5,
    Image = "rewind",
 })
 local function getServerInfo()
 	local Players = game:GetService("Players")
 	local playerCount = #Players:GetPlayers()
---local MaxPlayer = Game.MaxPlayers
-	local isStudio = game:GetService("RunService"):IsStudio()
+local maxPlayers = game:GetService("Players").MaxPlayers
+local isStudio = game:GetService("RunService"):IsStudio()
 
 	return {
 		PlaceId = game.PlaceId,
 		JobId = game.JobId,
 		IsStudio = isStudio,
-		CurrentPlayers = playerCount.."/Coming Very Soon"
+		CurrentPlayers = playerCount.."/"..maxPlayers
 	}
 end
 
