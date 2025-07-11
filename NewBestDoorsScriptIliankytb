@@ -416,7 +416,6 @@ CreateEsp(Assets,Color3.fromRGB(255,255,0),Assets.Name,Assets.PrimaryPart)
 end)
 end
 end)
-wait(0.1)
 end  
 wait(0.1) end
   for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
