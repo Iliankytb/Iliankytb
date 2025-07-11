@@ -44,10 +44,28 @@ local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "
 
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.13",
+   Content = "V.0.14",
    Duration = 2.5,
    Image = "rewind",
 })
+local function getServerInfo()
+	local Players = game:GetService("Players")
+	local playerCount = #Players:GetPlayers()
+	local vipServerId = game.PrivateServerId or ""
+	local isVIPServer = game.PrivateServerId ~= ""
+	local isStudio = game:GetService("RunService"):IsStudio()
+
+	return {
+		PlaceId = game.PlaceId,
+		JobId = game.JobId,
+		VIPServerId = vipServerId,
+		IsVIPServer = isVIPServer,
+		IsStudio = isStudio,
+		CurrentPlayers = playerCount
+	}
+end
+
+
 local function copyToClipboard(text)
     if setclipboard then
         setclipboard(text)
@@ -176,19 +194,19 @@ while true do
 	task.wait(1)
 	local updatedInfo = getServerInfo()
 	local updatedContent = string.format(
-		"📌 PlaceId: %s\n🔑 JobId: %s\n👥 Players: %d/%d",
+		"📌 PlaceId: %s\n🔑 JobId: %s\n🔒 PrivateServerId: %s\n🛡️ Is VIP Server: %s\n🧪 IsStudio: %s\n👥 Players: %d",
 		updatedInfo.PlaceId,
-		
 		updatedInfo.JobId,
-		
-		
-		updatedInfo.CurrentPlayers,
-		updatedInfo.MaxPlayers
+		updatedInfo.VIPServerId ~= "" and updatedInfo.VIPServerId or "N/A",
+		tostring(updatedInfo.IsVIPServer),
+		tostring(updatedInfo.IsStudio),
+		updatedInfo.CurrentPlayers
 	)
 
 	ParagraphInfoServer:Set({
-		Title = "🧠 Informations du Serveur",
+		Title = "Info",
 		Content = updatedContent
 	})
 end
+
 end)
