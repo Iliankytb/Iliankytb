@@ -44,7 +44,7 @@ local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "
 
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.12",
+   Content = "V.0.13",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -176,16 +176,13 @@ while true do
 	task.wait(1)
 	local updatedInfo = getServerInfo()
 	local updatedContent = string.format(
-		"📌 PlaceId: %s\n🧾 GameId: %s\n🔑 JobId: %s\n👤 CreatorId: %s (%s)\n🔒 PrivateServerId: %s\n🛡️ Is VIP Server: %s\n🏠 PrivateServerOwnerId: %s\n🧪 IsStudio: %s\n👥 Players: %d/%d",
+		"📌 PlaceId: %s\n🔑 JobId: %s\n👤 CreatorId: %s (%s)\n👥 Players: %d/%d",
 		updatedInfo.PlaceId,
-		updatedInfo.GameId,
+		
 		updatedInfo.JobId,
 		updatedInfo.CreatorId,
 		updatedInfo.CreatorType,
-		updatedInfo.VIPServerId ~= "" and updatedInfo.VIPServerId or "N/A",
-		tostring(updatedInfo.IsVIPServer),
-		updatedInfo.PrivateServerOwnerId ~= 0 and updatedInfo.PrivateServerOwnerId or "N/A",
-		tostring(updatedInfo.IsStudio),
+		
 		updatedInfo.CurrentPlayers,
 		updatedInfo.MaxPlayers
 	)
