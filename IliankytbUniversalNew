@@ -44,7 +44,7 @@ local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "
 
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.17",
+   Content = "V.0.18",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -141,7 +141,7 @@ end,
 local PlaceId = InfoTab:CreateButton({
    Name = "Copy PlaceId",
    Callback = function()
-copyToClipboard(Game.PlaceId)
+copyToClipboard(game.PlaceId)
 end,
 })
 local ButtonLoadInkGameCheat = GameTab:CreateButton({
