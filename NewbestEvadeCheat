@@ -41,7 +41,7 @@ local SettingsTab = Window:CreateTab("Settings")
 local ActiveSpeedBoost,ActiveEspPlayers,ActiveEspBots,ActiveAutoWin,ActiveAutoFarmMoney,InReviving,ActiveAutoRespawn = false,false,false,false,false,false,false
 Rayfield:Notify({
    Title = "Evade Version",
-   Content = "V.0.6",
+   Content = "V.0.7",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -184,7 +184,7 @@ local AutoRespawnToggle = GameTab:CreateToggle({
 ActiveAutoRespawn = Value 
 task.spawn(function() 
 while ActiveAutoRespawn do
- if Game.Players.LocalPlayer.Character and Game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and Game.Players.LocalPlayer.Character:GetAttribute("Downed") then
+ if Game.Players.LocalPlayer.Character and Game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and Game.Players.LocalPlayer.Character:GetAttribute("State") == "Downed" then
                 game:GetService("ReplicatedStorage").Events.Respawn:FireServer()
              
 end 
