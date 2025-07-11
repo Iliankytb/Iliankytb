@@ -191,14 +191,14 @@ local Dropdown = SettingsTab:CreateDropdown({
 Rayfield:LoadConfiguration()
 task.spawn(function()
 while true do
-	task.wait(1)
+	task.wait(1) 
+task.spawn(function()
 	local updatedInfo = getServerInfo()
 	local updatedContent = string.format(
-		"📌 PlaceId: %s\n🔑 JobId: %s\n🔒 PrivateServerId: %s\n🛡️ Is VIP Server: %s\n🧪 IsStudio: %s\n👥 Players: %d",
+		"📌 PlaceId: %s\n🔑 JobId: %s\n🧪 IsStudio: %s\n👥 Players: %d",
 		updatedInfo.PlaceId,
 		updatedInfo.JobId,
-		updatedInfo.VIPServerId ~= "" and updatedInfo.VIPServerId or "N/A",
-		tostring(updatedInfo.IsVIPServer),
+		
 		tostring(updatedInfo.IsStudio),
 		updatedInfo.CurrentPlayers
 	)
@@ -207,6 +207,7 @@ while true do
 		Title = "Info",
 		Content = updatedContent
 	})
+end)
 end
 
 end)
