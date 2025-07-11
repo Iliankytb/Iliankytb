@@ -38,7 +38,7 @@ local PlayerTab = Window:CreateTab("Player")
 local GameTab = Window:CreateTab("Game") local EspTab = Window:CreateTab("Esp")
 local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
-local ActiveSpeedBoost,ActiveEspPlayers,ActiveEspBots,ActiveAutoWin,ActiveAutoFarmMoney,InReviving = false,false,false,false,false,false
+local ActiveSpeedBoost,ActiveEspPlayers,ActiveEspBots,ActiveAutoWin,ActiveAutoFarmMoney,InReviving,ActiveAutoRespawn = false,false,false,false,false,false,false
 Rayfield:Notify({
    Title = "Evade Version",
    Content = "V.0.6",
@@ -170,6 +170,23 @@ Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = downedPlayer.Humano
                 wait(0.5)
         InReviving = false
             end
+end 
+wait(0.1)
+end   
+end)
+end,
+})
+local AutoRespawnToggle = GameTab:CreateToggle({
+   Name = "Auto Respawn",
+   CurrentValue = false,
+   Flag = "AutoRespawnToggle1", 
+   Callback = function(Value)
+ActiveAutoRespawn = Value 
+task.spawn(function() 
+while ActiveAutoRespawn do
+ if Game.Players.LocalPlayer.Character and Game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and Game.Players.LocalPlayer.Character:GetAttribute("Downed") then
+                game:GetService("ReplicatedStorage").Events.Respawn:FireServer()
+             
 end 
 wait(0.1)
 end   
