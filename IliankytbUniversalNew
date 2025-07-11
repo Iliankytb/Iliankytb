@@ -44,7 +44,7 @@ local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "
 
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.11",
+   Content = "V.0.12",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -171,6 +171,7 @@ local Dropdown = SettingsTab:CreateDropdown({
    end, 
 })
 Rayfield:LoadConfiguration()
+task.spawn(function()
 while true do
 	task.wait(1)
 	local updatedInfo = getServerInfo()
@@ -189,8 +190,9 @@ while true do
 		updatedInfo.MaxPlayers
 	)
 
-	ParagraphInfo:Set({
+	ParagraphInfoServer:Set({
 		Title = "🧠 Informations du Serveur",
 		Content = updatedContent
 	})
 end
+end)
