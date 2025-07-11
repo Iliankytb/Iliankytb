@@ -115,7 +115,7 @@ end
 end)
 end,
 })
---[[local ValueSpeed = 16
+local ValueSpeed = 16
 local PlayerSpeedSlider = PlayerTab:CreateSlider({
    Name = "Player Speed",
    Range = {0, 100},
@@ -144,46 +144,7 @@ task.wait(0.1)
 end end)
 end,
 })
-local GameFinishRedLightGreenLight = GameTab:CreateButton({
-   Name = "Finish RedLight,GreenLight",
-   Callback = function(Value) 
-task.spawn(function()
-if Game.Workspace:FindFirstChild("RedLightGreenLight") then
-Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
-    -39.7584915, 1027.2583, 123.181976,
-     0.400850087, 3.88652932e-09, 0.916143656,
-     1.25406912e-08, 1, -9.72933289e-09,
-    -0.916143656, 1.53890785e-08, 0.400850087
-)
-end
-end)
-end,
-})
-local AutoTugWarToggle = GameTab:CreateToggle({
-   Name = "Auto Tug Of War(Coming)",
-   CurrentValue = false,
-   Flag = "ButtonATW", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-   Callback = function(Value)
-  ActiveSpeedBoost = Value 
-task.spawn(function()
-while ActiveSpeedBoost do 
-task.spawn(function()
-Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = ValueSpeed 
-end)
-task.wait(0.1)
-end end)
-end,
-})
-local FinishGlassbridgeToggle = GameTab:CreateButton({
-   Name = "Finish Glass Bridge",
-   Callback = function(Value)
-if Game.Workspace:FindFirstChild("GlassBridge") then
-Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
-    -214.541122, 520.731689, -1535.03003, -0.855300546, 0, -0.518132925, 0, 1, 0, 0.518132925, 0, -0.855300546
-)
-end
-end,
-})]]
+
 local ButtonUnloadCheat = SettingsTab:CreateButton({
    Name = "Unload Cheat",
    Callback = function()
