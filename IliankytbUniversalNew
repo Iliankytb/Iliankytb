@@ -61,34 +61,8 @@ local DiscordLink = DiscordTab:CreateButton({
 copyToClipboard("https://discord.gg/E2TqYRsRP4")
 end,
 })
-local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
 
-local function getServerInfo()
-	local info = {
-while true do
-	task.wait(1) -- toutes les 10 secondes
-	local updatedInfo = getServerInfo()
-	local updatedContent = string.format(
-		"📌 PlaceId: %s\n🧾 GameId: %s\n🔑 JobId: %s\n👤 CreatorId: %s (%s)\n🔒 PrivateServerId: %s\n🛡️ Is VIP Server: %s\n🏠 PrivateServerOwnerId: %s\n🧪 IsStudio: %s\n👥 Players: %d/%d",
-		updatedInfo.PlaceId,
-		updatedInfo.GameId,
-		updatedInfo.JobId,
-		updatedInfo.CreatorId,
-		updatedInfo.CreatorType,
-		updatedInfo.VIPServerId ~= "" and updatedInfo.VIPServerId or "N/A",
-		tostring(updatedInfo.IsVIPServer),
-		updatedInfo.PrivateServerOwnerId ~= 0 and updatedInfo.PrivateServerOwnerId or "N/A",
-		tostring(updatedInfo.IsStudio),
-		updatedInfo.CurrentPlayers,
-		updatedInfo.MaxPlayers
-	)
 
-	ParagraphInfo:Set({
-		Title = "🧠 Informations du Serveur",
-		Content = updatedContent
-	})
-end
 
 local ValueSpeed = 16
 local PlayerSpeedSlider = PlayerTab:CreateSlider({
@@ -197,4 +171,26 @@ local Dropdown = SettingsTab:CreateDropdown({
    end, 
 })
 Rayfield:LoadConfiguration()
-getServerInfo()
+while true do
+	task.wait(1)
+	local updatedInfo = getServerInfo()
+	local updatedContent = string.format(
+		"📌 PlaceId: %s\n🧾 GameId: %s\n🔑 JobId: %s\n👤 CreatorId: %s (%s)\n🔒 PrivateServerId: %s\n🛡️ Is VIP Server: %s\n🏠 PrivateServerOwnerId: %s\n🧪 IsStudio: %s\n👥 Players: %d/%d",
+		updatedInfo.PlaceId,
+		updatedInfo.GameId,
+		updatedInfo.JobId,
+		updatedInfo.CreatorId,
+		updatedInfo.CreatorType,
+		updatedInfo.VIPServerId ~= "" and updatedInfo.VIPServerId or "N/A",
+		tostring(updatedInfo.IsVIPServer),
+		updatedInfo.PrivateServerOwnerId ~= 0 and updatedInfo.PrivateServerOwnerId or "N/A",
+		tostring(updatedInfo.IsStudio),
+		updatedInfo.CurrentPlayers,
+		updatedInfo.MaxPlayers
+	)
+
+	ParagraphInfo:Set({
+		Title = "🧠 Informations du Serveur",
+		Content = updatedContent
+	})
+end
