@@ -114,7 +114,7 @@ end
 end  
 wait(0.1) end
 for _,Assets in pairs(Game.Players:GetChildren()) do  
-if Assets and Assets.Character and Assets.Character:FindFirstChild("Head") and not Assets.Character:FindFirstChildOfClass("Highlight") and not Assets.Character.Head:FindFirstChildOfClass("BillboardGui") then 
+if Assets and Assets.Character and Assets.Character:FindFirstChild("Head") and Assets.Character:FindFirstChildOfClass("Highlight") and Assets.Character.Head:FindFirstChildOfClass("BillboardGui") then 
 KeepEsp(Assets.Character,Assets.Character.Head) 
 end 
 end   
