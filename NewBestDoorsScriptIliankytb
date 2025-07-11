@@ -285,7 +285,7 @@ if table.find(Options, "A-120") and not table.find(OptionNotif, "A120") then
     end,
 })
 
---[[local EspDoorToggle = EspTab:CreateToggle({
+local EspDoorToggle = EspTab:CreateToggle({
    Name = "Door Esp",
    CurrentValue = false,
    Flag = "EspDoor", 
@@ -742,7 +742,7 @@ end
 end end end 
 end)
 end,
-})]]
+})
 workspace.ChildAdded:Connect(function(child)
 task.spawn(function() if ActiveMonsterSpawnAlert then
 if table.find(OptionNotif,child.Name) then
@@ -791,7 +791,7 @@ ActiveAutoInteract = Value
 task.spawn(function() 
 while ActiveAutoInteract do 
 for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
-if Assets:isA("ProximityPrompt") and  then 
+if Assets:isA("ProximityPrompt") then 
 task.spawn(function()
 onPromptShown(Assets)
 end)
