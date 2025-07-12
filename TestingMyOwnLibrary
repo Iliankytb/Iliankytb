@@ -1,0 +1,51 @@
+local UILib = loadstring(game:HttpGet("https://raw.githubusercontent.com/TON_USER/NOM_REPO/main/MyUILibrary.lua"))()
+
+local Window = UILib:CreateWindow({
+    Name = "My Custom UI",
+    Theme = "Dark"
+})
+
+local Tab1 = Window:AddTab("Main")
+
+UILib:AddToggle(Tab1, {
+    Name = "God Mode",
+    Default = false,
+    Callback = function(value)
+        print("God Mode is", value)
+    end
+})
+
+UILib:AddSlider(Tab1, {
+    Name = "Speed",
+    Min = 16,
+    Max = 100,
+    Default = 30,
+    Callback = function(value)
+        print("Speed set to", value)
+    end
+})
+
+UILib:AddDropdown(Tab1, {
+    Name = "Choose Item",
+    Options = {"Sword", "Gun", "Flashlight"},
+    Default = "Gun",
+    Callback = function(value)
+        print("Selected:", value)
+    end
+})
+
+UILib:AddTextbox(Tab1, {
+    Name = "Your name",
+    Placeholder = "Enter here...",
+    Callback = function(text)
+        print("Name is", text)
+    end
+})
+
+UILib:AddColorPicker(Tab1, {
+    Name = "Choose a color",
+    Default = Color3.fromRGB(255, 0, 0),
+    Callback = function(color)
+        print("Color selected:", color)
+    end
+})
