@@ -43,12 +43,13 @@ local ActiveSpeedBoost,ActiveAutoUseCoinFlip,ActiveEspSurvivors,ActiveNoStun,Act
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.23",
+   Content = "V.0.24",
    Duration = 2.5,
    Image = "rewind",
 })
 local Paragraph1 = InfoTab:CreateParagraph({Title = "TP To Gen", Content = "This Function Work Now And If You Got Kicked I Guess Sorry!"})
 local Paragraph2 = InfoTab:CreateParagraph({Title = "Fixed Full Bright(V.0.23)", Content = "Normally Full Bright Is Fixed Try It!"})
+local Paragraph3 = InfoTab:CreateParagraph({Title = "Fixed Items(V.0.24)", Content = "Just Fixed Now!"})
 local function CreateEsp(Char,Color,Text,Parent)
 if Char then
 local NewHighlight = Instance.new("Highlight",Char)
@@ -124,7 +125,7 @@ task.wait(0.1)
 end
 if Game.Workspace.Map.Ingame:FindFirstChild("Map") then
 for _,Players in pairs(Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildren()) do 
-if Players:isA("Model") and Players.name == "Generator" and not Players:FindFirstChildOfClass("Highlight") then
+if Players:isA("Model") and Players.name == "Generator" and Players:FindFirstChildOfClass("Highlight") then
 KeepEsp(Players) end
 end
 end
@@ -143,10 +144,23 @@ if Players:isA("Tool")  and not Players:FindFirstChildOfClass("Highlight") then
 CreateEsp(Players,Color3.fromRGB(0,0,255))
 end
 end
+if Game.Workspace.Map.Ingame:FindFirstChild("Map") then
+for _,Players in pairs(Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildren()) do 
+if Players:isA("Tool")  and not Players:FindFirstChildOfClass("Highlight") then
+CreateEsp(Players,Color3.fromRGB(0,0,255))
+end
+end
+end
 task.wait(0.1) end
 for _,Players in pairs(Game.Workspace.Map.Ingame:GetChildren()) do 
-if Players:isA("Tool")  and not Players:FindFirstChildOfClass("Highlight") then
+if Players:isA("Tool")  and  Players:FindFirstChildOfClass("Highlight") then
 KeepEsp(Players) end
+end
+if Game.Workspace.Map.Ingame:FindFirstChild("Map") then
+for _,Players in pairs(Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildren()) do 
+if Players:isA("Tool")  and  Players:FindFirstChildOfClass("Highlight") then
+KeepEsp(Players) end
+end
 end
  end)
 end,
