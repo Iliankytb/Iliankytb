@@ -46,7 +46,7 @@ local LimitRangerEsp = 100
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.51",
+   Content = "V.0.52",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -116,23 +116,6 @@ highlight.Enabled = false
 	label.TextScaled = true
 	label.Parent = billboard
 
-	local billboard2 = Char:FindFirstChild("ESP") or Instance.new("BillboardGui")
-	billboard2.Name = "EspDistance"
-	billboard2.Size = UDim2.new(0, 50, 0, 25)
-	billboard2.AlwaysOnTop = true
-	billboard2.StudsOffset = Vector3.new(0, -3, 0)
-	billboard2.Adornee = Parent
-	billboard2.Enabled = false
-	billboard2.Parent = Parent
-
-	
-	local labelDistance = billboard:FindFirstChildOfClass("TextLabel") or Instance.new("TextLabel")
-	labelDistance.Size = UDim2.new(1, 0, 1, 0)
-	labelDistance.BackgroundTransparency = 1
-	labelDistance.Text = Text
-	labelDistance.TextColor3 = Color
-	labelDistance.TextScaled = true
-	labelDistance.Parent = billboard2
 	task.spawn(function()
 		local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
@@ -149,16 +132,14 @@ while highlight and billboard and Parent and Parent.Parent do
 			local withinRange = distance <= LimitRangerEsp
 task.spawn(function()
 if ActiveDistanceEsp then
-labelDistance.Text = "("..distance.."M )"
+label.Text = Text.." ("..distance.."M )"
+else
+label.Text = Text
 end
 end)
 			highlight.Enabled = withinRange
 			billboard.Enabled = withinRange
-if ActiveDistanceEsp then
-billboard2.Enabled = withinRange
-end
 		else
-if ActiveDistanceEsp then billboard2.Enabled = true end
 			billboard.Enabled = true
 			highlight.Enabled = true
 		end
