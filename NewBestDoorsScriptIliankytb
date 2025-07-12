@@ -41,12 +41,12 @@ local EspTab = Window:CreateTab("Esp")
 local MonstersTab = Window:CreateTab("Monsters")
 local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
-local ActiveEspDoor,ActiveSpeedBoost,ActiveEspHidingSpots,ActiveEspItems,ActiveEspCoins,ActiveMonsterSpawnAlert,ActiveNoCooldownPrompt,ActiveFullBright,ActiveModifiedFieldOfView,ActiveEspChest,ActiveEspBooks,ActiveEspMonster,ActiveEspTimerLever,ActiveEspGen,DisableLimitRangerEsp,ActiveAutoInteract,ActiveCanJump,ActiveInfOxygen,ActiveHMOxygen,ActiveSpeedBypassing = false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false
+local ActiveEspDoor,ActiveSpeedBoost,ActiveEspHidingSpots,ActiveEspItems,ActiveEspCoins,ActiveMonsterSpawnAlert,ActiveNoCooldownPrompt,ActiveFullBright,ActiveModifiedFieldOfView,ActiveEspChest,ActiveEspBooks,ActiveEspMonster,ActiveEspTimerLever,ActiveEspGen,DisableLimitRangerEsp,ActiveAutoInteract,ActiveCanJump,ActiveInfOxygen,ActiveHMOxygen,ActiveSpeedBypassing,ActiveEspPlayers,ActiveDistanceEsp,ActiveBigPrompt = false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false
 local LimitRangerEsp = 100
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.49",
+   Content = "V.0.50",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -99,7 +99,7 @@ highlight.Enabled = false
 	
 	local billboard = Char:FindFirstChild("ESP") or Instance.new("BillboardGui")
 	billboard.Name = "ESP"
-	billboard.Size = UDim2.new(5, 0, 1, 0)
+	billboard.Size = UDim2.new(0, 50, 0, 25)
 	billboard.AlwaysOnTop = true
 	billboard.StudsOffset = Vector3.new(0, -2, 0)
 	billboard.Adornee = Parent
@@ -115,7 +115,23 @@ highlight.Enabled = false
 	label.TextScaled = true
 	label.Parent = billboard
 
+	local billboard2 = Char:FindFirstChild("ESP") or Instance.new("BillboardGui")
+	billboard2.Name = "EspDistance"
+	billboard2.Size = UDim2.new(0, 50, 0, 25)
+	billboard2.AlwaysOnTop = true
+	billboard2.StudsOffset = Vector3.new(0, -3, 0)
+	billboard2.Adornee = Parent
+	billboard2.Enabled = false
+	billboard2.Parent = Parent
+
 	
+	local labelDistance = billboard:FindFirstChildOfClass("TextLabel") or Instance.new("TextLabel")
+	labelDistance.Size = UDim2.new(1, 0, 1, 0)
+	labelDistance.BackgroundTransparency = 1
+	labelDistance.Text = Text
+	labelDistance.TextColor3 = Color
+	labelDistance.TextScaled = true
+	labelDistance.Parent = billboard2
 	task.spawn(function()
 		local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
@@ -126,15 +142,22 @@ local Camera = Workspace.CurrentCamera
 
 while highlight and billboard and Parent and Parent.Parent do
 	local cameraPosition = Camera and Camera.CFrame.Position
-
 	if cameraPosition and Parent and Parent:IsA("BasePart") then
 		if not DisableLimitRangerEsp then
 			local distance = (cameraPosition - Parent.Position).Magnitude
 			local withinRange = distance <= LimitRangerEsp
-
+task.spawn(function()
+if ActiveDistanceEsp then
+labelDistance.Text = "("..distance.."M )"
+end
+end)
 			highlight.Enabled = withinRange
 			billboard.Enabled = withinRange
+if ActiveDistanceEsp then
+billboard2.Enabled = withinRange
+end
 		else
+if ActiveDistanceEsp then billboard2.Enabled = true end
 			billboard.Enabled = true
 			highlight.Enabled = true
 		end
@@ -165,13 +188,11 @@ local DiscordLink = DiscordTab:CreateButton({
 copyToClipboard("https://discord.gg/E2TqYRsRP4")
 end,
 }) local function onPromptShown(prompt)
-    if prompt.Enabled and prompt.MaxActivationDistance > 0 then
-        task.wait(0.1) 
-        if prompt:IsDescendantOf(workspace) then
+    if prompt and prompt.MaxActivationDistance > 0 then
             prompt:InputHoldBegin() 
             task.wait(prompt.HoldDuration or 0)
             prompt:InputHoldEnd() 
-        end
+        
     end
 end
 
@@ -538,7 +559,7 @@ task.spawn(function()
 while ActiveEspMonster do
 task.spawn(function()
 for _,Assets in pairs(Workspace:GetDescendants()) do  
-if Assets:isA("Model") and (Assets.Name == "FigureRig" or Assets.Name == "SallyMoving" or Assets.Name == "RushMoving" or Assets.Name == "Eyes" or Assets.Name == "SeekMovingNewClone" or Assets.Name == "BackdoorLookman" or Assets.Name == "BackdoorRush" or Assets.Name == "GloombatSwarm" or Assets.Name == "GiggleCeiling" or Assets.Name == "AmbushMoving")  and  not Assets:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
+if Assets:isA("Model") and (Assets.Name == "FigureRig" or Assets.Name == "SallyMoving" or Assets.Name == "RushMoving" or Assets.Name == "Eyes" or Assets.Name == "SeekMovingNewClone" or Assets.Name == "BackdoorLookman" or Assets.Name == "BackdoorRush" or Assets.Name == "GloombatSwarm" or Assets.Name == "GiggleCeiling" or Assets.Name == "AmbushMoving")  and  not Assets:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then Assets.PrimaryPart.Transparency = 0
 CreateEsp(Assets,Color3.fromRGB(255,0,0),Assets.Name,Assets.PrimaryPart) 
 end 
 end 
@@ -546,7 +567,7 @@ end)
 wait(0.1)
 end
 for _,Assets in pairs(Workspace:GetDescendants()) do 
-if Assets:isA("Model")  and (Assets.Name == "FigureRig" or Assets.Name == "SallyMoving" or Assets.Name == "Eyes" or Assets.Name == "RushMoving" or Assets.Name == "SeekMovingNewClone" or Assets.Name == "BackdoorRush" or Assets.Name == "BackdoorLookman" or Assets.Name == "GiggleCeiling" or Assets.Name == "GloombatSwarm" or Assets.Name == "AmbushMoving") and  Assets:FindFirstChildOfClass("Highlight") and  Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
+if Assets:isA("Model")  and (Assets.Name == "FigureRig" or Assets.Name == "SallyMoving" or Assets.Name == "Eyes" or Assets.Name == "RushMoving" or Assets.Name == "SeekMovingNewClone" or Assets.Name == "BackdoorRush" or Assets.Name == "BackdoorLookman" or Assets.Name == "GiggleCeiling" or Assets.Name == "GloombatSwarm" or Assets.Name == "AmbushMoving") and  Assets:FindFirstChildOfClass("Highlight") and  Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then Assets.PrimaryPart.Transparency = 1
 KeepEsp(Assets,Assets.PrimaryPart) 
 end 
 end
@@ -788,14 +809,14 @@ local AutoInteractToggle = GameTab:CreateToggle({
    Callback = function(Value)
 ActiveAutoInteract = Value 
 task.spawn(function() 
-while ActiveAutoInteract do 
+while ActiveAutoInteract do task.spawn(function()
 for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
-if Assets:isA("ProximityPrompt") then 
+if Assets:isA("ProximityPrompt") and  Assets.Name ~= "HidePrompt" then 
 task.spawn(function()
 onPromptShown(Assets)
 end)
 end 
-end  
+end  end)
 wait(0.1)
 end 
 end)
