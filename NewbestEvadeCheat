@@ -66,7 +66,7 @@ highlight.Enabled = true
 	
 	local billboard = Char:FindFirstChild("ESP") or Instance.new("BillboardGui")
 	billboard.Name = "ESP"
-	billboard.Size = UDim2.new(5, 0, 1, 0)
+	billboard.Size = UDim2.new(0, 250, 0, 150)
 	billboard.AlwaysOnTop = true
 	billboard.StudsOffset = Vector3.new(0, Number, 0)
 	billboard.Adornee = Parent
@@ -75,7 +75,7 @@ highlight.Enabled = true
 
 	
 	local label = billboard:FindFirstChildOfClass("TextLabel") or Instance.new("TextLabel")
-	label.Size = UDim2.new(5, 0, 5, 0)
+	label.Size = UDim2.new(1, 0, 1, 0)
 	label.BackgroundTransparency = 1
 	label.Text = Text
 	label.TextColor3 = Color
@@ -118,9 +118,11 @@ ActiveEspPlayers = Value
 task.spawn(function() 
 while ActiveEspPlayers do
 for _,Assets in pairs(Game.Players:GetChildren()) do  
+task.spawn(function()
 if Assets and Assets.Character and Assets.Character:FindFirstChild("Head") and not Assets.Character:FindFirstChildOfClass("Highlight") and not Assets.Character.Head:FindFirstChildOfClass("BillboardGui") then 
 CreateEsp(Assets.Character,Color3.fromRGB(255,255,255),Assets.Name,Assets.Character.Head,1) 
 end 
+end)
 end  
 wait(0.1) end
 for _,Assets in pairs(Game.Players:GetChildren()) do  
@@ -163,7 +165,7 @@ local AutoWinToggle = GameTab:CreateToggle({
 ActiveAutoWin = Value 
 task.spawn(function() 
 while ActiveAutoWin do
- if Game.Players.LocalPlayer.Character and Game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and not InReviving then
+ if Game.Players.LocalPlayer.Character and Game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and (not InReviving or not Game.Players.LocalPlayer.Character:GetAttribute("Downed")) then
 local securityPart = game.Workspace:FindFirstChild("SecurityPart") or Instance.new("Part")
             securityPart.Name = "SecurityPart"
             securityPart.Size = Vector3.new(10, 1, 10)
