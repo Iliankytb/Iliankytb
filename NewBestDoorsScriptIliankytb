@@ -841,7 +841,8 @@ Assets.MaxActivationDistance = 13
 end
 end)
 end 
-end  
+end
+end)
 wait(0.1) end 
 for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
 if Assets:isA("ProximityPrompt") then 
