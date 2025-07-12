@@ -42,7 +42,7 @@ local ActiveSpeedBoost,ActiveEspPlayers,ActiveEspBots,ActiveAutoWin,ActiveAutoFa
 
 Rayfield:Notify({
    Title = "Evade Version",
-   Content = "V.0.8",
+   Content = "V.0.9",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -75,7 +75,7 @@ highlight.Enabled = true
 
 	
 	local label = billboard:FindFirstChildOfClass("TextLabel") or Instance.new("TextLabel")
-	label.Size = UDim2.new(1, 0, 1, 0)
+	label.Size = UDim2.new(5, 0, 5, 0)
 	label.BackgroundTransparency = 1
 	label.Text = Text
 	label.TextColor3 = Color
@@ -141,12 +141,14 @@ task.spawn(function()
 while ActiveEspBots do
 for _,Assets in pairs(Game.Workspace.Game.Players:GetChildren()) do  
 if Assets and Assets:FindFirstChild("Hitbox") and not Assets:FindFirstChildOfClass("Highlight") and not Assets:FindFirstChild("Hitbox"):FindFirstChildOfClass("BillboardGui") then 
+Assets.Hitbox.Transparency = 0
 CreateEsp(Assets,Color3.fromRGB(255,0,0),Assets.Name,Assets.Hitbox,-2) 
 end 
 end  
 wait(0.1) end
 for _,Assets in pairs(Game.Workspace.Game.Players:GetChildren()) do  
 if Assets and Assets:FindFirstChild("Hitbox")  and Assets:FindFirstChildOfClass("Highlight") and Assets:FindFirstChild("Hitbox"):FindFirstChildOfClass("BillboardGui") then 
+Assets.Hitbox.Transparency = 1
 KeepEsp(Assets,Assets.Hitbox) 
 end 
 end   
