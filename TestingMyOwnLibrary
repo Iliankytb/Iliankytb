@@ -1,51 +1,76 @@
-local UILib = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/IliankLybrary.lua"))()
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/IliankLybrary.lua"))()
 
-local Window = UILib:CreateWindow({
-    Name = "My Custom UI",
-    Theme = "Dark"
+
+local window = library:CreateWindow({
+    Title = "Menu Principal",
+    Theme = "Dark", -- "Default", "Dark" ou "Light"
+    ConfigurationSaving = {
+        Enabled = true,
+        FolderName = "MonJeuConfig",
+        FileName = "MaConfig"
+    },
+    KeySystem = false -- tu peux l'activer si besoin
 })
 
-local Tab1 = Window:AddTab("Main")
+-- Création d’un onglet
+local mainTab = window:CreateTab("Principal")
 
-UILib:AddToggle(Tab1, {
-    Name = "God Mode",
+-- Ajout d’un bouton
+mainTab:AddButton({
+    Name = "Clique moi",
+    Callback = function()
+        print("Bouton cliqué !")
+    end
+})
+
+-- Ajout d’un toggle
+mainTab:AddToggle({
+    Name = "Mode nuit",
+    Flag = "NightMode",
     Default = false,
-    Callback = function(value)
-        print("God Mode is", value)
+    Callback = function(state)
+        print("Toggle activé:", state)
     end
 })
 
-UILib:AddSlider(Tab1, {
-    Name = "Speed",
-    Min = 16,
+-- Ajout d’un slider
+mainTab:AddSlider({
+    Name = "Volume",
+    Flag = "VolumeLevel",
+    Min = 0,
     Max = 100,
-    Default = 30,
+    Default = 50,
     Callback = function(value)
-        print("Speed set to", value)
+        print("Volume:", value)
     end
 })
 
-UILib:AddDropdown(Tab1, {
-    Name = "Choose Item",
-    Options = {"Sword", "Gun", "Flashlight"},
-    Default = "Gun",
-    Callback = function(value)
-        print("Selected:", value)
-    end
-})
-
-UILib:AddTextbox(Tab1, {
-    Name = "Your name",
-    Placeholder = "Enter here...",
+-- Ajout d’un champ de texte
+mainTab:AddTextbox({
+    Name = "Pseudo",
+    Flag = "UserName",
+    Default = "Invité",
     Callback = function(text)
-        print("Name is", text)
+        print("Nom d'utilisateur :", text)
     end
 })
 
-UILib:AddColorPicker(Tab1, {
-    Name = "Choose a color",
-    Default = Color3.fromRGB(255, 0, 0),
-    Callback = function(color)
-        print("Color selected:", color)
+-- Ajout d’un menu déroulant
+mainTab:AddDropdown({
+    Name = "Langue",
+    Flag = "LangueChoisie",
+    Options = {"Français", "Anglais", "Espagnol"},
+    Default = "Français",
+    Callback = function(choice)
+        print("Langue choisie :", choice)
+    end
+})
+
+-- Sauvegarde manuelle du fichier de config
+mainTab:AddButton({
+    Name = "Sauvegarder la configuration",
+    Callback = function()
+        window:SaveConfig()
+        print("Configuration sauvegardée !")
     end
 })
