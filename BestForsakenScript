@@ -43,23 +43,42 @@ local ActiveSpeedBoost,ActiveAutoUseCoinFlip,ActiveEspSurvivors,ActiveNoStun,Act
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.24",
+   Content = "V.0.25",
    Duration = 2.5,
    Image = "rewind",
 })
 local Paragraph1 = InfoTab:CreateParagraph({Title = "TP To Gen", Content = "This Function Work Now And If You Got Kicked I Guess Sorry!"})
 local Paragraph2 = InfoTab:CreateParagraph({Title = "Fixed Full Bright(V.0.23)", Content = "Normally Full Bright Is Fixed Try It!"})
 local Paragraph3 = InfoTab:CreateParagraph({Title = "Fixed Items(V.0.24)", Content = "Just Fixed Now!"})
-local function CreateEsp(Char,Color,Text,Parent)
-if Char then
+local function CreateEsp(Char,Color,Text,Parent,number)
+if Char and not Char:FindFirstChildOfClass("Highlight") and not Parent:FindFirstChildOfClass("BillboardGui") then
 local NewHighlight = Instance.new("Highlight",Char)
-NewHighlight.OutlineColor = Color NewHighlight.FillColor = Color
+NewHighlight.OutlineColor = Color 
+NewHighlight.FillColor = Color
+local billboard = Char:FindFirstChild("ESP") or Instance.new("BillboardGui")
+	billboard.Name = "ESP"
+	billboard.Size = UDim2.new(0, 50, 0, 25)
+	billboard.AlwaysOnTop = true
+	billboard.StudsOffset = Vector3.new(0, number, 0)
+	billboard.Adornee = Parent
+	billboard.Enabled = false
+	billboard.Parent = Parent
+
+	
+	local label = billboard:FindFirstChildOfClass("TextLabel") or Instance.new("TextLabel")
+	label.Size = UDim2.new(1, 0, 1, 0)
+	label.BackgroundTransparency = 1
+	label.Text = Text
+	label.TextColor3 = Color
+	label.TextScaled = true
+	label.Parent = billboard
 end
 end
 
-local function KeepEsp(Char)
-if Char and Char:FindFirstChildOfClass("Highlight") then
+local function KeepEsp(Char,parent)
+if Char and Char:FindFirstChildOfClass("Highlight") and parent:FindFirstChildOfClass("BillboardGui") then
 Char:FindFirstChildOfClass("Highlight"):Destroy()
+parent:FindFirstChildOfClass("BillboardGui"):Destroy()
 end
 end
 
@@ -71,15 +90,15 @@ local EspSurvivorsToggle = EspTab:CreateToggle({
   ActiveEspSurvivors = Value task.spawn(function()
 while ActiveEspSurvivors do task.spawn(function()
 for _,Players in pairs(Game.Workspace.Players.Survivors:GetChildren()) do 
-if Players:isA("Model") and not Players:FindFirstChildOfClass("Highlight") then
-CreateEsp(Players,Color3.fromRGB(0,255,0))
+if Players:isA("Model") and Players:FindFirstChild("Head") and not Players:FindFirstChildOfClass("Highlight") and not Players.Head:FindFirstChildOfClass("BillboardGui") then
+CreateEsp(Players,Color3.fromRGB(0,255,0),Players.Name,Players.Head,2)
 end
 end
 end)
 task.wait(0.1)
 end for _,Players in pairs(Game.Workspace.Players.Survivors:GetChildren()) do 
-if Players:isA("Model") and Players:FindFirstChildOfClass("Highlight") then
-KeepEsp(Players)
+if Players:isA("Model") and Players:FindFirstChild("Head") and Players:FindFirstChildOfClass("Highlight") and Players.Head:FindFirstChildOfClass("BillboardGui") then
+KeepEsp(Players,Players.Head)
 end
 end 
  end)
@@ -94,15 +113,15 @@ local EspKillersToggle = EspTab:CreateToggle({
   ActiveEspKillers = Value task.spawn(function()
 while ActiveEspKillers do task.spawn(function()
 for _,Players in pairs(Game.Workspace.Players.Killers:GetChildren()) do 
-if Players:isA("Model") and not Players:FindFirstChildOfClass("Highlight") then
-CreateEsp(Players,Color3.fromRGB(255,0,0))
+if Players:isA("Model") and Players:FindFirstChild("Head") and not Players:FindFirstChildOfClass("Highlight") and not Players.Head:FindFirstChildOfClass("BillboardGui") then
+CreateEsp(Players,Color3.fromRGB(255,0,0),Players.Name,Players.Head,2)
 end
 end
 end)
 task.wait(0.1)
 end for _,Players in pairs(Game.Workspace.Players.Killers:GetChildren()) do 
-if Players:isA("Model") and Players:FindFirstChildOfClass("Highlight") then
-KeepEsp(Players)
+if Players:isA("Model") and Players:FindFirstChild("Head") and Players:FindFirstChildOfClass("Highlight") and Players.Head:FindFirstChildOfClass("BillboardGui") then
+KeepEsp(Players,Players.Head)
 end
 end 
  end)
@@ -116,8 +135,8 @@ end,
 while ActiveEspGenerator do
 if Game.Workspace.Map.Ingame:FindFirstChild("Map") then
 for _,Players in pairs(Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildren()) do 
-if Players:isA("Model") and Players.name == "Generator" and not Players:FindFirstChildOfClass("Highlight") then
-CreateEsp(Players,Color3.fromRGB(255,255,0))
+if Players:isA("Model") and Players.PrimaryPart and Players.name == "Generator" and not Players:FindFirstChildOfClass("Highlight") and not Players.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+CreateEsp(Players,Color3.fromRGB(255,255,0),"Generator",Players.PrimaryPart,-2)
 end
 end
 end
@@ -125,8 +144,9 @@ task.wait(0.1)
 end
 if Game.Workspace.Map.Ingame:FindFirstChild("Map") then
 for _,Players in pairs(Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildren()) do 
-if Players:isA("Model") and Players.name == "Generator" and Players:FindFirstChildOfClass("Highlight") then
-KeepEsp(Players) end
+if Players:isA("Model") and Players.PrimaryPart and Players.name == "Generator" and Players:FindFirstChildOfClass("Highlight") and Players.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+KeepEsp(Players)
+end
 end
 end
  end)
@@ -137,29 +157,32 @@ local EspItemsToggle = EspTab:CreateToggle({
    CurrentValue = false,
    Flag = "EspItems", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
-  ActiveEspItems= Value task.spawn(function()
+  ActiveEspItems = Value
+task.spawn(function()
 while ActiveEspItems do
 for _,Players in pairs(Game.Workspace.Map.Ingame:GetChildren()) do 
-if Players:isA("Tool")  and not Players:FindFirstChildOfClass("Highlight") then
-CreateEsp(Players,Color3.fromRGB(0,0,255))
+if Players:isA("Tool") and Players.PrimaryPart and not Players:FindFirstChildOfClass("Highlight") and not Players.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+CreateEsp(Players,Color3.fromRGB(0,0,255),Players.Name,Players.PrimaryPart,-1)
 end
 end
 if Game.Workspace.Map.Ingame:FindFirstChild("Map") then
 for _,Players in pairs(Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildren()) do 
-if Players:isA("Tool")  and not Players:FindFirstChildOfClass("Highlight") then
-CreateEsp(Players,Color3.fromRGB(0,0,255))
+if Players:isA("Tool") and Players.PrimaryPart and not Players:FindFirstChildOfClass("Highlight") and not Players.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+CreateEsp(Players,Color3.fromRGB(0,0,255),Players.Name,Players.PrimaryPart,-1)
 end
 end
 end
 task.wait(0.1) end
 for _,Players in pairs(Game.Workspace.Map.Ingame:GetChildren()) do 
-if Players:isA("Tool")  and  Players:FindFirstChildOfClass("Highlight") then
-KeepEsp(Players) end
+if Players:isA("Tool") and Players.PrimaryPart  and  Players:FindFirstChildOfClass("Highlight") and Players.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+KeepEsp(Players,Players.PrimaryPart)
+end
 end
 if Game.Workspace.Map.Ingame:FindFirstChild("Map") then
 for _,Players in pairs(Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildren()) do 
-if Players:isA("Tool")  and  Players:FindFirstChildOfClass("Highlight") then
-KeepEsp(Players) end
+if Players:isA("Tool") and Players.PrimaryPart  and  Players:FindFirstChildOfClass("Highlight") and Players.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+KeepEsp(Players,Players.PrimaryPart) 
+end
 end
 end
  end)
@@ -338,15 +361,15 @@ local EspRagdollsToggle = EspTab:CreateToggle({
   ActiveEspRagdolls = Value task.spawn(function()
 while ActiveEspRagdolls do task.spawn(function()
 for _,Players in pairs(Game.Workspace.Ragdolls:GetChildren()) do 
-if Players:isA("Model") and not Players:FindFirstChildOfClass("Highlight") then
-CreateEsp(Players,Color3.fromRGB(47,47,47))
+if Players:isA("Model") and Players.PrimaryPart and not Players:FindFirstChildOfClass("Highlight") and not Players.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+CreateEsp(Players,Color3.fromRGB(47,47,47),Players.Name,Players.PrimaryPart,-1)
 end
 end
 end)
 task.wait(0.1)
 end for _,Players in pairs(Game.Workspace.Ragdolls:GetChildren()) do 
-if Players:isA("Model") and Players:FindFirstChildOfClass("Highlight") then
-KeepEsp(Players)
+if Players:isA("Model") and Players.PrimaryPart and Players:FindFirstChildOfClass("Highlight") and Players.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+KeepEsp(Players,Players.PrimaryPart)
 end
 end 
  end)
