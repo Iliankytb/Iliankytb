@@ -230,7 +230,7 @@ createUIElement("UIPadding", {
 end
 
 
-        function tab:AddSlider(opts)
+    
         function tab:AddSlider(opts)
     local min, max = opts.Min or 0, opts.Max or 100
     local value = opts.Default or min
