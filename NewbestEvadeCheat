@@ -165,13 +165,13 @@ local EspSummerEventToggle = EspTab:CreateToggle({
 ActiveEspSummerEvent = Value 
 task.spawn(function() 
 while ActiveEspSummerEvent do
-for _,Assets in pairs(Game.Workspace.Game.Tickets:GetChildren()) do  
+for _,Assets in pairs(Game.Workspace.Game.Effects.Tickets:GetChildren()) do  
 if Assets and Assets.PrimaryPart and Assets.Name == "Visual" and not Assets:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
 CreateEsp(Assets,Color3.fromRGB(0,255,255),"Tickets",Assets.PrimaryPart,-2) 
 end 
 end  
 wait(0.1) end
-for _,Assets in pairs(Game.Workspace.Game.Tickets:GetChildren()) do  
+for _,Assets in pairs(Game.Workspace.Game.Effects.Tickets:GetChildren()) do  
 if Assets and Assets.PrimaryPart and Assets.Name == "Visual"  and Assets:FindFirstChildOfClass("Highlight") and Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
 KeepEsp(Assets,Assets.PrimaryPart) 
 end 
@@ -234,7 +234,7 @@ local AutoFarmSummerEventToggle = GameTab:CreateToggle({
 AutoFarmSummerEvent = Value 
 task.spawn(function() 
 while AutoFarmSummerEvent do
-for _,Assets in pairs(Game.Workspace.Game.Tickets:GetChildren()) do  
+for _,Assets in pairs(Game.Workspace.Game.Effects.Tickets:GetChildren()) do  
 if Assets and Assets.PrimaryPart and Assets.Name == "Visual" then 
  if Game.Players.LocalPlayer.Character and Game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and (not InReviving or not Game.Players.LocalPlayer.Character:GetAttribute("Downed")) then
     Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Assets.PrimaryPart.CFrame + Vector3.new(0, 3, 0)           
