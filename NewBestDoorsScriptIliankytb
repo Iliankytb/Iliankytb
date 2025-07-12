@@ -46,7 +46,7 @@ local LimitRangerEsp = 100
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.53",
+   Content = "V.0.54",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -127,16 +127,17 @@ local Camera = Workspace.CurrentCamera
 while highlight and billboard and Parent and Parent.Parent do
 	local cameraPosition = Camera and Camera.CFrame.Position
 	if cameraPosition and Parent and Parent:IsA("BasePart") then
-		if not DisableLimitRangerEsp then
-			local distance = (cameraPosition - Parent.Position).Magnitude
-			local withinRange = distance <= LimitRangerEsp
-task.spawn(function()
+	local distance = (cameraPosition - Parent.Position).Magnitude
+				task.spawn(function()
 if ActiveDistanceEsp then
 label.Text = Text.." ("..math.floor(distance + 0.5).." m)"
 else
 label.Text = Text
 end
 end)
+if not DisableLimitRangerEsp then
+			local withinRange = distance <= LimitRangerEsp
+
 			highlight.Enabled = withinRange
 			billboard.Enabled = withinRange
 		else
