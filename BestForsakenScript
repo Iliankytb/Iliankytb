@@ -43,7 +43,7 @@ local ActiveSpeedBoost,ActiveAutoUseCoinFlip,ActiveEspSurvivors,ActiveNoStun,Act
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.25",
+   Content = "V.0.26",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -61,7 +61,7 @@ local billboard = Char:FindFirstChild("ESP") or Instance.new("BillboardGui")
 	billboard.AlwaysOnTop = true
 	billboard.StudsOffset = Vector3.new(0, number, 0)
 	billboard.Adornee = Parent
-	billboard.Enabled = false
+	billboard.Enabled = true
 	billboard.Parent = Parent
 
 	
