@@ -1,76 +1,69 @@
-local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/IliankLybrary.lua"))()
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/IliankLybrary"))()
 
-
+-- Création de la fenêtre
 local window = library:CreateWindow({
-    Title = "Menu Principal",
-    Theme = "Dark", -- "Default", "Dark" ou "Light"
+    Title = "Mon Menu",
+    Theme = "Dark",
     ConfigurationSaving = {
         Enabled = true,
-        FolderName = "MonJeuConfig",
-        FileName = "MaConfig"
+        FolderName = "MyGameConfigs",
+        FileName = "Settings"
     },
-    KeySystem = false -- tu peux l'activer si besoin
+    KeySystem = false
 })
 
--- Création d’un onglet
-local mainTab = window:CreateTab("Principal")
+-- Onglet Principal
+local tab = window:CreateTab("Principal")
 
--- Ajout d’un bouton
-mainTab:AddButton({
-    Name = "Clique moi",
+tab:AddButton({
+    Name = "Salut",
     Callback = function()
-        print("Bouton cliqué !")
+        print("Bonjour le monde !")
     end
 })
 
--- Ajout d’un toggle
-mainTab:AddToggle({
+tab:AddToggle({
     Name = "Mode nuit",
-    Flag = "NightMode",
     Default = false,
     Callback = function(state)
-        print("Toggle activé:", state)
+        print("Mode nuit =", state)
     end
 })
 
--- Ajout d’un slider
-mainTab:AddSlider({
+tab:AddSlider({
     Name = "Volume",
-    Flag = "VolumeLevel",
     Min = 0,
-    Max = 100,
-    Default = 50,
-    Callback = function(value)
-        print("Volume:", value)
+    Max = 10,
+    Default = 5,
+    Callback = function(val)
+        print("Volume =", val)
     end
 })
 
--- Ajout d’un champ de texte
-mainTab:AddTextbox({
+tab:AddTextbox({
     Name = "Pseudo",
-    Flag = "UserName",
-    Default = "Invité",
+    Placeholder = "Entrez pseudo...",
+    Default = "",
     Callback = function(text)
-        print("Nom d'utilisateur :", text)
+        print("Pseudo :", text)
     end
 })
 
--- Ajout d’un menu déroulant
-mainTab:AddDropdown({
+tab:AddDropdown({
     Name = "Langue",
-    Flag = "LangueChoisie",
     Options = {"Français", "Anglais", "Espagnol"},
     Default = "Français",
     Callback = function(choice)
-        print("Langue choisie :", choice)
+        print("Langue :", choice)
     end
 })
 
--- Sauvegarde manuelle du fichier de config
-mainTab:AddButton({
-    Name = "Sauvegarder la configuration",
+-- Onglet Réglages
+local settingsTab = window:CreateTab("Réglages")
+settingsTab:AddButton({
+    Name = "Sauvegarder",
     Callback = function()
         window:SaveConfig()
-        print("Configuration sauvegardée !")
+        print("Config sauvegardée !")
     end
 })
