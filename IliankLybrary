@@ -1,0 +1,167 @@
+-- library
+local HttpService = game:GetService("HttpService")
+local UserInputService = game:GetService("UserInputService")
+
+local library = {}
+
+local UIState = {
+    Windows = {},
+    Theme = {
+        Background = Color3.fromRGB(25, 25, 25),
+        Accent = Color3.fromRGB(0, 170, 255),
+        Text = Color3.fromRGB(255, 255, 255)
+    },
+    Config = {}
+}
+
+-- Theme presets
+local Themes = {
+    ["Default"] = {
+        Background = Color3.fromRGB(25, 25, 25),
+        Accent = Color3.fromRGB(0, 170, 255),
+        Text = Color3.fromRGB(255, 255, 255)
+    },
+    ["Dark"] = {
+        Background = Color3.fromRGB(15, 15, 15),
+        Accent = Color3.fromRGB(255, 0, 0),
+        Text = Color3.fromRGB(200, 200, 200)
+    },
+    ["Light"] = {
+        Background = Color3.fromRGB(245, 245, 245),
+        Accent = Color3.fromRGB(0, 85, 255),
+        Text = Color3.fromRGB(0, 0, 0)
+    }
+}
+
+function library:CreateWindow(settings)
+    local window = {
+        Tabs = {},
+        Settings = settings
+    }
+
+    -- Theme
+    if settings.Theme and Themes[settings.Theme] then
+        UIState.Theme = Themes[settings.Theme]
+    end
+
+    -- Load config
+    if settings.ConfigurationSaving and settings.ConfigurationSaving.Enabled then
+        local folder = settings.ConfigurationSaving.FolderName or "Forsaken"
+        local file = settings.ConfigurationSaving.FileName or "config"
+        local path = folder .. "/" .. file .. ".json"
+        if isfile(path) then
+            local success, result = pcall(function()
+                return HttpService:JSONDecode(readfile(path))
+            end)
+            if success then
+                UIState.Config = result
+            end
+        end
+    end
+
+    function window:SaveConfig()
+        if settings.ConfigurationSaving and settings.ConfigurationSaving.Enabled then
+            local folder = settings.ConfigurationSaving.FolderName or "Forsaken"
+            local file = settings.ConfigurationSaving.FileName or "config"
+            if not isfolder(folder) then
+                makefolder(folder)
+            end
+            writefile(folder .. "/" .. file .. ".json", HttpService:JSONEncode(UIState.Config))
+        end
+    end
+
+    function window:CreateTab(name)
+        local tab = {
+            Name = name,
+            Elements = {}
+        }
+
+        function tab:AddButton(options)
+            print("[BUTTON]", options.Name)
+            if options.Callback then
+                options.Callback()
+            end
+        end
+
+        function tab:AddToggle(options)
+            UIState.Config[options.Flag] = UIState.Config[options.Flag] or options.Default or false
+            print("[TOGGLE]", options.Name, "=", UIState.Config[options.Flag])
+            if options.Callback then
+                options.Callback(UIState.Config[options.Flag])
+            end
+        end
+
+        function tab:AddColorPicker(options)
+            UIState.Config[options.Flag] = UIState.Config[options.Flag] or options.Default or Color3.fromRGB(255, 255, 255)
+            print("[COLOR PICKER]", options.Name, "=", UIState.Config[options.Flag])
+            if options.Callback then
+                options.Callback(UIState.Config[options.Flag])
+            end
+        end
+
+        function tab:AddSlider(options)
+            UIState.Config[options.Flag] = UIState.Config[options.Flag] or options.Default or options.Min
+            print("[SLIDER]", options.Name, "=", UIState.Config[options.Flag])
+            if options.Callback then
+                options.Callback(UIState.Config[options.Flag])
+            end
+        end
+
+        function tab:AddTextbox(options)
+            UIState.Config[options.Flag] = UIState.Config[options.Flag] or options.Default or ""
+            print("[TEXTBOX]", options.Name, "=", UIState.Config[options.Flag])
+            if options.Callback then
+                options.Callback(UIState.Config[options.Flag])
+            end
+        end
+
+        function tab:AddDropdown(options)
+            UIState.Config[options.Flag] = UIState.Config[options.Flag] or options.Default or options.Options[1]
+            print("[DROPDOWN]", options.Name, "=", UIState.Config[options.Flag])
+            if options.Callback then
+                options.Callback(UIState.Config[options.Flag])
+            end
+        end
+
+        table.insert(window.Tabs, tab)
+        return tab
+    end
+
+    -- Simulate key system
+    if settings.KeySystem and settings.KeySettings then
+        local keyOK = false
+        local keyFile = settings.KeySettings.FileName or "Key"
+        if settings.KeySettings.SaveKey and isfile(keyFile .. ".txt") then
+            local key = readfile(keyFile .. ".txt")
+            for _, v in pairs(settings.KeySettings.Key) do
+                if key == v then
+                    keyOK = true
+                    break
+                end
+            end
+        end
+
+        if not keyOK then
+            print("[KEY SYSTEM] Enter key:")
+            local enteredKey = settings.KeySettings.Key[1] -- Simuler l'entrée utilisateur
+            for _, v in pairs(settings.KeySettings.Key) do
+                if enteredKey == v then
+                    keyOK = true
+                    if settings.KeySettings.SaveKey then
+                        writefile(keyFile .. ".txt", enteredKey)
+                    end
+                    break
+                end
+            end
+        end
+
+        if not keyOK then
+            error("[KEY SYSTEM] Invalid key")
+        end
+    end
+
+    table.insert(UIState.Windows, window)
+    return window
+end
+
+return library
