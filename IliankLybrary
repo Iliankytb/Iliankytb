@@ -1,3 +1,4 @@
+-- ModuleScript: UILibrary
 local library = {}
 
 local UIState = {
@@ -5,11 +6,12 @@ local UIState = {
         Background = Color3.fromRGB(30, 30, 30),
         Accent = Color3.fromRGB(0, 170, 255),
         Text = Color3.fromRGB(255, 255, 255),
-        Placeholder = Color3.fromRGB(150, 150, 150),
+        Header = Color3.fromRGB(35, 35, 35),
         SectionBackground = Color3.fromRGB(40, 40, 40),
         Button = Color3.fromRGB(50, 50, 50),
         ToggleOn = Color3.fromRGB(0, 200, 0),
-        ToggleOff = Color3.fromRGB(100, 100, 100)
+        ToggleOff = Color3.fromRGB(100, 100, 100),
+        Placeholder = Color3.fromRGB(150, 150, 150),
     }
 }
 
@@ -22,148 +24,243 @@ local function createUIElement(className, props)
 end
 
 function library:CreateWindow(settings)
-    local window = {}
     settings = settings or {}
+    local window = {}
 
-    local ScreenGui = createUIElement("ScreenGui", {
-        Name = "UIWindow_" .. (settings.Name or "Window"),
+    -- Créer la base de l'UI
+    local playerGui = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
+    local screenGui = createUIElement("ScreenGui", {
+        Name = "UIWindow_" .. (settings.Title or "Window"),
         ResetOnSpawn = false,
-        Parent = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
+        Parent = playerGui
     })
 
-    local MainFrame = createUIElement("Frame", {
+    -- MainFrame
+    local mainFrame = createUIElement("Frame", {
         Name = "MainFrame",
         BackgroundColor3 = UIState.Theme.Background,
         BorderSizePixel = 0,
-        Size = UDim2.new(0, 250, 0, 400),
-        Position = UDim2.new(0.05, 0, 0.2, 0),
-        AnchorPoint = Vector2.new(0, 0),
+        Size = UDim2.new(0, 800, 0, 500),
+        Position = UDim2.new(0.5, 0, 0.5, 0),
+        AnchorPoint = Vector2.new(0.5, 0.5),
         Active = true,
         Draggable = true,
-        Parent = ScreenGui
+        Parent = screenGui
+    })
+    createUIElement("UICorner", { Parent = mainFrame })
+
+    -- Header
+    local header = createUIElement("Frame", {
+        BackgroundColor3 = UIState.Theme.Header,
+        Size = UDim2.new(1, 0, 0, 50),
+        Parent = mainFrame
+    })
+    createUIElement("TextLabel", {
+        Text = settings.Title or "UI Window",
+        BackgroundTransparency = 1,
+        TextColor3 = UIState.Theme.Text,
+        TextSize = 24,
+        Font = Enum.Font.GothamSemibold,
+        TextXAlignment = Enum.TextXAlignment.Left,
+        Position = UDim2.new(0, 15, 0, 0),
+        Size = UDim2.new(1, -30, 1, 0),
+        Parent = header
     })
 
-    createUIElement("UIListLayout", {
-        Parent = MainFrame,
-        Padding = UDim.new(0, 4)
+    -- Navigation gauche
+    local navFrame = createUIElement("Frame", {
+        BackgroundColor3 = UIState.Theme.SectionBackground,
+        Size = UDim2.new(0, 200, 1, -50),
+        Position = UDim2.new(0, 0, 0, 50),
+        Parent = mainFrame
     })
+    local navLayout = Instance.new("UIListLayout", navFrame)
+    navLayout.Padding = UDim.new(0, 6)
+    navLayout.SortOrder = Enum.SortOrder.LayoutOrder
 
-    window.MainFrame = MainFrame
+    -- Content droite (scroll)
+    local contentFrame = createUIElement("ScrollingFrame", {
+        BackgroundTransparency = 1,
+        Size = UDim2.new(1, -200, 1, -50),
+        Position = UDim2.new(0, 200, 0, 50),
+        CanvasSize = UDim2.new(0, 0, 0, 0),
+        ScrollBarThickness = 6,
+        Parent = mainFrame
+    })
+    local contentLayout = Instance.new("UIListLayout", contentFrame)
+    contentLayout.Padding = UDim.new(0, 10)
+    contentLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    contentLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+        contentFrame.CanvasSize = UDim2.new(0, 0, 0, contentLayout.AbsoluteContentSize.Y + 20)
+    end)
+
+    -- Onglets
+    window._tabs = {}
 
     function window:CreateTab(name)
         local tab = {}
+        -- Bouton onglet
+        tab.button = createUIElement("TextButton", {
+            Text = name,
+            BackgroundColor3 = UIState.Theme.Button,
+            TextColor3 = UIState.Theme.Text,
+            Font = Enum.Font.Gotham,
+            TextSize = 18,
+            Size = UDim2.new(1, -20, 0, 40),
+            Parent = navFrame
+        })
+        createUIElement("UICorner", { Parent = tab.button })
 
-        function tab:AddToggle(options)
-            local toggle = createUIElement("TextButton", {
-                Text = options.Name or "Toggle",
-                BackgroundColor3 = UIState.Theme.ToggleOff,
-                TextColor3 = UIState.Theme.Text,
-                Size = UDim2.new(1, -10, 0, 30),
-                Parent = options.Parent or window.MainFrame
-            })
+        -- Zone de contenu
+        tab.content = createUIElement("Frame", {
+            Name = "Content_" .. name,
+            BackgroundTransparency = 1,
+            Size = UDim2.new(1, 0, 0, 0),
+            Parent = contentFrame
+        })
+        local layout = Instance.new("UIListLayout", tab.content)
+        layout.Padding = UDim.new(0, 10)
+        layout.SortOrder = Enum.SortOrder.LayoutOrder
+        layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+            tab.content.Size = UDim2.new(1, 0, 0, layout.AbsoluteContentSize.Y)
+        end)
 
-            local state = options.Default or false
-            toggle.MouseButton1Click:Connect(function()
-                state = not state
-                toggle.BackgroundColor3 = state and UIState.Theme.ToggleOn or UIState.Theme.ToggleOff
-                if options.Callback then
-                    options.Callback(state)
-                end
-            end)
-        end
+        -- Clique onglet
+        tab.button.MouseButton1Click:Connect(function()
+            for _, t in pairs(window._tabs) do
+                t.content.Visible = false
+                t.button.BackgroundColor3 = UIState.Theme.Button
+            end
+            tab.content.Visible = true
+            tab.button.BackgroundColor3 = UIState.Theme.Accent
+        end)
 
-        function tab:AddButton(options)
-            local button = createUIElement("TextButton", {
-                Text = options.Name or "Button",
+        -- Par défaut, cache contenu
+        tab.content.Visible = false
+        table.insert(window._tabs, tab)
+
+        -- Ajout d’éléments
+        function tab:AddButton(opts)
+            local btn = createUIElement("TextButton", {
+                Text = opts.Name or "Button",
                 BackgroundColor3 = UIState.Theme.Button,
                 TextColor3 = UIState.Theme.Text,
-                Size = UDim2.new(1, -10, 0, 30),
-                Parent = options.Parent or window.MainFrame
+                Font = Enum.Font.Gotham,
+                TextSize = 18,
+                Size = UDim2.new(1, 0, 0, 40),
+                Parent = tab.content
             })
-
-            button.MouseButton1Click:Connect(function()
-                if options.Callback then
-                    options.Callback()
-                end
+            createUIElement("UICorner", { Parent = btn })
+            btn.MouseButton1Click:Connect(function()
+                if opts.Callback then opts.Callback() end
             end)
         end
 
-        function tab:AddSlider(options)
+        function tab:AddToggle(opts)
+            local btn = createUIElement("TextButton", {
+                Text = opts.Name or "Toggle",
+                BackgroundColor3 = opts.Default and UIState.Theme.ToggleOn or UIState.Theme.ToggleOff,
+                TextColor3 = UIState.Theme.Text,
+                Font = Enum.Font.Gotham,
+                TextSize = 18,
+                Size = UDim2.new(1, 0, 0, 40),
+                Parent = tab.content
+            })
+            createUIElement("UICorner", { Parent = btn })
+            local state = opts.Default or false
+            btn.MouseButton1Click:Connect(function()
+                state = not state
+                btn.BackgroundColor3 = state and UIState.Theme.ToggleOn or UIState.Theme.ToggleOff
+                if opts.Callback then opts.Callback(state) end
+            end)
+        end
+
+        function tab:AddSlider(opts)
             local frame = createUIElement("Frame", {
                 BackgroundColor3 = UIState.Theme.SectionBackground,
-                Size = UDim2.new(1, -10, 0, 50),
-                Parent = options.Parent or window.MainFrame
+                Size = UDim2.new(1, 0, 0, 60),
+                Parent = tab.content
             })
-
+            createUIElement("UICorner", { Parent = frame })
             local label = createUIElement("TextLabel", {
-                Text = options.Name or "Slider",
+                Text = opts.Name or "Slider",
                 BackgroundTransparency = 1,
                 TextColor3 = UIState.Theme.Text,
-                Size = UDim2.new(1, 0, 0.5, 0),
+                Font = Enum.Font.Gotham,
+                TextSize = 18,
+                Position = UDim2.new(0, 10, 0, 5),
+                Size = UDim2.new(1, -20, 0, 20),
                 Parent = frame
             })
-
-            local slider = createUIElement("TextButton", {
-                Text = tostring(options.Default or 0),
+            local btn = createUIElement("TextButton", {
+                Text = tostring(opts.Default or opts.Min or 0),
                 BackgroundColor3 = UIState.Theme.Button,
                 TextColor3 = UIState.Theme.Text,
-                Size = UDim2.new(1, 0, 0.5, 0),
-                Position = UDim2.new(0, 0, 0.5, 0),
+                Font = Enum.Font.Gotham,
+                TextSize = 18,
+                Position = UDim2.new(0, 10, 0, 30),
+                Size = UDim2.new(1, -20, 0, 30),
                 Parent = frame
             })
-
-            local value = options.Default or 0
-            slider.MouseButton1Click:Connect(function()
-                value = value + 1
-                if value > options.Max then value = options.Min end
-                slider.Text = tostring(value)
-                if options.Callback then options.Callback(value) end
+            createUIElement("UICorner", { Parent = btn })
+            local val = opts.Default or opts.Min or 0
+            btn.MouseButton1Click:Connect(function()
+                val = val + 1
+                if val > opts.Max then val = opts.Min end
+                btn.Text = tostring(val)
+                if opts.Callback then opts.Callback(val) end
             end)
         end
 
-        function tab:AddTextbox(options)
-            local textbox = createUIElement("TextBox", {
-                Text = options.Default or "",
-                PlaceholderText = options.Placeholder or "Enter text...",
+        function tab:AddTextbox(opts)
+            local txt = createUIElement("TextBox", {
+                Text = opts.Default or "",
+                PlaceholderText = opts.Placeholder or "",
                 BackgroundColor3 = UIState.Theme.Button,
                 TextColor3 = UIState.Theme.Text,
                 PlaceholderColor3 = UIState.Theme.Placeholder,
-                Size = UDim2.new(1, -10, 0, 30),
-                Parent = options.Parent or window.MainFrame
+                Font = Enum.Font.Gotham,
+                TextSize = 18,
+                Size = UDim2.new(1, 0, 0, 40),
+                Parent = tab.content
             })
-
-            textbox.FocusLost:Connect(function()
-                if options.Callback then options.Callback(textbox.Text) end
+            createUIElement("UICorner", { Parent = txt })
+            txt.FocusLost:Connect(function()
+                if opts.Callback then opts.Callback(txt.Text) end
             end)
         end
 
-        function tab:AddDropdown(options)
-            local dropdown = createUIElement("TextButton", {
-                Text = options.Name or "Dropdown",
+        function tab:AddDropdown(opts)
+            local btn = createUIElement("TextButton", {
+                Text = opts.Default or opts.Options[1],
                 BackgroundColor3 = UIState.Theme.Button,
                 TextColor3 = UIState.Theme.Text,
-                Size = UDim2.new(1, -10, 0, 30),
-                Parent = options.Parent or window.MainFrame
+                Font = Enum.Font.Gotham,
+                TextSize = 18,
+                Size = UDim2.new(1, 0, 0, 40),
+                Parent = tab.content
             })
-
-            dropdown.MouseButton1Click:Connect(function()
-                if options.Callback then options.Callback("Selected") end -- Placeholder comportement
+            createUIElement("UICorner", { Parent = btn })
+            btn.MouseButton1Click:Connect(function()
+                -- cycle through options
+                local i = table.find(opts.Options, btn.Text) or 1
+                i = i + 1 > #opts.Options and 1 or i + 1
+                btn.Text = opts.Options[i]
+                if opts.Callback then opts.Callback(btn.Text) end
             end)
-        end
-
-        function tab:AddExportConfigButton(options)
-            tab:AddButton({
-                Name = options.Name or "Export Config",
-                Callback = function()
-                    local config = {}
-                    pcall(function()
-                        writefile((options.FileName or "config") .. ".json", game:GetService("HttpService"):JSONEncode(config))
-                    end)
-                end
-            })
         end
 
         return tab
+    end
+
+    function window:SaveConfig()
+        if settings.ConfigurationSaving and settings.ConfigurationSaving.Enabled then
+            local data = {}
+            local path = settings.ConfigurationSaving.FolderName.."/"..settings.ConfigurationSaving.FileName..".json"
+            pcall(function()
+                writefile(path, game:GetService("HttpService"):JSONEncode(data))
+            end)
+        end
     end
 
     return window
