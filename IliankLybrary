@@ -232,67 +232,76 @@ end
 
     
         function tab:AddSlider(opts)
-    local min, max = opts.Min or 0, opts.Max or 100
-    local value = opts.Default or min
+    local min, max = opts.Min or 0, opts.Max or 100
+    local value = opts.Default or min
 
-    local container = createUIElement("Frame", {
-        BackgroundColor3 = UIState.Theme.SectionBackground,
-        Size = UDim2.new(1, 0, 0, 60),
-        Parent = tab.content
-    })
-    createUIElement("UICorner", { Parent = container })
+    local container = createUIElement("Frame", {
+        BackgroundColor3 = UIState.Theme.SectionBackground,
+        Size = UDim2.new(1, 0, 0, 60),
+        Parent = tab.content
+    })
+    createUIElement("UICorner", { Parent = container })
 
-    local label = createUIElement("TextLabel", {
-        Text = (opts.Name or "Slider") .. ": " .. tostring(value),
-        BackgroundTransparency = 1,
-        TextColor3 = UIState.Theme.Text,
-        Font = Enum.Font.Gotham,
-        TextSize = 18,
-        Position = UDim2.new(0, 10, 0, 5),
-        Size = UDim2.new(1, -20, 0, 20),
-        Parent = container
-    })
+    local label = createUIElement("TextLabel", {
+        Text = (opts.Name or "Slider") .. ": " .. tostring(value),
+        BackgroundTransparency = 1,
+        TextColor3 = UIState.Theme.Text,
+        Font = Enum.Font.Gotham,
+        TextSize = 18,
+        TextXAlignment = Enum.TextXAlignment.Left,
+        Position = UDim2.new(0, 10, 0, 5),
+        Size = UDim2.new(1, -20, 0, 20),
+        Parent = container
+    })
 
-    local sliderBar = createUIElement("Frame", {
-        BackgroundColor3 = UIState.Theme.Button,
-        Position = UDim2.new(0, 10, 0, 35),
-        Size = UDim2.new(1, -20, 0, 10),
-        Parent = container
-    })
-    createUIElement("UICorner", { Parent = sliderBar })
+    local sliderBar = createUIElement("Frame", {
+        BackgroundColor3 = UIState.Theme.Button,
+        Position = UDim2.new(0, 10, 0, 35),
+        Size = UDim2.new(1, -20, 0, 10),
+        Parent = container
+    })
+    createUIElement("UICorner", { CornerRadius = UDim.new(0, 5), Parent = sliderBar })
 
-    local sliderFill = createUIElement("Frame", {
-        BackgroundColor3 = UIState.Theme.Accent,
-        Size = UDim2.new((value - min) / (max - min), 0, 1, 0),
-        Parent = sliderBar
-    })
-    createUIElement("UICorner", { Parent = sliderFill })
+    local fillBar = createUIElement("Frame", {
+        BackgroundColor3 = UIState.Theme.Accent,
+        Size = UDim2.new((value - min) / (max - min), 0, 1, 0),
+        Parent = sliderBar
+    })
+    createUIElement("UICorner", { CornerRadius = UDim.new(0, 5), Parent = fillBar })
 
-    local dragging = false
-    sliderBar.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            dragging = true
-        end
-    end)
+    local dragging = false
+    local userInput = game:GetService("UserInputService")
 
-    game:GetService("UserInputService").InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            dragging = false
-        end
-    end)
+    local function updateSlider(inputX)
+        local absPos = sliderBar.AbsolutePosition.X
+        local absSize = sliderBar.AbsoluteSize.X
+        local pos = math.clamp((inputX - absPos) / absSize, 0, 1)
+        value = math.floor((min + (max - min) * pos) + 0.5)
+        fillBar.Size = UDim2.new(pos, 0, 1, 0)
+        label.Text = (opts.Name or "Slider") .. ": " .. tostring(value)
+        if opts.Callback then
+            opts.Callback(value)
+        end
+    end
 
-    game:GetService("RunService").RenderStepped:Connect(function()
-        if dragging then
-            local mouseX = game:GetService("UserInputService"):GetMouseLocation().X
-            local barPos = sliderBar.AbsolutePosition.X
-            local barSize = sliderBar.AbsoluteSize.X
-            local percent = math.clamp((mouseX - barPos) / barSize, 0, 1)
-            value = math.floor(min + (max - min) * percent)
-            sliderFill.Size = UDim2.new(percent, 0, 1, 0)
-            label.Text = (opts.Name or "Slider") .. ": " .. tostring(value)
-            if opts.Callback then opts.Callback(value) end
-        end
-    end)
+    sliderBar.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = true
+            updateSlider(input.Position.X)
+        end
+    end)
+
+    userInput.InputChanged:Connect(function(input)
+        if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+            updateSlider(input.Position.X)
+        end
+    end)
+
+    userInput.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            dragging = false
+        end
+    end)
 end
 
 
