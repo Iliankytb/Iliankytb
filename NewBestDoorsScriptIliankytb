@@ -822,6 +822,38 @@ end
 end)
 end,
 })
+local BigDistancePromptToggle = GameTab:CreateToggle({
+   Name = "Big Distance Prompt",
+   CurrentValue = false,
+   Flag = "AutoBigDistancePrompt", 
+   Callback = function(Value)
+ActiveBigPrompt = Value 
+task.spawn(function() 
+while ActiveBigPrompt do 
+task.spawn(function()
+for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
+if Assets:isA("ProximityPrompt") then 
+task.spawn(function()
+if Assets.MaxActivationDistance ~= 13 then
+Assets:SetAttribute("MaxActivationDistanceOld",Assets.MaxActivationDistance)
+Assets.MaxActivationDistance = 13
+end
+end)
+end 
+end  
+wait(0.1) end 
+for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
+if Assets:isA("ProximityPrompt") then 
+task.spawn(function()
+if Assets:GetAttribute("MaxActivationDistanceOld") and Assets:GetAttribute("MaxActivationDistanceOld") ~= 13 then
+Assets.MaxActivationDistance = Assets:GetAttribute("MaxActivationDistanceOld")
+end
+end)
+end 
+end  
+end)
+end,
+})
 local ButtonUnloadCheat = SettingsTab:CreateButton({
    Name = "Unload Cheat",
    Callback = function()
@@ -846,7 +878,16 @@ end,  LimitRangerEsp = CurrentValue,
    Callback = function(Value)
   DisableLimitRangerEsp = Value 
 end,
-}) local CanJumpToggle = PlayerTab:CreateToggle({
+})
+local DistanceEspToggle = SettingsTab:CreateToggle({
+   Name = "Activate Distance For Esp",
+   CurrentValue = false,
+   Flag = "ButtonADFE", 
+   Callback = function(Value)
+  ActiveDistanceEsp = Value 
+end,
+})
+local CanJumpToggle = PlayerTab:CreateToggle({
    Name = "Can Jump",
    CurrentValue = false,
    Flag = "CanJump1", 
