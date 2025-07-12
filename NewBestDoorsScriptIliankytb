@@ -46,7 +46,7 @@ local LimitRangerEsp = 100
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.50",
+   Content = "V.0.51",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -67,6 +67,7 @@ local Paragraph13 = InfoTab:CreateParagraph({Title = "Lag(V.0.42)", Content = "U
 local Paragraph14 = InfoTab:CreateParagraph({Title = "Esp(V.0.43)", Content = "Fixed Esp now!"})
 local Paragraph15 = InfoTab:CreateParagraph({Title = "Esp(V.0.47)", Content = "Fixed Esp again, it use the cframe of the camera instead of the rootpart cframe,bcause with the spectate it don't work!"})
 local Paragraph16 = InfoTab:CreateParagraph({Title = "Added More Monsters(V.0.48)", Content = "Added A60 and A120 in Esp Monsters and Monster spawn alert."})
+local Paragraph17 = InfoTab:CreateParagraph({Title = "Added things(V.0.50-51)", Content = "Added A button to see distance for esp in settings,fixed auto interact,Added big distance prompt,Added textlabel like evade script.(coming soon esp players and custom esp color & highlight!"})
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local RunService = game:GetService("RunService")
