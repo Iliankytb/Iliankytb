@@ -42,7 +42,7 @@ local ActiveSpeedBoost,ActiveEspPlayers,ActiveEspBots,ActiveAutoWin,ActiveAutoFa
 
 Rayfield:Notify({
    Title = "Evade Version",
-   Content = "V.0.10",
+   Content = "V.0.11",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -66,7 +66,7 @@ highlight.Enabled = true
 	
 	local billboard = Char:FindFirstChild("ESP") or Instance.new("BillboardGui")
 	billboard.Name = "ESP"
-	billboard.Size = UDim2.new(0, 250, 0, 150)
+	billboard.Size = UDim2.new(0, 100, 0, 50)
 	billboard.AlwaysOnTop = true
 	billboard.StudsOffset = Vector3.new(0, Number, 0)
 	billboard.Adornee = Parent
