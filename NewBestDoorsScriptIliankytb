@@ -46,7 +46,7 @@ local LimitRangerEsp = 100
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.52",
+   Content = "V.0.53",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -132,7 +132,7 @@ while highlight and billboard and Parent and Parent.Parent do
 			local withinRange = distance <= LimitRangerEsp
 task.spawn(function()
 if ActiveDistanceEsp then
-label.Text = Text.." ("..distance.."M )"
+label.Text = Text.." ("..math.floor(distance + 0.5).." m)"
 else
 label.Text = Text
 end
