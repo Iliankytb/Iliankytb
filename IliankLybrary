@@ -40,8 +40,8 @@ function library:CreateWindow(settings)
         Name = "MainFrame",
         BackgroundColor3 = UIState.Theme.Background,
         BorderSizePixel = 0,
-        Size = UDim2.new(0, 800, 0, 500),
-        Position = UDim2.new(0.5, 0, 0.5, 0),
+        Size = UDim2.new(0, 500, 0, 400), -- plus compact
+   Position = UDim2.new(0.5, 0, 0.5, 0),
         AnchorPoint = Vector2.new(0.5, 0.5),
         Active = true,
         Draggable = true,
@@ -120,13 +120,7 @@ createUIElement("UIPadding", {
             Parent = navFrame
         })
         createUIElement("UICorner", { Parent = tab.button })
-createUIElement("UIPadding", {
-    PaddingTop = UDim.new(0, 10),
-    PaddingBottom = UDim.new(0, 10),
-    PaddingLeft = UDim.new(0, 10),
-    PaddingRight = UDim.new(0, 10),
-    Parent = tab.content
-})
+
 
         -- Zone de contenu
         tab.content = createUIElement("Frame", {
@@ -135,6 +129,13 @@ createUIElement("UIPadding", {
             Size = UDim2.new(1, 0, 0, 0),
             Parent = contentFrame
         })
+createUIElement("UIPadding", {
+    PaddingTop = UDim.new(0, 10),
+    PaddingBottom = UDim.new(0, 10),
+    PaddingLeft = UDim.new(0, 10),
+    PaddingRight = UDim.new(0, 10),
+    Parent = tab.content
+})
         local layout = Instance.new("UIListLayout", tab.content)
         layout.Padding = UDim.new(0, 10)
         layout.SortOrder = Enum.SortOrder.LayoutOrder
