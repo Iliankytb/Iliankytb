@@ -45,7 +45,7 @@ local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "
 
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.22",
+   Content = "V.0.23",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -158,7 +158,7 @@ local PlayerActiveEspPlayersToggle = EspTab:CreateToggle({
 task.spawn(function()
 while ActiveEspPlayers do 
 task.spawn(function()
-for _, Players in pairs(Game:GetService("Players"):GetChildren() do
+for _, Players in pairs(Game:GetService("Players"):GetChildren()) do
 if Players:isA("Players") and Players.Character and Players.Character:FindFirstChild("Head") and not Players.Character:FindFirstChildOfClass("Highlight") and not Players.Character.Head:FindFirstChildOfClass("BillboardGui") then
 CreateEsp(Players.Character,Color3.fromRGB(255,255,255),Players.Name,Players.Character.Head,2)
 end
@@ -166,7 +166,7 @@ end
 end)
 task.wait(0.1)
 end
-for _, Players in pairs(Game:GetService("Players"):GetChildren() do
+for _, Players in pairs(Game:GetService("Players"):GetChildren()) do
 if Players:isA("Players") and Players.Character and Players.Character:FindFirstChild("Head") and not Players.Character:FindFirstChildOfClass("Highlight") and not Players.Character.Head:FindFirstChildOfClass("BillboardGui") then
 KeepEsp(Players.Character,Players.Character.Head)
 end
@@ -185,7 +185,7 @@ task.spawn(function()
 while ActiveNoclip do 
 task.spawn(function()
 if Game.Players.LocalPlayer.Character then
-for _, Parts in pairs(Game.Players.LocalPlayer.Character:GetDecendants()) do
+for _, part in pairs(Game.Players.LocalPlayer.Character:GetDescendants()) do
 if Parts:isA("BasePart") and Parts.CanCollide then
 Parts.CanCollide = false
 end
@@ -195,7 +195,7 @@ end)
 task.wait(0.1)
 end 
 if Game.Players.LocalPlayer.Character then
-for _, Parts in pairs(Game.Players.LocalPlayer.Character:GetDecendants()) do
+for _, part in pairs(Game.Players.LocalPlayer.Character:GetDescendants()) do
 if Parts:isA("BasePart") and not Parts.CanCollide then
 Parts.CanCollide = true
 end
