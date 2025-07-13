@@ -45,7 +45,7 @@ local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "
 
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.24",
+   Content = "V.0.25",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -185,7 +185,7 @@ task.spawn(function()
 while ActiveNoclip do 
 task.spawn(function()
 if Game.Players.LocalPlayer.Character then
-for _, part in pairs(Game.Players.LocalPlayer.Character:GetDescendants()) do
+for _, Parts in pairs(Game.Players.LocalPlayer.Character:GetDescendants()) do
 if Parts:isA("BasePart") and Parts.CanCollide then
 Parts.CanCollide = false
 end
@@ -195,7 +195,7 @@ end)
 task.wait(0.1)
 end 
 if Game.Players.LocalPlayer.Character then
-for _, part in pairs(Game.Players.LocalPlayer.Character:GetDescendants()) do
+for _, Parts in pairs(Game.Players.LocalPlayer.Character:GetDescendants()) do
 if Parts:isA("BasePart") and not Parts.CanCollide then
 Parts.CanCollide = true
 end
