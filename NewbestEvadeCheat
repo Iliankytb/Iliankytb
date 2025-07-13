@@ -38,11 +38,11 @@ local PlayerTab = Window:CreateTab("Player")
 local GameTab = Window:CreateTab("Game") local EspTab = Window:CreateTab("Esp")
 local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
-local ActiveSpeedBoost,ActiveEspPlayers,ActiveEspBots,ActiveAutoWin,ActiveAutoFarmMoney,InReviving,AutoFarmSummerEvent,ActiveEspSummerEvent = false,false,false,false,false,false,false,false
+local ActiveSpeedBoost,ActiveEspPlayers,ActiveEspBots,ActiveAutoWin,ActiveAutoFarmMoney,InReviving,AutoFarmSummerEvent,ActiveEspSummerEvent,InTickets,ActiveDistanceEsp = false,false,false,false,false,false,false,false,false,false
 
 Rayfield:Notify({
    Title = "Evade Version",
-   Content = "V.0.11",
+   Content = "V.0.12",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -81,6 +81,31 @@ highlight.Enabled = true
 	label.TextColor3 = Color
 	label.TextScaled = true
 	label.Parent = billboard
+task.spawn(function()
+		local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local Workspace = game:GetService("Workspace")
+
+local LocalPlayer = Players.LocalPlayer
+local Camera = Workspace.CurrentCamera
+
+while highlight and billboard and Parent and Parent.Parent do
+	local cameraPosition = Camera and Camera.CFrame.Position
+	if cameraPosition and Parent and Parent:IsA("BasePart") then
+	local distance = (cameraPosition - Parent.Position).Magnitude
+				task.spawn(function()
+if ActiveDistanceEsp then
+label.Text = Text.." ("..math.floor(distance + 0.5).." m)"
+else
+label.Text = Text
+end
+end)
+	end
+
+	RunService.Heartbeat:Wait()
+end
+
+	end)
 end
 local function KeepEsp(Char,Parent)
 	if Char and Char:FindFirstChildOfClass("Highlight") and Parent:FindFirstChildOfClass("BillboardGui") then
@@ -280,6 +305,14 @@ local ButtonUnloadCheat = SettingsTab:CreateButton({
    Name = "Unload Cheat",
    Callback = function()
   Rayfield:Destroy()
+end,
+})
+local DistanceEspToggle = SettingsTab:CreateToggle({
+   Name = "Distance For Esp",
+   CurrentValue = false,
+   Flag = "ButtonDistanceEsp1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  ActiveDistanceEsp = Value 
 end,
 })
 local Themes = {
