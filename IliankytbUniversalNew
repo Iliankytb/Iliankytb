@@ -45,7 +45,7 @@ local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "
 
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.23",
+   Content = "V.0.24",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -159,7 +159,7 @@ task.spawn(function()
 while ActiveEspPlayers do 
 task.spawn(function()
 for _, Players in pairs(Game:GetService("Players"):GetChildren()) do
-if Players:isA("Players") and Players.Character and Players.Character:FindFirstChild("Head") and not Players.Character:FindFirstChildOfClass("Highlight") and not Players.Character.Head:FindFirstChildOfClass("BillboardGui") then
+if Players:isA("Player") and Players.Character and Players.Character:FindFirstChild("Head") and not Players.Character:FindFirstChildOfClass("Highlight") and not Players.Character.Head:FindFirstChildOfClass("BillboardGui") then
 CreateEsp(Players.Character,Color3.fromRGB(255,255,255),Players.Name,Players.Character.Head,2)
 end
 end
@@ -167,7 +167,7 @@ end)
 task.wait(0.1)
 end
 for _, Players in pairs(Game:GetService("Players"):GetChildren()) do
-if Players:isA("Players") and Players.Character and Players.Character:FindFirstChild("Head") and not Players.Character:FindFirstChildOfClass("Highlight") and not Players.Character.Head:FindFirstChildOfClass("BillboardGui") then
+if Players:isA("Player") and Players.Character and Players.Character:FindFirstChild("Head") and not Players.Character:FindFirstChildOfClass("Highlight") and not Players.Character.Head:FindFirstChildOfClass("BillboardGui") then
 KeepEsp(Players.Character,Players.Character.Head)
 end
 end
@@ -176,7 +176,7 @@ end,
 })
 
 local PlayerNoclipToggle = PlayerTab:CreateToggle({
-   Name = "Noclip(Coming Very Soon)",
+   Name = "Noclip",
    CurrentValue = false,
    Flag = "ButtonNoclip", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
