@@ -45,7 +45,7 @@ local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "
 
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.21",
+   Content = "V.0.22",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -150,15 +150,15 @@ end,
 })
 
 local PlayerActiveEspPlayersToggle = EspTab:CreateToggle({
-   Name = "Esp Players(Coming Very Soon)",
+   Name = "Esp Players",
    CurrentValue = false,
    Flag = "ButtonEspPlayers", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
   ActiveEspPlayers = Value 
---[[task.spawn(function()
+task.spawn(function()
 while ActiveEspPlayers do 
 task.spawn(function()
-for _, Players in pair(Game:GetService("Players"):GetChildren() do
+for _, Players in pairs(Game:GetService("Players"):GetChildren() do
 if Players:isA("Players") and Players.Character and Players.Character:FindFirstChild("Head") and not Players.Character:FindFirstChildOfClass("Highlight") and not Players.Character.Head:FindFirstChildOfClass("BillboardGui") then
 CreateEsp(Players.Character,Color3.fromRGB(255,255,255),Players.Name,Players.Character.Head,2)
 end
@@ -166,12 +166,12 @@ end
 end)
 task.wait(0.1)
 end
-for _, Players in pair(Game:GetService("Players"):GetChildren() do
+for _, Players in pairs(Game:GetService("Players"):GetChildren() do
 if Players:isA("Players") and Players.Character and Players.Character:FindFirstChild("Head") and not Players.Character:FindFirstChildOfClass("Highlight") and not Players.Character.Head:FindFirstChildOfClass("BillboardGui") then
 KeepEsp(Players.Character,Players.Character.Head)
 end
 end
-end)]]
+end)
 end,
 })
 
@@ -181,13 +181,27 @@ local PlayerNoclipToggle = PlayerTab:CreateToggle({
    Flag = "ButtonNoclip", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
   ActiveNoclip = Value 
---[[task.spawn(function()
+task.spawn(function()
 while ActiveNoclip do 
 task.spawn(function()
-
+if Game.Players.LocalPlayer.Character then
+for _, Parts in pairs(Game.Players.LocalPlayer.Character:GetDecendants()) do
+if Parts:isA("BasePart") and Parts.CanCollide then
+Parts.CanCollide = false
+end
+end
+end
 end)
 task.wait(0.1)
-end end)]]
+end 
+if Game.Players.LocalPlayer.Character then
+for _, Parts in pairs(Game.Players.LocalPlayer.Character:GetDecendants()) do
+if Parts:isA("BasePart") and not Parts.CanCollide then
+Parts.CanCollide = true
+end
+end
+end
+end)
 end,
 })
 
