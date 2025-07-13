@@ -1,6 +1,4 @@
--- ModuleScript: UILibrary
 local library = {}
-
 local UIState = {
     Theme = {
         Background = Color3.fromRGB(30, 30, 30),
@@ -14,7 +12,6 @@ local UIState = {
         Placeholder = Color3.fromRGB(150, 150, 150),
     }
 }
-
 local function createUIElement(className, props)
     local element = Instance.new(className)
     for prop, val in pairs(props) do
@@ -22,20 +19,15 @@ local function createUIElement(className, props)
     end
     return element
 end
-
 function library:CreateWindow(settings)
     settings = settings or {}
     local window = {}
-
-    -- Créer la base de l'UI
     local playerGui = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
     local screenGui = createUIElement("ScreenGui", {
         Name = "UIWindow_" .. (settings.Title or "Window"),
         ResetOnSpawn = false,
         Parent = playerGui
     })
-
-    -- MainFrame
     local mainFrame = createUIElement("Frame", {
         Name = "MainFrame",
         BackgroundColor3 = UIState.Theme.Background,
@@ -48,8 +40,6 @@ function library:CreateWindow(settings)
         Parent = screenGui
     })
     createUIElement("UICorner", { Parent = mainFrame })
-
-    -- Header
     local header = createUIElement("Frame", {
         BackgroundColor3 = UIState.Theme.Header,
         Size = UDim2.new(1, 0, 0, 50),
@@ -66,8 +56,6 @@ function library:CreateWindow(settings)
         Size = UDim2.new(1, -30, 1, 0),
         Parent = header
     })
-
-    -- Navigation gauche
     local navFrame = createUIElement("Frame", {
         BackgroundColor3 = UIState.Theme.SectionBackground,
         Size = UDim2.new(0, 200, 1, -50),
@@ -81,13 +69,12 @@ createUIElement("UIPadding", {
     PaddingRight = UDim.new(0, 10),
     Parent = navFrame
 })
-
-    local navLayout = Instance.new("UIListLayout", navFrame)
+ local navLayout = Instance.new("UIListLayout", navFrame)
     navLayout.Padding = UDim.new(0, 6)
     navLayout.SortOrder = Enum.SortOrder.LayoutOrder
 
-    -- Content droite (scroll)
-    local contentFrame = createUIElement("ScrollingFrame", {
+    
+local contentFrame = createUIElement("ScrollingFrame", {
         BackgroundTransparency = 1,
         Size = UDim2.new(1, -200, 1, -50),
         Position = UDim2.new(0, 200, 0, 50),
@@ -95,21 +82,15 @@ createUIElement("UIPadding", {
         ScrollBarThickness = 6,
         Parent = mainFrame
     })
-
-
-    local contentLayout = Instance.new("UIListLayout", contentFrame)
+  local contentLayout = Instance.new("UIListLayout", contentFrame)
     contentLayout.Padding = UDim.new(0, 10)
     contentLayout.SortOrder = Enum.SortOrder.LayoutOrder
     contentLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
         contentFrame.CanvasSize = UDim2.new(0, 0, 0, contentLayout.AbsoluteContentSize.Y + 20)
     end)
-
-    -- Onglets
     window._tabs = {}
-
-    function window:CreateTab(name)
+function window:CreateTab(name)
         local tab = {}
-        -- Bouton onglet
         tab.button = createUIElement("TextButton", {
             Text = name,
             BackgroundColor3 = UIState.Theme.Button,
@@ -120,9 +101,6 @@ createUIElement("UIPadding", {
             Parent = navFrame
         })
         createUIElement("UICorner", { Parent = tab.button })
-
-
-        -- Zone de contenu
         tab.content = createUIElement("Frame", {
             Name = "Content_" .. name,
             BackgroundTransparency = 1,
@@ -136,14 +114,12 @@ createUIElement("UIPadding", {
     PaddingRight = UDim.new(0, 10),
     Parent = tab.content
 })
-        local layout = Instance.new("UIListLayout", tab.content)
+  local layout = Instance.new("UIListLayout", tab.content)
         layout.Padding = UDim.new(0, 10)
         layout.SortOrder = Enum.SortOrder.LayoutOrder
         layout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
             tab.content.Size = UDim2.new(1, 0, 0, layout.AbsoluteContentSize.Y)
         end)
-
-        -- Clique onglet
         tab.button.MouseButton1Click:Connect(function()
             for _, t in pairs(window._tabs) do
                 t.content.Visible = false
@@ -152,12 +128,8 @@ createUIElement("UIPadding", {
             tab.content.Visible = true
             tab.button.BackgroundColor3 = UIState.Theme.Accent
         end)
-
-        -- Par défaut, cache contenu
         tab.content.Visible = false
         table.insert(window._tabs, tab)
-
-        -- Ajout d’éléments
         function tab:AddButton(opts)
             local btn = createUIElement("TextButton", {
                 Text = opts.Name or "Button",
@@ -173,15 +145,13 @@ createUIElement("UIPadding", {
                 if opts.Callback then opts.Callback() end
             end)
         end
-
         function tab:AddToggle(opts)
     local container = createUIElement("Frame", {
         BackgroundTransparency = 1,
         Size = UDim2.new(1, 0, 0, 40),
         Parent = tab.content
     })
-
-    local label = createUIElement("TextLabel", {
+ local label = createUIElement("TextLabel", {
         Text = opts.Name or "Toggle",
         BackgroundTransparency = 1,
         TextColor3 = UIState.Theme.Text,
@@ -191,7 +161,6 @@ createUIElement("UIPadding", {
         TextXAlignment = Enum.TextXAlignment.Left,
         Parent = container
     })
-
     local toggleFrame = createUIElement("Frame", {
         BackgroundColor3 = UIState.Theme.Button,
         Position = UDim2.new(1, -40, 0.5, -10),
@@ -200,7 +169,6 @@ createUIElement("UIPadding", {
         Parent = container
     })
     createUIElement("UICorner", { CornerRadius = UDim.new(0, 10), Parent = toggleFrame })
-
     local toggleIndicator = createUIElement("Frame", {
         BackgroundColor3 = UIState.Theme.Accent,
         Size = UDim2.new(0, 14, 0, 14),
@@ -209,7 +177,6 @@ createUIElement("UIPadding", {
         Parent = toggleFrame
     })
     createUIElement("UICorner", { CornerRadius = UDim.new(1, 0), Parent = toggleIndicator })
-
     local state = opts.Default or false
     local function updateToggle()
         toggleIndicator:TweenPosition(
@@ -217,31 +184,24 @@ createUIElement("UIPadding", {
             Enum.EasingDirection.Out, Enum.EasingStyle.Quad, 0.2, true
         )
     end
-
-    toggleFrame.InputBegan:Connect(function(input)
+   toggleFrame.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 then
             state = not state
             updateToggle()
             if opts.Callback then opts.Callback(state) end
         end
     end)
-
-    updateToggle()
+  updateToggle()
 end
-
-
-    
-        function tab:AddSlider(opts)
+function tab:AddSlider(opts)
     local min, max = opts.Min or 0, opts.Max or 100
     local value = opts.Default or min
-
-    local container = createUIElement("Frame", {
+local container = createUIElement("Frame", {
         BackgroundColor3 = UIState.Theme.SectionBackground,
         Size = UDim2.new(1, 0, 0, 60),
         Parent = tab.content
     })
     createUIElement("UICorner", { Parent = container })
-
     local label = createUIElement("TextLabel", {
         Text = (opts.Name or "Slider") .. ": " .. tostring(value),
         BackgroundTransparency = 1,
@@ -253,7 +213,6 @@ end
         Size = UDim2.new(1, -20, 0, 20),
         Parent = container
     })
-
     local sliderBar = createUIElement("Frame", {
         BackgroundColor3 = UIState.Theme.Button,
         Position = UDim2.new(0, 10, 0, 35),
@@ -261,17 +220,14 @@ end
         Parent = container
     })
     createUIElement("UICorner", { CornerRadius = UDim.new(0, 5), Parent = sliderBar })
-
     local fillBar = createUIElement("Frame", {
         BackgroundColor3 = UIState.Theme.Accent,
         Size = UDim2.new((value - min) / (max - min), 0, 1, 0),
         Parent = sliderBar
     })
     createUIElement("UICorner", { CornerRadius = UDim.new(0, 5), Parent = fillBar })
-
     local dragging = false
-    local userInput = game:GetService("UserInputService")
-
+   local userInput = game:GetService("UserInputService")
     local function updateSlider(inputX)
         local absPos = sliderBar.AbsolutePosition.X
         local absSize = sliderBar.AbsoluteSize.X
@@ -283,29 +239,24 @@ end
             opts.Callback(value)
         end
     end
-
     sliderBar.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 then
             dragging = true
             updateSlider(input.Position.X)
         end
     end)
-
     userInput.InputChanged:Connect(function(input)
         if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
             updateSlider(input.Position.X)
         end
     end)
-
     userInput.InputEnded:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 then
             dragging = false
         end
     end)
 end
-
-
-        function tab:AddTextbox(opts)
+function tab:AddTextbox(opts)
             local txt = createUIElement("TextBox", {
                 Text = opts.Default or "",
                 PlaceholderText = opts.Placeholder or "",
@@ -322,8 +273,7 @@ end
                 if opts.Callback then opts.Callback(txt.Text) end
             end)
         end
-
-        function tab:AddDropdown(opts)
+ function tab:AddDropdown(opts)
             local btn = createUIElement("TextButton", {
                 Text = opts.Default or opts.Options[1],
                 BackgroundColor3 = UIState.Theme.Button,
@@ -335,18 +285,15 @@ end
             })
             createUIElement("UICorner", { Parent = btn })
             btn.MouseButton1Click:Connect(function()
-                -- cycle through options
                 local i = table.find(opts.Options, btn.Text) or 1
                 i = i + 1 > #opts.Options and 1 or i + 1
                 btn.Text = opts.Options[i]
                 if opts.Callback then opts.Callback(btn.Text) end
             end)
         end
-
         return tab
     end
-
-    function window:SaveConfig()
+   function window:SaveConfig()
         if settings.ConfigurationSaving and settings.ConfigurationSaving.Enabled then
             local data = {}
             local path = settings.ConfigurationSaving.FolderName.."/"..settings.ConfigurationSaving.FileName..".json"
@@ -355,8 +302,6 @@ end
             end)
         end
     end
-
-    return window
+  return window
 end
-
 return library
