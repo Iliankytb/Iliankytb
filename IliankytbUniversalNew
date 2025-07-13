@@ -37,17 +37,88 @@ local Window = Rayfield:CreateWindow({
 local InfoTab = Window:CreateTab("Info")
 local PlayerTab = Window:CreateTab("Player")
 local GameTab = Window:CreateTab("Game")
+local EspTab = Window:CreateTab("Esp")
 local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
-local ActiveSpeedBoost = false
+local ActiveSpeedBoost,ActiveNoclip,ActiveEspPlayers,ActiveDistanceEsp = false,false,false,false
 local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "Loading"})
 
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.20",
+   Content = "V.0.21",
    Duration = 2.5,
    Image = "rewind",
 })
+local function CreateEsp(Char, Color, Text,Parent,number)
+	if not Char then return end
+	if Char:FindFirstChild("ESP") and Char:FindFirstChildOfClass("Highlight") then return end
+
+	
+	local highlight = Char:FindFirstChildOfClass("Highlight") or Instance.new("Highlight")
+	highlight.Name = "ESP_Highlight"
+highlight.Adornee = Char
+highlight.FillColor = Color
+highlight.FillTransparency = 1
+highlight.OutlineColor = Color
+highlight.OutlineTransparency = 0
+highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+highlight.Enabled = true
+	highlight.Parent = Char
+
+	
+	local billboard = Char:FindFirstChild("ESP") or Instance.new("BillboardGui")
+	billboard.Name = "ESP"
+	billboard.Size = UDim2.new(0, 50, 0, 25)
+	billboard.AlwaysOnTop = true
+	billboard.StudsOffset = Vector3.new(0, number, 0)
+	billboard.Adornee = Parent
+	billboard.Enabled = true
+	billboard.Parent = Parent
+
+	
+	local label = billboard:FindFirstChildOfClass("TextLabel") or Instance.new("TextLabel")
+	label.Size = UDim2.new(1, 0, 1, 0)
+	label.BackgroundTransparency = 1
+	label.Text = Text
+	label.TextColor3 = Color
+	label.TextScaled = true
+	label.Parent = billboard
+
+	task.spawn(function()
+		local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local Workspace = game:GetService("Workspace")
+
+local LocalPlayer = Players.LocalPlayer
+local Camera = Workspace.CurrentCamera
+
+while highlight and billboard and Parent and Parent.Parent do
+	local cameraPosition = Camera and Camera.CFrame.Position
+	if cameraPosition and Parent and Parent:IsA("BasePart") then
+	local distance = (cameraPosition - Parent.Position).Magnitude
+				task.spawn(function()
+if ActiveDistanceEsp then
+label.Text = Text.." ("..math.floor(distance + 0.5).." m)"
+else
+label.Text = Text
+end
+end)
+
+	end
+
+	RunService.Heartbeat:Wait()
+end
+
+	end)
+end
+
+local function KeepEsp(Char,Parent)
+	if Char and Char:FindFirstChildOfClass("Highlight") and Parent:FindFirstChildOfClass("BillboardGui") then
+		Char:FindFirstChildOfClass("Highlight"):Destroy()
+		Parent:FindFirstChildOfClass("BillboardGui"):Destroy()
+	end
+end
+
 local function getServerInfo()
 	local Players = game:GetService("Players")
 	local playerCount = #Players:GetPlayers()
@@ -78,7 +149,47 @@ copyToClipboard("https://discord.gg/E2TqYRsRP4")
 end,
 })
 
+local PlayerActiveEspPlayersToggle = EspTab:CreateToggle({
+   Name = "Esp Players(Coming Very Soon)",
+   CurrentValue = false,
+   Flag = "ButtonEspPlayers", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  ActiveEspPlayers = Value 
+--[[task.spawn(function()
+while ActiveEspPlayers do 
+task.spawn(function()
+for _, Players in pair(Game:GetService("Players"):GetChildren() do
+if Players:isA("Players") and Players.Character and Players.Character:FindFirstChild("Head") and not Players.Character:FindFirstChildOfClass("Highlight") and not Players.Character.Head:FindFirstChildOfClass("BillboardGui") then
+CreateEsp(Players.Character,Color3.fromRGB(255,255,255),Players.Name,Players.Character.Head,2)
+end
+end
+end)
+task.wait(0.1)
+end
+for _, Players in pair(Game:GetService("Players"):GetChildren() do
+if Players:isA("Players") and Players.Character and Players.Character:FindFirstChild("Head") and not Players.Character:FindFirstChildOfClass("Highlight") and not Players.Character.Head:FindFirstChildOfClass("BillboardGui") then
+KeepEsp(Players.Character,Players.Character.Head)
+end
+end
+end)]]
+end,
+})
 
+local PlayerNoclipToggle = PlayerTab:CreateToggle({
+   Name = "Noclip(Coming Very Soon)",
+   CurrentValue = false,
+   Flag = "ButtonNoclip", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  ActiveNoclip = Value 
+--[[task.spawn(function()
+while ActiveNoclip do 
+task.spawn(function()
+
+end)
+task.wait(0.1)
+end end)]]
+end,
+})
 
 local ValueSpeed = 16
 local PlayerSpeedSlider = PlayerTab:CreateSlider({
@@ -197,6 +308,14 @@ local ButtonUnloadCheat = SettingsTab:CreateButton({
    Name = "Unload Cheat",
    Callback = function()
   Rayfield:Destroy()
+end,
+})
+local PlayerActiveDistanceEspToggle = SettingsTab:CreateToggle({
+   Name = "Distance For Esp",
+   CurrentValue = false,
+   Flag = "ButtonDistanceEsp", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  ActiveDistanceEsp = Value 
 end,
 })
 local Themes = {
