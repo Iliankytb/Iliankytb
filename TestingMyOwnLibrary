@@ -92,7 +92,7 @@ library:CreateWindow({
 		Options = {"Option 1", "Option 2", "Option 3"},
 		Default = "This is a Dropdown",
 		MultiSelect = true,
-Flag = "Droping" --Put a name flag for save data if you enabled saving data
+Flag = "Droping", --Put a name flag for save data if you enabled saving data
 		Callback = function(choice)
 			
 		end
