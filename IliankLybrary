@@ -816,12 +816,7 @@ local function VisibleWindow(window,settings1,gui)
 			}
 			tab.ColorPicker[flag] = api
 
-			-- Appliquer couleur sauvegardée ou couleur par défaut
-			if tab.ColorPickerValue[flag] then
-				ApplyColor(TableToColor3(tab.ColorPickerValue[flag]))
-			else
-				ApplyColor(defaultColor)
-			end
+		
 
 			return api
 		end
