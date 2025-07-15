@@ -34,7 +34,130 @@ local function VisibleWindow(window,settings1,gui)
 		Parent = gui,
 		Draggable = true,
 	})
+	-- Notify container frame
+	local NotifyFrame = createUI("Frame", {
+		Size = UDim2.new(0.25, 0, 1, 0),
+		Position = UDim2.new(0.75, 0, -0.05, 0),
+		BackgroundColor3 = Color3.fromRGB(20, 20, 20),
+		BackgroundTransparency = 1,
+		AnchorPoint = Vector2.new(0, 0),
+		Name = "NotifyFrame",
+		Parent = gui,
+	})
 
+	-- UIListLayout to stack notifications top to bottom
+	
+	function window:Destroy()
+		gui:Destroy()
+	end
+	function window:IsVisbility()
+		return mainFrame.Visible	
+	end
+	-- Ajoute ce layout une seule fois quand tu crées NotifyFrame :
+	local listLayout = Instance.new("UIListLayout")
+	listLayout.Padding = UDim.new(0, 5)
+	listLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	listLayout.Parent = NotifyFrame
+
+	function window:Notify(opts)
+		local title = opts.Title or "Alert"
+		local message = opts.Message or "No message provided."
+		local icon = opts.Icon or "rbxassetid://0"
+		local duration = opts.Duration or 5
+
+		local tweenService = game:GetService("TweenService")
+
+		-- Panneau principal fixé par UIListLayout
+		local notifyPanel = createUI("Frame", {
+			Size = UDim2.new(1, 0, 0.15, 0),
+			BackgroundTransparency = 1,
+			BorderSizePixel = 0,
+			ClipsDescendants = true,
+			Parent = NotifyFrame,
+		})
+
+		-- Conteneur interne animé (slide in/out)
+		local content = createUI("Frame", {
+			Size = UDim2.new(1, 0, 1, 0),
+			Position = UDim2.new(1, 20, 0, 0), -- hors écran à droite
+			BackgroundColor3 = Color3.fromRGB(30, 30, 30),
+			BackgroundTransparency = 0.25,
+			BorderSizePixel = 0,
+			Parent = notifyPanel,
+		})
+
+		-- Titre
+		createUI("TextLabel", {
+			Size = UDim2.new(1, -10, 0.2, 0),
+			Position = UDim2.new(0, 5, 0, 2),
+			Text = title,
+			TextScaled = true,
+			TextColor3 = Color3.fromRGB(255, 255, 255),
+			Font = Enum.Font.GothamBold,
+			BackgroundTransparency = 1,
+			TextXAlignment = Enum.TextXAlignment.Left,
+			Parent = content,
+		})
+
+		-- Message
+		createUI("TextLabel", {
+			Size = UDim2.new(1, -10, 0.6, 0),
+			Position = UDim2.new(0, 5, 0.2, 0),
+			Text = message,
+			TextScaled = true,
+			TextColor3 = Color3.fromRGB(220, 220, 220),
+			Font = Enum.Font.Gotham,
+			BackgroundTransparency = 1,
+			TextWrapped = true,
+			TextXAlignment = Enum.TextXAlignment.Left,
+			Parent = content,
+		})
+
+		-- Icône
+		createUI("ImageLabel", {
+			Size = UDim2.new(0.15, 0, 0.6, 0),
+			Position = UDim2.new(0.85, -5, 0.2, 0),
+			Image = icon,
+			BackgroundTransparency = 1,
+			Parent = content,
+		})
+
+		-- Barre de durée
+		local durationBar = createUI("Frame", {
+			Size = UDim2.new(1, 0, 0.05, 0),
+			Position = UDim2.new(0, 0, 0.95, 0),
+			BackgroundColor3 = Color3.fromRGB(0, 170, 255),
+			BorderSizePixel = 0,
+			Parent = content,
+		})
+
+		-- Animation de slide in (droite vers gauche)
+		local enterTween = tweenService:Create(content, TweenInfo.new(0.4, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {
+			Position = UDim2.new(0, 0, 0, 0)
+		})
+		enterTween:Play()
+
+		-- Barre de progression
+		durationBar.AnchorPoint = Vector2.new(1, 0)
+		durationBar.Position = UDim2.new(1, 0, 0.95, 0)
+		local durationTween = tweenService:Create(durationBar, TweenInfo.new(duration, Enum.EasingStyle.Linear), {
+			Size = UDim2.new(0, 0, 0.05, 0)
+		})
+		durationTween:Play()
+
+		-- Despawn après délai
+		task.delay(duration, function()
+			local exitTween = tweenService:Create(content, TweenInfo.new(0.4, Enum.EasingStyle.Quint, Enum.EasingDirection.In), {
+				Position = UDim2.new(1, 20, 0, 0)
+			})
+			exitTween:Play()
+			exitTween.Completed:Wait()
+			notifyPanel:Destroy()
+		end)
+	end
+
+
+	
 	createUI("UICorner", {Parent = mainFrame})
 	local animOpenPC = TweenService:Create(mainFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
 		Size = UDim2.new(0, 600, 0, 400);
@@ -122,7 +245,7 @@ local function VisibleWindow(window,settings1,gui)
 		BackgroundTransparency = 0.1,
 		Font = Enum.Font.GothamBold,
 		TextSize = 25,
-		BackgroundColor3 = Color3.fromRGB(152, 152, 152),
+		BackgroundColor3 = Color3.fromRGB(30, 30, 30);
 		Size = UDim2.new(0.15, 0, 0.1, 0),
 		Position = UDim2.new(0.15, 0, 0.125, 0),
 		TextXAlignment = Enum.TextXAlignment.Center,
@@ -150,12 +273,12 @@ local function VisibleWindow(window,settings1,gui)
 		
 	end)
 	if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
-animOpenMobile:Play()
+		animOpenMobile:Play()
 	elseif UserInputService.TouchEnabled and UserInputService.KeyboardEnabled then
 		animOpenPC:Play()
 	else
 		animOpenPC:Play()
-end
+	end
 	-- Ajuste la position et la taille des autres frames pour laisser la place au titre
 	tabsFrame.Position = UDim2.new(0, 0, 0, 40)
 	tabsFrame.Size = UDim2.new(0, 150, 1, -40)
@@ -171,12 +294,8 @@ function window:SetVisibility(bool)
 		OpenButton.Visible = true
 	end
 end
-function window:Destroy()
-	gui:Destroy()
-end
-function window:IsVisbility()
-return mainFrame.Visible	
-end
+
+
 	function window:CreateTab(name)
 		local flags = {}
 
@@ -318,12 +437,11 @@ end
 				PaddingBottom = UDim.new(0, 5),
 				Parent = button;
 			})
-			if opts.Corner then
-				createUI("UICorner", {Parent = button})
-			end
-			if opts.CallBack then
-				button.MouseButton1Click:Connect(opts.CallBack)
-			end
+		button.MouseButton1Click:Connect(function()
+				if opts.Callback then opts.Callback() end
+
+		end)
+			if opts.Callback then opts.Callback() end
 
 		end
 		function tab:AddText(opts)
@@ -344,9 +462,7 @@ end
 				PaddingBottom = UDim.new(0, 5),
 				Parent = button;
 			})
-			if opts.Corner then
-				createUI("UICorner", {Parent = button})
-			end
+		
 
 			-- Retourne un objet avec une méthode Set pour changer le texte
 			local obj = {}
@@ -471,10 +587,7 @@ end
 				PaddingBottom = UDim.new(0, 5),
 				Parent = container;
 			})
-			if opts.Corner then
-				createUI("UICorner", {Parent = container})
-			end
-
+		
 			local colorDisplay = Instance.new("TextButton")
 			colorDisplay.Size = UDim2.new(0, 50, 0, 25)
 			colorDisplay.Position = UDim2.new(1, -60, 0.5, -12)
@@ -543,6 +656,7 @@ end
 					if settings1.Data.EnableSavingData then
 						SetFlag(flag, color)
 					end
+					if opts.Callback then opts.Callback(color) end
 				end
 			end
 
@@ -636,9 +750,7 @@ end
 			button.MouseButton1Click:Connect(function()
 				value = not value
 				setToggleState(value)
-				if opts.CallBack then
-					opts.CallBack(value)
-				end
+				if opts.Callback then opts.Callback(value) end
 				if settings1.Data.EnableSavingData then
 				tab.toggles[flag] = value
 					SetFlag(flag,value)
