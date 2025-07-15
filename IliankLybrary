@@ -46,7 +46,7 @@ local function VisibleWindow(window,settings1,gui)
 	})
 
 	-- UIListLayout to stack notifications top to bottom
-	
+
 	function window:Destroy()
 		gui:Destroy()
 	end
@@ -157,7 +157,7 @@ local function VisibleWindow(window,settings1,gui)
 	end
 
 
-	
+
 	createUI("UICorner", {Parent = mainFrame})
 	local animOpenPC = TweenService:Create(mainFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
 		Size = UDim2.new(0, 600, 0, 400);
@@ -270,7 +270,7 @@ local function VisibleWindow(window,settings1,gui)
 			animOpenPC:Play()
 		end
 		OpenButton.Visible = false
-		
+
 	end)
 	if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
 		animOpenMobile:Play()
@@ -285,113 +285,113 @@ local function VisibleWindow(window,settings1,gui)
 
 	contentHolder.Position = UDim2.new(0, 150, 0, 40)
 	contentHolder.Size = UDim2.new(1, -150, 1, -40)
-function window:SetVisibility(bool)
-	if bool then
-		mainFrame.Visible = true
-		OpenButton.Visible = false
-	else
-		mainFrame.Visible = false
-		OpenButton.Visible = true
+	function window:SetVisibility(bool)
+		if bool then
+			mainFrame.Visible = true
+			OpenButton.Visible = false
+		else
+			mainFrame.Visible = false
+			OpenButton.Visible = true
+		end
 	end
-end
 
 
 	function window:CreateTab(name)
 		local HttpService = game:GetService("HttpService")
 
--- Vérifie si writefile/readfile sont disponibles (ex: en exploit Roblox)
-if not writefile or not readfile then
-	warn("writefile/readfile non disponibles.")
-	return
-end
-
-local flags = {}
-
--- Structure contenant les éléments UI et leurs valeurs
-local tab = {
-	sliders = {},
-	textboxes = {},
-	dropdowns = {},
-	toggles = {},
-	ColorPicker = {},
-	SlidersValue = {},
-	ColorPickerValue = {},
-	textboxesText = {},
-	TogglesValue = {},
-	dropdownValue = {},
-}
-
--- Récupère le nom de fichier à partir des settings
-local settingsData = settings1 and settings1.Data or {}
-local fileName = settingsData.FileName or "UnknownFile.json"
-
--- Sauvegarde les flags dans un fichier JSON
-local function SaveData()
-	local success, err = pcall(function()
-		writefile(fileName, HttpService:JSONEncode(flags))
-	end)
-	if not success then
-		warn("Erreur de sauvegarde :", err)
-	end
-end
-
--- Définit une valeur de flag et sauvegarde
-local function SetFlag(name, value)
-	flags[name] = value
-	SaveData()
-end
-
--- Si la sauvegarde est activée, charge les données depuis le fichier
-if settingsData.EnableSavingData then
-
-	function library:LoadData()
-		local success, content = pcall(readfile, fileName)
-		if not success or not content then
-			warn("Échec du chargement : fichier introuvable ou vide.")
+		-- Vérifie si writefile/readfile sont disponibles (ex: en exploit Roblox)
+		if not writefile or not readfile then
+			warn("writefile/readfile non disponibles.")
 			return
 		end
 
-		local loadedData
-		success, loadedData = pcall(function()
-			return HttpService:JSONDecode(content)
-		end)
+		local flags = {}
 
-		if not success or type(loadedData) ~= "table" then
-			warn("Échec du décodage JSON ou données invalides.")
-			return
-		end
+		-- Structure contenant les éléments UI et leurs valeurs
+		local tab = {
+			sliders = {},
+			textboxes = {},
+			dropdowns = {},
+			toggles = {},
+			ColorPicker = {},
+			SlidersValue = {},
+			ColorPickerValue = {},
+			textboxesText = {},
+			TogglesValue = {},
+			dropdownValue = {},
+		}
 
-		flags = loadedData
+		-- Récupère le nom de fichier à partir des settings
+		local settingsData = settings1 and settings1.Data or {}
+		local fileName = settingsData.FileName or "UnknownFile.json"
 
-		-- Applique les données chargées aux composants
-		for name, value in pairs(flags) do
-			if tab.sliders[name] then
-				tab.sliders[name]:SetValue(value)
-				tab.SlidersValue[name] = value
-			end
-			if tab.textboxes[name] then
-				tab.textboxes[name]:SetText(value)
-				tab.textboxesText[name] = value
-			end
-			if tab.dropdowns[name] then
-				tab.dropdowns[name]:Select(value)
-				tab.dropdownValue[name] = value
-			end
-			if tab.toggles[name] then
-				tab.toggles[name]:Set(value)
-				tab.TogglesValue[name] = value
-			end
-			if tab.ColorPicker[name] then
-				tab.ColorPicker[name]:Set(value)
-				tab.ColorPickerValue[name] = value
+		-- Sauvegarde les flags dans un fichier JSON
+		local function SaveData()
+			local success, err = pcall(function()
+				writefile(fileName, HttpService:JSONEncode(flags))
+			end)
+			if not success then
+				warn("Erreur de sauvegarde :", err)
 			end
 		end
-	end
 
-end
+		-- Définit une valeur de flag et sauvegarde
+		local function SetFlag(name, value)
+			flags[name] = value
+			SaveData()
+		end
+
+		-- Si la sauvegarde est activée, charge les données depuis le fichier
+		if settingsData.EnableSavingData then
+
+			function library:LoadData()
+				local success, content = pcall(readfile, fileName)
+				if not success or not content then
+					warn("Échec du chargement : fichier introuvable ou vide.")
+					return
+				end
+
+				local loadedData
+				success, loadedData = pcall(function()
+					return HttpService:JSONDecode(content)
+				end)
+
+				if not success or type(loadedData) ~= "table" then
+					warn("Échec du décodage JSON ou données invalides.")
+					return
+				end
+
+				flags = loadedData
+
+				-- Applique les données chargées aux composants
+				for name, value in pairs(flags) do
+					if tab.sliders[name] then
+						tab.sliders[name]:SetValue(value)
+						tab.SlidersValue[name] = value
+					end
+					if tab.textboxes[name] then
+						tab.textboxes[name]:SetText(value)
+						tab.textboxesText[name] = value
+					end
+					if tab.dropdowns[name] then
+						tab.dropdowns[name]:Select(value)
+						tab.dropdownValue[name] = value
+					end
+					if tab.toggles[name] then
+						tab.toggles[name]:Set(value)
+						tab.TogglesValue[name] = value
+					end
+					if tab.ColorPicker[name] then
+						tab.ColorPicker[name]:Set(value)
+						tab.ColorPickerValue[name] = value
+					end
+				end
+			end
+
+		end
 
 
-		
+
 		-- Frame de contenu scrollable
 		local scroll = createUI("ScrollingFrame", {
 			Size = UDim2.new(1, 0, 1, 0);
@@ -465,11 +465,11 @@ end
 				PaddingBottom = UDim.new(0, 5),
 				Parent = button;
 			})
-		button.MouseButton1Click:Connect(function()
+			button.MouseButton1Click:Connect(function()
 				if opts.Callback then opts.Callback() end
 
-		end)
-		
+			end)
+
 
 		end
 		function tab:AddText(opts)
@@ -490,7 +490,7 @@ end
 				PaddingBottom = UDim.new(0, 5),
 				Parent = button;
 			})
-		
+
 
 			-- Retourne un objet avec une méthode Set pour changer le texte
 			local obj = {}
@@ -584,152 +584,152 @@ end
 			}
 		end
 
-		
+
 
 		local TweenService = game:GetService("TweenService")
-local UserInputService = game:GetService("UserInputService")
+		local UserInputService = game:GetService("UserInputService")
 
-function tab:AddColorPicker(opts)
-	local flag = opts.Flag or opts.Name or "ColorPicker"
-	local defaultColor = opts.Color or Color3.fromRGB(255, 255, 255)
+		function tab:AddColorPicker(opts)
+			local flag = opts.Flag or opts.Name or "ColorPicker"
+			local defaultColor = opts.Color or Color3.fromRGB(255, 255, 255)
 
-	tab.ColorPicker = tab.ColorPicker or {}
-	tab.ColorPickerValue = tab.ColorPickerValue or {}
+			tab.ColorPicker = tab.ColorPicker or {}
+			tab.ColorPickerValue = tab.ColorPickerValue or {}
 
-	-- UI Elements
-	local container = createUI("TextButton", {
-		Text = opts.Text;
-		Size = UDim2.new(1, 0, 0, 30);
-		BackgroundColor3 = Color3.fromRGB(50, 50, 50);
-		TextColor3 = Color3.new(1, 1, 1);
-		Font = Enum.Font.Gotham;
-		TextSize = 12;
-		Parent = tab.content;
-	})
-	createUI("UICorner", {Parent = container})
-	createUI("UIPadding", {
-		PaddingLeft = UDim.new(0, 10),
-		PaddingRight = UDim.new(0, 10),
-		PaddingTop = UDim.new(0, 5),
-		PaddingBottom = UDim.new(0, 5),
-		Parent = container;
-	})
+			-- UI Elements
+			local container = createUI("TextButton", {
+				Text = opts.Text;
+				Size = UDim2.new(1, 0, 0, 30);
+				BackgroundColor3 = Color3.fromRGB(50, 50, 50);
+				TextColor3 = Color3.new(1, 1, 1);
+				Font = Enum.Font.Gotham;
+				TextSize = 12;
+				Parent = tab.content;
+			})
+			createUI("UICorner", {Parent = container})
+			createUI("UIPadding", {
+				PaddingLeft = UDim.new(0, 10),
+				PaddingRight = UDim.new(0, 10),
+				PaddingTop = UDim.new(0, 5),
+				PaddingBottom = UDim.new(0, 5),
+				Parent = container;
+			})
 
-	local colorDisplay = Instance.new("TextButton")
-	colorDisplay.Size = UDim2.new(0, 50, 0, 25)
-	colorDisplay.Position = UDim2.new(1, -60, 0.5, -12)
-	colorDisplay.BackgroundColor3 = defaultColor
-	colorDisplay.BorderSizePixel = 0
-	colorDisplay.Text = ""
-	colorDisplay.AutoButtonColor = false
-	colorDisplay.Parent = container
-	createUI("UICorner", {Parent = colorDisplay})
+			local colorDisplay = Instance.new("TextButton")
+			colorDisplay.Size = UDim2.new(0, 50, 0, 25)
+			colorDisplay.Position = UDim2.new(1, -60, 0.5, -12)
+			colorDisplay.BackgroundColor3 = defaultColor
+			colorDisplay.BorderSizePixel = 0
+			colorDisplay.Text = ""
+			colorDisplay.AutoButtonColor = false
+			colorDisplay.Parent = container
+			createUI("UICorner", {Parent = colorDisplay})
 
-	-- Color Picker Window
-	local colorWindow = Instance.new("Frame")
-	colorWindow.Size = UDim2.new(0, 250, 0, 250)
-	colorWindow.Position = UDim2.new(0.5, 0, 0.5, 0)
-	colorWindow.AnchorPoint = Vector2.new(0.5, 0.5)
-	colorWindow.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-	colorWindow.Visible = false
-	colorWindow.BorderSizePixel = 0
-	colorWindow.ZIndex = 10
-	colorWindow.Parent = container
+			-- Color Picker Window
+			local colorWindow = Instance.new("Frame")
+			colorWindow.Size = UDim2.new(0, 250, 0, 250)
+			colorWindow.Position = UDim2.new(0.5, 0, 0.5, 0)
+			colorWindow.AnchorPoint = Vector2.new(0.5, 0.5)
+			colorWindow.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+			colorWindow.Visible = false
+			colorWindow.BorderSizePixel = 0
+			colorWindow.ZIndex = 10
+			colorWindow.Parent = container
 
-	createUI("UICorner", {CornerRadius = UDim.new(0, 6), Parent = colorWindow})
+			createUI("UICorner", {CornerRadius = UDim.new(0, 6), Parent = colorWindow})
 
-	local colorWheel = Instance.new("ImageLabel")
-	colorWheel.Size = UDim2.new(0, 200, 0, 200)
-	colorWheel.Position = UDim2.new(0.5, 0, 0, 10)
-	colorWheel.AnchorPoint = Vector2.new(0.5, 0)
-	colorWheel.BackgroundTransparency = 1
-	colorWheel.Image = "rbxassetid://6020299385" -- roue des couleurs
-	colorWheel.ZIndex = 11
-	colorWheel.Parent = colorWindow
+			local colorWheel = Instance.new("ImageLabel")
+			colorWheel.Size = UDim2.new(0, 200, 0, 200)
+			colorWheel.Position = UDim2.new(0.5, 0, 0, 10)
+			colorWheel.AnchorPoint = Vector2.new(0.5, 0)
+			colorWheel.BackgroundTransparency = 1
+			colorWheel.Image = "rbxassetid://6020299385" -- roue des couleurs
+			colorWheel.ZIndex = 11
+			colorWheel.Parent = colorWindow
 
-	local closeBtn = Instance.new("TextButton")
-	closeBtn.Size = UDim2.new(0, 60, 0, 30)
-	closeBtn.Position = UDim2.new(0.5, -30, 1, -35)
-	closeBtn.Text = "Close"
-	closeBtn.ZIndex = 11
-	closeBtn.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-	closeBtn.TextColor3 = Color3.new(1, 1, 1)
-	closeBtn.Parent = colorWindow
-	Instance.new("UICorner", closeBtn)
+			local closeBtn = Instance.new("TextButton")
+			closeBtn.Size = UDim2.new(0, 60, 0, 30)
+			closeBtn.Position = UDim2.new(0.5, -30, 1, -35)
+			closeBtn.Text = "Close"
+			closeBtn.ZIndex = 11
+			closeBtn.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+			closeBtn.TextColor3 = Color3.new(1, 1, 1)
+			closeBtn.Parent = colorWindow
+			Instance.new("UICorner", closeBtn)
 
-	local selecting = false
+			local selecting = false
 
-	local function ApplyColor(color)
-		TweenService:Create(colorDisplay, TweenInfo.new(0.15), {
-			BackgroundColor3 = color
-		}):Play()
+			local function ApplyColor(color)
+				TweenService:Create(colorDisplay, TweenInfo.new(0.15), {
+					BackgroundColor3 = color
+				}):Play()
 
-		tab.ColorPickerValue[flag] = color
-		if settings1 and settings1.Data and settings1.Data.EnableSavingData then
-			SetFlag(flag, color)
-		end
-		if opts.Callback then
-			opts.Callback(color)
-		end
-	end
-
-	local function updateColor(input)
-		local relPos = Vector2.new(input.Position.X - colorWheel.AbsolutePosition.X, input.Position.Y - colorWheel.AbsolutePosition.Y)
-		local radius = colorWheel.AbsoluteSize.X / 2
-		local center = Vector2.new(radius, radius)
-		local dist = (relPos - center).Magnitude
-
-		if dist <= radius then
-			local angle = math.atan2(relPos.Y - center.Y, relPos.X - center.X)
-			local hue = (angle / (2 * math.pi)) % 1
-			local color = Color3.fromHSV(hue, 1, 1)
-			ApplyColor(color)
-		end
-	end
-
-	colorWheel.InputBegan:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-			selecting = true
-			updateColor(input)
-		end
-	end)
-
-	colorWheel.InputChanged:Connect(function(input)
-		if selecting and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
-			updateColor(input)
-		end
-	end)
-
-	UserInputService.InputEnded:Connect(function(input)
-		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-			selecting = false
-		end
-	end)
-
-	colorDisplay.MouseButton1Click:Connect(function()
-		colorWindow.Visible = not colorWindow.Visible
-	end)
-
-	closeBtn.MouseButton1Click:Connect(function()
-		colorWindow.Visible = false
-	end)
-
-	-- Enregistrement dans tab.ColorPicker avec méthode Set
-	local api = {
-		Set = function(_, color)
-			if typeof(color) == "Color3" then
-				ApplyColor(color)
+				tab.ColorPickerValue[flag] = color
+				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
+					SetFlag(flag, color)
+				end
+				if opts.Callback then
+					opts.Callback(color)
+				end
 			end
-		end,
-		Get = function()
-			return tab.ColorPickerValue[flag]
-		end
-	}
-	tab.ColorPicker[flag] = api
-	ApplyColor(defaultColor)
 
-	return api
-end
+			local function updateColor(input)
+				local relPos = Vector2.new(input.Position.X - colorWheel.AbsolutePosition.X, input.Position.Y - colorWheel.AbsolutePosition.Y)
+				local radius = colorWheel.AbsoluteSize.X / 2
+				local center = Vector2.new(radius, radius)
+				local dist = (relPos - center).Magnitude
+
+				if dist <= radius then
+					local angle = math.atan2(relPos.Y - center.Y, relPos.X - center.X)
+					local hue = (angle / (2 * math.pi)) % 1
+					local color = Color3.fromHSV(hue, 1, 1)
+					ApplyColor(color)
+				end
+			end
+
+			colorWheel.InputBegan:Connect(function(input)
+				if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+					selecting = true
+					updateColor(input)
+				end
+			end)
+
+			colorWheel.InputChanged:Connect(function(input)
+				if selecting and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+					updateColor(input)
+				end
+			end)
+
+			UserInputService.InputEnded:Connect(function(input)
+				if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+					selecting = false
+				end
+			end)
+
+			colorDisplay.MouseButton1Click:Connect(function()
+				colorWindow.Visible = not colorWindow.Visible
+			end)
+
+			closeBtn.MouseButton1Click:Connect(function()
+				colorWindow.Visible = false
+			end)
+
+			-- Enregistrement dans tab.ColorPicker avec méthode Set
+			local api = {
+				Set = function(_, color)
+					if typeof(color) == "Color3" then
+						ApplyColor(color)
+					end
+				end,
+				Get = function()
+					return tab.ColorPickerValue[flag]
+				end
+			}
+			tab.ColorPicker[flag] = api
+			ApplyColor(defaultColor)
+
+			return api
+		end
 
 
 		function tab:AddToggle(opts)
@@ -800,16 +800,16 @@ end
 
 			-- Init state
 			setToggleState(value)
-		
+
 			-- ** AJOUT DE LA FONCTION Set **
 			local obj = {}
 			function obj:Set(t)
 				if type(t) == "table" and type(t[1]) == "boolean" then
 					setToggleState(t[1])
 					if settings1 and settings1.Data and settings1.Data.EnableSavingData then
-					tab.togglesValue[flag] = t[1]
-					SetFlag(flag, value)
-				end
+						tab.togglesValue[flag] = t[1]
+						SetFlag(flag, value)
+					end
 					if opts.CallBack then
 						opts.CallBack(t[1])
 					end
@@ -955,13 +955,13 @@ end
 			tab.sliders[flag] = obj
 
 			-- Initialisation valeur sauvegardée
-		
+
 
 			return obj
 		end
 
 
-	
+
 		function tab:AddTextbox(opts)
 			local flag = opts.Flag or opts.Name or "Textbox"
 			local defaultText = opts.Default or ""
@@ -985,18 +985,18 @@ end
 			local function UpdateValue(newValue)
 				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
 					tab.textboxesText = tab.textboxesText or {}
-					tab.textboxesText[flag] = value
-					SetFlag(flag, value)
+					tab.textboxesText[flag] = newValue
+					SetFlag(flag, newValue)
 				end
 				if opts.Callback then opts.Callback(newValue) end
 			end
 
-		
+
 			txt.FocusLost:Connect(function()
 				UpdateValue(txt.Text)
 			end)
 
-	
+
 			if flags[flag] then
 				UpdateValue(flags[flag])
 			else
@@ -1026,7 +1026,7 @@ end
 				end
 			end
 
-			
+
 
 			return obj
 		end
@@ -1121,10 +1121,10 @@ end
 							updateCanvas()
 						end
 						if settings1 and settings1.Data and settings1.Data.EnableSavingData then
-					tab.dropdownValue = tab.dropdownValue or {}
-					tab.dropdownValue[flag] = value
-					SetFlag(flag, value)
-				end
+							tab.dropdownValue = tab.dropdownValue or {}
+							tab.dropdownValue[flag] = dropdown.Selected
+							SetFlag(flag, dropdown.Selected)
+						end
 						updateButtonText()
 						if opts.Callback then opts.Callback(option, dropdown.Selected) end
 					end)
@@ -1175,10 +1175,10 @@ end
 					SetFlag(flag, dropdown)
 				end
 
-				
+
 			end
 
-		
+
 		end
 
 
@@ -1192,13 +1192,13 @@ function library:CreateWindow(settings1, onLoad)
 	local window = {}
 	window.tabs = {}
 
-	
+
 	local gui = createUI("ScreenGui", {
 		Name = "UILibrary";
 		ResetOnSpawn = false;
 		Parent = game:GetService("CoreGui");
 	})
-if settings1.KeySystem then
+	if settings1.KeySystem then
 		local TweenService = game:GetService("TweenService")
 
 		-- Récupération des valeurs
@@ -1274,7 +1274,7 @@ if settings1.KeySystem then
 		})
 		createUI("UICorner", {Parent = ConfirmButton})
 
-		
+
 		ConfirmButton.MouseButton1Click:Connect(function()
 			local inputKey = TextBox.Text
 			if table.find(Key, inputKey) then
@@ -1337,8 +1337,8 @@ if settings1.KeySystem then
 			end
 		end)
 
-else
-if settings1.Intro then
+	else
+		if settings1.Intro then
 			local TweenService = game:GetService("TweenService")
 			local IntroTitle = settings1.IntroTitle
 
@@ -1352,7 +1352,7 @@ if settings1.Intro then
 			})
 			createUI("UICorner", {Parent = IntroFrame})
 
-			
+
 			local anim = TweenService:Create(IntroFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
 				Size = UDim2.new(0, 500, 0, 200),
 				Position = UDim2.new(0.5, 0, 0.5, 0),
@@ -1376,11 +1376,11 @@ if settings1.Intro then
 				if onLoad then onLoad(window) end
 			end)
 
-else
-	VisibleWindow(window,settings1,gui)
+		else
+			VisibleWindow(window,settings1,gui)
 			if onLoad then onLoad(window) end
 
-end
+		end
 	end
 
 	return window
