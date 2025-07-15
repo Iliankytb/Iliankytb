@@ -386,7 +386,34 @@ local function VisibleWindow(window,settings1,gui)
 							tab.SlidersValue[name] = value
 						end)
 					end
-					-- même principe pour les autres widgets...
+					if tab.ColorPicker and tab.ColorPicker[name] then
+						pcall(function()
+							print("Setting color picker", name, "to", value)
+							tab.ColorPicker[name]:Set(value)
+							tab.ColorPickerValue[name] = value
+						end)
+					end
+					if tab.textboxes and tab.textboxes[name] then
+						pcall(function()
+							print("Setting textboxes", name, "to", value)
+							tab.textboxes[name]:SetText(value)
+							tab.textboxesText[name] = value
+						end)
+					end
+					if tab.dropdowns and tab.dropdowns[name] then
+						pcall(function()
+							print("Setting dropdown", name, "to", value)
+							tab.dropdowns[name]:Select(value)
+							tab.dropdownValue[name] = value
+						end)
+					end
+					if tab.toggles and tab.toggles[name] then
+						pcall(function()
+							print("Setting toggles", name, "to", value)
+							tab.toggles[name]:SetValue(value)
+							tab.TogglesValue[name] = value
+						end)
+					end
 				end
 
 				window:Notify({
@@ -672,8 +699,10 @@ local function VisibleWindow(window,settings1,gui)
 					BackgroundColor3 = color
 				}):Play()
 
-				tab.ColorPickerValue[flag] = color
+				
 				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
+					print("colors: "..color)
+					tab.ColorPickerValue[flag] = color
 					SetFlag(flag, color)
 				end
 				if opts.Callback then
