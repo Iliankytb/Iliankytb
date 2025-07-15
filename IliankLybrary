@@ -575,10 +575,7 @@ end
 			local defaultColor = opts.Color or Color3.fromRGB(255, 255, 255)
 
 			if not tab.ColorPicker then tab.ColorPicker = {} end
-			tab.ColorPicker[flag] = defaultColor
-			if settings1.Data.EnableSavingData then
-				SetFlag(flag, defaultColor)
-			end
+		
 
 			-- UI Elements
 			local container = createUI("TextButton", {
@@ -664,6 +661,7 @@ end
 
 					colorDisplay.BackgroundColor3 = color
 					tab.ColorPicker[flag] = color
+					
 					if settings1.Data.EnableSavingData then
 						SetFlag(flag, color)
 					end
@@ -770,10 +768,7 @@ end
 
 			-- Init state
 			setToggleState(value)
-			if settings1.Data.EnableSavingData then
-			tab.toggles[flag] = value
-			SetFlag(flag,value)
-end
+		
 			-- ** AJOUT DE LA FONCTION Set **
 			local obj = {}
 			function obj:Set(t)
@@ -891,6 +886,7 @@ end
 					label.Text = (opts.Name or "Slider") .. ": " .. tostring(value)
 
 					if settings1 and settings1.Data and settings1.Data.EnableSavingData then
+						tab.SlidersValue = tab.SlidersValue or {}
 						tab.SlidersValue[flag] = value
 						SetFlag(flag, value)
 					end
@@ -924,8 +920,7 @@ end
 			tab.sliders[flag] = obj
 
 			-- Initialisation valeur sauvegardée
-			tab.SlidersValue = tab.SlidersValue or {}
-			tab.SlidersValue[flag] = value
+		
 
 			return obj
 		end
@@ -996,7 +991,7 @@ end
 				end
 			end
 
-			tab.textboxes[flag] = obj -- ⚠️ On stocke l'objet ici, plus une string
+			
 
 			return obj
 		end
@@ -1147,10 +1142,7 @@ end
 				end
 			end
 
-			if settings1.Data.EnableSavingData then
-			tab.dropdowns[flag] = dropdown
-				SetFlag(flag,dropdown)
-			end
+		
 		end
 
 
