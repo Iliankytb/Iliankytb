@@ -701,7 +701,8 @@ local function VisibleWindow(window,settings1,gui)
 
 				
 				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
-					print("colors: "..color)
+					print("colors: "..tostring(color))
+
 					tab.ColorPickerValue[flag] = color
 					SetFlag(flag, color)
 				end
