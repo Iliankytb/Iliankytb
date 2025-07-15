@@ -797,7 +797,7 @@ end
 			local label = createUI("TextLabel", {
 				Text = (opts.Name or "Slider") .. ": " .. tostring(value),
 				BackgroundTransparency = 1,
-				TextColor3 = Color3.new(1, 1, 1);
+				TextColor3 = Color3.new(1, 1, 1),
 				Font = Enum.Font.Gotham,
 				TextSize = 18,
 				TextXAlignment = Enum.TextXAlignment.Left,
@@ -832,8 +832,8 @@ end
 				label.Text = (opts.Name or "Slider") .. ": " .. tostring(value)
 				if opts.Callback then opts.Callback(value) end
 				if settings1.Data.EnableSavingData then
-				tab.sliders[flag] = value
-					SetFlag(flag,value)
+					tab.slidersValues[flag] = value
+					SetFlag(flag, value)
 				end
 			end
 
@@ -858,66 +858,71 @@ end
 				end
 			end)
 
-			if settings1.Data.EnableSavingData then
-			tab.sliders[flag] = value
-				SetFlag(flag,value)
-end
-			-- ** AJOUT DE LA FONCTION Set **
+			-- Initialise le tableau pour stocker les valeurs si pas déjà fait
+			tab.slidersValues = tab.slidersValues or {}
+
+			-- Création de l'objet avec méthodes
 			local obj = {}
+
+			-- Stockage de la valeur dans l'objet
+			obj.value = value
+
 			function obj:Set(t)
 				if type(t) == "table" then
-					-- On met à jour min/max si fournis
 					if type(t.min) == "number" then min = t.min end
 					if type(t.max) == "number" then max = t.max end
-					-- On met à jour la valeur actuelle si fournie
 					if type(t.Current) == "number" then
 						value = math.clamp(t.Current, min, max)
+						obj.value = value
 					end
-					-- Mise à jour visuelle
+
 					local pos = (value - min) / (max - min)
 					fillBar.Size = UDim2.new(pos, 0, 1, 0)
 					label.Text = (opts.Name or "Slider") .. ": " .. tostring(value)
+
 					if settings1.Data.EnableSavingData then
-						tab.sliders[flag] = value
-						SetFlag(flag,value)
+						tab.slidersValues[flag] = value
+						SetFlag(flag, value)
 					end
 					if opts.Callback then opts.Callback(value) end
 				else
 					warn("Set attend une table avec min, max et/ou Current")
 				end
-				
 			end
+
 			function obj:SetValue(v)
 				if type(v) ~= "number" then
 					warn("SetValue attend un nombre (la valeur du slider).")
 					return
 				end
 
-				-- Clamp la valeur pour rester dans les limites
 				value = math.clamp(v, min, max)
+				obj.value = value
 
-				-- Calcul de position avec sécurité
 				local range = max - min
 				local pos = range ~= 0 and ((value - min) / range) or 0
 				fillBar.Size = UDim2.new(pos, 0, 1, 0)
-
-				-- Mise à jour du texte
 				label.Text = string.format("%s: %s", opts.Name or "Slider", tostring(value))
 
-				-- Sauvegarde si activée
 				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
-					tab.sliders[flag] = value
+					tab.slidersValues[flag] = value
 					SetFlag(flag, value)
 				end
 
-				-- Appel du callback si défini
 				if opts.Callback then
 					opts.Callback(value)
 				end
 			end
 
+			-- Stocke l'objet dans tab.sliders pour pouvoir appeler SetValue plus tard
+			tab.sliders[flag] = obj
+
+			-- Stocke la valeur initiale dans slidersValues (pour sauvegarde)
+			tab.slidersValues[flag] = value
+
 			return obj
 		end
+
 
 
 		function tab:AddTextbox(opts)
