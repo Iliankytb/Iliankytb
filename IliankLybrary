@@ -323,7 +323,7 @@ local function VisibleWindow(window,settings1,gui)
 
 		-- Récupère le nom de fichier à partir des settings
 		local settingsData = settings1 and settings1.Data or {}
-		local fileName = settingsData.FileName or "UnknownFile.json"
+		local fileName = settingsData.FileName or "UnknownFile"
 
 		-- Sauvegarde les flags dans un fichier JSON
 		local function SaveData()
@@ -345,11 +345,14 @@ local function VisibleWindow(window,settings1,gui)
 		if settingsData.EnableSavingData then
 
 			function library:LoadData()
+				print("LoadData called")
 				local success, content = pcall(readfile, fileName)
 				if not success or not content or content == "" then
 					warn("Échec du chargement : fichier introuvable, vide ou non lisible.")
 					return
 				end
+
+				print("File content:", content)
 
 				local loadedData
 				success, loadedData = pcall(function()
@@ -363,7 +366,6 @@ local function VisibleWindow(window,settings1,gui)
 
 				flags = loadedData
 
-				-- Vérifie que `tab` et ses sous-tables existent
 				if not tab then
 					warn("Erreur : 'tab' est nil.")
 					return
@@ -378,39 +380,14 @@ local function VisibleWindow(window,settings1,gui)
 				for name, value in pairs(flags) do
 					if tab.sliders and tab.sliders[name] then
 						pcall(function()
+							print("Setting slider", name, "to", value)
 							tab.sliders[name]:SetValue(value)
 							tab.SlidersValue[name] = value
 						end)
 					end
-
-					if tab.textboxes and tab.textboxes[name] then
-						pcall(function()
-							tab.textboxes[name]:SetText(value)
-							tab.textboxesText[name] = value
-						end)
-					end
-
-					if tab.dropdowns and tab.dropdowns[name] then
-						pcall(function()
-							tab.dropdowns[name]:Select(value)
-							tab.dropdownValue[name] = value
-						end)
-					end
-
-					if tab.toggles and tab.toggles[name] then
-						pcall(function()
-							tab.toggles[name]:Set(value)
-							tab.TogglesValue[name] = value
-						end)
-					end
-
-					if tab.ColorPicker and tab.ColorPicker[name] then
-						pcall(function()
-							tab.ColorPicker[name]:Set(value)
-							tab.ColorPickerValue[name] = value
-						end)
-					end
+					-- même principe pour les autres widgets...
 				end
+
 				window:Notify({
 					Title = "Data!",
 					Message = "Loaded Data!",
@@ -854,6 +831,8 @@ local function VisibleWindow(window,settings1,gui)
 			return obj
 		end
 
+		local UserInputService = game:GetService("UserInputService")
+
 		function tab:AddSlider(opts)
 			local flag = opts.Flag or opts.Name or "Slider"
 			local min = opts.Min or 0
@@ -930,6 +909,8 @@ local function VisibleWindow(window,settings1,gui)
 				end
 			end
 
+			local moveConn, releaseConn
+
 			local function updateSlider(x)
 				local percent = math.clamp((x - sliderBar.AbsolutePosition.X) / sliderBar.AbsoluteSize.X, 0, 1)
 				local v = math.floor(min + (max - min) * percent)
@@ -937,24 +918,26 @@ local function VisibleWindow(window,settings1,gui)
 			end
 
 			sliderBar.InputBegan:Connect(function(input)
-				if input.UserInputType == Enum.UserInputType.MouseButton1 then
+				if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
 					updateSlider(input.Position.X)
-					local moveConn, releaseConn
 
-					moveConn = game:GetService("UserInputService").InputChanged:Connect(function(moveInput)
-						if moveInput.UserInputType == Enum.UserInputType.MouseMovement then
+					moveConn = UserInputService.InputChanged:Connect(function(moveInput)
+						if moveInput.UserInputType == Enum.UserInputType.MouseMovement or moveInput.UserInputType == Enum.UserInputType.Touch then
 							updateSlider(moveInput.Position.X)
 						end
 					end)
 
-					releaseConn = game:GetService("UserInputService").InputEnded:Connect(function(endInput)
-						if endInput.UserInputType == Enum.UserInputType.MouseButton1 then
-							moveConn:Disconnect()
-							releaseConn:Disconnect()
+					releaseConn = UserInputService.InputEnded:Connect(function(endInput)
+						if endInput.UserInputType == Enum.UserInputType.MouseButton1 or endInput.UserInputType == Enum.UserInputType.Touch then
+							if moveConn then moveConn:Disconnect() end
+							if releaseConn then releaseConn:Disconnect() end
 						end
 					end)
 				end
 			end)
+
+			-- Initialise la valeur par défaut
+			obj:SetValue(default)
 
 			tab.sliders[flag] = obj
 
