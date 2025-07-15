@@ -300,7 +300,7 @@ end
 		local HttpService = game:GetService("HttpService")
 		local flags = {} 
 		local tab = {
-			slider = {},
+			sliders = {},
 			textboxes = {},
 			dropdowns = {},
 			toggles = {},
