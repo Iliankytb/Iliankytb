@@ -323,7 +323,7 @@ local function VisibleWindow(window,settings1,gui)
 
 		-- Settings
 		local settingsData = settings1 and settings1.Data or {}
-		local FolderName = settings1.FolderName or "UnknownFolder"
+		local FolderName = settingsData.FolderName or "UnknownFolder"
 		local fileName = settingsData.FileName or "UnknownFile"
 
 		-- Chemin complet avec dossier (ajoute l'extension .json)
