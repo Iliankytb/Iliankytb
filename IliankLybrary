@@ -1150,8 +1150,8 @@ end
 	end
 end
 function library:CreateWindow(settings1, onLoad)
-	if game.Players.LocalPlayer.PlayerGui:FindFirstChild("UILibrary") then
-		game.Players.LocalPlayer.PlayerGui:FindFirstChild("UILibrary"):Destroy()
+	if game:GetService("CoreGui"):FindFirstChild("UILibrary") then
+		game:GetService("CoreGui"):FindFirstChild("UILibrary"):Destroy()
 	end
 	local window = {}
 	window.tabs = {}
