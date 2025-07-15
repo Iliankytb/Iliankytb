@@ -307,7 +307,7 @@ local function VisibleWindow(window,settings1,gui)
 
 		local flags = {}
 
-		-- Structure contenant les éléments UI et leurs valeurs
+		-- Structure UI
 		local tab = {
 			sliders = {},
 			textboxes = {},
@@ -321,39 +321,67 @@ local function VisibleWindow(window,settings1,gui)
 			dropdownValue = {},
 		}
 
-		-- Récupère le nom de fichier à partir des settings
+		-- Settings
 		local settingsData = settings1 and settings1.Data or {}
+		local FolderName = settings1.FolderName or "UnknownFolder"
 		local fileName = settingsData.FileName or "UnknownFile"
 
-		-- Sauvegarde les flags dans un fichier JSON
+		-- Chemin complet avec dossier (ajoute l'extension .json)
+		local fullPath = FolderName .. "/" .. fileName .. ".json"
+
+		-- Fonction pour sauvegarder les flags dans un fichier JSON
 		local function SaveData()
 			local success, err = pcall(function()
-				print("Saving flags:", HttpService:JSONEncode(flags))
-				writefile(fileName, HttpService:JSONEncode(flags))
+				-- Encode flags en JSON, gérer Color3 en format table RGB pour éviter erreur JSON
+				local serializableFlags = {}
+
+				for key, value in pairs(flags) do
+					if typeof(value) == "Color3" then
+						serializableFlags[key] = {
+							__type = "Color3",
+							R = value.R,
+							G = value.G,
+							B = value.B
+						}
+					else
+						serializableFlags[key] = value
+					end
+				end
+
+				local jsonData = HttpService:JSONEncode(serializableFlags)
+				writefile(fullPath, jsonData)
+				print("Données sauvegardées dans", fullPath)
 			end)
 			if not success then
 				warn("Erreur de sauvegarde :", err)
 			end
 		end
 
-		-- Définit une valeur de flag et sauvegarde
+		-- Fonction pour transformer un tableau JSON en Color3 si besoin
+		local function DeserializeValue(val)
+			if type(val) == "table" and val.__type == "Color3" and val.R and val.G and val.B then
+				return Color3.new(val.R, val.G, val.B)
+			end
+			return val
+		end
+
+		-- Fonction pour définir une valeur de flag et sauvegarder
 		local function SetFlag(name, value)
 			flags[name] = value
 			SaveData()
 		end
 
-		-- Si la sauvegarde est activée, charge les données depuis le fichier
+		-- Chargement des données si activé
 		if settingsData.EnableSavingData then
 
 			function library:LoadData()
-				print("LoadData called")
-				local success, content = pcall(readfile, fileName)
+				print("Chargement des données...")
+
+				local success, content = pcall(readfile, fullPath)
 				if not success or not content or content == "" then
 					warn("Échec du chargement : fichier introuvable, vide ou non lisible.")
 					return
 				end
-
-				print("File content:", content)
 
 				local loadedData
 				success, loadedData = pcall(function()
@@ -365,12 +393,12 @@ local function VisibleWindow(window,settings1,gui)
 					return
 				end
 
-				flags = loadedData
-
-				if not tab then
-					warn("Erreur : 'tab' est nil.")
-					return
+				-- Désérialise les valeurs Color3
+				for k, v in pairs(loadedData) do
+					loadedData[k] = DeserializeValue(v)
 				end
+
+				flags = loadedData
 
 				tab.SlidersValue = tab.SlidersValue or {}
 				tab.textboxesText = tab.textboxesText or {}
@@ -381,35 +409,35 @@ local function VisibleWindow(window,settings1,gui)
 				for name, value in pairs(flags) do
 					if tab.sliders and tab.sliders[name] then
 						pcall(function()
-							print("Setting slider", name, "to", value)
+							print("Set slider", name, "to", value)
 							tab.sliders[name]:SetValue(value)
 							tab.SlidersValue[name] = value
 						end)
 					end
 					if tab.ColorPicker and tab.ColorPicker[name] then
 						pcall(function()
-							print("Setting color picker", name, "to", value)
+							print("Set color picker", name, "to", value)
 							tab.ColorPicker[name]:Set(value)
 							tab.ColorPickerValue[name] = value
 						end)
 					end
 					if tab.textboxes and tab.textboxes[name] then
 						pcall(function()
-							print("Setting textboxes", name, "to", value)
+							print("Set textbox", name, "to", value)
 							tab.textboxes[name]:SetText(value)
 							tab.textboxesText[name] = value
 						end)
 					end
 					if tab.dropdowns and tab.dropdowns[name] then
 						pcall(function()
-							print("Setting dropdown", name, "to", value)
+							print("Set dropdown", name, "to", value)
 							tab.dropdowns[name]:Select(value)
 							tab.dropdownValue[name] = value
 						end)
 					end
 					if tab.toggles and tab.toggles[name] then
 						pcall(function()
-							print("Setting toggles", name, "to", value)
+							print("Set toggle", name, "to", value)
 							tab.toggles[name]:SetValue(value)
 							tab.TogglesValue[name] = value
 						end)
@@ -424,6 +452,9 @@ local function VisibleWindow(window,settings1,gui)
 			end
 
 		end
+
+		-- Expose SetFlag pour usage extérieur si besoin
+		library.SetFlag = SetFlag
 
 
 
@@ -620,9 +651,22 @@ local function VisibleWindow(window,settings1,gui)
 		end
 
 
-
 		local TweenService = game:GetService("TweenService")
 		local UserInputService = game:GetService("UserInputService")
+
+		-- Convertit Color3 en table pour sauvegarde
+		local function Color3ToTable(color)
+			return {color.R, color.G, color.B}
+		end
+
+		-- Convertit table en Color3 pour chargement
+		local function TableToColor3(t)
+			if type(t) == "table" and #t == 3 then
+				return Color3.new(t[1], t[2], t[3])
+			else
+				return Color3.fromRGB(255, 255, 255) -- couleur par défaut
+			end
+		end
 
 		function tab:AddColorPicker(opts)
 			local flag = opts.Flag or opts.Name or "ColorPicker"
@@ -699,12 +743,11 @@ local function VisibleWindow(window,settings1,gui)
 					BackgroundColor3 = color
 				}):Play()
 
-				
 				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
-					print("colors: "..tostring(color))
-
-					tab.ColorPickerValue[flag] = color
-					SetFlag(flag, color)
+					print("Saving color: ", color)
+					local colorTable = Color3ToTable(color)
+					tab.ColorPickerValue[flag] = colorTable
+					SetFlag(flag, colorTable) -- sauvegarde la table, pas Color3 direct
 				end
 				if opts.Callback then
 					opts.Callback(color)
@@ -752,19 +795,33 @@ local function VisibleWindow(window,settings1,gui)
 				colorWindow.Visible = false
 			end)
 
-			-- Enregistrement dans tab.ColorPicker avec méthode Set
+			-- Enregistrement dans tab.ColorPicker avec méthode Set et Get
 			local api = {
 				Set = function(_, color)
-					if typeof(color) == "Color3" then
+					if typeof(color) == "table" then
+						local c = TableToColor3(color)
+						ApplyColor(c)
+					elseif typeof(color) == "Color3" then
 						ApplyColor(color)
 					end
 				end,
 				Get = function()
-					return tab.ColorPickerValue[flag]
+					local saved = tab.ColorPickerValue[flag]
+					if saved then
+						return TableToColor3(saved)
+					else
+						return defaultColor
+					end
 				end
 			}
 			tab.ColorPicker[flag] = api
-			ApplyColor(defaultColor)
+
+			-- Appliquer couleur sauvegardée ou couleur par défaut
+			if tab.ColorPickerValue[flag] then
+				ApplyColor(TableToColor3(tab.ColorPickerValue[flag]))
+			else
+				ApplyColor(defaultColor)
+			end
 
 			return api
 		end
