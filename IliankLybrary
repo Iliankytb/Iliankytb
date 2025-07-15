@@ -786,7 +786,6 @@ local function VisibleWindow(window,settings1,gui)
 				Parent = button;
 			})
 
-			-- Toggle container (switch)
 			local toggleContainer = createUI("Frame", {
 				AnchorPoint = Vector2.new(1, 0.5),
 				Position = UDim2.new(1, -10, 0.5, 0),
@@ -796,7 +795,6 @@ local function VisibleWindow(window,settings1,gui)
 			})
 			createUI("UICorner", {CornerRadius = UDim.new(1, 0), Parent = toggleContainer})
 
-			-- Circle (toggle knob)
 			local toggleCircle = createUI("Frame", {
 				Size = UDim2.new(0, 16, 0, 16),
 				Position = value and UDim2.new(1, -18, 0.5, -8) or UDim2.new(0, 2, 0.5, -8),
@@ -805,7 +803,6 @@ local function VisibleWindow(window,settings1,gui)
 			})
 			createUI("UICorner", {CornerRadius = UDim.new(1, 0), Parent = toggleCircle})
 
-			-- Toggle animation
 			local function setToggleState(state)
 				value = state
 				local goalPos = state and UDim2.new(1, -18, 0.5, -8) or UDim2.new(0, 2, 0.5, -8)
@@ -817,7 +814,7 @@ local function VisibleWindow(window,settings1,gui)
 				}):Play()
 			end
 
-			button.MouseButton1Click:Connect(function(Value)
+			button.MouseButton1Click:Connect(function()
 				value = not value
 				setToggleState(value)
 				if opts.Callback then opts.Callback(value) end
@@ -831,20 +828,26 @@ local function VisibleWindow(window,settings1,gui)
 			-- Init state
 			setToggleState(value)
 
-			-- ** AJOUT DE LA FONCTION Set **
+			-- Renvoi de l'objet
 			local obj = {}
-			function obj:Set(t)
-				if type(t) == "table" and type(t[1]) == "boolean" then
-					setToggleState(t[1])
-					if settings1 and settings1.Data and settings1.Data.EnableSavingData then
-						tab.togglesValue[flag] = t[1]
-						SetFlag(flag, value)
-					end
-					if opts.CallBack then
-						opts.CallBack(t[1])
-					end
-				else
-					warn("Set attend une table avec un booléen en premier élément")
+
+			function obj:Set(newValue)
+				if type(newValue) ~= "boolean" then
+					warn("Set attend un booléen.")
+					return
+				end
+
+				value = newValue
+				setToggleState(value)
+
+				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
+					tab.togglesValue = tab.togglesValue or {}
+					tab.togglesValue[flag] = value
+					SetFlag(flag, value)
+				end
+
+				if opts.Callback then
+					opts.Callback(value)
 				end
 			end
 
@@ -852,149 +855,121 @@ local function VisibleWindow(window,settings1,gui)
 		end
 
 		function tab:AddSlider(opts)
-			local min, max = opts.Min or 0, opts.Max or 100
-			local value = opts.Default or min
 			local flag = opts.Flag or opts.Name or "Slider"
+			local min = opts.Min or 0
+			local max = opts.Max or 100
+			local default = opts.Default or min
 
-			-- Container principal du slider
-			local container = createUI("Frame", {
+			tab.sliders = tab.sliders or {}
+			tab.SlidersValue = tab.SlidersValue or {}
+
+			local value = default
+
+			local slider = createUI("TextButton", {
+				Text = opts.Text or "Slider",
+				Size = UDim2.new(1, 0, 0, 30),
 				BackgroundColor3 = Color3.fromRGB(50, 50, 50),
-				Size = UDim2.new(1, 0, 0, 60),
-				Parent = tab.content
-			})
-			createUI("UICorner", { Parent = container })
-
-			-- Label affichant le nom et la valeur du slider
-			local label = createUI("TextLabel", {
-				Text = (opts.Name or "Slider") .. ": " .. tostring(value),
-				BackgroundTransparency = 1,
 				TextColor3 = Color3.new(1, 1, 1),
 				Font = Enum.Font.Gotham,
-				TextSize = 18,
+				TextSize = 12,
 				TextXAlignment = Enum.TextXAlignment.Left,
-				Position = UDim2.new(0, 10, 0, 5),
-				Size = UDim2.new(1, -20, 0, 20),
-				Parent = container
+				Parent = tab.content,
+			})
+			createUI("UICorner", { Parent = slider })
+			createUI("UIPadding", {
+				PaddingLeft = UDim.new(0, 10),
+				PaddingRight = UDim.new(0, 10),
+				PaddingTop = UDim.new(0, 5),
+				PaddingBottom = UDim.new(0, 5),
+				Parent = slider,
 			})
 
-			-- Bar de fond du slider
 			local sliderBar = createUI("Frame", {
+				AnchorPoint = Vector2.new(1, 0.5),
+				Position = UDim2.new(1, -10, 0.5, 0),
+				Size = UDim2.new(0, 100, 0, 6),
 				BackgroundColor3 = Color3.fromRGB(80, 80, 80),
-				Position = UDim2.new(0, 10, 0, 35),
-				Size = UDim2.new(1, -20, 0, 10),
-				Parent = container
+				Parent = slider,
 			})
-			createUI("UICorner", { CornerRadius = UDim.new(0, 5), Parent = sliderBar })
+			createUI("UICorner", { CornerRadius = UDim.new(1, 0), Parent = sliderBar })
 
-			-- Bar de remplissage du slider (progression)
 			local fillBar = createUI("Frame", {
-				BackgroundColor3 = Color3.fromRGB(0, 85, 255),
 				Size = UDim2.new((value - min) / (max - min), 0, 1, 0),
-				Parent = sliderBar
+				BackgroundColor3 = Color3.fromRGB(0, 170, 255),
+				Parent = sliderBar,
 			})
-			createUI("UICorner", { CornerRadius = UDim.new(0, 5), Parent = fillBar })
+			createUI("UICorner", { CornerRadius = UDim.new(1, 0), Parent = fillBar })
 
-			local dragging = false
-			local UserInputService = game:GetService("UserInputService")
+			local label = createUI("TextLabel", {
+				AnchorPoint = Vector2.new(0.5, 0.5),
+				Position = UDim2.new(0.5, 0, 0.5, -15),
+				Size = UDim2.new(0, 60, 0, 14),
+				BackgroundTransparency = 1,
+				Text = tostring(value),
+				TextColor3 = Color3.new(1, 1, 1),
+				Font = Enum.Font.Gotham,
+				TextSize = 10,
+				Parent = sliderBar,
+			})
 
-			-- Fonction pour mettre à jour la valeur du slider et l'affichage
-			local function updateSlider(inputX)
-				local absPos = sliderBar.AbsolutePosition.X
-				local absSize = sliderBar.AbsoluteSize.X
-				local pos = math.clamp((inputX - absPos) / absSize, 0, 1)
-				value = math.floor(min + (max - min) * pos + 0.5)
-				fillBar.Size = UDim2.new(pos, 0, 1, 0)
-				label.Text = (opts.Name or "Slider") .. ": " .. tostring(value)
-
-				if opts.Callback then opts.Callback(value) end
-
-				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
-					tab.SlidersValue = tab.SlidersValue or {}
-					tab.SlidersValue[flag] = value
-					SetFlag(flag, value)
-				end
-			end
-
-			-- Gestions des interactions utilisateur sur le slider
-			sliderBar.InputBegan:Connect(function(input)
-				if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-					dragging = true
-					updateSlider(input.Position.X)
-				end
-			end)
-
-			UserInputService.InputChanged:Connect(function(input)
-				if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
-					updateSlider(input.Position.X)
-				end
-			end)
-
-			UserInputService.InputEnded:Connect(function(input)
-				if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-					dragging = false
-				end
-			end)
-
-			-- Objet slider retourné avec méthodes pour modifier la valeur
-			local obj = { value = value }
-
-			function obj:Set(t)
-				if type(t) == "table" then
-					if type(t.min) == "number" then min = t.min end
-					if type(t.max) == "number" then max = t.max end
-					if type(t.Current) == "number" then
-						value = math.clamp(t.Current, min, max)
-						obj.value = value
-					end
-					local pos = (value - min) / (max - min)
-					fillBar.Size = UDim2.new(pos, 0, 1, 0)
-					label.Text = (opts.Name or "Slider") .. ": " .. tostring(value)
-
-					if settings1 and settings1.Data and settings1.Data.EnableSavingData then
-						tab.SlidersValue = tab.SlidersValue or {}
-						tab.SlidersValue[flag] = value
-						SetFlag(flag, value)
-					end
-					if opts.Callback then opts.Callback(value) end
-				else
-					warn("Set attend une table avec min, max et/ou Current")
-				end
-			end
+			local obj = {}
+			obj.value = value
 
 			function obj:SetValue(v)
-				if type(v) ~= "number" then
-					warn("SetValue attend un nombre.")
-					return
+				v = math.clamp(v, min, max)
+				local percent = (v - min) / (max - min)
+				fillBar.Size = UDim2.new(percent, 0, 1, 0)
+				label.Text = tostring(v)
+				value = v
+				obj.value = v
+
+				tab.SlidersValue[flag] = v
+
+				if opts.Callback then
+					opts.Callback(v)
 				end
-				value = math.clamp(v, min, max)
-				obj.value = value
-
-				local pos = (max - min) ~= 0 and ((value - min) / (max - min)) or 0
-				fillBar.Size = UDim2.new(pos, 0, 1, 0)
-				label.Text = string.format("%s: %s", opts.Name or "Slider", tostring(value))
-
-				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
-					tab.SlidersValue[flag] = value
-					SetFlag(flag, value)
-				end
-
-				if opts.Callback then opts.Callback(value) end
 			end
 
-			-- Stockage dans la table sliders pour pouvoir modifier plus tard
+			local function updateSlider(x)
+				local percent = math.clamp((x - sliderBar.AbsolutePosition.X) / sliderBar.AbsoluteSize.X, 0, 1)
+				local v = math.floor(min + (max - min) * percent)
+				obj:SetValue(v)
+			end
+
+			sliderBar.InputBegan:Connect(function(input)
+				if input.UserInputType == Enum.UserInputType.MouseButton1 then
+					updateSlider(input.Position.X)
+					local moveConn, releaseConn
+
+					moveConn = game:GetService("UserInputService").InputChanged:Connect(function(moveInput)
+						if moveInput.UserInputType == Enum.UserInputType.MouseMovement then
+							updateSlider(moveInput.Position.X)
+						end
+					end)
+
+					releaseConn = game:GetService("UserInputService").InputEnded:Connect(function(endInput)
+						if endInput.UserInputType == Enum.UserInputType.MouseButton1 then
+							moveConn:Disconnect()
+							releaseConn:Disconnect()
+						end
+					end)
+				end
+			end)
+
 			tab.sliders[flag] = obj
-
-			-- Initialisation valeur sauvegardée
-
 
 			return obj
 		end
 
 
 
+
 		function tab:AddTextbox(opts)
 			local flag = opts.Flag or opts.Name or "Textbox"
 			local defaultText = opts.Default or ""
+
+			tab.textboxes = tab.textboxes or {}
+			tab.textboxesText = tab.textboxesText or {}
 
 			local txt = createUI("TextBox", {
 				Text = defaultText,
@@ -1011,27 +986,14 @@ local function VisibleWindow(window,settings1,gui)
 
 			local obj = {}
 
-			-- Mise à jour de la valeur
 			local function UpdateValue(newValue)
-				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
-					tab.textboxesText = tab.textboxesText or {}
-					tab.textboxesText[flag] = newValue
-					SetFlag(flag, newValue)
-				end
+				tab.textboxesText[flag] = newValue
 				if opts.Callback then opts.Callback(newValue) end
 			end
-
 
 			txt.FocusLost:Connect(function()
 				UpdateValue(txt.Text)
 			end)
-
-
-			if flags[flag] then
-				UpdateValue(flags[flag])
-			else
-				UpdateValue(defaultText)
-			end
 
 			function obj:Set(t)
 				if type(t) == "table" then
@@ -1056,12 +1018,10 @@ local function VisibleWindow(window,settings1,gui)
 				end
 			end
 
-
+			tab.textboxes[flag] = obj
 
 			return obj
 		end
-
-		local TweenService = game:GetService("TweenService")
 
 		function tab:AddDropdown(opts)
 			local flag = opts.Flag or opts.Name or "Dropdown"
@@ -1070,6 +1030,9 @@ local function VisibleWindow(window,settings1,gui)
 			dropdown.Selected = {}
 			dropdown.Options = opts.Options or {}
 			dropdown.FrameOpen = false
+
+			tab.dropdowns = tab.dropdowns or {}
+			tab.dropdownValue = tab.dropdownValue or {}
 
 			local btn = createUI("TextButton", {
 				Text = opts.Name or "Dropdown",
@@ -1109,7 +1072,6 @@ local function VisibleWindow(window,settings1,gui)
 				}):Play()
 			end
 
-			-- Update visible text
 			local function updateButtonText()
 				if #dropdown.Selected == 0 then
 					btn.Text = opts.Name or "Dropdown"
@@ -1119,7 +1081,6 @@ local function VisibleWindow(window,settings1,gui)
 			end
 
 			local function createOptions(optionList)
-				-- Ne détruire QUE les anciens boutons, pas le layout
 				for _, child in ipairs(optionHolder:GetChildren()) do
 					if child:IsA("TextButton") then
 						child:Destroy()
@@ -1150,21 +1111,15 @@ local function VisibleWindow(window,settings1,gui)
 							dropdown.FrameOpen = false
 							updateCanvas()
 						end
-						if settings1 and settings1.Data and settings1.Data.EnableSavingData then
-							tab.dropdownValue = tab.dropdownValue or {}
-							tab.dropdownValue[flag] = dropdown.Selected
-							SetFlag(flag, dropdown.Selected)
-						end
+						tab.dropdownValue[flag] = dropdown.Selected
 						updateButtonText()
 						if opts.Callback then opts.Callback(option, dropdown.Selected) end
 					end)
 				end
 			end
 
-
 			createOptions(dropdown.Options)
 
-			-- Toggle dropdown
 			btn.MouseButton1Click:Connect(function()
 				dropdown.FrameOpen = not dropdown.FrameOpen
 				updateCanvas()
@@ -1173,13 +1128,13 @@ local function VisibleWindow(window,settings1,gui)
 			updateCanvas()
 			updateButtonText()
 
-
 			function dropdown:Refresh(newOptions)
 				dropdown.Options = newOptions
 				dropdown.Selected = {}
 				updateButtonText()
 				createOptions(newOptions)
 			end
+
 			function dropdown:Select(value)
 				if not table.find(dropdown.Options, value) then
 					warn("Option '" .. tostring(value) .. "' non trouvée dans le dropdown.")
@@ -1196,20 +1151,16 @@ local function VisibleWindow(window,settings1,gui)
 					updateCanvas()
 				end
 
+				tab.dropdownValue[flag] = dropdown.Selected
 				updateButtonText()
 
-				if settings1.Data.EnableSavingData then
-					tab.dropdowns[flag] = dropdown
-					tab.dropdownValue[flag] = dropdown.Selected
-					SetFlag(flag, value)
-					SetFlag(flag, dropdown)
-				end
-
-
+				if opts.Callback then opts.Callback(value, dropdown.Selected) end
 			end
 
-
+			tab.dropdowns[flag] = dropdown -- ✅ Sauvegarde du dropdown pour LoadData
+			return dropdown -- ✅ Très important !
 		end
+
 
 
 		return tab
