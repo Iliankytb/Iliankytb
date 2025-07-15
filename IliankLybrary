@@ -408,6 +408,7 @@ local function VisibleWindow(window,settings1,gui)
 				tab.ColorPickerValue = tab.ColorPickerValue or {}
 
 				for name, value in pairs(flags) do
+					print(name,value)
 					if tab.sliders and tab.sliders[name] then
 						pcall(function()
 							print("Set slider", name, "to", value)
@@ -880,8 +881,7 @@ local function VisibleWindow(window,settings1,gui)
 				setToggleState(value)
 				if opts.Callback then opts.Callback(value) end
 				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
-					print(flag,value)
-					print("work toggle")
+					print("Saving Toggle"..flag.." to "..value)
 					tab.togglesValue = tab.togglesValue or {}
 					tab.togglesValue[flag] = value
 					SetFlag(flag, value)
@@ -988,8 +988,11 @@ local function VisibleWindow(window,settings1,gui)
 				value = v
 				obj.value = v
 
-				tab.SlidersValue[flag] = v
-
+				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
+					tab.SlidersValue = tab.SlidersValue or {}
+					tab.SlidersValue[flag] = value
+					SetFlag(flag, value)
+				end
 				if opts.Callback then
 					opts.Callback(v)
 				end
@@ -1001,6 +1004,11 @@ local function VisibleWindow(window,settings1,gui)
 				local percent = math.clamp((x - sliderBar.AbsolutePosition.X) / sliderBar.AbsoluteSize.X, 0, 1)
 				local v = math.floor(min + (max - min) * percent)
 				obj:SetValue(v)
+				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
+					tab.SlidersValue = tab.SlidersValue or {}
+					tab.SlidersValue[flag] = v
+					SetFlag(flag, v)
+				end
 			end
 
 			sliderBar.InputBegan:Connect(function(input)
@@ -1021,9 +1029,6 @@ local function VisibleWindow(window,settings1,gui)
 					end)
 				end
 			end)
-
-			-- Initialise la valeur par défaut
-			obj:SetValue(default)
 
 			tab.sliders[flag] = obj
 
@@ -1056,7 +1061,11 @@ local function VisibleWindow(window,settings1,gui)
 			local obj = {}
 
 			local function UpdateValue(newValue)
-				tab.textboxesText[flag] = newValue
+				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
+					tab.textboxesText = tab.textboxesText or {}
+					tab.textboxesText[flag] = newValue
+					SetFlag(flag, newValue)
+				end
 				if opts.Callback then opts.Callback(newValue) end
 			end
 
@@ -1180,7 +1189,11 @@ local function VisibleWindow(window,settings1,gui)
 							dropdown.FrameOpen = false
 							updateCanvas()
 						end
-						tab.dropdownValue[flag] = dropdown.Selected
+						if settings1 and settings1.Data and settings1.Data.EnableSavingData then
+							tab.dropdownValue = tab.dropdownValue or {}
+							tab.dropdownValue[flag] = dropdown.Selected
+							SetFlag(flag, dropdown.Selected)
+						end
 						updateButtonText()
 						if opts.Callback then opts.Callback(option, dropdown.Selected) end
 					end)
@@ -1220,7 +1233,11 @@ local function VisibleWindow(window,settings1,gui)
 					updateCanvas()
 				end
 
-				tab.dropdownValue[flag] = dropdown.Selected
+				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
+					tab.dropdownValue = tab.dropdownValue or {}
+					tab.dropdownValue[flag] = dropdown.Selected
+					SetFlag(flag, dropdown.Selected)
+				end
 				updateButtonText()
 
 				if opts.Callback then opts.Callback(value, dropdown.Selected) end
