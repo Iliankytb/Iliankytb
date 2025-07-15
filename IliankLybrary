@@ -1138,7 +1138,7 @@ function library:CreateWindow(settings1, onLoad)
 	local gui = createUI("ScreenGui", {
 		Name = "UILibrary";
 		ResetOnSpawn = false;
-		Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui");
+		Parent = game:GetService("CoreGui");
 	})
 if settings1.KeySystem then
 		local TweenService = game:GetService("TweenService")
