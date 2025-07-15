@@ -298,81 +298,98 @@ end
 
 	function window:CreateTab(name)
 		local HttpService = game:GetService("HttpService")
-		local flags = {}
 
-		local tab = {
-			sliders = {},
-			textboxes = {},
-			dropdowns = {},
-			toggles = {},
-			ColorPicker = {},
-			SlidersValue = {},  -- stockage des valeurs des sliders
-		}
+-- Vérifie si writefile/readfile sont disponibles (ex: en exploit Roblox)
+if not writefile or not readfile then
+	warn("writefile/readfile non disponibles.")
+	return
+end
 
-		local fileName = (settings1 and settings1.Data and settings1.Data.FileName) or "UnknownFile.json"
+local flags = {}
 
-		-- Vérifie si writefile/readfile sont disponibles (ex: en exploit Roblox, sinon avertit)
-		if not writefile or not readfile then
-			warn("writefile/readfile non disponibles.")
+-- Structure contenant les éléments UI et leurs valeurs
+local tab = {
+	sliders = {},
+	textboxes = {},
+	dropdowns = {},
+	toggles = {},
+	ColorPicker = {},
+	SlidersValue = {},
+	ColorPickerValue = {},
+	textboxesText = {},
+	TogglesValue = {},
+	dropdownValue = {},
+}
+
+-- Récupère le nom de fichier à partir des settings
+local settingsData = settings1 and settings1.Data or {}
+local fileName = settingsData.FileName or "UnknownFile.json"
+
+-- Sauvegarde les flags dans un fichier JSON
+local function SaveData()
+	local success, err = pcall(function()
+		writefile(fileName, HttpService:JSONEncode(flags))
+	end)
+	if not success then
+		warn("Erreur de sauvegarde :", err)
+	end
+end
+
+-- Définit une valeur de flag et sauvegarde
+local function SetFlag(name, value)
+	flags[name] = value
+	SaveData()
+end
+
+-- Si la sauvegarde est activée, charge les données depuis le fichier
+if settingsData.EnableSavingData then
+
+	function library:LoadData()
+		local success, content = pcall(readfile, fileName)
+		if not success or not content then
+			warn("Échec du chargement : fichier introuvable ou vide.")
+			return
 		end
 
-		-- Fonction qui sauvegarde les flags dans un fichier JSON
-		local function SaveData()
-			local success, err = pcall(function()
-				writefile(fileName, HttpService:JSONEncode(flags))
-			end)
-			if not success then
-				warn("Erreur de sauvegarde :", err)
+		local loadedData
+		success, loadedData = pcall(function()
+			return HttpService:JSONDecode(content)
+		end)
+
+		if not success or type(loadedData) ~= "table" then
+			warn("Échec du décodage JSON ou données invalides.")
+			return
+		end
+
+		flags = loadedData
+
+		-- Applique les données chargées aux composants
+		for name, value in pairs(flags) do
+			if tab.sliders[name] then
+				tab.sliders[name]:SetValue(value)
+				tab.SlidersValue[name] = value
+			end
+			if tab.textboxes[name] then
+				tab.textboxes[name]:SetText(value)
+				tab.textboxesText[name] = value
+			end
+			if tab.dropdowns[name] then
+				tab.dropdowns[name]:Select(value)
+				tab.dropdownValue[name] = value
+			end
+			if tab.toggles[name] then
+				tab.toggles[name]:Set(value)
+				tab.TogglesValue[name] = value
+			end
+			if tab.ColorPicker[name] then
+				tab.ColorPicker[name]:Set(value)
+				tab.ColorPickerValue[name] = value
 			end
 		end
+	end
 
-		-- Met à jour un flag et sauvegarde
-		local function SetFlag(name, value)
-			flags[name] = value
-			SaveData()
-		end
+end
 
-		-- Chargement des données si activé dans settings
-		if settings1 and settings1.Data and settings1.Data.EnableSavingData then
-
-			function library:LoadData()
-				local success, content = pcall(function()
-					return readfile(fileName)
-				end)
-
-				if success and content then
-					local loaded = HttpService:JSONDecode(content)
-					if type(loaded) == "table" then
-						flags = loaded
-
-						-- Pour chaque flag chargé, met à jour les composants correspondants
-						for name, value in pairs(flags) do
-							if tab.sliders[name] then
-								tab.sliders[name]:SetValue(value)
-								tab.SlidersValue[name] = value  -- Met à jour aussi SlidersValue
-							end
-							if tab.textboxes[name] then
-								tab.textboxes[name]:SetText(value)
-							end
-							if tab.dropdowns[name] then
-								tab.dropdowns[name]:Select(value)
-							end
-							if tab.toggles[name] then
-								tab.toggles[name]:Set(value)
-							end
-							if tab.ColorPicker[name] then
-								tab.ColorPicker[name]:Set(value)
-							end
-						end
-					else
-						warn("Données chargées invalides : pas une table.")
-					end
-				else
-					warn("Aucune donnée chargée ou fichier introuvable.")
-				end
-			end
-
-		end
 
 		
 		-- Frame de contenu scrollable
@@ -452,7 +469,7 @@ end
 				if opts.Callback then opts.Callback() end
 
 		end)
-			if opts.Callback then opts.Callback() end
+		
 
 		end
 		function tab:AddText(opts)
@@ -570,136 +587,150 @@ end
 		
 
 		local TweenService = game:GetService("TweenService")
-		function tab:AddColorPicker(opts)
-			local flag = opts.Flag or opts.Name or "ColorPicker"
-			local defaultColor = opts.Color or Color3.fromRGB(255, 255, 255)
+local UserInputService = game:GetService("UserInputService")
 
-			if not tab.ColorPicker then tab.ColorPicker = {} end
-		
+function tab:AddColorPicker(opts)
+	local flag = opts.Flag or opts.Name or "ColorPicker"
+	local defaultColor = opts.Color or Color3.fromRGB(255, 255, 255)
 
-			-- UI Elements
-			local container = createUI("TextButton", {
-				Text = opts.Text;
-				Size = UDim2.new(1, 0, 0, 30);
-				BackgroundColor3 = Color3.fromRGB(50, 50, 50);
-				TextColor3 = Color3.new(1, 1, 1);
-				Font = Enum.Font.Gotham;
-				TextSize = 12;
-				Parent = tab.content;
-			})
-			createUI("UICorner", {Parent = container})
-			createUI("UIPadding", {
-				PaddingLeft = UDim.new(0, 10),
-				PaddingRight = UDim.new(0, 10),
-				PaddingTop = UDim.new(0, 5),
-				PaddingBottom = UDim.new(0, 5),
-				Parent = container;
-			})
-		
-			local colorDisplay = Instance.new("TextButton")
-			colorDisplay.Size = UDim2.new(0, 50, 0, 25)
-			colorDisplay.Position = UDim2.new(1, -60, 0.5, -12)
-			colorDisplay.BackgroundColor3 = defaultColor
-			colorDisplay.BorderSizePixel = 0
-			colorDisplay.Text = ""
-			colorDisplay.AutoButtonColor = false
-			colorDisplay.Parent = container
-			createUI("UICorner", {Parent = colorDisplay})
-			-- Color Picker Window
-			local colorWindow = Instance.new("Frame")
-			colorWindow.Size = UDim2.new(0, 250, 0, 250)
-			colorWindow.Position = UDim2.new(0.5, 0, 0.5, 0)
-			colorWindow.AnchorPoint = Vector2.new(0.5, 0.5)
-			colorWindow.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-			colorWindow.Visible = false
-			colorWindow.BorderSizePixel = 0
-			colorWindow.ZIndex = 10
-			colorWindow.Parent = container
+	tab.ColorPicker = tab.ColorPicker or {}
+	tab.ColorPickerValue = tab.ColorPickerValue or {}
 
-			local uiCorner = Instance.new("UICorner", colorWindow)
-			uiCorner.CornerRadius = UDim.new(0, 6)
+	-- UI Elements
+	local container = createUI("TextButton", {
+		Text = opts.Text;
+		Size = UDim2.new(1, 0, 0, 30);
+		BackgroundColor3 = Color3.fromRGB(50, 50, 50);
+		TextColor3 = Color3.new(1, 1, 1);
+		Font = Enum.Font.Gotham;
+		TextSize = 12;
+		Parent = tab.content;
+	})
+	createUI("UICorner", {Parent = container})
+	createUI("UIPadding", {
+		PaddingLeft = UDim.new(0, 10),
+		PaddingRight = UDim.new(0, 10),
+		PaddingTop = UDim.new(0, 5),
+		PaddingBottom = UDim.new(0, 5),
+		Parent = container;
+	})
 
-			local colorWheel = Instance.new("ImageLabel")
-			colorWheel.Size = UDim2.new(0, 200, 0, 200)
-			colorWheel.Position = UDim2.new(0.5, 0, 0, 10)
-			colorWheel.AnchorPoint = Vector2.new(0.5, 0)
-			colorWheel.BackgroundTransparency = 1
-			colorWheel.Image = "rbxassetid://6020299385" -- cercle de couleur
-			colorWheel.ZIndex = 11
-			colorWheel.Parent = colorWindow
+	local colorDisplay = Instance.new("TextButton")
+	colorDisplay.Size = UDim2.new(0, 50, 0, 25)
+	colorDisplay.Position = UDim2.new(1, -60, 0.5, -12)
+	colorDisplay.BackgroundColor3 = defaultColor
+	colorDisplay.BorderSizePixel = 0
+	colorDisplay.Text = ""
+	colorDisplay.AutoButtonColor = false
+	colorDisplay.Parent = container
+	createUI("UICorner", {Parent = colorDisplay})
 
-			local closeBtn = Instance.new("TextButton")
-			closeBtn.Size = UDim2.new(0, 60, 0, 30)
-			closeBtn.Position = UDim2.new(0.5, -30, 1, -35)
-			closeBtn.Text = "Close"
-			closeBtn.ZIndex = 11
-			closeBtn.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
-			closeBtn.TextColor3 = Color3.new(1, 1, 1)
-			closeBtn.Parent = colorWindow
-			Instance.new("UICorner", closeBtn)
+	-- Color Picker Window
+	local colorWindow = Instance.new("Frame")
+	colorWindow.Size = UDim2.new(0, 250, 0, 250)
+	colorWindow.Position = UDim2.new(0.5, 0, 0.5, 0)
+	colorWindow.AnchorPoint = Vector2.new(0.5, 0.5)
+	colorWindow.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+	colorWindow.Visible = false
+	colorWindow.BorderSizePixel = 0
+	colorWindow.ZIndex = 10
+	colorWindow.Parent = container
 
-			local selecting = false
-			local function updateColor(input)
-				local relPos = Vector2.new(input.Position.X - colorWheel.AbsolutePosition.X, input.Position.Y - colorWheel.AbsolutePosition.Y)
-				local radius = colorWheel.AbsoluteSize.X / 2
-				local center = Vector2.new(radius, radius)
-				local dist = (relPos - center).Magnitude
+	createUI("UICorner", {CornerRadius = UDim.new(0, 6), Parent = colorWindow})
 
-				if dist <= radius then
-					local image = colorWheel
-					local x = math.clamp(relPos.X, 0, image.AbsoluteSize.X - 1)
-					local y = math.clamp(relPos.Y, 0, image.AbsoluteSize.Y - 1)
-					local pixel = image:Clone()
-					pixel.Visible = false
-					pixel.Parent = workspace
-					local color = image.ImageColor3 -- fallback
+	local colorWheel = Instance.new("ImageLabel")
+	colorWheel.Size = UDim2.new(0, 200, 0, 200)
+	colorWheel.Position = UDim2.new(0.5, 0, 0, 10)
+	colorWheel.AnchorPoint = Vector2.new(0.5, 0)
+	colorWheel.BackgroundTransparency = 1
+	colorWheel.Image = "rbxassetid://6020299385" -- roue des couleurs
+	colorWheel.ZIndex = 11
+	colorWheel.Parent = colorWindow
 
-					-- Color sampling not natively supported; approximation here:
-					local angle = math.atan2(relPos.Y - center.Y, relPos.X - center.X)
-					local hue = (angle / (2 * math.pi)) % 1
-					color = Color3.fromHSV(hue, 1, 1)
+	local closeBtn = Instance.new("TextButton")
+	closeBtn.Size = UDim2.new(0, 60, 0, 30)
+	closeBtn.Position = UDim2.new(0.5, -30, 1, -35)
+	closeBtn.Text = "Close"
+	closeBtn.ZIndex = 11
+	closeBtn.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+	closeBtn.TextColor3 = Color3.new(1, 1, 1)
+	closeBtn.Parent = colorWindow
+	Instance.new("UICorner", closeBtn)
 
-					colorDisplay.BackgroundColor3 = color
-					tab.ColorPicker[flag] = color
-					
-					if settings1.Data.EnableSavingData then
-						SetFlag(flag, color)
-					end
-					if opts.Callback then opts.Callback(color) end
-				end
-			end
+	local selecting = false
 
-			local UserInputService = game:GetService("UserInputService")
+	local function ApplyColor(color)
+		TweenService:Create(colorDisplay, TweenInfo.new(0.15), {
+			BackgroundColor3 = color
+		}):Play()
 
-			colorWheel.InputBegan:Connect(function(input)
-				if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-					selecting = true
-					updateColor(input)
-				end
-			end)
-
-			colorWheel.InputChanged:Connect(function(input)
-				if selecting and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
-					updateColor(input)
-				end
-			end)
-
-			UserInputService.InputEnded:Connect(function(input)
-				if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-					selecting = false
-				end
-			end)
-
-			colorDisplay.MouseButton1Click:Connect(function()
-				colorWindow.Visible = not colorWindow.Visible
-			end)
-
-			closeBtn.MouseButton1Click:Connect(function()
-				colorWindow.Visible = false
-			end)
-
-			return colorDisplay
+		tab.ColorPickerValue[flag] = color
+		if settings1 and settings1.Data and settings1.Data.EnableSavingData then
+			SetFlag(flag, color)
 		end
+		if opts.Callback then
+			opts.Callback(color)
+		end
+	end
+
+	local function updateColor(input)
+		local relPos = Vector2.new(input.Position.X - colorWheel.AbsolutePosition.X, input.Position.Y - colorWheel.AbsolutePosition.Y)
+		local radius = colorWheel.AbsoluteSize.X / 2
+		local center = Vector2.new(radius, radius)
+		local dist = (relPos - center).Magnitude
+
+		if dist <= radius then
+			local angle = math.atan2(relPos.Y - center.Y, relPos.X - center.X)
+			local hue = (angle / (2 * math.pi)) % 1
+			local color = Color3.fromHSV(hue, 1, 1)
+			ApplyColor(color)
+		end
+	end
+
+	colorWheel.InputBegan:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			selecting = true
+			updateColor(input)
+		end
+	end)
+
+	colorWheel.InputChanged:Connect(function(input)
+		if selecting and (input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch) then
+			updateColor(input)
+		end
+	end)
+
+	UserInputService.InputEnded:Connect(function(input)
+		if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+			selecting = false
+		end
+	end)
+
+	colorDisplay.MouseButton1Click:Connect(function()
+		colorWindow.Visible = not colorWindow.Visible
+	end)
+
+	closeBtn.MouseButton1Click:Connect(function()
+		colorWindow.Visible = false
+	end)
+
+	-- Enregistrement dans tab.ColorPicker avec méthode Set
+	local api = {
+		Set = function(_, color)
+			if typeof(color) == "Color3" then
+				ApplyColor(color)
+			end
+		end,
+		Get = function()
+			return tab.ColorPickerValue[flag]
+		end
+	}
+	tab.ColorPicker[flag] = api
+	ApplyColor(defaultColor)
+
+	return api
+end
+
 
 		function tab:AddToggle(opts)
 			local flag = opts.Flag or opts.Name or "Button"
@@ -756,13 +787,14 @@ end
 				}):Play()
 			end
 
-			button.MouseButton1Click:Connect(function()
-				value = not value
+			button.MouseButton1Click:Connect(function(Value)
+				value = Value
 				setToggleState(value)
 				if opts.Callback then opts.Callback(value) end
-				if settings1.Data.EnableSavingData then
-				tab.toggles[flag] = value
-					SetFlag(flag,value)
+				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
+					tab.togglesValue = tab.togglesValue or {}
+					tab.togglesValue[flag] = Value
+					SetFlag(flag, Value)
 				end
 			end)
 
@@ -774,7 +806,10 @@ end
 			function obj:Set(t)
 				if type(t) == "table" and type(t[1]) == "boolean" then
 					setToggleState(t[1])
-					tab.toggles[flag] = t[1]
+					if settings1 and settings1.Data and settings1.Data.EnableSavingData then
+					tab.togglesValue[flag] = t[1]
+					SetFlag(flag, value)
+				end
 					if opts.CallBack then
 						opts.CallBack(t[1])
 					end
@@ -948,21 +983,21 @@ end
 
 			-- Mise à jour de la valeur
 			local function UpdateValue(newValue)
-				if settings1.Data.EnableSavingData then
-					flags[flag] = newValue
-					SetFlag(flag, newValue)
+				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
+					tab.textboxesText = tab.textboxesText or {}
+					tab.textboxesText[flag] = value
+					SetFlag(flag, value)
 				end
 				if opts.Callback then opts.Callback(newValue) end
 			end
 
-			-- Gère la validation
+		
 			txt.FocusLost:Connect(function()
 				UpdateValue(txt.Text)
 			end)
 
-			-- Initialisation (valeur sauvegardée ou valeur par défaut)
+	
 			if flags[flag] then
-				txt.Text = flags[flag]
 				UpdateValue(flags[flag])
 			else
 				UpdateValue(defaultText)
@@ -1085,10 +1120,11 @@ end
 							dropdown.FrameOpen = false
 							updateCanvas()
 						end
-						if settings1.Data.EnableSavingData then
-							tab.dropdowns[flag] = dropdown
-							SetFlag(flag,dropdown)
-						end
+						if settings1 and settings1.Data and settings1.Data.EnableSavingData then
+					tab.dropdownValue = tab.dropdownValue or {}
+					tab.dropdownValue[flag] = value
+					SetFlag(flag, value)
+				end
 						updateButtonText()
 						if opts.Callback then opts.Callback(option, dropdown.Selected) end
 					end)
@@ -1134,12 +1170,12 @@ end
 
 				if settings1.Data.EnableSavingData then
 					tab.dropdowns[flag] = dropdown
+					tab.dropdownValue[flag] = dropdown.Selected
+					SetFlag(flag, value)
 					SetFlag(flag, dropdown)
 				end
 
-				if opts.Callback then
-					opts.Callback(value, dropdown.Selected)
-				end
+				
 			end
 
 		
