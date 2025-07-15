@@ -788,13 +788,13 @@ end
 			end
 
 			button.MouseButton1Click:Connect(function(Value)
-				value = Value
+				value = not value
 				setToggleState(value)
 				if opts.Callback then opts.Callback(value) end
 				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
 					tab.togglesValue = tab.togglesValue or {}
-					tab.togglesValue[flag] = Value
-					SetFlag(flag, Value)
+					tab.togglesValue[flag] = value
+					SetFlag(flag, value)
 				end
 			end)
 
