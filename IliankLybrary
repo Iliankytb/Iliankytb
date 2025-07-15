@@ -931,66 +931,78 @@ end
 		end
 
 
-		function tab:AddTextbox(opts)
-			local flag = opts.Flag or opts.Name or "Textbox"
-			local txt = createUI("TextBox", {
-				Text = opts.Default or "",
-				PlaceholderText = opts.Placeholder or "",
-				BackgroundColor3 = Color3.fromRGB(80, 80, 80),
-				TextColor3 = Color3.new(255, 255, 255),
-				PlaceholderColor3 = Color3.new(143, 143, 143),
-				Font = Enum.Font.Gotham,
-				TextSize = 18,
-				Size = UDim2.new(1, 0, 0, 40),
-				Parent = tab.content
-			})
-			createUI("UICorner", { Parent = txt })
+	
+			function tab:AddTextbox(opts)
+				local flag = opts.Flag or opts.Name or "Textbox"
+				local defaultText = opts.Default or ""
 
-			txt.FocusLost:Connect(function()
-				if settings1.Data.EnableSavingData then
-					tab.textboxes[flag] = txt.Text
-					SetFlag(flag,txt.Text)
+				local txt = createUI("TextBox", {
+					Text = defaultText,
+					PlaceholderText = opts.Placeholder or "",
+					BackgroundColor3 = Color3.fromRGB(80, 80, 80),
+					TextColor3 = Color3.new(1, 1, 1),
+					PlaceholderColor3 = Color3.fromRGB(143, 143, 143),
+					Font = Enum.Font.Gotham,
+					TextSize = 18,
+					Size = UDim2.new(1, 0, 0, 40),
+					Parent = tab.content
+				})
+				createUI("UICorner", { Parent = txt })
+
+				-- Met à jour la valeur flag, la sauvegarde et appelle le callback
+				local function UpdateValue(newValue)
+					if settings1.Data.EnableSavingData then
+						flags[flag] = newValue
+						tab.textboxes[flag] = newValue
+						SetFlag(flag, newValue)
+					else
+						tab.textboxes[flag] = newValue
+					end
+					if opts.Callback then opts.Callback(newValue) end
 				end
-				if opts.Callback then opts.Callback(txt.Text) end
-			end)
-			if settings1.Data.EnableSavingData then
-			tab.textboxes[flag] = txt.Text
-				SetFlag(flag,txt.Text)
-			end
 
-			-- ** AJOUT DE LA FONCTION Set **
-			local obj = {}
-			function obj:Set(t)
-				if type(t) == "table" then
-					if type(t.PlaceHolder) == "string" then
-						txt.PlaceholderText = t.PlaceHolder
-					end
-					if type(t.Text) == "string" then
-						txt.Text = t.Text
-						if settings1.Data.EnableSavingData then
-							tab.textboxes[flag] = t.Text
-							SetFlag(flag,t.Text)
-						end
-						if opts.Callback then opts.Callback(t.Text) end
-					end
+				-- Connecte la mise à jour lors de la perte de focus
+				txt.FocusLost:Connect(function()
+					UpdateValue(txt.Text)
+				end)
+
+				-- Initialise la valeur au démarrage (charge depuis flags ou default)
+				if flags[flag] then
+					txt.Text = flags[flag]
+					tab.textboxes[flag] = flags[flag]
 				else
-					warn("Set attend une table avec PlaceHolder et/ou Text")
+					UpdateValue(defaultText)
 				end
-			end
-			function obj:SetText(t)
-				
-						txt.Text = t.Text
-						if settings1.Data.EnableSavingData then
-							tab.textboxes[flag] = t.Text
-							SetFlag(flag,t.Text)
+
+				-- Objet retourné avec méthode Set pour mise à jour externe
+				local obj = {}
+
+				function obj:Set(t)
+					if type(t) == "table" then
+						if type(t.Placeholder) == "string" then
+							txt.PlaceholderText = t.Placeholder
 						end
-						if opts.Callback then opts.Callback(t.Text) end
-				
-				
+						if type(t.Text) == "string" then
+							txt.Text = t.Text
+							UpdateValue(t.Text)
+						end
+					else
+						warn("Set attend une table avec 'Placeholder' et/ou 'Text'")
+					end
+				end
+
+				function obj:SetText(newText)
+					if type(newText) == "string" then
+						txt.Text = newText
+						UpdateValue(newText)
+					else
+						warn("SetText attend une string")
+					end
+				end
+
+				return obj
 			end
 
-			return obj
-		end
 
 
 		local TweenService = game:GetService("TweenService")
