@@ -411,6 +411,11 @@ local function VisibleWindow(window,settings1,gui)
 						end)
 					end
 				end
+				window:Notify({
+					Title = "Data!",
+					Message = "Loaded Data!",
+					Duration = 5,
+				})
 			end
 
 		end
