@@ -311,7 +311,7 @@ end
 
 		if not writefile or not readfile then
 			warn("writefile/readfile non disponibles.")
-			return
+			
 		end
 
 		local function SaveData()
@@ -342,13 +342,13 @@ end
 
 						for name, value in pairs(flags) do
 							if tab.sliders[name] then
-								tab.sliders[name].Value = value
+								tab.sliders[name]:SetValue(value)
 							end
 							if tab.textboxes[name] then
-								tab.textboxes[name].Text = value
+								tab.textboxes[name]:Set(value)
 							end
 							if tab.dropdowns[name] then
-								tab.dropdowns[name]:Select(value)
+								tab.dropdowns[name]:Select()(value)
 							end
 							if tab.toggles[name] then
 								tab.toggles[name]:Set(value)
@@ -885,6 +885,35 @@ end
 				else
 					warn("Set attend une table avec min, max et/ou Current")
 				end
+				
+			end
+			function obj:SetValue(v)
+				if type(v) ~= "number" then
+					warn("SetValue attend un nombre (la valeur du slider).")
+					return
+				end
+
+				-- Clamp la valeur pour rester dans les limites
+				value = math.clamp(v, min, max)
+
+				-- Calcul de position avec sécurité
+				local range = max - min
+				local pos = range ~= 0 and ((value - min) / range) or 0
+				fillBar.Size = UDim2.new(pos, 0, 1, 0)
+
+				-- Mise à jour du texte
+				label.Text = string.format("%s: %s", opts.Name or "Slider", tostring(value))
+
+				-- Sauvegarde si activée
+				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
+					tab.sliders[flag] = value
+					SetFlag(flag, value)
+				end
+
+				-- Appel du callback si défini
+				if opts.Callback then
+					opts.Callback(value)
+				end
 			end
 
 			return obj
@@ -1060,6 +1089,34 @@ end
 				updateButtonText()
 				createOptions(newOptions)
 			end
+			function dropdown:Select(value)
+				if not table.find(dropdown.Options, value) then
+					warn("Option '" .. tostring(value) .. "' non trouvée dans le dropdown.")
+					return
+				end
+
+				if multi then
+					if not table.find(dropdown.Selected, value) then
+						table.insert(dropdown.Selected, value)
+					end
+				else
+					dropdown.Selected = {value}
+					dropdown.FrameOpen = false
+					updateCanvas()
+				end
+
+				updateButtonText()
+
+				if settings1.Data.EnableSavingData then
+					tab.dropdowns[flag] = dropdown
+					SetFlag(flag, dropdown)
+				end
+
+				if opts.Callback then
+					opts.Callback(value, dropdown.Selected)
+				end
+			end
+
 			if settings1.Data.EnableSavingData then
 			tab.dropdowns[flag] = dropdown
 				SetFlag(flag,dropdown)
