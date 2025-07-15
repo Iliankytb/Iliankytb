@@ -1,69 +1,110 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/IliankLybrary"))()
 
--- Création de la fenêtre
-local window = library:CreateWindow({
-    Title = "Mon Menu",
-    Theme = "Dark",
-    ConfigurationSaving = {
-        Enabled = true,
-        FolderName = "MyGameConfigs",
-        FileName = "Settings"
-    },
-    KeySystem = false
-})
+library:CreateWindow({
+	Title = "Title of script",-- Title of the script
+	Icon = false,-- Icon or no (use rbxAssets://) (coming soon)
+	Intro = false,--Intro or no
+	IntroTitle = "Intro Title",--the intro title
+	Data = {
+		EnableSavingData = true,--Enabling data saver or no
+		FileName = "TestingNow"-- File name for the data saver
+	},
+	KeySystem = false,--Key System or no
+	KeySettings = {
+		Title = "key System Title",--Title of the key
+		Note = "No methode of obtaining",-- The method for obtaining
+		FileName = "Key",-- File name or no for saving the key (coming soon)
+		SaveKey = true,-- saving the key or no
+		Key = {"Key"},-- the name (you can add many name, Exemple "Key","Key2"
+	},
+}, function(window)
+	local tab = window:CreateTab("Tab 1")-- Tabs
 
--- Onglet Principal
-local tab = window:CreateTab("Principal")
+--Button--
+	tab:AddButton({
+		Text = "This is a button",
+		Name = "Button",
+		Callback = function() 
+			
+		end
+	})
+--Toggle--
+	tab:AddToggle({
+		Text = "This is a Toggle",
+		Name = "Toggle",
+		Flag = "okay",--Put a name flag for save data if you enabled saving data
+		Default = false,
+		Callback = function(state)
+			
+		end
+	})
 
-tab:AddButton({
-    Name = "Salut",
-    Callback = function()
-        print("Bonjour le monde !")
-    end
-})
+--Color Picker--
+	tab:AddColorPicker({
+		Text = "This is a color picker",
+		Name = "Color picker",
+		Color = Color3.new(255, 255, 255),
+		Flag = "like",--Put a name flag for save data if you enabled saving data
+		Callback = function(val)
+		
+		end
+	})
 
-tab:AddToggle({
-    Name = "Mode nuit",
-    Default = false,
-    Callback = function(state)
-        print("Mode nuit =", state)
-    end
-})
+--Text--
+	tab:AddText({
+		Text = "This is a Text",
+		Name = "Text"
+	})
 
-tab:AddSlider({
-    Name = "Volume",
-    Min = 0,
-    Max = 10,
-    Default = 5,
-    Callback = function(val)
-        print("Volume =", val)
-    end
-})
+--Paragraph--
+	tab:AddParagraph({
+		Title = "This is the title of a paragraph",
+	Content = "This is a paragraph"	
+	})
 
-tab:AddTextbox({
-    Name = "Pseudo",
-    Placeholder = "Entrez pseudo...",
-    Default = "",
-    Callback = function(text)
-        print("Pseudo :", text)
-    end
-})
+--Slider--
+	tab:AddSlider({
+		Name = "This is a Slider",
+		Min = 0,
+		Max = 100,
+		Default = 0,
+		Flag = "Okay2",--Put a name flag for save data if you enabled saving data
+		Callback = function(val)
+			
+		end
+	})
 
-tab:AddDropdown({
-    Name = "Langue",
-    Options = {"Français", "Anglais", "Espagnol"},
-    Default = "Français",
-    Callback = function(choice)
-        print("Langue :", choice)
-    end
-})
+--Textbox--
+	tab:AddTextbox({
+		Text = "This is a textbox",
+		Name = "TextBox",
+		Placeholder = "This is a TextBox",
+		Flag = "YAY",--Put a name flag for save data if you enabled saving data
+		Callback = function(text)
+			
+		end
+	})
 
--- Onglet Réglages
-local settingsTab = window:CreateTab("Réglages")
-settingsTab:AddButton({
-    Name = "Sauvegarder",
-    Callback = function()
-        window:SaveConfig()
-        print("Config sauvegardée !")
-    end
-})
+--Dropdown--
+	tab:AddDropdown({
+		Text = "This is a Dropdown",
+		Name = "Dropdown",
+		Options = {"Option 1", "Option 2", "Option 3"},
+		Default = "This is a Dropdown",
+		MultiSelect = true,
+Flag = "Droping" --Put a name flag for save data if you enabled saving data
+		Callback = function(choice)
+			
+		end
+	})
+
+	--notif--
+	window:Notify({
+		Title = "Testing!",
+		Message = "notif!",
+		Duration = 5,
+	})
+
+--Loading Data--
+	library:LoadData()
+end)
