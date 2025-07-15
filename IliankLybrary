@@ -352,7 +352,7 @@ end
 								tab.SlidersValue[name] = value  -- Met à jour aussi SlidersValue
 							end
 							if tab.textboxes[name] then
-								tab.textboxes[name]:Set(value)
+								tab.textboxes[name]:SetText(value)
 							end
 							if tab.dropdowns[name] then
 								tab.dropdowns[name]:Select(value)
@@ -976,6 +976,17 @@ end
 				else
 					warn("Set attend une table avec PlaceHolder et/ou Text")
 				end
+			end
+			function obj:SetText(t)
+				
+						txt.Text = t.Text
+						if settings1.Data.EnableSavingData then
+							tab.textboxes[flag] = t.Text
+							SetFlag(flag,t.Text)
+						end
+						if opts.Callback then opts.Callback(t.Text) end
+				
+				
 			end
 
 			return obj
