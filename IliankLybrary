@@ -881,7 +881,7 @@ local function VisibleWindow(window,settings1,gui)
 				setToggleState(value)
 				if opts.Callback then opts.Callback(value) end
 				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
-					print("Saving Toggle"..flag.." to "..value)
+					print("Saving Toggle "..flag.." to "..tostring(value))
 					tab.togglesValue = tab.togglesValue or {}
 					tab.togglesValue[flag] = value
 					SetFlag(flag, value)
@@ -1218,29 +1218,58 @@ local function VisibleWindow(window,settings1,gui)
 			end
 
 			function dropdown:Select(value)
-				if not table.find(dropdown.Options, value) then
-					warn("Option '" .. tostring(value) .. "' non trouvée dans le dropdown.")
-					return
-				end
-
-				if multi then
-					if not table.find(dropdown.Selected, value) then
-						table.insert(dropdown.Selected, value)
+				if typeof(value) == "table" then
+					if multi then
+						for _, val in ipairs(value) do
+							if not table.find(dropdown.Options, val) then
+								warn("Option '" .. tostring(val) .. "' non trouvée dans le dropdown.")
+								continue
+							end
+							if not table.find(dropdown.Selected, val) then
+								table.insert(dropdown.Selected, val)
+							end
+						end
+					else
+						-- mono-sélection : prendre le premier élément
+						local val = value[1]
+						if not table.find(dropdown.Options, val) then
+							warn("Option '" .. tostring(val) .. "' non trouvée dans le dropdown.")
+							return
+						end
+						dropdown.Selected = {val}
+						dropdown.FrameOpen = false
+						updateCanvas()
 					end
 				else
-					dropdown.Selected = {value}
-					dropdown.FrameOpen = false
-					updateCanvas()
+					-- Si value est une valeur simple
+					if not table.find(dropdown.Options, value) then
+						warn("Option '" .. tostring(value) .. "' non trouvée dans le dropdown.")
+						return
+					end
+
+					if multi then
+						if not table.find(dropdown.Selected, value) then
+							table.insert(dropdown.Selected, value)
+						end
+					else
+						dropdown.Selected = {value}
+						dropdown.FrameOpen = false
+						updateCanvas()
+					end
 				end
 
+				-- Sauvegarde
 				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
 					tab.dropdownValue = tab.dropdownValue or {}
 					tab.dropdownValue[flag] = dropdown.Selected
 					SetFlag(flag, dropdown.Selected)
 				end
+
 				updateButtonText()
 
-				if opts.Callback then opts.Callback(value, dropdown.Selected) end
+				if opts.Callback then
+					opts.Callback(value, dropdown.Selected)
+				end
 			end
 
 			tab.dropdowns[flag] = dropdown -- ✅ Sauvegarde du dropdown pour LoadData
