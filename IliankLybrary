@@ -297,17 +297,23 @@ end
 
 
 	function window:CreateTab(name)
-		local flags = {}
+		local HttpService = game:GetService("HttpService")
+		local flags = {} 
+		local tab = {
+			slider = {},
+			textboxes = {},
+			dropdowns = {},
+			toggles = {},
+			ColorPicker = {}
+		}
 
-		local tab = {}
-		tab.sliders = {}
-		tab.textboxes = {}
-		tab.dropdowns = {}
-		tab.toggles = {}
-		tab.ColorPicker = {}
-		local fileName = settings1.Data.FileName or "Unknow"
+		local fileName = (settings1 and settings1.Data and settings1.Data.FileName) or "UnknownFile.json"
 
-		-- Fonction pour sauvegarder les flags dans un fichier
+		if not writefile or not readfile then
+			warn("writefile/readfile non disponibles.")
+			return
+		end
+
 		local function SaveData()
 			local success, result = pcall(function()
 				writefile(fileName, HttpService:JSONEncode(flags))
@@ -317,52 +323,48 @@ end
 			end
 		end
 
-		-- Fonction pour changer un flag et sauvegarder automatiquement
 		local function SetFlag(name, value)
 			flags[name] = value
 			SaveData()
 		end
 
-		local HttpService = game:GetService("HttpService")
-		if settings1.Data.EnableSavingData then
+		if settings1 and settings1.Data and settings1.Data.EnableSavingData then
 
-		
+			function library:LoadData()
+				local success, content = pcall(function()
+					return readfile(fileName)
+				end)
 
-	
-		-- Fonction pour charger les flags depuis un fichier et les appliquer à l'interface
-		function library:LoadData()
-			local success, content = pcall(function()
-				return readfile(fileName)
-			end)
+				if success and content then
+					local loaded = HttpService:JSONDecode(content)
+					if type(loaded) == "table" then
+						flags = loaded
 
-			if success and content then
-				local loaded = HttpService:JSONDecode(content)
-				if type(loaded) == "table" then
-					flags = loaded
-
-					for name, value in pairs(flags) do
-						if tab.sliders[name] then
-							tab.sliders[name].Value = value
-						end
-						if tab.textboxes[name] then
-							tab.textboxes[name].Text = value
-						end
-						if tab.dropdowns[name] then
-							tab.dropdowns[name]:Select(value)
-						end
-						if tab.toggles[name] then
-							tab.toggles[name]:Set(value)
-						end
-						if tab.ColorPicker[name] then
-							tab.ColorPicker[name]:Set(value)
+						for name, value in pairs(flags) do
+							if tab.sliders[name] then
+								tab.sliders[name].Value = value
+							end
+							if tab.textboxes[name] then
+								tab.textboxes[name].Text = value
+							end
+							if tab.dropdowns[name] then
+								tab.dropdowns[name]:Select(value)
+							end
+							if tab.toggles[name] then
+								tab.toggles[name]:Set(value)
+							end
+							if tab.ColorPicker[name] then
+								tab.ColorPicker[name]:Set(value)
+							end
 						end
 					end
+				else
+					warn("Aucune donnée chargée ou fichier introuvable.")
 				end
-			else
-				warn("Aucune donnée chargée ou fichier introuvable.")
 			end
+
 		end
-end
+
 		
 		-- Frame de contenu scrollable
 		local scroll = createUI("ScrollingFrame", {
