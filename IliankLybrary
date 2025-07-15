@@ -348,7 +348,7 @@ end
 								tab.textboxes[name]:Set(value)
 							end
 							if tab.dropdowns[name] then
-								tab.dropdowns[name]:Select()(value)
+								tab.dropdowns[name]:Select(value)
 							end
 							if tab.toggles[name] then
 								tab.toggles[name]:Set(value)
