@@ -346,8 +346,8 @@ local function VisibleWindow(window,settings1,gui)
 
 			function library:LoadData()
 				local success, content = pcall(readfile, fileName)
-				if not success or not content then
-					warn("Échec du chargement : fichier introuvable ou vide.")
+				if not success or not content or content == "" then
+					warn("Échec du chargement : fichier introuvable, vide ou non lisible.")
 					return
 				end
 
@@ -363,27 +363,52 @@ local function VisibleWindow(window,settings1,gui)
 
 				flags = loadedData
 
-				-- Applique les données chargées aux composants
+				-- Vérifie que `tab` et ses sous-tables existent
+				if not tab then
+					warn("Erreur : 'tab' est nil.")
+					return
+				end
+
+				tab.SlidersValue = tab.SlidersValue or {}
+				tab.textboxesText = tab.textboxesText or {}
+				tab.dropdownValue = tab.dropdownValue or {}
+				tab.TogglesValue = tab.TogglesValue or {}
+				tab.ColorPickerValue = tab.ColorPickerValue or {}
+
 				for name, value in pairs(flags) do
-					if tab.sliders[name] then
-						tab.sliders[name]:SetValue(value)
-						tab.SlidersValue[name] = value
+					if tab.sliders and tab.sliders[name] then
+						pcall(function()
+							tab.sliders[name]:SetValue(value)
+							tab.SlidersValue[name] = value
+						end)
 					end
-					if tab.textboxes[name] then
-						tab.textboxes[name]:SetText(value)
-						tab.textboxesText[name] = value
+
+					if tab.textboxes and tab.textboxes[name] then
+						pcall(function()
+							tab.textboxes[name]:SetText(value)
+							tab.textboxesText[name] = value
+						end)
 					end
-					if tab.dropdowns[name] then
-						tab.dropdowns[name]:Select(value)
-						tab.dropdownValue[name] = value
+
+					if tab.dropdowns and tab.dropdowns[name] then
+						pcall(function()
+							tab.dropdowns[name]:Select(value)
+							tab.dropdownValue[name] = value
+						end)
 					end
-					if tab.toggles[name] then
-						tab.toggles[name]:Set(value)
-						tab.TogglesValue[name] = value
+
+					if tab.toggles and tab.toggles[name] then
+						pcall(function()
+							tab.toggles[name]:Set(value)
+							tab.TogglesValue[name] = value
+						end)
 					end
-					if tab.ColorPicker[name] then
-						tab.ColorPicker[name]:Set(value)
-						tab.ColorPickerValue[name] = value
+
+					if tab.ColorPicker and tab.ColorPicker[name] then
+						pcall(function()
+							tab.ColorPicker[name]:Set(value)
+							tab.ColorPickerValue[name] = value
+						end)
 					end
 				end
 			end
