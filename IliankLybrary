@@ -328,6 +328,7 @@ local function VisibleWindow(window,settings1,gui)
 		-- Sauvegarde les flags dans un fichier JSON
 		local function SaveData()
 			local success, err = pcall(function()
+				print("Saving flags:", HttpService:JSONEncode(flags))
 				writefile(fileName, HttpService:JSONEncode(flags))
 			end)
 			if not success then
