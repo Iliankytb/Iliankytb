@@ -367,6 +367,7 @@ local function VisibleWindow(window,settings1,gui)
 
 		-- Fonction pour définir une valeur de flag et sauvegarder
 		local function SetFlag(name, value)
+			print("SetFlag", name, value)
 			flags[name] = value
 			SaveData()
 		end
@@ -437,7 +438,7 @@ local function VisibleWindow(window,settings1,gui)
 					end
 					if tab.toggles and tab.toggles[name] then
 						pcall(function()
-							print("Set toggle", name, "to", value)
+							print("Set toggles", name, "to", value)
 							tab.toggles[name]:SetValue(value)
 							tab.TogglesValue[name] = value
 						end)
