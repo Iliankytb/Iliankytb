@@ -23,7 +23,7 @@ local function copyToClipboard(text)
 	end
 end
 local function VisibleWindow(window,settings1,gui)
-print("Library Version"..0.1)
+print("Library Version: 0.1")
 	local TweenService = game:GetService("TweenService")
 	local mainFrame = createUI("Frame", {
 		Size = UDim2.new(0, 0, 0, 0);
@@ -876,8 +876,13 @@ print("Library Version"..0.1)
 				}):Play()
 			end
 
-			button.MouseButton1Click:Connect(function()
-				value = not value
+			button.MouseButton1Click:Connect(function(State)
+				if State then
+					value = State
+				else
+					value = not value
+				end
+				
 				setToggleState(value)
 				if opts.Callback then opts.Callback(value) end
 				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
@@ -899,18 +904,18 @@ print("Library Version"..0.1)
 					warn("Set attend un booléen.")
 					return
 				end
-
-				value = newValue
-				setToggleState(value)
+				print("load Toggle " ..tostring(newValue))
+				
+				setToggleState(newValue)
 
 				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
 					tab.TogglesValue = tab.TogglesValue or {}
-					tab.TogglesValue[flag] = value
-					SetFlag(flag, value)
+					tab.TogglesValue[flag] = newValue
+					SetFlag(flag, newValue)
 				end
 
 				if opts.Callback then
-					opts.Callback(value)
+					opts.Callback(newValue)
 				end
 			end
 
