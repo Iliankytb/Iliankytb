@@ -28,7 +28,8 @@ function library:CopyText(Text)
 end
 
 local function VisibleWindow(window,settings1,gui)
-	print("Library Version: 0.5")
+	print("Library Version: 0.6")
+
 	local TweenService = game:GetService("TweenService")
 	local mainFrame = createUI("Frame", {
 		Size = UDim2.new(0, 0, 0, 0);
@@ -161,8 +162,6 @@ local function VisibleWindow(window,settings1,gui)
 		end)
 	end
 
-
-
 	createUI("UICorner", {Parent = mainFrame})
 	local animOpenPC = TweenService:Create(mainFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
 		Size = UDim2.new(0, 600, 0, 400);
@@ -193,6 +192,7 @@ local function VisibleWindow(window,settings1,gui)
 	else
 		tabsFrame.Size = UDim2.new(0,150,1,0)
 	end
+	
 	createUI("UIListLayout", {
 		Padding = UDim.new(0, 6),
 		SortOrder = Enum.SortOrder.LayoutOrder,
@@ -284,6 +284,17 @@ local function VisibleWindow(window,settings1,gui)
 	else
 		animOpenPC:Play()
 	end
+	if settings1.Discord.Enabled then
+		if settings1.Discord.RememberJoin and settings1.Discord.DiscordLink and  settings1.Discord.DiscordLink ~= "NoInviteLink" then
+			window:Notify({
+				Title = "Discord!",
+				Message = "Remember to join the discord,discord link: "..settings1.Discord.DiscordLink,
+				Duration = settings1.Discord.Duration,
+			})
+		elseif not settings1.Discord.RememberJoin and settings1.Discord.DiscordLink and  settings1.Discord.DiscordLink ~= "NoInviteLink" then
+			copyToClipboard(settings1.Discord.DiscordLink )
+		end
+	end
 	-- Ajuste la position et la taille des autres frames pour laisser la place au titre
 	tabsFrame.Position = UDim2.new(0, 0, 0, 40)
 	tabsFrame.Size = UDim2.new(0, 150, 1, -40)
@@ -301,7 +312,7 @@ local function VisibleWindow(window,settings1,gui)
 	end
 
 
-	function window:CreateTab(name)
+	function window:CreateTab(name,icon)
 		local HttpService = game:GetService("HttpService")
 
 		-- Vérifie si writefile/readfile sont disponibles (ex: en exploit Roblox)
@@ -450,17 +461,18 @@ local function VisibleWindow(window,settings1,gui)
 						end)
 					end
 				end
-
+				if not settingsData.DisableNotifyingLoadedData  then
 				window:Notify({
 					Title = "Data!",
 					Message = "Loaded Data!",
 					Duration = 5,
 				})
+				end
 			end
 
 		end
 
-		-- Expose SetFlag pour usage extérieur si besoin
+
 		library.SetFlag = SetFlag
 
 
@@ -493,16 +505,60 @@ local function VisibleWindow(window,settings1,gui)
 
 		tab.content = scroll
 
-		-- Bouton de tab
-		local tabButton = createUI("TextButton", {
-			Text = name;
-			Size = UDim2.new(1, 0, 0, 30);
-			BackgroundColor3 = Color3.fromRGB(50, 50, 50);
-			TextColor3 = Color3.new(1, 1, 1);
-			Font = Enum.Font.GothamBold;
-			TextSize = 14;
-			Parent = tabsFrame;
-		})
+	
+		local tabButton 
+			
+			if icon ~= 0 then 
+			 tabButton = createUI("TextButton", {
+				Text = ""; -- Le texte sera mis dans un Label séparé
+				Size = UDim2.new(1, 0, 0, 30);
+				BackgroundColor3 = Color3.fromRGB(50, 50, 50);
+				TextColor3 = Color3.new(1, 1, 1);
+				Font = Enum.Font.GothamBold;
+				TextSize = 14; -- inutile ici car on va utiliser un Label
+				Parent = tabsFrame;
+			})
+
+			-- Layout pour bien aligner l’image et le texte
+			local uiListLayout = Instance.new("UIListLayout")
+			uiListLayout.Parent = tabButton
+			uiListLayout.FillDirection = Enum.FillDirection.Horizontal
+			uiListLayout.HorizontalAlignment = Enum.HorizontalAlignment.Left
+			uiListLayout.VerticalAlignment = Enum.VerticalAlignment.Center
+			uiListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+			uiListLayout.Padding = UDim.new(0, 5)
+
+			-- Image à gauche
+			local icon = Instance.new("ImageLabel")
+			icon.Name = "Icon"
+			icon.Size = UDim2.new(0, 20, 0, 20)
+			icon.BackgroundTransparency = 1
+			icon.Image = "rbxassetid://12345678" -- Remplace par l’ID de ton image
+			icon.Parent = tabButton
+
+			-- Texte à droite
+			local textLabel = Instance.new("TextLabel")
+			textLabel.Name = name.."Tabs"
+			textLabel.Text = name
+			textLabel.Size = UDim2.new(1, -30, 1, 0) -- laisse de la place pour l'image + padding
+			textLabel.BackgroundTransparency = 1
+			textLabel.TextColor3 = Color3.new(1, 1, 1)
+			textLabel.Font = Enum.Font.Gotham
+			textLabel.TextSize = 12
+			textLabel.TextXAlignment = Enum.TextXAlignment.Left
+			textLabel.Parent = tabButton
+
+			else
+			tabButton =  createUI("TextButton", {
+				Text = name;
+				Size = UDim2.new(1, 0, 0, 30);
+				BackgroundColor3 = Color3.fromRGB(50, 50, 50);
+				TextColor3 = Color3.new(1, 1, 1);
+				Font = Enum.Font.GothamBold;
+				TextSize = 14;
+				Parent = tabsFrame;
+			})
+			end
 		createUI("UICorner", {Parent = tabButton})
 
 		tabButton.MouseButton1Click:Connect(function()
