@@ -28,7 +28,7 @@ function library:CopyText(Text)
 end
 
 local function VisibleWindow(window,settings1,gui)
-	print("Library Version: 0.10")
+	print("Library Version: 0.11")
 
 	local TweenService = game:GetService("TweenService")
 	local mainFrame = createUI("Frame", {
