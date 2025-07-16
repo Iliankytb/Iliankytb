@@ -27,11 +27,17 @@ RememberJoin = true,-- Set this ti false to make them copy the link every time t
 	local tab = window:CreateTab("Tab 1")-- Tabs
 
 --Button--
+--Text--
+	local firsttext = tab:AddText({
+		Text = "This is a Text",
+		Name = "Text"
+	})
+
 	tab:AddButton({
 		Text = "This is a button",
 		Name = "Button",
 		Callback = function() 
-			
+		firsttext:Set("okay")	
 		end
 	})
 --Toggle--
@@ -56,11 +62,7 @@ RememberJoin = true,-- Set this ti false to make them copy the link every time t
 		end
 	})
 
---Text--
-	tab:AddText({
-		Text = "This is a Text",
-		Name = "Text"
-	})
+
 
 --Paragraph--
 	tab:AddParagraph({
