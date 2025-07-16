@@ -23,7 +23,7 @@ local function copyToClipboard(text)
 	end
 end
 local function VisibleWindow(window,settings1,gui)
-print("Library Version: 0.1")
+print("Library Version: 0.2")
 	local TweenService = game:GetService("TweenService")
 	local mainFrame = createUI("Frame", {
 		Size = UDim2.new(0, 0, 0, 0);
