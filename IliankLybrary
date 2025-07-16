@@ -28,7 +28,7 @@ function library:CopyText(Text)
 end
 
 local function VisibleWindow(window,settings1,gui)
-	print("Library Version: 0.11")
+	print("Library Version: 0.12")
 
 	local TweenService = game:GetService("TweenService")
 	local mainFrame = createUI("Frame", {
@@ -357,8 +357,8 @@ else
 	UserInputService.InputBegan:Connect(function(input, gameProcessed)
 		if gameProcessed then return end -- Ignore si la touche est utilisée par le système ou Roblox
 		if input.KeyCode == settings1.KeyPC then
-			mainFrame.Visible = not mainFrame.Visible
-			if mainFrame.Visible then
+			if not mainFrame.Visible then
+				mainFrame.Visible = true
 			if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
 				animOpenMobile:Play()
 			elseif UserInputService.TouchEnabled and UserInputService.KeyboardEnabled then
@@ -368,7 +368,11 @@ else
 			end
 			else
 				animClose:Play()
+				animClose.Changed:Connect(function()
+				mainFrame.Visible = false
+				end)
 			end
+		
 		end
 	end)
 
