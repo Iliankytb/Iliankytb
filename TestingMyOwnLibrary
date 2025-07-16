@@ -1,4 +1,4 @@
-local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/IliankLybrary"))()
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 
 library:CreateWindow({
 	Title = "Title of script",-- Title of the script
@@ -36,20 +36,19 @@ GrabKeyFromSite = false,--Coming soon
 
 
 --Text--
-	local firsttext = tab:AddText({
+	local Text = tab:AddText({
 		Text = "This is a Text",
 		Name = "Text"
 	})
 --Button--
-	tab:AddButton({
+	local Button = tab:AddButton({
 		Text = "This is a button",
 		Name = "Button",
-		Callback = function() 
-		firsttext:Set({"test"})	
+		Callback = function() 	
 		end
 	})
 --Toggle--
-	tab:AddToggle({
+	local Toggle = tab:AddToggle({
 		Text = "This is a Toggle",
 		Name = "Toggle",
 		Flag = "Toggle",--Put a name flag for save data if you enabled saving data
@@ -60,7 +59,7 @@ GrabKeyFromSite = false,--Coming soon
 	})
 
 --Color Picker--
-	tab:AddColorPicker({
+	local ColorPicker = tab:AddColorPicker({
 		Text = "This is a color picker",
 		Name = "Color picker",
 		Color = Color3.new(255, 255, 255),
@@ -73,13 +72,13 @@ GrabKeyFromSite = false,--Coming soon
 
 
 --Paragraph--
-	tab:AddParagraph({
+	local Paragraph = tab:AddParagraph({
 		Title = "This is the title of a paragraph",
 	Content = "This is a paragraph"	
 	})
 
 --Slider--
-	tab:AddSlider({
+	local Slider = tab:AddSlider({
 		Name = "This is a Slider",
 		Min = 0,
 		Max = 100,
@@ -91,7 +90,7 @@ GrabKeyFromSite = false,--Coming soon
 	})
 
 --Textbox--
-	tab:AddTextbox({
+	local TextBox = tab:AddTextbox({
 		Text = "This is a textbox",
 		Name = "TextBox",
 		Placeholder = "This is a TextBox",
@@ -102,7 +101,7 @@ GrabKeyFromSite = false,--Coming soon
 	})
 
 --Dropdown--
-	tab:AddDropdown({
+	local Dropdown = tab:AddDropdown({
 		Text = "This is a Dropdown",
 		Name = "Dropdown",
 		Options = {"Option 1", "Option 2", "Option 3"},
@@ -115,7 +114,7 @@ Flag = "Dropdown", --Put a name flag for save data if you enabled saving data
 	})
 
 	--notif--
-	window:Notify({
+	local Notif = window:Notify({
 		Title = "Testing!",
 		Message = "notif!",
 		Duration = 5,
