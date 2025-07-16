@@ -28,7 +28,7 @@ function library:CopyText(Text)
 end
 
 local function VisibleWindow(window,settings1,gui)
-	print("Library Version: 0.7")
+	print("Library Version: 0.8")
 
 	local TweenService = game:GetService("TweenService")
 	local mainFrame = createUI("Frame", {
@@ -240,12 +240,12 @@ if settings1.Icon ~= 0 then
 		layout.Parent = titleContainer
 
 		-- Image à gauche
-		local icon = Instance.new("ImageLabel")
-		icon.Name = "Icon"
-		icon.Size = UDim2.new(0, 20, 0, 20)
-		icon.BackgroundTransparency = 1
-		icon.Image = "rbxassetid://12345678" -- Remplace par ton image
-		icon.Parent = titleContainer
+		local imageIcon2 = Instance.new("ImageLabel")
+		imageIcon2.Name = "Icon"
+		imageIcon2.Size = UDim2.new(0, 20, 0, 20)
+		imageIcon2.BackgroundTransparency = 1
+		imageIcon2.Image = "rbxassetid://"..settings1.Icon
+		imageIcon2.Parent = titleContainer
 
 		-- Texte à droite de l'image
 		 titleLabel = createUI("TextLabel", {
