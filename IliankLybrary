@@ -28,7 +28,7 @@ function library:CopyText(Text)
 end
 
 local function VisibleWindow(window,settings1,gui)
-	print("Library Version: 0.8")
+	print("Library Version: 0.9")
 
 	local TweenService = game:GetService("TweenService")
 	local mainFrame = createUI("Frame", {
@@ -1429,7 +1429,7 @@ function library:CreateWindow(settings1, onLoad)
 		local Note = settings1.KeySettings.Note
 		local Key = settings1.KeySettings.Key
 
-		-- Création du cadre principal (départ à taille 0 pour anim)
+		-- Création du cadre principal
 		local KeyFrame = createUI("Frame", {
 			Size = UDim2.new(0, 0, 0, 0),
 			Position = UDim2.new(0.5, 0, 0.5, 0),
@@ -1438,6 +1438,22 @@ function library:CreateWindow(settings1, onLoad)
 			Parent = gui,
 		})
 		createUI("UICorner", {Parent = KeyFrame})
+
+		-- Bouton de fermeture (croix rouge)
+		local closeButton = createUI("TextButton", {
+			Size = UDim2.new(0, 25, 0, 25),
+			Position = UDim2.new(1, -30, 0, 5),
+			BackgroundColor3 = Color3.fromRGB(200, 50, 50),
+			Text = "X",
+			TextColor3 = Color3.new(1, 1, 1),
+			Font = Enum.Font.GothamBold,
+			TextScaled = true,
+			Parent = KeyFrame,
+		})
+		createUI("UICorner", {Parent = closeButton})
+		closeButton.MouseButton1Click:Connect(function()
+			gui:Destroy()
+		end)
 
 		-- Animation d'ouverture
 		TweenService:Create(KeyFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
@@ -1497,7 +1513,86 @@ function library:CreateWindow(settings1, onLoad)
 		})
 		createUI("UICorner", {Parent = ConfirmButton})
 
+		-- Gestion des boutons Discord / GetKey
+		local AddDiscord = settings1.KeySettings.AddDiscordButton
+		local AddGetKey = settings1.KeySettings.AddGetKeyButton
 
+		-- Espace de base entre les deux (si les deux sont actifs)
+		local spacing = 10
+		local baseY = 170
+		local totalWidth = 500 - 20 -- largeur totale du cadre - padding
+
+		if AddDiscord and AddGetKey then
+			local halfWidth = (totalWidth - spacing) / 2
+
+			-- GetKey button
+			local GetKeyBtn = createUI("TextButton", {
+				Size = UDim2.new(0, halfWidth, 0, 30),
+				Position = UDim2.new(0, 10, 0, baseY),
+				BackgroundColor3 = Color3.fromRGB(90, 90, 150),
+				Text = "Get Key",
+				TextColor3 = Color3.new(1, 1, 1),
+				Font = Enum.Font.GothamBold,
+				TextScaled = true,
+				Parent = KeyFrame,
+			})
+			createUI("UICorner", {Parent = GetKeyBtn})
+
+			-- Discord button
+			local DiscordBtn = createUI("TextButton", {
+				Size = UDim2.new(0, halfWidth, 0, 30),
+				Position = UDim2.new(0, 10 + halfWidth + spacing, 0, baseY),
+				BackgroundColor3 = Color3.fromRGB(88, 101, 242),
+				Text = "Join Discord",
+				TextColor3 = Color3.new(1, 1, 1),
+				Font = Enum.Font.GothamBold,
+				TextScaled = true,
+				Parent = KeyFrame,
+			})
+			createUI("UICorner", {Parent = DiscordBtn})
+GetKeyBtn.MouseButton1Click:Connect(function()
+				if settings1.KeySettings.GetKeyLink and settings1.KeySettings.GetKeyLink ~= "NoGetKeyLink" then
+					copyToClipboard(settings1.KeySettings.GetKeyLink)
+				end
+end)
+			DiscordBtn.MouseButton1Click:Connect(function()
+				if settings1.KeySettings.DiscordLink and settings1.KeySettings.DiscordLink ~= "NoInviteLink" then
+					copyToClipboard(settings1.KeySettings.DiscordLink)
+				end
+			end)
+		elseif AddDiscord and not AddGetKey then
+			local DiscordBtn = createUI("TextButton", {
+				Size = UDim2.new(1, -20, 0, 30),
+				Position = UDim2.new(0, 10, 0, baseY),
+				BackgroundColor3 = Color3.fromRGB(88, 101, 242),
+				Text = "Join Discord",
+				TextColor3 = Color3.new(1, 1, 1),
+				Font = Enum.Font.GothamBold,
+				TextScaled = true,
+				Parent = KeyFrame,
+			})
+			createUI("UICorner", {Parent = DiscordBtn})
+
+		elseif not AddDiscord and AddGetKey then
+			local GetKeyBtn = createUI("TextButton", {
+				Size = UDim2.new(1, -20, 0, 30),
+				Position = UDim2.new(0, 10, 0, baseY),
+				BackgroundColor3 = Color3.fromRGB(90, 90, 150),
+				Text = "Get Key",
+				TextColor3 = Color3.new(1, 1, 1),
+				Font = Enum.Font.GothamBold,
+				TextScaled = true,
+				Parent = KeyFrame,
+			})
+			createUI("UICorner", {Parent = GetKeyBtn})
+			GetKeyBtn.MouseButton1Click:Connect(function()
+				if settings1.KeySettings.GetKeyLink and settings1.KeySettings.GetKeyLink ~= "NoGetKeyLink" then
+					copyToClipboard(settings1.KeySettings.GetKeyLink)
+				end
+			end)
+		end
+
+		
 		ConfirmButton.MouseButton1Click:Connect(function()
 			local inputKey = TextBox.Text
 			if table.find(Key, inputKey) then
