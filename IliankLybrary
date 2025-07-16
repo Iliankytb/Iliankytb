@@ -882,8 +882,8 @@ local function VisibleWindow(window,settings1,gui)
 				if opts.Callback then opts.Callback(value) end
 				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
 					print("Saving Toggle "..flag.." to "..tostring(value))
-					tab.togglesValue = tab.togglesValue or {}
-					tab.togglesValue[flag] = value
+					tab.TogglesValue = tab.TogglesValue or {}
+					tab.TogglesValue[flag] = value
 					SetFlag(flag, value)
 				end
 			end)
@@ -904,8 +904,8 @@ local function VisibleWindow(window,settings1,gui)
 				setToggleState(value)
 
 				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
-					tab.togglesValue = tab.togglesValue or {}
-					tab.togglesValue[flag] = value
+					tab.TogglesValue = tab.TogglesValue or {}
+					tab.TogglesValue[flag] = value
 					SetFlag(flag, value)
 				end
 
