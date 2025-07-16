@@ -10,6 +10,11 @@ library:CreateWindow({
 FolderName = "YAYYYfinally",
 		FileName = "TestingNow",-- File name for the data saver
 	},
+Discord = {
+Enabled = false,--enable to copy the discord
+DiscordLink = "NoInviteLink",-- put thr entire Link of discord
+RememberJoin = true,-- Set this ti false to make them copy the link every time they load the script
+},
 	KeySystem = false,--Key System or no
 	KeySettings = {
 		Title = "key System Title",--Title of the key
