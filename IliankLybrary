@@ -28,7 +28,7 @@ function library:CopyText(Text)
 end
 
 local function VisibleWindow(window,settings1,gui)
-	print("Library Version: 0.9")
+	print("Library Version: 0.10")
 
 	local TweenService = game:GetService("TweenService")
 	local mainFrame = createUI("Frame", {
@@ -298,9 +298,28 @@ else
 		Draggable = true,
 		Parent = gui
 	})
+	
+	local OneTime = false
 	CloseButton.MouseButton1Click:Connect(function()
 		animClose:Play()
-		OpenButton.Visible = true
+		if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
+			OpenButton.Visible = true
+		elseif UserInputService.TouchEnabled and UserInputService.KeyboardEnabled then
+			window:Notify({
+				Title = "Key",
+				Message = "Press "..settings1.KeyPC.Name.." to Open/Close frame",
+				Duration = 7.5,
+			})
+		
+		else
+			window:Notify({
+				Title = "Key",
+				Message = "Press "..settings1.KeyPC.Name.." to Open/Close frame",
+				Duration = 7.5,
+			})
+
+		end
+	
 		animClose.Completed:Connect(function()
 			mainFrame.Visible = false
 		end)
@@ -324,6 +343,23 @@ else
 	else
 		animOpenPC:Play()
 	end
+	local UserInputService = game:GetService("UserInputService")
+
+
+
+	UserInputService.InputBegan:Connect(function(input, gameProcessed)
+		if gameProcessed then return end -- Ignore si la touche est utilisée par le système ou Roblox
+		if input.KeyCode == settings1.KeyPC then
+			if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
+				animOpenMobile:Play()
+			elseif UserInputService.TouchEnabled and UserInputService.KeyboardEnabled then
+				animOpenPC:Play()
+			else
+				animOpenPC:Play()
+			end
+		end
+	end)
+
 	if settings1.Discord.Enabled then
 		if settings1.Discord.RememberJoin and settings1.Discord.DiscordLink and  settings1.Discord.DiscordLink ~= "NoInviteLink" then
 			window:Notify({
