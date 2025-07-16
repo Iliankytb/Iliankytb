@@ -28,7 +28,7 @@ function library:CopyText(Text)
 end
 
 local function VisibleWindow(window,settings1,gui)
-	print("Library Version: 0.6")
+	print("Library Version: 0.7")
 
 	local TweenService = game:GetService("TweenService")
 	local mainFrame = createUI("Frame", {
@@ -221,18 +221,58 @@ local function VisibleWindow(window,settings1,gui)
 		Position = UDim2.new(0, 0, 0, 0)
 	})
 	createUI("UICorner", {Parent = titleBar})
+	local titleLabel
+if settings1.Icon ~= 0 then
+		-- Conteneur pour regrouper l'image et le texte
+		local titleContainer = createUI("Frame", {
+			BackgroundTransparency = 1,
+			Size = UDim2.new(1, 0, 1, 0),
+			Parent = titleBar
+		})
 
-	local titleLabel = createUI("TextLabel", {
-		Text = settings1.Title,
-		TextColor3 = Color3.new(1, 1, 1),
-		BackgroundTransparency = 1,
-		Font = Enum.Font.GothamBold,
-		TextSize = 20,
-		Size = UDim2.new(1, -20, 1, 0),
-		Position = UDim2.new(0, 10, 0, 0),
-		TextXAlignment = Enum.TextXAlignment.Left,
-		Parent = titleBar
-	})
+		-- UIListLayout pour aligner image + texte horizontalement
+		local layout = Instance.new("UIListLayout")
+		layout.FillDirection = Enum.FillDirection.Horizontal
+		layout.HorizontalAlignment = Enum.HorizontalAlignment.Left
+		layout.VerticalAlignment = Enum.VerticalAlignment.Center
+		layout.SortOrder = Enum.SortOrder.LayoutOrder
+		layout.Padding = UDim.new(0, 6)
+		layout.Parent = titleContainer
+
+		-- Image à gauche
+		local icon = Instance.new("ImageLabel")
+		icon.Name = "Icon"
+		icon.Size = UDim2.new(0, 20, 0, 20)
+		icon.BackgroundTransparency = 1
+		icon.Image = "rbxassetid://12345678" -- Remplace par ton image
+		icon.Parent = titleContainer
+
+		-- Texte à droite de l'image
+		 titleLabel = createUI("TextLabel", {
+			Name = "TitleLabel",
+			Text = settings1.Title,
+			TextColor3 = Color3.new(1, 1, 1),
+			BackgroundTransparency = 1,
+			Font = Enum.Font.GothamBold,
+			TextSize = 18, -- Réduit un peu la taille
+			Size = UDim2.new(1, -30, 1, 0), -- Laisse de l'espace pour l’image
+			TextXAlignment = Enum.TextXAlignment.Left,
+			Parent = titleContainer
+		})
+
+else
+		titleLabel = createUI("TextLabel", {
+			Text = settings1.Title,
+			TextColor3 = Color3.new(1, 1, 1),
+			BackgroundTransparency = 1,
+			Font = Enum.Font.GothamBold,
+			TextSize = 20,
+			Size = UDim2.new(1, -20, 1, 0),
+			Position = UDim2.new(0, 10, 0, 0),
+			TextXAlignment = Enum.TextXAlignment.Left,
+			Parent = titleBar
+		})
+	end
 	local CloseButton = createUI("TextButton", {
 		Text = "X",
 		TextColor3 = Color3.new(1, 0, 0),
@@ -533,7 +573,7 @@ local function VisibleWindow(window,settings1,gui)
 			icon.Name = "Icon"
 			icon.Size = UDim2.new(0, 20, 0, 20)
 			icon.BackgroundTransparency = 1
-			icon.Image = "rbxassetid://12345678" -- Remplace par l’ID de ton image
+			icon.Image = "rbxassetid://"..icon -- Remplace par l’ID de ton image
 			icon.Parent = tabButton
 
 			-- Texte à droite
