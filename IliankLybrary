@@ -28,7 +28,7 @@ function library:CopyText(Text)
 end
 
 local function VisibleWindow(window,settings1,gui)
-	print("Library Version: 0.4")
+	print("Library Version: 0.5")
 	local TweenService = game:GetService("TweenService")
 	local mainFrame = createUI("Frame", {
 		Size = UDim2.new(0, 0, 0, 0);
@@ -445,7 +445,7 @@ local function VisibleWindow(window,settings1,gui)
 					if tab.toggles and tab.toggles[name] then
 						pcall(function()
 							print("Set toggles", name, "to", value)
-							tab.toggles[name]:SetValue(value)
+							tab.toggles[name]:Set(value)
 							tab.TogglesValue[name] = value
 						end)
 					end
