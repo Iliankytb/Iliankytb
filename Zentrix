@@ -28,8 +28,6 @@ function library:CopyText(Text)
 end
 
 local function VisibleWindow(window,settings1,gui)
-
-
 	local TweenService = game:GetService("TweenService")
 	local mainFrame = createUI("Frame", {
 		Size = UDim2.new(0, 0, 0, 0);
@@ -1219,7 +1217,7 @@ else
 
 		function tab:AddTextbox(opts)
 			local flag = opts.Flag or opts.Name or "Textbox"
-			local defaultText = opts.Default or ""
+			local defaultText = opts.Text or ""
 
 			tab.textboxes = tab.textboxes or {}
 			tab.textboxesText = tab.textboxesText or {}
@@ -1292,7 +1290,7 @@ else
 			tab.dropdownValue = tab.dropdownValue or {}
 
 			local btn = createUI("TextButton", {
-				Text = opts.Name or "Dropdown",
+				Text = opts.Text or "Dropdown",
 				BackgroundColor3 = Color3.fromRGB(80, 80, 80),
 				TextColor3 = Color3.new(1, 1, 1),
 				Font = Enum.Font.Gotham,
@@ -1461,7 +1459,7 @@ else
 	end
 end
 function library:CreateWindow(settings1, onLoad)
-	print("Library Version: 0.14")
+	print("Library Version: 0.15")
 	if game:GetService("CoreGui"):FindFirstChild("UILibrary") then
 		game:GetService("CoreGui"):FindFirstChild("UILibrary"):Destroy()
 	end
