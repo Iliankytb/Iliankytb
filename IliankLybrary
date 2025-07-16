@@ -569,12 +569,12 @@ else
 			uiListLayout.Padding = UDim.new(0, 5)
 
 			-- Image à gauche
-			local icon = Instance.new("ImageLabel")
-			icon.Name = "Icon"
-			icon.Size = UDim2.new(0, 20, 0, 20)
-			icon.BackgroundTransparency = 1
-			icon.Image = "rbxassetid://"..icon -- Remplace par l’ID de ton image
-			icon.Parent = tabButton
+			local Imageicon = Instance.new("ImageLabel")
+			Imageicon.Name = "Icon"
+			Imageicon.Size = UDim2.new(0, 20, 0, 20)
+			Imageicon.BackgroundTransparency = 1
+			Imageicon.Image = "rbxassetid://"..icon -- Remplace par l’ID de ton image
+			Imageicon.Parent = tabButton
 
 			-- Texte à droite
 			local textLabel = Instance.new("TextLabel")
