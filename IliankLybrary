@@ -28,7 +28,7 @@ function library:CopyText(Text)
 end
 
 local function VisibleWindow(window,settings1,gui)
-	print("Library Version: 0.13")
+
 
 	local TweenService = game:GetService("TweenService")
 	local mainFrame = createUI("Frame", {
@@ -1461,6 +1461,7 @@ else
 	end
 end
 function library:CreateWindow(settings1, onLoad)
+	print("Library Version: 0.14")
 	if game:GetService("CoreGui"):FindFirstChild("UILibrary") then
 		game:GetService("CoreGui"):FindFirstChild("UILibrary"):Destroy()
 	end
@@ -1667,12 +1668,7 @@ end)
 				if savedKey and savedKey ~= "" then
 			if table.find(Key, savedKey) then
 				print("✅ correct key :", savedKey)
-				if settings1.KeySettings.SaveKey then
-					if settings1.KeySettings.FileName then
-						local key = TextBox.Text
-						saveKey(key)
-					end
-				end
+				
 
 				-- Animation de fermeture
 				local closeTween = TweenService:Create(KeyFrame, TweenInfo.new(0.3, Enum.EasingStyle.Sine, Enum.EasingDirection.In), {
