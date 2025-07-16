@@ -7,7 +7,7 @@ library:CreateWindow({
 	IntroTitle = "Intro Title",--the intro title
     KeyPC = Enum.KeyCode.K,--the key for pc for Open/close the frame
 	Data = {
-		EnableSavingData = true,--Enabling data saver or no
+		EnableSavingData = false,--Enabling data saver or no
 DisableNotifyingLoadedData = false,--set it to true for disable the notify when loaded data
 FolderName = "FolderName",--Folder Name,you can change it
 		FileName = "FileName",-- File name for the data saver,you can change it
@@ -119,7 +119,4 @@ Flag = "Dropdown", --Put a name flag for save data if you enabled saving data
 		Message = "notif!",
 		Duration = 5,
 	})
-
---Loading Data--
-	library:LoadData()--Add this if you want to load data and everytime at bottom of your code
 end)
