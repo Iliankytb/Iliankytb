@@ -7,6 +7,7 @@ library:CreateWindow({
 	IntroTitle = "Intro Title",--the intro title
 	Data = {
 		EnableSavingData = true,--Enabling data saver or no
+DisableNotifyingLoadedData = false,--set it to true for disable the notify when loaded data
 FolderName = "YAYYYfinally",
 		FileName = "TestingNow",-- File name for the data saver
 	},
@@ -22,10 +23,11 @@ Duration = 5,-- 5 is the default you can change the number only for remember joi
 		Note = "No methode of obtaining",-- The method for obtaining
 		FileName = "Key",-- File name or no for saving the key (coming soon)
 		SaveKey = true,-- saving the key or no
+GrabKeyFromSite = false,
 		Key = {"Key"},-- the name (you can add many name, Exemple "Key","Key2"
 	},
 }, function(window)
-	local tab = window:CreateTab("Tab 1")-- Tabs
+	local tab = window:CreateTab("Tab 1",0)-- Tabs
 
 --Button--
 --Text--
