@@ -368,7 +368,7 @@ else
 			end
 			else
 				animClose:Play()
-				animClose.Changed:Connect(function()
+				animClose.Completed:Connect(function()
 				mainFrame.Visible = false
 				end)
 			end
@@ -1134,7 +1134,7 @@ else
 				Text = tostring(value),
 				TextColor3 = Color3.fromRGB(170, 255, 255),
 				Font = Enum.Font.Gotham,
-				TextSize = 10,
+				TextSize = 12,
 				TextXAlignment = Enum.TextXAlignment.Right,
 				Parent = slider,
 			})
