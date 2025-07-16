@@ -720,7 +720,7 @@ local function VisibleWindow(window,settings1,gui)
 			colorWindow.Visible = false
 			colorWindow.BorderSizePixel = 0
 			colorWindow.ZIndex = 10
-			colorWindow.Parent = container
+			colorWindow.Parent = gui
 
 			createUI("UICorner", {CornerRadius = UDim.new(0, 6), Parent = colorWindow})
 
