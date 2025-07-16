@@ -305,18 +305,25 @@ else
 		if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
 			OpenButton.Visible = true
 		elseif UserInputService.TouchEnabled and UserInputService.KeyboardEnabled then
+			if not OneTime then
+				OneTime = true
 			window:Notify({
 				Title = "Key",
 				Message = "Press "..settings1.KeyPC.Name.." to Open/Close frame",
 				Duration = 7.5,
 			})
-		
+
+		end
 		else
-			window:Notify({
-				Title = "Key",
-				Message = "Press "..settings1.KeyPC.Name.." to Open/Close frame",
-				Duration = 7.5,
-			})
+			if not OneTime then
+				OneTime = true
+				window:Notify({
+					Title = "Key",
+					Message = "Press "..settings1.KeyPC.Name.." to Open/Close frame",
+					Duration = 7.5,
+				})
+				
+			end
 
 		end
 	
@@ -350,12 +357,17 @@ else
 	UserInputService.InputBegan:Connect(function(input, gameProcessed)
 		if gameProcessed then return end -- Ignore si la touche est utilisée par le système ou Roblox
 		if input.KeyCode == settings1.KeyPC then
+			mainFrame.Visible = not mainFrame.Visible
+			if mainFrame.Visible then
 			if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
 				animOpenMobile:Play()
 			elseif UserInputService.TouchEnabled and UserInputService.KeyboardEnabled then
 				animOpenPC:Play()
 			else
 				animOpenPC:Play()
+			end
+			else
+				animClose:Play()
 			end
 		end
 	end)
