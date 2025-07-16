@@ -22,8 +22,13 @@ local function copyToClipboard(text)
 		warn("setclipboard is not supported in this environment.")
 	end
 end
+
+function library:CopyText(Text)
+	copyToClipboard(Text)
+end
+
 local function VisibleWindow(window,settings1,gui)
-print("Library Version: 0.2")
+	print("Library Version: 0.3")
 	local TweenService = game:GetService("TweenService")
 	local mainFrame = createUI("Frame", {
 		Size = UDim2.new(0, 0, 0, 0);
