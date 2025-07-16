@@ -1037,34 +1037,65 @@ else
 
 			local value = default
 
+			-- Conteneur principal du slider
 			local slider = createUI("TextButton", {
+				Text = "";
+				Size = UDim2.new(1, 0, 0, 40);
+				BackgroundColor3 = Color3.fromRGB(50, 50, 50);
+				AutoButtonColor = false;
+				Parent = tab.content;
+			})
+			createUI("UICorner", { Parent = slider })
+
+			-- Padding interne
+			createUI("UIPadding", {
+				PaddingLeft = UDim.new(0, 10),
+				PaddingRight = UDim.new(0, 10),
+				PaddingTop = UDim.new(0, 4),
+				PaddingBottom = UDim.new(0, 4),
+				Parent = slider,
+			})
+
+			-- Layout pour organiser les éléments verticalement
+			local layout = Instance.new("UIListLayout")
+			layout.FillDirection = Enum.FillDirection.Vertical
+			layout.SortOrder = Enum.SortOrder.LayoutOrder
+			layout.VerticalAlignment = Enum.VerticalAlignment.Center
+			layout.Parent = slider
+
+			-- Label du texte (ex: "Volume")
+			local labelText = createUI("TextLabel", {
 				Text = opts.Text or "Slider",
-				Size = UDim2.new(1, 0, 0, 30),
-				BackgroundColor3 = Color3.fromRGB(50, 50, 50),
+				Size = UDim2.new(1, 0, 0, 14),
+				BackgroundTransparency = 1,
 				TextColor3 = Color3.new(1, 1, 1),
 				Font = Enum.Font.Gotham,
 				TextSize = 12,
 				TextXAlignment = Enum.TextXAlignment.Left,
-				Parent = tab.content,
-			})
-			createUI("UICorner", { Parent = slider })
-			createUI("UIPadding", {
-				PaddingLeft = UDim.new(0, 10),
-				PaddingRight = UDim.new(0, 10),
-				PaddingTop = UDim.new(0, 5),
-				PaddingBottom = UDim.new(0, 5),
 				Parent = slider,
 			})
 
+			-- Label de la valeur (au-dessus de la barre)
+			local label = createUI("TextLabel", {
+				Size = UDim2.new(1, 0, 0, 12),
+				BackgroundTransparency = 1,
+				Text = tostring(value),
+				TextColor3 = Color3.fromRGB(170, 255, 255),
+				Font = Enum.Font.Gotham,
+				TextSize = 10,
+				TextXAlignment = Enum.TextXAlignment.Right,
+				Parent = slider,
+			})
+
+			-- Barre de fond (pleine largeur du bouton)
 			local sliderBar = createUI("Frame", {
-				AnchorPoint = Vector2.new(1, 0.5),
-				Position = UDim2.new(1, -10, 0.5, 0),
-				Size = UDim2.new(0, 100, 0, 6),
+				Size = UDim2.new(1, 0, 0, 6),
 				BackgroundColor3 = Color3.fromRGB(80, 80, 80),
 				Parent = slider,
 			})
 			createUI("UICorner", { CornerRadius = UDim.new(1, 0), Parent = sliderBar })
 
+			-- Barre de remplissage
 			local fillBar = createUI("Frame", {
 				Size = UDim2.new((value - min) / (max - min), 0, 1, 0),
 				BackgroundColor3 = Color3.fromRGB(0, 170, 255),
@@ -1072,17 +1103,6 @@ else
 			})
 			createUI("UICorner", { CornerRadius = UDim.new(1, 0), Parent = fillBar })
 
-			local label = createUI("TextLabel", {
-				AnchorPoint = Vector2.new(0.5, 0.5),
-				Position = UDim2.new(0.5, 0, 0.5, -15),
-				Size = UDim2.new(0, 60, 0, 14),
-				BackgroundTransparency = 1,
-				Text = tostring(value),
-				TextColor3 = Color3.new(1, 1, 1),
-				Font = Enum.Font.Gotham,
-				TextSize = 10,
-				Parent = sliderBar,
-			})
 
 			local obj = {}
 			obj.value = value
