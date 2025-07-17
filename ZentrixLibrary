@@ -1,38 +1,38 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 
 library:CreateWindow({
-	Title = "Title of script",-- Title of the script
+	Title = "Zentrix Library Testing",-- Title of the script
 	Icon = 0,-- 0 = no icon or add number
-	Intro = false,--Intro or no
-	IntroTitle = "Intro Title",--the intro title
+	Intro = true,--Intro or no
+	IntroTitle = "Zentrix Library Testing",--the intro title
     KeyPC = Enum.KeyCode.K,--the key for pc for Open/close the frame
 	Data = {
-		EnableSavingData = false,--Enabling data saver or no
+		EnableSavingData = true,--Enabling data saver or no
 DisableNotifyingLoadedData = false,--set it to true for disable the notify when loaded data
 FolderName = "FolderName",--Folder Name,you can change it
 		FileName = "FileName",-- File name for the data saver,you can change it
 	},
 Discord = {
-Enabled = false,--enable to copy the discord
-DiscordLink = "NoInviteLink",-- put thr entire Link of discord
+Enabled = true,--enable to copy the discord
+DiscordLink = "https://discord.gg/E2TqYRsRP4",-- put thr entire Link of discord
 RememberJoin = true,-- Set this ti false to make them copy the link every time they load the script
-Duration = 5,-- 5 is the default you can change the number only for remember join
+Duration = 10,-- 5 is the default you can change the number only for remember join
 },
-	KeySystem = false,--Key System or no
+	KeySystem = true,--Key System or no
 	KeySettings = {
-		Title = "key System Title of script",--Title of the key(just like that)
-		Note = "No methode of obtaining",-- The method for obtaining
+		Title = "Zentrix Library Testing Key System",--Title of the key(just like that)
+		Note = "the key is Zentrix",-- The method for obtaining
 		FileName = "Key",-- File name or no for saving the key
 		SaveKey = true,-- saving the key or no
 GrabKeyFromSite = false,--Coming soon
-		Key = {"Key"},-- the name you can add many name, Exemple "Key","Key2" or you can add a function to add key but i don't really know
-	AddGetKeyButton = fals,
-    AddDiscordButton = false,
+		Key = {"Zentrix"},-- the name you can add many name, Exemple "Key","Key2" or you can add a function to add key but i don't really know
+	AddGetKeyButton = false,
+    AddDiscordButton = true,
     DiscordLink = "NoInviteLink",
     GetKeyLink = "NoKeyLink",
     },
 }, function(window)
-	local tab = window:CreateTab("Tab 1",0)-- Tabs , 0 = no icon or add number
+	local tab = window:CreateTab("This is a Tab",0)-- Tabs , 0 = no icon or add number
 
 
 --Text--
@@ -119,4 +119,7 @@ Flag = "Dropdown", --Put a name flag for save data if you enabled saving data
 		Message = "notif!",
 		Duration = 5,
 	})
+
+--Loading Data--
+	library:LoadData()--Add this if you want to load data and everytime at bottom of your code
 end)
