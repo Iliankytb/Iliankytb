@@ -33,18 +33,26 @@ GrabKeyFromSite = false,--Coming soon
     },
 }, function(window)
 	local tab = window:CreateTab("This is a Tab",0)-- Tabs , 0 = no icon or add number
-
+local DiscordTab = window:CreateTab("Discord",0)
 
 --Text--
 	local Text = tab:AddText({
 		Text = "This is a Text",
 		Name = "Text"
 	})
---Button--
+--Buttons--
 	local Button = tab:AddButton({
 		Text = "This is a button",
 		Name = "Button",
 		Callback = function() 	
+
+		end
+	})
+    local ButonDiscordLink = DiscordTab:AddButton({
+		Text = "Discord Link",
+		Name = "Button",
+		Callback = function() 	
+library:CopyText("https://discord.gg/E2TqYRsRP4")
 		end
 	})
 --Toggle--
