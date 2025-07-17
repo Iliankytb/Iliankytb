@@ -456,10 +456,10 @@ else
 
 				local jsonData = HttpService:JSONEncode(serializableFlags)
 				writefile(fullPath, jsonData)
-				print("Données sauvegardées dans", fullPath)
+				print("Saved data in:", fullPath)
 			end)
 			if not success then
-				warn("Erreur de sauvegarde :", err)
+				warn("Error when saving the data :", err)
 			end
 		end
 
@@ -482,18 +482,27 @@ else
 		if settingsData.EnableSavingData then
 
 			function library:LoadData()
-				print("Chargement des données...")
+				print("Loading Data...")
 
 				local success, content = pcall(readfile, fullPath)
-				if not success or not content or content == "" then
+				if not success or not content then
 					warn("didn't loaded correctly the data saver please try again.")
-print("Glitch:"..content)
+print("Glitched :"..content)
 window:Notify({
 					Title = "Data!",
 					Message = "Data didn't loaded correctly please try again!",
 					Duration = 10,
 				})
 					return
+				end
+if  success and content == "" then					warn("didn't loaded correctly the data saver please try again.")
+print("Nothings in:"..content)
+window:Notify({
+					Title = "Data!",
+					Message = "Nothings got saved!",
+					Duration = 5,
+				})
+				return
 				end
 
 				local loadedData
@@ -1465,7 +1474,7 @@ window:Notify({
 	end
 end
 function library:CreateWindow(settings1, onLoad)
-	print("Library Version: 0.16")
+	print("Library Version: 0.17")
 	if game:GetService("CoreGui"):FindFirstChild("UILibrary") then
 		game:GetService("CoreGui"):FindFirstChild("UILibrary"):Destroy()
 	end
