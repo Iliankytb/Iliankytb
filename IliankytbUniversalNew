@@ -45,7 +45,7 @@ local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "
 
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.25",
+   Content = "V.0.26",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -331,6 +331,24 @@ local PlayerActiveDistanceEspToggle = SettingsTab:CreateToggle({
    Callback = function(Value)
   ActiveDistanceEsp = Value 
 end,
+})
+local ActiveFullBright = false
+local PlayerFullBright = GameTab:CreateToggle({
+   Name = "Full Bright(unverified!)",
+   CurrentValue = false,
+   Flag = "FullBright",
+   Callback = function(Value)
+ActiveFullBright = Value 
+task.spawn(function() 
+while ActiveFullBright do 
+if Game.Lighting then 
+Game.Lighting.Brightness = 5
+Game.Lighting.Ambient = Color3.fromRGB(255, 255, 255) 
+end  
+wait(0.1)
+end 
+end)
+end,  
 })
 local Themes = {
    ["Default"] = "Default",
