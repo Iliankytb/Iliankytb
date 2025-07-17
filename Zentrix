@@ -190,7 +190,7 @@ local function VisibleWindow(window,settings1,gui)
 	else
 		tabsFrame.Size = UDim2.new(0,150,1,0)
 	end
-	
+
 	createUI("UIListLayout", {
 		Padding = UDim.new(0, 6),
 		SortOrder = Enum.SortOrder.LayoutOrder,
@@ -220,7 +220,7 @@ local function VisibleWindow(window,settings1,gui)
 	})
 	createUI("UICorner", {Parent = titleBar})
 	local titleLabel
-if settings1.Icon ~= 0 then
+	if settings1.Icon ~= 0 then
 		-- Conteneur pour regrouper l'image et le texte
 		local titleContainer = createUI("Frame", {
 			BackgroundTransparency = 1,
@@ -246,7 +246,7 @@ if settings1.Icon ~= 0 then
 		imageIcon2.Parent = titleContainer
 
 		-- Texte à droite de l'image
-		 titleLabel = createUI("TextLabel", {
+		titleLabel = createUI("TextLabel", {
 			Name = "TitleLabel",
 			Text = settings1.Title,
 			TextColor3 = Color3.new(1, 1, 1),
@@ -258,7 +258,7 @@ if settings1.Icon ~= 0 then
 			Parent = titleContainer
 		})
 
-else
+	else
 		titleLabel = createUI("TextLabel", {
 			Text = settings1.Title,
 			TextColor3 = Color3.new(1, 1, 1),
@@ -296,7 +296,7 @@ else
 		Draggable = true,
 		Parent = gui
 	})
-	
+
 	local OneTime = false
 	CloseButton.MouseButton1Click:Connect(function()
 		animClose:Play()
@@ -305,13 +305,13 @@ else
 		elseif UserInputService.TouchEnabled and UserInputService.KeyboardEnabled then
 			if not OneTime then
 				OneTime = true
-			window:Notify({
-				Title = "Key",
-				Message = "Press "..settings1.KeyPC.Name.." to Open/Close frame",
-				Duration = 7.5,
-			})
+				window:Notify({
+					Title = "Key",
+					Message = "Press "..settings1.KeyPC.Name.." to Open/Close frame",
+					Duration = 7.5,
+				})
 
-		end
+			end
 		else
 			if not OneTime then
 				OneTime = true
@@ -320,11 +320,11 @@ else
 					Message = "Press "..settings1.KeyPC.Name.." to Open/Close frame",
 					Duration = 7.5,
 				})
-				
+
 			end
 
 		end
-	
+
 		animClose.Completed:Connect(function()
 			mainFrame.Visible = false
 		end)
@@ -357,20 +357,20 @@ else
 		if input.KeyCode == settings1.KeyPC then
 			if not mainFrame.Visible then
 				mainFrame.Visible = true
-			if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
-				animOpenMobile:Play()
-			elseif UserInputService.TouchEnabled and UserInputService.KeyboardEnabled then
-				animOpenPC:Play()
-			else
-				animOpenPC:Play()
-			end
+				if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
+					animOpenMobile:Play()
+				elseif UserInputService.TouchEnabled and UserInputService.KeyboardEnabled then
+					animOpenPC:Play()
+				else
+					animOpenPC:Play()
+				end
 			else
 				animClose:Play()
 				animClose.Completed:Connect(function()
-				mainFrame.Visible = false
+					mainFrame.Visible = false
 				end)
 			end
-		
+
 		end
 	end)
 
@@ -405,10 +405,11 @@ else
 	function window:CreateTab(name,icon)
 		local HttpService = game:GetService("HttpService")
 
-		-- Vérifie si writefile/readfile sont disponibles (ex: en exploit Roblox)
+		if  not game:GetService("RunService"):IsStudio() then
 		if not writefile or not readfile then
 			warn("writefile/readfile non disponibles.")
 			return
+		end
 		end
 
 		local flags = {}
@@ -463,7 +464,7 @@ else
 			end
 		end
 
-		-- Fonction pour transformer un tableau JSON en Color3 si besoin
+
 		local function DeserializeValue(val)
 			if type(val) == "table" and val.__type == "Color3" and val.R and val.G and val.B then
 				return Color3.new(val.R, val.G, val.B)
@@ -471,38 +472,40 @@ else
 			return val
 		end
 
-		-- Fonction pour définir une valeur de flag et sauvegarder
+
 		local function SetFlag(name, value)
 			print("SetFlag", name, value)
 			flags[name] = value
 			SaveData()
 		end
 
-		-- Chargement des données si activé
+	
 		if settingsData.EnableSavingData then
 
 			function library:LoadData()
+				if not game:GetService("RunService"):IsStudio() then
 				print("Loading Data...")
 
 				local success, content = pcall(readfile, fullPath)
 				if not success or not content then
 					warn("didn't loaded correctly the data saver please try again.")
-print("Glitched :"..content)
-window:Notify({
-					Title = "Data!",
-					Message = "Data didn't loaded correctly please try again!",
-					Duration = 10,
-				})
+					print("Glitched :"..content)
+					window:Notify({
+						Title = "Data!",
+						Message = "Data didn't loaded correctly please try again!",
+						Duration = 10,
+					})
 					return
 				end
-if  success and content == "" then					warn("didn't loaded correctly the data saver please try again.")
-print("Nothings in:"..content)
-window:Notify({
-					Title = "Data!",
-					Message = "Nothings got saved!",
-					Duration = 5,
-				})
-				return
+				if  success and content == "" then				
+					warn("Nothings got saved.")
+					print("Nothings in:"..content)
+					window:Notify({
+						Title = "Data!",
+						Message = "Nothings got saved!",
+						Duration = 5,
+					})
+					return
 				end
 
 				local loadedData
@@ -567,14 +570,14 @@ window:Notify({
 					end
 				end
 				if not settingsData.DisableNotifyingLoadedData  then
-				window:Notify({
-					Title = "Data!",
-					Message = "Loaded Data!",
-					Duration = 5,
-				})
+					window:Notify({
+						Title = "Data!",
+						Message = "Loaded Data!",
+						Duration = 5,
+					})
 				end
 			end
-
+end
 		end
 
 
@@ -610,11 +613,11 @@ window:Notify({
 
 		tab.content = scroll
 
-	
+
 		local tabButton 
-			
-			if icon ~= 0 then 
-			 tabButton = createUI("TextButton", {
+
+		if icon ~= 0 then 
+			tabButton = createUI("TextButton", {
 				Text = ""; -- Le texte sera mis dans un Label séparé
 				Size = UDim2.new(1, 0, 0, 30);
 				BackgroundColor3 = Color3.fromRGB(50, 50, 50);
@@ -653,7 +656,7 @@ window:Notify({
 			textLabel.TextXAlignment = Enum.TextXAlignment.Left
 			textLabel.Parent = tabButton
 
-			else
+		else
 			tabButton =  createUI("TextButton", {
 				Text = name;
 				Size = UDim2.new(1, 0, 0, 30);
@@ -663,7 +666,7 @@ window:Notify({
 				TextSize = 14;
 				Parent = tabsFrame;
 			})
-			end
+		end
 		createUI("UICorner", {Parent = tabButton})
 
 		tabButton.MouseButton1Click:Connect(function()
@@ -688,8 +691,19 @@ window:Notify({
 				BackgroundColor3 = Color3.fromRGB(50, 50, 50);
 				TextColor3 = Color3.new(1, 1, 1);
 				Font = Enum.Font.Gotham;
-				TextSize = 12;
+				TextSize = 14;
+				TextXAlignment = Enum.TextXAlignment.Left,
 				Parent = tab.content;
+			})
+			local TextButonn = createUI("TextLabel", {
+				Text = "Button";
+				Size = UDim2.new(0.15, 0, 0.35, 0);
+				Position = UDim2.new(0.8,0,0.65,0);
+				BackgroundTransparency = 1;
+				TextColor3 = Color3.new(0.533333, 0.533333, 0.533333);
+				Font = Enum.Font.Gotham;
+				TextSize = 12;
+				Parent = button;
 			})
 			createUI("UICorner", {Parent = button})
 			createUI("UIPadding", {
@@ -713,7 +727,8 @@ window:Notify({
 				BackgroundColor3 = Color3.fromRGB(50, 50, 50);
 				TextColor3 = Color3.new(1, 1, 1);
 				Font = Enum.Font.Gotham;
-				TextSize = 12;
+				TextSize = 14;
+				TextXAlignment = Enum.TextXAlignment.Left,
 				Parent = tab.content;
 			})
 			createUI("UICorner", {Parent = button})
@@ -771,7 +786,7 @@ window:Notify({
 				BackgroundTransparency = 1,
 				TextColor3 = Color3.new(1, 1, 1),
 				Font = Enum.Font.GothamBold,
-				TextSize = 18,
+				TextSize = 16,
 				TextXAlignment = Enum.TextXAlignment.Left,
 				Parent = frame,
 			})
@@ -850,7 +865,8 @@ window:Notify({
 				BackgroundColor3 = Color3.fromRGB(50, 50, 50);
 				TextColor3 = Color3.new(1, 1, 1);
 				Font = Enum.Font.Gotham;
-				TextSize = 12;
+				TextSize = 14;
+				TextXAlignment = Enum.TextXAlignment.Left,
 				Parent = tab.content;
 			})
 			createUI("UICorner", {Parent = container})
@@ -863,12 +879,13 @@ window:Notify({
 			})
 
 			local colorDisplay = Instance.new("TextButton")
-			colorDisplay.Size = UDim2.new(0, 50, 0, 25)
+			colorDisplay.Size = UDim2.new(0, 25, 0, 25)
 			colorDisplay.Position = UDim2.new(1, -60, 0.5, -12)
 			colorDisplay.BackgroundColor3 = defaultColor
 			colorDisplay.BorderSizePixel = 0
 			colorDisplay.Text = ""
 			colorDisplay.AutoButtonColor = false
+		
 			colorDisplay.Parent = container
 			createUI("UICorner", {Parent = colorDisplay})
 
@@ -881,6 +898,7 @@ window:Notify({
 			colorWindow.Visible = false
 			colorWindow.BorderSizePixel = 0
 			colorWindow.ZIndex = 10
+	
 			colorWindow.Parent = gui
 
 			createUI("UICorner", {CornerRadius = UDim.new(0, 6), Parent = colorWindow})
@@ -984,7 +1002,7 @@ window:Notify({
 			}
 			tab.ColorPicker[flag] = api
 
-		
+
 
 			return api
 		end
@@ -1000,7 +1018,7 @@ window:Notify({
 				BackgroundColor3 = Color3.fromRGB(50, 50, 50);
 				TextColor3 = Color3.new(1, 1, 1);
 				Font = Enum.Font.Gotham;
-				TextSize = 12;
+				TextSize = 14;
 				TextXAlignment = Enum.TextXAlignment.Left;
 				Parent = tab.content;
 			})
@@ -1056,7 +1074,7 @@ window:Notify({
 				end
 				setToggleState(value)
 				if opts.Callback then opts.Callback(value) end
-				
+
 			end)
 
 			-- Init state
@@ -1071,7 +1089,7 @@ window:Notify({
 					return
 				end
 				print("load Toggle " ..tostring(newValue))
-				
+
 				setToggleState(newValue)
 
 				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
@@ -1085,7 +1103,7 @@ window:Notify({
 				end
 			end
 			tab.toggles[flag] = obj
-		
+
 			return obj
 		end
 
@@ -1240,7 +1258,7 @@ window:Notify({
 			local txt = createUI("TextBox", {
 				Text = defaultText,
 				PlaceholderText = opts.Placeholder or "",
-				BackgroundColor3 = Color3.fromRGB(80, 80, 80),
+				BackgroundColor3 = Color3.fromRGB(50, 50, 50),
 				TextColor3 = Color3.new(1, 1, 1),
 				PlaceholderColor3 = Color3.fromRGB(143, 143, 143),
 				Font = Enum.Font.Gotham,
@@ -1306,7 +1324,7 @@ window:Notify({
 
 			local btn = createUI("TextButton", {
 				Text = opts.Text or "Dropdown",
-				BackgroundColor3 = Color3.fromRGB(80, 80, 80),
+				BackgroundColor3 = Color3.fromRGB(50, 50, 50),
 				TextColor3 = Color3.new(1, 1, 1),
 				Font = Enum.Font.Gotham,
 				TextSize = 14,
@@ -1316,12 +1334,15 @@ window:Notify({
 			createUI("UICorner", { Parent = btn })
 
 			local container = createUI("Frame", {
-				Size = UDim2.new(1, 0, 0, 0),
-				BackgroundTransparency = 1,
+				Size = UDim2.new(0.9, 0, 0, 0),
+				BackgroundColor3 = Color3.fromRGB(121, 121, 121),
+				BackgroundTransparency = 0,
 				ClipsDescendants = true,
 				Parent = tab.content
 			})
-
+			createUI("UICorner", { 
+				Parent = container
+			})
 			local optionHolder = createUI("Frame", {
 				Size = UDim2.new(1, 0, 0, 0),
 				BackgroundColor3 = Color3.fromRGB(60, 60, 60),
@@ -1334,6 +1355,7 @@ window:Notify({
 				SortOrder = Enum.SortOrder.LayoutOrder,
 				Parent = optionHolder
 			})
+
 
 			local function updateCanvas()
 				local newHeight = layout.AbsoluteContentSize.Y + 10
@@ -1363,7 +1385,7 @@ window:Notify({
 						TextColor3 = Color3.new(1,1,1),
 						Font = Enum.Font.Gotham,
 						TextSize = 14,
-						BackgroundColor3 = Color3.fromRGB(90, 90, 90),
+						BackgroundColor3 = Color3.fromRGB(50, 50, 50),
 						Size = UDim2.new(1, 0, 0, 28),
 						Parent = optionHolder
 					})
@@ -1474,19 +1496,35 @@ window:Notify({
 	end
 end
 function library:CreateWindow(settings1, onLoad)
-	print("Library Version: 0.18")
+	print("Library Version: 0.19")
+	if game:GetService("RunService"):IsStudio() then
+		if game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary") then
+			game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary"):Destroy()
+		end
+		else
 	if game:GetService("CoreGui"):FindFirstChild("UILibrary") then
 		game:GetService("CoreGui"):FindFirstChild("UILibrary"):Destroy()
+	end
 	end
 	local window = {}
 	window.tabs = {}
 
 
-	local gui = createUI("ScreenGui", {
+	local gui
+	
+	if game:GetService("RunService"):IsStudio() then
+		gui = createUI("ScreenGui", {
+			Name = "UILibrary";
+			ResetOnSpawn = false;
+			Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui");
+		})
+		else
+		gui = createUI("ScreenGui", {
 		Name = "UILibrary";
 		ResetOnSpawn = false;
 		Parent = game:GetService("CoreGui");
-	})
+		})
+		end
 	if settings1.KeySystem then
 		local TweenService = game:GetService("TweenService")
 
@@ -1616,11 +1654,11 @@ function library:CreateWindow(settings1, onLoad)
 				Parent = KeyFrame,
 			})
 			createUI("UICorner", {Parent = DiscordBtn})
-GetKeyBtn.MouseButton1Click:Connect(function()
+			GetKeyBtn.MouseButton1Click:Connect(function()
 				if settings1.KeySettings.GetKeyLink and settings1.KeySettings.GetKeyLink ~= "NoGetKeyLink" then
 					copyToClipboard(settings1.KeySettings.GetKeyLink)
 				end
-end)
+			end)
 			DiscordBtn.MouseButton1Click:Connect(function()
 				if settings1.KeySettings.DiscordLink and settings1.KeySettings.DiscordLink ~= "NoInviteLink" then
 					copyToClipboard(settings1.KeySettings.DiscordLink)
@@ -1658,89 +1696,89 @@ end)
 			end)
 		end
 
-				local fileName = settings1.KeySettings.FileName .. ".txt"
+		local fileName = settings1.KeySettings.FileName .. ".txt"
 
-				
-				local function saveKey(key)
-					pcall(function()
-						writefile(fileName, key)
-					end)
-				end
 
-			
-				local function loadKey()
-					if isfile(fileName) then
-						local key = readfile(fileName)
-						return key
-					end
-					return nil
-				end
+		local function saveKey(key)
+			pcall(function()
+				writefile(fileName, key)
+			end)
+		end
 
-		
-				local savedKey = loadKey()
-				if savedKey and savedKey ~= "" then
+
+		local function loadKey()
+			if isfile(fileName) then
+				local key = readfile(fileName)
+				return key
+			end
+			return nil
+		end
+
+		if  not game:GetService("RunService"):IsStudio() then
+		local savedKey = loadKey()
+		if savedKey and savedKey ~= ""  then
 			if table.find(Key, savedKey) then
 				print("✅ correct key :", savedKey)
-					KeyFrame:Destroy()
-					if settings1.Intro then
-						local TweenService = game:GetService("TweenService")
-						local IntroTitle = settings1.IntroTitle
-
-					
-						local IntroFrame = createUI("Frame", {
-							Size = UDim2.new(0, 0, 0, 0),
-							Position = UDim2.new(0.5, 0, 0.5, 0),
-							AnchorPoint = Vector2.new(0.5, 0.5),
-							BackgroundColor3 = Color3.fromRGB(30, 30, 30),
-							Parent = gui,
-						})
-						createUI("UICorner", {Parent = IntroFrame})
+				KeyFrame:Destroy()
+				if settings1.Intro then
+					local TweenService = game:GetService("TweenService")
+					local IntroTitle = settings1.IntroTitle
 
 
-						local anim = TweenService:Create(IntroFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
-							Size = UDim2.new(0, 500, 0, 200),
-							Position = UDim2.new(0.5, 0, 0.5, 0),
-						})
+					local IntroFrame = createUI("Frame", {
+						Size = UDim2.new(0, 0, 0, 0),
+						Position = UDim2.new(0.5, 0, 0.5, 0),
+						AnchorPoint = Vector2.new(0.5, 0.5),
+						BackgroundColor3 = Color3.fromRGB(30, 30, 30),
+						Parent = gui,
+					})
+					createUI("UICorner", {Parent = IntroFrame})
 
-						createUI("TextLabel", {
-							Size = UDim2.new(1, -20, 0, 40),
-							Position = UDim2.new(0, 10, 0.5, -20),
-							BackgroundTransparency = 1,
-							Text = IntroTitle,
-							TextColor3 = Color3.new(1, 1, 1),
-							TextScaled = true,
-							Font = Enum.Font.GothamBold,
-							Parent = IntroFrame,
-						})
-						anim:Play()
-						anim.Completed:Connect(function()
-							wait(1.5)
-							IntroFrame:Destroy()
-							VisibleWindow(window,settings1,gui)
-							if onLoad then onLoad(window) end
-						end)
 
-					else
+					local anim = TweenService:Create(IntroFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+						Size = UDim2.new(0, 500, 0, 200),
+						Position = UDim2.new(0.5, 0, 0.5, 0),
+					})
+
+					createUI("TextLabel", {
+						Size = UDim2.new(1, -20, 0, 40),
+						Position = UDim2.new(0, 10, 0.5, -20),
+						BackgroundTransparency = 1,
+						Text = IntroTitle,
+						TextColor3 = Color3.new(1, 1, 1),
+						TextScaled = true,
+						Font = Enum.Font.GothamBold,
+						Parent = IntroFrame,
+					})
+					anim:Play()
+					anim.Completed:Connect(function()
+						wait(1.5)
+						IntroFrame:Destroy()
 						VisibleWindow(window,settings1,gui)
 						if onLoad then onLoad(window) end
-					end
-				
+					end)
+
+				else
+					VisibleWindow(window,settings1,gui)
+					if onLoad then onLoad(window) end
+				end
+
 			else
 				TextBox.Text = ""
 				TextBox.PlaceholderText = "❌ Incorrect/Invalid Key"
 			end
-					
-				end
 
-			
-		
+		end
+end
+
+
 
 		ConfirmButton.MouseButton1Click:Connect(function()
 			local inputKey = TextBox.Text
 			if table.find(Key, inputKey) then
 				print("✅ correct key :", inputKey)
 				if settings1.KeySettings.SaveKey then
-					if settings1.KeySettings.FileName then
+					if settings1.KeySettings.FileName and not game:GetService("RunService"):IsStudio() then
 						local key = TextBox.Text
 						saveKey(key)
 					end
@@ -1815,7 +1853,7 @@ end)
 				AnchorPoint = Vector2.new(0.5, 0.5),
 				BackgroundColor3 = Color3.fromRGB(30, 30, 30),
 				Parent = gui,
-			})
+			})https://github.com/Iliankytb/Iliankytb/blob/main/Zentrix
 			createUI("UICorner", {Parent = IntroFrame})
 
 
