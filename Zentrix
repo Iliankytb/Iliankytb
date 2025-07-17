@@ -486,7 +486,13 @@ else
 
 				local success, content = pcall(readfile, fullPath)
 				if not success or not content or content == "" then
-					warn("Échec du chargement : fichier introuvable, vide ou non lisible.")
+					warn("didn't loaded correctly the data saver please try again.")
+print("Glitch:"..content)
+window:Notify({
+					Title = "Data!",
+					Message = "Data didn't loaded correctly please try again!",
+					Duration = 10,
+				})
 					return
 				end
 
@@ -1459,7 +1465,7 @@ else
 	end
 end
 function library:CreateWindow(settings1, onLoad)
-	print("Library Version: 0.15")
+	print("Library Version: 0.16")
 	if game:GetService("CoreGui"):FindFirstChild("UILibrary") then
 		game:GetService("CoreGui"):FindFirstChild("UILibrary"):Destroy()
 	end
