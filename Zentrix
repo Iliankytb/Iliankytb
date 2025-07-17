@@ -1474,7 +1474,7 @@ window:Notify({
 	end
 end
 function library:CreateWindow(settings1, onLoad)
-	print("Library Version: 0.17")
+	print("Library Version: 0.18")
 	if game:GetService("CoreGui"):FindFirstChild("UILibrary") then
 		game:GetService("CoreGui"):FindFirstChild("UILibrary"):Destroy()
 	end
@@ -1660,14 +1660,14 @@ end)
 
 				local fileName = settings1.KeySettings.FileName .. ".txt"
 
-				-- Fonction pour sauvegarder la clé
+				
 				local function saveKey(key)
 					pcall(function()
 						writefile(fileName, key)
 					end)
 				end
 
-				-- Fonction pour charger la clé
+			
 				local function loadKey()
 					if isfile(fileName) then
 						local key = readfile(fileName)
@@ -1681,21 +1681,12 @@ end)
 				if savedKey and savedKey ~= "" then
 			if table.find(Key, savedKey) then
 				print("✅ correct key :", savedKey)
-				
-
-				-- Animation de fermeture
-				local closeTween = TweenService:Create(KeyFrame, TweenInfo.new(0.3, Enum.EasingStyle.Sine, Enum.EasingDirection.In), {
-					Size = UDim2.new(0, 0, 0, 0),
-					Position = UDim2.new(0.5, 0, 0.5, 0)
-				})
-				closeTween:Play()
-				closeTween.Completed:Connect(function()
 					KeyFrame:Destroy()
 					if settings1.Intro then
 						local TweenService = game:GetService("TweenService")
 						local IntroTitle = settings1.IntroTitle
 
-						-- Création de l'IntroFrame
+					
 						local IntroFrame = createUI("Frame", {
 							Size = UDim2.new(0, 0, 0, 0),
 							Position = UDim2.new(0.5, 0, 0.5, 0),
@@ -1733,7 +1724,7 @@ end)
 						VisibleWindow(window,settings1,gui)
 						if onLoad then onLoad(window) end
 					end
-				end)
+				
 			else
 				TextBox.Text = ""
 				TextBox.PlaceholderText = "❌ Incorrect/Invalid Key"
