@@ -1496,7 +1496,7 @@ end
 	end
 end
 function library:CreateWindow(settings1, onLoad)
-	print("Library Version: 0.19")
+	print("Library Version: 0.20")
 	if game:GetService("RunService"):IsStudio() then
 		if game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary") then
 			game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary"):Destroy()
