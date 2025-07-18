@@ -1853,7 +1853,7 @@ end
 				AnchorPoint = Vector2.new(0.5, 0.5),
 				BackgroundColor3 = Color3.fromRGB(30, 30, 30),
 				Parent = gui,
-			})https://github.com/Iliankytb/Iliankytb/blob/main/Zentrix
+			})
 			createUI("UICorner", {Parent = IntroFrame})
 
 
