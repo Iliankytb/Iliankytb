@@ -45,7 +45,7 @@ local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "
 
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.30",
+   Content = "V.0.31",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -415,7 +415,7 @@ local PlayerFlyToggle = PlayerTab:CreateToggle({
    Callback = function(Value)
   ActivateFly = Value 
 task.spawn(function()
-if not FLYING then
+if not FLYING and ActivateFly then
 			if UserInputService.TouchEnabled then
 				MobileFly()
 			else
@@ -423,7 +423,7 @@ if not FLYING then
 				wait()
 				sFLY()
 			end
-		else
+		elseif FLYING and not ActivateFly then
 			if UserInputService.TouchEnabled then
 				UnMobileFly()
 			else
@@ -445,8 +445,8 @@ end,
 
 UserInputService.InputBegan:Connect(function(input, processed)
 	if processed then return end
-	if input.KeyCode == Enum.KeyCode.F and ActivateFly then
-		if not FLYING then
+	if input.KeyCode == Enum.KeyCode.F then
+		if not FLYING and ActivateFly then
 			if UserInputService.TouchEnabled then
 				MobileFly()
 			else
@@ -454,7 +454,7 @@ UserInputService.InputBegan:Connect(function(input, processed)
 				wait()
 				sFLY()
 			end
-		else
+		elseif FLYING and ActivateFly then
 			if UserInputService.TouchEnabled then
 				UnMobileFly()
 			else
