@@ -40,12 +40,12 @@ local GameTab = Window:CreateTab("Game")
 local EspTab = Window:CreateTab("Esp")
 local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
-local ActiveSpeedBoost,ActiveNoclip,ActiveEspPlayers,ActiveDistanceEsp,ActivateFly,ActivateInfiniteJump = false,false,false,false,false,false
+local ActiveSpeedBoost,ActiveNoclip,ActiveEspPlayers,ActiveDistanceEsp,ActivateFly,ActivateInfiniteJump,AlrActivatedFlyPC = false,false,false,false,false,false,false
 local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "Loading"})
 
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.31",
+   Content = "V.0.32",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -419,6 +419,17 @@ if not FLYING and ActivateFly then
 			if UserInputService.TouchEnabled then
 				MobileFly()
 			else
+task.spawn(function()
+if not AlrActivatedFlyPC then 
+AlrActivatedFlyPC = true
+Rayfield:Notify({
+   Title = "Fly",
+   Content = "When you enable to fly you can press F to fly/unfly (it won't disable the button!)",
+   Duration = 5,
+   Image = "rewind",
+})
+end
+end)
 				NOFLY()
 				wait()
 				sFLY()
