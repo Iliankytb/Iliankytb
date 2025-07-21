@@ -45,7 +45,7 @@ local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "
 
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.29",
+   Content = "V.0.30",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -357,7 +357,7 @@ end)
 task.wait(0.1)
 end
 for _, Players in pairs(Game:GetService("Players"):GetChildren()) do
-if Players:isA("Player") and Players.Character and Players.Character:FindFirstChild("Head") and not Players.Character:FindFirstChildOfClass("Highlight") and not Players.Character.Head:FindFirstChildOfClass("BillboardGui") then
+if Players:isA("Player") and Players.Character and Players.Character:FindFirstChild("Head") and  Players.Character:FindFirstChildOfClass("Highlight") and  Players.Character.Head:FindFirstChildOfClass("BillboardGui") then
 KeepEsp(Players.Character,Players.Character.Head)
 end
 end
@@ -465,6 +465,7 @@ UserInputService.InputBegan:Connect(function(input, processed)
 end)
 
 local ValueSpeed = 16
+local OldSpeed = Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed
 local PlayerSpeedSlider = PlayerTab:CreateSlider({
    Name = "Player Speed(Recommended to put it below 500!)",
    Range = {0, 1000},
@@ -492,7 +493,8 @@ Game.Players.LocalPlayer.Character.Humanoid:SetAttribute("BaseSpeed",ValueSpeed)
 end)
 task.wait(0.1)
 end
-
+Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = OldSpeed 
+Game.Players.LocalPlayer.Character.Humanoid:SetAttribute("BaseSpeed",OldSpeed)
 end)
 end,
 })
@@ -600,6 +602,8 @@ local PlayerActiveDistanceEspToggle = SettingsTab:CreateToggle({
 end,
 })
 local ActiveFullBright = false
+local OldBrightness = Game.Lighting.Brightness
+local OldAmbient = Game.Lighting.Ambient
 local PlayerFullBright = PlayerTab:CreateToggle({
    Name = "Full Bright(unverified!)",
    CurrentValue = false,
@@ -614,6 +618,10 @@ Game.Lighting.Ambient = Color3.fromRGB(255, 255, 255)
 end  
 wait(0.1)
 end 
+if Game.Lighting then 
+Game.Lighting.Brightness = OldBrightness
+Game.Lighting.Ambient = OldAmbient
+end  
 end)
 end,  
 })
