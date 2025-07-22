@@ -44,7 +44,7 @@ local ActiveEspItems,ActiveDistanceEsp,ActiveEspEnemy,ActiveEspChildren,ActiveEs
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.3",
+   Content = "V.0.4",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -866,7 +866,7 @@ Game.Players.LocalPlayer.Character.Humanoid:SetAttribute("BaseSpeed",OldSpeed)
 end)
 end,
 })
-local NoCooldownpromptToggle = playerTab:CreateToggle({
+local NoCooldownpromptToggle = PlayerTab:CreateToggle({
    Name = "Instant Interact",
    CurrentValue = false,
    Flag = "NoCooldownPrompt1", 
