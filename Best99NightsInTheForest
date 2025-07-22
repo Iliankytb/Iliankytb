@@ -44,7 +44,7 @@ local ActiveEspItems,ActiveDistanceEsp,ActiveEspEnemy,ActiveEspChildren,ActiveEs
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.1",
+   Content = "V.0.2",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -809,7 +809,7 @@ end)
 end,
 })
 local TextBoxText = ""
-local TextboxBringNameItem = Tab:CreateInput({
+local TextboxBringNameItem = BringItemTab:CreateInput({
    Name = "TextBox",
    CurrentValue = "",
    PlaceholderText = "Put a name only 1 for bring it on you(use the esp for the name)",
