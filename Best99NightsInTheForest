@@ -423,6 +423,27 @@ end)
 end)
 end,
 })
+UserInputService.InputBegan:Connect(function(input, processed)
+	if processed then return end
+	if input.KeyCode == Enum.KeyCode.F then
+		if not FLYING and ActivateFly then
+			if UserInputService.TouchEnabled then
+				MobileFly()
+			else
+				NOFLY()
+				wait()
+				sFLY()
+			end
+		elseif FLYING and ActivateFly then
+			if UserInputService.TouchEnabled then
+				UnMobileFly()
+			else
+				NOFLY()
+			end
+		end
+	end
+end)
+
 local EspChildrensToggle = EspTab:CreateToggle({
    Name = "Childrens Esp",
    CurrentValue = false,
