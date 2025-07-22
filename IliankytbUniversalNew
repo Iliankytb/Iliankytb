@@ -45,7 +45,7 @@ local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "
 
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.32",
+   Content = "V.0.33",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -553,6 +553,12 @@ local ButtonLoadEvadeCheat = GameTab:CreateButton({
    Name = "Evade Cheat Iliankytb",
      Callback = function(Value)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/NewbestEvadeCheat"))()
+end,
+})
+local ButtonLoad99NightsInTheForestCheat = GameTab:CreateButton({
+   Name = "99 Nights in the forest Cheat Iliankytb(Coming Soon)",
+     Callback = function(Value)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Best99NightsInTheForest"))()
 end,
 })
 local ButtonLoadInfiniteYieldCheat = PlayerTab:CreateButton({
