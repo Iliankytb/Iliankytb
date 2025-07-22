@@ -44,7 +44,7 @@ local ActiveEspItems,ActiveDistanceEsp,ActiveEspEnemy,ActiveEspChildren,ActiveEs
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.4",
+   Content = "V.0.5",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -501,9 +501,9 @@ local ButtonBringAllItems = BringItemTab:CreateButton({
    Callback = function(Value)
 task.spawn(function()
 for _, Obj in pairs(game.workspace.Items:GetChildren()) do
-wait(0.1)
 if Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+wait(0.01)
 end    
 end
 end)
@@ -514,9 +514,9 @@ local ButtonBringAllLogs = BringItemTab:CreateButton({
    Callback = function(Value)
 task.spawn(function()
 for _, Obj in pairs(game.workspace.Items:GetChildren()) do
-wait(0.1)
 if Obj.Name == "Log" and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+wait(0.01)
 end    
 end
 end)
@@ -527,9 +527,9 @@ local ButtonBringAllCoal = BringItemTab:CreateButton({
    Callback = function(Value)
 task.spawn(function()
 for _, Obj in pairs(game.workspace.Items:GetChildren()) do
-wait(0.1)
 if Obj.Name == "Coal" and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+wait(0.01)
 end    
 end
 end)
@@ -540,9 +540,9 @@ local ButtonBringAllFuelCanister = BringItemTab:CreateButton({
    Callback = function(Value)
 task.spawn(function()
 for _, Obj in pairs(game.workspace.Items:GetChildren()) do
-wait(0.1)
 if Obj.Name == "Fuel Canister" and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+wait(0.01)
 end    
 end
 end)
@@ -553,9 +553,9 @@ local ButtonBringAllCarrot = BringItemTab:CreateButton({
    Callback = function(Value)
 task.spawn(function()
 for _, Obj in pairs(game.workspace.Items:GetChildren()) do
-wait(0.1)
 if Obj.Name == "Carrot" and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+wait(0.01)
 end    
 end
 end)
@@ -566,9 +566,9 @@ local ButtonBringAllFuel = BringItemTab:CreateButton({
    Callback = function(Value)
 task.spawn(function()
 for _, Obj in pairs(game.workspace.Items:GetChildren()) do
-wait(0.1)
 if (Obj.Name == "Log" or Obj.Name == "Fuel Canister" or Obj.Name == "Coal" or Obj.Name == "Oil Barrel") and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+wait(0.01)
 end    
 end
 end)
@@ -579,9 +579,9 @@ local ButtonBringAllScraps = BringItemTab:CreateButton({
    Callback = function(Value)
 task.spawn(function()
 for _, Obj in pairs(game.workspace.Items:GetChildren()) do
-wait(0.1)
 if (Obj.Name == "Tyre" or Obj.Name == "Sheet Metal" or Obj.Name == "Broken Fan" or Obj.Name == "Bolt" or Obj.Name == "Old Radio" or Obj.Name == "UFO Junk" or Obj.Name == "UFO Scrap" or Obj.Name == "Broken Microwave") and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+wait(0.01)
 end    
 end
 end)
@@ -592,9 +592,9 @@ local ButtonBringAllAmmo = BringItemTab:CreateButton({
    Callback = function(Value)
 task.spawn(function()
 for _, Obj in pairs(game.workspace.Items:GetChildren()) do
-wait(0.1)
 if (Obj.Name == "Rifle Ammo" or Obj.Name == "Revolver Ammo") and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+wait(0.01)
 end    
 end
 end)
@@ -605,9 +605,9 @@ local ButtonBringAllGuns = BringItemTab:CreateButton({
    Callback = function(Value)
 task.spawn(function()
 for _, Obj in pairs(game.workspace.Items:GetChildren()) do
-wait(0.1)
 if (Obj.Name == "Rifle" or Obj.Name == "Revolver") and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+wait(0.01)
 end    
 end
 end)
@@ -618,9 +618,9 @@ local ButtonBringAllChildren = BringItemTab:CreateButton({
    Callback = function(Value)
 task.spawn(function()
 for _, Obj in pairs(game.workspace.Characters:GetChildren()) do
-wait(0.1)
 if (Obj.Name == "Lost Child" or Obj.Name == "Lost Child2" or Obj.Name == "Lost Child3" or Obj.Name == "Lost Child4" ) and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+wait(0.01)
 end    
 end
 end)
@@ -631,9 +631,9 @@ local ButtonBringAllFoods = BringItemTab:CreateButton({
    Callback = function(Value)
 task.spawn(function()
 for _, Obj in pairs(game.workspace.Items:GetChildren()) do
-wait(0.1)
 if (Obj.Name == "Cake" or Obj.Name == "Carrot" or Obj.Name == "Morsel" or Obj.Name == "Meat? Sandwich") and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+wait(0.01)
 end    
 end
 end)
@@ -644,9 +644,9 @@ local ButtonBringAllBody = BringItemTab:CreateButton({
    Callback = function(Value)
 task.spawn(function()
 for _, Obj in pairs(game.workspace.Items:GetChildren()) do
-wait(0.1)
 if (Obj.Name == "Leather Body" or Obj.Name == "Iron Body") and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+wait(0.01)
 end    
 end
 end)
@@ -657,9 +657,9 @@ local ButtonBringAllBandage = BringItemTab:CreateButton({
    Callback = function(Value)
 task.spawn(function()
 for _, Obj in pairs(game.workspace.Items:GetChildren()) do
-wait(0.1)
 if Obj.Name == "Bandage" and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+wait(0.01)
 end    
 end
 end)
@@ -670,9 +670,9 @@ local ButtonBringAllMedkit = BringItemTab:CreateButton({
    Callback = function(Value)
 task.spawn(function()
 for _, Obj in pairs(game.workspace.Items:GetChildren()) do
-wait(0.1)
 if Obj.Name == "MedKit" and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+wait(0.01)
 end    
 end
 end)
@@ -683,9 +683,9 @@ local ButtonBringAllCoins = BringItemTab:CreateButton({
    Callback = function(Value)
 task.spawn(function()
 for _, Obj in pairs(game.workspace.Items:GetChildren()) do
-wait(0.1)
 if Obj.Name == "Coin Stack" and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+wait(0.01)
 end    
 end
 end)
@@ -696,9 +696,9 @@ local ButtonBringAllOldRadio = BringItemTab:CreateButton({
    Callback = function(Value)
 task.spawn(function()
 for _, Obj in pairs(game.workspace.Items:GetChildren()) do
-wait(0.1)
 if Obj.Name == "Old Radio" and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+wait(0.01)
 end    
 end
 end)
@@ -709,9 +709,9 @@ local ButtonBringAllTyre = BringItemTab:CreateButton({
    Callback = function(Value)
 task.spawn(function()
 for _, Obj in pairs(game.workspace.Items:GetChildren()) do
-wait(0.1)
 if Obj.Name == "Tyre" and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+wait(0.01)
 end    
 end
 end)
@@ -722,9 +722,9 @@ local ButtonBringAllBrokenFan = BringItemTab:CreateButton({
    Callback = function(Value)
 task.spawn(function()
 for _, Obj in pairs(game.workspace.Items:GetChildren()) do
-wait(0.1)
 if Obj.Name == "Broken Fan" and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+wait(0.01)
 end    
 end
 end)
@@ -735,9 +735,9 @@ local ButtonBringAllBrokenMicrowave = BringItemTab:CreateButton({
    Callback = function(Value)
 task.spawn(function()
 for _, Obj in pairs(game.workspace.Items:GetChildren()) do
-wait(0.1)
 if Obj.Name == "Broken Microwave" and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+wait(0.01)
 end    
 end
 end)
@@ -748,9 +748,9 @@ local ButtonBringAllBolt = BringItemTab:CreateButton({
    Callback = function(Value)
 task.spawn(function()
 for _, Obj in pairs(game.workspace.Items:GetChildren()) do
-wait(0.1)
 if Obj.Name == "Bolt" and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+wait(0.01)
 end    
 end
 end)
@@ -761,9 +761,9 @@ local ButtonBringAllBrokenMicrowave = BringItemTab:CreateButton({
    Callback = function(Value)
 task.spawn(function()
 for _, Obj in pairs(game.workspace.Items:GetChildren()) do
-wait(0.1)
 if Obj.Name == "Broken Microwave" and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+wait(0.01)
 end    
 end
 end)
@@ -774,9 +774,9 @@ local ButtonBringAllSheetMetal = BringItemTab:CreateButton({
    Callback = function(Value)
 task.spawn(function()
 for _, Obj in pairs(game.workspace.Items:GetChildren()) do
-wait(0.1)
 if Obj.Name == "Sheet Metal" and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+wait(0.01)
 end    
 end
 end)
@@ -787,9 +787,9 @@ local ButtonBringAllSeedBox = BringItemTab:CreateButton({
    Callback = function(Value)
 task.spawn(function()
 for _, Obj in pairs(game.workspace.Items:GetChildren()) do
-wait(0.1)
 if Obj.Name == "Seed Box" and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+wait(0.01)
 end    
 end
 end)
@@ -800,9 +800,9 @@ local ButtonBringAllChair = BringItemTab:CreateButton({
    Callback = function(Value)
 task.spawn(function()
 for _, Obj in pairs(game.workspace.Items:GetChildren()) do
-wait(0.1)
 if Obj.Name == "Chair" and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+wait(0.01)
 end    
 end
 end)
@@ -824,9 +824,9 @@ local ButtonBringAllThingsNamedInTextBox = BringItemTab:CreateButton({
    Callback = function(Value)
 task.spawn(function()
 for _, Obj in pairs(game.workspace.Items:GetChildren()) do
-wait(0.1)
 if Obj.Name == TextBoxText and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+wait(0.01)
 end    
 end
 end)
