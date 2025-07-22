@@ -39,7 +39,7 @@ local GameTab = Window:CreateTab("Game")
 local EspTab = Window:CreateTab("Esp")
 local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
-local ActiveEspItems,ActiveEspMonsters,ActiveAutoPickupItems = false,false,false
+local ActiveEspItems,ActiveDistanceEsp,ActiveAutoPickupItems = false,false,false
 
 Rayfield:Notify({
    Title = "Cheat Version",
@@ -48,17 +48,72 @@ Rayfield:Notify({
    Image = "rewind",
 })
 
-local function CreateEsp(Char,Color,Text,Parent)
-if Char then
-local NewHighlight = Instance.new("Highlight",Char)
-NewHighlight.OutlineColor = Color NewHighlight.FillColor = Color
+local function CreateEsp(Char, Color, Text,Parent,number)
+	if not Char then return end
+	if Char:FindFirstChild("ESP") and Char:FindFirstChildOfClass("Highlight") then return end
+	local highlight = Char:FindFirstChildOfClass("Highlight") or Instance.new("Highlight")
+	highlight.Name = "ESP_Highlight"
+highlight.Adornee = Char
+highlight.FillColor = Color
+highlight.FillTransparency = 1
+highlight.OutlineColor = Color
+highlight.OutlineTransparency = 0
+highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+highlight.Enabled = true
+	highlight.Parent = Char
+
+	
+	local billboard = Char:FindFirstChild("ESP") or Instance.new("BillboardGui")
+	billboard.Name = "ESP"
+	billboard.Size = UDim2.new(0, 50, 0, 25)
+	billboard.AlwaysOnTop = true
+	billboard.StudsOffset = Vector3.new(0, number, 0)
+	billboard.Adornee = Parent
+	billboard.Enabled = true
+	billboard.Parent = Parent
+
+	
+	local label = billboard:FindFirstChildOfClass("TextLabel") or Instance.new("TextLabel")
+	label.Size = UDim2.new(1, 0, 1, 0)
+	label.BackgroundTransparency = 1
+	label.Text = Text
+	label.TextColor3 = Color
+	label.TextScaled = true
+	label.Parent = billboard
+
+	task.spawn(function()
+		local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local Workspace = game:GetService("Workspace")
+
+local LocalPlayer = Players.LocalPlayer
+local Camera = Workspace.CurrentCamera
+
+while highlight and billboard and Parent and Parent.Parent do
+	local cameraPosition = Camera and Camera.CFrame.Position
+	if cameraPosition and Parent and Parent:IsA("BasePart") then
+	local distance = (cameraPosition - Parent.Position).Magnitude
+				task.spawn(function()
+if ActiveDistanceEsp then
+label.Text = Text.." ("..math.floor(distance + 0.5).." m)"
+else
+label.Text = Text
 end
+end)
+
+	end
+
+	RunService.Heartbeat:Wait()
 end
 
-local function KeepEsp(Char)
-if Char and Char:FindFirstChildOfClass("Highlight") then
-Char:FindFirstChildOfClass("Highlight"):Destroy()
+	end)
 end
+
+local function KeepEsp(Char,Parent)
+	if Char and Char:FindFirstChildOfClass("Highlight") and Parent:FindFirstChildOfClass("BillboardGui") then
+		Char:FindFirstChildOfClass("Highlight"):Destroy()
+		Parent:FindFirstChildOfClass("BillboardGui"):Destroy()
+	end
 end
 
 local function copyToClipboard(text)
@@ -84,7 +139,8 @@ local EspItemsToggle = EspTab:CreateToggle({
 task.spawn(function()
 while ActiveEspItems do 
 task.spawn(function()
- for _,Obj in pairs(Game.Workspace.Items:GetChildren()) do if Obj:isA("Model") and Obj.PrimaryPart and not Obj:FindFirstChildOfClass("Highlight") and not Obj.PrimaryPart:FindFirstChildOfClass("BillBoard") then
+ for _,Obj in pairs(Game.Workspace.Items:GetChildren()) do 
+if Obj:isA("Model") and Obj.PrimaryPart and not Obj:FindFirstChildOfClass("Highlight") and not Obj.PrimaryPart:FindFirstChildOfClass("BillBoard") then
 CreateEsp(Obj,Color3.fromRGB(0,255,0)) end end
 end)
 task.wait(0.1)
