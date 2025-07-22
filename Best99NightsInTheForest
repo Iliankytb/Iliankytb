@@ -140,15 +140,19 @@ task.spawn(function()
 while ActiveEspItems do 
 task.spawn(function()
  for _,Obj in pairs(Game.Workspace.Items:GetChildren()) do 
-if Obj:isA("Model") and Obj.PrimaryPart and not Obj:FindFirstChildOfClass("Highlight") and not Obj.PrimaryPart:FindFirstChildOfClass("BillBoard") then
-CreateEsp(Obj,Color3.fromRGB(0,255,0)) end end
-end)
-task.wait(0.1)
-end for _,Light in pairs(Game.Workspace:GetChildren()) do 
-if (Light.name == "LightBulb"or Light.name == "GasCanister" or Light.name == "CakeMix") and Light:FindFirstChildOfClass("Highlight") then
-KeepEsp(Light)
+if Obj:isA("Model") and Obj.PrimaryPart and not Obj:FindFirstChildOfClass("Highlight") and not Obj.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+CreateEsp(Obj,Color3.fromRGB(0,255,0))
 end 
 end
+end)
+task.wait(0.1)
+end task.spawn(function()
+ for _,Obj in pairs(Game.Workspace.Items:GetChildren()) do 
+if Obj:isA("Model") and Obj.PrimaryPart and  Obj:FindFirstChildOfClass("Highlight") and Obj.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+CreateEsp(Obj,Color3.fromRGB(0,255,0))
+end 
+end
+end)
 end)
 end,
 })
