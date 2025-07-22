@@ -37,6 +37,7 @@ local Window = Rayfield:CreateWindow({
 local PlayerTab = Window:CreateTab("Player")
 local GameTab = Window:CreateTab("Game")
 local EspTab = Window:CreateTab("Esp")
+local BringItemTab = Window:CreateTab("Bring Item")
 local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
 local ActiveEspItems,ActiveDistanceEsp,ActiveAutoPickupItems = false,false,false
@@ -141,7 +142,7 @@ while ActiveEspItems do
 task.spawn(function()
  for _,Obj in pairs(Game.Workspace.Items:GetChildren()) do 
 if Obj:isA("Model") and Obj.PrimaryPart and not Obj:FindFirstChildOfClass("Highlight") and not Obj.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
-CreateEsp(Obj,Color3.fromRGB(0,255,0))
+CreateEsp(Obj,Color3.fromRGB(255,255,0),Obj.Name,Obj.PrimaryPart) 
 end 
 end
 end)
@@ -149,10 +150,62 @@ task.wait(0.1)
 end task.spawn(function()
  for _,Obj in pairs(Game.Workspace.Items:GetChildren()) do 
 if Obj:isA("Model") and Obj.PrimaryPart and  Obj:FindFirstChildOfClass("Highlight") and Obj.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
-CreateEsp(Obj,Color3.fromRGB(0,255,0))
+KeepEsp(Obj,Obj.PrimaryPart)
 end 
 end
 end)
+end)
+end,
+})
+local ButtonBringAllItems = BringItemTab:CreateButton({
+   Name = "Bring All Items",
+   Callback = function(Value)
+task.spawn(function()
+for _, Obj in pairs(game.workspace.Items:GetChildren()) do
+wait(0.01)
+if Obj:isA("Model") and Obj.PrimaryPart then 
+Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+end    
+end
+end)
+end,
+})
+local ButtonBringAllLogs = BringItemTab:CreateButton({
+   Name = "Bring All Logs",
+   Callback = function(Value)
+task.spawn(function()
+for _, Obj in pairs(game.workspace.Items:GetChildren()) do
+wait(0.01)
+if Obj.Name == "Log" and Obj:isA("Model") and Obj.PrimaryPart then 
+Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+end    
+end
+end)
+end,
+})
+local ButtonBringAllCoal = BringItemTab:CreateButton({
+   Name = "Bring All Coal",
+   Callback = function(Value)
+task.spawn(function()
+for _, Obj in pairs(game.workspace.Items:GetChildren()) do
+wait(0.01)
+if Obj.Name == "Coal" and Obj:isA("Model") and Obj.PrimaryPart then 
+Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+end    
+end
+end)
+end,
+})
+local ButtonBringAllFuelCanister = BringItemTab:CreateButton({
+   Name = "Bring All Fuel Canister",
+   Callback = function(Value)
+task.spawn(function()
+for _, Obj in pairs(game.workspace.Items:GetChildren()) do
+wait(0.01)
+if Obj.Name == "Fuel Canister" and Obj:isA("Model") and Obj.PrimaryPart then 
+Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+end    
+end
 end)
 end,
 })
