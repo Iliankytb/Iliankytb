@@ -833,9 +833,10 @@ end)
 end,
 })
 local ValueSpeed = 16
+local OldSpeed = Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed
 local PlayerSpeedSlider = PlayerTab:CreateSlider({
-   Name = "Player Speed",
-   Range = {0, 500},
+   Name = "Player Speed(Recommended to put it below 500!)",
+   Range = {0, 1000},
    Increment = 1,
    Suffix = "Speeds",
    CurrentValue = 16,
@@ -845,16 +846,24 @@ CurrentValue = Value
 ValueSpeed = Value
 end,  ValueSpeed = CurrentValue,
 })
+
 local PlayerActiveModifyingSpeedToggle = PlayerTab:CreateToggle({
    Name = "Active Modifying Player Speed",
    CurrentValue = false,
    Flag = "ButtonSpeed", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
-  ActiveSpeedBoost = Value task.spawn(function()
-while ActiveSpeedBoost do
-Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = ValueSpeed
+  ActiveSpeedBoost = Value 
+task.spawn(function()
+while ActiveSpeedBoost do 
+task.spawn(function()
+Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = ValueSpeed 
+Game.Players.LocalPlayer.Character.Humanoid:SetAttribute("BaseSpeed",ValueSpeed)
+end)
 task.wait(0.1)
-end end)
+end
+Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = OldSpeed 
+Game.Players.LocalPlayer.Character.Humanoid:SetAttribute("BaseSpeed",OldSpeed)
+end)
 end,
 })
 local ButtonUnloadCheat = SettingsTab:CreateButton({
