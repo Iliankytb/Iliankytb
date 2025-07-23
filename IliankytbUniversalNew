@@ -45,7 +45,7 @@ local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "
 
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.34",
+   Content = "V.0.35",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -642,35 +642,31 @@ end
 end)
 end,  
 })
-local NoCooldownpromptToggle = playerTab:CreateToggle({
+local NoCooldownpromptToggle = PlayerTab:CreateToggle({
    Name = "Instant Interact",
    CurrentValue = false,
    Flag = "NoCooldownPrompt1", 
    Callback = function(Value)
-ActiveNoCooldownPrompt = Value 
-task.spawn(function()  
+ActiveNoCooldownPrompt = Value  
 while ActiveNoCooldownPrompt do
 for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
 if Assets:isA("ProximityPrompt") then 
-task.spawn(function()
 if Assets.HoldDuration ~= 0 then
 Assets:SetAttribute("HoldDurationOld",Assets.HoldDuration)
 Assets.HoldDuration = 0
 end
-end)
 end 
 end  
-wait(0.1) end 
+wait(0.1) 
+end 
 for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
 if Assets:isA("ProximityPrompt") then 
 task.spawn(function()
 if Assets:GetAttribute("HoldDurationOld") and Assets:GetAttribute("HoldDurationOld") ~= 0 then
 Assets.HoldDuration = Assets:GetAttribute("HoldDurationOld")
 end
-end)
 end 
 end   
-end)
 end,
 })
 local Themes = {
