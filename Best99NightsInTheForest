@@ -44,7 +44,7 @@ local ActiveEspItems,ActiveDistanceEsp,ActiveEspEnemy,ActiveEspChildren,ActiveEs
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.5",
+   Content = "V.0.6",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -379,21 +379,19 @@ local EspItemsToggle = EspTab:CreateToggle({
   ActiveEspItems = Value 
 task.spawn(function()
 while ActiveEspItems do 
-task.spawn(function()
  for _,Obj in pairs(Game.Workspace.Items:GetChildren()) do 
 if Obj:isA("Model") and Obj.PrimaryPart and not Obj:FindFirstChildOfClass("Highlight") and not Obj.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
 CreateEsp(Obj,Color3.fromRGB(255,255,0),Obj.Name,Obj.PrimaryPart) 
+wait(0.01)
 end 
 end
-end)
 task.wait(0.1)
-end task.spawn(function()
+end
  for _,Obj in pairs(Game.Workspace.Items:GetChildren()) do 
 if Obj:isA("Model") and Obj.PrimaryPart and  Obj:FindFirstChildOfClass("Highlight") and Obj.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
 KeepEsp(Obj,Obj.PrimaryPart)
 end 
 end
-end)
 end)
 end,
 })
@@ -405,21 +403,19 @@ local EspEnemyToggle = EspTab:CreateToggle({
   ActiveEspEnemy = Value 
 task.spawn(function()
 while ActiveEspEnemy do 
-task.spawn(function()
  for _,Obj in pairs(Game.Workspace.Characters:GetChildren()) do 
 if Obj:isA("Model") and Obj.PrimaryPart and (Obj.Name ~= "Lost Child" and Obj.Name ~= "Lost Child2" and Obj.Name ~= "Lost Child3" and Obj.Name ~= "Lost Child4" and Obj.Name ~= "Pelt Trader") and not Obj:FindFirstChildOfClass("Highlight") and not Obj.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
 CreateEsp(Obj,Color3.fromRGB(255,0,0),Obj.Name,Obj.PrimaryPart) 
+wait(0.01)
 end 
 end
-end)
 task.wait(0.1)
-end task.spawn(function()
+end 
  for _,Obj in pairs(Game.Workspace.Characters:GetChildren()) do 
 if Obj:isA("Model") and Obj.PrimaryPart and (Obj.Name ~= "Lost Child" and Obj.Name ~= "Lost Child2" and Obj.Name ~= "Lost Child3" and Obj.Name ~= "Lost Child4" and Obj.Name ~= "Pelt Trader") and Obj:FindFirstChildOfClass("Highlight") and Obj.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
 KeepEsp(Obj,Obj.PrimaryPart)
 end 
 end
-end)
 end)
 end,
 })
@@ -452,21 +448,19 @@ local EspChildrensToggle = EspTab:CreateToggle({
   ActiveEspChildren = Value 
 task.spawn(function()
 while ActiveEspChildren do 
-task.spawn(function()
  for _,Obj in pairs(Game.Workspace.Characters:GetChildren()) do 
 if Obj:isA("Model") and Obj.PrimaryPart and (Obj.Name == "Lost Child" or Obj.Name == "Lost Child2" or Obj.Name == "Lost Child3" or Obj.Name == "Lost Child4") and not Obj:FindFirstChildOfClass("Highlight") and not Obj.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
 CreateEsp(Obj,Color3.fromRGB(0,255,0),Obj.Name,Obj.PrimaryPart) 
+wait(0.01)
 end 
 end
-end)
 task.wait(0.1)
-end task.spawn(function()
+end
  for _,Obj in pairs(Game.Workspace.Characters:GetChildren()) do 
 if Obj:isA("Model") and Obj.PrimaryPart and (Obj.Name == "Lost Child" or Obj.Name == "Lost Child2" or Obj.Name == "Lost Child3" or Obj.Name == "Lost Child4") and Obj:FindFirstChildOfClass("Highlight") and Obj.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
 KeepEsp(Obj,Obj.PrimaryPart)
 end 
 end
-end)
 end)
 end,
 })
@@ -478,21 +472,18 @@ local EspPeltTraderToggle = EspTab:CreateToggle({
   ActiveEspPeltTrader = Value 
 task.spawn(function()
 while ActiveEspPeltTrader do 
-task.spawn(function()
  for _,Obj in pairs(Game.Workspace.Characters:GetChildren()) do 
 if Obj:isA("Model") and Obj.PrimaryPart and Obj.Name == "Pelt Trader" and not Obj:FindFirstChildOfClass("Highlight") and not Obj.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
 CreateEsp(Obj,Color3.fromRGB(0,255,255),Obj.Name,Obj.PrimaryPart) 
 end 
 end
-end)
 task.wait(0.1)
-end task.spawn(function()
+end 
  for _,Obj in pairs(Game.Workspace.Characters:GetChildren()) do 
 if Obj:isA("Model") and Obj.PrimaryPart and Obj.Name == "Pelt Trader" and Obj:FindFirstChildOfClass("Highlight") and Obj.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
 KeepEsp(Obj,Obj.PrimaryPart)
 end 
 end
-end)
 end)
 end,
 })
