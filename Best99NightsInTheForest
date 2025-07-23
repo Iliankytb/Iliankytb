@@ -44,7 +44,7 @@ local ActiveEspItems,ActiveDistanceEsp,ActiveEspEnemy,ActiveEspChildren,ActiveEs
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.7",
+   Content = "V.0.8",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -377,22 +377,20 @@ local EspItemsToggle = EspTab:CreateToggle({
    Flag = "EspItems",
    Callback = function(Value)
   ActiveEspItems = Value 
-task.spawn(function()
+
 while ActiveEspItems do 
  for _,Obj in pairs(Game.Workspace.Items:GetChildren()) do 
 if Obj:isA("Model") and Obj.PrimaryPart and not Obj:FindFirstChildOfClass("Highlight") and not Obj.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
 CreateEsp(Obj,Color3.fromRGB(255,255,0),Obj.Name,Obj.PrimaryPart) 
-wait(0.01)
 end 
 end
-task.wait(0.1)
+wait(0.1)
 end
  for _,Obj in pairs(Game.Workspace.Items:GetChildren()) do 
 if Obj:isA("Model") and Obj.PrimaryPart and  Obj:FindFirstChildOfClass("Highlight") and Obj.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
 KeepEsp(Obj,Obj.PrimaryPart)
 end 
 end
-end)
 end,
 })
 local EspEnemyToggle = EspTab:CreateToggle({
@@ -401,22 +399,19 @@ local EspEnemyToggle = EspTab:CreateToggle({
    Flag = "EspEnemy",
    Callback = function(Value)
   ActiveEspEnemy = Value 
-task.spawn(function()
 while ActiveEspEnemy do 
  for _,Obj in pairs(Game.Workspace.Characters:GetChildren()) do 
 if Obj:isA("Model") and Obj.PrimaryPart and (Obj.Name ~= "Lost Child" and Obj.Name ~= "Lost Child2" and Obj.Name ~= "Lost Child3" and Obj.Name ~= "Lost Child4" and Obj.Name ~= "Pelt Trader") and not Obj:FindFirstChildOfClass("Highlight") and not Obj.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
 CreateEsp(Obj,Color3.fromRGB(255,0,0),Obj.Name,Obj.PrimaryPart) 
-wait(0.01)
 end 
 end
-task.wait(0.1)
+wait(0.1)
 end 
  for _,Obj in pairs(Game.Workspace.Characters:GetChildren()) do 
 if Obj:isA("Model") and Obj.PrimaryPart and (Obj.Name ~= "Lost Child" and Obj.Name ~= "Lost Child2" and Obj.Name ~= "Lost Child3" and Obj.Name ~= "Lost Child4" and Obj.Name ~= "Pelt Trader") and Obj:FindFirstChildOfClass("Highlight") and Obj.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
 KeepEsp(Obj,Obj.PrimaryPart)
 end 
 end
-end)
 end,
 })
 UserInputService.InputBegan:Connect(function(input, processed)
@@ -446,22 +441,19 @@ local EspChildrensToggle = EspTab:CreateToggle({
    Flag = "EspChildrens",
    Callback = function(Value)
   ActiveEspChildren = Value 
-task.spawn(function()
 while ActiveEspChildren do 
  for _,Obj in pairs(Game.Workspace.Characters:GetChildren()) do 
 if Obj:isA("Model") and Obj.PrimaryPart and (Obj.Name == "Lost Child" or Obj.Name == "Lost Child2" or Obj.Name == "Lost Child3" or Obj.Name == "Lost Child4") and not Obj:FindFirstChildOfClass("Highlight") and not Obj.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
 CreateEsp(Obj,Color3.fromRGB(0,255,0),Obj.Name,Obj.PrimaryPart) 
-wait(0.01)
 end 
 end
-task.wait(0.1)
+wait(0.1)
 end
  for _,Obj in pairs(Game.Workspace.Characters:GetChildren()) do 
 if Obj:isA("Model") and Obj.PrimaryPart and (Obj.Name == "Lost Child" or Obj.Name == "Lost Child2" or Obj.Name == "Lost Child3" or Obj.Name == "Lost Child4") and Obj:FindFirstChildOfClass("Highlight") and Obj.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
 KeepEsp(Obj,Obj.PrimaryPart)
 end 
 end
-end)
 end,
 })
 local EspPeltTraderToggle = EspTab:CreateToggle({
@@ -470,21 +462,19 @@ local EspPeltTraderToggle = EspTab:CreateToggle({
    Flag = "EspPeltTrader",
    Callback = function(Value)
   ActiveEspPeltTrader = Value 
-task.spawn(function()
 while ActiveEspPeltTrader do 
  for _,Obj in pairs(Game.Workspace.Characters:GetChildren()) do 
 if Obj:isA("Model") and Obj.PrimaryPart and Obj.Name == "Pelt Trader" and not Obj:FindFirstChildOfClass("Highlight") and not Obj.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
 CreateEsp(Obj,Color3.fromRGB(0,255,255),Obj.Name,Obj.PrimaryPart) 
 end 
 end
-task.wait(0.1)
+wait(0.1)
 end 
  for _,Obj in pairs(Game.Workspace.Characters:GetChildren()) do 
 if Obj:isA("Model") and Obj.PrimaryPart and Obj.Name == "Pelt Trader" and Obj:FindFirstChildOfClass("Highlight") and Obj.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
 KeepEsp(Obj,Obj.PrimaryPart)
 end 
 end
-end)
 end,
 })
 local ButtonBringAllItems = BringItemTab:CreateButton({
@@ -863,7 +853,6 @@ local NoCooldownpromptToggle = PlayerTab:CreateToggle({
    Flag = "NoCooldownPrompt1", 
    Callback = function(Value)
 ActiveNoCooldownPrompt = Value 
-task.spawn(function()  
 while ActiveNoCooldownPrompt do
 for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
 if Assets:isA("ProximityPrompt") then 
@@ -873,7 +862,8 @@ Assets.HoldDuration = 0
 end
 end 
 end  
-wait(0.1) end 
+wait(0.1)
+end 
 for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
 if Assets:isA("ProximityPrompt") then 
 if Assets:GetAttribute("HoldDurationOld") and Assets:GetAttribute("HoldDurationOld") ~= 0 then
@@ -881,7 +871,6 @@ Assets.HoldDuration = Assets:GetAttribute("HoldDurationOld")
 end
 end 
 end   
-end)
 end,
 })
 local ButtonUnloadCheat = SettingsTab:CreateButton({
