@@ -36,7 +36,7 @@ local Window = Rayfield:CreateWindow({
 })
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.8",
+   Content = "V.0.9",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -378,14 +378,14 @@ local EspPlayerToggle = EspTab:CreateToggle({
   EspPlayers = Value task.spawn(function()
 while EspPlayers do
 for _,Players in pairs(Game:GetService("Players"):GetPlayers()) do 
-if Players.Character:FindFirstChild("Head") and Players:isA("Player") and not Players.Character:FindFirstChildOfClass("Highlight") and not Players.Character:FindFirstChild("Head"):FindFirstChildOfClass("BillboardGui") then
+if Players.Character:WaitForChild("Head") and Players:isA("Player") and not Players.Character:FindFirstChildOfClass("Highlight") and not Players.Character:FindFirstChild("Head"):FindFirstChildOfClass("BillboardGui") then
 CreateEsp(Players.Character,Color3.fromRGB(255,0,0),Players.Name,Players.Character:FindFirstChild("Head"))
 end
 end
 task.wait(0.1)
 end
 for _,Players in pairs(Game:GetService("Players"):GetPlayers()) do 
-if Players.Character:FindFirstChild("Head") and Players:isA("Player") and Players.Character:FindFirstChild("Head"):FindFirstChildOfClass("Highlight") and Computers.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+if Players.Character:WaitForChild("Head") and Players:isA("Player") and Players.Character:FindFirstChild("Head"):FindFirstChildOfClass("Highlight") and Computers.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
 Keepesp(Players.Character,Players.Character:FindFirstChild("Head"))
 end end end)
 end,
