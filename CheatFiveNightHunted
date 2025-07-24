@@ -36,7 +36,7 @@ local Window = Rayfield:CreateWindow({
 })
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.12",
+   Content = "V.0.13",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -404,8 +404,8 @@ if Folders:isA("Folder") then
 if Folders:FindFirstChild("Map") then 
 if Folders:FindFirstChild("Map"):FindFirstChild("Tasks") then
 for _,Computers in pairs(Folders:FindFirstChild("Map"):FindFirstChild("Tasks"):GetChildren()) do
-if Computers.PrimaryPart and Computers:isA("Model") and not Computers:FindFirstChildOfClass("Highlight") and not Computers.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
-CreateEsp(Computers,Color3.fromRGB(255,165,0),"Computer",Computers.PrimaryPart)
+if Computers:FindFirstChild("Meshes/t_Cube") and Computers:isA("Model") and not Computers:FindFirstChildOfClass("Highlight") and not Computers:FindFirstChild("Meshes/t_Cube"):FindFirstChildOfClass("BillboardGui") then
+CreateEsp(Computers,Color3.fromRGB(255,165,0),"Computer",Computers:FindFirstChild("Meshes/t_Cube"))
 end end end end
 end
 end
@@ -415,8 +415,8 @@ if Folders:isA("Folder") then
 if Folders:FindFirstChild("Map") then 
 if Folders:FindFirstChild("Map"):FindFirstChild("Tasks") then 
 for _,Computers in pairs(Folders:FindFirstChild("Map"):FindFirstChild("Tasks"):GetChildren()) do 
-if Computers.PrimaryPart and Computers:isA("Model") and Computers:FindFirstChildOfClass("Highlight") and Computers.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
-KeepEsp(Computers,Computers.PrimaryPart) 
+if Computers:FindFirstChild("Meshes/t_Cube") and Computers:isA("Model") and Computers:FindFirstChildOfClass("Highlight") and Computers:FindFirstChild("Meshes/t_Cube"):FindFirstChildOfClass("BillboardGui") then 
+KeepEsp(Computers,Computers:FindFirstChild("Meshes/t_Cube")) 
 end end end end
 end
 end end)
