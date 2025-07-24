@@ -36,7 +36,7 @@ local Window = Rayfield:CreateWindow({
 })
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.7",
+   Content = "V.0.8",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -46,7 +46,7 @@ local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings", "rewind")
 
 
-local EspPlayers,EspComputer,EspLocker,EspBallPit,ActiveSpeedBoost,ActivateFly,AlrActivatedFlyPC = false,false,false,false,false,false,false
+local EspPlayers,EspComputer,EspLocker,EspBallPit,ActiveSpeedBoost,ActivateFly,AlrActivatedFlyPC,ActiveDistanceEsp = false,false,false,false,false,false,false,false
 
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
