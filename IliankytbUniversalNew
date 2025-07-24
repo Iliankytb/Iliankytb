@@ -661,7 +661,6 @@ wait(0.1)
 end 
 for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
 if Assets:isA("ProximityPrompt") then 
-task.spawn(function()
 if Assets:GetAttribute("HoldDurationOld") and Assets:GetAttribute("HoldDurationOld") ~= 0 then
 Assets.HoldDuration = Assets:GetAttribute("HoldDurationOld")
 end
