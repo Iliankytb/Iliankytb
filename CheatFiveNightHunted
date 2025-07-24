@@ -36,7 +36,7 @@ local Window = Rayfield:CreateWindow({
 })
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.9",
+   Content = "V.0.10",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -386,7 +386,7 @@ task.wait(0.1)
 end
 for _,Players in pairs(Game:GetService("Players"):GetPlayers()) do 
 if Players.Character:WaitForChild("Head") and Players:isA("Player") and Players.Character:FindFirstChild("Head"):FindFirstChildOfClass("Highlight") and Computers.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
-Keepesp(Players.Character,Players.Character:FindFirstChild("Head"))
+KeepEsp(Players.Character,Players.Character:FindFirstChild("Head"))
 end end end)
 end,
 })
