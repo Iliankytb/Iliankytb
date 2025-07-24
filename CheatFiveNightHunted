@@ -36,7 +36,7 @@ local Window = Rayfield:CreateWindow({
 })
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.11",
+   Content = "V.0.12",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -46,7 +46,7 @@ local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings", "rewind")
 
 
-local EspPlayers,EspComputer,EspLocker,EspBallPit,ActiveSpeedBoost,ActivateFly,AlrActivatedFlyPC,ActiveDistanceEsp = false,false,false,false,false,false,false,false
+local EspPlayers,EspComputer,Esplocker,EspBallPit,ActiveSpeedBoost,ActivateFly,AlrActivatedFlyPC,ActiveDistanceEsp = false,false,false,false,false,false,false,false
 
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
@@ -396,7 +396,8 @@ local EspComputerToggle = EspTab:CreateToggle({
    CurrentValue = false,
    Flag = "EspComputer", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
-  EspComputer = Value task.spawn(function()
+  EspComputer = Value
+task.spawn(function()
 while EspComputer do
 for _,Folders in pairs(Game.Workspace:GetChildren()) do 
 if Folders:isA("Folder") then 
@@ -427,7 +428,7 @@ local EspLockerToggle = EspTab:CreateToggle({
    CurrentValue = false,
    Flag = "EspLocker", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
-  EspLocker = Value 
+  Esplocker = Value 
 task.spawn(function()
 while Esplocker do
 for _,Folders in pairs(Game.Workspace:GetChildren()) do 
@@ -468,7 +469,7 @@ if Folders:FindFirstChild("Map") then
 if Folders:FindFirstChild("Map"):FindFirstChild("Hooks") then 
 for _,Computers in pairs(Folders:FindFirstChild("Map"):FindFirstChild("Hooks"):GetChildren()) do 
 if Computers.PrimaryPart and Computers:isA("Model") and not Computers:FindFirstChildOfClass("Highlight") and not Computers.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
-CreateEsp(Computers,Color3.fromRGB(255,176,0),"Locker",Computers.PrimaryPart) 
+CreateEsp(Computers,Color3.fromRGB(255,176,0),"Ball Pit",Computers.PrimaryPart) 
 end end end end
 end
 end
