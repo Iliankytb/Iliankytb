@@ -468,7 +468,7 @@ if Folders:FindFirstChild("Map") then
 if Folders:FindFirstChild("Map"):FindFirstChild("Hooks") then 
 for _,Computers in pairs(Folders:FindFirstChild("Map"):FindFirstChild("Hooks"):GetChildren()) do 
 if Computers.PrimaryPart and Computers:isA("Model") and not Computers:FindFirstChildOfClass("Highlight") and not Computers.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
-CreateEsp(Computers,Color3.fromRGB(255,176,0),"Locker","Computer",Computers.PrimaryPart) 
+CreateEsp(Computers,Color3.fromRGB(255,176,0),"Locker",Computers.PrimaryPart) 
 end end end end
 end
 end
