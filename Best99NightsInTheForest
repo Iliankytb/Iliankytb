@@ -44,7 +44,7 @@ local ActiveEspItems,ActiveDistanceEsp,ActiveEspEnemy,ActiveEspChildren,ActiveEs
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.2",
+   Content = "V.0.3",
    Duration = 2.5,
    Image = "rewind",
 })
