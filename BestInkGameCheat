@@ -13,7 +13,7 @@ local Window = Rayfield:CreateWindow({
 
    ConfigurationSaving = {
       Enabled = true,
-      FolderName = "saver", -- Create a custom folder for your hub/game
+      FolderName = "SaverInkGame", -- Create a custom folder for your hub/game
       FileName = "K"
    },
 
@@ -41,7 +41,7 @@ local SettingsTab = Window:CreateTab("Settings")
 local ActiveSpeedBoost = false
 Rayfield:Notify({
    Title = "script Version",
-   Content = "V.0.6",
+   Content = "V.0.7",
    Duration = 2.5,
    Image = "rewind",
 })
