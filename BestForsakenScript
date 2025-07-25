@@ -13,7 +13,7 @@ local Window = Rayfield:CreateWindow({
 
    ConfigurationSaving = {
       Enabled = true,
-      FolderName = "saver", -- Create a custom folder for your hub/game
+	      FolderName = "SaverForsaken", -- Create a custom folder for your hub/game
       FileName = "K"
    },
 
@@ -43,7 +43,7 @@ local ActiveSpeedBoost,ActiveAutoUseCoinFlip,ActiveEspSurvivors,ActiveNoStun,Act
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.36",
+   Content = "V.0.37",
    Duration = 2.5,
    Image = "rewind",
 })
