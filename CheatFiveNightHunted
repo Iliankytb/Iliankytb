@@ -36,7 +36,7 @@ local Window = Rayfield:CreateWindow({
 })
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.16",
+   Content = "V.0.17",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -285,23 +285,27 @@ while highlight and billboard and Parent and Parent.Parent do
 	if cameraPosition and Parent and Parent:IsA("BasePart") then
 	local distance = (cameraPosition - Parent.Position).Magnitude
 	task.spawn(function()
+
+
 	local showDistance = ActiveDistanceEsp
 	local showProgress = ComputerProgress and computer
-	local hasProgress = ComputerProgress and not not computer
+
+
 
 	local distanceText = showDistance and (" (" .. math.floor(distance + 0.5) .. " m)") or ""
 	local progressText = ""
 
-	if hasProgress then
-		local rawProgress = Char:GetAttribute("Progress") or 0
+	if showProgress then
+		local rawProgress = Char:GetAttribute("Progress")
+		rawProgress = rawProgress or 0
 		local maxProgress = 150
 		local percentProgress = math.clamp((rawProgress / maxProgress) * 100, 0, 100)
 		progressText = string.format("%.0f%%", percentProgress)
 	end
 
+
 	label.Text = Text .. distanceText .. progressText
 end)
-
 
 	end
 
@@ -418,7 +422,7 @@ if Folders:FindFirstChild("Map") then
 if Folders:FindFirstChild("Map"):FindFirstChild("Tasks") then
 for _,Computers in pairs(Folders:FindFirstChild("Map"):FindFirstChild("Tasks"):GetChildren()) do
 if Computers:FindFirstChild("Meshes/t_Cube") and Computers:isA("Model") and not Computers:FindFirstChildOfClass("Highlight") and not Computers:FindFirstChild("Meshes/t_Cube"):FindFirstChildOfClass("BillboardGui") then
-CreateEsp(Computers,Color3.fromRGB(255,165,0),"Computer",Computers:FindFirstChild("Meshes/t_Cube"),true)
+CreateEsp(Computers,Color3.fromRGB(255,165,0),"Computer",Computers:FindFirstChild("Meshes/t_Cube"),0,true)
 end end end end
 end
 end
