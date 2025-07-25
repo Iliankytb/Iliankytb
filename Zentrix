@@ -483,100 +483,124 @@ local function VisibleWindow(window,settings1,gui)
 		if settingsData.EnableSavingData then
 
 			function library:LoadData()
-				if not game:GetService("RunService"):IsStudio() then
-				print("Loading Data...")
+    if not game:GetService("RunService"):IsStudio() then
+        print("Loading Data...")
 
-				local success, content = pcall(readfile, fullPath)
-				if not success or not content then
-					warn("didn't loaded correctly the data saver please try again.")
-					print("Glitched :"..content)
-					window:Notify({
-						Title = "Data!",
-						Message = "Data didn't loaded correctly please try again!",
-						Duration = 10,
-					})
-					return
-				end
-				if  success and content == "" then				
-					warn("Nothings got saved.")
-					print("Nothings in:"..content)
-					window:Notify({
-						Title = "Data!",
-						Message = "Nothings got saved!",
-						Duration = 5,
-					})
-					return
-				end
+        local settingsData = settings1 and settings1.Data or {}
+        local FolderName = settingsData.FolderName or "UnknownFolder"
+        local fileName = settingsData.FileName or "UnknownFile"
+        local fullPath = FolderName .. "/" .. fileName .. ".json"
 
-				local loadedData
-				success, loadedData = pcall(function()
-					return HttpService:JSONDecode(content)
-				end)
+        -- Check if file exists
+        if not isfile(fullPath) then
+            warn("No saved data file found at: " .. fullPath)
+            window:Notify({
+                Title = "Data!",
+                Message = "No saved data found!",
+                Duration = 5,
+            })
+            return
+        end
 
-				if not success or type(loadedData) ~= "table" then
-					warn("Échec du décodage JSON ou données invalides.")
-					return
-				end
+        -- Read file content
+        local success, content = pcall(readfile, fullPath)
+        if not success or not content or content == "" then
+            warn("Failed to read data file or file is empty: " .. tostring(content))
+            window:Notify({
+                Title = "Data!",
+                Message = "Failed to load data or file is empty!",
+                Duration = 10,
+            })
+            return
+        end
 
-				-- Désérialise les valeurs Color3
-				for k, v in pairs(loadedData) do
-					loadedData[k] = DeserializeValue(v)
-				end
+        -- Decode JSON data
+        local loadedData
+        success, loadedData = pcall(function()
+            return HttpService:JSONDecode(content)
+        end)
 
-				flags = loadedData
+        if not success or type(loadedData) ~= "table" then
+            warn("Failed to decode JSON data or invalid data format.")
+            window:Notify({
+                Title = "Data!",
+                Message = "Failed to decode saved data!",
+                Duration = 10,
+            })
+            return
+        end
 
-				tab.SlidersValue = tab.SlidersValue or {}
-				tab.textboxesText = tab.textboxesText or {}
-				tab.dropdownValue = tab.dropdownValue or {}
-				tab.TogglesValue = tab.TogglesValue or {}
-				tab.ColorPickerValue = tab.ColorPickerValue or {}
+        -- Deserialize values (handle Color3 and other types)
+        for k, v in pairs(loadedData) do
+            loadedData[k] = DeserializeValue(v)
+        end
 
-				for name, value in pairs(flags) do
-					print(name,value)
-					if tab.sliders and tab.sliders[name] then
-						pcall(function()
-							print("Set slider", name, "to", value)
-							tab.sliders[name]:SetValue(value)
-							tab.SlidersValue[name] = value
-						end)
-					end
-					if tab.ColorPicker and tab.ColorPicker[name] then
-						pcall(function()
-							print("Set color picker", name, "to", value)
-							tab.ColorPicker[name]:Set(value)
-							tab.ColorPickerValue[name] = value
-						end)
-					end
-					if tab.textboxes and tab.textboxes[name] then
-						pcall(function()
-							print("Set textbox", name, "to", value)
-							tab.textboxes[name]:SetText(value)
-							tab.textboxesText[name] = value
-						end)
-					end
-					if tab.dropdowns and tab.dropdowns[name] then
-						pcall(function()
-							print("Set dropdown", name, "to", value)
-							tab.dropdowns[name]:Select(value)
-							tab.dropdownValue[name] = value
-						end)
-					end
-					if tab.toggles and tab.toggles[name] then
-						pcall(function()
-							print("Set toggles", name, "to", value)
-							tab.toggles[name]:Set(value)
-							tab.TogglesValue[name] = value
-						end)
-					end
-				end
-				if not settingsData.DisableNotifyingLoadedData  then
-					window:Notify({
-						Title = "Data!",
-						Message = "Loaded Data!",
-						Duration = 5,
-					})
-				end
-			end
+        -- Update flags
+        flags = loadedData
+
+        -- Apply loaded data to all tabs
+        for _, tab in pairs(window.tabs) do
+            -- Initialize tables if not already done
+            tab.SlidersValue = tab.SlidersValue or {}
+            tab.textboxesText = tab.textboxesText or {}
+            tab.dropdownValue = tab.dropdownValue or {}
+            tab.TogglesValue = tab.TogglesValue or {}
+            tab.ColorPickerValue = tab.ColorPickerValue or {}
+            tab.sliders = tab.sliders or {}
+            tab.textboxes = tab.textboxes or {}
+            tab.dropdowns = tab.dropdowns or {}
+            tab.toggles = tab.toggles or {}
+            tab.ColorPicker = tab.ColorPicker or {}
+
+            -- Apply saved values to UI elements
+            for name, value in pairs(flags) do
+                print("Processing flag:", name, value)
+                if tab.sliders[name] then
+                    pcall(function()
+                        print("Set slider", name, "to", value)
+                        tab.sliders[name]:SetValue(value)
+                        tab.SlidersValue[name] = value
+                    end)
+                end
+                if tab.ColorPicker[name] then
+                    pcall(function()
+                        print("Set color picker", name, "to", value)
+                        tab.ColorPicker[name]:Set(value)
+                        tab.ColorPickerValue[name] = value
+                    end)
+                end
+                if tab.textboxes[name] then
+                    pcall(function()
+                        print("Set textbox", name, "to", value)
+                        tab.textboxes[name]:SetText(value)
+                        tab.textboxesText[name] = value
+                    end)
+                end
+                if tab.dropdowns[name] then
+                    pcall(function()
+                        print("Set dropdown", name, "to", value)
+                        tab.dropdowns[name]:Select(value)
+                        tab.dropdownValue[name] = value
+                    end)
+                end
+                if tab.toggles[name] then
+                    pcall(function()
+                        print("Set toggle", name, "to", value)
+                        tab.toggles[name]:Set(value)
+                        tab.TogglesValue[name] = value
+                    end)
+                end
+            end
+        end
+
+        if not settingsData.DisableNotifyingLoadedData then
+            window:Notify({
+                Title = "Data!",
+                Message = "Successfully loaded saved data!",
+                Duration = 5,
+            })
+        end
+    end
 end
 		end
 
@@ -1496,7 +1520,7 @@ end
 	end
 end
 function library:CreateWindow(settings1, onLoad)
-	print("Library Version: 0.20")
+	print("Library Version: 0.21")
 	if game:GetService("RunService"):IsStudio() then
 		if game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary") then
 			game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary"):Destroy()
