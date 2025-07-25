@@ -37,7 +37,7 @@ local PlayerTab = Window:CreateTab("Player")
 local EspTab = Window:CreateTab("Esp")
 local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
-local ActiveSpeedBoost,ActiveEspBot,ActiveEspItems,ActivateFly,AlrActivatedFlyPC = false,false,false,false,false
+local ActiveSpeedBoost,ActiveNoclip,ActiveEspBot,ActiveEspItems,ActiveEspPlayers,ActivateFly,AlrActivatedFlyPC = false,false,false,false,false,false,false
 
 Rayfield:Notify({
    Title = "Cheat Version",
@@ -331,7 +331,31 @@ CurrentValue = Value
 ValueSpeed = Value
 end,  ValueSpeed = CurrentValue,
 })
-
+local PlayerActiveEspPlayersToggle = EspTab:CreateToggle({
+   Name = "Esp Players",
+   CurrentValue = false,
+   Flag = "ButtonEspPlayers", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  ActiveEspPlayers = Value 
+task.spawn(function()
+while ActiveEspPlayers do 
+task.spawn(function()
+for _, Players in pairs(Game:GetService("Players"):GetChildren()) do
+if Players:isA("Player") and Players.Character and Players.Character:FindFirstChild("Head") and not Players.Character:FindFirstChildOfClass("Highlight") and not Players.Character.Head:FindFirstChildOfClass("BillboardGui") then
+CreateEsp(Players.Character,Color3.fromRGB(255,255,255),Players.Name,Players.Character.Head,2)
+end
+end
+end)
+task.wait(0.1)
+end
+for _, Players in pairs(Game:GetService("Players"):GetChildren()) do
+if Players:isA("Player") and Players.Character and Players.Character:FindFirstChild("Head") and  Players.Character:FindFirstChildOfClass("Highlight") and  Players.Character.Head:FindFirstChildOfClass("BillboardGui") then
+KeepEsp(Players.Character,Players.Character.Head)
+end
+end
+end)
+end,
+})
 local PlayerActiveModifyingSpeedToggle = PlayerTab:CreateToggle({
    Name = "Active Modifying Player Speed",
    CurrentValue = false,
@@ -413,6 +437,86 @@ UserInputService.InputBegan:Connect(function(input, processed)
 		end
 	end
 end)
+local EspItemsToggle = EspTab:CreateToggle({
+   Name = "Items Esp",
+   CurrentValue = false,
+   Flag = "EspItems",
+   Callback = function(Value)
+  ActiveEspItems = Value 
+
+while ActiveEspItems do 
+    for _, Folder in pairs(Game.Workspace:GetChildren()) do
+        if Folder:isA("Folder") and (not Folder:FindFirstChild("PeppaSpawn") and not Folder:FindFirstChild("PiggySpawn") and not Folder:FindFirstChild("ResetSpawn"))  then
+        for _,Obj in pairs(Folder:GetChildren()) do 
+if Obj:isA("BasePart") and not Obj:FindFirstChildOfClass("Highlight") and not Obj:FindFirstChildOfClass("BillboardGui") then
+CreateEsp(Obj,Obj.Color,Obj.Name,Obj) 
+end 
+end
+        end
+        end 
+wait(0.1)
+end
+   for _, Folder in pairs(Game.Workspace:GetChildren()) do
+        if Folder:isA("Folder") and (not Folder:FindFirstChild("PeppaSpawn") and not Folder:FindFirstChild("PiggySpawn") and not Folder:FindFirstChild("ResetSpawn"))  then
+        for _,Obj in pairs(Folder:GetChildren()) do 
+if Obj:isA("BasePart") and Obj:FindFirstChildOfClass("Highlight") and Obj:FindFirstChildOfClass("BillboardGui") then
+KeepEsp(Obj,Obj) 
+end 
+end
+        end
+        end 
+end,
+})
+local PlayerNoclipToggle = PlayerTab:CreateToggle({
+   Name = "Noclip",
+   CurrentValue = false,
+   Flag = "ButtonNoclip", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  ActiveNoclip = Value 
+task.spawn(function()
+while ActiveNoclip do 
+task.spawn(function()
+if Game.Players.LocalPlayer.Character then
+for _, Parts in pairs(Game.Players.LocalPlayer.Character:GetDescendants()) do
+if Parts:isA("BasePart") and Parts.CanCollide then
+Parts.CanCollide = false
+end
+end
+end
+end)
+task.wait(0.1)
+end 
+if Game.Players.LocalPlayer.Character then
+for _, Parts in pairs(Game.Players.LocalPlayer.Character:GetDescendants()) do
+if Parts:isA("BasePart") and not Parts.CanCollide then
+Parts.CanCollide = true
+end
+end
+end
+end)
+end,
+})
+local EspBotsToggle = EspTab:CreateToggle({
+   Name = "Bots Esp",
+   CurrentValue = false,
+   Flag = "EspBot",
+   Callback = function(Value)
+  ActiveEspBot = Value 
+while ActiveEspBot do 
+  for _,Obj in pairs(Game.Workspace.PiggyNPC:GetChildren()) do 
+if Obj.PrimaryPart and Obj:isA("Model") and not Obj:FindFirstChildOfClass("Highlight") and not Obj.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+CreateEsp(Obj,Color3.fromRGB(255,0,0),Obj.Name,Obj.PrimaryPart) 
+end 
+end
+wait(0.1)
+end
+ for _,Obj in pairs(Game.Workspace.PiggyNPC:GetChildren()) do 
+if Obj.PrimaryPart and Obj:isA("Model") and Obj:FindFirstChildOfClass("Highlight") and Obj.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+KeepEsp(Obj,Obj.PrimaryPart) 
+end 
+end
+end,
+})
 local ButtonUnloadCheat = SettingsTab:CreateButton({
    Name = "Unload Cheat",
    Callback = function()
