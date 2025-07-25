@@ -13,7 +13,7 @@ local Window = Rayfield:CreateWindow({
 
    ConfigurationSaving = {
       Enabled = true,
-      FolderName = "saver", -- Create a custom folder for your hub/game
+      FolderName = "SaverEvade", -- Create a custom folder for your hub/game
       FileName = "K"
    },
 
@@ -42,7 +42,7 @@ local ActiveSpeedBoost,ActiveEspPlayers,ActiveEspBots,ActiveAutoWin,ActiveAutoFa
 
 Rayfield:Notify({
    Title = "Evade Version",
-   Content = "V.0.12",
+   Content = "V.0.13",
    Duration = 2.5,
    Image = "rewind",
 })
