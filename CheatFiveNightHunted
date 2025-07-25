@@ -557,7 +557,7 @@ end,
 local ActiveDistanceForEsp = SettingsTab:CreateToggle({
    Name = "Distane For Esp",
    CurrentValue = false,
-   Flag = "ButtonDistanceForEsp"
+   Flag = "ButtonDistanceForEsp",
    Callback = function(Value)
   ActiveDistanceEsp = Value 
 end,
@@ -565,7 +565,7 @@ end,
 local ActiveComputerProgressBar = SettingsTab:CreateToggle({
    Name = "Active View Computer Progress Bar For Computer Esp",
    CurrentValue = false,
-   Flag = "ButtonComputerProgressBar"
+   Flag = "ButtonComputerProgressBar",
    Callback = function(Value)
   ComputerProgress = Value 
 end,
