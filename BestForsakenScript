@@ -43,7 +43,7 @@ local ActiveSpeedBoost,ActiveAutoUseCoinFlip,ActiveEspSurvivors,ActiveNoStun,Act
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.29",
+   Content = "V.0.30",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -312,9 +312,7 @@ for _,Players in pairs(Game.Workspace.Players.Survivors:GetChildren()) do
 if Players:isA("Model") then
 Game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = Players.HumanoidRootPart.CFrame
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
-local RemoteEvent = ReplicatedStorage.Modules.Network.RemoteEvent -- RemoteEvent 
-
+local RemoteEvent = ReplicatedStorage.Modules.Network.RemoteEvent
 RemoteEvent:FireServer(
     "UseActorAbility",
     "Slash"
@@ -379,8 +377,9 @@ end
 end,
 })
 local ValueFieldOfView = 80
+local OldFOV = Game.Players.LocalPlayer.PlayerData.Settings.Game.FieldOfView.Value
 local PlayerFieldOfViewSlider = PlayerTab:CreateSlider({
-   Name = "Field Of View (Coming Soon)",
+   Name = "Field Of View",
    Range = {80, 120},
    Increment = 1,
    Suffix = "FOV",
@@ -390,18 +389,18 @@ local PlayerFieldOfViewSlider = PlayerTab:CreateSlider({
 CurrentValue = Value
 ValueFieldOfView = Value
 end,  ValueFieldOfView = CurrentValue,
-}) local ActiveModifiedFieldOfView = false local PlayerActiveModifyingFOVToggle = PlayerTab:CreateToggle({
-   Name = "Active Modifying Player FOV(i will upgrade this function it work but the game reput the normal fov!)",
+})
+local ActiveModifiedFieldOfView = false local PlayerActiveModifyingFOVToggle = PlayerTab:CreateToggle({
+   Name = "Active Modifying Player FOV",
    CurrentValue = false,
    Flag = "ButtonFOV", 
    Callback = function(Value)
   ActiveModifiedFieldOfView = Value 
-task.spawn(function()
-while ActiveModifiedFieldOfView do 
-task.spawn(function()
-Game.Workspace.Camera.FieldOfView = ValueFieldOfView end)
-task.wait(0.1)
-end end)
+if ActiveModifiedFieldOfView then
+Game.Players.LocalPlayer.PlayerData.Settings.Game.FieldOfView.Value = ValueFieldOfView 
+else
+Game.Players.LocalPlayer.PlayerData.Settings.Game.FieldOfView.Value = OldFOV 
+end
 end,
 }) 
 local ActiveFullBright = false
