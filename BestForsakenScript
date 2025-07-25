@@ -43,7 +43,7 @@ local ActiveSpeedBoost,ActiveAutoUseCoinFlip,ActiveEspSurvivors,ActiveNoStun,Act
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.33",
+   Content = "V.0.34",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -171,7 +171,7 @@ end
 if Game.Workspace.Map.Ingame:FindFirstChild("Map") then
 for _,Players in pairs(Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildren()) do 
 if Players:isA("Tool") and Players.PrimaryPart and not Players:FindFirstChildOfClass("Highlight") and not Players.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
-KeepEsp(Players,Players.PrimaryPart)
+CreateEsp(Players,Color3.fromRGB(0,0,255),Players.Name,Players.PrimaryPart,2)
 end
 end
 end
