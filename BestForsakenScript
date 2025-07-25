@@ -43,7 +43,7 @@ local ActiveSpeedBoost,ActiveAutoUseCoinFlip,ActiveEspSurvivors,ActiveNoStun,Act
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.30",
+   Content = "V.0.31",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -251,17 +251,17 @@ end,
 }) 
 
 local PlayerActiveInfStaminaToggle = PlayerTab:CreateToggle({
-   Name = "Infinite Stamina(Don't work!)",
+   Name = "Infinite Stamina(Unverified!)",
    CurrentValue = false,
    Flag = "ButtonInfiniteStamina", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
   ActiveInfiniteStamina = Value task.spawn(function()
 while ActiveInfiniteStamina do task.spawn(function()
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local UnreliableRemoteEvent = ReplicatedStorage.Modules.Network.UnreliableRemoteEvent
-UnreliableRemoteEvent:FireServer("FootstepPlayed",100)
+local m = require(game.ReplicatedStorage.Systems.Character.Game.Sprinting)
+m.StaminaLossDisabled = true 
+m.Stamina = 9999999
 end)
-task.wait(0.00000001)
+task.wait(0.1)
 end end)
 end,
 })
