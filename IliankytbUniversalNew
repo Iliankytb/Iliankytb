@@ -45,7 +45,7 @@ local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "
 
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.35",
+   Content = "V.0.36",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -556,7 +556,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/m
 end,
 })
 local ButtonLoad99NightsInTheForestCheat = GameTab:CreateButton({
-   Name = "99 Nights in the forest Cheat Iliankytb(Coming Soon)",
+   Name = "99 Nights in the forest Cheat Iliankytb",
      Callback = function(Value)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Best99NightsInTheForest"))()
 end,
@@ -567,6 +567,12 @@ local ButtonLoadInfiniteYieldCheat = PlayerTab:CreateButton({
 loadstring(game:HttpGet(('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'),true))()
 end,
 })
+local ButtonLoadPiggyCheat = GameTab:CreateButton({
+   Name = "Piggy Cheat Iliankytb",
+     Callback = function(Value)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatPiggy"))()
+end,
+})
 local ButtonLoadBloxFruitCheat = GameTab:CreateButton({
    Name = "Blox Fruit Cheat Iliankytb(Coming Soon)",
      Callback = function(Value)
@@ -574,12 +580,6 @@ local ButtonLoadBloxFruitCheat = GameTab:CreateButton({
 end,
 })
 
-local ButtonLoadsecretCheat = GameTab:CreateButton({
-   Name = "Piggy Cheat Iliankytb(Coming Soon)",
-     Callback = function(Value)
---loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/BestRainbowFriendsTwo"))()
-end,
-})
 local ButtonLoadsecretCheat = GameTab:CreateButton({
    Name = "Pig 64 Cheat Iliankytb(Coming Soon)",
      Callback = function(Value)
