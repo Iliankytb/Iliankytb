@@ -41,7 +41,7 @@ local SettingsTab = Window:CreateTab("Settings")
 local ActiveSpeedBoost = false
 Rayfield:Notify({
    Title = "script Version",
-   Content = "V.0.7",
+   Content = "V.0.8",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -99,6 +99,18 @@ Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
     -0.916143656, 1.53890785e-08, 0.400850087
 )
 end
+end)
+end,
+})
+local GameFinishJumpRope = GameTab:CreateButton({
+   Name = "Finish Jump Rope",
+   Callback = function(Value) 
+task.spawn(function()
+--if Game.Workspace:FindFirstChild("RedLightGreenLight") then
+Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
+ 745.475525, 197.143631, 932.038086, -0.321652174, -0.000133810085, 0.94685787, 5.46438678e-05, 1, 0.000159882911, -0.94685787, 0.000103166662, -0.321652174
+)
+--end
 end)
 end,
 })
