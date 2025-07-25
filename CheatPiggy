@@ -1,11 +1,11 @@
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
-
+local selectedTheme = "Default"
 local Window = Rayfield:CreateWindow({
    Name = "Piggy - Script By Iliankytb",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
    LoadingTitle = "Piggy",
    LoadingSubtitle = "Script By Iliankytb",
-   Theme = "Default", -- Check https://docs.sirius.menu/rayfield/configuration/themes
+   Theme = selectedTheme, -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
    DisableRayfieldPrompts = false,
    DisableBuildWarnings = false, -- Prevents Rayfield from warning when the script has a version mismatch with the interface
@@ -37,7 +37,7 @@ local PlayerTab = Window:CreateTab("Player")
 local EspTab = Window:CreateTab("Esp")
 local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
-local ActiveSpeedBoost,ActiveEspMonster,ActiveEspItems = false,false,false
+local ActiveSpeedBoost,ActiveEspBot,ActiveEspItems = false,false,false
 
 Rayfield:Notify({
    Title = "Cheat Version",
