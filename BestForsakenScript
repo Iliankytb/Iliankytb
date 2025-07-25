@@ -43,7 +43,7 @@ local ActiveSpeedBoost,ActiveAutoUseCoinFlip,ActiveEspSurvivors,ActiveNoStun,Act
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.31",
+   Content = "V.0.32",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -251,18 +251,25 @@ end,
 }) 
 
 local PlayerActiveInfStaminaToggle = PlayerTab:CreateToggle({
-   Name = "Infinite Stamina(Unverified!)",
+   Name = "Infinite Stamina(Don't work on solara and xeno,verified on Krnl!)",
    CurrentValue = false,
    Flag = "ButtonInfiniteStamina", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
   ActiveInfiniteStamina = Value task.spawn(function()
-while ActiveInfiniteStamina do task.spawn(function()
+while ActiveInfiniteStamina do 
+task.spawn(function()
 local m = require(game.ReplicatedStorage.Systems.Character.Game.Sprinting)
 m.StaminaLossDisabled = true 
 m.Stamina = 9999999
 end)
 task.wait(0.1)
-end end)
+end 
+task.spawn(function()
+local m = require(game.ReplicatedStorage.Systems.Character.Game.Sprinting)
+m.StaminaLossDisabled = false 
+m.Stamina = 100
+end)
+end)
 end,
 })
 local PlayerNoStunToggle = PlayerTab:CreateToggle({
