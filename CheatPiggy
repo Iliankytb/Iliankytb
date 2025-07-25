@@ -399,4 +399,34 @@ local ButtonUnloadCheat = SettingsTab:CreateButton({
   Rayfield:Destroy()
 end,
 })
+local ActiveEspDistanceToggle = SettingsTab:CreateToggle({
+   Name = "Active Distance for esp",
+   CurrentValue = false,
+   Flag = "EspDistance",
+   Callback = function(Value)
+  ActiveDistanceEsp = Value 
+end,
+})
+local Themes = {
+   ["Default"] = "Default",
+   ["Amber Glow"] = "AmberGlow",
+   ["Amethyst"] = "Amethyst",
+   ["Bloom"] = "Bloom",
+   ["Dark Blue"] = "DarkBlue",
+   ["Green"] = "Green",
+   ["Light"] = "Light",
+   ["Ocean"] = "Ocean",
+   ["Serenity"] = "Serenity"
+}
+
+local Dropdown = SettingsTab:CreateDropdown({
+   Name = "Change Theme",
+   Options = {"Default", "Amber Glow", "Amethyst", "Bloom", "Dark Blue", "Green", "Light", "Ocean", "Serenity"},
+   CurrentOption = selectedTheme,  -- pour afficher ce qui est réellement chargé
+   Flag = "ThemeSelection",
+   Callback = function(Selected)
+      local ident = Themes[Selected[1]]
+      Window.ModifyTheme(ident)  -- <— Applique le thème en direct
+   end, 
+})
 Rayfield:LoadConfiguration()
