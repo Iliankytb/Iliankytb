@@ -43,7 +43,7 @@ local ActiveSpeedBoost,ActiveAutoUseCoinFlip,ActiveEspSurvivors,ActiveNoStun,Act
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.35",
+   Content = "V.0.36",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -91,7 +91,7 @@ local EspSurvivorsToggle = EspTab:CreateToggle({
 while ActiveEspSurvivors do task.spawn(function()
 for _,Players in pairs(Game.Workspace.Players.Survivors:GetChildren()) do 
 if Players:isA("Model") and Players:FindFirstChild("Head") and not Players:FindFirstChildOfClass("Highlight") and not Players.Head:FindFirstChildOfClass("BillboardGui") then
-CreateEsp(Players,Color3.fromRGB(0,255,0),Players.Name,Players.Head,2)
+CreateEsp(Players,Color3.fromRGB(0,255,0),Players.Name.." ("..Players:GetAttribute("Username")..")",Players.Head,2)
 end
 end
 end)
@@ -117,7 +117,7 @@ if Players:isA("Model") and (Players.Name == "1x1x1x1" or Players.Name == "Jason
 Players:FindFirstChildOfClass("Highlight"):Destroy()
 end
 if Players:isA("Model") and Players:FindFirstChild("Head") and not Players:FindFirstChildOfClass("Highlight") and not Players.Head:FindFirstChildOfClass("BillboardGui") then
-CreateEsp(Players,Color3.fromRGB(255,0,0),Players.Name,Players.Head,2)
+CreateEsp(Players,Color3.fromRGB(255,0,0),Players.Name.." ("..Players:GetAttribute("Username")..")",Players.Head,2)
 end
 end
 end)
