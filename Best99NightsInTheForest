@@ -1,9 +1,10 @@
+
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local selectedTheme = "Default"
 local Window = Rayfield:CreateWindow({
-   Name = "Piggy - Script By Iliankytb",
+   Name = "99 Nights In The Forest - Script By Iliankytb",
    Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Piggy",
+   LoadingTitle = "99 Nights In The Forest",
    LoadingSubtitle = "Script By Iliankytb",
    Theme = selectedTheme, -- Check https://docs.sirius.menu/rayfield/configuration/themes
 
@@ -12,7 +13,7 @@ local Window = Rayfield:CreateWindow({
 
    ConfigurationSaving = {
       Enabled = true,
-      FolderName = "saver", -- Create a custom folder for your hub/game
+      FolderName = "SaverNITF", -- Create a custom folder for your hub/game
       FileName = "K"
    },
 
@@ -34,17 +35,20 @@ local Window = Rayfield:CreateWindow({
    }
 })
 local PlayerTab = Window:CreateTab("Player")
+local GameTab = Window:CreateTab("Game")
 local EspTab = Window:CreateTab("Esp")
+local BringItemTab = Window:CreateTab("Bring Item")
 local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
-local ActiveSpeedBoost,ActiveEspBot,ActiveEspItems,ActivateFly,AlrActivatedFlyPC = false,false,false,false,false
+local ActiveEspItems,ActiveDistanceEsp,ActiveEspEnemy,ActiveEspChildren,ActiveEspPeltTrader = false,false,false,false,false
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.1",
+   Content = "V.0.2",
    Duration = 2.5,
    Image = "rewind",
 })
+
 
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
@@ -304,6 +308,7 @@ local function KeepEsp(Char,Parent)
 		Parent:FindFirstChildOfClass("BillboardGui"):Destroy()
 	end
 end
+
 local function copyToClipboard(text)
     if setclipboard then
         setclipboard(text)
@@ -318,10 +323,450 @@ copyToClipboard("https://discord.gg/E2TqYRsRP4")
 end,
 })
 
+local EspItemsToggle = EspTab:CreateToggle({
+   Name = "Items Esp",
+   CurrentValue = false,
+   Flag = "EspItems",
+   Callback = function(Value)
+  ActiveEspItems = Value 
+task.spawn(function()
+while ActiveEspItems do 
+task.spawn(function()
+ for _,Obj in pairs(Game.Workspace.Items:GetChildren()) do 
+if Obj:isA("Model") and Obj.PrimaryPart and not Obj:FindFirstChildOfClass("Highlight") and not Obj.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+CreateEsp(Obj,Color3.fromRGB(255,255,0),Obj.Name,Obj.PrimaryPart) 
+end 
+end
+end)
+task.wait(0.1)
+end task.spawn(function()
+ for _,Obj in pairs(Game.Workspace.Items:GetChildren()) do 
+if Obj:isA("Model") and Obj.PrimaryPart and  Obj:FindFirstChildOfClass("Highlight") and Obj.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+KeepEsp(Obj,Obj.PrimaryPart)
+end 
+end
+end)
+end)
+end,
+})
+local EspEnemyToggle = EspTab:CreateToggle({
+   Name = "Enemy Esp",
+   CurrentValue = false,
+   Flag = "EspEnemy",
+   Callback = function(Value)
+  ActiveEspEnemy = Value 
+task.spawn(function()
+while ActiveEspEnemy do 
+task.spawn(function()
+ for _,Obj in pairs(Game.Workspace.Characters:GetChildren()) do 
+if Obj:isA("Model") and Obj.PrimaryPart and (Obj.Name ~= "Lost Child" or Obj.Name ~= "Lost Child2" or Obj.Name ~= "Lost Child3" or Obj.Name ~= "Lost Child4" or Obj.Name ~= "Pelt Trader") and not Obj:FindFirstChildOfClass("Highlight") and not Obj.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+CreateEsp(Obj,Color3.fromRGB(255,0,0),Obj.Name,Obj.PrimaryPart) 
+end 
+end
+end)
+task.wait(0.1)
+end task.spawn(function()
+ for _,Obj in pairs(Game.Workspace.Characters:GetChildren()) do 
+if Obj:isA("Model") and Obj.PrimaryPart and (Obj.Name ~= "Lost Child" or Obj.Name ~= "Lost Child2" or Obj.Name ~= "Lost Child3" or Obj.Name ~= "Lost Child4" or Obj.Name ~= "Pelt Trader") and Obj:FindFirstChildOfClass("Highlight") and Obj.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+KeepEsp(Obj,Obj.PrimaryPart)
+end 
+end
+end)
+end)
+end,
+})
+local EspChildrensToggle = EspTab:CreateToggle({
+   Name = "Childrens Esp",
+   CurrentValue = false,
+   Flag = "EspChildrens",
+   Callback = function(Value)
+  ActiveEspChildren = Value 
+task.spawn(function()
+while ActiveEspChildren do 
+task.spawn(function()
+ for _,Obj in pairs(Game.Workspace.Characters:GetChildren()) do 
+if Obj:isA("Model") and Obj.PrimaryPart and (Obj.Name == "Lost Child" or Obj.Name == "Lost Child2" or Obj.Name == "Lost Child3" or Obj.Name == "Lost Child4") and not Obj:FindFirstChildOfClass("Highlight") and not Obj.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+CreateEsp(Obj,Color3.fromRGB(0,255,0),Obj.Name,Obj.PrimaryPart) 
+end 
+end
+end)
+task.wait(0.1)
+end task.spawn(function()
+ for _,Obj in pairs(Game.Workspace.Characters:GetChildren()) do 
+if Obj:isA("Model") and Obj.PrimaryPart and (Obj.Name == "Lost Child" or Obj.Name == "Lost Child2" or Obj.Name == "Lost Child3" or Obj.Name == "Lost Child4") and Obj:FindFirstChildOfClass("Highlight") and Obj.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+KeepEsp(Obj,Obj.PrimaryPart)
+end 
+end
+end)
+end)
+end,
+})
+local EspPeltTraderToggle = EspTab:CreateToggle({
+   Name = "Pelt Trader Esp",
+   CurrentValue = false,
+   Flag = "EspPeltTrader",
+   Callback = function(Value)
+  ActiveEspPeltTrader = Value 
+task.spawn(function()
+while ActiveEspPeltTrader do 
+task.spawn(function()
+ for _,Obj in pairs(Game.Workspace.Characters:GetChildren()) do 
+if Obj:isA("Model") and Obj.PrimaryPart and Obj.Name == "Pelt Trader" and not Obj:FindFirstChildOfClass("Highlight") and not Obj.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+CreateEsp(Obj,Color3.fromRGB(0,255,255),Obj.Name,Obj.PrimaryPart) 
+end 
+end
+end)
+task.wait(0.1)
+end task.spawn(function()
+ for _,Obj in pairs(Game.Workspace.Characters:GetChildren()) do 
+if Obj:isA("Model") and Obj.PrimaryPart and Obj.Name == "Pelt Trader" and Obj:FindFirstChildOfClass("Highlight") and Obj.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+KeepEsp(Obj,Obj.PrimaryPart)
+end 
+end
+end)
+end)
+end,
+})
+local ButtonBringAllItems = BringItemTab:CreateButton({
+   Name = "Bring All Items",
+   Callback = function(Value)
+task.spawn(function()
+for _, Obj in pairs(game.workspace.Items:GetChildren()) do
+wait(0.1)
+if Obj:isA("Model") and Obj.PrimaryPart then 
+Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+end    
+end
+end)
+end,
+})
+local ButtonBringAllLogs = BringItemTab:CreateButton({
+   Name = "Bring All Logs",
+   Callback = function(Value)
+task.spawn(function()
+for _, Obj in pairs(game.workspace.Items:GetChildren()) do
+wait(0.1)
+if Obj.Name == "Log" and Obj:isA("Model") and Obj.PrimaryPart then 
+Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+end    
+end
+end)
+end,
+})
+local ButtonBringAllCoal = BringItemTab:CreateButton({
+   Name = "Bring All Coal",
+   Callback = function(Value)
+task.spawn(function()
+for _, Obj in pairs(game.workspace.Items:GetChildren()) do
+wait(0.1)
+if Obj.Name == "Coal" and Obj:isA("Model") and Obj.PrimaryPart then 
+Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+end    
+end
+end)
+end,
+})
+local ButtonBringAllFuelCanister = BringItemTab:CreateButton({
+   Name = "Bring All Fuel Canister",
+   Callback = function(Value)
+task.spawn(function()
+for _, Obj in pairs(game.workspace.Items:GetChildren()) do
+wait(0.1)
+if Obj.Name == "Fuel Canister" and Obj:isA("Model") and Obj.PrimaryPart then 
+Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+end    
+end
+end)
+end,
+})
+local ButtonBringAllCarrot = BringItemTab:CreateButton({
+   Name = "Bring All Carrot",
+   Callback = function(Value)
+task.spawn(function()
+for _, Obj in pairs(game.workspace.Items:GetChildren()) do
+wait(0.1)
+if Obj.Name == "Carrot" and Obj:isA("Model") and Obj.PrimaryPart then 
+Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+end    
+end
+end)
+end,
+})
+local ButtonBringAllFuel = BringItemTab:CreateButton({
+   Name = "Bring All Fuel",
+   Callback = function(Value)
+task.spawn(function()
+for _, Obj in pairs(game.workspace.Items:GetChildren()) do
+wait(0.1)
+if (Obj.Name == "Log" or Obj.Name == "Fuel Canister" or Obj.Name == "Coal" or Obj.Name == "Oil Barrel") and Obj:isA("Model") and Obj.PrimaryPart then 
+Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+end    
+end
+end)
+end,
+})
+local ButtonBringAllScraps = BringItemTab:CreateButton({
+   Name = "Bring All Scraps",
+   Callback = function(Value)
+task.spawn(function()
+for _, Obj in pairs(game.workspace.Items:GetChildren()) do
+wait(0.1)
+if (Obj.Name == "Tyre" or Obj.Name == "Sheet Metal" or Obj.Name == "Broken Fan" or Obj.Name == "Bolt" or Obj.Name == "Old Radio" or Obj.Name == "UFO Junk" or Obj.Name == "UFO Scrap" or Obj.Name == "Broken Microwave") and Obj:isA("Model") and Obj.PrimaryPart then 
+Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+end    
+end
+end)
+end,
+})
+local ButtonBringAllAmmo = BringItemTab:CreateButton({
+   Name = "Bring All Ammo",
+   Callback = function(Value)
+task.spawn(function()
+for _, Obj in pairs(game.workspace.Items:GetChildren()) do
+wait(0.1)
+if (Obj.Name == "Rifle Ammo" or Obj.Name == "Revolver Ammo") and Obj:isA("Model") and Obj.PrimaryPart then 
+Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+end    
+end
+end)
+end,
+})
+local ButtonBringAllGuns = BringItemTab:CreateButton({
+   Name = "Bring All Guns",
+   Callback = function(Value)
+task.spawn(function()
+for _, Obj in pairs(game.workspace.Items:GetChildren()) do
+wait(0.1)
+if (Obj.Name == "Rifle" or Obj.Name == "Revolver") and Obj:isA("Model") and Obj.PrimaryPart then 
+Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+end    
+end
+end)
+end,
+})
+local ButtonBringAllChildren = BringItemTab:CreateButton({
+   Name = "Bring All Children",
+   Callback = function(Value)
+task.spawn(function()
+for _, Obj in pairs(game.workspace.Characters:GetChildren()) do
+wait(0.1)
+if (Obj.Name == "Lost Child" or Obj.Name == "Lost Child2" or Obj.Name == "Lost Child3" or Obj.Name == "Lost Child4" ) and Obj:isA("Model") and Obj.PrimaryPart then 
+Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+end    
+end
+end)
+end,
+})
+local ButtonBringAllFoods = BringItemTab:CreateButton({
+   Name = "Bring All Foods",
+   Callback = function(Value)
+task.spawn(function()
+for _, Obj in pairs(game.workspace.Items:GetChildren()) do
+wait(0.1)
+if (Obj.Name == "Cake" or Obj.Name == "Carrot" or Obj.Name == "Morsel" or Obj.Name == "Meat? Sandwich") and Obj:isA("Model") and Obj.PrimaryPart then 
+Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+end    
+end
+end)
+end,
+})
+local ButtonBringAllBody = BringItemTab:CreateButton({
+   Name = "Bring All Body",
+   Callback = function(Value)
+task.spawn(function()
+for _, Obj in pairs(game.workspace.Items:GetChildren()) do
+wait(0.1)
+if (Obj.Name == "Leather Body" or Obj.Name == "Iron Body") and Obj:isA("Model") and Obj.PrimaryPart then 
+Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+end    
+end
+end)
+end,
+})
+local ButtonBringAllBandage = BringItemTab:CreateButton({
+   Name = "Bring All Bandage",
+   Callback = function(Value)
+task.spawn(function()
+for _, Obj in pairs(game.workspace.Items:GetChildren()) do
+wait(0.1)
+if Obj.Name == "Bandage" and Obj:isA("Model") and Obj.PrimaryPart then 
+Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+end    
+end
+end)
+end,
+})
+local ButtonBringAllMedkit = BringItemTab:CreateButton({
+   Name = "Bring All Medkit",
+   Callback = function(Value)
+task.spawn(function()
+for _, Obj in pairs(game.workspace.Items:GetChildren()) do
+wait(0.1)
+if Obj.Name == "MedKit" and Obj:isA("Model") and Obj.PrimaryPart then 
+Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+end    
+end
+end)
+end,
+})
+local ButtonBringAllCoins = BringItemTab:CreateButton({
+   Name = "Bring All Coins",
+   Callback = function(Value)
+task.spawn(function()
+for _, Obj in pairs(game.workspace.Items:GetChildren()) do
+wait(0.1)
+if Obj.Name == "Coin Stack" and Obj:isA("Model") and Obj.PrimaryPart then 
+Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+end    
+end
+end)
+end,
+})
+local ButtonBringAllOldRadio = BringItemTab:CreateButton({
+   Name = "Bring All Old Radio",
+   Callback = function(Value)
+task.spawn(function()
+for _, Obj in pairs(game.workspace.Items:GetChildren()) do
+wait(0.1)
+if Obj.Name == "Old Radio" and Obj:isA("Model") and Obj.PrimaryPart then 
+Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+end    
+end
+end)
+end,
+})
+local ButtonBringAllTyre = BringItemTab:CreateButton({
+   Name = "Bring All Tyre",
+   Callback = function(Value)
+task.spawn(function()
+for _, Obj in pairs(game.workspace.Items:GetChildren()) do
+wait(0.1)
+if Obj.Name == "Tyre" and Obj:isA("Model") and Obj.PrimaryPart then 
+Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+end    
+end
+end)
+end,
+})
+local ButtonBringAllBrokenFan = BringItemTab:CreateButton({
+   Name = "Bring All Broken Fan",
+   Callback = function(Value)
+task.spawn(function()
+for _, Obj in pairs(game.workspace.Items:GetChildren()) do
+wait(0.1)
+if Obj.Name == "Broken Fan" and Obj:isA("Model") and Obj.PrimaryPart then 
+Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+end    
+end
+end)
+end,
+})
+local ButtonBringAllBrokenMicrowave = BringItemTab:CreateButton({
+   Name = "Bring All Broken Microwave",
+   Callback = function(Value)
+task.spawn(function()
+for _, Obj in pairs(game.workspace.Items:GetChildren()) do
+wait(0.1)
+if Obj.Name == "Broken Microwave" and Obj:isA("Model") and Obj.PrimaryPart then 
+Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+end    
+end
+end)
+end,
+})
+local ButtonBringAllBolt = BringItemTab:CreateButton({
+   Name = "Bring All Bolt",
+   Callback = function(Value)
+task.spawn(function()
+for _, Obj in pairs(game.workspace.Items:GetChildren()) do
+wait(0.1)
+if Obj.Name == "Bolt" and Obj:isA("Model") and Obj.PrimaryPart then 
+Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+end    
+end
+end)
+end,
+})
+local ButtonBringAllBrokenMicrowave = BringItemTab:CreateButton({
+   Name = "Bring All Broken Microwave",
+   Callback = function(Value)
+task.spawn(function()
+for _, Obj in pairs(game.workspace.Items:GetChildren()) do
+wait(0.1)
+if Obj.Name == "Broken Microwave" and Obj:isA("Model") and Obj.PrimaryPart then 
+Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+end    
+end
+end)
+end,
+})
+local ButtonBringAllSheetMetal = BringItemTab:CreateButton({
+   Name = "Bring All Sheet Metal",
+   Callback = function(Value)
+task.spawn(function()
+for _, Obj in pairs(game.workspace.Items:GetChildren()) do
+wait(0.1)
+if Obj.Name == "Sheet Metal" and Obj:isA("Model") and Obj.PrimaryPart then 
+Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+end    
+end
+end)
+end,
+})
+local ButtonBringAllSeedBox = BringItemTab:CreateButton({
+   Name = "Bring All SeedBox",
+   Callback = function(Value)
+task.spawn(function()
+for _, Obj in pairs(game.workspace.Items:GetChildren()) do
+wait(0.1)
+if Obj.Name == "Seed Box" and Obj:isA("Model") and Obj.PrimaryPart then 
+Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+end    
+end
+end)
+end,
+})
+local ButtonBringAllChair = BringItemTab:CreateButton({
+   Name = "Bring All Chair",
+   Callback = function(Value)
+task.spawn(function()
+for _, Obj in pairs(game.workspace.Items:GetChildren()) do
+wait(0.1)
+if Obj.Name == "Chair" and Obj:isA("Model") and Obj.PrimaryPart then 
+Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+end    
+end
+end)
+end,
+})
+local TextBoxText = ""
+local TextboxBringNameItem = Tab:CreateInput({
+   Name = "TextBox",
+   CurrentValue = "",
+   PlaceholderText = "Put a name only 1 for bring it on you(use the esp for the name)",
+   RemoveTextAfterFocusLost = false,
+   Flag = "Textbox1",
+   Callback = function(Text)
+  TextBoxText = Text
+   end,
+})
+local ButtonBringAllThingsNamedInTextBox = BringItemTab:CreateButton({
+   Name = "Bring All the item with the name you choosed",
+   Callback = function(Value)
+task.spawn(function()
+for _, Obj in pairs(game.workspace.Items:GetChildren()) do
+wait(0.1)
+if Obj.Name == TextBoxText and Obj:isA("Model") and Obj.PrimaryPart then 
+Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
+end    
+end
+end)
+end,
+})
 local ValueSpeed = 16
 local PlayerSpeedSlider = PlayerTab:CreateSlider({
-   Name = "Player Speed(max 21 for not be a exploiter) ",
-   Range = {0, 21},
+   Name = "Player Speed",
+   Range = {0, 500},
    Increment = 1,
    Suffix = "Speeds",
    CurrentValue = 16,
@@ -331,7 +776,6 @@ CurrentValue = Value
 ValueSpeed = Value
 end,  ValueSpeed = CurrentValue,
 })
-
 local PlayerActiveModifyingSpeedToggle = PlayerTab:CreateToggle({
    Name = "Active Modifying Player Speed",
    CurrentValue = false,
@@ -342,105 +786,6 @@ while ActiveSpeedBoost do
 Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = ValueSpeed
 task.wait(0.1)
 end end)
-end,
-})
-local PlayerFlySpeedSlider = PlayerTab:CreateSlider({
-   Name = "Fly Speed(Recommended to put 1 or below 5!)",
-   Range = {0, 10},
-   Increment = 0.1,
-   Suffix = "Fly Speed",
-   CurrentValue = 1,
-   Flag = "Slider2", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-   Callback = function(Value)
-CurrentValue = Value
-iyflyspeed = Value
-end,  iyflyspeed = CurrentValue,
-})
-
-local PlayerFlyToggle = PlayerTab:CreateToggle({
-   Name = "Fly",
-   CurrentValue = false,
-   Flag = "ButtonFly", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-   Callback = function(Value)
-  ActivateFly = Value 
-task.spawn(function()
-if not FLYING and ActivateFly then
-			if UserInputService.TouchEnabled then
-				MobileFly()
-			else
-task.spawn(function()
-if not AlrActivatedFlyPC then 
-AlrActivatedFlyPC = true
-Rayfield:Notify({
-   Title = "Fly",
-   Content = "When you enable to fly you can press F to fly/unfly (it won't disable the button!)",
-   Duration = 5,
-   Image = "rewind",
-})
-end
-end)
-				NOFLY()
-				wait()
-				sFLY()
-			end
-		elseif FLYING and not ActivateFly then
-			if UserInputService.TouchEnabled then
-				UnMobileFly()
-			else
-				NOFLY()
-			end
-		end
-end)
-end,
-})
-UserInputService.InputBegan:Connect(function(input, processed)
-	if processed then return end
-	if input.KeyCode == Enum.KeyCode.F then
-		if not FLYING and ActivateFly then
-			if UserInputService.TouchEnabled then
-				MobileFly()
-			else
-				NOFLY()
-				wait()
-				sFLY()
-			end
-		elseif FLYING and ActivateFly then
-			if UserInputService.TouchEnabled then
-				UnMobileFly()
-			else
-				NOFLY()
-			end
-		end
-	end
-end)
-local EspItemsToggle = EspTab:CreateToggle({
-   Name = "Items Esp",
-   CurrentValue = false,
-   Flag = "EspItems",
-   Callback = function(Value)
-  ActiveEspItems = Value 
-
-while ActiveEspItems do 
-    for _, Folder in pairs(Game.Workspace:GetChildren()) do
-        if Folder:isA("Folder") and (not Folder:FindFirstChild("PeppaSpawn") and not Folder:FindFirstChild("PiggySpawn") and not Folder:FindFirstChild("ResetSpawn"))  then
-        for _,Obj in pairs(Folder:GetChildren()) do 
-if Obj:isA("BasePart") and not Obj:FindFirstChildOfClass("Highlight") and not Obj:FindFirstChildOfClass("BillboardGui") then
-CreateEsp(Obj,Obj.Color,Obj.Name,Obj) 
-end 
-end
-        end
-        end 
-wait(0.1)
-end
-   for _, Folder in pairs(Game.Workspace:GetChildren()) do
-        if Folder:isA("Folder") and (not Folder:FindFirstChild("PeppaSpawn") and not Folder:FindFirstChild("PiggySpawn") and not Folder:FindFirstChild("ResetSpawn"))  then
-        for _,Obj in pairs(Folder:GetChildren()) do 
-if Obj:isA("BasePart") and Obj:FindFirstChildOfClass("Highlight") and Obj:FindFirstChildOfClass("BillboardGui") then
-KeepEsp(Obj,Obj) 
-end 
-end
-        end
-        end 
 end,
 })
 local ButtonUnloadCheat = SettingsTab:CreateButton({
