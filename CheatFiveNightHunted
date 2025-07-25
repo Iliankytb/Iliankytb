@@ -36,7 +36,7 @@ local Window = Rayfield:CreateWindow({
 })
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.13",
+   Content = "V.0.14",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -46,7 +46,7 @@ local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings", "rewind")
 
 
-local EspPlayers,EspComputer,Esplocker,EspBallPit,ActiveSpeedBoost,ActivateFly,AlrActivatedFlyPC,ActiveDistanceEsp = false,false,false,false,false,false,false,false
+local EspPlayers,EspComputer,Esplocker,EspBallPit,ActiveSpeedBoost,ActivateFly,AlrActivatedFlyPC,ActiveDistanceEsp,ComputerProgress = false,false,false,false,false,false,false,false,false
 
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
@@ -239,7 +239,7 @@ local function MobileFly()
 	end)
 end
 
-local function CreateEsp(Char, Color, Text,Parent,number)
+local function CreateEsp(Char, Color, Text,Parent,number,computer)
 	if not Char then return end
 	if Char:FindFirstChild("ESP") and Char:FindFirstChildOfClass("Highlight") then return end
 	local highlight = Char:FindFirstChildOfClass("Highlight") or Instance.new("Highlight")
@@ -285,7 +285,19 @@ while highlight and billboard and Parent and Parent.Parent do
 	if cameraPosition and Parent and Parent:IsA("BasePart") then
 	local distance = (cameraPosition - Parent.Position).Magnitude
 				task.spawn(function()
-if ActiveDistanceEsp then
+if ActiveDistanceEsp and not ComputerProgress then
+label.Text = Text.." ("..math.floor(distance + 0.5).." m)"
+elseif ComputerProgress and ActiveDistanceEsp and computer then
+local rawProgress = Char:GetAttribute("Progress") or 0
+local maxProgress = 150
+local percentProgress = math.clamp((rawProgress / maxProgress) * 100, 0, 100)
+label.Text = Text.." ("..math.floor(distance + 0.5).." m)" .. string.format("%.0f", percentProgress) .. "%"
+elseif ComputerProgress and not ActiveDistanceEsp and computer then
+local rawProgress = Char:GetAttribute("Progress") or 0
+local maxProgress = 150
+local percentProgress = math.clamp((rawProgress / maxProgress) * 100, 0, 100)
+label.Text = Text .. string.format("%.0f", percentProgress) .. "%"
+elseif ComputerProgress and ActiveDistanceEsp and not computer then
 label.Text = Text.." ("..math.floor(distance + 0.5).." m)"
 else
 label.Text = Text
@@ -405,7 +417,7 @@ if Folders:FindFirstChild("Map") then
 if Folders:FindFirstChild("Map"):FindFirstChild("Tasks") then
 for _,Computers in pairs(Folders:FindFirstChild("Map"):FindFirstChild("Tasks"):GetChildren()) do
 if Computers:FindFirstChild("Meshes/t_Cube") and Computers:isA("Model") and not Computers:FindFirstChildOfClass("Highlight") and not Computers:FindFirstChild("Meshes/t_Cube"):FindFirstChildOfClass("BillboardGui") then
-CreateEsp(Computers,Color3.fromRGB(255,165,0),"Computer",Computers:FindFirstChild("Meshes/t_Cube"))
+CreateEsp(Computers,Color3.fromRGB(255,165,0),"Computer",Computers:FindFirstChild("Meshes/t_Cube"),true)
 end end end end
 end
 end
@@ -539,6 +551,22 @@ local ButtonUnloadCheat = SettingsTab:CreateButton({
    Name = "Unload Cheat",
    Callback = function()
   Rayfield:Destroy()
+end,
+})
+local ActiveDistanceForEsp = SettingsTab:CreateToggle({
+   Name = "Distane For Esp",
+   CurrentValue = false,
+   Flag = "ButtonDistanceForEsp"
+   Callback = function(Value)
+  ActiveDistanceEsp = Value 
+end,
+})
+local ActiveComputerProgressBar = SettingsTab:CreateToggle({
+   Name = "Active View Computer Progress Bar For Computer Esp",
+   CurrentValue = false,
+   Flag = "ButtonComputerProgressBar"
+   Callback = function(Value)
+  ComputerProgress = Value 
 end,
 })
 local Themes = {
