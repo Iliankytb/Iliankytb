@@ -37,7 +37,7 @@ local PlayerTab = Window:CreateTab("Player")
 local EspTab = Window:CreateTab("Esp")
 local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
-local ActiveSpeedBoost,ActiveEspBot,ActiveEspItems = false,false,false
+local ActiveSpeedBoost,ActiveEspBot,ActiveEspItems,ActivateFly,AlrActivatedFlyPC = false,false,false,false,false
 
 Rayfield:Notify({
    Title = "Cheat Version",
@@ -393,6 +393,26 @@ end)
 end)
 end,
 })
+UserInputService.InputBegan:Connect(function(input, processed)
+	if processed then return end
+	if input.KeyCode == Enum.KeyCode.F then
+		if not FLYING and ActivateFly then
+			if UserInputService.TouchEnabled then
+				MobileFly()
+			else
+				NOFLY()
+				wait()
+				sFLY()
+			end
+		elseif FLYING and ActivateFly then
+			if UserInputService.TouchEnabled then
+				UnMobileFly()
+			else
+				NOFLY()
+			end
+		end
+	end
+end)
 local ButtonUnloadCheat = SettingsTab:CreateButton({
    Name = "Unload Cheat",
    Callback = function()
