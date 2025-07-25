@@ -13,7 +13,7 @@ local Window = Rayfield:CreateWindow({
 
    ConfigurationSaving = {
       Enabled = true,
-      FolderName = "saver", -- Create a custom folder for your hub/game
+      FolderName = "SaverDoors", -- Create a custom folder for your hub/game
       FileName = "K"
    },
 
@@ -46,7 +46,7 @@ local LimitRangerEsp = 100
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.56",
+   Content = "V.0.57",
    Duration = 2.5,
    Image = "rewind",
 })
