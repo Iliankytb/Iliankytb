@@ -36,7 +36,7 @@ local Window = Rayfield:CreateWindow({
 })
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.21",
+   Content = "V.0.22",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -392,19 +392,52 @@ local EspPlayerToggle = EspTab:CreateToggle({
    Callback = function(Value)
   EspPlayers = Value task.spawn(function()
 while EspPlayers do
-for _,Players in pairs(Game:GetService("Players"):GetPlayers()) do 
-if Players.Character and (Players.Character:FindFirstChild("Head") or Players.Character.PrimaryPart) and Players:isA("Player") and not Players.Character:FindFirstChildOfClass("Highlight") and (not Players.Character:FindFirstChild("Head"):FindFirstChildOfClass("BillboardGui") or not Players.Character.PrimaryPart:FindFirstChildOfClass("BillboardGui")) then
-local Prim = Players.Character:FindFirstChild("Head") or Players.Character:FindFirstChild("RootPart")
-CreateEsp(Players.Character,Color3.fromRGB(255,0,0),Players.Name,Prim)
+for _, player in pairs(game:GetService("Players"):GetPlayers()) do
+	local character = player.Character
+	if character and (character:FindFirstChild("Head") or character.PrimaryPart) and not character:FindFirstChildOfClass("Highlight") then
+		local head = character:FindFirstChild("Head")
+		local primary = character.PrimaryPart
+		local hasBillboard = false
+
+		if head and not head:FindFirstChildOfClass("BillboardGui") then
+			hasBillboard = true
+		elseif primary and not primary:FindFirstChildOfClass("BillboardGui") then
+			hasBillboard = true
+		end
+
+		if hasBillboard then
+			local prim = head or character:FindFirstChild("RootPart") or primary
+			if prim then
+				CreateEsp(character, Color3.fromRGB(255, 0, 0), player.Name, prim)
+			end
+		end
+	end
 end
-end
+
 task.wait(0.1)
 end
-for _,Players in pairs(Game:GetService("Players"):GetPlayers()) do 
-if Players.Character and (Players.Character:FindFirstChild("Head") or Players.Character.PrimaryPart) and Players:isA("Player") and Players.Character:FindFirstChildOfClass("Highlight") and (Players.Character:FindFirstChild("Head"):FindFirstChildOfClass("BillboardGui") or Players.Character.PrimaryPart:FindFirstChildOfClass("BillboardGui")) then
-local Prim = Players.Character:FindFirstChild("Head") or Players.Character:FindFirstChild("RootPart")
-KeepEsp(Players.Character,Prim)
-end end end)
+for _, player in pairs(game:GetService("Players"):GetPlayers()) do
+	local character = player.Character
+	if character and (character:FindFirstChild("Head") or character.PrimaryPart) and not character:FindFirstChildOfClass("Highlight") then
+		local head = character:FindFirstChild("Head")
+		local primary = character.PrimaryPart
+		local hasBillboard = false
+
+		if head and head:FindFirstChildOfClass("BillboardGui") then
+			hasBillboard = true
+		elseif primary and primary:FindFirstChildOfClass("BillboardGui") then
+			hasBillboard = true
+		end
+
+		if hasBillboard then
+			local prim = head or character:FindFirstChild("RootPart") or primary
+			if prim then
+				KeepEsp(character, prim)
+			end
+		end
+	end
+end
+ end)
 end,
 })
 
