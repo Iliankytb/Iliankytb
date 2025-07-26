@@ -36,7 +36,7 @@ local Window = Rayfield:CreateWindow({
 })
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.20",
+   Content = "V.0.21",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -393,7 +393,7 @@ local EspPlayerToggle = EspTab:CreateToggle({
   EspPlayers = Value task.spawn(function()
 while EspPlayers do
 for _,Players in pairs(Game:GetService("Players"):GetPlayers()) do 
-if Players.Character and (Players.Character:FindFirstChild("Head") or Players.Character:FindFirstChild("RootPart")) and Players:isA("Player") and not Players.Character:FindFirstChildOfClass("Highlight") and (not Players.Character:FindFirstChild("Head"):FindFirstChildOfClass("BillboardGui") or not Players.Character:FindFirstChild("RootPart"):FindFirstChildOfClass("BillboardGui")) then
+if Players.Character and (Players.Character:FindFirstChild("Head") or Players.Character.PrimaryPart) and Players:isA("Player") and not Players.Character:FindFirstChildOfClass("Highlight") and (not Players.Character:FindFirstChild("Head"):FindFirstChildOfClass("BillboardGui") or not Players.Character.PrimaryPart:FindFirstChildOfClass("BillboardGui")) then
 local Prim = Players.Character:FindFirstChild("Head") or Players.Character:FindFirstChild("RootPart")
 CreateEsp(Players.Character,Color3.fromRGB(255,0,0),Players.Name,Prim)
 end
@@ -401,7 +401,7 @@ end
 task.wait(0.1)
 end
 for _,Players in pairs(Game:GetService("Players"):GetPlayers()) do 
-if Players.Character and (Players.Character:FindFirstChild("Head") or Players.Character:FindFirstChild("RootPart")) and Players:isA("Player") and Players.Character:FindFirstChildOfClass("Highlight") and (Players.Character:FindFirstChild("Head"):FindFirstChildOfClass("BillboardGui") or Players.Character:FindFirstChild("RootPart"):FindFirstChildOfClass("BillboardGui")) then
+if Players.Character and (Players.Character:FindFirstChild("Head") or Players.Character.PrimaryPart) and Players:isA("Player") and Players.Character:FindFirstChildOfClass("Highlight") and (Players.Character:FindFirstChild("Head"):FindFirstChildOfClass("BillboardGui") or Players.Character.PrimaryPart:FindFirstChildOfClass("BillboardGui")) then
 local Prim = Players.Character:FindFirstChild("Head") or Players.Character:FindFirstChild("RootPart")
 KeepEsp(Players.Character,Prim)
 end end end)
