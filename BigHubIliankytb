@@ -80,7 +80,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/m
 elseif PlaceService.PlaceId == PlaceId99NightsInTheForestGame then
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Best99NightsInTheForest"))()
 elseif PlaceService.PlaceId == PlaceIdPiggyGame then
-loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Best99NightsInTheForest"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/BestPiggy"))()
 else
  loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/IliankytbUniversalNew"))()   
 end
