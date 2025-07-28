@@ -127,6 +127,69 @@ Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
 end)
 end,
 })
+local GameTeleportToCamp4 = GameTab:CreateButton({
+   Name = "Teleport To Camp 4",
+   Callback = function(Value) 
+task.spawn(function()
+Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
+8991.0957, 601.370667, 59.1994514, -0.999373674, 0, 0.0353864804, 0, 1, 0, -0.0353864804, 0, -0.999373674
+)
+end)
+end,
+})
+local OldCFrame = nil
+local GameAutoGetManyBadges = GameTab:CreateButton({
+   Name = "Auto Get Many Badges",
+   Callback = function(Value) 
+task.spawn(function()
+OldCFrame = Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
+  -3688.32056, 233.330719, 271.26474, 0.710165381, 0, 0.704034865, 0, 1, 0, -0.704034865, 0, 0.710165381
+)
+wait(1.5)
+for _, Parts in pairs(Workspace:FindFirstChild("Badges%"):GetChildren()) do
+if Parts:isA("BasePart") and Parts.CFrame and Parts then
+    Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Parts.CFrame
+end
+wait(0.5)
+end
+wait(1.5)
+Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
+  1768.3324, 109.818718, -174.390442, -0.790706277, 0, -0.612195849, 0, 1, 0, 0.612195849, 0, -0.790706277
+)
+wait(1.5)
+for _, Parts in pairs(Workspace:FindFirstChild("Badges%"):GetChildren()) do
+if Parts:isA("BasePart") and Parts.CFrame and Parts then
+    Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Parts.CFrame
+end
+wait(0.5)
+end
+wait(1.5)
+Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
+  5853.9917, 325.368683, -0.225488514, 0.494506121, -0, -0.869174123, 0, 1, -0, 0.869174123, 0, 0.494506121
+)
+wait(1.5)
+for _, Parts in pairs(Workspace:FindFirstChild("Badges%"):GetChildren()) do
+if Parts:isA("BasePart") and Parts.CFrame and Parts then
+    Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Parts.CFrame
+end
+wait(0.5)
+end
+wait(1.5)
+Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
+ 8991.0957, 601.370667, 59.1994514, -0.999373674, 0, 0.0353864804, 0, 1, 0, -0.0353864804, 0, -0.999373674
+)
+wait(1.5)
+for _, Parts in pairs(Workspace:FindFirstChild("Badges%"):GetChildren()) do
+if Parts:isA("BasePart") and Parts.CFrame and Parts then
+    Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Parts.CFrame
+end
+wait(0.5)
+end
+Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = OldCFrame
+end)
+end,
+})
 local ButtonUnloadCheat = SettingsTab:CreateButton({
    Name = "Unload Cheat",
    Callback = function()
