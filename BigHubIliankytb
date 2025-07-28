@@ -22,8 +22,12 @@ local PlaceIdInkGame = 125009265613167
 local PlaceId99NightsInTheForestLobby = 79546208627805
 local PlaceId99NightsInTheForestGame = 126509999114328
 
+--Antarctic Expedition--
+local PlaceIdAntarcticExpedition = 2693023319
+
 --Piggy--
 local PlaceIdPiggyGame = 4623386862
+local PlaceIdPiggyGame2 = 5661005779
 
 --Evade--
 local PlaceIdEvadeMainGame = 9872472334
@@ -81,6 +85,10 @@ elseif PlaceService.PlaceId == PlaceId99NightsInTheForestGame then
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Best99NightsInTheForest"))()
 elseif PlaceService.PlaceId == PlaceIdPiggyGame then
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatPiggy"))()
+elseif PlaceService.PlaceId == PlaceIdPiggyGame2 then
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatPiggy"))()
+elseif PlaceService.PlaceId == PlaceIdAntarcticExpedition then
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/BestAntarticaExpedition"))()
 else
  loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/IliankytbUniversalNew"))()   
 end
