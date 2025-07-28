@@ -39,11 +39,11 @@ local PlayerTab = Window:CreateTab("Player")
 local EspTab = Window:CreateTab("Esp")
 local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
-local ActiveSpeedBoost,ActiveAutoUseCoinFlip,ActiveEspSurvivors,ActiveNoStun,ActiveEspKillers,ActiveEspGenerator,ActiveEspItems,ActiveInfiniteStamina,ActiveEspRagdolls,ActiveAutoGenerator,AutoKillSurvivors = false,false,false,false,false,false,false,false,false,false
+local ActiveSpeedBoost,ActiveAutoUseCoinFlip,ActiveEspSurvivors,ActiveNoStun,ActiveEspKillers,ActiveEspGenerator,ActiveEspItems,ActiveInfiniteStamina,ActiveEspRagdolls,ActiveAutoGenerator,AutoKillSurvivors,RemoveLags = false,false,false,false,false,false,false,false,false,false,false
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.37",
+   Content = "V.0.38",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -425,6 +425,56 @@ Game.Lighting.Ambient = Color3.fromRGB(255, 255, 255)
 end  
 wait(0.1) 
 end 
+end)
+end,  
+})
+local PlayerRemoveLag = PlayerTab:CreateToggle({
+   Name = "Remove Lag",
+   CurrentValue = false,
+   Flag = "RemoveLag",
+   Callback = function(Value)
+RemoveLags = Value
+task.spawn(function()
+while RemoveLags do
+for _, asset in pairs(workspace:GetDescendants()) do
+	if (asset:IsA("Part") or asset:IsA("MeshPart")) and asset.Transparency < 1 then
+		if not asset:GetAttribute("OldMaterial") then
+			asset:SetAttribute("OldMaterial",asset.Material.Name)
+		end
+
+		asset.Material = Enum.Material.SmoothPlastic
+
+		if asset:IsA("MeshPart") then
+			if asset.TextureID and asset.TextureID ~= "" and not asset:GetAttribute("OldTextureID") then
+				asset:SetAttribute("OldTextureID", asset.TextureID)
+				asset.TextureID = ""
+			end
+		end
+	end
+end
+wait(0.1) 
+end 
+for _, asset in pairs(workspace:GetDescendants()) do
+	if asset:IsA("Part") or asset:IsA("MeshPart") then
+		local oldMatName = asset:GetAttribute("OldMaterial")
+		if oldMatName then
+			for _, enumItem in ipairs(Enum.Material:GetEnumItems()) do
+				if enumItem.Name == oldMatName then
+					asset.Material = enumItem
+					break
+				end
+			end
+		end
+
+		if asset:IsA("MeshPart") then
+			local oldTex = asset:GetAttribute("OldTextureID")
+			if oldTex then
+				asset.TextureID = oldTex
+			end
+		end
+	end
+end
+
 end)
 end,  
 })
