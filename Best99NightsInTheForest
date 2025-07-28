@@ -43,7 +43,7 @@ local ActiveEspItems,ActiveDistanceEsp,ActiveEspEnemy,ActiveEspChildren,ActiveEs
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.10",
+   Content = "V.0.11",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -729,6 +729,7 @@ local TextboxBringNameItem = BringItemTab:CreateInput({
    Callback = function(Text)
   TextBoxText = Text
 isInTheMap = "no"
+HowManyItemCanShowUp = 0
 for _, Obj in pairs(game.workspace.Items:GetChildren()) do
 if Obj.Name == TextBoxText and Obj:isA("Model") and Obj.PrimaryPart then 
 HowManyItemCanShowUp = HowManyItemCanShowUp +1
