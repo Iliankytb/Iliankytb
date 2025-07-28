@@ -43,7 +43,7 @@ local ActiveEspItems,ActiveDistanceEsp,ActiveEspEnemy,ActiveEspChildren,ActiveEs
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.11",
+   Content = "V.0.12",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -751,6 +751,7 @@ end
 end)
 end,
 })
+
 local ValueSpeed = 16
 local OldSpeed = Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed
 local PlayerSpeedSlider = PlayerTab:CreateSlider({
@@ -887,6 +888,14 @@ for _, part in pairs(Workspace.Map.Boundaries:GetChildren()) do
 end  
 wait(0.1)
 end
+end)
+end,
+})
+local ButtonTeleportToCampfire = PlayerTab:CreateButton({
+   Name = "Teleport to campfire",
+   Callback = function(Value)
+task.spawn(function()
+ game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = Workspace.Map.Campground.MainFire.PrimaryPart.CFrame
 end)
 end,
 })
