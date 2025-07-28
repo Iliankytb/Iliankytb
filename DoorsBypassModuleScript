@@ -1,0 +1,2 @@
+local mod = require(game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("MainUI").Initiator.)
+mod.hum.WalkSpeed = 999
