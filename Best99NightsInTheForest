@@ -35,7 +35,6 @@ local Window = Rayfield:CreateWindow({
    }
 })
 local PlayerTab = Window:CreateTab("Player")
-local GameTab = Window:CreateTab("Game")
 local EspTab = Window:CreateTab("Esp")
 local BringItemTab = Window:CreateTab("Bring Item")
 local DiscordTab = Window:CreateTab("Discord")
@@ -44,7 +43,7 @@ local ActiveEspItems,ActiveDistanceEsp,ActiveEspEnemy,ActiveEspChildren,ActiveEs
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.9",
+   Content = "V.0.10",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -435,7 +434,6 @@ for _, Obj in pairs(game.workspace.Items:GetChildren()) do
 if Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
 end  
-wait(0.1)
 end
 end)
 end,
@@ -448,7 +446,6 @@ for _, Obj in pairs(game.workspace.Items:GetChildren()) do
 if Obj.Name == "Log" and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
 end  
-wait(0.1)
 end
 end)
 end,
@@ -474,7 +471,6 @@ for _, Obj in pairs(game.workspace.Items:GetChildren()) do
 if Obj.Name == "Fuel Canister" and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
 end 
-wait(0.1)
 end
 end)
 end,
@@ -487,7 +483,6 @@ for _, Obj in pairs(game.workspace.Items:GetChildren()) do
 if Obj.Name == "Carrot" and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
 end 
-wait(0.1)
 end
 end)
 end,
@@ -500,7 +495,6 @@ for _, Obj in pairs(game.workspace.Items:GetChildren()) do
 if (Obj.Name == "Log" or Obj.Name == "Fuel Canister" or Obj.Name == "Coal" or Obj.Name == "Oil Barrel") and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
 end   
-wait(0.1)
 end
 end)
 end,
@@ -513,7 +507,6 @@ for _, Obj in pairs(game.workspace.Items:GetChildren()) do
 if (Obj.Name == "Tyre" or Obj.Name == "Sheet Metal" or Obj.Name == "Broken Fan" or Obj.Name == "Bolt" or Obj.Name == "Old Radio" or Obj.Name == "UFO Junk" or Obj.Name == "UFO Scrap" or Obj.Name == "Broken Microwave") and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
 end 
-wait(0.1)
 end
 end)
 end,
@@ -526,7 +519,6 @@ for _, Obj in pairs(game.workspace.Items:GetChildren()) do
 if (Obj.Name == "Rifle Ammo" or Obj.Name == "Revolver Ammo") and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
 end 
-wait(0.1)
 end
 end)
 end,
@@ -539,7 +531,6 @@ for _, Obj in pairs(game.workspace.Items:GetChildren()) do
 if (Obj.Name == "Rifle" or Obj.Name == "Revolver") and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
 end  
-wait(0.1)
 end
 end)
 end,
@@ -552,7 +543,6 @@ for _, Obj in pairs(game.workspace.Characters:GetChildren()) do
 if (Obj.Name == "Lost Child" or Obj.Name == "Lost Child2" or Obj.Name == "Lost Child3" or Obj.Name == "Lost Child4" ) and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
 end  
-wait(0.1)
 end
 end)
 end,
@@ -565,7 +555,6 @@ for _, Obj in pairs(game.workspace.Items:GetChildren()) do
 if (Obj.Name == "Cake" or Obj.Name == "Carrot" or Obj.Name == "Morsel" or Obj.Name == "Meat? Sandwich") and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
 end  
-wait(0.1)
 end
 end)
 end,
@@ -577,7 +566,6 @@ task.spawn(function()
 for _, Obj in pairs(game.workspace.Items:GetChildren()) do
 if (Obj.Name == "Leather Body" or Obj.Name == "Iron Body") and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
-wait(0.1)
 end    
 end
 end)
@@ -604,7 +592,6 @@ for _, Obj in pairs(game.workspace.Items:GetChildren()) do
 if Obj.Name == "MedKit" and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
 end
-wait(0.1)
 end
 end)
 end,
@@ -617,7 +604,6 @@ for _, Obj in pairs(game.workspace.Items:GetChildren()) do
 if Obj.Name == "Coin Stack" and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
 end
-wait(0.1)
 end
 end)
 end,
@@ -630,7 +616,6 @@ for _, Obj in pairs(game.workspace.Items:GetChildren()) do
 if Obj.Name == "Old Radio" and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
 end 
-wait(0.1)
 end
 end)
 end,
@@ -643,7 +628,6 @@ for _, Obj in pairs(game.workspace.Items:GetChildren()) do
 if Obj.Name == "Tyre" and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
 end 
-wait(0.1)
 end
 end)
 end,
@@ -656,7 +640,6 @@ for _, Obj in pairs(game.workspace.Items:GetChildren()) do
 if Obj.Name == "Broken Fan" and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
 end
-wait(0.1)
 end
 end)
 end,
@@ -669,7 +652,6 @@ for _, Obj in pairs(game.workspace.Items:GetChildren()) do
 if Obj.Name == "Broken Microwave" and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
 end 
-wait(0.1)
 end
 end)
 end,
@@ -682,7 +664,6 @@ for _, Obj in pairs(game.workspace.Items:GetChildren()) do
 if Obj.Name == "Bolt" and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
 end
-wait(0.1)
 end
 end)
 end,
@@ -695,7 +676,6 @@ for _, Obj in pairs(game.workspace.Items:GetChildren()) do
 if Obj.Name == "Broken Microwave" and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
 end
-wait(0.1)
 end
 end)
 end,
@@ -708,7 +688,6 @@ for _, Obj in pairs(game.workspace.Items:GetChildren()) do
 if Obj.Name == "Sheet Metal" and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
 end
-wait(0.1)
 end
 end)
 end,
@@ -721,7 +700,6 @@ for _, Obj in pairs(game.workspace.Items:GetChildren()) do
 if Obj.Name == "Seed Box" and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
 end   
-wait(0.1)
 end
 end)
 end,
@@ -734,12 +712,14 @@ for _, Obj in pairs(game.workspace.Items:GetChildren()) do
 if Obj.Name == "Chair" and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
 end 
-wait(0.1)
 end
 end)
 end,
 })
 local TextBoxText = ""
+local isInTheMap = "no"
+local HowManyItemCanShowUp = 0
+local Label = BringItemTab:CreateLabel("Item Is In The Map: No (x"..HowManyItemCanShowUp..")", "rewind")
 local TextboxBringNameItem = BringItemTab:CreateInput({
    Name = "TextBox",
    CurrentValue = "",
@@ -748,6 +728,14 @@ local TextboxBringNameItem = BringItemTab:CreateInput({
    Flag = "Textbox1",
    Callback = function(Text)
   TextBoxText = Text
+isInTheMap = "no"
+for _, Obj in pairs(game.workspace.Items:GetChildren()) do
+if Obj.Name == TextBoxText and Obj:isA("Model") and Obj.PrimaryPart then 
+HowManyItemCanShowUp = HowManyItemCanShowUp +1
+isInTheMap ="yes"
+end 
+end
+Label:Set("Item Is In The Map: "..isInTheMap.." (x"..HowManyItemCanShowUp..")","rewind")
    end,
 })
 local ButtonBringAllThingsNamedInTextBox = BringItemTab:CreateButton({
@@ -758,7 +746,6 @@ for _, Obj in pairs(game.workspace.Items:GetChildren()) do
 if Obj.Name == TextBoxText and Obj:isA("Model") and Obj.PrimaryPart then 
 Obj.PrimaryPart.CFrame = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame
 end 
-wait(0.1)
 end
 end)
 end,
