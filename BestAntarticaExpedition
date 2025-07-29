@@ -41,7 +41,7 @@ local SettingsTab = Window:CreateTab("Settings")
 local ActiveSpeedBoost = false
 Rayfield:Notify({
    Title = "script Version",
-   Content = "V.0.1",
+   Content = "V.0.2",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -113,16 +113,6 @@ local GameTeleportToCamp3 = GameTab:CreateButton({
 task.spawn(function()
 Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
 5853.9917, 325.368683, -0.225488514, 0.494506121, -0, -0.869174123, 0, 1, -0, 0.869174123, 0, 0.494506121
-)
-end)
-end,
-})
-local GameTeleportToCamp4 = GameTab:CreateButton({
-   Name = "Teleport To Camp 4",
-   Callback = function(Value) 
-task.spawn(function()
-Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
-8991.0957, 601.370667, 59.1994514, -0.999373674, 0, 0.0353864804, 0, 1, 0, -0.0353864804, 0, -0.999373674
 )
 end)
 end,
