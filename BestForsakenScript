@@ -43,7 +43,7 @@ local ActiveSpeedBoost,ActiveAutoUseCoinFlip,ActiveEspSurvivors,ActiveNoStun,Act
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.38",
+   Content = "V.0.39",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -113,7 +113,7 @@ local EspKillersToggle = EspTab:CreateToggle({
   ActiveEspKillers = Value task.spawn(function()
 while ActiveEspKillers do task.spawn(function()
 for _,Players in pairs(Game.Workspace.Players.Killers:GetChildren()) do 
-if Players:isA("Model") and (Players.Name == "1x1x1x1" or Players.Name == "Jason") and Players:FindFirstChild("Head") and Players:FindFirstChildOfClass("Highlight") and not Players.Head:FindFirstChildOfClass("BillboardGui") then
+if Players:isA("Model") and (Players.Name == "1x1x1x1" or Players.Name == "Jason" or Players.Name == "John Doe") and Players:FindFirstChild("Head") and Players:FindFirstChildOfClass("Highlight") and not Players.Head:FindFirstChildOfClass("BillboardGui") then
 Players:FindFirstChildOfClass("Highlight"):Destroy()
 end
 if Players:isA("Model") and Players:FindFirstChild("Head") and not Players:FindFirstChildOfClass("Highlight") and not Players.Head:FindFirstChildOfClass("BillboardGui") then
