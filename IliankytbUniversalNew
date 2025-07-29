@@ -45,7 +45,7 @@ local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "
 
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.36",
+   Content = "V.0.37",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -571,6 +571,12 @@ local ButtonLoadPiggyCheat = GameTab:CreateButton({
    Name = "Piggy Cheat Iliankytb",
      Callback = function(Value)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatPiggy"))()
+end,
+})
+local ButtonLoadAntarcticaExpeditionCheat = GameTab:CreateButton({
+   Name = "Antarctica Expedition Cheat Iliankytb",
+     Callback = function(Value)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/BestAntarticaExpedition"))()
 end,
 })
 local ButtonLoadBloxFruitCheat = GameTab:CreateButton({
