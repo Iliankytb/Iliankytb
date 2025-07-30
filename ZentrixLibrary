@@ -38,7 +38,8 @@ library:CreateWindow({
 	},
 }, function(window)
 	local tab = window:CreateTab("This is a Tab",0)-- Tabs , 0 = no icon or add number
-	local DiscordTab = window:CreateTab("Discord",0)
+	local Notiftab = window:CreateTab("Test Notif",0)-- Tabs , 0 = no icon or add number
+	local DiscordTab = window:CreateTab("Discord",0)-- Tabs , 0 = no icon or add number
 
 	--Text--
 	local Text = tab:AddText({
@@ -49,7 +50,19 @@ library:CreateWindow({
 	local Button = tab:AddButton({
 		Text = "This is a button",
 		Name = "Button",
+		Callback = function() 
+			
+		end
+	})
+	local Button = Notiftab:AddButton({
+		Text = "Test Notif",
+		Name = "Button",
 		Callback = function() 	
+			local Notif = window:Notify({
+				Title = "Testing!",
+				Message = "notif!",
+				Duration = 10,
+			})
 
 		end
 	})
@@ -116,7 +129,7 @@ library:CreateWindow({
 
 	--Dropdown--
 	local Dropdown = tab:AddDropdown({
-		Text = "This is a Dropdown",
+		Text = "This is a Dropdown:",
 		Name = "Dropdown",
 		Options = {"Option 1", "Option 2", "Option 3"},
 		Default = "This is a Dropdown",
@@ -127,9 +140,14 @@ library:CreateWindow({
 		end
 	})
 	local ChangeThemeDropdown = tab:AddDropdown({
-		Text = "Change Theme",
+		Text = "Change Theme:",
 		Name = "Dropdown2",
-		Options = {"Default", "Light", "RedDark","BlueNeon","GreenMatrix","PurpleDream"},
+		Options = {"Default", "Light", "RedDark","BlueNeon","GreenMatrix","PurpleDream","Sunset",
+		"Ocean","Toxic","Storm","LimePop","Cyber","Chocolate","RoseGold","CottonCandy","NightSky","Steel",
+			"GoldLux","Ice","TealWave","FrostFire","DarkMatter","Lava","PinkCandy","Sakura","DeepSpace","Skyline","Crimson"
+			,"Desert","Camo","Plasma","Arctic","Slate","Vaporwave"
+			
+		},
 		Default = "Default",
 		MultiSelect = false,
 		Flag = "Dropdown2", --Put a name flag for save data if you enabled saving data
