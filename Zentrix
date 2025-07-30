@@ -1819,16 +1819,7 @@ end
 				Parent = tab.content
 			})
 			createUI("UICorner", { Parent = btn })
-			local label = createUI("TextLabel", {
-				Size = UDim2.new(1, 0, 1, 0),
-				BackgroundTransparency = 1,
-				Text = opts.Default,
-				TextColor3 = selectedTheme.TextColor,
-				Font = Enum.Font.Gotham,
-				TextXAlignment = Enum.TextXAlignment.Center,
-				TextSize = 14,
-				Parent = btn,
-			})
+	
 
 			local container = createUI("Frame", {
 				Size = UDim2.new(0.9, 0, 0, 0),
@@ -1863,9 +1854,9 @@ end
 
 			local function updateButtonText()
 				if #dropdown.Selected == 0 then
-					label.Text = opts.Default
+					btn.Text = opts.Text.." "..opts.Default
 				else
-					label.Text = table.concat(dropdown.Selected, ", ")
+					btn.Text = opts.Text.." "..table.concat(dropdown.Selected, ", ")
 				end
 			end
 
@@ -2017,7 +2008,7 @@ end
 	
 end
 function library:CreateWindow(settings1, onLoad)
-	print("Library Version: 0.27")
+	print("Library Version: 0.28")
 	if game:GetService("RunService"):IsStudio() then
 		if game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary") then
 			game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary"):Destroy()
