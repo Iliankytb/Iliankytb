@@ -464,6 +464,106 @@ local function VisibleWindow(window,settings1,gui)
 	end
 
 local TabButtons = {}
+	function window:ChangeTheme(themeName)
+		if Theme[themeName] then
+			selectedTheme = Theme[themeName]
+			mainFrame.BackgroundColor3 = selectedTheme.mainFrame
+			titleBar.BackgroundColor3 = selectedTheme.Top
+			tabsFrame.BackgroundColor3 = selectedTheme.TabContent
+			for _, name in pairs(TabButtons) do
+				name.BackgroundColor3 = selectedTheme.TabButtons
+				name.TextColor3 = selectedTheme.TextColor
+			end
+			for _, tab in pairs(window.tabs) do
+				if tab.sliders then
+					for _, name in pairs(tab.sliders) do
+						pcall(function()
+							print("ok slider")
+							name:ChangeTheme(selectedTheme)
+
+						end)
+						print(name)
+					end
+				end
+				if tab.ColorPicker then
+					for _, name in pairs(tab.ColorPicker) do
+						pcall(function()
+							print("ok ColorPicker")
+							name:ChangeTheme(selectedTheme)
+
+						end)
+						print(name)
+					end
+
+				end
+				if tab.textboxes then
+					for _, name in pairs(tab.textboxes) do
+						pcall(function()
+							print("ok Text")
+							name:ChangeTheme(selectedTheme)
+
+						end)
+						print(name)
+					end
+
+				end
+				if tab.dropdowns then
+					for _, name in pairs(tab.dropdowns) do
+						pcall(function()
+							print("ok Dropdown")
+							name:ChangeTheme(selectedTheme)
+
+						end)
+						print(name)
+					end
+
+				end
+				if tab.toggles then
+					for _, name in pairs(tab.toggles) do
+						pcall(function()
+							print("ok Toggle")
+							name:ChangeTheme(selectedTheme)
+
+						end)
+						print(name)
+					end
+				end
+				if tab.texts then
+					for _, name in pairs(tab.texts) do
+						pcall(function()
+							print("ok texts")
+							name:ChangeTheme(selectedTheme)
+
+						end)
+						print(name)
+					end
+				end
+				if tab.paragraphs then
+					for _, name in pairs(tab.paragraphs) do
+						pcall(function()
+							print("ok paragraphs")
+							name:ChangeTheme(selectedTheme)
+
+						end)
+						print(name)
+					end
+				end
+				if tab.buttons then
+					for _, name in pairs(tab.buttons) do
+						pcall(function()
+							print("ok buttons")
+							name:ChangeTheme(selectedTheme)
+
+						end)
+						print(name)
+					end
+				end
+			end
+
+		else
+			warn("Theme '" .. themeName .. "' introuvable.")
+		end
+	end
 	function window:CreateTab(name,icon)
 		local HttpService = game:GetService("HttpService")
 
@@ -1589,7 +1689,7 @@ end
 						updateCanvas()
 					end
 				else
-					-- Si value est une valeur simple
+			
 					if not table.find(dropdown.Options, value) then
 						warn("Option '" .. tostring(value) .. "' non trouvée dans le dropdown.")
 						return
@@ -1601,9 +1701,11 @@ end
 						end
 					else
 						dropdown.Selected = {value}
+		
 						dropdown.FrameOpen = false
 						updateCanvas()
 					end
+					
 				end
 
 				-- Sauvegarde
@@ -1629,106 +1731,7 @@ end
 		end
 
 
-		function window:ChangeTheme(themeName)
-			if Theme[themeName] then
-				selectedTheme = Theme[themeName]
-				mainFrame.BackgroundColor3 = selectedTheme.mainFrame
-				titleBar.BackgroundColor3 = selectedTheme.Top
-				tabsFrame.BackgroundColor3 = selectedTheme.TabContent
-				for _, name in pairs(TabButtons) do
-				name.BackgroundColor3 = selectedTheme.TabButtons
-				name.TextColor3 = selectedTheme.TextColor
-				end
-				for _, tab in pairs(window.tabs) do
-						if tab.sliders then
-						for _, name in pairs(tab.sliders) do
-							pcall(function()
-								print("ok slider")
-							name:ChangeTheme(selectedTheme)
-			
-							end)
-							print(name)
-							end
-						end
-						if tab.ColorPicker then
-						for _, name in pairs(tab.ColorPicker) do
-							pcall(function()
-							print("ok ColorPicker")
-						name:ChangeTheme(selectedTheme)
-					
-							end)
-							print(name)
-						end
-			
-						end
-						if tab.textboxes then
-						for _, name in pairs(tab.textboxes) do
-							pcall(function()
-							print("ok Text")
-							name:ChangeTheme(selectedTheme)
-						
-							end)
-							print(name)
-						end
-			
-						end
-						if tab.dropdowns then
-						for _, name in pairs(tab.dropdowns) do
-							pcall(function()
-							print("ok Dropdown")
-							name:ChangeTheme(selectedTheme)
-						
-							end)
-							print(name)
-						end
-				
-						end
-						if tab.toggles then
-						for _, name in pairs(tab.toggles) do
-							pcall(function()
-							print("ok Toggle")
-						name:ChangeTheme(selectedTheme)
-
-							end)
-							print(name)
-							end
-						end
-					if tab.texts then
-						for _, name in pairs(tab.texts) do
-							pcall(function()
-								print("ok texts")
-								name:ChangeTheme(selectedTheme)
-
-							end)
-							print(name)
-						end
-					end
-					if tab.paragraphs then
-						for _, name in pairs(tab.paragraphs) do
-							pcall(function()
-								print("ok paragraphs")
-								name:ChangeTheme(selectedTheme)
-
-							end)
-							print(name)
-						end
-					end
-					if tab.buttons then
-						for _, name in pairs(tab.buttons) do
-							pcall(function()
-								print("ok buttons")
-								name:ChangeTheme(selectedTheme)
-
-							end)
-							print(name)
-						end
-					end
-				end
-				
-			else
-				warn("Theme '" .. themeName .. "' introuvable.")
-			end
-		end
+		
 
 		return tab
 		
@@ -1737,7 +1740,7 @@ end
 	
 end
 function library:CreateWindow(settings1, onLoad)
-	print("Library Version: 0.22")
+	print("Library Version: 0.23")
 	if game:GetService("RunService"):IsStudio() then
 		if game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary") then
 			game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary"):Destroy()
