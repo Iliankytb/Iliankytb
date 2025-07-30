@@ -1725,10 +1725,11 @@ end
 					updateButtonText()
 
 					if opts.Callback then
-						print("[DEBUG] Callback appelé avec :", value, dropdown.Selected)
 						local selectedCopy = table.clone(dropdown.Selected)
-						opts.Callback(value, selectedCopy)
+						local firstValue = (typeof(value) == "table" and value[1]) or value
+						opts.Callback(firstValue, selectedCopy)
 					end
+
 
 				end
 			end
@@ -1752,7 +1753,7 @@ end
 	
 end
 function library:CreateWindow(settings1, onLoad)
-	print("Library Version: 0.25")
+	print("Library Version: 0.26")
 	if game:GetService("RunService"):IsStudio() then
 		if game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary") then
 			game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary"):Destroy()
