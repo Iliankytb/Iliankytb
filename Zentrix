@@ -1666,6 +1666,8 @@ end
 			end
 
 			function dropdown:Select(value)
+				local changed = false
+
 				if typeof(value) == "table" then
 					if multi then
 						for _, val in ipairs(value) do
@@ -1675,21 +1677,23 @@ end
 							end
 							if not table.find(dropdown.Selected, val) then
 								table.insert(dropdown.Selected, val)
+								changed = true
 							end
 						end
 					else
-						-- mono-sélection : prendre le premier élément
 						local val = value[1]
 						if not table.find(dropdown.Options, val) then
 							warn("Option '" .. tostring(val) .. "' non trouvée dans le dropdown.")
 							return
 						end
-						dropdown.Selected = {val}
+						if dropdown.Selected[1] ~= val or #dropdown.Selected > 1 then
+							dropdown.Selected = {val}
+							changed = true
+						end
 						dropdown.FrameOpen = false
 						updateCanvas()
 					end
 				else
-			
 					if not table.find(dropdown.Options, value) then
 						warn("Option '" .. tostring(value) .. "' non trouvée dans le dropdown.")
 						return
@@ -1698,29 +1702,35 @@ end
 					if multi then
 						if not table.find(dropdown.Selected, value) then
 							table.insert(dropdown.Selected, value)
+							changed = true
 						end
 					else
-						dropdown.Selected = {value}
-		
+						if dropdown.Selected[1] ~= value or #dropdown.Selected > 1 then
+							dropdown.Selected = {value}
+							changed = true
+						end
 						dropdown.FrameOpen = false
 						updateCanvas()
 					end
-					
 				end
 
-				-- Sauvegarde
-				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
-					tab.dropdownValue = tab.dropdownValue or {}
-					tab.dropdownValue[flag] = dropdown.Selected
-					SetFlag(flag, dropdown.Selected)
-				end
+				if changed then
+					-- Sauvegarde
+					if settings1 and settings1.Data and settings1.Data.EnableSavingData then
+						tab.dropdownValue = tab.dropdownValue or {}
+						tab.dropdownValue[flag] = dropdown.Selected
+						SetFlag(flag, dropdown.Selected)
+					end
 
-				updateButtonText()
+					updateButtonText()
 
-				if opts.Callback then
-					opts.Callback(value, dropdown.Selected)
+					if opts.Callback then
+						local selectedCopy = table.clone(dropdown.Selected)
+						opts.Callback(value, selectedCopy)
+					end
 				end
 			end
+
 			function dropdown:ChangeTheme(ThemesName)
 				btn.BackgroundColor3 = selectedTheme.Buttons
 				btn.TextColor3 = selectedTheme.TextColor
@@ -1740,7 +1750,7 @@ end
 	
 end
 function library:CreateWindow(settings1, onLoad)
-	print("Library Version: 0.23")
+	print("Library Version: 0.24")
 	if game:GetService("RunService"):IsStudio() then
 		if game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary") then
 			game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary"):Destroy()
