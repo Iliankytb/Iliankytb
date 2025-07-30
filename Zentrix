@@ -26,18 +26,80 @@ end
 function library:CopyText(Text)
 	copyToClipboard(Text)
 end
+local Theme = {
+	Default = {
+		mainFrame = Color3.fromRGB(30, 30, 30),
+		NotifyFrame = Color3.fromRGB(30, 30, 30),
+		TextColor = Color3.fromRGB(255, 255, 255),
+		TabContent = Color3.fromRGB(20, 20, 20),
+		TabButtons = Color3.fromRGB(50, 50, 50),
+		Top = Color3.fromRGB(45, 45, 45),
+		Buttons = Color3.fromRGB(50, 50, 50),
+	},
+	Light = {
+		mainFrame = Color3.fromRGB(220, 225, 230), 
+		NotifyFrame = Color3.fromRGB(235, 235, 240),
+		TextColor = Color3.fromRGB(40, 40, 40),
+		TabContent = Color3.fromRGB(210, 215, 220), 
+		TabButtons = Color3.fromRGB(180, 185, 190), 
+		Top = Color3.fromRGB(200, 205, 210),
+		Buttons = Color3.fromRGB(160, 170, 180), 
+	},
+	RedDark = {
+		mainFrame = Color3.fromRGB(45, 0, 0),
+		NotifyFrame = Color3.fromRGB(30, 0, 0),
+		TextColor = Color3.fromRGB(255, 200, 200),
+		TabContent = Color3.fromRGB(25, 0, 0),
+		TabButtons = Color3.fromRGB(60, 10, 10),
+		Top = Color3.fromRGB(50, 0, 0),
+		Buttons = Color3.fromRGB(70, 0, 0),
+	},
+	BlueNeon = {
+		mainFrame = Color3.fromRGB(10, 10, 30),
+		NotifyFrame = Color3.fromRGB(15, 15, 40),
+		TextColor = Color3.fromRGB(0, 200, 255),
+		TabContent = Color3.fromRGB(20, 20, 50),
+		TabButtons = Color3.fromRGB(0, 140, 255),
+		Top = Color3.fromRGB(0, 120, 255),
+		Buttons = Color3.fromRGB(0, 100, 200),
+	},
+	GreenMatrix = {
+		mainFrame = Color3.fromRGB(0, 20, 0),
+		NotifyFrame = Color3.fromRGB(0, 30, 0),
+		TextColor = Color3.fromRGB(255, 255, 255),
+		TabContent = Color3.fromRGB(0, 40, 0),
+		TabButtons = Color3.fromRGB(0, 200, 0),
+		Top = Color3.fromRGB(0, 180, 0),
+		Buttons = Color3.fromRGB(0, 200, 0),
+	},
+	PurpleDream = {
+		mainFrame = Color3.fromRGB(40, 0, 50),
+		NotifyFrame = Color3.fromRGB(30, 0, 40),
+		TextColor = Color3.fromRGB(255, 200, 255),
+		TabContent = Color3.fromRGB(60, 0, 80),
+		TabButtons = Color3.fromRGB(120, 0, 150),
+		Top = Color3.fromRGB(100, 0, 130),
+		Buttons = Color3.fromRGB(90, 0, 120),
+	},
+}
+
 
 local function VisibleWindow(window,settings1,gui)
+	local themeName = settings1.Theme 
+	local selectedTheme = Theme[themeName] or Theme.Default
+
 	local TweenService = game:GetService("TweenService")
+
 	local mainFrame = createUI("Frame", {
-		Size = UDim2.new(0, 0, 0, 0);
-		Position = UDim2.new(0.5, 0, 0.5, 0);
-		BackgroundColor3 = Color3.fromRGB(30, 30, 30);
+		Size = UDim2.new(0, 0, 0, 0),
+		Position = UDim2.new(0.5, 0, 0.5, 0),
+		BackgroundColor3 = selectedTheme.mainFrame,
 		AnchorPoint = Vector2.new(0.5, 0.5),
 		Interactable = true,
 		Parent = gui,
 		Draggable = true,
 	})
+
 	-- Notify container frame
 	local NotifyFrame = createUI("Frame", {
 		Size = UDim2.new(0.25, 0, 1, 0),
@@ -84,7 +146,7 @@ local function VisibleWindow(window,settings1,gui)
 		local content = createUI("Frame", {
 			Size = UDim2.new(1, 0, 1, 0),
 			Position = UDim2.new(1, 20, 0, 0), -- hors écran à droite
-			BackgroundColor3 = Color3.fromRGB(30, 30, 30),
+			BackgroundColor3 = selectedTheme.NotifyFrame,
 			BackgroundTransparency = 0.25,
 			BorderSizePixel = 0,
 			Parent = notifyPanel,
@@ -96,7 +158,7 @@ local function VisibleWindow(window,settings1,gui)
 			Position = UDim2.new(0, 5, 0, 2),
 			Text = title,
 			TextScaled = true,
-			TextColor3 = Color3.fromRGB(255, 255, 255),
+			TextColor3 = selectedTheme.TextColor,
 			Font = Enum.Font.GothamBold,
 			BackgroundTransparency = 1,
 			TextXAlignment = Enum.TextXAlignment.Left,
@@ -109,7 +171,7 @@ local function VisibleWindow(window,settings1,gui)
 			Position = UDim2.new(0, 5, 0.2, 0),
 			Text = message,
 			TextScaled = true,
-			TextColor3 = Color3.fromRGB(220, 220, 220),
+			TextColor3 = selectedTheme.TextColor,
 			Font = Enum.Font.Gotham,
 			BackgroundTransparency = 1,
 			TextWrapped = true,
@@ -179,7 +241,7 @@ local function VisibleWindow(window,settings1,gui)
 		Size = UDim2.new(0, 150, 1, 0);
 		CanvasSize = UDim2.new(0, 0, 0, 0);
 		ScrollBarThickness = 6;
-		BackgroundColor3 = Color3.fromRGB(20, 20, 20);
+		BackgroundColor3 =selectedTheme.TabContent;
 		BorderSizePixel = 0;
 		Parent = mainFrame;
 	})
@@ -213,7 +275,7 @@ local function VisibleWindow(window,settings1,gui)
 	})
 	local titleBar = createUI("Frame", {
 		Size = UDim2.new(1, 0, 0, 40),  -- en largeur complète, hauteur 40px
-		BackgroundColor3 = Color3.fromRGB(45, 45, 45),
+		BackgroundColor3 = selectedTheme.Top,
 		Interactable = true,
 		Parent = mainFrame,
 		Position = UDim2.new(0, 0, 0, 0)
@@ -401,15 +463,15 @@ local function VisibleWindow(window,settings1,gui)
 		end
 	end
 
-
+local TabButtons = {}
 	function window:CreateTab(name,icon)
 		local HttpService = game:GetService("HttpService")
 
 		if  not game:GetService("RunService"):IsStudio() then
-		if not writefile or not readfile then
-			warn("writefile/readfile non disponibles.")
-			return
-		end
+			if not writefile or not readfile then
+				warn("writefile/readfile non disponibles.")
+				return
+			end
 		end
 
 		local flags = {}
@@ -420,6 +482,9 @@ local function VisibleWindow(window,settings1,gui)
 			textboxes = {},
 			dropdowns = {},
 			toggles = {},
+			texts = {},
+			buttons = {},
+			paragraphs = {},
 			ColorPicker = {},
 			SlidersValue = {},
 			ColorPickerValue = {},
@@ -479,129 +544,132 @@ local function VisibleWindow(window,settings1,gui)
 			SaveData()
 		end
 
-	
+
 		if settingsData.EnableSavingData then
 
 			function library:LoadData()
-    if not game:GetService("RunService"):IsStudio() then
-        print("Loading Data...")
+				if not game:GetService("RunService"):IsStudio() then
+					print("Loading Data...")
 
-        local settingsData = settings1 and settings1.Data or {}
-        local FolderName = settingsData.FolderName or "UnknownFolder"
-        local fileName = settingsData.FileName or "UnknownFile"
-        local fullPath = FolderName .. "/" .. fileName .. ".json"
+					local settingsData = settings1 and settings1.Data or {}
+					local FolderName = settingsData.FolderName or "UnknownFolder"
+					local fileName = settingsData.FileName or "UnknownFile"
+					local fullPath = FolderName .. "/" .. fileName .. ".json"
 
-        -- Check if file exists
-        if not isfile(fullPath) then
-            warn("No saved data file found at: " .. fullPath)
-            window:Notify({
-                Title = "Data!",
-                Message = "No saved data found!",
-                Duration = 5,
-            })
-            return
-        end
+					-- Check if file exists
+					if not isfile(fullPath) then
+						warn("No saved data file found at: " .. fullPath)
+						window:Notify({
+							Title = "Data!",
+							Message = "No saved data found!",
+							Duration = 5,
+						})
+						return
+					end
 
-        -- Read file content
-        local success, content = pcall(readfile, fullPath)
-        if not success or not content or content == "" then
-            warn("Failed to read data file or file is empty: " .. tostring(content))
-            window:Notify({
-                Title = "Data!",
-                Message = "Failed to load data or file is empty!",
-                Duration = 10,
-            })
-            return
-        end
+					-- Read file content
+					local success, content = pcall(readfile, fullPath)
+					if not success or not content or content == "" then
+						warn("Failed to read data file or file is empty: " .. tostring(content))
+						window:Notify({
+							Title = "Data!",
+							Message = "Failed to load data or file is empty!",
+							Duration = 10,
+						})
+						return
+					end
 
-        -- Decode JSON data
-        local loadedData
-        success, loadedData = pcall(function()
-            return HttpService:JSONDecode(content)
-        end)
+					-- Decode JSON data
+					local loadedData
+					success, loadedData = pcall(function()
+						return HttpService:JSONDecode(content)
+					end)
 
-        if not success or type(loadedData) ~= "table" then
-            warn("Failed to decode JSON data or invalid data format.")
-            window:Notify({
-                Title = "Data!",
-                Message = "Failed to decode saved data!",
-                Duration = 10,
-            })
-            return
-        end
+					if not success or type(loadedData) ~= "table" then
+						warn("Failed to decode JSON data or invalid data format.")
+						window:Notify({
+							Title = "Data!",
+							Message = "Failed to decode saved data!",
+							Duration = 10,
+						})
+						return
+					end
 
-        -- Deserialize values (handle Color3 and other types)
-        for k, v in pairs(loadedData) do
-            loadedData[k] = DeserializeValue(v)
-        end
+					-- Deserialize values (handle Color3 and other types)
+					for k, v in pairs(loadedData) do
+						loadedData[k] = DeserializeValue(v)
+					end
 
-        -- Update flags
-        flags = loadedData
+					-- Update flags
+					flags = loadedData
 
-        -- Apply loaded data to all tabs
-        for _, tab in pairs(window.tabs) do
-            -- Initialize tables if not already done
-            tab.SlidersValue = tab.SlidersValue or {}
-            tab.textboxesText = tab.textboxesText or {}
-            tab.dropdownValue = tab.dropdownValue or {}
-            tab.TogglesValue = tab.TogglesValue or {}
-            tab.ColorPickerValue = tab.ColorPickerValue or {}
-            tab.sliders = tab.sliders or {}
-            tab.textboxes = tab.textboxes or {}
-            tab.dropdowns = tab.dropdowns or {}
-            tab.toggles = tab.toggles or {}
-            tab.ColorPicker = tab.ColorPicker or {}
+					-- Apply loaded data to all tabs
+					for _, tab in pairs(window.tabs) do
+				
+						tab.SlidersValue = tab.SlidersValue or {}
+						tab.textboxesText = tab.textboxesText or {}
+						tab.dropdownValue = tab.dropdownValue or {}
+						tab.TogglesValue = tab.TogglesValue or {}
+						tab.ColorPickerValue = tab.ColorPickerValue or {}
+						tab.sliders = tab.sliders or {}
+						tab.textboxes = tab.textboxes or {}
+						tab.dropdowns = tab.dropdowns or {}
+						tab.buttons = tab.buttons or {}
+						tab.texts = tab.texts or {}
+						tab.paragraphs = tab.paragraphs or {}
+						tab.toggles = tab.toggles or {}
+						tab.ColorPicker = tab.ColorPicker or {}
 
-            -- Apply saved values to UI elements
-            for name, value in pairs(flags) do
-                print("Processing flag:", name, value)
-                if tab.sliders[name] then
-                    pcall(function()
-                        print("Set slider", name, "to", value)
-                        tab.sliders[name]:SetValue(value)
-                        tab.SlidersValue[name] = value
-                    end)
-                end
-                if tab.ColorPicker[name] then
-                    pcall(function()
-                        print("Set color picker", name, "to", value)
-                        tab.ColorPicker[name]:Set(value)
-                        tab.ColorPickerValue[name] = value
-                    end)
-                end
-                if tab.textboxes[name] then
-                    pcall(function()
-                        print("Set textbox", name, "to", value)
-                        tab.textboxes[name]:SetText(value)
-                        tab.textboxesText[name] = value
-                    end)
-                end
-                if tab.dropdowns[name] then
-                    pcall(function()
-                        print("Set dropdown", name, "to", value)
-                        tab.dropdowns[name]:Select(value)
-                        tab.dropdownValue[name] = value
-                    end)
-                end
-                if tab.toggles[name] then
-                    pcall(function()
-                        print("Set toggle", name, "to", value)
-                        tab.toggles[name]:Set(value)
-                        tab.TogglesValue[name] = value
-                    end)
-                end
-            end
-        end
+						-- Apply saved values to UI elements
+						for name, value in pairs(flags) do
+							print("Processing flag:", name, value)
+							if tab.sliders[name] then
+								pcall(function()
+									print("Set slider", name, "to", value)
+									tab.sliders[name]:SetValue(value)
+									tab.SlidersValue[name] = value
+								end)
+							end
+							if tab.ColorPicker[name] then
+								pcall(function()
+									print("Set color picker", name, "to", value)
+									tab.ColorPicker[name]:Set(value)
+									tab.ColorPickerValue[name] = value
+								end)
+							end
+							if tab.textboxes[name] then
+								pcall(function()
+									print("Set textbox", name, "to", value)
+									tab.textboxes[name]:SetText(value)
+									tab.textboxesText[name] = value
+								end)
+							end
+							if tab.dropdowns[name] then
+								pcall(function()
+									print("Set dropdown", name, "to", value)
+									tab.dropdowns[name]:Select(value)
+									tab.dropdownValue[name] = value
+								end)
+							end
+							if tab.toggles[name] then
+								pcall(function()
+									print("Set toggle", name, "to", value)
+									tab.toggles[name]:Set(value)
+									tab.TogglesValue[name] = value
+								end)
+							end
+						end
+					end
 
-        if not settingsData.DisableNotifyingLoadedData then
-            window:Notify({
-                Title = "Data!",
-                Message = "Successfully loaded saved data!",
-                Duration = 5,
-            })
-        end
-    end
-end
+					if not settingsData.DisableNotifyingLoadedData then
+						window:Notify({
+							Title = "Data!",
+							Message = "Successfully loaded saved data!",
+							Duration = 5,
+						})
+					end
+				end
+			end
 		end
 
 
@@ -639,13 +707,12 @@ end
 
 
 		local tabButton 
-
 		if icon ~= 0 then 
 			tabButton = createUI("TextButton", {
 				Text = ""; -- Le texte sera mis dans un Label séparé
 				Size = UDim2.new(1, 0, 0, 30);
-				BackgroundColor3 = Color3.fromRGB(50, 50, 50);
-				TextColor3 = Color3.new(1, 1, 1);
+				BackgroundColor3 = selectedTheme.TabButtons;
+				TextColor3 = selectedTheme.TextColor,
 				Font = Enum.Font.GothamBold;
 				TextSize = 14; -- inutile ici car on va utiliser un Label
 				Parent = tabsFrame;
@@ -670,11 +737,11 @@ end
 
 			-- Texte à droite
 			local textLabel = Instance.new("TextLabel")
-			textLabel.Name = name.."Tabs"
+			textLabel.Name = name
 			textLabel.Text = name
 			textLabel.Size = UDim2.new(1, -30, 1, 0) -- laisse de la place pour l'image + padding
 			textLabel.BackgroundTransparency = 1
-			textLabel.TextColor3 = Color3.new(1, 1, 1)
+			textLabel.TextColor3 = selectedTheme.TextColor
 			textLabel.Font = Enum.Font.Gotham
 			textLabel.TextSize = 12
 			textLabel.TextXAlignment = Enum.TextXAlignment.Left
@@ -684,13 +751,15 @@ end
 			tabButton =  createUI("TextButton", {
 				Text = name;
 				Size = UDim2.new(1, 0, 0, 30);
-				BackgroundColor3 = Color3.fromRGB(50, 50, 50);
-				TextColor3 = Color3.new(1, 1, 1);
+				BackgroundColor3 = selectedTheme.TabButtons;
+				TextColor3 =selectedTheme.TextColor,
 				Font = Enum.Font.GothamBold;
 				TextSize = 14;
 				Parent = tabsFrame;
 			})
+		
 		end
+		TabButtons[name] = tabButton
 		createUI("UICorner", {Parent = tabButton})
 
 		tabButton.MouseButton1Click:Connect(function()
@@ -709,11 +778,12 @@ end
 		end
 
 		function tab:AddButton(opts)
+			local flag = opts.Name
 			local button = createUI("TextButton", {
 				Text = opts.Text;
 				Size = UDim2.new(1, 0, 0, 30);
-				BackgroundColor3 = Color3.fromRGB(50, 50, 50);
-				TextColor3 = Color3.new(1, 1, 1);
+				BackgroundColor3 = selectedTheme.Buttons;
+				TextColor3 = selectedTheme.TextColor,
 				Font = Enum.Font.Gotham;
 				TextSize = 14;
 				TextXAlignment = Enum.TextXAlignment.Left,
@@ -741,15 +811,31 @@ end
 				if opts.Callback then opts.Callback() end
 
 			end)
-
+			-- Retourne un objet avec une méthode Set pour changer le texte
+			local obj = {}
+			function obj:Set(t)
+				-- t est une table avec un seul élément string, ex: {"nouveaux"}
+				if type(t) == "table" and type(t[1]) == "string" then
+					button.Text = t[1]
+				else
+					warn("Set attend une table avec un string en premier élément")
+				end
+			end
+			function obj:ChangeTheme(ThemesName)
+				button.BackgroundColor3 = selectedTheme.Buttons
+				button.TextColor3 = selectedTheme.TextColor
+			end
+			tab.buttons[flag] = obj
+			return obj
 
 		end
 		function tab:AddText(opts)
+			local flag = opts.Name
 			local button = createUI("TextLabel", {
 				Text = opts.Text;
 				Size = UDim2.new(1, 0, 0, 30);
-				BackgroundColor3 = Color3.fromRGB(50, 50, 50);
-				TextColor3 = Color3.new(1, 1, 1);
+				BackgroundColor3 = selectedTheme.Buttons;
+				TextColor3 = selectedTheme.TextColor,
 				Font = Enum.Font.Gotham;
 				TextSize = 14;
 				TextXAlignment = Enum.TextXAlignment.Left,
@@ -775,12 +861,16 @@ end
 					warn("Set attend une table avec un string en premier élément")
 				end
 			end
-
+function obj:ChangeTheme(ThemesName)
+				button.BackgroundColor3 = selectedTheme.Buttons
+				button.TextColor3 = selectedTheme.TextColor
+end
+			tab.texts[flag] = obj
 			return obj
 		end
 
 		function tab:AddParagraph(opts)
-			-- opts attend une table avec Title (string) et Content (string)
+			local flag = opts.Name
 			assert(type(opts) == "table", "Expected table as argument")
 			assert(type(opts.Title) == "string", "Title must be a string")
 			assert(type(opts.Content) == "string", "Content must be a string")
@@ -788,7 +878,7 @@ end
 			-- Création de la frame conteneur
 			local frame = createUI("Frame", {
 				Size = UDim2.new(1, 0, 0, 50), -- hauteur temporaire, on va ajuster après
-				BackgroundColor3 = Color3.fromRGB(50, 50, 50),
+				BackgroundColor3 = selectedTheme.Buttons,
 				Parent = tab.content,
 			})
 			createUI("UICorner", {Parent = frame})
@@ -838,9 +928,8 @@ end
 			-- Ajustement de la taille de la frame conteneur (titre + contenu + padding)
 			frame.Size = UDim2.new(1, 0, 0, 25 + textSize.Y + 20) -- 25 pour le titre, 20 pour padding haut+bas
 
-			-- Retourner la frame et labels pour pouvoir manipuler ensuite si besoin
-			return {
-				Frame = frame,
+	
+			local Api = {Frame = frame,
 				TitleLabel = titleLabel,
 				ContentLabel = contentLabel,
 				Set = function(self, newOpts)
@@ -853,8 +942,14 @@ end
 						self.ContentLabel.Size = UDim2.new(1, 0, 0, newSize.Y)
 						self.Frame.Size = UDim2.new(1, 0, 0, 25 + newSize.Y + 20)
 					end
-				end
-			}
+				end,
+				ChangeTheme = function(ThemesName)
+					frame.BackgroundColor3 = selectedTheme.Buttons
+				end}
+			
+			tab.paragraphs[flag] = Api
+
+			return Api
 		end
 
 
@@ -886,8 +981,8 @@ end
 			local container = createUI("TextButton", {
 				Text = opts.Text;
 				Size = UDim2.new(1, 0, 0, 30);
-				BackgroundColor3 = Color3.fromRGB(50, 50, 50);
-				TextColor3 = Color3.new(1, 1, 1);
+				BackgroundColor3 = selectedTheme.Buttons;
+				TextColor3 = selectedTheme.TextColor,
 				Font = Enum.Font.Gotham;
 				TextSize = 14;
 				TextXAlignment = Enum.TextXAlignment.Left,
@@ -909,7 +1004,7 @@ end
 			colorDisplay.BorderSizePixel = 0
 			colorDisplay.Text = ""
 			colorDisplay.AutoButtonColor = false
-		
+
 			colorDisplay.Parent = container
 			createUI("UICorner", {Parent = colorDisplay})
 
@@ -922,7 +1017,7 @@ end
 			colorWindow.Visible = false
 			colorWindow.BorderSizePixel = 0
 			colorWindow.ZIndex = 10
-	
+
 			colorWindow.Parent = gui
 
 			createUI("UICorner", {CornerRadius = UDim.new(0, 6), Parent = colorWindow})
@@ -1005,7 +1100,7 @@ end
 				colorWindow.Visible = false
 			end)
 
-			-- Enregistrement dans tab.ColorPicker avec méthode Set et Get
+	
 			local api = {
 				Set = function(_, color)
 					if typeof(color) == "table" then
@@ -1022,6 +1117,10 @@ end
 					else
 						return defaultColor
 					end
+				end,
+				ChangeTheme = function(ThemeName)
+					container.BackgroundColor3 = selectedTheme.Buttons
+				container.TextColor3 = selectedTheme.TextColor
 				end
 			}
 			tab.ColorPicker[flag] = api
@@ -1039,8 +1138,8 @@ end
 			local button = createUI("TextButton", {
 				Text = opts.Text;
 				Size = UDim2.new(1, 0, 0, 30);
-				BackgroundColor3 = Color3.fromRGB(50, 50, 50);
-				TextColor3 = Color3.new(1, 1, 1);
+				BackgroundColor3 = selectedTheme.Buttons;
+				TextColor3 = selectedTheme.TextColor,
 				Font = Enum.Font.Gotham;
 				TextSize = 14;
 				TextXAlignment = Enum.TextXAlignment.Left;
@@ -1126,6 +1225,10 @@ end
 					opts.Callback(newValue)
 				end
 			end
+			function obj:ChangeTheme(ThemesName)
+				button.BackgroundColor3 = selectedTheme.Buttons
+			button.TextColor3 = selectedTheme.TextColor
+			end
 			tab.toggles[flag] = obj
 
 			return obj
@@ -1148,7 +1251,7 @@ end
 			local slider = createUI("TextButton", {
 				Text = "";
 				Size = UDim2.new(1, 0, 0, 40);
-				BackgroundColor3 = Color3.fromRGB(50, 50, 50);
+				BackgroundColor3 = selectedTheme.Buttons;
 				AutoButtonColor = false;
 				Parent = tab.content;
 			})
@@ -1175,7 +1278,7 @@ end
 				Text = opts.Text or "Slider",
 				Size = UDim2.new(1, 0, 0, 14),
 				BackgroundTransparency = 1,
-				TextColor3 = Color3.new(1, 1, 1),
+				TextColor3 = selectedTheme.TextColor,
 				Font = Enum.Font.Gotham,
 				TextSize = 12,
 				TextXAlignment = Enum.TextXAlignment.Left,
@@ -1231,7 +1334,10 @@ end
 					opts.Callback(v)
 				end
 			end
-
+function obj:ChangeTheme(ThemesName)
+				slider.BackgroundColor3 = selectedTheme.Buttons
+				labelText.TextColor3 = selectedTheme.TextColor
+end
 			local moveConn, releaseConn
 
 			local function updateSlider(x)
@@ -1282,8 +1388,8 @@ end
 			local txt = createUI("TextBox", {
 				Text = defaultText,
 				PlaceholderText = opts.Placeholder or "",
-				BackgroundColor3 = Color3.fromRGB(50, 50, 50),
-				TextColor3 = Color3.new(1, 1, 1),
+				BackgroundColor3 = selectedTheme.Buttons,
+				TextColor3 = selectedTheme.TextColor,
 				PlaceholderColor3 = Color3.fromRGB(143, 143, 143),
 				Font = Enum.Font.Gotham,
 				TextSize = 18,
@@ -1329,7 +1435,11 @@ end
 					warn("SetText attend une string")
 				end
 			end
-
+function obj:ChangeTheme(ThemesName)
+				txt.BackgroundColor3 = selectedTheme.Buttons
+				txt.TextColor3 = selectedTheme.TextColor
+	
+end
 			tab.textboxes[flag] = obj
 
 			return obj
@@ -1348,8 +1458,8 @@ end
 
 			local btn = createUI("TextButton", {
 				Text = opts.Text or "Dropdown",
-				BackgroundColor3 = Color3.fromRGB(50, 50, 50),
-				TextColor3 = Color3.new(1, 1, 1),
+				BackgroundColor3 = selectedTheme.Buttons,
+				TextColor3 = selectedTheme.TextColor,
 				Font = Enum.Font.Gotham,
 				TextSize = 14,
 				Size = UDim2.new(1, 0, 0, 40),
@@ -1359,7 +1469,7 @@ end
 
 			local container = createUI("Frame", {
 				Size = UDim2.new(0.9, 0, 0, 0),
-				BackgroundColor3 = Color3.fromRGB(121, 121, 121),
+				BackgroundColor3 = selectedTheme.TabContent,
 				BackgroundTransparency = 0,
 				ClipsDescendants = true,
 				Parent = tab.content
@@ -1406,10 +1516,10 @@ end
 				for _, option in ipairs(optionList) do
 					local optBtn = createUI("TextButton", {
 						Text = option,
-						TextColor3 = Color3.new(1,1,1),
+						TextColor3 = selectedTheme.TextColor,
 						Font = Enum.Font.Gotham,
 						TextSize = 14,
-						BackgroundColor3 = Color3.fromRGB(50, 50, 50),
+						BackgroundColor3 = selectedTheme.Buttons,
 						Size = UDim2.new(1, 0, 0, 28),
 						Parent = optionHolder
 					})
@@ -1509,46 +1619,153 @@ end
 					opts.Callback(value, dropdown.Selected)
 				end
 			end
-
+			function dropdown:ChangeTheme(ThemesName)
+				btn.BackgroundColor3 = selectedTheme.Buttons
+				btn.TextColor3 = selectedTheme.TextColor
+				createOptions(dropdown.Options)
+			end
 			tab.dropdowns[flag] = dropdown -- ✅ Sauvegarde du dropdown pour LoadData
 			return dropdown -- ✅ Très important !
 		end
 
 
+		function window:ChangeTheme(themeName)
+			if Theme[themeName] then
+				selectedTheme = Theme[themeName]
+				mainFrame.BackgroundColor3 = selectedTheme.mainFrame
+				titleBar.BackgroundColor3 = selectedTheme.Top
+				tabsFrame.BackgroundColor3 = selectedTheme.TabContent
+				for _, name in pairs(TabButtons) do
+				name.BackgroundColor3 = selectedTheme.TabButtons
+				name.TextColor3 = selectedTheme.TextColor
+				end
+				for _, tab in pairs(window.tabs) do
+						if tab.sliders then
+						for _, name in pairs(tab.sliders) do
+							pcall(function()
+								print("ok slider")
+							name:ChangeTheme(selectedTheme)
+			
+							end)
+							print(name)
+							end
+						end
+						if tab.ColorPicker then
+						for _, name in pairs(tab.ColorPicker) do
+							pcall(function()
+							print("ok ColorPicker")
+						name:ChangeTheme(selectedTheme)
+					
+							end)
+							print(name)
+						end
+			
+						end
+						if tab.textboxes then
+						for _, name in pairs(tab.textboxes) do
+							pcall(function()
+							print("ok Text")
+							name:ChangeTheme(selectedTheme)
+						
+							end)
+							print(name)
+						end
+			
+						end
+						if tab.dropdowns then
+						for _, name in pairs(tab.dropdowns) do
+							pcall(function()
+							print("ok Dropdown")
+							name:ChangeTheme(selectedTheme)
+						
+							end)
+							print(name)
+						end
+				
+						end
+						if tab.toggles then
+						for _, name in pairs(tab.toggles) do
+							pcall(function()
+							print("ok Toggle")
+						name:ChangeTheme(selectedTheme)
+
+							end)
+							print(name)
+							end
+						end
+					if tab.texts then
+						for _, name in pairs(tab.texts) do
+							pcall(function()
+								print("ok texts")
+								name:ChangeTheme(selectedTheme)
+
+							end)
+							print(name)
+						end
+					end
+					if tab.paragraphs then
+						for _, name in pairs(tab.paragraphs) do
+							pcall(function()
+								print("ok paragraphs")
+								name:ChangeTheme(selectedTheme)
+
+							end)
+							print(name)
+						end
+					end
+					if tab.buttons then
+						for _, name in pairs(tab.buttons) do
+							pcall(function()
+								print("ok buttons")
+								name:ChangeTheme(selectedTheme)
+
+							end)
+							print(name)
+						end
+					end
+				end
+				
+			else
+				warn("Theme '" .. themeName .. "' introuvable.")
+			end
+		end
 
 		return tab
+		
 	end
+	
+	
 end
 function library:CreateWindow(settings1, onLoad)
-	print("Library Version: 0.21")
+	print("Library Version: 0.22")
 	if game:GetService("RunService"):IsStudio() then
 		if game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary") then
 			game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary"):Destroy()
 		end
-		else
-	if game:GetService("CoreGui"):FindFirstChild("UILibrary") then
-		game:GetService("CoreGui"):FindFirstChild("UILibrary"):Destroy()
-	end
+	else
+		if game:GetService("CoreGui"):FindFirstChild("UILibrary") then
+			game:GetService("CoreGui"):FindFirstChild("UILibrary"):Destroy()
+		end
 	end
 	local window = {}
 	window.tabs = {}
 
 
 	local gui
-	
+
 	if game:GetService("RunService"):IsStudio() then
 		gui = createUI("ScreenGui", {
 			Name = "UILibrary";
 			ResetOnSpawn = false;
 			Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui");
 		})
-		else
+	else
 		gui = createUI("ScreenGui", {
-		Name = "UILibrary";
-		ResetOnSpawn = false;
-		Parent = game:GetService("CoreGui");
+			Name = "UILibrary";
+			ResetOnSpawn = false;
+			Parent = game:GetService("CoreGui");
 		})
-		end
+	end
 	if settings1.KeySystem then
 		local TweenService = game:GetService("TweenService")
 
@@ -1739,61 +1956,61 @@ function library:CreateWindow(settings1, onLoad)
 		end
 
 		if  not game:GetService("RunService"):IsStudio() then
-		local savedKey = loadKey()
-		if savedKey and savedKey ~= ""  then
-			if table.find(Key, savedKey) then
-				print("✅ correct key :", savedKey)
-				KeyFrame:Destroy()
-				if settings1.Intro then
-					local TweenService = game:GetService("TweenService")
-					local IntroTitle = settings1.IntroTitle
+			local savedKey = loadKey()
+			if savedKey and savedKey ~= ""  then
+				if table.find(Key, savedKey) then
+					print("✅ correct key :", savedKey)
+					KeyFrame:Destroy()
+					if settings1.Intro then
+						local TweenService = game:GetService("TweenService")
+						local IntroTitle = settings1.IntroTitle
 
 
-					local IntroFrame = createUI("Frame", {
-						Size = UDim2.new(0, 0, 0, 0),
-						Position = UDim2.new(0.5, 0, 0.5, 0),
-						AnchorPoint = Vector2.new(0.5, 0.5),
-						BackgroundColor3 = Color3.fromRGB(30, 30, 30),
-						Parent = gui,
-					})
-					createUI("UICorner", {Parent = IntroFrame})
+						local IntroFrame = createUI("Frame", {
+							Size = UDim2.new(0, 0, 0, 0),
+							Position = UDim2.new(0.5, 0, 0.5, 0),
+							AnchorPoint = Vector2.new(0.5, 0.5),
+							BackgroundColor3 = Color3.fromRGB(30, 30, 30),
+							Parent = gui,
+						})
+						createUI("UICorner", {Parent = IntroFrame})
 
 
-					local anim = TweenService:Create(IntroFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
-						Size = UDim2.new(0, 500, 0, 200),
-						Position = UDim2.new(0.5, 0, 0.5, 0),
-					})
+						local anim = TweenService:Create(IntroFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+							Size = UDim2.new(0, 500, 0, 200),
+							Position = UDim2.new(0.5, 0, 0.5, 0),
+						})
 
-					createUI("TextLabel", {
-						Size = UDim2.new(1, -20, 0, 40),
-						Position = UDim2.new(0, 10, 0.5, -20),
-						BackgroundTransparency = 1,
-						Text = IntroTitle,
-						TextColor3 = Color3.new(1, 1, 1),
-						TextScaled = true,
-						Font = Enum.Font.GothamBold,
-						Parent = IntroFrame,
-					})
-					anim:Play()
-					anim.Completed:Connect(function()
-						wait(1.5)
-						IntroFrame:Destroy()
+						createUI("TextLabel", {
+							Size = UDim2.new(1, -20, 0, 40),
+							Position = UDim2.new(0, 10, 0.5, -20),
+							BackgroundTransparency = 1,
+							Text = IntroTitle,
+							TextColor3 = Color3.new(1, 1, 1),
+							TextScaled = true,
+							Font = Enum.Font.GothamBold,
+							Parent = IntroFrame,
+						})
+						anim:Play()
+						anim.Completed:Connect(function()
+							wait(1.5)
+							IntroFrame:Destroy()
+							VisibleWindow(window,settings1,gui)
+							if onLoad then onLoad(window) end
+						end)
+
+					else
 						VisibleWindow(window,settings1,gui)
 						if onLoad then onLoad(window) end
-					end)
+					end
 
 				else
-					VisibleWindow(window,settings1,gui)
-					if onLoad then onLoad(window) end
+					TextBox.Text = ""
+					TextBox.PlaceholderText = "❌ Incorrect/Invalid Key"
 				end
 
-			else
-				TextBox.Text = ""
-				TextBox.PlaceholderText = "❌ Incorrect/Invalid Key"
 			end
-
 		end
-end
 
 
 
