@@ -81,6 +81,258 @@ local Theme = {
 		Top = Color3.fromRGB(100, 0, 130),
 		Buttons = Color3.fromRGB(90, 0, 120),
 	},
+	Sunset = {
+		mainFrame = Color3.fromRGB(255, 94, 77),
+		NotifyFrame = Color3.fromRGB(204, 77, 61),
+		TextColor = Color3.fromRGB(255, 240, 230),
+		TabContent = Color3.fromRGB(153, 51, 51),
+		TabButtons = Color3.fromRGB(255, 140, 120),
+		Top = Color3.fromRGB(204, 70, 60),
+		Buttons = Color3.fromRGB(255, 120, 100),
+	},
+	Ocean = {
+		mainFrame = Color3.fromRGB(0, 40, 70),
+		NotifyFrame = Color3.fromRGB(0, 50, 90),
+		TextColor = Color3.fromRGB(200, 230, 255),
+		TabContent = Color3.fromRGB(0, 60, 100),
+		TabButtons = Color3.fromRGB(0, 100, 150),
+		Top = Color3.fromRGB(0, 80, 130),
+		Buttons = Color3.fromRGB(0, 120, 180),
+	},
+	Storm = {
+		mainFrame = Color3.fromRGB(20, 20, 30),
+		NotifyFrame = Color3.fromRGB(25, 25, 35),
+		TextColor = Color3.fromRGB(200, 200, 220),
+		TabContent = Color3.fromRGB(30, 30, 40),
+		TabButtons = Color3.fromRGB(70, 70, 90),
+		Top = Color3.fromRGB(50, 50, 70),
+		Buttons = Color3.fromRGB(80, 80, 100),
+	},
+	LimePop = {
+		mainFrame = Color3.fromRGB(30, 50, 30),
+		NotifyFrame = Color3.fromRGB(40, 70, 40),
+		TextColor = Color3.fromRGB(200, 255, 200),
+		TabContent = Color3.fromRGB(50, 90, 50),
+		TabButtons = Color3.fromRGB(100, 200, 100),
+		Top = Color3.fromRGB(90, 180, 90),
+		Buttons = Color3.fromRGB(70, 160, 70),
+	},
+	Chocolate = {
+		mainFrame = Color3.fromRGB(60, 40, 30),
+		NotifyFrame = Color3.fromRGB(50, 30, 20),
+		TextColor = Color3.fromRGB(255, 240, 220),
+		TabContent = Color3.fromRGB(40, 20, 10),
+		TabButtons = Color3.fromRGB(100, 70, 50),
+		Top = Color3.fromRGB(80, 60, 40),
+		Buttons = Color3.fromRGB(110, 80, 60),
+	},
+	Cyber = {
+		mainFrame = Color3.fromRGB(10, 10, 20),
+		NotifyFrame = Color3.fromRGB(15, 15, 30),
+		TextColor = Color3.fromRGB(0, 255, 180),
+		TabContent = Color3.fromRGB(20, 20, 35),
+		TabButtons = Color3.fromRGB(0, 220, 170),
+		Top = Color3.fromRGB(0, 200, 160),
+		Buttons = Color3.fromRGB(0, 180, 140),
+	},
+	RoseGold = {
+		mainFrame = Color3.fromRGB(183, 110, 121),
+		NotifyFrame = Color3.fromRGB(153, 90, 101),
+		TextColor = Color3.fromRGB(255, 230, 240),
+		TabContent = Color3.fromRGB(133, 70, 81),
+		TabButtons = Color3.fromRGB(203, 130, 141),
+		Top = Color3.fromRGB(173, 100, 111),
+		Buttons = Color3.fromRGB(213, 140, 151),
+	},
+	CottonCandy = {
+		mainFrame = Color3.fromRGB(255, 182, 193),
+		NotifyFrame = Color3.fromRGB(255, 192, 203),
+		TextColor = Color3.fromRGB(100, 0, 50),
+		TabContent = Color3.fromRGB(255, 204, 229),
+		TabButtons = Color3.fromRGB(255, 153, 204),
+		Top = Color3.fromRGB(255, 160, 215),
+		Buttons = Color3.fromRGB(255, 105, 180),
+	},
+	NightSky = {
+		mainFrame = Color3.fromRGB(10, 10, 30),
+		NotifyFrame = Color3.fromRGB(20, 20, 40),
+		TextColor = Color3.fromRGB(200, 200, 255),
+		TabContent = Color3.fromRGB(15, 15, 35),
+		TabButtons = Color3.fromRGB(30, 30, 70),
+		Top = Color3.fromRGB(40, 40, 90),
+		Buttons = Color3.fromRGB(60, 60, 120),
+	},
+	Steel = {
+		mainFrame = Color3.fromRGB(80, 80, 85),
+		NotifyFrame = Color3.fromRGB(90, 90, 95),
+		TextColor = Color3.fromRGB(240, 240, 240),
+		TabContent = Color3.fromRGB(70, 70, 75),
+		TabButtons = Color3.fromRGB(100, 100, 105),
+		Top = Color3.fromRGB(110, 110, 115),
+		Buttons = Color3.fromRGB(95, 95, 100),
+	},
+	GoldLux = {
+		mainFrame = Color3.fromRGB(70, 60, 0),
+		NotifyFrame = Color3.fromRGB(90, 70, 0),
+		TextColor = Color3.fromRGB(255, 220, 100),
+		TabContent = Color3.fromRGB(80, 70, 20),
+		TabButtons = Color3.fromRGB(200, 160, 20),
+		Top = Color3.fromRGB(180, 150, 0),
+		Buttons = Color3.fromRGB(220, 180, 0),
+	},
+	TealWave = {
+		mainFrame = Color3.fromRGB(0, 80, 80),
+		NotifyFrame = Color3.fromRGB(0, 90, 90),
+		TextColor = Color3.fromRGB(200, 255, 255),
+		TabContent = Color3.fromRGB(0, 100, 100),
+		TabButtons = Color3.fromRGB(0, 160, 160),
+		Top = Color3.fromRGB(0, 140, 140),
+		Buttons = Color3.fromRGB(0, 180, 180),
+	},
+	Ice = {
+		mainFrame = Color3.fromRGB(200, 240, 255),
+		NotifyFrame = Color3.fromRGB(180, 220, 245),
+		TextColor = Color3.fromRGB(30, 60, 90),
+		TabContent = Color3.fromRGB(160, 210, 240),
+		TabButtons = Color3.fromRGB(140, 200, 230),
+		Top = Color3.fromRGB(120, 190, 220),
+		Buttons = Color3.fromRGB(100, 180, 210),
+	},
+	FrostFire = {
+		mainFrame = Color3.fromRGB(40, 40, 60),
+		NotifyFrame = Color3.fromRGB(60, 60, 80),
+		TextColor = Color3.fromRGB(255, 100, 100),
+		TabContent = Color3.fromRGB(50, 50, 70),
+		TabButtons = Color3.fromRGB(255, 150, 150),
+		Top = Color3.fromRGB(120, 180, 255),
+		Buttons = Color3.fromRGB(255, 120, 120),
+	},
+	DarkMatter = {
+		mainFrame = Color3.fromRGB(10, 5, 20),
+		NotifyFrame = Color3.fromRGB(15, 10, 30),
+		TextColor = Color3.fromRGB(180, 0, 255),
+		TabContent = Color3.fromRGB(20, 10, 40),
+		TabButtons = Color3.fromRGB(100, 0, 150),
+		Top = Color3.fromRGB(80, 0, 120),
+		Buttons = Color3.fromRGB(60, 0, 100),
+	},
+	Lava = {
+		mainFrame = Color3.fromRGB(50, 10, 0),
+		NotifyFrame = Color3.fromRGB(70, 20, 0),
+		TextColor = Color3.fromRGB(255, 180, 100),
+		TabContent = Color3.fromRGB(90, 30, 0),
+		TabButtons = Color3.fromRGB(255, 80, 0),
+		Top = Color3.fromRGB(220, 60, 0),
+		Buttons = Color3.fromRGB(255, 100, 10),
+	},
+	PinkCandy = {
+		mainFrame = Color3.fromRGB(255, 170, 200),
+		NotifyFrame = Color3.fromRGB(255, 180, 210),
+		TextColor = Color3.fromRGB(100, 0, 50),
+		TabContent = Color3.fromRGB(255, 200, 220),
+		TabButtons = Color3.fromRGB(255, 120, 180),
+		Top = Color3.fromRGB(255, 150, 190),
+		Buttons = Color3.fromRGB(255, 100, 170),
+	},
+	DeepSpace = {
+		mainFrame = Color3.fromRGB(5, 5, 10),
+		NotifyFrame = Color3.fromRGB(10, 10, 15),
+		TextColor = Color3.fromRGB(100, 200, 255),
+		TabContent = Color3.fromRGB(15, 15, 25),
+		TabButtons = Color3.fromRGB(50, 100, 150),
+		Top = Color3.fromRGB(40, 80, 130),
+		Buttons = Color3.fromRGB(30, 60, 110),
+	},
+	Sakura = {
+		mainFrame = Color3.fromRGB(255, 225, 235),
+		NotifyFrame = Color3.fromRGB(255, 230, 240),
+		TextColor = Color3.fromRGB(120, 60, 90),
+		TabContent = Color3.fromRGB(255, 210, 225),
+		TabButtons = Color3.fromRGB(255, 160, 190),
+		Top = Color3.fromRGB(240, 140, 180),
+		Buttons = Color3.fromRGB(220, 120, 160),
+	},
+	Toxic = {
+		mainFrame = Color3.fromRGB(20, 40, 10),
+		NotifyFrame = Color3.fromRGB(25, 50, 15),
+		TextColor = Color3.fromRGB(150, 255, 50),
+		TabContent = Color3.fromRGB(30, 60, 20),
+		TabButtons = Color3.fromRGB(100, 255, 50),
+		Top = Color3.fromRGB(80, 230, 40),
+		Buttons = Color3.fromRGB(120, 255, 60),
+	},
+	Skyline = {
+		mainFrame = Color3.fromRGB(135, 206, 250),
+		NotifyFrame = Color3.fromRGB(176, 226, 255),
+		TextColor = Color3.fromRGB(30, 60, 90),
+		TabContent = Color3.fromRGB(160, 210, 240),
+		TabButtons = Color3.fromRGB(100, 180, 255),
+		Top = Color3.fromRGB(70, 160, 230),
+		Buttons = Color3.fromRGB(90, 180, 250),
+	},
+	Crimson = {
+		mainFrame = Color3.fromRGB(60, 0, 10),
+		NotifyFrame = Color3.fromRGB(90, 10, 20),
+		TextColor = Color3.fromRGB(255, 180, 180),
+		TabContent = Color3.fromRGB(100, 0, 0),
+		TabButtons = Color3.fromRGB(160, 0, 20),
+		Top = Color3.fromRGB(190, 0, 30),
+		Buttons = Color3.fromRGB(220, 0, 40),
+	},
+	Desert = {
+		mainFrame = Color3.fromRGB(237, 201, 175),
+		NotifyFrame = Color3.fromRGB(245, 222, 179),
+		TextColor = Color3.fromRGB(80, 60, 40),
+		TabContent = Color3.fromRGB(222, 184, 135),
+		TabButtons = Color3.fromRGB(210, 180, 140),
+		Top = Color3.fromRGB(189, 154, 100),
+		Buttons = Color3.fromRGB(160, 130, 90),
+	},
+	Plasma = {
+		mainFrame = Color3.fromRGB(50, 0, 80),
+		NotifyFrame = Color3.fromRGB(60, 10, 90),
+		TextColor = Color3.fromRGB(255, 100, 255),
+		TabContent = Color3.fromRGB(80, 0, 120),
+		TabButtons = Color3.fromRGB(150, 0, 255),
+		Top = Color3.fromRGB(130, 0, 200),
+		Buttons = Color3.fromRGB(170, 0, 255),
+	},
+	Arctic = {
+		mainFrame = Color3.fromRGB(210, 230, 255),
+		NotifyFrame = Color3.fromRGB(230, 245, 255),
+		TextColor = Color3.fromRGB(0, 30, 60),
+		TabContent = Color3.fromRGB(200, 225, 250),
+		TabButtons = Color3.fromRGB(180, 215, 240),
+		Top = Color3.fromRGB(160, 200, 230),
+		Buttons = Color3.fromRGB(140, 190, 220),
+	},
+	Camo = {
+		mainFrame = Color3.fromRGB(75, 85, 60),
+		NotifyFrame = Color3.fromRGB(80, 100, 70),
+		TextColor = Color3.fromRGB(220, 240, 200),
+		TabContent = Color3.fromRGB(60, 70, 50),
+		TabButtons = Color3.fromRGB(100, 130, 90),
+		Top = Color3.fromRGB(90, 110, 70),
+		Buttons = Color3.fromRGB(110, 140, 100),
+	},
+	Vaporwave = {
+		mainFrame = Color3.fromRGB(255, 128, 255),
+		NotifyFrame = Color3.fromRGB(170, 255, 255),
+		TextColor = Color3.fromRGB(40, 0, 80),
+		TabContent = Color3.fromRGB(200, 140, 255),
+		TabButtons = Color3.fromRGB(180, 255, 255),
+		Top = Color3.fromRGB(255, 180, 255),
+		Buttons = Color3.fromRGB(255, 220, 255),
+	},
+	Slate = {
+		mainFrame = Color3.fromRGB(50, 50, 60),
+		NotifyFrame = Color3.fromRGB(60, 60, 70),
+		TextColor = Color3.fromRGB(220, 220, 230),
+		TabContent = Color3.fromRGB(70, 70, 80),
+		TabButtons = Color3.fromRGB(80, 80, 90),
+		Top = Color3.fromRGB(90, 90, 100),
+		Buttons = Color3.fromRGB(100, 100, 110),
+	},
 }
 
 
@@ -478,50 +730,50 @@ local TabButtons = {}
 				if tab.sliders then
 					for _, name in pairs(tab.sliders) do
 						pcall(function()
-							print("ok slider")
+					
 							name:ChangeTheme(selectedTheme)
 
 						end)
-						print(name)
+					
 					end
 				end
 				if tab.ColorPicker then
 					for _, name in pairs(tab.ColorPicker) do
 						pcall(function()
-							print("ok ColorPicker")
+					
 							name:ChangeTheme(selectedTheme)
 
 						end)
-						print(name)
+					
 					end
 
 				end
 				if tab.textboxes then
 					for _, name in pairs(tab.textboxes) do
 						pcall(function()
-							print("ok Text")
+					
 							name:ChangeTheme(selectedTheme)
 
 						end)
-						print(name)
+					
 					end
 
 				end
 				if tab.dropdowns then
 					for _, name in pairs(tab.dropdowns) do
 						pcall(function()
-							print("ok Dropdown")
+					
 							name:ChangeTheme(selectedTheme)
 
 						end)
-						print(name)
+					
 					end
 
 				end
 				if tab.toggles then
 					for _, name in pairs(tab.toggles) do
 						pcall(function()
-							print("ok Toggle")
+						
 							name:ChangeTheme(selectedTheme)
 
 						end)
@@ -531,31 +783,31 @@ local TabButtons = {}
 				if tab.texts then
 					for _, name in pairs(tab.texts) do
 						pcall(function()
-							print("ok texts")
+					
 							name:ChangeTheme(selectedTheme)
 
 						end)
-						print(name)
+				
 					end
 				end
 				if tab.paragraphs then
 					for _, name in pairs(tab.paragraphs) do
 						pcall(function()
-							print("ok paragraphs")
+							
 							name:ChangeTheme(selectedTheme)
 
 						end)
-						print(name)
+					
 					end
 				end
 				if tab.buttons then
 					for _, name in pairs(tab.buttons) do
 						pcall(function()
-							print("ok buttons")
+					
 							name:ChangeTheme(selectedTheme)
 
 						end)
-						print(name)
+						
 					end
 				end
 			end
@@ -1557,15 +1809,26 @@ end
 			tab.dropdownValue = tab.dropdownValue or {}
 
 			local btn = createUI("TextButton", {
-				Text = opts.Text or "Dropdown",
+				Text = opts.Text,
 				BackgroundColor3 = selectedTheme.Buttons,
 				TextColor3 = selectedTheme.TextColor,
 				Font = Enum.Font.Gotham,
 				TextSize = 14,
 				Size = UDim2.new(1, 0, 0, 40),
+				TextXAlignment = Enum.TextXAlignment.Left,
 				Parent = tab.content
 			})
 			createUI("UICorner", { Parent = btn })
+			local label = createUI("TextLabel", {
+				Size = UDim2.new(1, 0, 1, 0),
+				BackgroundTransparency = 1,
+				Text = opts.Default,
+				TextColor3 = selectedTheme.TextColor,
+				Font = Enum.Font.Gotham,
+				TextXAlignment = Enum.TextXAlignment.Center,
+				TextSize = 14,
+				Parent = btn,
+			})
 
 			local container = createUI("Frame", {
 				Size = UDim2.new(0.9, 0, 0, 0),
@@ -1600,9 +1863,9 @@ end
 
 			local function updateButtonText()
 				if #dropdown.Selected == 0 then
-					btn.Text = opts.Name or "Dropdown"
+					label.Text = opts.Default
 				else
-					btn.Text = table.concat(dropdown.Selected, ", ")
+					label.Text = table.concat(dropdown.Selected, ", ")
 				end
 			end
 
@@ -1737,6 +2000,7 @@ end
 			function dropdown:ChangeTheme(ThemesName)
 				btn.BackgroundColor3 = selectedTheme.Buttons
 				btn.TextColor3 = selectedTheme.TextColor
+				label.TextColor3 = selectedTheme.TextColor
 				createOptions(dropdown.Options)
 			end
 			tab.dropdowns[flag] = dropdown -- ✅ Sauvegarde du dropdown pour LoadData
@@ -1753,7 +2017,7 @@ end
 	
 end
 function library:CreateWindow(settings1, onLoad)
-	print("Library Version: 0.26")
+	print("Library Version: 0.27")
 	if game:GetService("RunService"):IsStudio() then
 		if game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary") then
 			game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary"):Destroy()
