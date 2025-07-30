@@ -1,46 +1,51 @@
-local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-
+local library
+	if game:GetService("RunService"):IsStudio() then
+		library = require(game:GetService("ReplicatedStorage").ModuleScript)
+	else
+	library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
+		end
 library:CreateWindow({
 	Title = "Zentrix Library Testing",-- Title of the script
+	Theme = "Default",--View more theme in my dicord server!
 	Icon = 0,-- 0 = no icon or add number
 	Intro = true,--Intro or no
 	IntroTitle = "Zentrix Library Testing",--the intro title
-    KeyPC = Enum.KeyCode.K,--the key for pc for Open/close the frame
+	KeyPC = Enum.KeyCode.K,--the key for pc for Open/close the frame
 	Data = {
 		EnableSavingData = true,--Enabling data saver or no
-DisableNotifyingLoadedData = false,--set it to true for disable the notify when loaded data
-FolderName = "FolderName",--Folder Name,you can change it
+		DisableNotifyingLoadedData = false,--set it to true for disable the notify when loaded data
+		FolderName = "FolderName",--Folder Name,you can change it
 		FileName = "FileName",-- File name for the data saver,you can change it
 	},
-Discord = {
-Enabled = true,--enable to copy the discord
-DiscordLink = "https://discord.gg/E2TqYRsRP4",-- put thr entire Link of discord
-RememberJoin = true,-- Set this ti false to make them copy the link every time they load the script
-Duration = 10,-- 5 is the default you can change the number only for remember join
-},
+	Discord = {
+		Enabled = true,--enable to copy the discord
+		DiscordLink = "https://discord.gg/E2TqYRsRP4",-- put thr entire Link of discord
+		RememberJoin = true,-- Set this ti false to make them copy the link every time they load the script
+		Duration = 10,-- 5 is the default you can change the number only for remember join
+	},
 	KeySystem = true,--Key System or no
 	KeySettings = {
 		Title = "Zentrix Library Testing Key System",--Title of the key(just like that)
 		Note = "the key is Zentrix",-- The method for obtaining
 		FileName = "Key",-- File name or no for saving the key
 		SaveKey = true,-- saving the key or no
-GrabKeyFromSite = false,--Coming soon
+		GrabKeyFromSite = false,--Coming soon
 		Key = {"Zentrix"},-- the name you can add many name, Exemple "Key","Key2" or you can add a function to add key but i don't really know
-	AddGetKeyButton = false,
-    AddDiscordButton = true,
-    DiscordLink = "NoInviteLink",
-    GetKeyLink = "NoKeyLink",
-    },
+		AddGetKeyButton = false,
+		AddDiscordButton = true,
+		DiscordLink = "NoInviteLink",
+		GetKeyLink = "NoKeyLink",
+	},
 }, function(window)
 	local tab = window:CreateTab("This is a Tab",0)-- Tabs , 0 = no icon or add number
-local DiscordTab = window:CreateTab("Discord",0)
+	local DiscordTab = window:CreateTab("Discord",0)
 
---Text--
+	--Text--
 	local Text = tab:AddText({
 		Text = "This is a Text",
 		Name = "Text"
 	})
---Buttons--
+	--Buttons--
 	local Button = tab:AddButton({
 		Text = "This is a button",
 		Name = "Button",
@@ -48,44 +53,45 @@ local DiscordTab = window:CreateTab("Discord",0)
 
 		end
 	})
-    local ButonDiscordLink = DiscordTab:AddButton({
+	local ButonDiscordLink = DiscordTab:AddButton({
 		Text = "Discord Link",
 		Name = "Button",
 		Callback = function() 	
-library:CopyText("https://discord.gg/E2TqYRsRP4")
+			library:CopyText("https://discord.gg/E2TqYRsRP4")
 		end
 	})
---Toggle--
+	--Toggle--
 	local Toggle = tab:AddToggle({
 		Text = "This is a Toggle",
 		Name = "Toggle",
 		Flag = "Toggle",--Put a name flag for save data if you enabled saving data
 		Default = false,
 		Callback = function(state)
-			
+
 		end
 	})
 
---Color Picker--
+	--Color Picker--
 	local ColorPicker = tab:AddColorPicker({
 		Text = "This is a color picker",
 		Name = "Color picker",
 		Color = Color3.new(255, 255, 255),
 		Flag = "ColorPicker",--Put a name flag for save data if you enabled saving data
 		Callback = function(val)
-		
+
 		end
 	})
 
 
 
---Paragraph--
+	--Paragraph--
 	local Paragraph = tab:AddParagraph({
 		Title = "This is the title of a paragraph",
-	Content = "This is a paragraph"	
+		Content = "This is a paragraph",
+		Name = "Paragraph1"
 	})
 
---Slider--
+	--Slider--
 	local Slider = tab:AddSlider({
 		Name = "This is a Slider",
 		Min = 0,
@@ -93,31 +99,42 @@ library:CopyText("https://discord.gg/E2TqYRsRP4")
 		Default = 0,
 		Flag = "Slider",--Put a name flag for save data if you enabled saving data
 		Callback = function(val)
-			
+
 		end
 	})
 
---Textbox--
+	--Textbox--
 	local TextBox = tab:AddTextbox({
 		Text = "This is a textbox",
 		Name = "TextBox",
 		Placeholder = "This is a TextBox",
 		Flag = "Textbox",--Put a name flag for save data if you enabled saving data
 		Callback = function(text)
-			
+
 		end
 	})
 
---Dropdown--
+	--Dropdown--
 	local Dropdown = tab:AddDropdown({
 		Text = "This is a Dropdown",
 		Name = "Dropdown",
 		Options = {"Option 1", "Option 2", "Option 3"},
 		Default = "This is a Dropdown",
 		MultiSelect = true,
-Flag = "Dropdown", --Put a name flag for save data if you enabled saving data
+		Flag = "Dropdown", --Put a name flag for save data if you enabled saving data
 		Callback = function(choice)
-			
+
+		end
+	})
+	local ChangeThemeDropdown = tab:AddDropdown({
+		Text = "Change Theme",
+		Name = "Dropdown2",
+		Options = {"Default", "Light", "RedDark","BlueNeon","GreenMatrix","PurpleDream"},
+		Default = "Default",
+		MultiSelect = false,
+		Flag = "Dropdown2", --Put a name flag for save data if you enabled saving data
+		Callback = function(choice)
+window:ChangeTheme(choice)
 		end
 	})
 
@@ -128,6 +145,6 @@ Flag = "Dropdown", --Put a name flag for save data if you enabled saving data
 		Duration = 5,
 	})
 
---Loading Data--
+	--Loading Data--
 	library:LoadData()--Add this if you want to load data and everytime at bottom of your code
 end)
