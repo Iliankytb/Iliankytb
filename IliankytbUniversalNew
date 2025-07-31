@@ -46,7 +46,7 @@ local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "
 
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.39",
+   Content = "V.0.40",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -614,7 +614,7 @@ local AimbotDropdown = AimbotTab:CreateDropdown({
     Options = {"Verify Wall", "Verify Team Color"},
     CurrentOption = {},
     MultipleOptions = true,
-    Flag = "AimbotDropdown",
+    Flag = "AimbotDropdown2",
     Callback = function(Options)
         VerifyWall = table.find(Options, "Verify Wall") ~= nil
         VerifyTeamColor = table.find(Options, "Verify Team Color") ~= nil
