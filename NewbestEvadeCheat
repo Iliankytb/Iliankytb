@@ -34,15 +34,17 @@ local Window = Rayfield:CreateWindow({
       Key = {"Hello"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
    }
 })
+local InfoTab = Window:CreateTab("Info")
 local PlayerTab = Window:CreateTab("Player")
-local GameTab = Window:CreateTab("Game") local EspTab = Window:CreateTab("Esp")
+local GameTab = Window:CreateTab("Game")
+local EspTab = Window:CreateTab("Esp")
 local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
 local ActiveSpeedBoost,ActiveEspPlayers,ActiveEspBots,ActiveAutoWin,ActiveAutoFarmMoney,InReviving,AutoFarmSummerEvent,ActiveEspSummerEvent,InTickets,ActiveDistanceEsp = false,false,false,false,false,false,false,false,false,false
-
+local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "Loading"})
 Rayfield:Notify({
    Title = "Evade Version",
-   Content = "V.0.13",
+   Content = "V.0.14",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -339,3 +341,40 @@ local Dropdown = SettingsTab:CreateDropdown({
 })
 
 Rayfield:LoadConfiguration()
+local function getServerInfo()
+	local Players = game:GetService("Players")
+	local playerCount = #Players:GetPlayers()
+local maxPlayers = game:GetService("Players").MaxPlayers
+local isStudio = game:GetService("RunService"):IsStudio()
+
+	return {
+		PlaceId = game.PlaceId,
+		JobId = game.JobId,
+		IsStudio = isStudio,
+		CurrentPlayers = playerCount,
+MaxPlayers =maxPlayers
+	}
+end
+task.spawn(function()
+while true do
+	task.wait(1) 
+task.spawn(function()
+	local updatedInfo = getServerInfo()
+	local updatedContent = string.format(
+		"📌 PlaceId: %s\n🔑 JobId: %s\n🧪 IsStudio: %s\n👥 Players: %d/%d",
+		updatedInfo.PlaceId,
+		updatedInfo.JobId,
+		
+		tostring(updatedInfo.IsStudio),
+		updatedInfo.CurrentPlayers,
+updatedInfo.MaxPlayers
+	)
+
+	ParagraphInfoServer:Set({
+		Title = "Info",
+		Content = updatedContent
+	})
+end)
+end
+
+end)
