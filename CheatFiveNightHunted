@@ -36,7 +36,7 @@ local Window = Rayfield:CreateWindow({
 })
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.23",
+   Content = "V.0.24",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -581,8 +581,8 @@ end,
 })
 local ValueSpeed = 16
 local PlayerSpeedSlider = PlayerTab:CreateSlider({
-   Name = "Player Speed(max 21 for not be a exploiter) ",
-   Range = {0, 21},
+   Name = "Player Speed(Recommended to put 21 for not be a exploiter) ",
+   Range = {0, 25},
    Increment = 1,
    Suffix = "Speeds",
    CurrentValue = 16,
@@ -598,7 +598,8 @@ local PlayerActiveModifyingSpeedToggle = PlayerTab:CreateToggle({
    CurrentValue = false,
    Flag = "ButtonSpeed", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
-  ActiveSpeedBoost = Value task.spawn(function()
+  ActiveSpeedBoost = Value
+task.spawn(function()
 while ActiveSpeedBoost do
 Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = ValueSpeed
 task.wait(0.1)
