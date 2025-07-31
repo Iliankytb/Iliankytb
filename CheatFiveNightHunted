@@ -36,18 +36,17 @@ local Window = Rayfield:CreateWindow({
 })
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.22",
+   Content = "V.0.23",
    Duration = 2.5,
    Image = "rewind",
 })
-local PlayerTab = Window:CreateTab("Player", "rewind")
-local EspTab = Window:CreateTab("Esp", "rewind")
+local InfoTab = Window:CreateTab("Info")
+local PlayerTab = Window:CreateTab("Player")
+local EspTab = Window:CreateTab("Esp")
 local DiscordTab = Window:CreateTab("Discord")
-local SettingsTab = Window:CreateTab("Settings", "rewind")
-
-
-local EspPlayers,EspComputer,Esplocker,EspBallPit,ActiveSpeedBoost,ActivateFly,AlrActivatedFlyPC,ActiveDistanceEsp,ComputerProgress = false,false,false,false,false,false,false,false,false
-
+local SettingsTab = Window:CreateTab("Settings")
+local ActiveNoclip,EspPlayers,EspComputer,Esplocker,EspBallPit,ActiveSpeedBoost,ActivateFly,AlrActivatedFlyPC,ActiveDistanceEsp,ComputerProgress = false,false,false,false,false,false,false,false,false,false
+local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "Loading"})
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
@@ -57,7 +56,20 @@ local FLYING = false
 local QEfly = true
 local iyflyspeed = 1
 local vehicleflyspeed = 1
+local function getServerInfo()
+	local Players = game:GetService("Players")
+	local playerCount = #Players:GetPlayers()
+local maxPlayers = game:GetService("Players").MaxPlayers
+local isStudio = game:GetService("RunService"):IsStudio()
 
+	return {
+		PlaceId = game.PlaceId,
+		JobId = game.JobId,
+		IsStudio = isStudio,
+		CurrentPlayers = playerCount,
+MaxPlayers =maxPlayers
+	}
+end
 local function sFLY(vfly)
 	repeat wait() until Players.LocalPlayer and Players.LocalPlayer.Character and Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart") and Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
 	repeat wait() until IYMouse
@@ -321,7 +333,35 @@ local function KeepEsp(Char,Parent)
 		Parent:FindFirstChildOfClass("BillboardGui"):Destroy()
 	end
 end
-
+local PlayerNoclipToggle = PlayerTab:CreateToggle({
+   Name = "Noclip",
+   CurrentValue = false,
+   Flag = "ButtonNoclip", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  ActiveNoclip = Value 
+task.spawn(function()
+while ActiveNoclip do 
+task.spawn(function()
+if Game.Players.LocalPlayer.Character then
+for _, Parts in pairs(Game.Players.LocalPlayer.Character:GetDescendants()) do
+if Parts:isA("BasePart") and Parts.CanCollide then
+Parts.CanCollide = false
+end
+end
+end
+end)
+task.wait(0.1)
+end 
+if Game.Players.LocalPlayer.Character then
+for _, Parts in pairs(Game.Players.LocalPlayer.Character:GetDescendants()) do
+if Parts:isA("BasePart") and not Parts.CanCollide then
+Parts.CanCollide = true
+end
+end
+end
+end)
+end,
+})
 local PlayerFlySpeedSlider = PlayerTab:CreateSlider({
    Name = "Fly Speed(Recommended to put 1 or below 5!)",
    Range = {0, 10},
@@ -630,3 +670,26 @@ local Dropdown = SettingsTab:CreateDropdown({
    end, 
 })
 Rayfield:LoadConfiguration()
+task.spawn(function()
+while true do
+	task.wait(1) 
+task.spawn(function()
+	local updatedInfo = getServerInfo()
+	local updatedContent = string.format(
+		"📌 PlaceId: %s\n🔑 JobId: %s\n🧪 IsStudio: %s\n👥 Players: %d/%d",
+		updatedInfo.PlaceId,
+		updatedInfo.JobId,
+		
+		tostring(updatedInfo.IsStudio),
+		updatedInfo.CurrentPlayers,
+updatedInfo.MaxPlayers
+	)
+
+	ParagraphInfoServer:Set({
+		Title = "Info",
+		Content = updatedContent
+	})
+end)
+end
+
+end)
