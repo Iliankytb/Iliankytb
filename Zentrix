@@ -590,19 +590,19 @@ local function VisibleWindow(window,settings1,gui)
 		TextColor3 = Color3.new(1, 0, 0),
 		BackgroundTransparency = 1,
 		Font = Enum.Font.GothamBold,
-		TextSize = 25,
+		TextScaled = true,
 		Size = UDim2.new(0.25, 0, 1, 0),
 		Position = UDim2.new(0.7, 0, 0, 0),
 		TextXAlignment = Enum.TextXAlignment.Right,
 		Parent = titleBar
 	})
 	local OpenButton = createUI("TextButton", {
-		Text = "Open",
-		TextColor3 = Color3.new(1, 1, 1),
+		Text = "Show "..settings1.Title,
+		TextColor3 = selectedTheme.TextColor;
 		BackgroundTransparency = 0.1,
 		Font = Enum.Font.GothamBold,
-		TextSize = 25,
-		BackgroundColor3 = Color3.fromRGB(30, 30, 30);
+		TextScaled = true,
+		BackgroundColor3 = selectedTheme.mainFrame;
 		Size = UDim2.new(0.15, 0, 0.1, 0),
 		Position = UDim2.new(0.15, 0, 0.125, 0),
 		TextXAlignment = Enum.TextXAlignment.Center,
@@ -719,6 +719,8 @@ local TabButtons = {}
 	function window:ChangeTheme(themeName)
 		if Theme[themeName] then
 			selectedTheme = Theme[themeName]
+			OpenButton.TextColor3 = selectedTheme.TextColor
+			OpenButton.BackgroundColor3 = selectedTheme.mainFrame
 			mainFrame.BackgroundColor3 = selectedTheme.mainFrame
 			titleBar.BackgroundColor3 = selectedTheme.Top
 			tabsFrame.BackgroundColor3 = selectedTheme.TabContent
@@ -815,6 +817,15 @@ local TabButtons = {}
 		else
 			warn("Theme '" .. themeName .. "' introuvable.")
 		end
+	end
+	function window:ResetShowButtonPosition()
+		OpenButton.Position = UDim2.new(0.15, 0, 0.125, 0)
+	end
+	function window:LockButton()
+		OpenButton.Draggable = false
+	end
+	function window:UnlockButton()
+		OpenButton.Draggable = true
 	end
 	function window:CreateTab(name,icon)
 		local HttpService = game:GetService("HttpService")
@@ -1819,7 +1830,7 @@ end
 				Parent = tab.content
 			})
 			createUI("UICorner", { Parent = btn })
-	
+		
 
 			local container = createUI("Frame", {
 				Size = UDim2.new(0.9, 0, 0, 0),
@@ -1855,8 +1866,12 @@ end
 			local function updateButtonText()
 				if #dropdown.Selected == 0 then
 					btn.Text = opts.Text.." "..opts.Default
+					btn.TextSize = 14
 				else
-					btn.Text = opts.Text.." "..table.concat(dropdown.Selected, ", ")
+					btn.Text =  opts.Text.." "..table.concat(dropdown.Selected, ", ")
+					local HM = #dropdown.Selected/2
+					btn.TextSize = 14
+					btn.TextSize = btn.TextSize - HM
 				end
 			end
 
@@ -1991,7 +2006,6 @@ end
 			function dropdown:ChangeTheme(ThemesName)
 				btn.BackgroundColor3 = selectedTheme.Buttons
 				btn.TextColor3 = selectedTheme.TextColor
-				label.TextColor3 = selectedTheme.TextColor
 				createOptions(dropdown.Options)
 			end
 			tab.dropdowns[flag] = dropdown -- ✅ Sauvegarde du dropdown pour LoadData
@@ -2008,7 +2022,7 @@ end
 	
 end
 function library:CreateWindow(settings1, onLoad)
-	print("Library Version: 0.28")
+	print("Library Version: 0.29")
 	if game:GetService("RunService"):IsStudio() then
 		if game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary") then
 			game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary"):Destroy()
