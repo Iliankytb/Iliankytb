@@ -39,6 +39,8 @@ library:CreateWindow({
 }, function(window)
 	local tab = window:CreateTab("This is a Tab",0)-- Tabs , 0 = no icon or add number
 	local Notiftab = window:CreateTab("Test Notif",0)-- Tabs , 0 = no icon or add number
+	local ShowButton = window:CreateTab("Show Button",0)-- Tabs , 0 = no icon or add number
+	local ResetPositionShowButtonTab = window:CreateTab("Reset Position Show Button",0)-- Tabs , 0 = no icon or add number
 	local DiscordTab = window:CreateTab("Discord",0)-- Tabs , 0 = no icon or add number
 
 	--Text--
@@ -54,9 +56,17 @@ library:CreateWindow({
 			
 		end
 	})
+	--Buttons--
+	local Button = ResetPositionShowButtonTab:AddButton({
+		Text = "Reset Position Button",
+		Name = "Button3",
+		Callback = function() 
+			window:ResetShowButtonPosition()
+		end
+	})
 	local Button = Notiftab:AddButton({
 		Text = "Test Notif",
-		Name = "Button",
+		Name = "Button2",
 		Callback = function() 	
 			local Notif = window:Notify({
 				Title = "Testing!",
@@ -81,6 +91,20 @@ library:CreateWindow({
 		Default = false,
 		Callback = function(state)
 
+		end
+	})
+	--Toggle--
+	local ShowOpenButton = ShowButton:AddToggle({
+		Text = "Lock Show Button",
+		Name = "ULShowButton",
+		Flag = "Toggle2",--Put a name flag for save data if you enabled saving data
+		Default = false,
+		Callback = function(state)
+			if state then
+				window:LockButton()
+			else
+				window:UnlockButton()
+			end
 		end
 	})
 
