@@ -38,14 +38,15 @@ local InfoTab = Window:CreateTab("Info")
 local PlayerTab = Window:CreateTab("Player")
 local GameTab = Window:CreateTab("Game")
 local EspTab = Window:CreateTab("Esp")
+local AimbotTab = Window:CreateTab("Aimbot")
 local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
-local ActiveSpeedBoost,ActiveNoclip,ActiveEspPlayers,ActiveDistanceEsp,ActivateFly,ActivateInfiniteJump,AlrActivatedFlyPC,ActiveNoCooldownPrompt = false,false,false,false,false,false,false,false
+local ActiveSpeedBoost,ActiveNoclip,ActiveEspPlayers,ActiveDistanceEsp,ActivateFly,ActivateInfiniteJump,AlrActivatedFlyPC,ActiveNoCooldownPrompt,ActiveAimbot,HowAim,VerifyTeamColor,VerifyWall = false,false,false,false,false,false,false,false,false,"Camera",false,false
 local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "Loading"})
 
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.37",
+   Content = "V.0.38",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -510,6 +511,113 @@ end)
 end,
 })
 
+local Camera = workspace.CurrentCamera
+
+local function getDistance(a, b)
+	return (a.Position - b.Position).Magnitude
+end
+
+local function hasClearLineOfSight(from, to)
+	local rayParams = RaycastParams.new()
+	rayParams.FilterType = Enum.RaycastFilterType.Blacklist
+	rayParams.FilterDescendantsInstances = {LocalPlayer.Character}
+	local result = workspace:Raycast(from.Position, (to.Position - from.Position), rayParams)
+	
+	if result then
+		local part = result.Instance
+		if part:IsA("Part") or part:IsA("MeshPart") then
+			return false
+		end
+	end
+	return true
+end
+
+
+local function aimToClosestPlayer()
+	local closestPlayer = nil
+	local shortestDistance = math.huge
+	local myCharacter = Game.Players.LocalPlayer.Character
+	local myHead = myCharacter and myCharacter:FindFirstChild("Head")
+	local myRoot = myCharacter and myCharacter:FindFirstChild("HumanoidRootPart")
+	if not (myHead and myRoot) then return end
+
+	for _, player in pairs(Players:GetPlayers()) do
+		if player ~= Game.Players.LocalPlayer and player.Character and player.Character:FindFirstChild("Head") then
+			local head = player.Character.Head
+
+			if VerifyTeamColor and player.TeamColor == Game.Players.LocalPlayer.TeamColor then
+				continue
+			end
+
+			if VerifyWall and not hasClearLineOfSight(myHead, head) then
+				continue
+			end
+
+			local distance = getDistance(myHead, head)
+			if distance < shortestDistance then
+				shortestDistance = distance
+				closestPlayer = player
+			end
+		end
+	end
+
+	if closestPlayer and closestPlayer.Character then
+		local targetHead = closestPlayer.Character:FindFirstChild("Head")
+		if targetHead then
+			if HowAim == "Camera" then
+				Camera.CFrame = CFrame.new(Camera.CFrame.Position, targetHead.Position)
+			elseif HowAim == "Character" then
+				local lookVector = (targetHead.Position - myRoot.Position).Unit
+				local newCFrame = CFrame.new(myRoot.Position, myRoot.Position + Vector3.new(lookVector.X, 0, lookVector.Z))
+				myRoot.CFrame = newCFrame
+			end
+		end
+	end
+end
+
+
+local PlayerActiveAimbot = AimbotTab:CreateToggle({
+   Name = "Active Aimbot",
+   CurrentValue = false,
+   Flag = "ButtonAimbot", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  ActiveAimbot = Value 
+task.spawn(function()
+while ActiveAimbot do 
+task.spawn(function()
+aimToClosestPlayer()
+end)
+task.wait(0.1)
+end
+end)
+end,
+})
+
+local AimbotDropdown = AimbotTab:CreateDropdown({
+    Name = "Aimbot Settings",
+    Options = {"Verify Wall", "Verify Team Color"},
+    CurrentOption = {},
+    MultipleOptions = true,
+    Flag = "AimbotDropdown",
+    Callback = function(Options)
+        VerifyWall = table.find(Options, "Verify Wall") ~= nil
+        VerifyTeamColor = table.find(Options, "Verify Team Color") ~= nil
+    end,
+})
+local AimbotDropdown2 = AimbotTab:CreateDropdown({
+    Name = "How Aim",
+    Options = {"Camera", "Character"},
+    CurrentOption = {"Camera"},
+    MultipleOptions = false,
+    Flag = "AimbotDropdown",
+    Callback = function(Options)
+if Options[1] then
+HowAim = "Camera"
+elseif Options[2] then
+HowAim = "Character"
+end
+    end,
+})
 local ButtonLoadForsakenCheat = GameTab:CreateButton({
    Name = "Forsaken Cheat Iliankytb",
      Callback = function(Value)
