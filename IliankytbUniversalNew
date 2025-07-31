@@ -46,7 +46,7 @@ local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "
 
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.41",
+   Content = "V.0.42",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -519,56 +519,44 @@ local function getDistance(a, b)
 	return (a.Position - b.Position).Magnitude
 end
 
-
 local function hasClearLineOfSight(from, to)
 	local rayParams = RaycastParams.new()
 	rayParams.FilterType = Enum.RaycastFilterType.Blacklist
 	rayParams.FilterDescendantsInstances = {LocalPlayer.Character}
 	local result = workspace:Raycast(from.Position, (to.Position - from.Position), rayParams)
-	
-	if result and (result.Instance:IsA("Part") or result.Instance:IsA("MeshPart")) then
-		return false
+	return not (result and result.Instance and result.Instance.Transparency < 1)
+end
+
+local function isValidTarget(char)
+	if not char or char == LocalPlayer.Character then return false end
+	local humanoid = char:FindFirstChildWhichIsA("Humanoid")
+	local head = char:FindFirstChild("Head")
+	if not humanoid or not head then return false end
+	if humanoid.Health <= 0 then return false end
+	if VerifyTeamColor then
+		local player = Players:GetPlayerFromCharacter(char)
+		if player and player.TeamColor == LocalPlayer.TeamColor then return false end
+	end
+	if VerifyWall then
+		local myHead = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Head")
+		if myHead and not hasClearLineOfSight(myHead, head) then return false end
 	end
 	return true
 end
 
-
 local function aimToClosestTarget()
-	local closestTarget = nil
-	local shortestDistance = math.huge
 	local myCharacter = LocalPlayer.Character
 	local myHead = myCharacter and myCharacter:FindFirstChild("Head")
 	local myRoot = myCharacter and myCharacter:FindFirstChild("HumanoidRootPart")
 	if not (myHead and myRoot) then return end
 
-	
-	local possibleTargets = {}
+	local closestTarget = nil
+	local shortestDistance = math.huge
 
-
-	for _, player in pairs(Players:GetPlayers()) do
-		if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("Humanoid") and player.Character:FindFirstChild("Head") then
-			if not VerifyTeamColor or player.TeamColor ~= LocalPlayer.TeamColor then
-				table.insert(possibleTargets, player.Character)
-			end
-		end
-	end
-
-	
 	for _, instance in pairs(workspace:GetDescendants()) do
-		if instance:IsA("Model") and instance ~= myCharacter then
-			local humanoid = instance:FindFirstChildOfClass("Humanoid")
+		if instance:IsA("Model") and isValidTarget(instance) then
 			local head = instance:FindFirstChild("Head")
-			if humanoid and head then
-				table.insert(possibleTargets, instance)
-			end
-		end
-	end
-
-
-	for _, target in pairs(possibleTargets) do
-		local head = target:FindFirstChild("Head")
-		if head then
-			if not VerifyWall or hasClearLineOfSight(myHead, head) then
+			if head then
 				local distance = getDistance(myHead, head)
 				if distance < shortestDistance then
 					shortestDistance = distance
@@ -577,7 +565,6 @@ local function aimToClosestTarget()
 			end
 		end
 	end
-
 
 	if closestTarget then
 		if HowAim == "Camera" then
