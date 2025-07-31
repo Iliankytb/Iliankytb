@@ -46,7 +46,7 @@ local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "
 
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.40",
+   Content = "V.0.41",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -598,14 +598,6 @@ local PlayerActiveAimbot = AimbotTab:CreateToggle({
    Flag = "ButtonAimbot", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
   ActiveAimbot = Value 
-task.spawn(function()
-while ActiveAimbot do 
-task.spawn(function()
-aimToClosestPlayer()
-end)
-task.wait(0.1)
-end
-end)
 end,
 })
 
@@ -620,6 +612,8 @@ local AimbotDropdown = AimbotTab:CreateDropdown({
         VerifyTeamColor = table.find(Options, "Verify Team Color") ~= nil
     end,
 })
+
+
 local AimbotDropdown2 = AimbotTab:CreateDropdown({
     Name = "How Aim",
     Options = {"Camera", "Character"},
@@ -627,13 +621,14 @@ local AimbotDropdown2 = AimbotTab:CreateDropdown({
     MultipleOptions = false,
     Flag = "AimbotDropdown",
     Callback = function(Options)
-if Options[1] then
-HowAim = "Camera"
-elseif Options[2] then
-HowAim = "Character"
-end
+        if Options[1] == "Camera" then
+            HowAim = "Camera"
+        elseif Options[1] == "Character" then
+            HowAim = "Character"
+        end
     end,
 })
+
 local ButtonLoadForsakenCheat = GameTab:CreateButton({
    Name = "Forsaken Cheat Iliankytb",
      Callback = function(Value)
@@ -837,6 +832,13 @@ end
 
 
 Rayfield:LoadConfiguration()
+task.spawn(function()
+game:GetService("RunService").RenderStepped:Connect(function()
+if ActiveAimbot then
+aimToClosestTarget()
+end
+end)
+end)
 task.spawn(function()
 while true do
 	task.wait(1) 
