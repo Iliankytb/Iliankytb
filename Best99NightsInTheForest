@@ -41,12 +41,14 @@ local GameTab = Window:CreateTab("Game")
 local BringItemTab = Window:CreateTab("Bring Item")
 local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
-local ActiveEspItems,ActiveDistanceEsp,ActiveEspEnemy,ActiveEspChildren,ActiveEspPeltTrader,ActivateFly,AlrActivatedFlyPC,ActiveNoCooldownPrompt,ActiveNoFog,ActiveAuoChopTree,DistanceForAutoChopTree,ActiveKillAura,DistanceForKillAura = false,false,false,false,false,false,false,false,false,false,25,false,25
+local ActiveEspItems,ActiveDistanceEsp,ActiveEspEnemy,ActiveEspChildren,ActiveEspPeltTrader,ActivateFly,AlrActivatedFlyPC,ActiveNoCooldownPrompt,ActiveNoFog,
+ActiveAuoChopTree,ActiveKillAura = false,false,false,false,false,false,false,false,false,false,false
 local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "Loading"})
-
+local DistanceForKillAura = 25
+local DistanceForAutoChopTree = 25
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.14",
+   Content = "V.0.15",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -907,7 +909,7 @@ end
 end)
 end,
 })
-local ParagraphNote = InfoTab:CreateParagraph({Title = "Note", Content = "For Auto Chop Tree and kill aura work equip any of axe and it will work!"})
+local ParagraphNote = GameTab:CreateParagraph({Title = "Note", Content = "For Auto Chop Tree and kill aura work equip any of axe and it will work!"})
 local PlayerKillAuraDistanceSlider = GameTab:CreateSlider({
    Name = "Distance For Kill Aura",
    Range = {25, 10000},
@@ -946,7 +948,7 @@ end
 end)
 end,
 })
-local PlayerFlySpeedSlider = PlayerTab:CreateSlider({
+local PlayerDistanceAutoChopTreeSlider = GameTab:CreateSlider({
    Name = "Distance For Auto Chop Tree(Recommended to put below 250 if you have strong axe or chainsaw)",
    Range = {0, 1000},
    Increment = 0.1,
