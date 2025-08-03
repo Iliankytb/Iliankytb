@@ -46,7 +46,7 @@ local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "
 
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.4"",
+   Content = "V.0.5",
    Duration = 2.5,
    Image = "rewind",
 })
