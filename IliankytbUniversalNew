@@ -46,7 +46,7 @@ local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "
 
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.5",
+   Content = "V.0.6",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -465,7 +465,7 @@ local plr = game:GetService('Players').LocalPlayer
 			end
 		end
 	end)
-wait0.1)
+wait(0.1)
 end
 end,
 })
