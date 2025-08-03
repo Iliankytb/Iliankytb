@@ -37,15 +37,16 @@ local Window = Rayfield:CreateWindow({
 local InfoTab = Window:CreateTab("Info")
 local PlayerTab = Window:CreateTab("Player")
 local EspTab = Window:CreateTab("Esp")
+local GameTab = Window:CreateTab("Game")
 local BringItemTab = Window:CreateTab("Bring Item")
 local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
-local ActiveEspItems,ActiveDistanceEsp,ActiveEspEnemy,ActiveEspChildren,ActiveEspPeltTrader,ActivateFly,AlrActivatedFlyPC,ActiveNoCooldownPrompt,ActiveNoFog = false,false,false,false,false,false,false,false,false
+local ActiveEspItems,ActiveDistanceEsp,ActiveEspEnemy,ActiveEspChildren,ActiveEspPeltTrader,ActivateFly,AlrActivatedFlyPC,ActiveNoCooldownPrompt,ActiveNoFog,ActiveAuoChopTree,DistanceForAutoChopTree,ActiveKillAura,DistanceForKillAura = false,false,false,false,false,false,false,false,false,false,25,false,25
 local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "Loading"})
 
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.13",
+   Content = "V.0.14",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -901,6 +902,94 @@ for _, part in pairs(Workspace.Map.Boundaries:GetChildren()) do
 		part:Destroy()
 	end
 end  
+wait(0.1)
+end
+end)
+end,
+})
+local ParagraphNote = InfoTab:CreateParagraph({Title = "Note", Content = "For Auto Chop Tree and kill aura work equip any of axe and it will work!"})
+local PlayerKillAuraDistanceSlider = GameTab:CreateSlider({
+   Name = "Distance For Kill Aura",
+   Range = {25, 10000},
+   Increment = 0.1,
+   Suffix = "Distance",
+   CurrentValue = 25,
+   Flag = "KillAuraD2", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+CurrentValue = Value
+DistanceForKillAura = Value
+end,  DistanceForKillAura = CurrentValue,
+})
+local KillAuraToggle = GameTab:CreateToggle({
+   Name = "Kill Aura",
+   CurrentValue = false,
+   Flag = "KillAura1", 
+   Callback = function(Value)
+ActiveKillAura = Value 
+task.spawn(function()
+while ActiveKillAura do 
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local hrp = character:WaitForChild("HumanoidRootPart")
+local weapon = (player.Inventory:FindFirstChild("Old Axe") or player.Inventory:FindFirstChild("Good Axe") or player.Inventory:FindFirstChild("Strong Axe") or player.Inventory:FindFirstChild("Chainsaw"))
+task.spawn(function()
+for _, bunny in pairs(workspace.Characters:GetChildren()) do
+	if bunny:IsA("Model") and bunny.PrimaryPart then
+		local distance = (bunny.PrimaryPart.Position - hrp.Position).Magnitude
+		if distance <= DistanceForKillAura then
+			local result = game:GetService("ReplicatedStorage").RemoteEvents.ToolDamageObject:InvokeServer(bunny, weapon, 999, hrp.CFrame)
+		end
+	end
+end
+wait(0.1)
+end
+end)
+end,
+})
+local PlayerFlySpeedSlider = PlayerTab:CreateSlider({
+   Name = "Distance For Auto Chop Tree(Recommended to put below 250 if you have strong axe or chainsaw)",
+   Range = {0, 1000},
+   Increment = 0.1,
+   Suffix = "Distance",
+   CurrentValue = 25,
+   Flag = "AutoChopTreeDistance2", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+CurrentValue = Value
+DistanceForAutoChopTree = Value
+end,  DistanceForAutoChopTree = CurrentValue,
+})
+local AutoChopTreeToggle = GameTab:CreateToggle({
+   Name = "Auto Chop Tree",
+   CurrentValue = false,
+   Flag = "AutoChopTree1", 
+   Callback = function(Value)
+ActiveAuoChopTree = Value 
+task.spawn(function()
+while ActiveAuoChopTree do 
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local hrp = character:WaitForChild("HumanoidRootPart")
+local weapon = (player.Inventory:FindFirstChild("Old Axe") or player.Inventory:FindFirstChild("Good Axe") or player.Inventory:FindFirstChild("Strong Axe") or player.Inventory:FindFirstChild("Chainsaw"))
+task.spawn(function()
+for _, bunny in pairs(workspace.Map.Foliage:GetChildren()) do
+	if bunny:IsA("Model") and (bunny.Name == "Small Tree" or bunny.Name == "TreeBig1" or bunny.Name == "TreeBig2")  and bunny.PrimaryPart then
+		local distance = (bunny.PrimaryPart.Position - hrp.Position).Magnitude
+		if distance <= DistanceForAutoChopTree then
+			local result = game:GetService("ReplicatedStorage").RemoteEvents.ToolDamageObject:InvokeServer(bunny, weapon, 999, hrp.CFrame)
+		end
+	end
+end 
+end)
+task.spawn(function()
+for _, bunny in pairs(workspace.Map.Landmarks:GetChildren()) do
+	if bunny:IsA("Model") and (bunny.Name == "Small Tree" or bunny.Name == "TreeBig1" or bunny.Name == "TreeBig2")  and bunny.PrimaryPart then
+		local distance = (bunny.PrimaryPart.Position - hrp.Position).Magnitude
+		if distance <= DistanceForAutoChopTree then
+			local result = game:GetService("ReplicatedStorage").RemoteEvents.ToolDamageObject:InvokeServer(bunny, weapon, 999, hrp.CFrame)
+			end
+	end
+end
+end)
 wait(0.1)
 end
 end)
