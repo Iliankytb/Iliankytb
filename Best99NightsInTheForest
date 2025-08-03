@@ -965,9 +965,9 @@ local AutoChopTreeToggle = GameTab:CreateToggle({
    CurrentValue = false,
    Flag = "AutoChopTree1", 
    Callback = function(Value)
-ActiveAuoChopTree = Value 
+ActiveAutoChopTree = Value 
 task.spawn(function()
-while ActiveAuoChopTree do 
+while ActiveAutoChopTree do 
 local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local hrp = character:WaitForChild("HumanoidRootPart")
