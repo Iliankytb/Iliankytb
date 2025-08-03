@@ -46,7 +46,7 @@ local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "
 
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.42",
+   Content = "V.0.4"",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -446,12 +446,27 @@ end)
 end,
 })
 
-local PlayerFlyToggle = PlayerTab:CreateToggle({
+local PlayerInfiniteJumpToggle = PlayerTab:CreateToggle({
    Name = "Infinite Jump",
    CurrentValue = false,
    Flag = "ButtonInfiniteJump", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
   ActivateInfiniteJump = Value 
+while ActivateInfiniteJump do
+local plr = game:GetService('Players').LocalPlayer
+	local m = plr:GetMouse()
+	m.KeyDown:connect(function(k)
+		if ActivateInfiniteJump then
+			if k:byte() == 32 then
+			humanoid = game:GetService'Players'.LocalPlayer.Character:FindFirstChildOfClass('Humanoid')
+			humanoid:ChangeState('Jumping')
+			wait()
+			humanoid:ChangeState('Seated')
+			end
+		end
+	end)
+wait0.1)
+end
 end,
 })
 
