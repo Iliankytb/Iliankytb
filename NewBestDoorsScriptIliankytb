@@ -849,7 +849,6 @@ task.spawn(function()
 if Assets:isA("Model") and (Assets.Name == "KeyObtain" or Assets.Name == "LeverForGate" or Assets.Name == "Battery" or Assets.Name == "Flashlight" or Assets.Name == "Lighter" or Assets.Name == "Bandage" or Assets.Name == "Crucifix" or Assets.Name == "Vitamins" or Assets.Name == "Lockpick" or Assets.Name == "Candle" or Assets.Name == "AlarmClock" or Assets.Name == "LibraryHintPaper" or Assets.Name == "Smoothie" or Assets.Name == "FuseObtain" or Assets.Name == "BatteryPack" or Assets.Name == "Glowsticks" or Assets.Name == "StarVial" or Assets.Name == "Shakelight" or Assets.Name == "SkeletonKey" or Assets.Name == "Compass" or Assets.Name == "Shears" or Assets.Name == "Lantern")  and not Assets:FindFirstChildOfClass("Highlight") 
 and not  Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
 CreateEsp(Assets,Color3.fromRGB(255,255,0),Assets.Name,Assets.PrimaryPart) 
-end)
 end
 end)
 end  
