@@ -800,7 +800,7 @@ end end end
 end
 end)
 task.spawn(function()
-if ActiveEspGen and child.Name = "MinesGenerator" then
+if ActiveEspGen and child.Name == "MinesGenerator" then
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
@@ -856,7 +856,7 @@ end
 end
 end)
 task.spawn(function()
-if ActiveEspTimerLever and child.Name = "TimerLever" then
+if ActiveEspTimerLever and child.Name == "TimerLever" then
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
