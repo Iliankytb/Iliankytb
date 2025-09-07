@@ -97,14 +97,14 @@ local AFToggle = GameTab:CreateToggle({
 task.spawn(function()
 while AutoFarm do
 for _,zombies in pairs(workspace.Entities.Zombie:GetChildren()) do
-if zombies:IsA("Model") and zombies:FindFirstChildOfClass("Humanoid").Health ~= 0 then 
+if zombies:IsA("Model") then 
 Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = zombies.PrimaryPart.CFrame + Vector3.new(0,3,0)
-Game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true 
+
 end 
 end 
 wait(0.1)
 end
-Game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+
 end)
 end,
 })
@@ -123,7 +123,7 @@ game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool"):SetAttribute("l
 end)
 task.wait(0.1) 
 end
-task.wait(0.1)
+task.wait(0.1) end
 end)
 end,
 })
@@ -157,4 +157,4 @@ local Dropdown = SettingsTab:CreateDropdown({
    end, 
 })
 
-Rayfield:LoadConfiguration()
+Rayfield:LoadConfiguration() workspace.School.Doors:Destroy()
