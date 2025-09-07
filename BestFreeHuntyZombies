@@ -38,7 +38,7 @@ local PlayerTab = Window:CreateTab("Player")
 local GameTab = Window:CreateTab("Game")
 local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
-local ActiveSpeedBoost,AutoFarm,NoCooldownAbility,AutoReplay = false,false,false,false
+local ActiveSpeedBoost,AutoFarm,NoCooldownAbility,AutoReplay,FreezeNPC = false,false,false,false,false
 Rayfield:Notify({
    Title = "script Version",
    Content = "V.0.1",
@@ -97,8 +97,8 @@ local AFToggle = GameTab:CreateToggle({
 task.spawn(function()
 while AutoFarm do
 for _,zombies in pairs(workspace.Entities.Zombie:GetChildren()) do
-if zombies:IsA("Model") then 
-Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = zombies.PrimaryPart.CFrame + Vector3.new(0,3,0)
+if zombies:IsA("Model") and zombies.Head.EntityHealth.HealthBar.Bar.Size.X.Scale ~= 0 then 
+Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = zombies.PrimaryPart.CFrame
 
 end 
 end 
@@ -127,7 +127,21 @@ task.wait(0.1) end
 end)
 end,
 })
-
+local FreezeZombiesToggle = GameTab:CreateToggle({
+   Name = "Freeze Zombies",
+   CurrentValue = false,
+   Flag = "ButtonFreezeZombies1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  FreezeNPC = Value 
+ for _, k in pairs(workspace.School.Doors:GetChildren()) do k:SetAttribute("locked",Value)  end
+end,
+})
+local ButtonTPCheat = GameTab:CreateButton({
+   Name = "TP to endl",
+   Callback = function()
+  Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.School.Rooms.RooftopBoss.HeliObjective.CFrame
+end,
+})
 local ButtonUnloadCheat = SettingsTab:CreateButton({
    Name = "Unload Cheat",
    Callback = function()
@@ -157,4 +171,4 @@ local Dropdown = SettingsTab:CreateDropdown({
    end, 
 })
 
-Rayfield:LoadConfiguration() workspace.School.Doors:Destroy()
+Rayfield:LoadConfiguration() 
