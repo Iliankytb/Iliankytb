@@ -41,7 +41,7 @@ local SettingsTab = Window:CreateTab("Settings")
 local ActiveSpeedBoost,AutoFarm,NoCooldownAbility,AutoReplay,FreezeNPC,AutoCollect,NoStun,InCollecting,AutoEscape,InteractedWithGen,InEscaping = false,false,false,false,false,false,false,false,false,false,false
 Rayfield:Notify({
    Title = "script Version",
-   Content = "V.0.6",
+   Content = "V.0.7",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -152,14 +152,13 @@ for _, k in pairs(workspace.DropItems:GetChildren()) do
 task.spawn(function()
 if k:isA("BasePart") and not InEscaping and not Game.Players.LocalPlayer.Character:GetAttribute("Escaped") then
 InCollecting = true
-Game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
 Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = k.CFrame
 wait(0.25)
-end
+end 
 end)
 end
 wait(0.1)
-end
+end InCollecting = false
 end,
 })
 local NoStunToggle = GameTab:CreateToggle({
@@ -169,7 +168,7 @@ local NoStunToggle = GameTab:CreateToggle({
    Callback = function(Value)
   NoStun = Value 
 while NoStun do
-if not InCollecting and not Game.Players.LocalPlayer.Character:GetAttribute("Escaped") and not InEscaping then
+if  not Game.Players.LocalPlayer.Character:GetAttribute("Escaped") and not InEscaping then
 Game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
 Game.Players.LocalPlayer.Character:SetAttribute("abilitiesDisabled",false)
 end
@@ -192,7 +191,7 @@ game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = heliObjective.CFram
     prompt:InputHoldBegin()
     task.wait(prompt.HoldDuration) -- Attente de la durée de maintien
     prompt:InputHoldEnd()
-wait(5)
+wait(7)
 InteractedWithGen = true
 end
 end
