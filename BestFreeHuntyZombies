@@ -41,7 +41,7 @@ local SettingsTab = Window:CreateTab("Settings")
 local ActiveSpeedBoost,AutoFarm,NoCooldownAbility,AutoReplay,FreezeNPC,AutoCollect,NoStun,InCollecting,AutoEscape,InteractedWithGen,InEscaping = false,false,false,false,false,false,false,false,false,false,false
 Rayfield:Notify({
    Title = "script Version",
-   Content = "V.0.5",
+   Content = "V.0.6",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -184,7 +184,7 @@ local AutoEscapeToggle = GameTab:CreateToggle({
    Callback = function(Value)
   AutoEscape = Value 
 while AutoEscape do 
-if workspace.School.Rooms:FindFirstChild("RooftopBoss"):FindFirstChild("RadioObjective") and not InEscaping and not InteractedWithGen and not Game.Players.LocalPlayer.Character:GetAttribute("Escaped") and  then
+if workspace.School.Rooms:FindFirstChild("RooftopBoss"):FindFirstChild("RadioObjective") and not InEscaping and not InteractedWithGen and not Game.Players.LocalPlayer.Character:GetAttribute("Escaped")  then
 local heliObjective = workspace.School.Rooms.RooftopBoss.RadioObjective
 local prompt = heliObjective:FindFirstChildOfClass("ProximityPrompt")
 if prompt then
