@@ -41,7 +41,7 @@ local SettingsTab = Window:CreateTab("Settings")
 local ActiveSpeedBoost,AutoFarm,NoCooldownAbility,AutoReplay,FreezeNPC,AutoCollect,NoStun,InCollecting,AutoEscape,InteractedWithGen,InEscaping = false,false,false,false,false,false,false,false,false,false,false
 Rayfield:Notify({
    Title = "script Version",
-   Content = "V.0.4",
+   Content = "V.0.5",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -97,7 +97,7 @@ local AFToggle = GameTab:CreateToggle({
 task.spawn(function()
 while AutoFarm do
 for _,zombies in pairs(workspace.Entities.Zombie:GetChildren()) do
-if zombies:IsA("Model") and zombies.Head.EntityHealth.HealthBar.Bar.Size.X.Scale ~= 0 and not InCollecting then 
+if zombies:IsA("Model") and zombies.Head.EntityHealth.HealthBar.Bar.Size.X.Scale ~= 0 and not InCollecting and not InEscaping and not InteractedWithGen and not Game.Players.LocalPlayer.Character:GetAttribute("Escaped") then 
 Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = zombies.PrimaryPart.CFrame
 end 
 end 
@@ -181,14 +181,31 @@ local AutoEscapeToggle = GameTab:CreateToggle({
    Callback = function(Value)
   AutoEscape = Value 
 while AutoEscape do 
-if workspace.School.Rooms:FindFirstChild("RooftopBoss"):FindFirstChild("HeliObjective") and InteractedWithGen and not Game.Players.LocalPlayer.Character:GetAttribute("Escaped") then
+if workspace.School.Rooms:FindFirstChild("RooftopBoss"):FindFirstChild("RadioObjective") and not InEscaping and not InteractedWithGen and not Game.Players.LocalPlayer.Character:GetAttribute("Escaped") and  then
+local heliObjective = workspace.School.Rooms.RooftopBoss.RadioObjective
+local prompt = heliObjective:FindFirstChildOfClass("ProximityPrompt")
+if prompt then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = heliObjective.CFrame
+    prompt:InputHoldBegin()
+    task.wait(prompt.HoldDuration) -- Attente de la durée de maintien
+    prompt:InputHoldEnd()
+wait(5)
+InteractedWithGen = true
+end
+end
+if workspace.School.Rooms:FindFirstChild("RooftopBoss"):FindFirstChild("HeliObjective") and not InEscaping and InteractedWithGen and not Game.Players.LocalPlayer.Character:GetAttribute("Escaped") then
 local heliObjective = workspace.School.Rooms.RooftopBoss.HeliObjective
 local prompt = heliObjective:FindFirstChildOfClass("ProximityPrompt")
 
 if prompt then
-    prompt.Triggered:Connect(function(player)
-   InEscaping = true
-end)
+InEscaping = true
+for _, part in pairs(workspace.School.Rooms.RooftopBoss.Buildings.InvisibleWalls:GetChildren()) do
+if part then
+part.CanCollide = false
+end
+end
+
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = heliObjective.CFrame
     prompt:InputHoldBegin()
     task.wait(prompt.HoldDuration) -- Attente de la durée de maintien
     prompt:InputHoldEnd()
@@ -218,6 +235,11 @@ local ButtonTPCheat = GameTab:CreateButton({
    Callback = function()
 if workspace.School.Rooms.RooftopBoss.HeliObjective then
 Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.School.Rooms.RooftopBoss.HeliObjective.CFrame
+for _, part in pairs(workspace.School.Rooms.RooftopBoss.Buildings.InvisibleWalls:GetChildren()) do
+if part then
+part.CanCollide = false
+end
+end
 end
 end,
 })
