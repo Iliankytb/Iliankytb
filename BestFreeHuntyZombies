@@ -38,10 +38,10 @@ local PlayerTab = Window:CreateTab("Player")
 local GameTab = Window:CreateTab("Game")
 local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
-local ActiveSpeedBoost,AutoFarm,NoCooldownAbility,AutoReplay,FreezeNPC,AutoCollect,NoStun,InCollecting,AutoEscape = false,false,false,false,false,false,false,false,false
+local ActiveSpeedBoost,AutoFarm,NoCooldownAbility,AutoReplay,FreezeNPC,AutoCollect,NoStun,InCollecting,AutoEscape,InteractedWithGen,InEscaping = false,false,false,false,false,false,false,false,false,false,false
 Rayfield:Notify({
    Title = "script Version",
-   Content = "V.0.3",
+   Content = "V.0.4",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -175,19 +175,42 @@ end
 end,
 })
 local AutoEscapeToggle = GameTab:CreateToggle({
-   Name = "Auto Escape(Soon)",
+   Name = "Auto Escape",
    CurrentValue = false,
    Flag = "ButtonAE1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
   AutoEscape = Value 
+while AutoEscape do 
+if workspace.School.Rooms:FindFirstChild("RooftopBoss"):FindFirstChild("HeliObjective") and InteractedWithGen and not Game.Players.LocalPlayer.Character:GetAttribute("Escaped") then
+local heliObjective = workspace.School.Rooms.RooftopBoss.HeliObjective
+local prompt = heliObjective:FindFirstChildOfClass("ProximityPrompt")
+
+if prompt then
+    prompt.Triggered:Connect(function(player)
+   InEscaping = true
+end)
+    prompt:InputHoldBegin()
+    task.wait(prompt.HoldDuration) -- Attente de la durée de maintien
+    prompt:InputHoldEnd()
+end
+end
+wait(0.5)
+end
 end,
 })
 local AutoReplayToggle = GameTab:CreateToggle({
-   Name = "Auto Replay(Soon)",
+   Name = "Auto Replay",
    CurrentValue = false,
    Flag = "ButtonAR1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
   AutoReplay = Value 
+while AutoReplay do
+if Game.Players.LocalPlayer.Character:GetAttribute("Escaped") then
+game:GetService("ReplicatedStorage").external.Packets.voteReplay:FireServer()
+break
+end
+wait(1)
+end
 end,
 })
 local ButtonTPCheat = GameTab:CreateButton({
