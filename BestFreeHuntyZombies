@@ -41,7 +41,7 @@ local SettingsTab = Window:CreateTab("Settings")
 local ActiveSpeedBoost,AutoFarm,NoCooldownAbility,AutoReplay,FreezeNPC,AutoCollect,NoStun,InCollecting,AutoEscape = false,false,false,false,false,false,false,false,false
 Rayfield:Notify({
    Title = "script Version",
-   Content = "V.0.2",
+   Content = "V.0.3",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -117,7 +117,7 @@ task.spawn(function()
 while NoCooldownAbility do
 for I = 1,9 do 
 task.spawn(function()
-game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool"):SetAttribute("lastActivated"..I-1,0)
+game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool"):SetAttribute("lastActivated"..I-1,game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool"):GetAttribute("lastActivated"..I-1)+500)
 end)
 task.wait(0.1) 
 end
@@ -169,7 +169,7 @@ local NoStunToggle = GameTab:CreateToggle({
   NoStun = Value 
 while NoStun do
 Game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
-Game.Players.LocalPlayer.Character:SetAttribute("AbilityDisabled",false)
+Game.Players.LocalPlayer.Character:SetAttribute("abilitiesDisabled",false)
 wait(0.1)
 end
 end,
