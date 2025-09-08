@@ -38,10 +38,10 @@ local PlayerTab = Window:CreateTab("Player")
 local GameTab = Window:CreateTab("Game")
 local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
-local ActiveSpeedBoost,AutoFarm,NoCooldownAbility,AutoReplay,FreezeNPC,AutoCollect,NoStun,InCollecting,AutoEscape,InteractedWithGen,InEscaping = false,false,false,false,false,false,false,false,false,false,false
+local ActiveSpeedBoost,AutoFarm,NoCooldownAbility,AutoReplay,FreezeNPC,AutoCollect,NoStun,InCollecting,AutoEscape,InteractedWithGen,InEscaping,ActivateDash = false,false,false,false,false,false,false,false,false,false,false,false
 Rayfield:Notify({
    Title = "script Version",
-   Content = "V.0.7",
+   Content = "V.0.8",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -82,6 +82,35 @@ task.spawn(function()
 while ActiveSpeedBoost do 
 task.spawn(function()
 Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = ValueSpeed 
+end)
+task.wait(0.1)
+end end)
+end,
+})
+local ValueSpeed2 = 16
+local PlayerSpeedSlider = PlayerTab:CreateSlider({
+   Name = "Dash Speed",
+   Range = {0, 1000},
+   Increment = 1,
+   Suffix = "Speeds",
+   CurrentValue = 16,
+   Flag = "Slider2", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+CurrentValue = Value
+ValueSpeed2 = Value
+end,  ValueSpeed2 = CurrentValue,
+})
+
+local PlayerActiveModifyingSpeedToggle = PlayerTab:CreateToggle({
+   Name = "Active Modifying Dash Speed",
+   CurrentValue = false,
+   Flag = "ButtonSpeed2", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  ActiveDash = Value 
+task.spawn(function()
+while ActiveDash do 
+task.spawn(function()
+Game.Players.LocalPlayer.Character:SetAttribute("DashMagnitude",ValueSpeed2)
 end)
 task.wait(0.1)
 end end)
@@ -183,7 +212,7 @@ local AutoEscapeToggle = GameTab:CreateToggle({
    Callback = function(Value)
   AutoEscape = Value 
 while AutoEscape do 
-if workspace.School.Rooms:FindFirstChild("RooftopBoss"):FindFirstChild("RadioObjective") and not InEscaping and not InteractedWithGen and not Game.Players.LocalPlayer.Character:GetAttribute("Escaped")  then
+if workspace.School.Rooms:FindFirstChild("RooftopBoss") and not InEscaping and not InteractedWithGen and not Game.Players.LocalPlayer.Character:GetAttribute("Escaped")  then
 local heliObjective = workspace.School.Rooms.RooftopBoss.RadioObjective
 local prompt = heliObjective:FindFirstChildOfClass("ProximityPrompt")
 if prompt then
@@ -195,7 +224,7 @@ wait(7)
 InteractedWithGen = true
 end
 end
-if workspace.School.Rooms:FindFirstChild("RooftopBoss"):FindFirstChild("HeliObjective") and not InEscaping and InteractedWithGen and not Game.Players.LocalPlayer.Character:GetAttribute("Escaped") then
+if workspace.School.Rooms:FindFirstChild("RooftopBoss") and not InEscaping and InteractedWithGen and not Game.Players.LocalPlayer.Character:GetAttribute("Escaped") then
 local heliObjective = workspace.School.Rooms.RooftopBoss.HeliObjective
 local prompt = heliObjective:FindFirstChildOfClass("ProximityPrompt")
 
