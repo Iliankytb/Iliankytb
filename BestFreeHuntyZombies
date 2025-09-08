@@ -38,10 +38,10 @@ local PlayerTab = Window:CreateTab("Player")
 local GameTab = Window:CreateTab("Game")
 local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
-local ActiveSpeedBoost,AutoFarm,NoCooldownAbility,AutoReplay,FreezeNPC = false,false,false,false,false
+local ActiveSpeedBoost,AutoFarm,NoCooldownAbility,AutoReplay,FreezeNPC,AutoCollect,NoStun,InCollecting,AutoEscape = false,false,false,false,false,false,false,false,false
 Rayfield:Notify({
    Title = "script Version",
-   Content = "V.0.1",
+   Content = "V.0.2",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -97,14 +97,12 @@ local AFToggle = GameTab:CreateToggle({
 task.spawn(function()
 while AutoFarm do
 for _,zombies in pairs(workspace.Entities.Zombie:GetChildren()) do
-if zombies:IsA("Model") and zombies.Head.EntityHealth.HealthBar.Bar.Size.X.Scale ~= 0 then 
+if zombies:IsA("Model") and zombies.Head.EntityHealth.HealthBar.Bar.Size.X.Scale ~= 0 and not InCollecting then 
 Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = zombies.PrimaryPart.CFrame
-
 end 
 end 
 wait(0.1)
 end
-
 end)
 end,
 })
@@ -133,13 +131,71 @@ local FreezeZombiesToggle = GameTab:CreateToggle({
    Flag = "ButtonFreezeZombies1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
   FreezeNPC = Value 
- for _, k in pairs(workspace.School.Doors:GetChildren()) do k:SetAttribute("locked",Value)  end
+while FreezeNPC do
+for _, k in pairs(workspace.School.Doors:GetChildren()) do 
+k:SetAttribute("locked",true)
+end
+wait(1)
+end
+for _, k in pairs(workspace.School.Doors:GetChildren()) do k:SetAttribute("locked",false)  end
+ end,
+})
+local AutoCollectToggle = GameTab:CreateToggle({
+   Name = "Auto Collect",
+   CurrentValue = false,
+   Flag = "ButtonAC1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  AutoCollect = Value 
+while AutoCollect do
+InCollecting = false
+for _, k in pairs(workspace.DropItems:GetChildren()) do 
+task.spawn(function()
+if k:isA("BasePart") then
+InCollecting = true
+Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = k.CFrame
+wait(0.25)
+end
+end)
+end
+wait(0.1)
+end
+end,
+})
+local NoStunToggle = GameTab:CreateToggle({
+   Name = "No Stun",
+   CurrentValue = false,
+   Flag = "ButtonNS1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  NoStun = Value 
+while NoStun do
+Game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+Game.Players.LocalPlayer.Character:SetAttribute("AbilityDisabled",false)
+wait(0.1)
+end
+end,
+})
+local AutoEscapeToggle = GameTab:CreateToggle({
+   Name = "Auto Escape(Soon)",
+   CurrentValue = false,
+   Flag = "ButtonAE1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  AutoEscape = Value 
+end,
+})
+local AutoReplayToggle = GameTab:CreateToggle({
+   Name = "Auto Replay(Soon)",
+   CurrentValue = false,
+   Flag = "ButtonAR1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  AutoReplay = Value 
 end,
 })
 local ButtonTPCheat = GameTab:CreateButton({
-   Name = "TP to endl",
+   Name = "TP to end",
    Callback = function()
-  Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.School.Rooms.RooftopBoss.HeliObjective.CFrame
+if workspace.School.Rooms.RooftopBoss.HeliObjective then
+Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.School.Rooms.RooftopBoss.HeliObjective.CFrame
+end
 end,
 })
 local ButtonUnloadCheat = SettingsTab:CreateButton({
