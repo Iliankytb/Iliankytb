@@ -150,8 +150,9 @@ while AutoCollect do
 InCollecting = false
 for _, k in pairs(workspace.DropItems:GetChildren()) do 
 task.spawn(function()
-if k:isA("BasePart") then
+if k:isA("BasePart") and not InEscaping and not Game.Players.LocalPlayer.Character:GetAttribute("Escaped") then
 InCollecting = true
+Game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
 Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = k.CFrame
 wait(0.25)
 end
@@ -168,8 +169,10 @@ local NoStunToggle = GameTab:CreateToggle({
    Callback = function(Value)
   NoStun = Value 
 while NoStun do
+if not InCollecting and not Game.Players.LocalPlayer.Character:GetAttribute("Escaped") and not InEscaping then
 Game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
 Game.Players.LocalPlayer.Character:SetAttribute("abilitiesDisabled",false)
+end
 wait(0.1)
 end
 end,
