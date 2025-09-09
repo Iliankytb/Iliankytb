@@ -41,7 +41,7 @@ local SettingsTab = Window:CreateTab("Settings")
 local ActiveSpeedBoost,AutoFarm,NoCooldownAbility,AutoReplay,FreezeNPC,AutoCollect,NoStun,InCollecting,AutoEscape,InteractedWithGen,InEscaping,ActivateDash,InSafePos,AutoSP,AutoGen = false,false,false,false,false,false,false,false,false,false,false,false,false,false,false
 Rayfield:Notify({
    Title = "script Version",
-   Content = "V.0.14",
+   Content = "V.0.15",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -128,7 +128,7 @@ local AFToggle = GameTab:CreateToggle({
 task.spawn(function()
 while AutoFarm do
 for _,zombies in pairs(workspace.Entities.Zombie:GetChildren()) do
-if zombies:IsA("Model") and zombies.Head.EntityHealth.HealthBar.Bar.Size.X.Scale ~= 0 and not InSafePos and not InCollecting and not InEscaping and not InteractedWithGen and not Game.Players.LocalPlayer.Character:GetAttribute("Escaped") then 
+if zombies:IsA("Model") and zombies.Head.EntityHealth.HealthBar.Bar.Size.X.Scale ~= 0 and not InSafePos and not InCollecting and not InEscaping and not InteractedWithGen and not Game.Players.LocalPlayer:GetAttribute("escaped") then 
 Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = zombies.PrimaryPart.CFrame
 end 
 end 
@@ -187,7 +187,7 @@ while AutoCollect do
 InCollecting = false
 for _, k in pairs(workspace.DropItems:GetChildren()) do 
 task.spawn(function()
-if k:isA("BasePart") and not InSafePos and  not InEscaping and not Game.Players.LocalPlayer.Character:GetAttribute("Escaped") then
+if k:isA("BasePart") and not InSafePos and  not InEscaping and not Game.Players.LocalPlayer:GetAttribute("escaped") then
 InCollecting = true
 Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = k.CFrame
 wait(0.25)
@@ -205,7 +205,7 @@ local NoStunToggle = GameTab:CreateToggle({
    Callback = function(Value)
   NoStun = Value 
 while NoStun do
-if  not Game.Players.LocalPlayer.Character:GetAttribute("Escaped") and not InEscaping then
+if  not Game.Players.LocalPlayer:GetAttribute("escaped") and not InEscaping then
 Game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
 Game.Players.LocalPlayer.Character:SetAttribute("abilitiesDisabled",false)
 end
@@ -221,7 +221,7 @@ local AutoGenToggle = GameTab:CreateToggle({
    Callback = function(Value)
   AutoGen = Value 
 while AutoGen do
-if workspace.Sewers.Rooms:FindFirstChild("BossRoom") and not InEscaping and not InteractedWithGen and not Game.Players.LocalPlayer.Character:GetAttribute("Escaped")  then
+if workspace.Sewers.Rooms:FindFirstChild("BossRoom") and not InEscaping and not InteractedWithGen and not Game.Players.LocalPlayer:GetAttribute("escaped")  then
 local heliObjective = workspace.Sewers.Rooms.BossRoom.generator.gen
 local prompt = heliObjective:FindFirstChildOfClass("ProximityPrompt")
 if prompt then
@@ -267,7 +267,7 @@ local AutoEscapeToggle = GameTab:CreateToggle({
    Callback = function(Value)
   AutoEscape = Value 
 while AutoEscape do 
-if workspace.School.Rooms:FindFirstChild("RooftopBoss") and not InEscaping and not InteractedWithGen and not Game.Players.LocalPlayer.Character:GetAttribute("Escaped")  then
+if workspace.School.Rooms:FindFirstChild("RooftopBoss") and not InEscaping and not game:GetService("ReplicatedStorage").OBJECTIVES.surviveTimer and not InteractedWithGen and not Game.Players.LocalPlayer:GetAttribute("escaped")  then
 local heliObjective = workspace.School.Rooms.RooftopBoss.RadioObjective
 local prompt = heliObjective:FindFirstChildOfClass("ProximityPrompt")
 if prompt then
@@ -279,7 +279,7 @@ wait(7)
 InteractedWithGen = true
 end
 end
-if workspace.School.Rooms:FindFirstChild("RooftopBoss") and not InEscaping and InteractedWithGen and not Game.Players.LocalPlayer.Character:GetAttribute("Escaped") then
+if game:GetService("ReplicatedStorage").OBJECTIVES.surviveTimer and workspace.School.Rooms:FindFirstChild("RooftopBoss") and not InEscaping and InteractedWithGen and not Game.Players.LocalPlayer:GetAttribute("escaped") then
 local heliObjective = workspace.School.Rooms.RooftopBoss.HeliObjective
 local prompt = heliObjective:FindFirstChildOfClass("ProximityPrompt")
 
