@@ -41,7 +41,7 @@ local SettingsTab = Window:CreateTab("Settings")
 local ActiveSpeedBoost,AutoFarm,NoCooldownAbility,AutoReplay,FreezeNPC,AutoCollect,NoStun,InCollecting,AutoEscape,InteractedWithGen,InEscaping,ActivateDash,InSafePos,AutoSP,AutoGen = false,false,false,false,false,false,false,false,false,false,false,false,false,false,false
 Rayfield:Notify({
    Title = "script Version",
-   Content = "V.0.13",
+   Content = "V.0.14",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -221,7 +221,7 @@ local AutoGenToggle = GameTab:CreateToggle({
    Callback = function(Value)
   AutoGen = Value 
 while AutoGen do
-if workspace.Sewers.Rooms.BossRoom and not InEscaping and not InteractedWithGen and not Game.Players.LocalPlayer.Character:GetAttribute("Escaped")  then
+if workspace.Sewers.Rooms:FindFirstChild("BossRoom") and not InEscaping and not InteractedWithGen and not Game.Players.LocalPlayer.Character:GetAttribute("Escaped")  then
 local heliObjective = workspace.Sewers.Rooms.BossRoom.generator.gen
 local prompt = heliObjective:FindFirstChildOfClass("ProximityPrompt")
 if prompt then
