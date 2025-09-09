@@ -493,7 +493,7 @@ local function VisibleWindow(window,settings1,gui)
 		Size = UDim2.new(0, 150, 1, 0);
 		CanvasSize = UDim2.new(0, 0, 0, 0);
 		ScrollBarThickness = 6;
-AutomaticSize = Enum.AutomaticSize.Y;
+AutomaticCanvasSize = Enum.AutomaticSize.Y;
 		BackgroundColor3 =selectedTheme.TabContent;
 		BorderSizePixel = 0;
 		Parent = mainFrame;
@@ -2023,7 +2023,7 @@ end
 	
 end
 function library:CreateWindow(settings1, onLoad)
-	print("Library Version: 0.31")
+	print("Library Version: 0.32")
 	if game:GetService("RunService"):IsStudio() then
 		if game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary") then
 			game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary"):Destroy()
