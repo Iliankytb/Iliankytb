@@ -7,6 +7,10 @@ local PlaceIdDoorsGame = 6839171747
 --Hunted--
 local PlaceIdFNAFHuntedGame =74161468227974
 
+--Hunty Zombies--
+local PlaceIDLobbyHZ = 103754275310547
+local PlaceIdGameHZ = 86076978383613
+
 --Forsaken--
 local PlaceIdForsaken = 18687417158
 
@@ -65,6 +69,8 @@ task.wait(1)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/IliankytbUniversalNew"))()   
 elseif PlaceService.PlaceId == PlaceIdEvadeMainGame then
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/NewbestEvadeCheat"))()
+elseif PlaceService.PlaceId == PlaceIdGameHZ then
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/BestFreeHuntyZombies"))()
 elseif PlaceService.PlaceId == PlaceIdRainbowFriend2Game then
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/BestRainbowFriendsTwo"))()
 elseif PlaceService.PlaceId == PlaceIdRainbowFriend2Lobby then
@@ -76,6 +82,10 @@ textLabel.Text = "Loading Universale Cheat Because you're not ingame(it take Som
 task.wait(1)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/IliankytbUniversalNew"))()   
 elseif PlaceService.PlaceId == PlaceIdInkGameLobby then
+textLabel.Text = "Loading Universale Cheat Because you're not ingame(it take Some Times)"
+task.wait(1)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/IliankytbUniversalNew"))()   
+elseif PlaceService.PlaceId == PlaceIDLobbyHZ then
 textLabel.Text = "Loading Universale Cheat Because you're not ingame(it take Some Times)"
 task.wait(1)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/IliankytbUniversalNew"))()   
