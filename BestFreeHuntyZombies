@@ -38,10 +38,10 @@ local PlayerTab = Window:CreateTab("Player")
 local GameTab = Window:CreateTab("Game")
 local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
-local ActiveSpeedBoost,AutoFarm,NoCooldownAbility,AutoReplay,FreezeNPC,AutoCollect,NoStun,InCollecting,AutoEscape,InteractedWithGen,InEscaping,ActivateDash = false,false,false,false,false,false,false,false,false,false,false,false
+local ActiveSpeedBoost,AutoFarm,NoCooldownAbility,AutoReplay,FreezeNPC,AutoCollect,NoStun,InCollecting,AutoEscape,InteractedWithGen,InEscaping,ActivateDash,InSafePos,AutoSP,AutoGen = false,false,false,false,false,false,false,false,false,false,false,false,false,false,false
 Rayfield:Notify({
    Title = "script Version",
-   Content = "V.0.11",
+   Content = "V.0.12",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -128,7 +128,7 @@ local AFToggle = GameTab:CreateToggle({
 task.spawn(function()
 while AutoFarm do
 for _,zombies in pairs(workspace.Entities.Zombie:GetChildren()) do
-if zombies:IsA("Model") and zombies.Head.EntityHealth.HealthBar.Bar.Size.X.Scale ~= 0 and not InCollecting and not InEscaping and not InteractedWithGen and not Game.Players.LocalPlayer.Character:GetAttribute("Escaped") then 
+if zombies:IsA("Model") and zombies.Head.EntityHealth.HealthBar.Bar.Size.X.Scale ~= 0 and not InSafePos and not InCollecting and not InEscaping and not InteractedWithGen and not Game.Players.LocalPlayer.Character:GetAttribute("Escaped") then 
 Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = zombies.PrimaryPart.CFrame
 end 
 end 
@@ -213,6 +213,52 @@ wait(0.1)
 end
 end,
 })
+if Workspace:FindFirstChild("Sewers") then
+local AutoGenToggle = GameTab:CreateToggle({
+   Name = "Auto Gen",
+   CurrentValue = false,
+   Flag = "ButtonAG1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  AutoGen = Value 
+while AutoGen do
+if workspace.Sewers.Rooms.BossRoom and not InEscaping and not InteractedWithGen and not Game.Players.LocalPlayer.Character:GetAttribute("Escaped")  then
+local heliObjective = workspace.Sewers.Rooms.BossRoom.generator.gen
+local prompt = heliObjective:FindFirstChildOfClass("ProximityPrompt")
+if prompt then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = heliObjective.CFrame
+  wait(0.5)  
+prompt:InputHoldBegin()
+task.wait(prompt.HoldDuration) -- Attente de la durée de maintien
+    prompt:InputHoldEnd()
+InteractedWithGen = true
+end
+end
+wait(0.1)
+end
+end,
+})
+local SafePositionToggle = GameTab:CreateToggle({
+   Name = "Auto Safe Position",
+   CurrentValue = false,
+   Flag = "ButtonASP1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  AutoSP = Value 
+while AutoSP do 
+task.spawn(function()
+if game:GetService("ReplicatedStorage").OBJECTIVES.timer and not game.Players.LocalPlayer.Character:GetAttribute("Escaped") then
+InSafePos = true
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Sewers.Rooms.BossRoom.NewSpawnPos.CFrame + Vector3.new(0,50,0)
+if InteractedWithGen then
+InEscaping = true
+end
+end
+end)
+wait(0.1)
+end
+InSafePos = false
+end,
+})
+end
 if Workspace:FindFirstChild("School") then
 local AutoEscapeToggle = GameTab:CreateToggle({
    Name = "Auto Escape",
@@ -226,8 +272,9 @@ local heliObjective = workspace.School.Rooms.RooftopBoss.RadioObjective
 local prompt = heliObjective:FindFirstChildOfClass("ProximityPrompt")
 if prompt then
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = heliObjective.CFrame
-    prompt:InputHoldBegin()
-    task.wait(prompt.HoldDuration) -- Attente de la durée de maintien
+  wait(0.5)  
+prompt:InputHoldBegin()
+task.wait(prompt.HoldDuration) -- Attente de la durée de maintien
     prompt:InputHoldEnd()
 wait(7)
 InteractedWithGen = true
@@ -246,7 +293,8 @@ end
 end
 
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = heliObjective.CFrame
-    prompt:InputHoldBegin()
+  wait(0.5) 
+prompt:InputHoldBegin()
     task.wait(prompt.HoldDuration) -- Attente de la durée de maintien
     prompt:InputHoldEnd()
 end
@@ -270,6 +318,16 @@ wait(0.1)
 end
 end,
 })
+if Workspace:FindFirstChild("Sewers") then
+local ButtonTPCheat = GameTab:CreateButton({
+   Name = "TP to end",
+   Callback = function()
+if workspace.Sewers.Rooms.BossRoom then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Sewers.Rooms.BossRoom.NewSpawnPos.CFrame
+end
+end,
+})
+end
 if Workspace:FindFirstChild("School") then
 local ButtonTPCheat = GameTab:CreateButton({
    Name = "TP to end",
