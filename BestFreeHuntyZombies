@@ -41,7 +41,7 @@ local SettingsTab = Window:CreateTab("Settings")
 local ActiveSpeedBoost,AutoFarm,NoCooldownAbility,AutoReplay,FreezeNPC,AutoCollect,NoStun,InCollecting,AutoEscape,InteractedWithGen,InEscaping,ActivateDash,InSafePos,AutoSP,AutoGen = false,false,false,false,false,false,false,false,false,false,false,false,false,false,false
 Rayfield:Notify({
    Title = "script Version",
-   Content = "V.0.15",
+   Content = "V.0.16",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -279,7 +279,7 @@ wait(7)
 InteractedWithGen = true
 end
 end
-if game:GetService("ReplicatedStorage").OBJECTIVES.surviveTimer and workspace.School.Rooms:FindFirstChild("RooftopBoss") and not InEscaping and InteractedWithGen and not Game.Players.LocalPlayer:GetAttribute("escaped") then
+if game:GetService("ReplicatedStorage").OBJECTIVES:FindFirstChild("surviveTimer") and workspace.School.Rooms:FindFirstChild("RooftopBoss") and not InEscaping and InteractedWithGen and not Game.Players.LocalPlayer:GetAttribute("escaped") then
 local heliObjective = workspace.School.Rooms.RooftopBoss.HeliObjective
 local prompt = heliObjective:FindFirstChildOfClass("ProximityPrompt")
 
