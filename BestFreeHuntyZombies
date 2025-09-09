@@ -39,9 +39,10 @@ local GameTab = Window:CreateTab("Game")
 local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
 local ActiveSpeedBoost,AutoFarm,NoCooldownAbility,AutoReplay,FreezeNPC,AutoCollect,NoStun,InCollecting,AutoEscape,InteractedWithGen,InEscaping,ActivateDash,InSafePos,AutoSP,AutoGen = false,false,false,false,false,false,false,false,false,false,false,false,false,false,false
+local DS = false
 Rayfield:Notify({
    Title = "script Version",
-   Content = "V.0.17",
+   Content = "V.0.18",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -128,7 +129,7 @@ local AFToggle = GameTab:CreateToggle({
 task.spawn(function()
 while AutoFarm do
 for _,zombies in pairs(workspace.Entities.Zombie:GetChildren()) do
-if zombies:IsA("Model") and zombies.Head.EntityHealth.HealthBar.Bar.Size.X.Scale ~= 0 and not InSafePos and not InCollecting and not InEscaping and not InteractedWithGen and not Game.Players.LocalPlayer:GetAttribute("escaped") then 
+if zombies:IsA("Model") and zombies.Head.EntityHealth.HealthBar.Bar.Size.X.Scale ~= 0 and not DS and not InSafePos and not InCollecting and not InEscaping and not InteractedWithGen and not Game.Players.LocalPlayer:GetAttribute("escaped") then 
 Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = zombies.PrimaryPart.CFrame
 end 
 end 
@@ -148,7 +149,7 @@ task.spawn(function()
 while NoCooldownAbility do
 for I = 1,9 do 
 task.spawn(function()
-game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool"):SetAttribute("lastActivated"..I-1,game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool"):GetAttribute("lastActivated"..I-1)+500)
+game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool"):SetAttribute("lastActivated"..I-1,game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool"):GetAttribute("lastActivated"..I-1)+0.00001)
 end)
 task.wait(0.1) 
 end
@@ -187,7 +188,7 @@ while AutoCollect do
 InCollecting = false
 for _, k in pairs(workspace.DropItems:GetChildren()) do 
 task.spawn(function()
-if k:isA("BasePart") and not InSafePos and  not InEscaping and not Game.Players.LocalPlayer:GetAttribute("escaped") then
+if k:isA("BasePart") and not DS and not InSafePos and  not InEscaping and not Game.Players.LocalPlayer:GetAttribute("escaped") then
 InCollecting = true
 Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = k.CFrame
 wait(0.25)
@@ -225,12 +226,14 @@ if workspace.Sewers.Rooms:FindFirstChild("BossRoom") and not InEscaping and not 
 local heliObjective = workspace.Sewers.Rooms.BossRoom.generator.gen
 local prompt = heliObjective:FindFirstChildOfClass("ProximityPrompt")
 if prompt then
+DS = true
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = heliObjective.CFrame
   wait(0.5)  
 prompt:InputHoldBegin()
 task.wait(prompt.HoldDuration) -- Attente de la durée de maintien
     wait(0.5)
 InteractedWithGen = true
+DS = false
 end
 end
 wait(0.1)
@@ -271,10 +274,12 @@ if workspace.School.Rooms:FindFirstChild("RooftopBoss") and not InEscaping and n
 local heliObjective = workspace.School.Rooms.RooftopBoss.RadioObjective
 local prompt = heliObjective:FindFirstChildOfClass("ProximityPrompt")
 if prompt then
+DS = true
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = heliObjective.CFrame
   wait(0.5)  
 prompt:InputHoldBegin()
 task.wait(prompt.HoldDuration) -- Attente de la durée de maintien
+DS = false
 wait(7)
 InteractedWithGen = true
 end
@@ -284,6 +289,7 @@ local heliObjective = workspace.School.Rooms.RooftopBoss.HeliObjective
 local prompt = heliObjective:FindFirstChildOfClass("ProximityPrompt")
 
 if prompt then
+DS = true
 InEscaping = true
 for _, part in pairs(workspace.School.Rooms.RooftopBoss.Buildings.InvisibleWalls:GetChildren()) do
 if part then
@@ -296,6 +302,7 @@ game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = heliObjective.CFram
 prompt:InputHoldBegin()
     task.wait(prompt.HoldDuration) -- Attente de la durée de maintien
     wait(0.5)
+DS = false
 end
 end
 wait(0.1)
