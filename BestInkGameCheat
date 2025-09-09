@@ -41,7 +41,7 @@ local GameTab = window:CreateTab("Game",0)
 local DiscordTab = window:CreateTab("Discord",0)
 local SettingsTab = window:CreateTab("Settings",0)
 local ActiveSpeedBoost = false
-local ParagraphInfoServer = InfoTab:AddParagraph({Title = "Info", Content = "Loading"})
+local ParagraphInfoServer = InfoTab:AddParagraph({Title = "",Content = "Loading",Name = "Paragraph1"})
 local Version = InfoTab:AddText({
 		Text = "Version:"..V,
 		Name = "VersionScript"
