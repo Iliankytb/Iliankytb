@@ -41,7 +41,7 @@ local SettingsTab = Window:CreateTab("Settings")
 local ActiveSpeedBoost,AutoFarm,NoCooldownAbility,AutoReplay,FreezeNPC,AutoCollect,NoStun,InCollecting,AutoEscape,InteractedWithGen,InEscaping,ActivateDash = false,false,false,false,false,false,false,false,false,false,false,false
 Rayfield:Notify({
    Title = "script Version",
-   Content = "V.0.10",
+   Content = "V.0.11",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -162,14 +162,19 @@ local FreezeZombiesToggle = GameTab:CreateToggle({
    Flag = "ButtonFreezeZombies1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
   FreezeNPC = Value 
-local V = Workspace.School or Workspace.Sewers
+local Map = ""
+if Workspace:FindFirstChild("School") then
+Map = "School"
+elseif Workspace:FindFirstChild("Sewers") then 
+Map = "Sewers"
+end
 while FreezeNPC do
-for _, k in pairs(V.Doors:GetChildren()) do 
+for _, k in pairs(Workspace[Map].Doors:GetChildren()) do 
 k:SetAttribute("locked",true)
 end
 wait(1)
 end
-for _, k in pairs(V.Doors:GetChildren()) do k:SetAttribute("locked",false)  end
+for _, k in pairs(Workspace[Map].Doors:GetChildren()) do k:SetAttribute("locked",false)  end
  end,
 })
 local AutoCollectToggle = GameTab:CreateToggle({
@@ -208,6 +213,7 @@ wait(0.1)
 end
 end,
 })
+if Workspace:FindFirstChild("School") then
 local AutoEscapeToggle = GameTab:CreateToggle({
    Name = "Auto Escape",
    CurrentValue = false,
@@ -249,6 +255,7 @@ wait(0.1)
 end
 end,
 })
+end
 local AutoReplayToggle = GameTab:CreateToggle({
    Name = "Auto Replay",
    CurrentValue = false,
@@ -263,6 +270,7 @@ wait(0.1)
 end
 end,
 })
+if Workspace:FindFirstChild("School") then
 local ButtonTPCheat = GameTab:CreateButton({
    Name = "TP to end",
    Callback = function()
@@ -276,6 +284,7 @@ end
 end
 end,
 })
+end
 local ButtonUnloadCheat = SettingsTab:CreateButton({
    Name = "Unload Cheat",
    Callback = function()
