@@ -2022,7 +2022,7 @@ end
 	
 end
 function library:CreateWindow(settings1, onLoad)
-	print("Library Version: 0.29")
+	print("Library Version: 0.30")
 	if game:GetService("RunService"):IsStudio() then
 		if game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary") then
 			game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary"):Destroy()
@@ -2202,7 +2202,11 @@ function library:CreateWindow(settings1, onLoad)
 				Parent = KeyFrame,
 			})
 			createUI("UICorner", {Parent = DiscordBtn})
-
+DiscordBtn.MouseButton1Click:Connect(function()
+				if settings1.KeySettings.DiscordLink and settings1.KeySettings.DiscordLink ~= "NoInviteLink" then
+					copyToClipboard(settings1.KeySettings.DiscordLink)
+				end
+			end)
 		elseif not AddDiscord and AddGetKey then
 			local GetKeyBtn = createUI("TextButton", {
 				Size = UDim2.new(1, -20, 0, 30),
