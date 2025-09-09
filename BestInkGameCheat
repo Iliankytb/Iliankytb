@@ -1,10 +1,10 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.10"
+local V = "V.0.11"
 library:CreateWindow({
 	Title = "Ink Game",-- Title of the script
-	Theme = "Default",--View more theme in my dicord server!
+	Theme = selectedTheme,--View more theme in my dicord server!
 	Icon = 0,-- 0 = no icon or add number
 	Intro = false,--Intro or no
 	IntroTitle = "Zentrix Library Testing",--the intro title
@@ -42,6 +42,10 @@ local DiscordTab = window:CreateTab("Discord",0)
 local SettingsTab = window:CreateTab("Settings",0)
 local ActiveSpeedBoost = false
 local ParagraphInfoServer = InfoTab:AddParagraph({Title = "Info", Content = "Loading"})
+local Version = InfoTab:AddText({
+		Text = "Version:"..V,
+		Name = "VersionScript"
+	})
 window:Notify({
 				Title = "Script Version!",
 				Message = V",
@@ -107,7 +111,7 @@ end,
 })
 local GameFinishRedLightGreenLight = GameTab:AddButton({
 Text = "Finish RedLight,GreenLight",
-   Name = "GameFinishRedLightGreenLight"
+   Name = "GameFinishRedLightGreenLight",
    Callback = function(Value) 
 task.spawn(function()
 if Game.Workspace:FindFirstChild("RedLightGreenLight") then
