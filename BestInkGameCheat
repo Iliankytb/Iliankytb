@@ -48,7 +48,7 @@ local Version = InfoTab:AddText({
 	})
 window:Notify({
 				Title = "Script Version!",
-				Message = V",
+				Message = V,
 				Duration = 7.5,
 })
 
