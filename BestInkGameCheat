@@ -1,52 +1,53 @@
 
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local Window = Rayfield:CreateWindow({
-   Name = "Ink Game - Script By Iliankytb",
-   Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Ink Game",
-   LoadingSubtitle = "Script By Iliankytb",
-   Theme = selectedTheme, -- Check https://docs.sirius.menu/rayfield/configuration/themes
-
-   DisableRayfieldPrompts = false,
-   DisableBuildWarnings = false, -- Prevents Rayfield from warning when the script has a version mismatch with the interface
-
-   ConfigurationSaving = {
-      Enabled = true,
-      FolderName = "SaverInkGame", -- Create a custom folder for your hub/game
-      FileName = "K"
-   },
-
-   Discord = {
-      Enabled = false, -- Prompt the user to join your Discord server if their executor supports it
-      Invite = "noinvitelink", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ ABCD would be ABCD
-      RememberJoins = true -- Set this to false to make them join the discord every time they load it up
-   },
-
-   KeySystem = false, -- Set this to true to use our key system
-   KeySettings = {
-      Title = "Untitled",
-      Subtitle = "Key System",
-      Note = "No method of obtaining the key is provided", -- Use this to tell the user how to get a key
-      FileName = "Key", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
-      SaveKey = true, -- The user's key will be saved, but if you change the key, they will be unable to use your script
-      GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
-      Key = {"Hello"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
-   }
-})
-local InfoTab = Window:CreateTab("Info")
-local PlayerTab = Window:CreateTab("Player")
-local GameTab = Window:CreateTab("Game")
-local DiscordTab = Window:CreateTab("Discord")
-local SettingsTab = Window:CreateTab("Settings")
+local V = "V.0.10"
+library:CreateWindow({
+	Title = "Ink Game",-- Title of the script
+	Theme = "Default",--View more theme in my dicord server!
+	Icon = 0,-- 0 = no icon or add number
+	Intro = false,--Intro or no
+	IntroTitle = "Zentrix Library Testing",--the intro title
+	KeyPC = Enum.KeyCode.K,--the key for pc for Open/close the frame
+	Data = {
+		EnableSavingData = true,--Enabling data saver or no
+		DisableNotifyingLoadedData = false,--set it to true for disable the notify when loaded data
+		FolderName = "SaverIG",--Folder Name,you can change it
+		FileName = "IliankYTB",-- File name for the data saver,you can change it
+	},
+	Discord = {
+		Enabled = false,--enable to copy the discord
+		DiscordLink = "https://discord.gg/E2TqYRsRP4",-- put thr entire Link of discord
+		RememberJoin = false,-- Set this ti false to make them copy the link every time they load the script
+		Duration = 5,-- 5 is the default you can change the number only for remember join
+	},
+	KeySystem = false,--Key System or no
+	KeySettings = {
+		Title = "Zentrix Library Testing Key System",--Title of the key(just like that)
+		Note = "the key is Zentrix",-- The method for obtaining
+		FileName = "Key",-- File name or no for saving the key
+		SaveKey = true,-- saving the key or no
+		GrabKeyFromSite = false,--Coming soon
+		Key = {"Zentrix"},-- the name you can add many name, Exemple "Key","Key2" or you can add a function to add key but i don't really know
+		AddGetKeyButton = false,
+		AddDiscordButton = true,
+		DiscordLink = "NoInviteLink",
+		GetKeyLink = "NoKeyLink",
+	},
+}, function(window)
+local InfoTab = window:CreateTab("Info",0)
+local PlayerTab = window:CreateTab("Player",0)
+local GameTab = window:CreateTab("Game",0)
+local DiscordTab = window:CreateTab("Discord",0)
+local SettingsTab = window:CreateTab("Settings",0)
 local ActiveSpeedBoost = false
-local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "Loading"})
-Rayfield:Notify({
-   Title = "script Version",
-   Content = "V.0.9",
-   Duration = 2.5,
-   Image = "rewind",
+local ParagraphInfoServer = InfoTab:AddParagraph({Title = "Info", Content = "Loading"})
+window:Notify({
+				Title = "Script Version!",
+				Message = V",
+				Duration = 7.5,
 })
+
 local function getServerInfo()
 	local Players = game:GetService("Players")
 	local playerCount = #Players:GetPlayers()
@@ -68,29 +69,30 @@ local function copyToClipboard(text)
         warn("setclipboard is not supported in this environment.")
     end
 end
-local DiscordLink = DiscordTab:CreateButton({
-   Name = "Discord Link",
+local DiscordLink = DiscordTab:AddButton({
+Text = "Discord Link",
+   Name = "DCLink",
    Callback = function()
 copyToClipboard("https://discord.gg/E2TqYRsRP4")
 end,
 })
 local ValueSpeed = 16
-local PlayerSpeedSlider = PlayerTab:CreateSlider({
-   Name = "Player Speed",
-   Range = {0, 100},
-   Increment = 1,
-   Suffix = "Speeds",
-   CurrentValue = 16,
-   Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+local PlayerSpeedSlider = PlayerTab:AddSlider({
+  Name = "Player Speed",
+		Min = 0,
+		Max = 100,
+		Default = 16,
+		Flag = "PSSlider",--Put a name flag for save data if you enabled saving data
    Callback = function(Value)
 CurrentValue = Value
 ValueSpeed = Value
 end,  ValueSpeed = CurrentValue,
 })
 
-local PlayerActiveModifyingSpeedToggle = PlayerTab:CreateToggle({
-   Name = "Active Modifying Player Speed",
-   CurrentValue = false,
+local PlayerActiveModifyingSpeedToggle = PlayerTab:AddToggle({
+Text ="Active Modifying Player Speed",
+   Name = "PlayerActiveModifyingSpeedToggle",
+   Default = false,
    Flag = "ButtonSpeed1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
   ActiveSpeedBoost = Value 
@@ -103,8 +105,9 @@ task.wait(0.1)
 end end)
 end,
 })
-local GameFinishRedLightGreenLight = GameTab:CreateButton({
-   Name = "Finish RedLight,GreenLight",
+local GameFinishRedLightGreenLight = GameTab:AddButton({
+Text = "Finish RedLight,GreenLight",
+   Name = "GameFinishRedLightGreenLight"
    Callback = function(Value) 
 task.spawn(function()
 if Game.Workspace:FindFirstChild("RedLightGreenLight") then
@@ -118,8 +121,9 @@ end
 end)
 end,
 })
-local GameFinishJumpRope = GameTab:CreateButton({
-   Name = "Finish Jump Rope",
+local GameFinishJumpRope = GameTab:AddButton({
+Text = "Finish Jump Rope",
+   Name = "GameFinishJumpRope",
    Callback = function(Value) 
 task.spawn(function()
 --if Game.Workspace:FindFirstChild("RedLightGreenLight") then
@@ -130,23 +134,17 @@ Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
 end)
 end,
 })
-local AutoTugWarToggle = GameTab:CreateToggle({
-   Name = "Auto Tug Of War(Coming)",
+local AutoTugWarToggle = GameTab:AddToggle({
+Text ="Auto Tug Of War(Coming)",
+   Name = "AutoTugWarToggle",
    CurrentValue = false,
    Flag = "ButtonATW", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
---[[  ActiveSpeedBoost = Value 
-task.spawn(function()
-while ActiveSpeedBoost do 
-task.spawn(function()
-Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = ValueSpeed 
-end)
-task.wait(0.1)
-end end)]]
 end,
 })
-local FinishGlassbridgeToggle = GameTab:CreateButton({
-   Name = "Finish Glass Bridge",
+local FinishGlassbridgeToggle = GameTab:AddButton({
+Text = "Finish Glass Bridge",
+   Name ="FinishGlassbridgeToggle",
    Callback = function(Value)
 if Game.Workspace:FindFirstChild("GlassBridge") then
 Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
@@ -155,36 +153,32 @@ Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
 end
 end,
 })
-local ButtonUnloadCheat = SettingsTab:CreateButton({
-   Name = "Unload Cheat",
+local ButtonUnloadCheat = SettingsTab:AddButton({
+Text = "Unload Cheat",
+   Name = "ButtonUnloadCheat",
    Callback = function()
-  Rayfield:Destroy()
+
 end,
 })
-local Themes = {
-   ["Default"] = "Default",
-   ["Amber Glow"] = "AmberGlow",
-   ["Amethyst"] = "Amethyst",
-   ["Bloom"] = "Bloom",
-   ["Dark Blue"] = "DarkBlue",
-   ["Green"] = "Green",
-   ["Light"] = "Light",
-   ["Ocean"] = "Ocean",
-   ["Serenity"] = "Serenity"
-}
 
-local Dropdown = SettingsTab:CreateDropdown({
-   Name = "Change Theme",
-   Options = {"Default", "Amber Glow", "Amethyst", "Bloom", "Dark Blue", "Green", "Light", "Ocean", "Serenity"},
-   CurrentOption = selectedTheme,  -- pour afficher ce qui est réellement chargé
-   Flag = "ThemeSelection",
-   Callback = function(Selected)
-      local ident = Themes[Selected[1]]
-      Window.ModifyTheme(ident)  -- <— Applique le thème en direct
-   end, 
-})
+local ChangeThemeDropdown = SettingsTab:AddDropdown({
+		Text = "Change Theme:",
+		Name = "CTD",
+		Options = {"Default", "Light", "RedDark","BlueNeon","GreenMatrix","PurpleDream","Sunset",
+		"Ocean","Toxic","Storm","LimePop","Cyber","Chocolate","RoseGold","CottonCandy","NightSky","Steel",
+			"GoldLux","Ice","TealWave","FrostFire","DarkMatter","Lava","PinkCandy","Sakura","DeepSpace","Skyline","Crimson"
+			,"Desert","Camo","Plasma","Arctic","Slate","Vaporwave"
+			
+		},
+		Default = "Default",
+		MultiSelect = false,
+		Flag = "CTD", --Put a name flag for save data if you enabled saving data
+		Callback = function(choice)
+window:ChangeTheme(choice)
+		end
+	})
 
-Rayfield:LoadConfiguration()
+library:LoadData()
 task.spawn(function()
 while true do
 	task.wait(1) 
@@ -207,4 +201,5 @@ updatedInfo.MaxPlayers
 end)
 end
 
+end)
 end)
