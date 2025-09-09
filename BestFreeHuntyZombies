@@ -41,7 +41,7 @@ local SettingsTab = Window:CreateTab("Settings")
 local ActiveSpeedBoost,AutoFarm,NoCooldownAbility,AutoReplay,FreezeNPC,AutoCollect,NoStun,InCollecting,AutoEscape,InteractedWithGen,InEscaping,ActivateDash,InSafePos,AutoSP,AutoGen = false,false,false,false,false,false,false,false,false,false,false,false,false,false,false
 Rayfield:Notify({
    Title = "script Version",
-   Content = "V.0.12",
+   Content = "V.0.13",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -187,7 +187,7 @@ while AutoCollect do
 InCollecting = false
 for _, k in pairs(workspace.DropItems:GetChildren()) do 
 task.spawn(function()
-if k:isA("BasePart") and not InEscaping and not Game.Players.LocalPlayer.Character:GetAttribute("Escaped") then
+if k:isA("BasePart") and not InSafePos and  not InEscaping and not Game.Players.LocalPlayer.Character:GetAttribute("Escaped") then
 InCollecting = true
 Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = k.CFrame
 wait(0.25)
@@ -229,7 +229,7 @@ game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = heliObjective.CFram
   wait(0.5)  
 prompt:InputHoldBegin()
 task.wait(prompt.HoldDuration) -- Attente de la durée de maintien
-    prompt:InputHoldEnd()
+    wait(0.5)
 InteractedWithGen = true
 end
 end
@@ -247,7 +247,7 @@ while AutoSP do
 task.spawn(function()
 if game:GetService("ReplicatedStorage").OBJECTIVES.timer and not game.Players.LocalPlayer.Character:GetAttribute("Escaped") then
 InSafePos = true
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Sewers.Rooms.BossRoom.NewSpawnPos.CFrame + Vector3.new(0,50,0)
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Sewers.Rooms.BossRoom.NewSpawnPos.CFrame + Vector3.new(0,150,0)
 if InteractedWithGen then
 InEscaping = true
 end
@@ -275,7 +275,6 @@ game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = heliObjective.CFram
   wait(0.5)  
 prompt:InputHoldBegin()
 task.wait(prompt.HoldDuration) -- Attente de la durée de maintien
-    prompt:InputHoldEnd()
 wait(7)
 InteractedWithGen = true
 end
@@ -296,7 +295,7 @@ game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = heliObjective.CFram
   wait(0.5) 
 prompt:InputHoldBegin()
     task.wait(prompt.HoldDuration) -- Attente de la durée de maintien
-    prompt:InputHoldEnd()
+    wait(0.5)
 end
 end
 wait(0.1)
@@ -311,9 +310,7 @@ local AutoReplayToggle = GameTab:CreateToggle({
    Callback = function(Value)
   AutoReplay = Value 
 while AutoReplay do
-if Game.Players.LocalPlayer.Character:GetAttribute("Escaped") then
 game:GetService("ReplicatedStorage").external.Packets.voteReplay:FireServer()
-end
 wait(0.1)
 end
 end,
