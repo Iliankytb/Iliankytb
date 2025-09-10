@@ -967,7 +967,7 @@ end
 end
 end,
 })
-local ButtonUnloadCheat = SettingsTab:TextButton({
+local ButtonUnloadCheat = SettingsTab:AddButton({
 Text = "Unload Cheat",
    Name = "ButtonUnloadCheat",
    Callback = function()
