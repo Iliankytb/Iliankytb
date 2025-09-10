@@ -750,7 +750,7 @@ end
 end
 end end end
 end
-end)
+
 if ActiveEspMonster then
 for _,Assets in pairs(Workspace:GetDescendants()) do  
 if Assets:isA("Model") and (Assets.Name == "FigureRig" or Assets.Name == "SallyMoving" or Assets.Name == "RushMoving" or Assets.Name == "Eyes" or Assets.Name == "SeekMovingNewClone" or Assets.Name == "BackdoorLookman" or Assets.Name == "BackdoorRush" or Assets.Name == "GloombatSwarm" or Assets.Name == "GiggleCeiling" or Assets.Name == "AmbushMoving" or Asset.Name == "EyestalkMoving")  and  not Assets:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then Assets.PrimaryPart.Transparency = 0
@@ -824,7 +824,6 @@ end
 
 end  
 end
-end)
 
 if ActiveEspTimerLever and child.Name == "TimerLever" then
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
