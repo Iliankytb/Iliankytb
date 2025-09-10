@@ -625,7 +625,7 @@ Text = "Active Modifying Player FOV(Unverified!)",
 task.spawn(function()
 while ActiveModifiedFieldOfView do 
 task.spawn(function()
-Game.Workspace.Camera.FieldOfView = ValueFieldOfView 
+Game.Workspace.CurrentCamera.FieldOfView = ValueFieldOfView 
 end)
 task.wait(0.1)
 end end)
