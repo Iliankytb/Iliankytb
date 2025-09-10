@@ -36,6 +36,7 @@ library:CreateWindow({
 		GetKeyLink = "NoKeyLink",
 	},
 }, function(window)
+local InfoTab = window:CreateTab("Info Tab",0)
 local PlayerTab = window:CreateTab("Player",0)
 local GameTab = window:CreateTab("Game",0)
 local DiscordTab = window:CreateTab("Discord",0)
