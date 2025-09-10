@@ -668,7 +668,7 @@ AutomaticCanvasSize = Enum.AutomaticSize.Y;
 
 
 	UserInputService.InputBegan:Connect(function(input, gameProcessed)
-		if gameProcessed then return end -- Ignore si la touche est utilisée par le système ou Roblox
+		if gameProcessed then return end
 		if input.KeyCode == settings1.KeyPC then
 			if not mainFrame.Visible then
 				mainFrame.Visible = true
@@ -700,7 +700,7 @@ AutomaticCanvasSize = Enum.AutomaticSize.Y;
 			copyToClipboard(settings1.Discord.DiscordLink )
 		end
 	end
-	-- Ajuste la position et la taille des autres frames pour laisser la place au titre
+
 	tabsFrame.Position = UDim2.new(0, 0, 0, 40)
 	tabsFrame.Size = UDim2.new(0, 150, 1, -40)
 
@@ -1278,7 +1278,6 @@ end
 				TextColor3 = Color3.new(1, 1, 1),
 				Font = Enum.Font.Gotham,
 				TextSize = 14,
-				TextWrapped = true,
 				TextXAlignment = Enum.TextXAlignment.Left,
 				Parent = frame,
 			})
@@ -1290,7 +1289,7 @@ end
 			contentLabel.Size = UDim2.new(1, 0, 0, textSize.Y)
 
 			-- Ajustement de la taille de la frame conteneur (titre + contenu + padding)
-			frame.Size = UDim2.new(1, 0, 0, 25 + textSize.Y + 20) -- 25 pour le titre, 20 pour padding haut+bas
+			frame.Size = UDim2.new(1, 0, 0, 25 + textSize.Y + 25) -- 25 pour le titre, 20 pour padding haut+bas
 
 	
 			local Api = {Frame = frame,
@@ -2023,7 +2022,7 @@ end
 	
 end
 function library:CreateWindow(settings1, onLoad)
-	print("Library Version: 0.32")
+	print("Library Version: 0.33")
 	if game:GetService("RunService"):IsStudio() then
 		if game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary") then
 			game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary"):Destroy()
