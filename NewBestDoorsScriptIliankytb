@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.65"
+local V = "V.0.66"
 library:CreateWindow({
 	Title = "Doors - by Iliankytb",-- Title of the script
 	Theme = selectedTheme,--View more theme in my dicord server!
@@ -63,7 +63,7 @@ local RunService = game:GetService("RunService")
 local function NotifMonsterSpawned(NameMonster,Time)
 window:Notify({
 				  Title = "Monster Spawned!",
-   Content = NameMonster.." Has Spawned!",
+   Message = NameMonster.." Has Spawned!",
    Duration = Time,
 })
 end
