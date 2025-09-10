@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.61"
+local V = "V.0.62"
 library:CreateWindow({
 	Title = "Doors - by Iliankytb",-- Title of the script
 	Theme = selectedTheme,--View more theme in my dicord server!
@@ -931,7 +931,7 @@ Text = "Auto Interact",
 ActiveAutoInteract = Value 
 task.spawn(function() 
 while ActiveAutoInteract do 
-local hrp = game.players.LocalPlayer.Character.HumanoidRootPart
+local hrp = game.Players.LocalPlayer.Character.HumanoidRootPart
 for _, asset in pairs(workspace:GetDescendants()) do
 task.spawn(function()
 	if asset:IsA("ProximityPrompt") and asset.Name ~= "HidePrompt" then
