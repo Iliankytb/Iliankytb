@@ -42,7 +42,7 @@ local ActiveSpeedBoost,AutoFarm,NoCooldownAbility,AutoReplay,FreezeNPC,AutoColle
 local DS = false
 Rayfield:Notify({
    Title = "script Version",
-   Content = "V.0.18",
+   Content = "V.0.19",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -131,6 +131,24 @@ while AutoFarm do
 for _,zombies in pairs(workspace.Entities.Zombie:GetChildren()) do
 if zombies:IsA("Model") and zombies.Head.EntityHealth.HealthBar.Bar.Size.X.Scale ~= 0 and not DS and not InSafePos and not InCollecting and not InEscaping and not InteractedWithGen and not Game.Players.LocalPlayer:GetAttribute("escaped") then 
 Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = zombies.PrimaryPart.CFrame
+local VIM = game:GetService("VirtualInputManager")
+
+    
+       local ButtonPath = game:GetService("Players").LocalPlayer.PlayerGui.MainScreenConcept.TouchControlFrame.JumpButton.TouchButtons.ToolUseButton
+        
+        if ButtonPath and ButtonPath.Visible and ButtonPath.Active then
+            local absolutePos = ButtonPath.AbsolutePosition
+            local absoluteSize = ButtonPath.AbsoluteSize
+            
+            local centerX = absolutePos.X + (absoluteSize.X / 2)
+            local centerY = absolutePos.Y + (absoluteSize.Y / 2)
+            
+            VIM:SendMouseButtonEvent(centerX, centerY, 0, true, game, 1) 
+            wait(0.05)
+            VIM:SendMouseButtonEvent(centerX, centerY, 0, false, game, 1) 
+            
+            task.wait(AttackDelay)
+        end
 end 
 end 
 wait(0.1)
