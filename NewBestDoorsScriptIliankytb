@@ -1,41 +1,41 @@
 
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local Window = Rayfield:CreateWindow({
-   Name = "Doors - Script By Iliankytb",
-   Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Doors",
-   LoadingSubtitle = "Script By Iliankytb",
-   Theme = selectedTheme, -- Check https://docs.sirius.menu/rayfield/configuration/themes
-
-   DisableRayfieldPrompts = false,
-   DisableBuildWarnings = false, -- Prevents Rayfield from warning when the script has a version mismatch with the interface
-
-   ConfigurationSaving = {
-      Enabled = true,
-      FolderName = "SaverDoors", -- Create a custom folder for your hub/game
-      FileName = "K"
-   },
-
-   Discord = {
-      Enabled = false, -- Prompt the user to join your Discord server if their executor supports it
-      Invite = "noinvitelink", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ ABCD would be ABCD
-      RememberJoins = true -- Set this to false to make them join the discord every time they load it up
-   },
-
-   KeySystem = false, -- Set this to true to use our key system
-   KeySettings = {
-      Title = "Untitled",
-      Subtitle = "Key System",
-      Note = "No method of obtaining the key is provided", -- Use this to tell the user how to get a key
-      FileName = "Key", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
-      SaveKey = true, -- The user's key will be saved, but if you change the key, they will be unable to use your script
-      GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
-      Key = {"Hello"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
-   }
-})
+local V = "V.0.61"
+library:CreateWindow({
+	Title = "Doors - by Iliankytb",-- Title of the script
+	Theme = selectedTheme,--View more theme in my dicord server!
+	Icon = 0,-- 0 = no icon or add number
+	Intro = false,--Intro or no
+	IntroTitle = "Zentrix Library Testing",--the intro title
+	KeyPC = Enum.KeyCode.K,--the key for pc for Open/close the frame
+	Data = {
+		EnableSavingData = true,--Enabling data saver or no
+		DisableNotifyingLoadedData = false,--set it to true for disable the notify when loaded data
+		FolderName = "SaverIG",--Folder Name,you can change it
+		FileName = "IliankYTB",-- File name for the data saver,you can change it
+	},
+	Discord = {
+		Enabled = false,--enable to copy the discord
+		DiscordLink = "https://discord.gg/E2TqYRsRP4",-- put thr entire Link of discord
+		RememberJoin = false,-- Set this ti false to make them copy the link every time they load the script
+		Duration = 5,-- 5 is the default you can change the number only for remember join
+	},
+	KeySystem = false,--Key System or no
+	KeySettings = {
+		Title = "Zentrix Library Testing Key System",--Title of the key(just like that)
+		Note = "the key is Zentrix",-- The method for obtaining
+		FileName = "Key",-- File name or no for saving the key
+		SaveKey = true,-- saving the key or no
+		GrabKeyFromSite = false,--Coming soon
+		Key = {"Zentrix"},-- the name you can add many name, Exemple "Key","Key2" or you can add a function to add key but i don't really know
+		AddGetKeyButton = false,
+		AddDiscordButton = true,
+		DiscordLink = "NoInviteLink",
+		GetKeyLink = "NoKeyLink",
+	},
+}, function(window)
 local InfoTab = Window:CreateTab("Info")
-local UpdateTab = Window:CreateTab("Update")
 local PlayerTab = Window:CreateTab("Player")
 local GameTab = Window:CreateTab("Game")
 local EspTab = Window:CreateTab("Esp")
@@ -44,41 +44,27 @@ local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
 local ActiveEspDoor,ActiveSpeedBoost,ActiveEspHidingSpots,ActiveEspItems,ActiveEspCoins,ActiveMonsterSpawnAlert,ActiveNoCooldownPrompt,ActiveFullBright,ActiveModifiedFieldOfView,ActiveEspChest,ActiveEspBooks,ActiveEspMonster,ActiveEspTimerLever,ActiveEspGen,DisableLimitRangerEsp,ActiveAutoInteract,ActiveCanJump,ActiveInfOxygen,ActiveHMOxygen,ActiveSpeedBypassing,ActiveEspPlayers,ActiveDistanceEsp,ActiveBigPrompt = false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false
 local LimitRangerEsp = 100
-local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "Loading"})
-Rayfield:Notify({
-   Title = "Cheat Version",
-   Content = "V.0.60",
-   Duration = 2.5,
-   Image = "rewind",
+local ParagraphInfoServer = InfoTab:AddParagraph({Title = "",Content = "Loading",Name = "Paragraph1"})
+local Version = InfoTab:AddText({
+		Text = "Version:"..V,
+		Name = "VersionScript"
+	})
+window:Notify({
+				Title = "Script Version!",
+				Message = V,
+				Duration = 7.5,
 })
 
-local Paragraph1 = UpdateTab:CreateParagraph({Title = "Released(V.0.8)", Content = "The Script Is Released It Has Only Some Esp And Speed Boost,I Will Add More Things In The Future!"})
-local Paragraph2 = UpdateTab:CreateParagraph({Title = "Notify Monster Spawning(V.0.21)", Content = "New Things Added Monsters Esp(Uncompleted!) and Notify Monster Spawning is Uncompleted Too I Will Try To get monster from floor 2 and ambush & halt!"})
-local Paragraph3 = UpdateTab:CreateParagraph({Title = "Theme Changer In Settings(V.0.22)", Content = "Added Themes Changer In Settings"})
-local Paragraph4 = UpdateTab:CreateParagraph({Title = "Theme Changer In Settings(V.0.25)", Content = "Fixed Themes Changer In Settings,Now It Work Enjoy With My Script!"})
-local Paragraph5 = UpdateTab:CreateParagraph({Title = "Upgraded And Added Things(V.0.26)", Content = "Added Section And Game Button,Upgrade Esp Monster And Monster Spawning Alert,Added Esp Timer Lever"})
-local Paragraph6 = UpdateTab:CreateParagraph({Title = "Upgraded Limit Ranger Esp(V.0.30)", Content = "Added  A Slider To Change The Limit Ranger Esp Or A Toggle To Disable A Limit Ranger Esp In Settings!"})
-local Paragraph7 = UpdateTab:CreateParagraph({Title = "Fixed Esp Door For Mines(V.0.31)", Content = "Just Try it! normally it work"})
-local Paragraph8 = UpdateTab:CreateParagraph({Title = "Auto Interact(V.0.32)", Content = "Working Good But I Will Work On The Auto Interact Settings! btw its in Game tab."})
-local Paragraph9 = UpdateTab:CreateParagraph({Title = "Fixed Full Bright(V.0.33)", Content = "Normally Full Bright Is Fixed Try It!"})
-local Paragraph10 = UpdateTab:CreateParagraph({Title = "Fixed And Added(V.0.35)", Content = "Normally Full Bright Is Fixed Again,fixed Esp Hidding Spots And Esp Door Sometimes It Disapear and added Can Jump And Inf Oxygen!"})
-local Paragraph11 = UpdateTab:CreateParagraph({Title = "Lag(V.0.36)", Content = "Normally there no lag for esp or etc i will upgrade again the full bright and somethings!"})
-local Paragraph12 = UpdateTab:CreateParagraph({Title = "Highlight(V.0.39)", Content = "Just Upgraded Highlight!"})
-local Paragraph13 = UpdateTab:CreateParagraph({Title = "Lag(V.0.42)", Content = "Using Heartbeat methode instead of renderstepped!"})
-local Paragraph14 = UpdateTab:CreateParagraph({Title = "Esp(V.0.43)", Content = "Fixed Esp now!"})
-local Paragraph15 = UpdateTab:CreateParagraph({Title = "Esp(V.0.47)", Content = "Fixed Esp again, it use the cframe of the camera instead of the rootpart cframe,bcause with the spectate it don't work!"})
-local Paragraph16 = UpdateTab:CreateParagraph({Title = "Added More Monsters(V.0.48)", Content = "Added A60 and A120 in Esp Monsters and Monster spawn alert."})
-local Paragraph17 = UpdateTab:CreateParagraph({Title = "Added things(V.0.50-51)", Content = "Added A button to see distance for esp in settings,fixed auto interact,Added big distance prompt,Added textlabel like evade script.(coming soon esp players and custom esp color & highlight!"})
+
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local RunService = game:GetService("RunService")
 
 local function NotifMonsterSpawned(NameMonster,Time)
-Rayfield:Notify({
-   Title = "Monster Spawned!",
+window:Notify({
+				  Title = "Monster Spawned!",
    Content = NameMonster.." Has Spawned!",
    Duration = Time,
-   Image = "rewind",
 })
 end
 local OptionNotif = {}
@@ -147,7 +133,7 @@ if not DisableLimitRangerEsp then
 		end
 	end
 
-	RunService.Heartbeat:Wait()
+wait(0.1)
 end
 
 	end)
@@ -166,8 +152,9 @@ local function copyToClipboard(text)
         warn("setclipboard is not supported in this environment.")
     end
 end
-local DiscordLink = DiscordTab:CreateButton({
-   Name = "Discord Link",
+local DiscordLink = DiscordTab:AddButton({
+Text = "Discord Link",
+   Name = "DCLink",
    Callback = function()
 copyToClipboard("https://discord.gg/E2TqYRsRP4")
 end,
@@ -180,13 +167,14 @@ end,
     end
 end
 
-local Section1 = GameTab:CreateSection("General")
-local Section2 = EspTab:CreateSection("General")
-local DropdownMonsterSpawnAlert = GameTab:CreateDropdown({
-    Name = "Monster Spawn Alert Dropdown",
+local Section1 = GameTab:AddSection({Text = "General",Name = "General"})
+local Section2 = EspTab:AddSection({Text = "General",Name = "General"})
+local DropdownMonsterSpawnAlert = GameTab:AddDropdown({
+Text =  "Monster Spawn Alert Dropdown",
+    Name ="DropdownMonsterSpawnAlert",
     Options = {"Rush","Seek","Figure","Sally","Eyes","LookMan","BackdoorRush","Giggle","GloombatSwarm","Ambush","A-60","A-120","Eye stalk"},
-    CurrentOption = {""},
-    MultipleOptions = true,
+    Default = "",
+    MultiSelect  = true,
     Flag = "MonsterSpawnAlertDropdown",
     Callback = function(Options)
        
@@ -298,9 +286,10 @@ if table.find(Options, "A-120") and not table.find(OptionNotif, "A120") then
     end,
 })
 
-local EspDoorToggle = EspTab:CreateToggle({
-   Name = "Door Esp",
-   CurrentValue = false,
+local EspDoorToggle = EspTab:AddToggle({
+Text = "Door Esp",
+   Name = "EspDoorToggle",
+   Default = false,
    Flag = "EspDoor", 
    Callback = function(Value)
 ActiveEspDoor = Value 
@@ -339,9 +328,10 @@ end
 end
 end)
 end,
-}) local EspHidingSpotsToggle = EspTab:CreateToggle({
-   Name = "Hiding Spots Esp",
-   CurrentValue = false,
+}) local EspHidingSpotsToggle = EspTab:AddToggle({
+Text = "Hiding Spots Esp",
+   Name = "EspHidingSpotsToggle",
+   Default = false,
    Flag = "EspHidingSpots", 
    Callback = function(Value)
 ActiveEspHidingSpots = Value 
@@ -375,17 +365,19 @@ end
 end)
 end,
 })
-local ActiveMonsterSpawnAlertToggle = GameTab:CreateToggle({
-   Name = "Active Monster Spawn Alert(Its uncompleted!)",
-   CurrentValue = false,
+local ActiveMonsterSpawnAlertToggle = GameTab:AddToggle({
+Text = "Active Monster Spawn Alert(Its uncompleted!)",
+   Name = "ActiveMonsterSpawnAlertToggle",
+   Default = false,
    Flag = "ActiveMonsterSpawnAlert1", 
    Callback = function(Value)
 ActiveMonsterSpawnAlert = Value 
 end,
 })
-local NoCooldownpromptToggle = GameTab:CreateToggle({
-   Name = "Instant Prompt",
-   CurrentValue = false,
+local NoCooldownpromptToggle = GameTab:AddToggle({
+Text =  "Instant Prompt",
+   Name ="NoCooldownpromptToggle",
+   Default = false,
    Flag = "NoCooldownPrompt1", 
    Callback = function(Value)
 ActiveNoCooldownPrompt = Value 
@@ -415,9 +407,10 @@ end
 end)
 end,
 })
-local EspItemsToggle = EspTab:CreateToggle({
-   Name = "Items Esp",
-   CurrentValue = false,
+local EspItemsToggle = EspTab:AddToggle({
+Text =  "Items Esp",
+   Name ="EspItemsToggle",
+   Default = false,
    Flag = "EspItems", 
    Callback = function(Value)
 ActiveEspItems = Value 
@@ -440,9 +433,10 @@ end
 end
 end)
 end,
-}) local EspCoinsToggle = EspTab:CreateToggle({
-   Name = "Coins Esp",
-   CurrentValue = false,
+}) local EspCoinsToggle = EspTab:AddToggle({
+Text=  "Coins Esp",
+   Name ="EspCoinsToggle",
+   Default = false,
    Flag = "EspCoins", 
    Callback = function(Value)
 ActiveEspCoins = Value 
@@ -475,9 +469,10 @@ end
 end)
 end,
 })
-local EspChestToggle = EspTab:CreateToggle({
-   Name = "Chest Esp",
-   CurrentValue = false,
+local EspChestToggle = EspTab:AddToggle({
+Text = "Chest Esp",
+   Name = "EspChestToggle",
+   Default = false,
    Flag = "EspChest", 
    Callback = function(Value)
 ActiveEspChest = Value 
@@ -510,9 +505,10 @@ end
 end)
 end,
 })
- local EspBooksToggle = EspTab:CreateToggle({
-   Name = "Books Esp",
-   CurrentValue = false,
+ local EspBooksToggle = EspTab:AddToggle({
+Text =  "Books Esp",
+   Name = "EspBooksToggle",
+Default = false,
    Flag = "EspBooks", 
    Callback = function(Value)
 ActiveEspBooks = Value 
@@ -545,9 +541,10 @@ end
 end)
 end,
 })
-local EspMonstersToggle = EspTab:CreateToggle({
-   Name = "Monsters Esp",
-   CurrentValue = false,
+local EspMonstersToggle = EspTab:AddToggle({
+Text = "Monsters Esp",
+   Name = "EspMonstersToggle",
+   Default = false,
    Flag = "EspMonsters", 
    Callback = function(Value)
 ActiveEspMonster = Value 
@@ -567,12 +564,12 @@ end
 end,
 })
 local ValueSpeed = 16
-local PlayerSpeedSlider = PlayerTab:CreateSlider({
-   Name = "Player Speed(max 21 for not be a exploiter) ",
-   Range = {0, 21},
-   Increment = 1,
-   Suffix = "Speeds",
-   CurrentValue = 16,
+local PlayerSpeedSlider = PlayerTab:AddSlider({
+Text = "Player Speed(max 21 for not be a exploiter)",
+   Name = "PlayerSpeedSlider",
+   Min = 0
+   Max = 23,
+   Default = 16,
    Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
 CurrentValue = Value
@@ -580,9 +577,10 @@ ValueSpeed = Value
 end,  ValueSpeed = CurrentValue,
 })
 
-local PlayerActiveModifyingSpeedToggle = PlayerTab:CreateToggle({
-   Name = "Active Modifying Player Speed",
-   CurrentValue = false,
+local PlayerActiveModifyingSpeedToggle = PlayerTab:AddToggle({
+Text = "Active Modifying Player Speed",
+   Name = "PlayerActiveModifyingSpeedToggle",
+   Default = false,
    Flag = "ButtonSpeed", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
   ActiveSpeedBoost = Value task.spawn(function()
@@ -592,57 +590,35 @@ task.wait(0.1)
 end end)
 end,
 })
-local ActiveNoEyes = false
-local NoEyesToggle = MonstersTab:CreateToggle({
-   Name = "No Eyes(Unverified!)",
-   CurrentValue = false,
+local ActiveAvoidFigure = false
+local AvoidFigureToggle = MonstersTab:AddToggle({
+Text =  "Figure can't detect you(Soon)",
+   Name ="AvoidFigureToggle",
+   Default = false,
    Flag = "ButtonNoEyes", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
-  ActiveNoEyes = Value
-
- Game:GetService("ReplicatedStorage").GameData.EntityDisableEyes.Value = ActiveNoEyes
-
+  ActiveAvoidFigure = Value
 end,
 })
-local ActiveNoScreech = false
-local NoScreechToggle = MonstersTab:CreateToggle({
-   Name = "No Screech(Unverified!)",
-   CurrentValue = false,
-   Flag = "ButtonNoScreech", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-   Callback = function(Value)
-  ActiveNoScreech = Value
 
- Game:GetService("ReplicatedStorage").GameData.EntityDisableScreech.Value = ActiveNoScreech
-
-
-end,
-})
-local ActiveNoDupe = false
-local NoDupeToggle = MonstersTab:CreateToggle({
-   Name = "No Dupe(Unverified!)",
-   CurrentValue = false,
-   Flag = "ButtonNoDupe", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-   Callback = function(Value)
-  ActiveNoDupe = Value
- Game:GetService("ReplicatedStorage").GameData.EntityDisableDupe.Value = ActiveNoDupe
-end,
-})
 local ValueFieldOfView = 80
-local PlayerFieldOfViewSlider = PlayerTab:CreateSlider({
-   Name = "Field Of View(Unverified!)",
-   Range = {80, 120},
-   Increment = 1,
-   Suffix = "FOV",
-   CurrentValue = 80,
+local PlayerFieldOfViewSlider = PlayerTab:AddSlider({
+Text = "Field Of View(Unverified!)",
+   Name = "PlayerFieldOfViewSlider",
+   Min = 80
+   Max = 120,
+   Default = 80,
    Flag = "FOV1",
    Callback = function(Value)
 CurrentValue = Value
 ValueFieldOfView = Value
 end,  ValueFieldOfView = CurrentValue,
 }) 
-local ActiveModifiedFieldOfView = false local PlayerActiveModifyingFOVToggle = PlayerTab:CreateToggle({
-   Name = "Active Modifying Player FOV(Unverified!)",
-   CurrentValue = false,
+local ActiveModifiedFieldOfView = false
+local PlayerActiveModifyingFOVToggle = PlayerTab:DefaultToggle({
+Text = "Active Modifying Player FOV(Unverified!)",
+   Name = "PlayerActiveModifyingFOVToggle",
+   Default = false,
    Flag = "ButtonFOV", 
    Callback = function(Value)
   ActiveModifiedFieldOfView = Value 
@@ -656,9 +632,10 @@ end end)
 end,
 }) 
 local ActiveFullBright = false
-local PlayerFullBright = GameTab:CreateToggle({
-   Name = "Full Bright(unverified!)",
-   CurrentValue = false,
+local PlayerFullBright = GameTab:AddToggle({
+Text =  "Full Bright(unverified!)",
+   Name ="PlayerFullBright",
+   Default = false,
    Flag = "FullBright",
    Callback = function(Value)
 ActiveFullBright = Value 
@@ -673,10 +650,11 @@ end
 end)
 end,  
 })
-local Section3 = EspTab:CreateSection("Backdoor")
-local EspTimerLeverToggle = EspTab:CreateToggle({
-   Name = "Timer Lever Esp",
-   CurrentValue = false,
+local Section3 = EspTab:AddSection({Text = "Backdoor", Name = "Backdoor"})
+local EspTimerLeverToggle = EspTab:AddToggle({
+Text = "Timer Lever Esp",
+   Name = "EspTimerLeverToggle",
+   Default = false,
    Flag = "EspTimerLever", 
    Callback = function(Value)
 ActiveEspTimerLever = Value 
@@ -711,10 +689,11 @@ end
 end)
 end,
 })
-local Section4 = EspTab:CreateSection("Mines")
-local EspGeneratorToggle = EspTab:CreateToggle({
-   Name = "Generator Esp",
-   CurrentValue = false,
+local Section4 = EspTab:AddSection({Text = "Mines",Name = "Mines"})
+local EspGeneratorToggle = EspTab:AddToggle({
+Text = "Generator Esp",
+   Name = "EspGeneratorToggle",
+   Default = false,
    Flag = "EspGen", 
    Callback = function(Value)
 ActiveEspGen = Value 
@@ -746,21 +725,18 @@ end)
 end,
 })
 workspace.ChildAdded:Connect(function(child)
-task.spawn(function()
 if ActiveNoCooldownPrompt then
 for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
 if Assets:isA("ProximityPrompt") then 
-task.spawn(function()
 if Assets.HoldDuration ~= 0 then
 Assets:SetAttribute("HoldDurationOld",Assets.HoldDuration)
 Assets.HoldDuration = 0
 end
-end)
 end 
 end  
 end
-end)
-task.spawn(function()
+
+
 if ActiveEspChest then
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
@@ -775,7 +751,6 @@ end
 end end end
 end
 end)
-task.spawn(function()
 if ActiveEspMonster then
 for _,Assets in pairs(Workspace:GetDescendants()) do  
 if Assets:isA("Model") and (Assets.Name == "FigureRig" or Assets.Name == "SallyMoving" or Assets.Name == "RushMoving" or Assets.Name == "Eyes" or Assets.Name == "SeekMovingNewClone" or Assets.Name == "BackdoorLookman" or Assets.Name == "BackdoorRush" or Assets.Name == "GloombatSwarm" or Assets.Name == "GiggleCeiling" or Assets.Name == "AmbushMoving" or Asset.Name == "EyestalkMoving")  and  not Assets:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then Assets.PrimaryPart.Transparency = 0
@@ -783,8 +758,8 @@ CreateEsp(Assets,Color3.fromRGB(255,0,0),Assets.Name,Assets.PrimaryPart)
 end 
 end 
 end
-end)
-task.spawn(function()
+
+
 if ActiveEspBooks then
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
@@ -798,8 +773,8 @@ end
 end
 end end end
 end
-end)
-task.spawn(function()
+
+
 if ActiveEspGen and child.Name == "MinesGenerator" then
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
@@ -813,24 +788,21 @@ end
 end 
 end end end
 end
-end)
-task.spawn(function()
+
 if ActiveEspHidingSpots then
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
 if Rooms:FindFirstChild("Assets") then  
 for _,Assets in pairs(Rooms:FindFirstChild("Assets"):GetChildren()) do
-task.spawn(function() 
 if Assets:isA("Model") and (Assets.Name == "Bed" or Assets.Name == "Wardrobe" or Assets.Name == "Backdoor_Wardrobe" or Assets.Name == "Locker_Large" or Assets.Name == "Rooms_Locker")  and  not Assets:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
 CreateEsp(Assets,Color3.fromRGB(0,255,255),Assets.Name,Assets.PrimaryPart) 
-end end)
+end
 end 
 end 
 end end end
 end
-end)
-task.spawn(function() 
+
 if ActiveBigPrompt and child:isA("ProximityPrompt") then
 for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
 if Assets:isA("ProximityPrompt") then 
@@ -841,20 +813,19 @@ end
 end 
 end 
 end
-end)
-task.spawn(function()
+
 if  ActiveEspItems then
   for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
-task.spawn(function()
+
 if Assets:isA("Model") and (Assets.Name == "KeyObtain" or Assets.Name == "LeverForGate" or Assets.Name == "Battery" or Assets.Name == "Flashlight" or Assets.Name == "Lighter" or Assets.Name == "Bandage" or Assets.Name == "Crucifix" or Assets.Name == "Vitamins" or Assets.Name == "Lockpick" or Assets.Name == "Candle" or Assets.Name == "AlarmClock" or Assets.Name == "LibraryHintPaper" or Assets.Name == "Smoothie" or Assets.Name == "FuseObtain" or Assets.Name == "BatteryPack" or Assets.Name == "Glowsticks" or Assets.Name == "StarVial" or Assets.Name == "Shakelight" or Assets.Name == "SkeletonKey" or Assets.Name == "Compass" or Assets.Name == "Shears" or Assets.Name == "Lantern")  and not Assets:FindFirstChildOfClass("Highlight") 
 and not  Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
 CreateEsp(Assets,Color3.fromRGB(255,255,0),Assets.Name,Assets.PrimaryPart) 
 end
-end)
+
 end  
 end
 end)
-task.spawn(function()
+
 if ActiveEspTimerLever and child.Name == "TimerLever" then
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
@@ -870,12 +841,11 @@ end
 end
 end
 end
-end)
-task.spawn(function()
+
 if ActiveEspDoor then
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
-if Rooms:isA("Model") then task.spawn(function()
+if Rooms:isA("Model") then 
 if Rooms:FindFirstChild("Door") and not Rooms:FindFirstChild("Door"):FindFirstChildOfClass("Highlight") and not Rooms:FindFirstChild("Door").PrimaryPart:FindFirstChildOfClass("BillboardGui") and not Rooms:FindFirstChild("Assets"):FindFirstChild("KeyObtain") then 
 local signText = (Rooms:FindFirstChild("Door") and Rooms.Door:FindFirstChild("Sign") and 
                  ((Rooms.Door.Sign:FindFirstChild("Stinker") and Rooms.Door.Sign.Stinker.Text ~= "" and Rooms.Door.Sign.Stinker.Text)
@@ -889,13 +859,13 @@ local signText = (Rooms:FindFirstChild("Door") and Rooms.Door:FindFirstChild("Si
                or "Unknown"
 
 CreateEsp(Rooms.Door, Color3.fromRGB(0,255,0), "Doors " .. signText.."(Lock)",Rooms.Door.PrimaryPart)
-end end)
+end
 end 
 end 
 end
 end
 end)
-task.spawn(function()
+
 if ActiveEspCoins then
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
@@ -909,8 +879,8 @@ end
 end
 end end end
 end
-end)
-task.spawn(function() if ActiveMonsterSpawnAlert then
+
+ if ActiveMonsterSpawnAlert then
 if table.find(OptionNotif,child.Name) then
 if child.Name == "RushMoving" then 
 NotifMonsterSpawned("Rush",3)
@@ -940,19 +910,21 @@ elseif child.Name == "A120" then
 NotifMonsterSpawned("A120",3)
 end
 end
-end end) 
+end
 end)
-local DropdownAutoInteract = GameTab:CreateDropdown({
-   Name = "Auto Interact Settings(Coming Soon)",
+local DropdownAutoInteract = GameTab:AddDropdown({
+Text = "Auto Interact Settings(Coming Soon)",
+   Name = "DropdownAutoInteract",
    Options = {"Drawer", "Pickup Items", "???"},
-   CurrentOption = "Nothings",  -- pour afficher ce qui est réellement chargé
+   Default = "Nothings",  -- pour afficher ce qui est réellement chargé
    Flag = "AIS",
    Callback = function(Selected)
  end,
 })
-local AutoInteractToggle = GameTab:CreateToggle({
-   Name = "Auto Interact",
-   CurrentValue = false,
+local AutoInteractToggle = GameTab:AddToggle({
+Text = "Auto Interact",
+   Name = "AutoInteractToggle",
+   Default = false,
    Flag = "AutoInter1", 
    Callback = function(Value)
 ActiveAutoInteract = Value 
@@ -969,9 +941,10 @@ end
 end)
 end,
 })
-local BigDistancePromptToggle = GameTab:CreateToggle({
-   Name = "Big Distance Prompt",
-   CurrentValue = false,
+local BigDistancePromptToggle = GameTab:AddToggle({
+Text =  "Big Distance Prompt",
+   Name ="BigDistancePromptToggle",
+   Default = false,
    Flag = "AutoBigDistancePrompt", 
    Callback = function(Value)
 ActiveBigPrompt = Value 
@@ -995,91 +968,71 @@ end
 end
 end,
 })
-local ButtonUnloadCheat = SettingsTab:CreateButton({
-   Name = "Unload Cheat",
+local ButtonUnloadCheat = SettingsTab:TextButton({
+Text = "Unload Cheat",
+   Name = "ButtonUnloadCheat",
    Callback = function()
-  Rayfield:Destroy()
+
 end,
 })
-local LimitRangerEspSlider = SettingsTab:CreateSlider({
-   Name = "Field Of View(Unverified!)",
-   Range = {25,1000},
-   Increment = 1,
-   Suffix = "Ranger",
-   CurrentValue = 100,
+local LimitRangerEspSlider = SettingsTab:AddSlider({
+Text =  "Limit Ranger for esp",
+   Name ="LimitRangerEspSlider",
+   Min =25,
+   Max = 1000,
+   Default = 100,
    Flag = "LimitRangerEsp1",
    Callback = function(Value)
 CurrentValue = Value
 LimitRangerEsp = Value
 end,  LimitRangerEsp = CurrentValue,
-})  local DisableLimitRangerEspToggle = SettingsTab:CreateToggle({
-   Name = "Disable Limit Ranger Esp",
-   CurrentValue = false,
+})  local DisableLimitRangerEspToggle = SettingsTab:AddToggle({
+Text =  "Disable Limit Ranger Esp",
+   Name ="DisableLimitRangerEspToggle",
+   Default = false,
    Flag = "ButtonDLRE", 
    Callback = function(Value)
   DisableLimitRangerEsp = Value 
 end,
 })
-local DistanceEspToggle = SettingsTab:CreateToggle({
-   Name = "Activate Distance For Esp",
-   CurrentValue = false,
+local DistanceEspToggle = SettingsTab:AddToggle({
+Text =  "Activate Distance For Esp",
+   Name ="DistanceEspToggle"
+   Default = false,
    Flag = "ButtonADFE", 
    Callback = function(Value)
   ActiveDistanceEsp = Value 
 end,
 })
-local CanJumpToggle = PlayerTab:CreateToggle({
-   Name = "Can Jump",
-   CurrentValue = false,
+local CanJumpToggle = PlayerTab:AddToggle({
+Text = "Can Jump",
+   Name = "CanJumpToggle",
+   Default = false,
    Flag = "CanJump1", 
    Callback = function(Value)
 ActiveCanJump = Value 
-task.spawn(function() 
-while ActiveCanJump do 
-Game.Players.LocalPlayer.Character:SetAttribute("CanJump",true)
-wait(0.1)
-end Game.Players.LocalPlayer.Character:SetAttribute("CanJump",false)
-end)
+Game.Players.LocalPlayer.Character:SetAttribute("CanJump",ActiveCanJump)
 end,
-}) local InfOToggle = PlayerTab:CreateToggle({
-   Name = "Inf Oxygen",
-   CurrentValue = false,
-   Flag = "InfO1", 
-   Callback = function(Value)
-ActiveInfOxygen = Value 
-task.spawn(function() 
-while ActiveInfOxygen do 
-Game.Players.LocalPlayer.Character:SetAttribute("Oxygen",99999)
-wait(0.1)
-end Game.Players.LocalPlayer.Character:SetAttribute("Oxygen",100)
-end)
-end,
-})
+}) 
 
-local Themes = {
-   ["Default"] = "Default",
-   ["Amber Glow"] = "AmberGlow",
-   ["Amethyst"] = "Amethyst",
-   ["Bloom"] = "Bloom",
-   ["Dark Blue"] = "DarkBlue",
-   ["Green"] = "Green",
-   ["Light"] = "Light",
-   ["Ocean"] = "Ocean",
-   ["Serenity"] = "Serenity"
-}
+local ChangeThemeDropdown = SettingsTab:AddDropdown({
+		Text = "Change Theme:",
+		Name = "CTD",
+		Options = {"Default", "Light", "RedDark","BlueNeon","GreenMatrix","PurpleDream","Sunset",
+		"Ocean","Toxic","Storm","LimePop","Cyber","Chocolate","RoseGold","CottonCandy","NightSky","Steel",
+			"GoldLux","Ice","TealWave","FrostFire","DarkMatter","Lava","PinkCandy","Sakura","DeepSpace","Skyline","Crimson"
+			,"Desert","Camo","Plasma","Arctic","Slate","Vaporwave"
+			
+		},
+		Default = "Default",
+		MultiSelect = false,
+		Flag = "CTD", --Put a name flag for save data if you enabled saving data
+		Callback = function(choice)
+window:ChangeTheme(choice)
+		end
+	})
 
-local Dropdown = SettingsTab:CreateDropdown({
-   Name = "Change Theme",
-   Options = {"Default", "Amber Glow", "Amethyst", "Bloom", "Dark Blue", "Green", "Light", "Ocean", "Serenity"},
-   CurrentOption = selectedTheme,  -- pour afficher ce qui est réellement chargé
-   Flag = "ThemeSelection",
-   Callback = function(Selected)
-      local ident = Themes[Selected[1]] print(ident)
-      Window.ModifyTheme(ident)  -- <— Applique le thème en direct
-   end,
-})
-
-Rayfield:LoadConfiguration()
+library:LoadData()
 local function getServerInfo()
 	local Players = game:GetService("Players")
 	local playerCount = #Players:GetPlayers()
@@ -1116,4 +1069,5 @@ updatedInfo.MaxPlayers
 end)
 end
 
+end)
 end)
