@@ -1,7 +1,8 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.66"
+local V = "V.0.67"
+
 library:CreateWindow({
 	Title = "Doors - by Iliankytb",-- Title of the script
 	Theme = selectedTheme,--View more theme in my dicord server!
@@ -316,6 +317,7 @@ end end)
 end 
 end 
 end
+task.wait(0.1)
 end
 if Game.Workspace:FindFirstChild("CurrentRooms") then
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do
@@ -349,6 +351,7 @@ end end)
 end 
 end 
 end end end
+task.wait(0.1)
 end
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
@@ -392,6 +395,7 @@ end
 end)
 end 
 end  
+task.wait(0.1)
 end
 for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
 if Assets:isA("ProximityPrompt") then 
@@ -422,6 +426,7 @@ CreateEsp(Assets,Color3.fromRGB(255,255,0),Assets.Name,Assets.PrimaryPart)
 end
 end)
 end  
+task.wait(0.1)
 end
   for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
 if Assets:isA("Model")  and (Assets.Name == "KeyObtain" or Assets.Name == "LeverForGate" or  Assets.Name == "Battery" or Assets.Name == "Flashlight" or Assets.Name == "Bandage" or Assets.Name == "Lighter" or Assets.Name == "Crucifix" or Assets.Name == "Candle" or Assets.Name == "Lockpick" or Assets.Name == "AlarmClock" or Assets.Name == "LibraryHintPaper" or Assets.Name == "Smoothie" or Assets.Name == "FuseObtain" or Assets.Name == "Glowsticks" or Assets.Name == "BatteryPack" or Assets.Name == "StarVial" or Assets.Name == "SkeletonKey" or Assets.Name == "Shakelight" or Assets.Name == "Compass" or Assets.Name == "Shears" or Assets.Name == "Lantern") and  Assets:FindFirstChildOfClass("Highlight") and  Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
@@ -451,6 +456,7 @@ end
 end 
 end
 end end end
+task.wait(0.1)
 end
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
@@ -486,6 +492,7 @@ end
 end 
 end
 end end end
+task.wait(0.1)
 end
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
@@ -521,6 +528,7 @@ end
 end 
 end
 end end end
+task.wait(0.1)
 end
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
@@ -533,6 +541,7 @@ end
 end 
 end 
 end end end 
+task.wait(0.1)
 end)
 end,
 })
@@ -549,6 +558,7 @@ if Assets:isA("Model") and (Assets.Name == "FigureRig" or Assets.Name == "SallyM
 CreateEsp(Assets,Color3.fromRGB(255,0,0),Assets.Name,Assets.PrimaryPart) 
 end 
 end 
+task.wait(0.1)
 end
 for _,Assets in pairs(Workspace:GetDescendants()) do 
 if Assets:isA("Model")  and (Assets.Name == "FigureRig" or Assets.Name == "SallyMoving" or Assets.Name == "Eyes" or Assets.Name == "RushMoving" or Assets.Name == "SeekMovingNewClone" or Assets.Name == "BackdoorRush" or Assets.Name == "BackdoorLookman" or Assets.Name == "GiggleCeiling" or Assets.Name == "GloombatSwarm" or Assets.Name == "AmbushMoving" or Assets.Name == "EyestalkMoving") and  Assets:FindFirstChildOfClass("Highlight") and  Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then Assets.PrimaryPart.Transparency = 1
@@ -667,6 +677,7 @@ end)
 end 
 end
 end end end
+task.wait(0.1)
 end
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
@@ -701,6 +712,7 @@ end
 end 
 end 
 end end end
+task.wait(0.1)
 end
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
@@ -802,6 +814,7 @@ Assets.MaxActivationDistance = 13
 end
 end 
 end 
+task.wait(0.1)
 end
 for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
 if Assets:isA("ProximityPrompt") then 
