@@ -1803,7 +1803,7 @@ end
 			local flag = opts.Name
 			local button = createUI("TextLabel", {
 				Text = opts.Text;
-				Size = UDim2.new(1, 0, 0, 15);
+				Size = UDim2.new(1, 0, 0, 25);
 				BackgroundColor3 = selectedTheme.Buttons;
 				TextColor3 = selectedTheme.TextColor,
 				Font = Enum.Font.Gotham;
