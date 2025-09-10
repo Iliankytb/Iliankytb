@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.16"
+local V = "V.0.17"
 library:CreateWindow({
 	Title = "Rainbow Friend 2 - Scripted by Iliankytb",-- Title of the script
 	Theme = selectedTheme,--View more theme in my dicord server!
@@ -186,7 +186,8 @@ end,
 })
 local ValueSpeed = 16
 local PlayerSpeedSlider = PlayerTab:AddSlider({
-   Name = "Player Speed",
+Text = "Player Speed",
+   Name = "PlayerSpeedSlider",
 		Min = 0,
 		Max = 100,
 		Default = 16,
