@@ -1807,7 +1807,38 @@ end
 
 			return obj
 		end
+	function tab:AddSection(opts)
+			local flag = opts.Name
+			local button = createUI("TextLabel", {
+				Text = opts.Text;
+				Size = UDim2.new(1, 0, 0, 15);
+				BackgroundColor3 = selectedTheme.Buttons;
+				TextColor3 = selectedTheme.TextColor,
+				Font = Enum.Font.Gotham;
+				TextScaled = true;
+				TextXAlignment = Enum.TextXAlignment.Center,
+				Parent = tab.content;
+			})
+			createUI("UICorner", {Parent = button})
+			createUI("UIPadding", {
+				PaddingLeft = UDim.new(0, 10),
+				PaddingRight = UDim.new(0, 10),
+				PaddingTop = UDim.new(0, 5),
+				PaddingBottom = UDim.new(0, 5),
+				Parent = button;
+			})
 
+
+			-- Retourne un objet avec une méthode Set pour changer le texte
+			local obj = {}
+			function obj:Set(t)
+				-- t est une table avec un seul élément string, ex: {"nouveaux"}
+				if type(t) == "table" and type(t[1]) == "string" then
+					button.Text = t[1]
+				else
+					warn("Set attend une table avec un string en premier élément")
+				end
+			end
 		function tab:AddDropdown(opts)
 			local flag = opts.Flag or opts.Name or "Dropdown"
 			local multi = opts.MultiSelect or false
@@ -2022,7 +2053,7 @@ end
 	
 end
 function library:CreateWindow(settings1, onLoad)
-	print("Library Version: 0.33")
+	print("Library Version: 0.34")
 	if game:GetService("RunService"):IsStudio() then
 		if game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary") then
 			game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary"):Destroy()
