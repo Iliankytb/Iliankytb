@@ -64,7 +64,7 @@ end)
 for _, tool in pairs(game:GetService("Players").LocalPlayer.Inventory:GetChildren()) do
 if tool:isA("Model") and tool:GetAttribute("Capacity") then
 Rayfield:Notify({
-Title = "Founded!"
+Title = "Founded!",
 Content = "Founded your: "..Item.Name..",Trying to put it in your bag",
 Duration = 2,
 Image = "rewind",
