@@ -864,7 +864,7 @@ end
 end 
 end
 end
-end)
+
 
 if ActiveEspCoins then
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
