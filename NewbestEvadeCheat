@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.15"
+local V = "V.0.16"
 library:CreateWindow({
 	Title = "Evade - by Iliankytb",-- Title of the script
 	Theme = selectedTheme,--View more theme in my dicord server!
@@ -265,7 +265,7 @@ end,
 })
 local AutoFarmSummerEventToggle = GameTab:AddToggle({
 Text = "Auto Farm Summer Event",
-   Name = "AutoFarmSummerEventToggle"
+   Name = "AutoFarmSummerEventToggle",
    Default = false,
    Flag = "AutoFarmSummerEventToggle1", 
    Callback = function(Value)
