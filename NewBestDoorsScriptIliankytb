@@ -12,7 +12,7 @@ library:CreateWindow({
 	Data = {
 		EnableSavingData = true,--Enabling data saver or no
 		DisableNotifyingLoadedData = false,--set it to true for disable the notify when loaded data
-		FolderName = "SaverIG",--Folder Name,you can change it
+		FolderName = "SaverDoors",--Folder Name,you can change it
 		FileName = "IliankYTB",-- File name for the data saver,you can change it
 	},
 	Discord = {
