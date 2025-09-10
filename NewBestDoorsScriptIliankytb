@@ -845,6 +845,7 @@ if ActiveEspDoor then
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then 
+task.spawn(function()
 if Rooms:FindFirstChild("Door") and not Rooms:FindFirstChild("Door"):FindFirstChildOfClass("Highlight") and not Rooms:FindFirstChild("Door").PrimaryPart:FindFirstChildOfClass("BillboardGui") and not Rooms:FindFirstChild("Assets"):FindFirstChild("KeyObtain") then 
 local signText = (Rooms:FindFirstChild("Door") and Rooms.Door:FindFirstChild("Sign") and 
                  ((Rooms.Door.Sign:FindFirstChild("Stinker") and Rooms.Door.Sign.Stinker.Text ~= "" and Rooms.Door.Sign.Stinker.Text)
@@ -859,6 +860,7 @@ local signText = (Rooms:FindFirstChild("Door") and Rooms.Door:FindFirstChild("Si
 
 CreateEsp(Rooms.Door, Color3.fromRGB(0,255,0), "Doors " .. signText.."(Lock)",Rooms.Door.PrimaryPart)
 end
+end)
 end 
 end 
 end
@@ -929,11 +931,19 @@ Text = "Auto Interact",
 ActiveAutoInteract = Value 
 task.spawn(function() 
 while ActiveAutoInteract do 
-for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
-if Assets:isA("ProximityPrompt") and  Assets.Name ~= "HidePrompt" then 
-onPromptShown(Assets)
-wait(0.000001)
-end 
+local hrp = game.players.LocalPlayer.Character.HumanoidRootPart
+for _, asset in pairs(workspace:GetDescendants()) do
+task.spawn(function()
+	if asset:IsA("ProximityPrompt") and asset.Name ~= "HidePrompt" then
+		local parentPart = asset.Parent
+		if parentPart and parentPart:IsA("BasePart") then
+			local distance = (parentPart.Position - hrp.Position).Magnitude
+			if distance <= asset.MaxActivationDistance then
+				onPromptShown(asset)
+			end
+		end
+	end
+end)
 end
 wait(0.000001)
 end 
