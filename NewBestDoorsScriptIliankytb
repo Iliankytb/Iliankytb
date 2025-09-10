@@ -615,7 +615,7 @@ ValueFieldOfView = Value
 end,  ValueFieldOfView = CurrentValue,
 }) 
 local ActiveModifiedFieldOfView = false
-local PlayerActiveModifyingFOVToggle = PlayerTab:DefaultToggle({
+local PlayerActiveModifyingFOVToggle = PlayerTab:AddToggle({
 Text = "Active Modifying Player FOV(Unverified!)",
    Name = "PlayerActiveModifyingFOVToggle",
    Default = false,
