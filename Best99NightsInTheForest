@@ -48,23 +48,22 @@ local DistanceForKillAura = 25
 local DistanceForAutoChopTree = 25
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.20",
+   Content = "V.0.21",
    Duration = 2.5,
    Image = "rewind",
 })
 local function DragItem(Item)
-local sackname = ""
 for _, tool in pairs(game:GetService("Players").LocalPlayer.Inventory:GetChildren()) do
 if tool:isA("Tool") and tool:GetAttribute("Capacity") then
-sackname = tool.Name
+local args = {
+	tool,
+	Item
+}
+game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("RequestBagStoreItem"):InvokeServer(unpack(args))
+
 end
 wait(0.1)
 end
-local args = {
-	game:GetService("Players").LocalPlayer:WaitForChild("Inventory"):WaitForChild(sackname),
-	item
-}
-game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("RequestBagStoreItem"):InvokeServer(unpack(args))
 end
 local function getServerInfo()
 	local Players = game:GetService("Players")
