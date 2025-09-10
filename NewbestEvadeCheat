@@ -299,8 +299,9 @@ end,  ValueSpeed = CurrentValue,
 })
 
 local PlayerActiveModifyingSpeedToggle = PlayerTab:AddToggle({
-   Name = "Active Modifying Player Speed",
-   CurrentValue = false,
+Text = "Active Modifying Player Speed",
+   Name = "PlayerActiveModifyingSpeedToggle",
+   Default = false,
    Flag = "ButtonSpeed1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
   ActiveSpeedBoost = Value 
