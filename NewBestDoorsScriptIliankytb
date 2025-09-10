@@ -996,7 +996,7 @@ end,
 })
 local DistanceEspToggle = SettingsTab:AddToggle({
 Text =  "Activate Distance For Esp",
-   Name ="DistanceEspToggle"
+   Name ="DistanceEspToggle",
    Default = false,
    Flag = "ButtonADFE", 
    Callback = function(Value)
