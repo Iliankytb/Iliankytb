@@ -483,10 +483,7 @@ local function VisibleWindow(window,settings1,gui)
 		Size = UDim2.new(0, 0, 0, 0);
 		Position = UDim2.new(0.5, 0, 0.5, 0);
 	})
-	local animOpenMobile = TweenService:Create(mainFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
-		Size = UDim2.new(0, 400, 0, 200);
-		Position = UDim2.new(0.5, 0, 0.5, 0);
-	})
+	
 
 	-- Tabs list (gauche)
 	local tabsFrame = createUI("ScrollingFrame", {
@@ -646,23 +643,16 @@ AutomaticCanvasSize = Enum.AutomaticSize.Y;
 	end)
 	OpenButton.MouseButton1Click:Connect(function()
 		mainFrame.Visible = true
-		if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
-			animOpenMobile:Play()
-		elseif UserInputService.TouchEnabled and UserInputService.KeyboardEnabled then
+	
+		
 			animOpenPC:Play()
-		else
-			animOpenPC:Play()
-		end
+		
 		OpenButton.Visible = false
 
 	end)
-	if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
-		animOpenMobile:Play()
-	elseif UserInputService.TouchEnabled and UserInputService.KeyboardEnabled then
+	
 		animOpenPC:Play()
-	else
-		animOpenPC:Play()
-	end
+	
 	local UserInputService = game:GetService("UserInputService")
 
 
@@ -847,6 +837,7 @@ local TabButtons = {}
 			dropdowns = {},
 			toggles = {},
 			texts = {},
+	sections = {},
 			buttons = {},
 			paragraphs = {},
 			ColorPicker = {},
@@ -980,6 +971,7 @@ local TabButtons = {}
 						tab.dropdowns = tab.dropdowns or {}
 						tab.buttons = tab.buttons or {}
 						tab.texts = tab.texts or {}
+		tab.sections = tab.sections or {}
 						tab.paragraphs = tab.paragraphs or {}
 						tab.toggles = tab.toggles or {}
 						tab.ColorPicker = tab.ColorPicker or {}
@@ -1839,7 +1831,13 @@ end
 					warn("Set attend une table avec un string en premier élément")
 				end
 			end
+function obj:ChangeTheme(ThemesName)
+				button.BackgroundColor3 = selectedTheme.Buttons
+				button.TextColor3 = selectedTheme.TextColor
 end
+			tab.sections[flag] = obj
+			return obj
+		end
 		function tab:AddDropdown(opts)
 			local flag = opts.Flag or opts.Name or "Dropdown"
 			local multi = opts.MultiSelect or false
@@ -2054,7 +2052,7 @@ end
 	
 end
 function library:CreateWindow(settings1, onLoad)
-	print("Library Version: 0.35")
+	print("Library Version: 0.36")
 	if game:GetService("RunService"):IsStudio() then
 		if game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary") then
 			game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary"):Destroy()
