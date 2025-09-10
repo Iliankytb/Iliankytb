@@ -35,13 +35,13 @@ library:CreateWindow({
 		GetKeyLink = "NoKeyLink",
 	},
 }, function(window)
-local InfoTab = Window:CreateTab("Info")
-local PlayerTab = Window:CreateTab("Player")
-local GameTab = Window:CreateTab("Game")
-local EspTab = Window:CreateTab("Esp")
-local MonstersTab = Window:CreateTab("Monsters")
-local DiscordTab = Window:CreateTab("Discord")
-local SettingsTab = Window:CreateTab("Settings")
+local InfoTab = window:CreateTab("Info",0)
+local PlayerTab = window:CreateTab("Player",0)
+local GameTab = window:CreateTab("Game",0)
+local EspTab = window:CreateTab("Esp",0)
+local MonstersTab = window:CreateTab("Monsters",0)
+local DiscordTab = window:CreateTab("Discord",0)
+local SettingsTab = window:CreateTab("Settings",0)
 local ActiveEspDoor,ActiveSpeedBoost,ActiveEspHidingSpots,ActiveEspItems,ActiveEspCoins,ActiveMonsterSpawnAlert,ActiveNoCooldownPrompt,ActiveFullBright,ActiveModifiedFieldOfView,ActiveEspChest,ActiveEspBooks,ActiveEspMonster,ActiveEspTimerLever,ActiveEspGen,DisableLimitRangerEsp,ActiveAutoInteract,ActiveCanJump,ActiveInfOxygen,ActiveHMOxygen,ActiveSpeedBypassing,ActiveEspPlayers,ActiveDistanceEsp,ActiveBigPrompt = false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false,false
 local LimitRangerEsp = 100
 local ParagraphInfoServer = InfoTab:AddParagraph({Title = "",Content = "Loading",Name = "Paragraph1"})
