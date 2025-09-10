@@ -726,6 +726,7 @@ end)
 end,
 })
 workspace.ChildAdded:Connect(function(child)
+wait(0.5)
 if ActiveNoCooldownPrompt then
 for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
 if Assets:isA("ProximityPrompt") then 
