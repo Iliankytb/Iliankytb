@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.63"
+local V = "V.0.64"
 library:CreateWindow({
 	Title = "Doors - by Iliankytb",-- Title of the script
 	Theme = selectedTheme,--View more theme in my dicord server!
@@ -179,106 +179,106 @@ Text =  "Monster Spawn Alert Dropdown",
     Flag = "MonsterSpawnAlertDropdown",
     Callback = function(Options)
        
-        if table.find(Options, "Rush") and not table.find(OptionNotif, "RushMoving") then
+        if  Options == "Rush" and not table.find(OptionNotif, "RushMoving") then
             table.insert(OptionNotif, "RushMoving")
-        elseif not table.find(Options, "Rush") then
+        elseif not  Options ==  "Rush" then
             local index = table.find(OptionNotif, "RushMoving")
             if index then
                 table.remove(OptionNotif, index)
             end
         end
-      if table.find(Options, "Eye stalk") and not table.find(OptionNotif, "EyestalkMoving") then
+      if  Options ==  "Eye stalk" and not table.find(OptionNotif, "EyestalkMoving") then
             table.insert(OptionNotif, "EyestalkMoving")
-        elseif not table.find(Options, "Eye stalk") then
+        elseif not  Options ==  "Eye stalk" then
             local index = table.find(OptionNotif, "EyestalkMoving")
             if index then
                 table.remove(OptionNotif, index)
             end
         end
 
-        if table.find(Options, "Seek") and not table.find(OptionNotif, "SeekMovingNewClone") then
+        if  Options ==  "Seek" and not table.find(OptionNotif, "SeekMovingNewClone") then
             table.insert(OptionNotif, "SeekMovingNewClone")
-        elseif not table.find(Options, "Seek") then
+        elseif not  Options ==  "Seek" then
             local index = table.find(OptionNotif, "SeekMovingNewClone")
             if index then
                 table.remove(OptionNotif, index)
             end
         end
-if table.find(Options, "Sally") and not table.find(OptionNotif, "SallyMoving") then
+if  Options ==  "Sally" and not table.find(OptionNotif, "SallyMoving") then
             table.insert(OptionNotif, "SallyMoving")
-        elseif not table.find(Options, "Sally") then
+        elseif not  Options == "Sally" then
             local index = table.find(OptionNotif, "SallyMoving")
             if index then
                 table.remove(OptionNotif, index)
             end
         end
-if table.find(Options, "Figure") and not table.find(OptionNotif, "FigureRig") then
+if Options == "Figure" and not table.find(OptionNotif, "FigureRig") then
             table.insert(OptionNotif, "FigureRig")
-        elseif not table.find(Options, "Figure") then
+        elseif not Options =="Figure" then
             local index = table.find(OptionNotif, "FigureRig")
             if index then
                 table.remove(OptionNotif, index)
             end
         end
-if table.find(Options, "Eyes") and not table.find(OptionNotif, "Eyes") then
+if Options == "Eyes" and not table.find(OptionNotif, "Eyes") then
             table.insert(OptionNotif, "Eyes")
-        elseif not table.find(Options, "Eyes") then
+        elseif not Options == "Eyes" then
             local index = table.find(OptionNotif, "Eyes")
             if index then
                 table.remove(OptionNotif, index)
             end
         end
-if table.find(Options, "LookMan") and not table.find(OptionNotif, "BackdoorLookman") then
+if Options == "LookMan" and not table.find(OptionNotif, "BackdoorLookman") then
             table.insert(OptionNotif, "BackdoorLookman")
-        elseif not table.find(Options, "LookMan") then
+        elseif not tOptions == "LookMan" then
             local index = table.find(OptionNotif, "BackdoorLookman")
             if index then
                 table.remove(OptionNotif, index)
             end
         end
-if table.find(Options, "BackdoorRush") and not table.find(OptionNotif, "BackdoorRush") then
+if Options == "BackdoorRush" and not table.find(OptionNotif, "BackdoorRush") then
             table.insert(OptionNotif, "BackdoorRush")
-        elseif not table.find(Options, "BackdoorRush") then
+        elseif not Options == "BackdoorRush" then
             local index = table.find(OptionNotif, "BackdoorRush")
             if index then
                 table.remove(OptionNotif, index)
             end
         end
-if table.find(Options, "Giggle") and not table.find(OptionNotif, "GiggleCeiling") then
+if Options =="Giggle" and not table.find(OptionNotif, "GiggleCeiling") then
             table.insert(OptionNotif, "GiggleCeiling")
-        elseif not table.find(Options, "Giggle") then
+        elseif not Options == "Giggle" then
             local index = table.find(OptionNotif, "GiggleCeiling")
             if index then
                 table.remove(OptionNotif, index)
             end
         end
-if table.find(Options, "GloombatSwarm") and not table.find(OptionNotif, "GloombatSwarm") then
+if Options == "GloombatSwarm" and not table.find(OptionNotif, "GloombatSwarm") then
             table.insert(OptionNotif, "GloombatSwarm")
-        elseif not table.find(Options, "GloombatSwarm") then
+        elseif not Options == "GloombatSwarm" then
             local index = table.find(OptionNotif, "GloombatSwarm")
             if index then
                 table.remove(OptionNotif, index)
             end
         end
-if table.find(Options, "Ambush") and not table.find(OptionNotif, "AmbushMoving") then
+if Options == "Ambush" and not table.find(OptionNotif, "AmbushMoving") then
             table.insert(OptionNotif, "AmbushMoving")
-        elseif not table.find(Options, "Ambush") then
+        elseif Options == "Ambush"then
             local index = table.find(OptionNotif, "AmbushMoving")
             if index then
                 table.remove(OptionNotif, index)
             end
         end
-if table.find(Options, "A-60") and not table.find(OptionNotif, "A60") then
+if Options =="A-60" and not table.find(OptionNotif, "A60") then
             table.insert(OptionNotif, "A60")
-        elseif not table.find(Options, "A-60") then
+        elseif not Options == "A-60" then
             local index = table.find(OptionNotif, "A60")
             if index then
                 table.remove(OptionNotif, index)
             end
         end
-if table.find(Options, "A-120") and not table.find(OptionNotif, "A120") then
+if Options == "A-120" and not table.find(OptionNotif, "A120") then
             table.insert(OptionNotif, "A120")
-        elseif not table.find(Options, "A-120") then
+        elseif not Options == "A-120" then
             local index = table.find(OptionNotif, "A120")
             if index then
                 table.remove(OptionNotif, index)
