@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.15"
+local V = "V.0.16"
 library:CreateWindow({
 	Title = "Rainbow Friend 2 - Scripted by Iliankytb",-- Title of the script
 	Theme = selectedTheme,--View more theme in my dicord server!
@@ -86,8 +86,9 @@ local function copyToClipboard(text)
         warn("setclipboard is not supported in this environment.")
     end
 end
-local DiscordLink = DiscordTab:CreateButton({
-   Name = "Discord Link",
+local DiscordLink = DiscordTab:AddButton({
+Text = "Discord Link",
+   Name = "DCLink",
    Callback = function()
 copyToClipboard("https://discord.gg/E2TqYRsRP4")
 end,
