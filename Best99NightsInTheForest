@@ -48,19 +48,32 @@ local DistanceForKillAura = 25
 local DistanceForAutoChopTree = 25
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.21",
+   Content = "V.0.22",
    Duration = 2.5,
    Image = "rewind",
 })
 local function DragItem(Item)
+task.spawn(function()
+Rayfield:Notify({
+Title = "Searching",
+Content = "Searching to get the item:"..Item.Name,
+Duration = 1.5,
+Image = "rewind",
+})
+end)
 for _, tool in pairs(game:GetService("Players").LocalPlayer.Inventory:GetChildren()) do
 if tool:isA("Model") and tool:GetAttribute("Capacity") then
+Rayfield:Notify({
+Title = "Founded!"
+Content = "Founded your: "..Item.Name..",Trying to put it in your bag",
+Duration = 2,
+Image = "rewind",
+})
 local args = {
 	tool,
 	Item
 }
 game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("RequestBagStoreItem"):InvokeServer(unpack(args))
-
 end
 wait(0.1)
 end
