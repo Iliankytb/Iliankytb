@@ -48,7 +48,7 @@ local DistanceForKillAura = 25
 local DistanceForAutoChopTree = 25
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.22",
+   Content = "V.0.23",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -62,7 +62,7 @@ Image = "rewind",
 })
 end)
 for _, tool in pairs(game:GetService("Players").LocalPlayer.Inventory:GetChildren()) do
-if tool:isA("Model") and tool:GetAttribute("Capacity") then
+if tool:isA("Model") and tool:GetAttribute("Capacity") and tool:GetAttribute("NumberItems") < 5 then
 Rayfield:Notify({
 Title = "Founded!",
 Content = "Founded your: "..Item.Name..",Trying to put it in your bag",
