@@ -1,9 +1,9 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.11"
+local V = "V.0.12"
 library:CreateWindow({
-	Title = "Ink Game",-- Title of the script
+	Title = "Ink Game - Scripted by Iliankytb",-- Title of the script
 	Theme = selectedTheme,--View more theme in my dicord server!
 	Icon = 0,-- 0 = no icon or add number
 	Intro = false,--Intro or no
