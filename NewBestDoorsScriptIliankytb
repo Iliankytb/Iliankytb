@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.62"
+local V = "V.0.63"
 library:CreateWindow({
 	Title = "Doors - by Iliankytb",-- Title of the script
 	Theme = selectedTheme,--View more theme in my dicord server!
@@ -159,11 +159,12 @@ Text = "Discord Link",
 copyToClipboard("https://discord.gg/E2TqYRsRP4")
 end,
 }) local function onPromptShown(prompt)
-    if prompt and prompt.MaxActivationDistance > 0 then
-            prompt:InputHoldBegin() 
+    if prompt and prompt.MaxActivationDistance > 0 and not prompt:GetAttribute("Doing") then
+prompt:SetAttribute("Doing",true)            
+prompt:InputHoldBegin() 
             task.wait(prompt.HoldDuration or 0)
-            prompt:InputHoldEnd() 
-        
+wait(0.5)
+        prompt:SetAttribute("Doing",true) 
     end
 end
 
