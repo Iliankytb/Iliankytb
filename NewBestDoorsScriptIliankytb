@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.64"
+local V = "V.0.65"
 library:CreateWindow({
 	Title = "Doors - by Iliankytb",-- Title of the script
 	Theme = selectedTheme,--View more theme in my dicord server!
@@ -164,7 +164,7 @@ prompt:SetAttribute("Doing",true)
 prompt:InputHoldBegin() 
             task.wait(prompt.HoldDuration or 0)
 wait(0.5)
-        prompt:SetAttribute("Doing",true) 
+        prompt:SetAttribute("Doing",false) 
     end
 end
 
@@ -295,7 +295,7 @@ Text = "Door Esp",
    Callback = function(Value)
 ActiveEspDoor = Value 
 task.spawn(function() 
-if ActiveEspDoor then
+while  ActiveEspDoor do
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then task.spawn(function()
@@ -316,7 +316,7 @@ end end)
 end 
 end 
 end
-else
+end
 if Game.Workspace:FindFirstChild("CurrentRooms") then
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do
 if Rooms:isA("Model") then
@@ -326,7 +326,6 @@ end
 end 
 end
 end 
-end
 end)
 end,
 }) local EspHidingSpotsToggle = EspTab:AddToggle({
@@ -337,7 +336,7 @@ Text = "Hiding Spots Esp",
    Callback = function(Value)
 ActiveEspHidingSpots = Value 
 task.spawn(function() 
-if ActiveEspHidingSpots then
+while ActiveEspHidingSpots do
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
@@ -350,7 +349,7 @@ end end)
 end 
 end 
 end end end
-else
+end
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
@@ -362,7 +361,6 @@ end
 end 
 end 
 end end end 
-end
 end)
 end,
 })
@@ -383,7 +381,7 @@ Text =  "Instant Prompt",
    Callback = function(Value)
 ActiveNoCooldownPrompt = Value 
 task.spawn(function()  
-if ActiveNoCooldownPrompt then
+while ActiveNoCooldownPrompt do
 for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
 if Assets:isA("ProximityPrompt") then 
 task.spawn(function()
@@ -394,7 +392,7 @@ end
 end)
 end 
 end  
-else
+end
 for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
 if Assets:isA("ProximityPrompt") then 
 task.spawn(function()
@@ -404,7 +402,6 @@ end
 end)
 end 
 end   
-end
 end)
 end,
 })
@@ -416,7 +413,7 @@ Text =  "Items Esp",
    Callback = function(Value)
 ActiveEspItems = Value 
 task.spawn(function() 
-if  ActiveEspItems then
+while  ActiveEspItems do
   for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
 task.spawn(function()
 if Assets:isA("Model") and (Assets.Name == "KeyObtain" or Assets.Name == "LeverForGate" or Assets.Name == "Battery" or Assets.Name == "Flashlight" or Assets.Name == "Lighter" or Assets.Name == "Bandage" or Assets.Name == "Crucifix" or Assets.Name == "Vitamins" or Assets.Name == "Lockpick" or Assets.Name == "Candle" or Assets.Name == "AlarmClock" or Assets.Name == "LibraryHintPaper" or Assets.Name == "Smoothie" or Assets.Name == "FuseObtain" or Assets.Name == "BatteryPack" or Assets.Name == "Glowsticks" or Assets.Name == "StarVial" or Assets.Name == "Shakelight" or Assets.Name == "SkeletonKey" or Assets.Name == "Compass" or Assets.Name == "Shears" or Assets.Name == "Lantern")  and not Assets:FindFirstChildOfClass("Highlight") 
@@ -425,12 +422,12 @@ CreateEsp(Assets,Color3.fromRGB(255,255,0),Assets.Name,Assets.PrimaryPart)
 end
 end)
 end  
-else
+end
   for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
 if Assets:isA("Model")  and (Assets.Name == "KeyObtain" or Assets.Name == "LeverForGate" or  Assets.Name == "Battery" or Assets.Name == "Flashlight" or Assets.Name == "Bandage" or Assets.Name == "Lighter" or Assets.Name == "Crucifix" or Assets.Name == "Candle" or Assets.Name == "Lockpick" or Assets.Name == "AlarmClock" or Assets.Name == "LibraryHintPaper" or Assets.Name == "Smoothie" or Assets.Name == "FuseObtain" or Assets.Name == "Glowsticks" or Assets.Name == "BatteryPack" or Assets.Name == "StarVial" or Assets.Name == "SkeletonKey" or Assets.Name == "Shakelight" or Assets.Name == "Compass" or Assets.Name == "Shears" or Assets.Name == "Lantern") and  Assets:FindFirstChildOfClass("Highlight") and  Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
 KeepEsp(Assets,Assets.PrimaryPart) 
 end 
-end 
+
 end
 end)
 end,
@@ -442,7 +439,7 @@ Text=  "Coins Esp",
    Callback = function(Value)
 ActiveEspCoins = Value 
 task.spawn(function() 
-if ActiveEspCoins then
+while ActiveEspCoins do
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
@@ -454,7 +451,7 @@ end
 end 
 end
 end end end
-else
+end
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
@@ -466,7 +463,6 @@ end
 end 
 end 
 end end end 
-end
 end)
 end,
 })
@@ -478,7 +474,7 @@ Text = "Chest Esp",
    Callback = function(Value)
 ActiveEspChest = Value 
 task.spawn(function() 
-if ActiveEspChest then
+while ActiveEspChest do
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
@@ -490,7 +486,7 @@ end
 end 
 end
 end end end
-else
+end
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
@@ -502,7 +498,6 @@ end
 end 
 end 
 end end end 
-end
 end)
 end,
 })
@@ -514,7 +509,7 @@ Default = false,
    Callback = function(Value)
 ActiveEspBooks = Value 
 task.spawn(function() 
-if ActiveEspBooks then
+while ActiveEspBooks do
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
@@ -526,7 +521,7 @@ end
 end 
 end
 end end end
-else
+end
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
@@ -538,7 +533,6 @@ end
 end 
 end 
 end end end 
-end
 end)
 end,
 })
@@ -549,18 +543,17 @@ Text = "Monsters Esp",
    Flag = "EspMonsters", 
    Callback = function(Value)
 ActiveEspMonster = Value 
-if ActiveEspMonster then
+while ActiveEspMonster do
 for _,Assets in pairs(Workspace:GetDescendants()) do  
 if Assets:isA("Model") and (Assets.Name == "FigureRig" or Assets.Name == "SallyMoving" or Assets.Name == "RushMoving" or Assets.Name == "Eyes" or Assets.Name == "SeekMovingNewClone" or Assets.Name == "BackdoorLookman" or Assets.Name == "BackdoorRush" or Assets.Name == "GloombatSwarm" or Assets.Name == "GiggleCeiling" or Assets.Name == "AmbushMoving" or Assets.Name == "EyestalkMoving")  and  not Assets:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then Assets.PrimaryPart.Transparency = 0
 CreateEsp(Assets,Color3.fromRGB(255,0,0),Assets.Name,Assets.PrimaryPart) 
 end 
 end 
-else
+end
 for _,Assets in pairs(Workspace:GetDescendants()) do 
 if Assets:isA("Model")  and (Assets.Name == "FigureRig" or Assets.Name == "SallyMoving" or Assets.Name == "Eyes" or Assets.Name == "RushMoving" or Assets.Name == "SeekMovingNewClone" or Assets.Name == "BackdoorRush" or Assets.Name == "BackdoorLookman" or Assets.Name == "GiggleCeiling" or Assets.Name == "GloombatSwarm" or Assets.Name == "AmbushMoving" or Assets.Name == "EyestalkMoving") and  Assets:FindFirstChildOfClass("Highlight") and  Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then Assets.PrimaryPart.Transparency = 1
 KeepEsp(Assets,Assets.PrimaryPart) 
 end 
-end
 end
 end,
 })
@@ -660,7 +653,7 @@ Text = "Timer Lever Esp",
    Callback = function(Value)
 ActiveEspTimerLever = Value 
 task.spawn(function() 
-if ActiveEspTimerLever then
+while ActiveEspTimerLever do
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
@@ -674,7 +667,7 @@ end)
 end 
 end
 end end end
-else
+end
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
@@ -686,7 +679,6 @@ end
 end 
 end 
 end end end 
-end
 end)
 end,
 })
@@ -699,7 +691,7 @@ Text = "Generator Esp",
    Callback = function(Value)
 ActiveEspGen = Value 
 task.spawn(function() 
-if ActiveEspGen then
+while ActiveEspGen do
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
@@ -709,7 +701,7 @@ end
 end 
 end 
 end end end
-else
+end
 if Game.Workspace:FindFirstChild("CurrentRooms") then 
 for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
 if Rooms:isA("Model") then
@@ -721,168 +713,10 @@ end
 end 
 end 
 end end end 
-end
 end)
 end,
 })
 workspace.ChildAdded:Connect(function(child)
-wait(0.5)
-if ActiveNoCooldownPrompt then
-for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
-if Assets:isA("ProximityPrompt") then 
-if Assets.HoldDuration ~= 0 then
-Assets:SetAttribute("HoldDurationOld",Assets.HoldDuration)
-Assets.HoldDuration = 0
-end
-end 
-end  
-end
-
-
-if ActiveEspChest then
-if Game.Workspace:FindFirstChild("CurrentRooms") then 
-for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
-if Rooms:isA("Model") then
-if Rooms:FindFirstChild("Assets") then 
-for _,Assets in pairs(Rooms:GetDescendants()) do 
-if Assets:isA("Model") and (Assets.Name == "ChestBoxLocked" or Assets.Name == "ChestBox")  and  not Assets:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
-CreateEsp(Assets,Color3.fromRGB(255,255,0),Assets.Name,Assets.PrimaryPart) 
-end 
-end 
-end
-end end end
-end
-
-if ActiveEspMonster then
-for _,Assets in pairs(Workspace:GetDescendants()) do  
-if Assets:isA("Model") and (Assets.Name == "FigureRig" or Assets.Name == "SallyMoving" or Assets.Name == "RushMoving" or Assets.Name == "Eyes" or Assets.Name == "SeekMovingNewClone" or Assets.Name == "BackdoorLookman" or Assets.Name == "BackdoorRush" or Assets.Name == "GloombatSwarm" or Assets.Name == "GiggleCeiling" or Assets.Name == "AmbushMoving" or Assets.Name == "EyestalkMoving")  and  not Assets:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then Assets.PrimaryPart.Transparency = 0
-CreateEsp(Assets,Color3.fromRGB(255,0,0),Assets.Name,Assets.PrimaryPart) 
-end 
-end 
-end
-
-
-if ActiveEspBooks then
-if Game.Workspace:FindFirstChild("CurrentRooms") then 
-for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
-if Rooms:isA("Model") then
-if Rooms:FindFirstChild("Assets") then  
-for _,Assets in pairs(Rooms:GetDescendants()) do 
-if Assets:isA("Model") and Assets.Name == "LiveHintBook"  and  not Assets:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
-CreateEsp(Assets,Color3.fromRGB(0,150,150),"Books",Assets.PrimaryPart) 
-end 
-end 
-end
-end end end
-end
-
-
-if ActiveEspGen and child.Name == "MinesGenerator" then
-if Game.Workspace:FindFirstChild("CurrentRooms") then 
-for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
-if Rooms:isA("Model") then
-if Rooms:FindFirstChild("Assets") then
-for _,Assets in pairs(Rooms:FindFirstChild("Assets"):GetChildren()) do 
-if Assets:isA("Model") and Assets.Name == "MinesGenerator"  and  not Assets:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
-CreateEsp(Assets,Color3.fromRGB(255,255,0),Assets.Name,Assets.PrimaryPart) 
-end 
-end 
-end 
-end end end
-end
-
-if ActiveEspHidingSpots then
-if Game.Workspace:FindFirstChild("CurrentRooms") then 
-for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
-if Rooms:isA("Model") then
-if Rooms:FindFirstChild("Assets") then  
-for _,Assets in pairs(Rooms:FindFirstChild("Assets"):GetChildren()) do
-if Assets:isA("Model") and (Assets.Name == "Bed" or Assets.Name == "Wardrobe" or Assets.Name == "Backdoor_Wardrobe" or Assets.Name == "Locker_Large" or Assets.Name == "Rooms_Locker")  and  not Assets:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
-CreateEsp(Assets,Color3.fromRGB(0,255,255),Assets.Name,Assets.PrimaryPart) 
-end
-end 
-end 
-end end end
-end
-
-if ActiveBigPrompt and child:isA("ProximityPrompt") then
-for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
-if Assets:isA("ProximityPrompt") then 
-if Assets.MaxActivationDistance ~= 13 then
-Assets:SetAttribute("MaxActivationDistanceOld",Assets.MaxActivationDistance)
-Assets.MaxActivationDistance = 13
-end
-end 
-end 
-end
-
-if  ActiveEspItems then
-  for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
-
-if Assets:isA("Model") and (Assets.Name == "KeyObtain" or Assets.Name == "LeverForGate" or Assets.Name == "Battery" or Assets.Name == "Flashlight" or Assets.Name == "Lighter" or Assets.Name == "Bandage" or Assets.Name == "Crucifix" or Assets.Name == "Vitamins" or Assets.Name == "Lockpick" or Assets.Name == "Candle" or Assets.Name == "AlarmClock" or Assets.Name == "LibraryHintPaper" or Assets.Name == "Smoothie" or Assets.Name == "FuseObtain" or Assets.Name == "BatteryPack" or Assets.Name == "Glowsticks" or Assets.Name == "StarVial" or Assets.Name == "Shakelight" or Assets.Name == "SkeletonKey" or Assets.Name == "Compass" or Assets.Name == "Shears" or Assets.Name == "Lantern")  and not Assets:FindFirstChildOfClass("Highlight") 
-and not  Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
-CreateEsp(Assets,Color3.fromRGB(255,255,0),Assets.Name,Assets.PrimaryPart) 
-end
-
-end  
-end
-
-if ActiveEspTimerLever and child.Name == "TimerLever" then
-if Game.Workspace:FindFirstChild("CurrentRooms") then 
-for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
-if Rooms:isA("Model") then
-if Rooms:FindFirstChild("Assets") then 
-for _,Assets in pairs(Rooms:GetDescendants()) do  
-if Assets:isA("Model") and Assets.Name == "TimerLever"  and  not Assets:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
-CreateEsp(Assets,Color3.fromRGB(0,150,150),"Timer Lever",Assets.PrimaryPart) 
-end 
-end 
-end
-end 
-end
-end
-end
-
-if ActiveEspDoor then
-if Game.Workspace:FindFirstChild("CurrentRooms") then 
-for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
-if Rooms:isA("Model") then 
-task.spawn(function()
-if Rooms:FindFirstChild("Door") and not Rooms:FindFirstChild("Door"):FindFirstChildOfClass("Highlight") and not Rooms:FindFirstChild("Door").PrimaryPart:FindFirstChildOfClass("BillboardGui") and not Rooms:FindFirstChild("Assets"):FindFirstChild("KeyObtain") then 
-local signText = (Rooms:FindFirstChild("Door") and Rooms.Door:FindFirstChild("Sign") and 
-                 ((Rooms.Door.Sign:FindFirstChild("Stinker") and Rooms.Door.Sign.Stinker.Text ~= "" and Rooms.Door.Sign.Stinker.Text)
-               or (Rooms.Door.Sign:FindFirstChild("SignText") and Rooms.Door.Sign.SignText.Text)))
-               or "Unknown"
-CreateEsp(Rooms.Door, Color3.fromRGB(0,255,0), "Doors " .. signText,Rooms.Door.PrimaryPart) 
-elseif Rooms:FindFirstChild("Door") and not Rooms:FindFirstChild("Door"):FindFirstChildOfClass("Highlight") and not Rooms:FindFirstChild("Door").PrimaryPart:FindFirstChildOfClass("BillboardGui") and  Rooms:FindFirstChild("Assets"):FindFirstChild("KeyObtain") then 
-local signText = (Rooms:FindFirstChild("Door") and Rooms.Door:FindFirstChild("Sign") and 
-                 ((Rooms.Door.Sign:FindFirstChild("Stinker") and Rooms.Door.Sign.Stinker.Text ~= "" and Rooms.Door.Sign.Stinker.Text)
-               or (Rooms.Door.Sign:FindFirstChild("SignText") and Rooms.Door.Sign.SignText.Text)))
-               or "Unknown"
-
-CreateEsp(Rooms.Door, Color3.fromRGB(0,255,0), "Doors " .. signText.."(Lock)",Rooms.Door.PrimaryPart)
-end
-end)
-end 
-end 
-end
-end
-
-
-if ActiveEspCoins then
-if Game.Workspace:FindFirstChild("CurrentRooms") then 
-for _,Rooms in pairs(Game.Workspace:FindFirstChild("CurrentRooms"):GetChildren()) do 
-if Rooms:isA("Model") then
-if Rooms:FindFirstChild("Assets") then 
-for _,Assets in pairs(Rooms:GetDescendants()) do
-if Assets:isA("Model") and (Assets.Name == "GoldPile" or Assets.Name == "")  and  not Assets:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
-CreateEsp(Assets,Color3.fromRGB(255,255,0),"Gold",Assets.PrimaryPart) 
-end 
-end 
-end
-end end end
-end
-
  if ActiveMonsterSpawnAlert then
 if table.find(OptionNotif,child.Name) then
 if child.Name == "RushMoving" then 
@@ -959,7 +793,7 @@ Text =  "Big Distance Prompt",
    Flag = "AutoBigDistancePrompt", 
    Callback = function(Value)
 ActiveBigPrompt = Value 
-if ActiveBigPrompt then
+while ActiveBigPrompt do
 for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
 if Assets:isA("ProximityPrompt") then 
 if Assets.MaxActivationDistance ~= 13 then
@@ -968,7 +802,7 @@ Assets.MaxActivationDistance = 13
 end
 end 
 end 
-else
+end
 for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
 if Assets:isA("ProximityPrompt") then 
 if Assets:GetAttribute("MaxActivationDistanceOld") and Assets:GetAttribute("MaxActivationDistanceOld") ~= 13 then
@@ -976,7 +810,6 @@ Assets.MaxActivationDistance = Assets:GetAttribute("MaxActivationDistanceOld")
 end
 end 
 end  
-end
 end,
 })
 local ButtonUnloadCheat = SettingsTab:AddButton({
