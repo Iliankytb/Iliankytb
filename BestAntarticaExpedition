@@ -4,7 +4,7 @@ local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Ilian
 local selectedTheme = "Default"
 local V = "V.0.3"
 library:CreateWindow({
-	Title = "Antartic Expedition - Scripted by Iliankytb",-- Title of the script
+	Title = "Antartic Expedition - by Iliankytb",-- Title of the script
 	Theme = selectedTheme,--View more theme in my dicord server!
 	Icon = 0,-- 0 = no icon or add number
 	Intro = false,--Intro or no
