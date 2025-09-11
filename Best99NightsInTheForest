@@ -48,7 +48,7 @@ local DistanceForKillAura = 25
 local DistanceForAutoChopTree = 25
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.25",
+   Content = "V.0.26",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -62,8 +62,8 @@ local args = {
 }
 game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("RequestBagStoreItem"):InvokeServer(unpack(args))
 wait(0.1)
-end
 end)
+end
 wait(0.1)
 end
 end
