@@ -463,7 +463,10 @@ local function VisibleWindow(window,settings1,gui)
 		})
 		durationTween:Play()
 
-		-- Despawn après délai
+	local NewSound = Instance.new("Sound",workspace)
+	NewSound.SoundId = "rbxassetid://6647898215"
+	NewSound:Play()
+	game:GetService("Debris"):AddItem(NewSound,NewSound.TimeLength)
 		task.delay(duration, function()
 			local exitTween = tweenService:Create(content, TweenInfo.new(0.4, Enum.EasingStyle.Quint, Enum.EasingDirection.In), {
 				Position = UDim2.new(1, 20, 0, 0)
@@ -476,11 +479,15 @@ local function VisibleWindow(window,settings1,gui)
 
 	createUI("UICorner", {Parent = mainFrame})
 	local animOpenPC = TweenService:Create(mainFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
-		Size = UDim2.new(0, 600, 0, 400);
+		Size = UDim2.new(0, 600, 0, 500);
 		Position = UDim2.new(0.5, 0, 0.5, 0);
 	})
 	local animClose = TweenService:Create(mainFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
 		Size = UDim2.new(0, 0, 0, 0);
+		Position = UDim2.new(0.5, 0, 0.5, 0);
+	})
+	local animOpenMobile = TweenService:Create(mainFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+		Size = UDim2.new(0, 500, 0, 250);
 		Position = UDim2.new(0.5, 0, 0.5, 0);
 	})
 	
@@ -645,13 +652,21 @@ AutomaticCanvasSize = Enum.AutomaticSize.Y;
 		mainFrame.Visible = true
 	
 		
-			animOpenPC:Play()
+			if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
+	animOpenMobile:Play()
+else
+	animOpenPC:Play()
+end
 		
 		OpenButton.Visible = false
 
 	end)
 	
-		animOpenPC:Play()
+	if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
+	animOpenMobile:Play()
+else
+	animOpenPC:Play()
+end
 	
 	local UserInputService = game:GetService("UserInputService")
 
@@ -663,12 +678,11 @@ AutomaticCanvasSize = Enum.AutomaticSize.Y;
 			if not mainFrame.Visible then
 				mainFrame.Visible = true
 				if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
-					animOpenMobile:Play()
-				elseif UserInputService.TouchEnabled and UserInputService.KeyboardEnabled then
-					animOpenPC:Play()
-				else
-					animOpenPC:Play()
-				end
+	animOpenMobile:Play()
+else
+	animOpenPC:Play()
+end
+
 			else
 				animClose:Play()
 				animClose.Completed:Connect(function()
@@ -2052,7 +2066,7 @@ end
 	
 end
 function library:CreateWindow(settings1, onLoad)
-	print("Library Version: 0.36")
+	print("Library Version: 0.37")
 	if game:GetService("RunService"):IsStudio() then
 		if game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary") then
 			game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary"):Destroy()
