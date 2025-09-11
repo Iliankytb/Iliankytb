@@ -54,7 +54,7 @@ Rayfield:Notify({
 })
 local function DragItem(Item)
 for _, tool in pairs(game:GetService("Players").LocalPlayer.Inventory:GetChildren()) do
-if tool:isA("Model") and tool:GetAttribute("NumberItems") and tool:GetAttribute("Capacity") and tool:GetAttribute("NumberItems") < tool:GetAttribute("Capacity") then
+if tool:isA("Model")  and tool:GetAttribute("Capacity") and tool:GetAttribute("NumberItems") < tool:GetAttribute("Capacity") then
 task.spawn(function()
 local args = {
 	tool,
