@@ -48,7 +48,7 @@ local DistanceForKillAura = 25
 local DistanceForAutoChopTree = 25
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.28",
+   Content = "V.0.29",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -65,7 +65,7 @@ game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents"):WaitForChild("
 wait(0.1)
 end)
 end
-wait(0.1)
+wait(0.25)
 end
 end)
 end
