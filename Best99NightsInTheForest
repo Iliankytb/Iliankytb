@@ -48,7 +48,7 @@ local DistanceForKillAura = 25
 local DistanceForAutoChopTree = 25
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.27",
+   Content = "V.0.28",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -967,12 +967,15 @@ local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local hrp = character:WaitForChild("HumanoidRootPart")
 local weapon = (player.Inventory:FindFirstChild("Old Axe") or player.Inventory:FindFirstChild("Good Axe") or player.Inventory:FindFirstChild("Strong Axe") or player.Inventory:FindFirstChild("Chainsaw"))
+
 for _, bunny in pairs(workspace.Characters:GetChildren()) do
 	if bunny:IsA("Model") and bunny.PrimaryPart then
 		local distance = (bunny.PrimaryPart.Position - hrp.Position).Magnitude
 		if distance <= DistanceForKillAura then
-			local result = game:GetService("ReplicatedStorage").RemoteEvents.ToolDamageObject:InvokeServer(bunny, weapon, 999, hrp.CFrame)
-		end
+	task.spawn(function()	
+local result = game:GetService("ReplicatedStorage").RemoteEvents.ToolDamageObject:InvokeServer(bunny, weapon, 999, hrp.CFrame)
+end)	
+end
 	end
 end
 wait(0.01)
@@ -1008,19 +1011,23 @@ for _, bunny in pairs(workspace.Map.Foliage:GetChildren()) do
 	if bunny:IsA("Model") and (bunny.Name == "Small Tree" or bunny.Name == "TreeBig1" or bunny.Name == "TreeBig2")  and bunny.PrimaryPart then
 		local distance = (bunny.PrimaryPart.Position - hrp.Position).Magnitude
 		if distance <= DistanceForAutoChopTree then
-			local result = game:GetService("ReplicatedStorage").RemoteEvents.ToolDamageObject:InvokeServer(bunny, weapon, 999, hrp.CFrame)
-		end
+task.spawn(function()		
+local result = game:GetService("ReplicatedStorage").RemoteEvents.ToolDamageObject:InvokeServer(bunny, weapon, 999, hrp.CFrame)
+end)		
+end
 	end
 end 
 for _, bunny in pairs(workspace.Map.Landmarks:GetChildren()) do
 	if bunny:IsA("Model") and (bunny.Name == "Small Tree" or bunny.Name == "TreeBig1" or bunny.Name == "TreeBig2")  and bunny.PrimaryPart then
 		local distance = (bunny.PrimaryPart.Position - hrp.Position).Magnitude
 		if distance <= DistanceForAutoChopTree then
-			local result = game:GetService("ReplicatedStorage").RemoteEvents.ToolDamageObject:InvokeServer(bunny, weapon, 999, hrp.CFrame)
-			end
+	task.spawn(function()	
+local result = game:GetService("ReplicatedStorage").RemoteEvents.ToolDamageObject:InvokeServer(bunny, weapon, 999, hrp.CFrame)
+end)			
+end
 	end
 end
-wait(0.1)
+wait(0.01)
 end
 end)
 end,
