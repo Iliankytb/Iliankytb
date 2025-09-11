@@ -48,7 +48,7 @@ local DistanceForKillAura = 25
 local DistanceForAutoChopTree = 25
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.29",
+   Content = "V.0.30",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -804,7 +804,10 @@ end,
 })
 
 local ValueSpeed = 16
-local OldSpeed = Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed
+local OldSpeed =nil
+task.spawn(function()
+OldSpeed = Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed
+end
 local PlayerSpeedSlider = PlayerTab:CreateSlider({
    Name = "Player Speed",
    Range = {0, 500},
