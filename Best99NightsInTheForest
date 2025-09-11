@@ -48,11 +48,12 @@ local DistanceForKillAura = 25
 local DistanceForAutoChopTree = 25
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.26",
+   Content = "V.0.27",
    Duration = 2.5,
    Image = "rewind",
 })
 local function DragItem(Item)
+task.spawn(function()
 for _, tool in pairs(game:GetService("Players").LocalPlayer.Inventory:GetChildren()) do
 if tool:isA("Model") and tool:GetAttribute("NumberItems")  and tool:GetAttribute("Capacity") and tool:GetAttribute("NumberItems") < tool:GetAttribute("Capacity") then
 task.spawn(function()
@@ -66,6 +67,7 @@ end)
 end
 wait(0.1)
 end
+end)
 end
 local function getServerInfo()
 	local Players = game:GetService("Players")
@@ -444,6 +446,7 @@ task.spawn(function()
  for _,Obj in pairs(Game.Workspace.Characters:GetChildren()) do 
 if Obj:isA("Model") and Obj.PrimaryPart and (Obj.Name ~= "Lost Child" or Obj.Name ~= "Lost Child2" or Obj.Name ~= "Lost Child3" or Obj.Name ~= "Lost Child4" or Obj.Name ~= "Pelt Trader") and not Obj:FindFirstChildOfClass("Highlight") and not Obj.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
 CreateEsp(Obj,Color3.fromRGB(255,0,0),Obj.Name,Obj.PrimaryPart) 
+wait(0.15)
 end 
 end
 end)
@@ -517,6 +520,7 @@ task.spawn(function()
 for _, Obj in pairs(game.workspace.Items:GetChildren()) do
 if Obj:isA("Model") and Obj.PrimaryPart then 
 DragItem(Obj)
+wait(0.05)
 end  
 end
 end)
@@ -542,7 +546,6 @@ for _, Obj in pairs(game.workspace.Items:GetChildren()) do
 if Obj.Name == "Coal" and Obj:isA("Model") and Obj.PrimaryPart then 
 DragItem(Obj)
 end 
-wait(0.1)
 end
 end)
 end,
@@ -607,18 +610,6 @@ end
 end)
 end,
 })
-local ButtonBringAllGuns = BringItemTab:CreateButton({
-   Name = "Bring All Guns",
-   Callback = function(Value)
-task.spawn(function()
-for _, Obj in pairs(game.workspace.Items:GetChildren()) do
-if (Obj.Name == "Rifle" or Obj.Name == "Revolver") and Obj:isA("Model") and Obj.PrimaryPart then 
-DragItem(Obj)
-end  
-end
-end)
-end,
-})
 local ButtonBringAllChildren = BringItemTab:CreateButton({
    Name = "Bring All Children",
    Callback = function(Value)
@@ -643,18 +634,6 @@ end
 end)
 end,
 })
-local ButtonBringAllBody = BringItemTab:CreateButton({
-   Name = "Bring All Body",
-   Callback = function(Value)
-task.spawn(function()
-for _, Obj in pairs(game.workspace.Items:GetChildren()) do
-if (Obj.Name == "Leather Body" or Obj.Name == "Iron Body") and Obj:isA("Model") and Obj.PrimaryPart then 
-DragItem(Obj)
-end    
-end
-end)
-end,
-})
 local ButtonBringAllBandage = BringItemTab:CreateButton({
    Name = "Bring All Bandage",
    Callback = function(Value)
@@ -663,7 +642,6 @@ for _, Obj in pairs(game.workspace.Items:GetChildren()) do
 if Obj.Name == "Bandage" and Obj:isA("Model") and Obj.PrimaryPart then 
 DragItem(Obj)
 end
-wait(0.1)
 end
 end)
 end,
@@ -680,18 +658,7 @@ end
 end)
 end,
 })
-local ButtonBringAllCoins = BringItemTab:CreateButton({
-   Name = "Bring All Coins",
-   Callback = function(Value)
-task.spawn(function()
-for _, Obj in pairs(game.workspace.Items:GetChildren()) do
-if Obj.Name == "Coin Stack" and Obj:isA("Model") and Obj.PrimaryPart then 
-DragItem(Obj)
-end
-end
-end)
-end,
-})
+
 local ButtonBringAllOldRadio = BringItemTab:CreateButton({
    Name = "Bring All Old Radio",
    Callback = function(Value)
@@ -1000,7 +967,6 @@ local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local hrp = character:WaitForChild("HumanoidRootPart")
 local weapon = (player.Inventory:FindFirstChild("Old Axe") or player.Inventory:FindFirstChild("Good Axe") or player.Inventory:FindFirstChild("Strong Axe") or player.Inventory:FindFirstChild("Chainsaw"))
-task.spawn(function()
 for _, bunny in pairs(workspace.Characters:GetChildren()) do
 	if bunny:IsA("Model") and bunny.PrimaryPart then
 		local distance = (bunny.PrimaryPart.Position - hrp.Position).Magnitude
@@ -1009,8 +975,7 @@ for _, bunny in pairs(workspace.Characters:GetChildren()) do
 		end
 	end
 end
-end)
-wait(0.1)
+wait(0.01)
 end
 end)
 end,
@@ -1039,7 +1004,6 @@ local player = game.Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local hrp = character:WaitForChild("HumanoidRootPart")
 local weapon = (player.Inventory:FindFirstChild("Old Axe") or player.Inventory:FindFirstChild("Good Axe") or player.Inventory:FindFirstChild("Strong Axe") or player.Inventory:FindFirstChild("Chainsaw"))
-task.spawn(function()
 for _, bunny in pairs(workspace.Map.Foliage:GetChildren()) do
 	if bunny:IsA("Model") and (bunny.Name == "Small Tree" or bunny.Name == "TreeBig1" or bunny.Name == "TreeBig2")  and bunny.PrimaryPart then
 		local distance = (bunny.PrimaryPart.Position - hrp.Position).Magnitude
@@ -1048,8 +1012,6 @@ for _, bunny in pairs(workspace.Map.Foliage:GetChildren()) do
 		end
 	end
 end 
-end)
-task.spawn(function()
 for _, bunny in pairs(workspace.Map.Landmarks:GetChildren()) do
 	if bunny:IsA("Model") and (bunny.Name == "Small Tree" or bunny.Name == "TreeBig1" or bunny.Name == "TreeBig2")  and bunny.PrimaryPart then
 		local distance = (bunny.PrimaryPart.Position - hrp.Position).Magnitude
@@ -1058,7 +1020,6 @@ for _, bunny in pairs(workspace.Map.Landmarks:GetChildren()) do
 			end
 	end
 end
-end)
 wait(0.1)
 end
 end)
@@ -1068,7 +1029,7 @@ local ButtonTeleportToCampfire = PlayerTab:CreateButton({
    Name = "Teleport to campfire",
    Callback = function(Value)
 task.spawn(function()
- game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = Workspace.Map.Campground.MainFire.PrimaryPart.CFrame
+ game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart").CFrame = Workspace.Map.Campground.MainFire.PrimaryPart.CFrame + Vector3.new(0,10,0)
 end)
 end,
 })
