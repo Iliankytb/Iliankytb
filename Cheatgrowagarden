@@ -103,7 +103,8 @@ if AutoCollectFruits and not InSellingInventory and not InSelling then
 for _, farm in pairs(workspace.Farm:GetChildren()) do 
 if farm.Important.Data.Owner.Value == game.Players.LocalPlayer.Name then 
 for _, part in pairs(farm.Important.Plants_Physical:GetChildren()) do 
-if part:isA("Model") then if part:FindFirstChild("Fruits") then 
+if part:isA("Model") then
+if part:FindFirstChild("Fruits") then 
 for _, fruits in pairs(part:FindFirstChild("Fruits"):GetChildren()) do 
 if fruits.PrimaryPart and  AutoCollectFruits and not InSellingInventory and not InSelling then
 game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
@@ -121,6 +122,7 @@ end
 end 
 end 
 end  
+end
 end
 end
 wait(0.1)
