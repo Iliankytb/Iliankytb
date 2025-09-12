@@ -1,1 +1,96 @@
 
+local library
+	if game:GetService("RunService"):IsStudio() then
+		library = require(game:GetService("ReplicatedStorage").ModuleScript)
+	else
+	library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
+		end
+library:CreateWindow({
+	Title = "Pig 64 - By Iliankytb",-- Title of the script
+	Theme = "Default",--View more theme in my dicord server!
+	Icon = 0,-- 0 = no icon or add number
+	Intro = true,--Intro or no
+	IntroTitle = "Zentrix Library Testing",--the intro title
+	KeyPC = Enum.KeyCode.K,--the key for pc for Open/close the frame
+	Data = {
+		EnableSavingData = true,--Enabling data saver or no
+		DisableNotifyingLoadedData = false,--set it to true for disable the notify when loaded data
+		FolderName = "SaverPig64",--Folder Name,you can change it
+		FileName = "Iliankytb",-- File name for the data saver,you can change it
+	},
+	Discord = {
+		Enabled = false,--enable to copy the discord
+		DiscordLink = "https://discord.gg/E2TqYRsRP4",-- put the entire Link of discord
+		RememberJoin = true,-- Set this ti false to make them copy the link every time they load the script
+		Duration = 5,-- 5 is the default you can change the number only for remember join
+	},
+	KeySystem = false,--Key System or no
+	KeySettings = {
+		Title = "Zentrix Library Testing Key System",--Title of the key(just like that)
+		Note = "the key is Zentrix",-- The method for obtaining
+		FileName = "Key",-- File name or no for saving the key
+		SaveKey = true,-- saving the key or no
+		GrabKeyFromSite = false,--Coming soon
+		Key = {"Zentrix"},-- the name you can add many name, Exemple "Key","Key2" or you can add a function to add key but i don't really know
+		AddGetKeyButton = false,
+		AddDiscordButton = true,
+		DiscordLink = "NoInviteLink",
+		GetKeyLink = "NoKeyLink",
+	},
+}, function(window)
+	local AutoFarmTab = window:CreateTab("AutoFarm",0)-- Tabs , 0 = no icon or add number
+	local DiscordTab = window:CreateTab("Discord",0)-- Tabs , 0 = no icon or add number
+local SettingsTab = window:CreateTab("Settings",0)
+local AutoFarmStick = false
+	local ButonDiscordLink = DiscordTab:AddButton({
+		Text = "Discord Link",
+		Name = "Button",
+		Callback = function() 	
+			library:CopyText("https://discord.gg/E2TqYRsRP4")
+		end
+	})
+	--Toggle--
+	local AFS = AutoFarmTab:AddToggle({
+		Text = "AutoFarm Stick",
+		Name = "AFS",
+		Flag = "AFS",--Put a name flag for save data if you enabled saving data
+		Default = false,
+		Callback = function(state)
+AutoFarmStick = state
+task.spawn(function()
+while AutoFarmStick do
+for _, p in pairs(workspace.Collectables.Sticks:GetChildren()) do
+if p then
+game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p.CFrame
+wait(2)
+end
+end
+wait(0.1)
+end
+end)
+		end
+	})
+
+	local ChangeThemeDropdown = SettingsTab:AddDropdown({
+		Text = "Change Theme:",
+		Name = "Dropdown2",
+		Options = {"Default", "Light", "RedDark","BlueNeon","GreenMatrix","PurpleDream","Sunset",
+		"Ocean","Toxic","Storm","LimePop","Cyber","Chocolate","RoseGold","CottonCandy","NightSky","Steel",
+			"GoldLux","Ice","TealWave","FrostFire","DarkMatter","Lava","PinkCandy","Sakura","DeepSpace","Skyline","Crimson"
+			,"Desert","Camo","Plasma","Arctic","Slate","Vaporwave"
+			
+		},
+		Default = "Default",
+		MultiSelect = false,
+		Flag = "Dropdown2", --Put a name flag for save data if you enabled saving data
+		Callback = function(choice)
+window:ChangeTheme(choice)
+		end
+	})
+
+
+
+	--Loading Data--
+	library:LoadData()--Add this if you want to load data and everytime at bottom of your code
+end)
