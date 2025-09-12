@@ -1,5 +1,5 @@
 local library  = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.2"
+local V = "V.0.3"
 library:CreateWindow({
 	Title = "Grow A Garden - Script by Iliankytb",-- Title of the script
 	Theme = "Default",--View more theme in my dicord server!
@@ -83,10 +83,15 @@ AutoSellInventory = true
 wait(0.25)
 Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
 86.5898285, 2.99999976, 0.426797628, -0.0030667223, 5.64698901e-08, -0.999995291, -5.71349608e-13, 1, 5.64701601e-08, 0.999995291, 1.7374964e-10, -0.0030667223)
-wait(0.1)
+wait(0.25)
 game:GetService("ReplicatedStorage"):WaitForChild("GameEvents"):WaitForChild("Sell_Inventory"):FireServer()
 wait(0.5)
 AutoSellInventory = false
+for _, farm in pairs(workspace.Farm:GetChildren()) do 
+if farm.Important.Data.Owner.Value == game.Players.LocalPlayer.Name then 
+Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = farm.Spawn_Point.CFrame
+end
+end
 end
 	})
 local SellItem = GameTab:AddButton({
@@ -97,9 +102,14 @@ InSelling = true
 wait(0.25)
 Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
 86.5898285, 2.99999976, 0.426797628, -0.0030667223, 5.64698901e-08, -0.999995291, -5.71349608e-13, 1, 5.64701601e-08, 0.999995291, 1.7374964e-10, -0.0030667223)
-wait(0.1)
+wait(0.25)
 game:GetService("ReplicatedStorage"):WaitForChild("GameEvents"):WaitForChild("Sell_Item"):FireServer()
 wait(0.5)
+for _, farm in pairs(workspace.Farm:GetChildren()) do 
+if farm.Important.Data.Owner.Value == game.Players.LocalPlayer.Name then 
+Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = farm.Spawn_Point.CFrame
+end
+end
 InSelling = false
 end
 	})
@@ -120,16 +130,13 @@ if part:isA("Model") then
 if part:FindFirstChild("Fruits") then 
 for _, fruits in pairs(part:FindFirstChild("Fruits"):GetChildren()) do 
 if fruits.PrimaryPart and  AutoCollectFruits and not InSellingInventory and not InSelling then
-game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = fruits.PrimaryPart.CFrame 
-for _, base in pairs(fruits:GetChildren()) do 
-if base:isA("BasePart") and base:FindFirstChildOfClass("ProximityPrompt") then
-local prompt = base:FindFirstChildOfClass("ProximityPrompt")
+for _, pr in pairs(farm.Important.Plants_Physical:GetDescendants()) do if  pr:isA("ProximityPrompt") and  AutoCollectFruits and not InSellingInventory and not InSelling  then task.spawn(function()
+local prompt = pr if AutoCollectFruits and not InSellingInventory and not InSelling then wait(0.5) if AutoCollectFruits and not InSellingInventory and not InSelling then
 prompt:InputHoldBegin()
-task.wait(prompt.HoldDuration)
-wait(0.15)
-end
-end  
+task.wait(prompt.HoldDuration) 
+wait(0.25) end end end)
+end end
 end  
 end 
 end 
@@ -140,7 +147,6 @@ end
 end
 wait(0.1)
 end
-game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
 end)
 		end
 	})
@@ -182,6 +188,17 @@ local args = {
 CurrentItemSelectedT2
 }
 game:GetService("ReplicatedStorage"):WaitForChild("GameEvents"):WaitForChild("BuySeedStock"):FireServer(unpack(args))
+end
+	})
+local TPtoyourbase = GameTab:AddButton({
+		Text = "Tp to your garden",
+		Name = "ButtonTPGarden",
+		Callback = function() 	
+for _, farm in pairs(workspace.Farm:GetChildren()) do 
+if farm.Important.Data.Owner.Value == game.Players.LocalPlayer.Name then 
+Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = farm.Spawn_Point.CFrame
+end
+end
 end
 	})
 
@@ -227,5 +244,3 @@ end)
 end
 end)
 end)
-
-
