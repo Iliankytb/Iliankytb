@@ -80,7 +80,7 @@ task.spawn(function()
 while AutoFarmWallet do
 for _, p in pairs(workspace.Collectables.Wallets:GetChildren()) do
 if p then
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p.Stick.CFrame
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p.Wallet.CFrame
 end
 end
 wait(0.1)
