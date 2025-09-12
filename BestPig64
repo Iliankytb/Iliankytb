@@ -61,18 +61,33 @@ task.spawn(function()
 while AutoFarmStick do
 for _, p in pairs(workspace.Collectables.Sticks:GetChildren()) do
 if p then
-game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p.Stick.CFrame
-wait(2)
 end
 end
 wait(0.1)
 end
-Game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
 end)
 		end
 	})
-
+	local AFW = AutoFarmTab:AddToggle({
+		Text = "AutoFarm Wallet",
+		Name = "AFW",
+		Flag = "AFW",--Put a name flag for save data if you enabled saving data
+		Default = false,
+		Callback = function(state)
+AutoFarmWallet = state
+task.spawn(function()
+while AutoFarmWallet do
+for _, p in pairs(workspace.Collectables.Wallets:GetChildren()) do
+if p then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p.Stick.CFrame
+end
+end
+wait(0.1)
+end
+end)
+		end
+	})
 	local ChangeThemeDropdown = SettingsTab:AddDropdown({
 		Text = "Change Theme:",
 		Name = "Dropdown2",
