@@ -42,7 +42,7 @@ local ActiveSpeedBoost,AutoFarm,NoCooldownAbility,AutoReplay,FreezeNPC,AutoColle
 local DS = false
 Rayfield:Notify({
    Title = "script Version",
-   Content = "V.0.20",
+   Content = "V.0.21",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -168,6 +168,8 @@ if Workspace:FindFirstChild("School") then
 Map = "School"
 elseif Workspace:FindFirstChild("Sewers") then 
 Map = "Sewers"
+elseif Workspace:FindFirstChild("Carnival") then 
+Map = "Carnival"
 end
 while FreezeNPC do
 for _, k in pairs(Workspace[Map].Doors:GetChildren()) do 
