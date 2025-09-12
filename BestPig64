@@ -41,7 +41,7 @@ library:CreateWindow({
 	local AutoFarmTab = window:CreateTab("AutoFarm",0)-- Tabs , 0 = no icon or add number
 	local DiscordTab = window:CreateTab("Discord",0)-- Tabs , 0 = no icon or add number
 local SettingsTab = window:CreateTab("Settings",0)
-local AutoFarmStick,AutoFarmWallet,AutoFarmTokens = false,false,false
+local AutoFarmStick,AutoFarmWallet,AutoFarmToken,AutoFarmTickets,AutoFarmSewersCollectable,AutoFarmPierCollectable,AutoFarmOdysseyCollectable,AutoFarmOilsCan,AutoFarmJewelry,AutoFarmBills,AutoFarmBunkerCollectable = false,false,false,false,false,false,false,false,false,false,false
 	local ButonDiscordLink = DiscordTab:AddButton({
 		Text = "Discord Link",
 		Name = "Button",
@@ -81,6 +81,177 @@ while AutoFarmWallet do
 for _, p in pairs(workspace.Collectables.Wallets:GetChildren()) do
 if p then
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p.Wallet.CFrame
+end
+end
+wait(0.1)
+end
+end)
+		end
+	})
+	local AFTK = AutoFarmTab:AddToggle({
+		Text = "AutoFarm Tokens",
+		Name = "AFTK",
+		Flag = "AFTK",--Put a name flag for save data if you enabled saving data
+		Default = false,
+		Callback = function(state)
+AutoFarmToken = state
+task.spawn(function()
+while AutoFarmToken do
+for _, p in pairs(workspace.Collectables.Tokens:GetChildren()) do
+if p then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p:FindFirstChildOfClass("BasePart").CFrame
+end
+end
+wait(0.1)
+end
+end)
+		end
+	})
+	local AFTC = AutoFarmTab:AddToggle({
+		Text = "AutoFarm Tickets",
+		Name = "AFTC",
+		Flag = "AFTC",--Put a name flag for save data if you enabled saving data
+		Default = false,
+		Callback = function(state)
+AutoFarmTickets = state
+task.spawn(function()
+while AutoFarmTickets do
+for _, p in pairs(workspace.Collectables.Tickets:GetChildren()) do
+if p then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p:FindFirstChildOfClass("BasePart").CFrame
+end
+end
+wait(0.1)
+end
+end)
+		end
+	})
+local AFSC = AutoFarmTab:AddToggle({
+		Text = "AutoFarm Sewers Collectables",
+		Name = "AFSC",
+		Flag = "AFSC",--Put a name flag for save data if you enabled saving data
+		Default = false,
+		Callback = function(state)
+AutoFarmSewersCollectable = state
+task.spawn(function()
+while AutoFarmSewersCollectable do
+for _, p in pairs(workspace.Collectables.SewerCollectables:GetChildren()) do
+if p then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p:FindFirstChildOfClass("BasePart").CFrame
+end
+end
+wait(0.1)
+end
+end)
+		end
+	})
+local AFPC = AutoFarmTab:AddToggle({
+		Text = "AutoFarm Pier Collectables",
+		Name = "AFPC",
+		Flag = "AFPC",--Put a name flag for save data if you enabled saving data
+		Default = false,
+		Callback = function(state)
+AutoFarmPierCollectable = state
+task.spawn(function()
+while AutoFarmPierCollectable do
+for _, p in pairs(workspace.Collectables.PierCollectables:GetChildren()) do
+if p then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p:FindFirstChildOfClass("BasePart").CFrame
+end
+end
+wait(0.1)
+end
+end)
+		end
+	})
+local AFOC = AutoFarmTab:AddToggle({
+		Text = "AutoFarm Oils Can",
+		Name = "AFOC",
+		Flag = "AFOC",--Put a name flag for save data if you enabled saving data
+		Default = false,
+		Callback = function(state)
+AutoFarmOilsCan = state
+task.spawn(function()
+while AutoFarmOilsCan do
+for _, p in pairs(workspace.Collectables.OilCans:GetChildren()) do
+if p then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p:FindFirstChildOfClass("BasePart").CFrame
+end
+end
+wait(0.1)
+end
+end)
+		end
+	})
+local AFODC = AutoFarmTab:AddToggle({
+		Text = "AutoFarm Odyssey",
+		Name = "AFODC",
+		Flag = "AFODC",--Put a name flag for save data if you enabled saving data
+		Default = false,
+		Callback = function(state)
+AutoFarmOdysseyCollectable = state
+task.spawn(function()
+while AutoFarmOdysseyCollectable do
+for _, p in pairs(workspace.Collectables.OdysseyCollectables:GetChildren()) do
+if p then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p:FindFirstChildOfClass("BasePart").CFrame
+end
+end
+wait(0.1)
+end
+end)
+		end
+	})
+local AFJ = AutoFarmTab:AddToggle({
+		Text = "AutoFarm Jewelry",
+		Name = "AFJ",
+		Flag = "AFJ",--Put a name flag for save data if you enabled saving data
+		Default = false,
+		Callback = function(state)
+AutoFarmJewelry = state
+task.spawn(function()
+while AutoFarmJewelry do
+for _, p in pairs(workspace.Collectables.Jewelry:GetChildren()) do
+if p then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p:FindFirstChildOfClass("BasePart").CFrame
+end
+end
+wait(0.1)
+end
+end)
+		end
+	})
+local AFBC = AutoFarmTab:AddToggle({
+		Text = "AutoFarm Bunker Collectables",
+		Name = "AFBC",
+		Flag = "AFBC",--Put a name flag for save data if you enabled saving data
+		Default = false,
+		Callback = function(state)
+AutoFarmBunkerCollectable = state
+task.spawn(function()
+while AutoFarmBunkerCollectable do
+for _, p in pairs(workspace.Collectables.BunkerCollectables:GetChildren()) do
+if p then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p:FindFirstChildOfClass("BasePart").CFrame
+end
+end
+wait(0.1)
+end
+end)
+		end
+	})
+local AFBills = AutoFarmTab:AddToggle({
+		Text = "AutoFarm Bills",
+		Name = "AFBills",
+		Flag = "AFBills",--Put a name flag for save data if you enabled saving data
+		Default = false,
+		Callback = function(state)
+AutoFarmBills = state
+task.spawn(function()
+while AutoFarmBills do
+for _, p in pairs(workspace.Collectables.Bills:GetChildren()) do
+if p then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p:FindFirstChildOfClass("BasePart").CFrame
 end
 end
 wait(0.1)
