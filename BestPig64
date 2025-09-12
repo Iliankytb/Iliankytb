@@ -41,7 +41,7 @@ library:CreateWindow({
 	local AutoFarmTab = window:CreateTab("AutoFarm",0)-- Tabs , 0 = no icon or add number
 	local DiscordTab = window:CreateTab("Discord",0)-- Tabs , 0 = no icon or add number
 local SettingsTab = window:CreateTab("Settings",0)
-local AutoFarmStick = false
+local AutoFarmStick,AutoFarmWallet,AutoFarmTokens = false,false,false
 	local ButonDiscordLink = DiscordTab:AddButton({
 		Text = "Discord Link",
 		Name = "Button",
