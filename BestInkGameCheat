@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.13"
+local V = "V.0.14"
 library:CreateWindow({
 	Title = "Ink Game - by Iliankytb",-- Title of the script
 	Theme = selectedTheme,--View more theme in my dicord server!
@@ -158,11 +158,33 @@ Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
 end
 end,
 })
+local SafeSpotHideSeek = GameTab:AddButton({
+Text = "Safe Spot In Hide and seek(unverified)",
+   Name ="SPHSToggle",
+   Callback = function(Value)
+if Game.Workspace:FindFirstChild("HideAndSeekMap") then
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.HideAndSeekMap.KillingParts:GetChildren()[2].CFrame  + Vector3.new(0,250,0)
+end
+end,
+})
+local FinishDalgonaToggle = GameTab:AddButton({
+Text = "Finish Dalgona(unverified)",
+   Name ="FinishDalgonaToggle",
+   Callback = function(Value)
+local args = {
+	{
+		Completed = true
+	}
+}
+game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("DALGONATEMPREMPTE"):FireServer(unpack(args))
+
+end,
+})
 local ButtonUnloadCheat = SettingsTab:AddButton({
 Text = "Unload Cheat",
    Name = "ButtonUnloadCheat",
    Callback = function()
-
+window:Destroy()
 end,
 })
 
