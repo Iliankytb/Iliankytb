@@ -9,7 +9,7 @@ library:CreateWindow({
 	Title = "Pig 64 - By Iliankytb",-- Title of the script
 	Theme = "Default",--View more theme in my dicord server!
 	Icon = 0,-- 0 = no icon or add number
-	Intro = true,--Intro or no
+	Intro = false,--Intro or no
 	IntroTitle = "Zentrix Library Testing",--the intro title
 	KeyPC = Enum.KeyCode.K,--the key for pc for Open/close the frame
 	Data = {
@@ -62,12 +62,13 @@ while AutoFarmStick do
 for _, p in pairs(workspace.Collectables.Sticks:GetChildren()) do
 if p then
 game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p.CFrame
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p.Stick.CFrame
 wait(2)
 end
 end
 wait(0.1)
 end
+Game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
 end)
 		end
 	})
