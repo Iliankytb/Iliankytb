@@ -1,12 +1,216 @@
-for _, farm in pairs(workspace.Farm:GetChildren()) do if farm.Important.Data.Owner.Value == game.Players.LocalPlayer.Name then for _, part in pairs(farm.Important.Plants_Physical:GetChildren()) do if part:isA("Model") then if part:FindFirstChild("Fruits") then for _, fruits in pairs(part:FindFirstChild("Fruits"):GetChildren()) do if fruits.PrimaryPart then game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = fruits.PrimaryPart.CFrame end   end  end  end  end   end  end
-86.5898285, 2.99999976, 0.426797628, -0.0030667223, 5.64698901e-08, -0.999995291, -5.71349608e-13, 1, 5.64701601e-08, 0.999995291, 1.7374964e-10, -0.0030667223
+local library  = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
+local V = "V.0.1"
+library:CreateWindow({
+	Title = "Grow A Garden - Script by Iliankytb",-- Title of the script
+	Theme = "Default",--View more theme in my dicord server!
+	Icon = 0,-- 0 = no icon or add number
+	Intro = false,--Intro or no
+	IntroTitle = "Zentrix Library Testing",--the intro title
+	KeyPC = Enum.KeyCode.K,--the key for pc for Open/close the frame
+	Data = {
+		EnableSavingData = true,--Enabling data saver or no
+		DisableNotifyingLoadedData = false,--set it to true for disable the notify when loaded data
+		FolderName = "SaverGAG",--Folder Name,you can change it
+		FileName = "Iliankytb",-- File name for the data saver,you can change it
+	},
+	Discord = {
+		Enabled = false,--enable to copy the discord
+		DiscordLink = "https://discord.gg/E2TqYRsRP4",-- put the entire Link of discord
+		RememberJoin = true,-- Set this ti false to make them copy the link every time they load the script
+		Duration = 5,-- 5 is the default you can change the number only for remember join
+	},
+	KeySystem = false,--Key System or no
+	KeySettings = {
+		Title = "Zentrix Library Testing Key System",--Title of the key(just like that)
+		Note = "the key is Zentrix",-- The method for obtaining
+		FileName = "Key",-- File name or no for saving the key
+		SaveKey = true,-- saving the key or no
+		GrabKeyFromSite = false,--Coming soon
+		Key = {"Zentrix"},-- the name you can add many name, Exemple "Key","Key2" or you can add a function to add key but i don't really know
+		AddGetKeyButton = false,
+		AddDiscordButton = true,
+		DiscordLink = "NoInviteLink",
+		GetKeyLink = "NoKeyLink",
+	},
+}, function(window)
+local InfoTab = window:CreateTab("Info",0)
+	local GameTab = window:CreateTab("Game",0)-- Tabs , 0 = no icon or add number
+	local DiscordTab = window:CreateTab("Discord",0)-- Tabs , 0 = no icon or add number
+local SettingsTab = window:CreateTab("Settings",0)
+local AutoCollectFruits,AutoSellInventory,InSellingInventory,InSelling = false,false,false,false
+local ParagraphInfoServer = InfoTab:AddParagraph({Title = "",Content = "Loading",Name = "Paragraph1"})
+local CurrentItemSelectedT1 = ""
+local CurrentItemSelectedT2 = ""
+local Version = InfoTab:AddText({
+		Text = "Version:"..V,
+		Name = "VersionScript"
+	})
+local Smth = InfoTab:AddText({
+		Text = "the script is not finished yet!",
+		Name = "idkwarning"
+	})
+window:Notify({
+				Title = "Script Version!",
+				Message = V,
+				Duration = 7.5,
+})
+
+local ButonDiscordLink = DiscordTab:AddButton({
+		Text = "Discord Link",
+		Name = "ButtonDCL",
+		Callback = function() 	
+			library:CopyText("https://discord.gg/E2TqYRsRP4")
+		end
+	})
+local SellInventory = GameTab:AddButton({
+		Text = "Sell Inventory",
+		Name = "ButtonSI",
+		Callback = function() 	
+AutoSellInventory = true
+wait(0.25)
+Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
+86.5898285, 2.99999976, 0.426797628, -0.0030667223, 5.64698901e-08, -0.999995291, -5.71349608e-13, 1, 5.64701601e-08, 0.999995291, 1.7374964e-10, -0.0030667223)
+wait(0.1)
+game:GetService("ReplicatedStorage"):WaitForChild("GameEvents"):WaitForChild("Sell_Inventory"):FireServer()
+wait(0.5)
+AutoSellInventory = false
+end
+	})
+local SellItem = GameTab:AddButton({
+		Text = "Sell Current Item",
+		Name = "ButtonSCI",
+		Callback = function() 	
+InSelling = true
+wait(0.25)
+Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
+86.5898285, 2.99999976, 0.426797628, -0.0030667223, 5.64698901e-08, -0.999995291, -5.71349608e-13, 1, 5.64701601e-08, 0.999995291, 1.7374964e-10, -0.0030667223)
+wait(0.1)
+game:GetService("ReplicatedStorage"):WaitForChild("GameEvents"):WaitForChild("Sell_Item"):FireServer()
+wait(0.5)
+InSelling = false
+end
+	})
+local ACP = GameTab:AddToggle({
+		Text = "Auto Collects Fruits",
+		Name = "AFCP",
+		Flag = "AFCP",--Put a name flag for save data if you enabled saving data
+		Default = false,
+		Callback = function(state)
+AutoCollectFruits = state
+task.spawn(function()
+while AutoCollectFruits do
+if AutoCollectFruits and not InSellingInventory and not InSelling then
+for _, farm in pairs(workspace.Farm:GetChildren()) do 
+if farm.Important.Data.Owner.Value == game.Players.LocalPlayer.Name then 
+for _, part in pairs(farm.Important.Plants_Physical:GetChildren()) do 
+if part:isA("Model") then if part:FindFirstChild("Fruits") then 
+for _, fruits in pairs(part:FindFirstChild("Fruits"):GetChildren()) do 
+if fruits.PrimaryPart and  AutoCollectFruits and not InSellingInventory and not InSelling then
+game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = fruits.PrimaryPart.CFrame 
+for _, base in pairs(fruits:GetChildren()) do 
+if base:isA("BasePart") and base:FindFirstChildOfClass("ProximityPrompt") then
+local prompt = base:FindFirstChildOfClass("ProximityPrompt")
+prompt:InputHoldBegin()
+task.wait(prompt.HoldDuration)
+wait(0.15)
+end
+end  
+end  
+end 
+end 
+end 
+end  
+end
+end
+wait(0.1)
+end
+game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+end)
+		end
+	})
+	local TextBoxT1 = GameTab:AddTextbox({
+		Text = "",
+		Name = "TextBoxT1",
+		Placeholder = "Put the name of a tier 1 seed",
+		Flag = "TextboxT1",--Put a name flag for save data if you enabled saving data
+		Callback = function(text)
+CurrentItemSelectedT1 = text
+		end
+	})
+local BuySeedTier1 = GameTab:AddButton({
+		Text = "Buy Seed Tier 1",
+		Name = "ButtonBST1",
+		Callback = function() 	
 local args = {
 	"Tier 1",
-	"Strawberry"
+CurrentItemSelectedT1
 }
 game:GetService("ReplicatedStorage"):WaitForChild("GameEvents"):WaitForChild("BuySeedStock"):FireServer(unpack(args))
+end
+	})
+	local TextBoxT2 = GameTab:AddTextbox({
+		Text = "",
+		Name = "TextBoxT2",
+		Placeholder = "Put the name of a tier 2 seed",
+		Flag = "TextboxT2",--Put a name flag for save data if you enabled saving data
+		Callback = function(text)
+CurrentItemSelectedT2 = text
+		end
+	})
+local BuySeedTier2 = GameTab:AddButton({
+		Text = "Buy Seed Tier 2",
+		Name = "ButtonBST2",
+		Callback = function() 	
+local args = {
+	"Tier 2",
+CurrentItemSelectedT2
+}
+game:GetService("ReplicatedStorage"):WaitForChild("GameEvents"):WaitForChild("BuySeedStock"):FireServer(unpack(args))
+end
+	})
 
-game:GetService("ReplicatedStorage"):WaitForChild("GameEvents"):WaitForChild("Sell_Item"):FireServer()
 
-game:GetService("ReplicatedStorage"):WaitForChild("GameEvents"):WaitForChild("Sell_Inventory"):FireServer()
+local ChangeThemeDropdown = SettingsTab:AddDropdown({
+		Text = "Change Theme:",
+		Name = "CTD",
+		Options = {"Default", "Light", "RedDark","BlueNeon","GreenMatrix","PurpleDream","Sunset",
+		"Ocean","Toxic","Storm","LimePop","Cyber","Chocolate","RoseGold","CottonCandy","NightSky","Steel",
+			"GoldLux","Ice","TealWave","FrostFire","DarkMatter","Lava","PinkCandy","Sakura","DeepSpace","Skyline","Crimson"
+			,"Desert","Camo","Plasma","Arctic","Slate","Vaporwave"
+			
+		},
+		Default = "Default",
+		MultiSelect = false,
+		Flag = "CTD", --Put a name flag for save data if you enabled saving data
+		Callback = function(choice)
+window:ChangeTheme(choice)
+		end
+	})
+
+library:LoadData()
+task.spawn(function()
+while true do
+	task.wait(1) 
+task.spawn(function()
+	local updatedInfo = getServerInfo()
+	local updatedContent = string.format(
+		"📌 PlaceId: %s\n🔑 JobId: %s\n🧪 IsStudio: %s\n👥 Players: %d/%d",
+		updatedInfo.PlaceId,
+		updatedInfo.JobId,
+		
+		tostring(updatedInfo.IsStudio),
+		updatedInfo.CurrentPlayers,
+updatedInfo.MaxPlayers
+	)
+
+	ParagraphInfoServer:Set({
+		Title = "Info",
+		Content = updatedContent
+	})
+end)
+end
+end)
+end)
+
 
