@@ -46,7 +46,7 @@ local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "
 
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.7",
+   Content = "V.0.8",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -682,6 +682,19 @@ local ButtonLoadEvadeCheat = GameTab:CreateButton({
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/NewbestEvadeCheat"))()
 end,
 })
+
+local ButtonLoadEvadeCheat = GameTab:CreateButton({
+   Name = "Rainbow Friend Chapter 1 Cheat Iliankytb",
+     Callback = function(Value)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/BestRainbowFriendOne"))()
+end,
+})
+local ButtonLoadGAGCheat = GameTab:CreateButton({
+   Name = "Grow A Garden Cheat Iliankytb(Coming Soon)",
+     Callback = function(Value)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/cheatgrowagarden"))()
+end,
+})
 local ButtonLoad99NightsInTheForestCheat = GameTab:CreateButton({
    Name = "99 Nights in the forest Cheat Iliankytb",
      Callback = function(Value)
@@ -725,12 +738,7 @@ local ButtonLoadsecretCheat = GameTab:CreateButton({
 --loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/BestRainbowFriendsTwo"))()
 end,
 })
-local ButtonLoadsecretCheat = GameTab:CreateButton({
-   Name = "Grow A Garden Cheat Iliankytb(Coming Soon)",
-     Callback = function(Value)
---loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/BestRainbowFriendsTwo"))()
-end,
-})
+
 local ButtonLoadsecretCheat = GameTab:CreateButton({
    Name = "??? Cheat Iliankytb(Coming Soon)",
      Callback = function(Value)
