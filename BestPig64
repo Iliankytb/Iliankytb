@@ -1,10 +1,5 @@
-
-local library
-	if game:GetService("RunService"):IsStudio() then
-		library = require(game:GetService("ReplicatedStorage").ModuleScript)
-	else
-	library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-		end
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
+		
 library:CreateWindow({
 	Title = "Pig 64 - By Iliankytb",-- Title of the script
 	Theme = "Default",--View more theme in my dicord server!
@@ -98,9 +93,13 @@ AutoFarmToken = state
 task.spawn(function()
 while AutoFarmToken do
 for _, p in pairs(workspace.Collectables.Tokens:GetChildren()) do
+task.spawn(function()
 if p then
+task.spawn(function()
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p:FindFirstChildOfClass("MeshPart").CFrame
+end)
 end
+end)
 end
 wait(0.1)
 end
@@ -175,7 +174,7 @@ task.spawn(function()
 while AutoFarmOilsCan do
 for _, p in pairs(workspace.Collectables.OilCans:GetChildren()) do
 if p then
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p:FindFirstChildOfClass("MeshPart").CFrame
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p.Settings:FindFirstChildOfClass("Part").CFrame
 end
 end
 wait(0.1)
@@ -216,6 +215,13 @@ if p then
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p:FindFirstChildOfClass("MeshPart").CFrame
 end
 end
+for _, p in pairs(workspace.Collectables.Jewelry:GetChildren()) do
+if p then
+task.spawn(function()
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p.Settings:FindFirstChildOfClass("MeshPart").CFrame
+end)
+end
+end
 wait(0.1)
 end
 end)
@@ -250,9 +256,13 @@ AutoFarmBills = state
 task.spawn(function()
 while AutoFarmBills do
 for _, p in pairs(workspace.Collectables.Bills:GetChildren()) do
+task.spawn(function()
 if p then
+task.spawn(function()
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p:FindFirstChildOfClass("Part").CFrame
+end)
 end
+end)
 end
 wait(0.1)
 end
