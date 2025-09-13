@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.2"
+local V = "V.0.3"
 library:CreateWindow({
 	Title = "Rainbow Friend 1 - by Iliankytb",-- Title of the script
 	Theme = selectedTheme,--View more theme in my dicord server!
@@ -103,7 +103,7 @@ Text = "Esp Items",
   ActiveEspItems = Value task.spawn(function()
 while ActiveEspItems do task.spawn(function()
  for _,Light in pairs(Game.Workspace:GetChildren()) do 
-if (Light.name == "FoodOrange"or Light.name == "FoodPink" or Light.name == "FoodGreen") and not Light:FindFirstChildOfClass("Highlight") then
+if (Light.name == "FoodOrange"or Light.name == "FoodPink" or Light.name == "FoodGreen"  or Light.name == "Battery") and not Light:FindFirstChildOfClass("Highlight") then
 CreateEsp(Light,Color3.fromRGB(0,255,0)) end end
 end)
 task.spawn(function()
@@ -113,7 +113,7 @@ CreateEsp(Light.PrimaryPart,Color3.fromRGB(0,255,0)) end end end
 end)
 task.wait(0.1)
 end  for _,Light in pairs(Game.Workspace:GetChildren()) do 
-if (Light.name == "FoodOrange"or Light.name == "FoodPink" or Light.name == "FoodGreen") and not Light:FindFirstChildOfClass("Highlight") then
+if (Light.name == "FoodOrange"or Light.name == "FoodPink" or Light.name == "FoodGreen  or Light.name == "Battery"") and not Light:FindFirstChildOfClass("Highlight") then
 KeepEsp(Light) end end
  task.spawn(function()
 for i = 1,25 do
@@ -149,7 +149,7 @@ Text = "Auto Pickup Items",
 task.spawn(function()
 while ActiveAutoPickupItems do
  for _,Light in pairs(Game.Workspace:GetChildren()) do 
-if Light and Light:isA("Model") and (Light.name == "FoodPink"or Light.name == "FoodOrange" or Light.name == "FoodGreen")   then 
+if Light and Light:isA("Model") and (Light.name == "FoodPink"or Light.name == "FoodOrange" or Light.name == "FoodGreen"  or Light.name == "Battery")   then 
 Game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = Light.PrimaryPart.CFrame
 wait(0.15)
 Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
@@ -178,7 +178,7 @@ Text = "Pickup Random Item",
    Callback = function(Value)
   task.spawn(function()
  for _,Light in pairs(Game.Workspace:GetChildren()) do 
-if Light and Light:isA("Model") and (Light.name == "FoodPink"or Light.name == "FoodOrange" or Light.name == "FoodGreen")   then 
+if Light and Light:isA("Model") and (Light.name == "FoodPink"or Light.name == "FoodOrange" or Light.name == "FoodGreen"  or Light.name == "Battery")   then 
 Game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = Light.PrimaryPart.CFrame
  end end 
  end)
@@ -190,6 +190,13 @@ Game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = L
  end end
 end
 end)
+end,
+})
+local LightoOn = PlayerTab:AddButton({
+Text = "No Light Off(Visual)",
+   Name = "NLO",
+   Callback = function(Value)
+  
 end,
 })
 local ValueSpeed = 16
@@ -222,7 +229,7 @@ end,
 local ButtonUnloadCheat = SettingsTab:AddButton({
    Name = "Unload Cheat",
    Callback = function()
- 
+ window:Destroy()
 end,
 })
 local ChangeThemeDropdown = SettingsTab:AddDropdown({
