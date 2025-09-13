@@ -95,7 +95,7 @@ while AutoFarmToken do
 for _, p in pairs(workspace.Collectables.Tokens:GetChildren()) do
 if p then
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p:FindFirstChildOfClass("MeshPart").CFrame
-wait(0.25
+wait(0.25)
 end
 end
 wait(0.1)
