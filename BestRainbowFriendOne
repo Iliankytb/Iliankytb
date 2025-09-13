@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.3"
+local V = "V.0.4"
 library:CreateWindow({
 	Title = "Rainbow Friend 1 - by Iliankytb",-- Title of the script
 	Theme = selectedTheme,--View more theme in my dicord server!
@@ -113,7 +113,7 @@ CreateEsp(Light.PrimaryPart,Color3.fromRGB(0,255,0)) end end end
 end)
 task.wait(0.1)
 end  for _,Light in pairs(Game.Workspace:GetChildren()) do 
-if (Light.name == "FoodOrange"or Light.name == "FoodPink" or Light.name == "FoodGreen  or Light.name == "Battery"") and not Light:FindFirstChildOfClass("Highlight") then
+if (Light.name == "FoodOrange"or Light.name == "FoodPink" or Light.name == "FoodGreen"  or Light.name == "Battery") and not Light:FindFirstChildOfClass("Highlight") then
 KeepEsp(Light) end end
  task.spawn(function()
 for i = 1,25 do
@@ -153,7 +153,7 @@ if Light and Light:isA("Model") and (Light.name == "FoodPink"or Light.name == "F
 Game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = Light.PrimaryPart.CFrame
 wait(0.15)
 Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
-370.774414, 44.748024, 132.202011, -0.989281297, 2.31281181e-08, -0.146022394, 3.43484068e-08, 1, -7.43181658e-08, 0.146022394, -7.85372052e-08, -0.989281297
+373.17746, 44.7480164, 135.617584, -0.997903705, 2.3134767e-08, -0.0647165775, 2.8132078e-08, 1, -7.63071597e-08, 0.0647165775, -7.79678047e-08, -0.997903705
 )
  end end 
 
@@ -163,7 +163,7 @@ if Light and Light:isA("Model") and (Light.name == "Fuse"..i or Light.name == "B
 Game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = Light.PrimaryPart.CFrame
 wait(0.15)
 Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
-370.774414, 44.748024, 132.202011, -0.989281297, 2.31281181e-08, -0.146022394, 3.43484068e-08, 1, -7.43181658e-08, 0.146022394, -7.85372052e-08, -0.989281297
+373.17746, 44.7480164, 135.617584, -0.997903705, 2.3134767e-08, -0.0647165775, 2.8132078e-08, 1, -7.63071597e-08, 0.0647165775, -7.79678047e-08, -0.997903705
 )
  end end
 end
@@ -196,7 +196,26 @@ local LightoOn = PlayerTab:AddButton({
 Text = "No Light Off(Visual)",
    Name = "NLO",
    Callback = function(Value)
-  
+  local Lighting = game:GetService("Lighting")
+Lighting.Ambient = Color3.fromRGB(81, 81, 81)
+end,
+})
+local FinishChase = PlayerTab:AddButton({
+Text = "Finish Chase",
+   Name = "FC",
+   Callback = function(Value)
+  Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
+-357.648285, 18.2980289, 623.609192, 0.791546643, 9.20364673e-10, -0.61110872, -6.9823658e-09, 1, -7.53794449e-09, 0.61110872, 1.02336193e-08, 0.791546643
+)
+end,
+})
+local TeleportToCenter = PlayerTab:AddButton({
+Text = "TP To Center",
+   Name = "TPC",
+   Callback = function(Value)
+  Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(
+373.17746, 44.7480164, 135.617584, -0.997903705, 2.3134767e-08, -0.0647165775, 2.8132078e-08, 1, -7.63071597e-08, 0.0647165775, -7.79678047e-08, -0.997903705
+)
 end,
 })
 local ValueSpeed = 16
@@ -273,6 +292,5 @@ end)
 end
 end)
 end)
-373.17746, 44.7480164, 135.617584, -0.997903705, 2.3134767e-08, -0.0647165775, 2.8132078e-08, 1, -7.63071597e-08, 0.0647165775, -7.79678047e-08, -0.997903705
 
--357.648285, 18.2980289, 623.609192, 0.791546643, 9.20364673e-10, -0.61110872, -6.9823658e-09, 1, -7.53794449e-09, 0.61110872, 1.02336193e-08, 0.791546643
+
