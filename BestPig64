@@ -99,7 +99,7 @@ task.spawn(function()
 while AutoFarmToken do
 for _, p in pairs(workspace.Collectables.Tokens:GetChildren()) do
 if p then
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p:FindFirstChildOfClass("BasePart").CFrame
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p:FindFirstChildOfClass("MeshPart").CFrame
 end
 end
 wait(0.1)
@@ -118,7 +118,7 @@ task.spawn(function()
 while AutoFarmTickets do
 for _, p in pairs(workspace.Collectables.Tickets:GetChildren()) do
 if p then
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p:FindFirstChildOfClass("BasePart").CFrame
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p:FindFirstChildOfClass("MeshPart").CFrame
 end
 end
 wait(0.1)
@@ -137,7 +137,7 @@ task.spawn(function()
 while AutoFarmSewersCollectable do
 for _, p in pairs(workspace.Collectables.SewerCollectables:GetChildren()) do
 if p then
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p:FindFirstChildOfClass("BasePart").CFrame
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p:FindFirstChildOfClass("MeshPart").CFrame
 end
 end
 wait(0.1)
@@ -156,7 +156,7 @@ task.spawn(function()
 while AutoFarmPierCollectable do
 for _, p in pairs(workspace.Collectables.PierCollectables:GetChildren()) do
 if p then
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p:FindFirstChildOfClass("BasePart").CFrame
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p:FindFirstChildOfClass("MeshPart").CFrame
 end
 end
 wait(0.1)
@@ -175,7 +175,7 @@ task.spawn(function()
 while AutoFarmOilsCan do
 for _, p in pairs(workspace.Collectables.OilCans:GetChildren()) do
 if p then
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p:FindFirstChildOfClass("BasePart").CFrame
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p:FindFirstChildOfClass("MeshPart").CFrame
 end
 end
 wait(0.1)
@@ -194,7 +194,7 @@ task.spawn(function()
 while AutoFarmOdysseyCollectable do
 for _, p in pairs(workspace.Collectables.OdysseyCollectables:GetChildren()) do
 if p then
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p:FindFirstChildOfClass("BasePart").CFrame
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p:FindFirstChildOfClass("MeshPart").CFrame
 end
 end
 wait(0.1)
@@ -213,7 +213,7 @@ task.spawn(function()
 while AutoFarmJewelry do
 for _, p in pairs(workspace.Collectables.Jewelry:GetChildren()) do
 if p then
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p:FindFirstChildOfClass("BasePart").CFrame
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p:FindFirstChildOfClass("MeshPart").CFrame
 end
 end
 wait(0.1)
@@ -232,7 +232,7 @@ task.spawn(function()
 while AutoFarmBunkerCollectable do
 for _, p in pairs(workspace.Collectables.BunkerCollectables:GetChildren()) do
 if p then
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p:FindFirstChildOfClass("BasePart").CFrame
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p:FindFirstChildOfClass("MeshPart").CFrame
 end
 end
 wait(0.1)
@@ -251,7 +251,7 @@ task.spawn(function()
 while AutoFarmBills do
 for _, p in pairs(workspace.Collectables.Bills:GetChildren()) do
 if p then
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p:FindFirstChildOfClass("BasePart").CFrame
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p:FindFirstChildOfClass("Part").CFrame
 end
 end
 wait(0.1)
