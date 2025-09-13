@@ -93,9 +93,10 @@ AutoFarmToken = state
 task.spawn(function()
 while AutoFarmToken do
 for _, p in pairs(workspace.Collectables.Tokens:GetChildren()) do
+if not AutoFarmToken then break end
 if p then
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p:FindFirstChildOfClass("MeshPart").CFrame
-wait(0.25)
+wait(0.1)
 end
 end
 wait(0.1)
@@ -253,9 +254,10 @@ AutoFarmBills = state
 task.spawn(function()
 while AutoFarmBills do
 for _, p in pairs(workspace.Collectables.Bills:GetChildren()) do
+if not AutoFarmBills then break end
 if p then
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = p:FindFirstChildOfClass("Part").CFrame
-wait(0.25)
+wait(0.1)
 end
 end)
 end
