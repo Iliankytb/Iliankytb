@@ -42,7 +42,7 @@ local ActiveSpeedBoost,AutoFarm,NoCooldownAbility,AutoReplay,FreezeNPC,AutoColle
 local DS = false
 Rayfield:Notify({
    Title = "script Version",
-   Content = "V.0.22",
+   Content = "V.0.23",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -129,7 +129,7 @@ local AFToggle = GameTab:CreateToggle({
 task.spawn(function()
 while AutoFarm do
 for _,zombies in pairs(workspace.Entities.Zombie:GetChildren()) do
-if Workspace:FindFirstChild("Carnival") and game:GetService("ReplicatedStorage").OBJECTIVES:FindForChild("KILL_BOSS") then
+if Workspace:FindFirstChild("Carnival") and game:GetService("ReplicatedStorage").OBJECTIVES:FindFirstChild("KILL_BOSS") then
 if zombies:IsA("Model") and zombies.name == "1" and zombies.Head.EntityHealth.HealthBar.Bar.Size.X.Scale ~= 0 and not DS and not InSafePos and not InCollecting and not InEscaping and not InteractedWithGen and not Game.Players.LocalPlayer:GetAttribute("escaped") then 
 Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = zombies.PrimaryPart.CFrame 
 end
