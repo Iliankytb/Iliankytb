@@ -1,0 +1,6 @@
+while true do for _, rooms in pairs(workspace.GameplayFolder.Rooms:GetChildren()) do if rooms:isA("Model") then task.spawn(function() if rooms.Entrances:FindFirstChildOfClass("Model") then if  not rooms.Entrances:FindFirstChildOfClass("Model").OpenValue.Value then Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = rooms.Entrances:FindFirstChildOfClass("Model").PrimaryPart.CFrame end end  end) end end wait(0.1) end
+while true do for _, rooms in pairs(workspace.GameplayFolder.Rooms:GetChildren()) do if rooms:isA("Model") then for _, lockers in pairs(rooms:GetChildren()) do if lockers:isA("Model") and lockers.name == "Locker" then task.spawn(function() lockers.Folder.Enter:InvokeServer(true) end) end  end  end end wait(0.1) end
+local args = {
+	true
+}
+workspace:WaitForChild("GameplayFolder"):WaitForChild("Rooms"):WaitForChild("RightTurn/WRoom4"):WaitForChild("Locker"):WaitForChild("Folder"):WaitForChild("Enter"):InvokeServer(unpack(args))
