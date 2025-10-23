@@ -46,7 +46,7 @@ local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "
 
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.10",
+   Content = "V.0.11",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -655,12 +655,12 @@ local AimbotDropdown2 = AimbotTab:CreateDropdown({
     end,
 })
 
-local DistanceAimbotSlider = PlayerTab:CreateSlider({
+local DistanceAimbotSlider = AimbotTab:CreateSlider({
    Name = "Distance Aimbot(Work Only if Infinite Aimbot Distance Is Disabled!)",
    Range = {0, 99999999},
-   Increment = 0.1,
-   Suffix = "Fly Speed",
-   CurrentValue = 1,
+   Increment = 1,
+   Suffix = "Distance",
+   CurrentValue = 0,
    Flag = "SliderAIMBOT", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
 CurrentValue = Value
