@@ -41,7 +41,7 @@ local EspTab = Window:CreateTab("Esp")
 local AimbotTab = Window:CreateTab("Aimbot")
 local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
-local ActiveSpeedBoost,ActiveNoclip,ActiveEspPlayers,ActiveDistanceEsp,ActivateFly,ActivateInfiniteJump,AlrActivatedFlyPC,ActiveNoCooldownPrompt,ActiveAimbot,HowAim,VerifyTeamColor,VerifyWall,ShootBot = false,false,false,false,false,false,false,false,false,"Camera",false,false,false
+local ActiveSpeedBoost,ActiveNoclip,ActiveEspPlayers,ActiveDistanceEsp,ActivateFly,ActivateInfiniteJump,AlrActivatedFlyPC,ActiveNoCooldownPrompt,ActiveAimbot,HowAim,VerifyTeamColor,VerifyWall,ShootBot,InfiniteDistance,MaxDistanceForAimbot = false,false,false,false,false,false,false,false,false,"Camera",false,false,false,false,0
 local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "Loading"})
 
 Rayfield:Notify({
@@ -566,10 +566,16 @@ local function aimToClosestTarget()
 	if not (myHead and myRoot) then return end
 
 	local closestTarget = nil
-	local shortestDistance = math.huge
+	local shortestDistance = 0
+if InfiniteDistance then
+shortestDistance = math.huge
+else
+shortestDistance = MaxDistanceForAimbot
+end 
 if ShootBot then
 	for _, instance in pairs(workspace:GetDescendants()) do
-		if instance:IsA("Model") and isValidTarget(instance) and instance:FindFirstChildOfClass("Humanoid") and instance:FindFirstChildOfClass("Humanoid").Health > 0 then
+		if instance:IsA("Model") and instance:FindFirstChildOfClass("Humanoid") and instance:FindFirstChildOfClass("Humanoid").Health > 0 then
+if isValidTarget(instance) then
 			local head = instance:FindFirstChild("Head")
 			if head then
 				local distance = getDistance(myHead, head)
@@ -577,6 +583,7 @@ if ShootBot then
 					shortestDistance = distance
 					closestTarget = head
 				end
+end
 			end
 		end
 	end
@@ -620,7 +627,7 @@ end,
 
 local AimbotDropdown = AimbotTab:CreateDropdown({
     Name = "Aimbot Settings",
-    Options = {"Verify Wall", "Verify Team Color","Target Bot"},
+    Options = {"Verify Wall", "Verify Team Color","Target Bot","Infinite Aimbot Distance"},
     CurrentOption = {},
     MultipleOptions = true,
     Flag = "AimbotDropdown2",
@@ -628,6 +635,7 @@ local AimbotDropdown = AimbotTab:CreateDropdown({
         VerifyWall = table.find(Options, "Verify Wall") ~= nil
         VerifyTeamColor = table.find(Options, "Verify Team Color") ~= nil
       ShootBot = table.find(Options, "Target Bot") ~= nil
+ InfiniteDistance = table.find(Options, "Infinite Aimbot Distance") ~= nil
     end,
 })
 
@@ -645,6 +653,19 @@ local AimbotDropdown2 = AimbotTab:CreateDropdown({
             HowAim = "Character"
         end
     end,
+})
+
+local DistanceAimbotSlider = PlayerTab:CreateSlider({
+   Name = "Distance Aimbot(Work Only if Infinite Aimbot Distance Is Disabled!)",
+   Range = {0, 99999999},
+   Increment = 0.1,
+   Suffix = "Fly Speed",
+   CurrentValue = 1,
+   Flag = "SliderAIMBOT", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+CurrentValue = Value
+MaxDistanceForAimbot = Value
+end,  MaxDistanceForAimbot = CurrentValue,
 })
 
 local ButtonLoadForsakenCheat = GameTab:CreateButton({
