@@ -657,7 +657,7 @@ local AimbotDropdown2 = AimbotTab:CreateDropdown({
 
 local DistanceAimbotSlider = AimbotTab:CreateSlider({
    Name = "Distance Aimbot(Work Only if Infinite Aimbot Distance Is Disabled!)",
-   Range = {0, 99999999},
+   Range = {0, 1000},
    Increment = 1,
    Suffix = "Distance",
    CurrentValue = 0,
