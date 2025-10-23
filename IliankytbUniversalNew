@@ -41,12 +41,12 @@ local EspTab = Window:CreateTab("Esp")
 local AimbotTab = Window:CreateTab("Aimbot")
 local DiscordTab = Window:CreateTab("Discord")
 local SettingsTab = Window:CreateTab("Settings")
-local ActiveSpeedBoost,ActiveNoclip,ActiveEspPlayers,ActiveDistanceEsp,ActivateFly,ActivateInfiniteJump,AlrActivatedFlyPC,ActiveNoCooldownPrompt,ActiveAimbot,HowAim,VerifyTeamColor,VerifyWall = false,false,false,false,false,false,false,false,false,"Camera",false,false
+local ActiveSpeedBoost,ActiveNoclip,ActiveEspPlayers,ActiveDistanceEsp,ActivateFly,ActivateInfiniteJump,AlrActivatedFlyPC,ActiveNoCooldownPrompt,ActiveAimbot,HowAim,VerifyTeamColor,VerifyWall,ShootBot = false,false,false,false,false,false,false,false,false,"Camera",false,false,false
 local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "Loading"})
 
 Rayfield:Notify({
    Title = "Universal Version",
-   Content = "V.0.8",
+   Content = "V.0.9",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -547,7 +547,7 @@ local function isValidTarget(char)
 	local humanoid = char:FindFirstChildWhichIsA("Humanoid")
 	local head = char:FindFirstChild("Head")
 	if not humanoid or not head then return false end
-	if humanoid.Health <= 0 then return false end
+	if humanoid.Health == 0 then return false end
 	if VerifyTeamColor then
 		local player = Players:GetPlayerFromCharacter(char)
 		if player and player.TeamColor == LocalPlayer.TeamColor then return false end
@@ -567,9 +567,9 @@ local function aimToClosestTarget()
 
 	local closestTarget = nil
 	local shortestDistance = math.huge
-
+if ShootBot then
 	for _, instance in pairs(workspace:GetDescendants()) do
-		if instance:IsA("Model") and isValidTarget(instance) then
+		if instance:IsA("Model") and isValidTarget(instance) and instance:FindFirstChildOfClass("Humanoid") and instance:FindFirstChildOfClass("Humanoid").Health > 0 then
 			local head = instance:FindFirstChild("Head")
 			if head then
 				local distance = getDistance(myHead, head)
@@ -580,7 +580,22 @@ local function aimToClosestTarget()
 			end
 		end
 	end
+else
+for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
+	local character = player.Character
+	local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+	local head = character and character:FindFirstChild("Head")
 
+	if humanoid and humanoid.Health > 0 and head and isValidTarget(character) then
+		local distance = getDistance(myHead, head)
+		if distance < shortestDistance then
+			shortestDistance = distance
+			closestTarget = head
+		end
+	end
+end
+
+end
 	if closestTarget then
 		if HowAim == "Camera" then
 			Camera.CFrame = CFrame.new(Camera.CFrame.Position, closestTarget.Position)
@@ -605,13 +620,14 @@ end,
 
 local AimbotDropdown = AimbotTab:CreateDropdown({
     Name = "Aimbot Settings",
-    Options = {"Verify Wall", "Verify Team Color"},
+    Options = {"Verify Wall", "Verify Team Color","Target Bot"},
     CurrentOption = {},
     MultipleOptions = true,
     Flag = "AimbotDropdown2",
     Callback = function(Options)
         VerifyWall = table.find(Options, "Verify Wall") ~= nil
         VerifyTeamColor = table.find(Options, "Verify Team Color") ~= nil
+      ShootBot = table.find(Options, "Target Bot") ~= nil
     end,
 })
 
