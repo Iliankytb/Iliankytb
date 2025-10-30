@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.70"
+local V = "V.0.71"
 
 library:CreateWindow({
 	Title = "Doors - by Iliankytb",-- Title of the script
@@ -919,6 +919,28 @@ child:SetAttribute("HoldDurationOld",child.HoldDuration)
 child.HoldDuration = 0
 end  
 end
+
+  if ActiveEspDoor and child:FindFirstChild("Door") and child.Door.PrimaryPart then
+        local Door = child.Door
+        local Assets = child:FindFirstChild("Assets")
+        if not Door:FindFirstChildOfClass("Highlight") and not Door.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+            local signText = "Unknown"
+            if Door:FindFirstChild("Sign") then
+                local Sign = Door.Sign
+                if Sign:FindFirstChild("Stinker") and Sign.Stinker.Text ~= "" then
+                    signText = Sign.Stinker.Text
+                elseif Sign:FindFirstChild("SignText") then
+                    signText = Sign.SignText.Text
+                end
+            end
+            if Assets and Assets:FindFirstChild("KeyObtain") then
+                CreateEsp(Door, Color3.fromRGB(0,255,0), "Doors " .. signText .. " (Lock)", Door.PrimaryPart)
+            else
+                CreateEsp(Door, Color3.fromRGB(0,255,0), "Doors " .. signText, Door.PrimaryPart)
+            end
+        end
+    end
+
     if not child:IsA("Model") then return end
     if not child.PrimaryPart then return end 
 
@@ -984,31 +1006,10 @@ end
     end
 
   
-    if ActiveEspDoor and child:FindFirstChild("Door") and child.Door.PrimaryPart then
-        local Door = child.Door
-        local Assets = child:FindFirstChild("Assets")
-        if not Door:FindFirstChildOfClass("Highlight") and not Door.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
-            local signText = "Unknown"
-            if Door:FindFirstChild("Sign") then
-                local Sign = Door.Sign
-                if Sign:FindFirstChild("Stinker") and Sign.Stinker.Text ~= "" then
-                    signText = Sign.Stinker.Text
-                elseif Sign:FindFirstChild("SignText") then
-                    signText = Sign.SignText.Text
-                end
-            end
-            if Assets and Assets:FindFirstChild("KeyObtain") then
-                CreateEsp(Door, Color3.fromRGB(0,255,0), "Doors " .. signText .. " (Lock)", Door.PrimaryPart)
-            else
-                CreateEsp(Door, Color3.fromRGB(0,255,0), "Doors " .. signText, Door.PrimaryPart)
-            end
-        end
-    end
+  
 end)
 
 workspace.DescendantRemoving:Connect(function(child)
-    if not child:IsA("Model") then return end
-    if not child.PrimaryPart then return end
     for i = #ESPs, 1, -1 do
         local esp = ESPs[i]
         if esp.Char == child then
