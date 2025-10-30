@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.71"
+local V = "V.0.72"
 
 library:CreateWindow({
 	Title = "Doors - by Iliankytb",-- Title of the script
@@ -920,7 +920,9 @@ child.HoldDuration = 0
 end  
 end
 
-  if ActiveEspDoor and child:FindFirstChild("Door") and child.Door.PrimaryPart then
+ 
+    if not child:IsA("Model") then return end
+     if ActiveEspDoor and child:FindFirstChild("Door") and child.Door.PrimaryPart then
         local Door = child.Door
         local Assets = child:FindFirstChild("Assets")
         if not Door:FindFirstChildOfClass("Highlight") and not Door.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
@@ -941,7 +943,6 @@ end
         end
     end
 
-    if not child:IsA("Model") then return end
     if not child.PrimaryPart then return end 
 
     if ActiveEspCandy and child.Name == "Candy" 
@@ -1010,14 +1011,77 @@ end
 end)
 
 workspace.DescendantRemoving:Connect(function(child)
-    for i = #ESPs, 1, -1 do
-        local esp = ESPs[i]
-        if esp.Char == child then
-             table.remove(ESPs, i)
-            if esp.Highlight then esp.Highlight:Destroy() end
-            if esp.Billboard then esp.Billboard:Destroy() end
-            if esp.Line then esp.Line:Destroy() end
+     if not child:IsA("Model") then return end
+     if ActiveEspDoor and child:FindFirstChild("Door") and child.Door.PrimaryPart then
+        local Door = child.Door
+        local Assets = child:FindFirstChild("Assets")
+        if  Door:FindFirstChildOfClass("Highlight") and Door.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+         
+              KeepEsp(child,child.PrimaryPart)
+             
         end
+    end
+
+    if not child.PrimaryPart then return end 
+
+    if ActiveEspCandy and child.Name == "Candy" 
+    and  child:FindFirstChildOfClass("Highlight")
+    and  child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+   KeepEsp(child,child.PrimaryPart)
+     end
+
+   
+    if ActiveEspHidingSpots and (child.Name == "Bed" or child.Name == "Wardrobe" or child.Name == "Backdoor_Wardrobe" or child.Name == "Locker_Large" or child.Name == "Rooms_Locker")
+    and  child:FindFirstChildOfClass("Highlight")
+    and  child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+   KeepEsp(child,child.PrimaryPart)
+      end
+
+  
+    if ActiveEspItems and table.find(ItemNames, child.Name)
+    and  child:FindFirstChildOfClass("Highlight")
+    and  child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+     KeepEsp(child,child.PrimaryPart)
+      end
+
+    if ActiveEspCoins and child.Name == "GoldPile"
+    and  child:FindFirstChildOfClass("Highlight")
+    and  child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+    KeepEsp(child,child.PrimaryPart)
+      end
+
+
+    if ActiveEspChest and (child.Name == "ChestBoxLocked" or child.Name == "ChestBox")
+    andnot child:FindFirstChildOfClass("Highlight")
+    and  child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+     KeepEsp(child,child.PrimaryPart)
+       end
+
+
+    if ActiveEspBooks and child.Name == "LiveHintBook"
+    and  child:FindFirstChildOfClass("Highlight")
+    and  child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+   KeepEsp(child,child.PrimaryPart)
+      end
+
+  
+    if ActiveEspMonster and table.find(MonsterNames, child.Name)
+    and  child:FindFirstChildOfClass("Highlight")
+    and  child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+      KeepEsp(child,child.PrimaryPart)
+        end
+
+  
+    if ActiveEspTimerLever and child.Name == "TimerLever"
+    and  child:FindFirstChildOfClass("Highlight")
+    and  child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+       KeepEsp(child,child.PrimaryPart)
+          end
+
+    if ActiveEspGen and child.Name == "MinesGenerator"
+    and  child:FindFirstChildOfClass("Highlight")
+    and  child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+        KeepEsp(child,child.PrimaryPart)
     end
 end)
 
