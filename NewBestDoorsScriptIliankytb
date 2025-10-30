@@ -1052,7 +1052,7 @@ workspace.DescendantRemoving:Connect(function(child)
 
 
     if ActiveEspChest and (child.Name == "ChestBoxLocked" or child.Name == "ChestBox")
-    andnot child:FindFirstChildOfClass("Highlight")
+    and child:FindFirstChildOfClass("Highlight")
     and  child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
      KeepEsp(child,child.PrimaryPart)
        end
@@ -1083,7 +1083,6 @@ workspace.DescendantRemoving:Connect(function(child)
     and  child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
         KeepEsp(child,child.PrimaryPart)
     end
-end)
 
 workspace.ChildAdded:Connect(function(child)
  if ActiveMonsterSpawnAlert then
