@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.69"
+local V = "V.0.70"
 
 library:CreateWindow({
 	Title = "Doors - by Iliankytb",-- Title of the script
@@ -1011,11 +1011,11 @@ workspace.DescendantRemoving:Connect(function(child)
     if not child.PrimaryPart then return end
     for i = #ESPs, 1, -1 do
         local esp = ESPs[i]
-        if esp.Model == child then
+        if esp.Char == child then
+             table.remove(ESPs, i)
             if esp.Highlight then esp.Highlight:Destroy() end
             if esp.Billboard then esp.Billboard:Destroy() end
             if esp.Line then esp.Line:Destroy() end
-            table.remove(ESPs, i)
         end
     end
 end)
