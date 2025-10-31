@@ -784,7 +784,7 @@ end,
 })
 local AvoidSnaresToggle = MonstersTab:AddToggle({
 Text =  "Anti Snares",
-   Name ="AntiS’aresToggle",
+   Name ="AntiSnaresToggle",
    Default = false,
    Flag = "ButtonNoSnares", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
@@ -1058,7 +1058,7 @@ end
     if ActiveEspMonster and table.find(MonsterNames, child.Name)
     and not child:FindFirstChildOfClass("Highlight")
     and not child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
-        child.PrimaryPart.Transparency = 0
+        child.PrimaryPart.Transparency = 0.99
         CreateEsp(child, Color3.fromRGB(255,0,0), child.Name, child.PrimaryPart)
     end
 
