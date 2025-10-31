@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.74"
+local V = "V.0.75"
 
 library:CreateWindow({
 	Title = "Doors - by Iliankytb",-- Title of the script
@@ -928,36 +928,14 @@ local ItemNames = {
 
 
 workspace.DescendantAdded:Connect(function(child) 
- if ActiveMonsterSpawnAlert then
+if ActiveMonsterSpawnAlert then
 if table.find(OptionNotif,child.Name) then
-if child.Name == "RushMoving" then 
-NotifMonsterSpawned("Rush",3)
-elseif child.Name == "EyestalkMoving" then
-NotifMonsterSpawned("Eye Stalk",3)
-elseif child.Name == "SeekMovingNewClone" then
-NotifMonsterSpawned("Seek",3)
+if child.Name == "Groundskeeper" then
+NotifMonsterSpawned("Groundskeeper",3)
 elseif child.Name == "FigureRig" then
 NotifMonsterSpawned("Figure",3)
-elseif child.Name == "SallyMoving" then
-NotifMonsterSpawned("Sally",3)
-elseif child.Name == "Eyes" then
-NotifMonsterSpawned("Eyes",3)
-elseif child.Name == "BackdoorLookman" then
-NotifMonsterSpawned("LookMan",3)
-elseif child.Name == "BackdoorRush" then
-NotifMonsterSpawned("Blitz",3)
-elseif child.Name == "GloombatSwarm" then
-NotifMonsterSpawned("Gloombat Swarm",3)
 elseif child.Name == "GiggleCeiling" then
 NotifMonsterSpawned("Giggle",3)
-elseif child.Name == "AmbushMoving" then
-NotifMonsterSpawned("Ambush",3)
-elseif child.Name == "A60" then
-NotifMonsterSpawned("A60",3)
-elseif child.Name == "A120" then
-NotifMonsterSpawned("A120",3)
-elseif child.Name == "Groundskeeper" then
-NotifMonsterSpawned("Groundskeeper",3)
 end
 end
 end
@@ -1135,7 +1113,35 @@ workspace.DescendantRemoving:Connect(function(child)
         KeepEsp(child,child.PrimaryPart)
     end
 end)
-
+workspace.ChildAdded:Connect(function(child)
+ if ActiveMonsterSpawnAlert then
+if table.find(OptionNotif,child.Name) then
+if child.Name == "RushMoving" then 
+NotifMonsterSpawned("Rush",3)
+elseif child.Name == "EyestalkMoving" then
+NotifMonsterSpawned("Eye Stalk",3)
+elseif child.Name == "SeekMovingNewClone" then
+NotifMonsterSpawned("Seek",3)
+elseif child.Name == "SallyMoving" then
+NotifMonsterSpawned("Sally",3)
+elseif child.Name == "Eyes" then
+NotifMonsterSpawned("Eyes",3)
+elseif child.Name == "BackdoorLookman" then
+NotifMonsterSpawned("LookMan",3)
+elseif child.Name == "BackdoorRush" then
+NotifMonsterSpawned("Blitz",3)
+elseif child.Name == "GloombatSwarm" then
+NotifMonsterSpawned("Gloombat Swarm",3)
+elseif child.Name == "AmbushMoving" then
+NotifMonsterSpawned("Ambush",3)
+elseif child.Name == "A60" then
+NotifMonsterSpawned("A60",3)
+elseif child.Name == "A120" then
+NotifMonsterSpawned("A120",3)
+end
+end
+end
+end)
 local DropdownAutoInteract = GameTab:AddDropdown({
 Text = "Auto Interact Settings(Coming Soon)",
    Name = "DropdownAutoInteract",
