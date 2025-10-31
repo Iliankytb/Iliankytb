@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.75"
+local V = "V.0.76"
 
 library:CreateWindow({
 	Title = "Doors - by Iliankytb",-- Title of the script
@@ -49,6 +49,7 @@ local ValueSpeed = 16
 local ActiveEspCandy = false
 local ActiveFullBright = false
 local ActiveAvoidFigure = false
+local AntiSnare = false
 local ParagraphInfoServer = InfoTab:AddParagraph({Title = "",Content = "Loading",Name = "Paragraph1"})
 local Version = InfoTab:AddText({
 		Text = "Version:"..V,
@@ -277,7 +278,7 @@ local Section2 = EspTab:AddSection({Text = "General",Name = "General"})
 local DropdownMonsterSpawnAlert = GameTab:AddDropdown({
 Text =  "Monster Spawn Alert Dropdown",
     Name ="DropdownMonsterSpawnAlert",
-    Options = {"Rush","Seek","Figure","Sally","Eyes","LookMan","BackdoorRush","Giggle","GloombatSwarm","Ambush","A-60","A-120","Eye stalk","Groundskeeper"},
+    Options = {"Rush","Seek","Figure","Sally","Eyes","LookMan","BackdoorRush","Giggle","GloombatSwarm","Ambush","A-60","A-120","Eye stalk","Groundskeeper",Mandrake"},
     Default = "",
     MultiSelect  = true,
     Flag = "MonsterSpawnAlertDropdown",
@@ -287,6 +288,14 @@ Text =  "Monster Spawn Alert Dropdown",
             table.insert(OptionNotif, "RushMoving")
         elseif not  Options ==  "Rush" then
             local index = table.find(OptionNotif, "RushMoving")
+            if index then
+                table.remove(OptionNotif, index)
+            end
+        end
+if  Options == "Mandrake" and not table.find(OptionNotif, "MandrakeLive") then
+            table.insert(OptionNotif, "MandrakeLive")
+        elseif not  Options ==  "Rush" then
+            local index = table.find(OptionNotif, "MandrakeLive")
             if index then
                 table.remove(OptionNotif, index)
             end
@@ -704,7 +713,7 @@ end,
 local MonsterNames = {
 	"FigureRig", "SallyMoving", "RushMoving", "Eyes", "SeekMovingNewClone",
 	"BackdoorLookman", "BackdoorRush", "GloombatSwarm", "GiggleCeiling",
-	"AmbushMoving", "EyestalkMoving","Groundskeeper","Mandrakes"
+	"AmbushMoving", "EyestalkMoving","Groundskeeper","MandrakeLive"
 }
 local EspMonstersToggle = EspTab:AddToggle({
 Text = "Monsters Esp",
@@ -767,10 +776,32 @@ local AvoidFigureToggle = MonstersTab:AddToggle({
 Text =  "Figure can't detect you",
    Name ="AvoidFigureToggle",
    Default = false,
-   Flag = "ButtonNoEyes", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Flag = "ButtonNoFigure", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
   ActiveAvoidFigure = Value
   game:GetService("ReplicatedStorage").RemotesFolder.Crouch:FireEvent(ActiveAvoidFigure)
+end,
+})
+local AvoidSnaresToggle = MonstersTab:AddToggle({
+Text =  "Anti Snares",
+   Name ="AntiS’aresToggle",
+   Default = false,
+   Flag = "ButtonNoSnares", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  AntiSnare = Value
+ if AntiSnare then
+for _, Assets in pairs(workspace:GetDescendants()) do
+		if Assets:IsA("Model") and Assets.Name == "Snare" and Assets:FindFirstChild("Hitbox") then
+	Assets:FindFirstChild("Hitbox").CanTouch = false
+end
+	end
+else
+for _, Assets in pairs(workspace:GetDescendants()) do
+		if Assets:IsA("Model") and Assets.Name == "Snare" and Assets:FindFirstChild("Hitbox") then
+	Assets:FindFirstChild("Hitbox").CanTouch = true
+end
+	end
+end
 end,
 })
 
@@ -936,6 +967,8 @@ elseif child.Name == "FigureRig" then
 NotifMonsterSpawned("Figure",3)
 elseif child.Name == "GiggleCeiling" then
 NotifMonsterSpawned("Giggle",3)
+elseif child.Name == "MandrakeLive" then
+NotifMonsterSpawned("Mandrake",3)
 end
 end
 end
@@ -982,7 +1015,12 @@ if child:IsA("ProximityPrompt") then
         CreateEsp(child, Color3.fromRGB(255,255,0), child.Name, child.PrimaryPart)
     end
 
-   
+if AntiSnare then
+	if child:IsA("Model") and child.Name == "Snare" and child:FindFirstChild("Hitbox") then
+	child:FindFirstChild("Hitbox").CanTouch = false
+	end
+end
+
     if ActiveEspHidingSpots and (child.Name == "Bed" or child.Name == "Wardrobe" or child.Name == "Backdoor_Wardrobe" or child.Name == "Locker_Large" or child.Name == "Rooms_Locker" or child.Name == "Toolshed")
     and not child:FindFirstChildOfClass("Highlight")
     and not child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
