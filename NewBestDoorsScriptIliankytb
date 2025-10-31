@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.72"
+local V = "V.0.73"
 
 library:CreateWindow({
 	Title = "Doors - by Iliankytb",-- Title of the script
@@ -150,26 +150,6 @@ wait(0.5)
         prompt:SetAttribute("Doing",false) 
     end
 end
-local function AutoInteract()
-	local character = LocalPlayer.Character
-	if not character then return end
-	local hrp = character:FindFirstChild("HumanoidRootPart")
-	if not hrp then return end
-
-	for _, asset in pairs(workspace:GetDescendants()) do
-		if asset:IsA("ProximityPrompt") and asset.Name ~= "HidePrompt" then
-			local parentPart = asset.Parent
-			if parentPart and parentPart:IsA("BasePart") then
-				local distance = (parentPart.Position - hrp.Position).Magnitude
-				if distance <= asset.MaxActivationDistance then
-					pcall(function()
-						onPromptShown(asset)
-					end)
-				end
-			end
-		end
-	end
-end
 RunService.RenderStepped:Connect(function()
 task.spawn(function()
 	local updatedInfo = getServerInfo()
@@ -190,14 +170,14 @@ updatedInfo.MaxPlayers
 end)
 	local cameraPosition = Camera.CFrame.Position
 	local screenCenter = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y)
-
+task.spawn(function()
 	for _, esp in ipairs(ESPs) do
 		local part = esp.Part
 		local highlight = esp.Highlight
 		local billboard = esp.Billboard
 		local label = esp.Label
 		local line = esp.Line
-
+if not part or not highlight or not billboard or not label or not line then return end
 		if part and part.Parent and highlight and billboard then
 			local distance = (cameraPosition - part.Position).Magnitude
 			local screenPos, onScreen = Camera:WorldToViewportPoint(part.Position)
@@ -227,34 +207,31 @@ end)
 			if line then line.Visible = false end
 		end
 	end
+    end)
     if ActiveSpeedBoost then
         Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = ValueSpeed
     end
     if ActiveAvoidFigure then
         game:GetService("ReplicatedStorage").RemotesFolder.Crouch:FireServer(true)
     end
+    task.spawn(function()
     if ActiveAutoInteract then
-		AutoInteract()
-    end
-    if ActiveBigPrompt then
 		for _, asset in pairs(workspace:GetDescendants()) do
-			if asset:IsA("ProximityPrompt") then
-				if asset.MaxActivationDistance ~= 13 then
-					asset:SetAttribute("MaxActivationDistanceOld", asset.MaxActivationDistance)
-					asset.MaxActivationDistance = 13
+		if asset:IsA("ProximityPrompt") and not asset:GetAttribute("Doing") and asset.Name ~= "HidePrompt" then
+			local parentPart = asset.Parent
+			if parentPart and parentPart:IsA("BasePart") then
+				local distance = (parentPart.Position - hrp.Position).Magnitude
+				if distance <= asset.MaxActivationDistance then
+					pcall(function()
+						onPromptShown(asset)
+					end)
 				end
 			end
 		end
-	else
-		for _, asset in pairs(workspace:GetDescendants()) do
-			if asset:IsA("ProximityPrompt") then
-				local old = asset:GetAttribute("MaxActivationDistanceOld")
-				if old and old ~= 13 then
-					asset.MaxActivationDistance = old
-				end
-			end
-		end
+        task.wait(0.25)
 	end
+    end
+    end)
     if ActiveFullBright then 
 if Game.Lighting then 
 Game.Lighting.Brightness = 5
@@ -912,17 +889,54 @@ end
 
 end,
 })
+
+local ItemNames = {
+	"KeyObtain",
+	"LeverForGate",
+	"Battery",
+	"Flashlight",
+	"Lighter",
+	"Bandage",
+	"Crucifix",
+	"Vitamins",
+	"Lockpick",
+	"Candle",
+	"AlarmClock",
+	"LibraryHintPaper",
+	"Smoothie",
+	"FuseObtain",
+	"BatteryPack",
+	"Glowsticks",
+	"StarVial",
+	"Shakelight",
+	"SkeletonKey",
+	"Compass",
+	"Shears",
+	"Lantern"
+}
+
+
 workspace.DescendantAdded:Connect(function(child) 
+task.wait(0.75)
 if ActiveNoCooldownPrompt then
 if child:IsA("ProximityPrompt") and child.HoldDuration ~= 0 then
 child:SetAttribute("HoldDurationOld",child.HoldDuration)
 child.HoldDuration = 0
 end  
 end
-
- 
+ if ActiveBigPrompt then
+if child:IsA("ProximityPrompt") then
+				if child.MaxActivationDistance ~= 13 then
+					child:SetAttribute("MaxActivationDistanceOld", child.MaxActivationDistance)
+					child.MaxActivationDistance = 13
+				end
+			end
+ end
     if not child:IsA("Model") then return end
-     if ActiveEspDoor and child:FindFirstChild("Door") and child.Door.PrimaryPart then
+    
+
+    if not child.PrimaryPart then return end 
+ if ActiveEspDoor and child:FindFirstChild("Door") and child.Door.PrimaryPart then
         local Door = child.Door
         local Assets = child:FindFirstChild("Assets")
         if not Door:FindFirstChildOfClass("Highlight") and not Door.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
@@ -942,9 +956,6 @@ end
             end
         end
     end
-
-    if not child.PrimaryPart then return end 
-
     if ActiveEspCandy and child.Name == "Candy" 
     and not child:FindFirstChildOfClass("Highlight")
     and not child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
@@ -1012,7 +1023,8 @@ end)
 
 workspace.DescendantRemoving:Connect(function(child)
      if not child:IsA("Model") then return end
-     if ActiveEspDoor and child:FindFirstChild("Door") and child.Door.PrimaryPart then
+    if not child.PrimaryPart then return end 
+ if ActiveEspDoor and child:FindFirstChild("Door") and child.Door.PrimaryPart then
         local Door = child.Door
         local Assets = child:FindFirstChild("Assets")
         if  Door:FindFirstChildOfClass("Highlight") and Door.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
@@ -1021,9 +1033,6 @@ workspace.DescendantRemoving:Connect(function(child)
              
         end
     end
-
-    if not child.PrimaryPart then return end 
-
     if ActiveEspCandy and child.Name == "Candy" 
     and  child:FindFirstChildOfClass("Highlight")
     and  child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
