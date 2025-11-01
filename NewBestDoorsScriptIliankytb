@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.77"
+local V = "V.0.78"
 
 library:CreateWindow({
 	Title = "Doors - by Iliankytb",-- Title of the script
@@ -279,7 +279,7 @@ local Section2 = EspTab:AddSection({Text = "General",Name = "General"})
 local DropdownMonsterSpawnAlert = GameTab:AddDropdown({
 Text =  "Monster Spawn Alert Dropdown",
     Name ="DropdownMonsterSpawnAlert",
-    Options = {"Rush","Seek","Figure","Sally","Eyes","LookMan","BackdoorRush","Giggle","GloombatSwarm","Ambush","A-60","A-120","Eye stalk","Groundskeeper","Mandrake"},
+    Options = {"Rush","Seek","Figure","Sally","Eyes","Screech","LookMan","BackdoorRush","Giggle","GloombatSwarm","Ambush","A-60","A-120","Eye stalk","Groundskeeper","Mandrake"},
     Default = "",
     MultiSelect  = true,
     Flag = "MonsterSpawnAlertDropdown",
@@ -289,6 +289,14 @@ Text =  "Monster Spawn Alert Dropdown",
             table.insert(OptionNotif, "RushMoving")
         elseif not  Options ==  "Rush" then
             local index = table.find(OptionNotif, "RushMoving")
+            if index then
+                table.remove(OptionNotif, index)
+            end
+        end
+          if  Options == "Screech" and not table.find(OptionNotif, "Screech") then
+            table.insert(OptionNotif, "Screech")
+        elseif not  Options ==  "Screech" then
+            local index = table.find(OptionNotif, "Screech")
             if index then
                 table.remove(OptionNotif, index)
             end
@@ -714,7 +722,7 @@ end,
 local MonsterNames = {
 	"FigureRig", "SallyMoving", "RushMoving", "Eyes", "SeekMovingNewClone",
 	"BackdoorLookman", "BackdoorRush", "GloombatSwarm", "GiggleCeiling",
-	"AmbushMoving", "EyestalkMoving","Groundskeeper","MandrakeLive","Snare"
+	"AmbushMoving", "EyestalkMoving","Groundskeeper","MandrakeLive","Snare","Screech"
 }
 local EspMonstersToggle = EspTab:AddToggle({
 Text = "Monsters Esp",
@@ -991,6 +999,8 @@ elseif child.Name == "GiggleCeiling" then
 NotifMonsterSpawned("Giggle",3)
 elseif child.Name == "MandrakeLive" then
 NotifMonsterSpawned("Mandrake",3)
+elseif child.Name == "Screech" then
+NotifMonsterSpawned("Screech",3)
 end
 end
 end
