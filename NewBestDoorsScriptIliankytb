@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.78"
+local V = "V.0.79"
 
 library:CreateWindow({
 	Title = "Doors - by Iliankytb",-- Title of the script
@@ -51,6 +51,7 @@ local ActiveFullBright = false
 local ActiveAvoidFigure = false
 local AntiSnare = false
 local AntiGiggle = false
+local AntiScreech = false
 local ParagraphInfoServer = InfoTab:AddParagraph({Title = "",Content = "Loading",Name = "Paragraph1"})
 local Version = InfoTab:AddText({
 		Text = "Version:"..V,
@@ -61,7 +62,35 @@ window:Notify({
 				Message = V,
 				Duration = 7.5,
 })
-
+local ItemNames = {
+	"KeyObtain",
+	"LeverForGate",
+	"Battery",
+	"Flashlight",
+	"Lighter",
+	"Bandage",
+	"Crucifix",
+	"Vitamins",
+	"Lockpick",
+	"Candle",
+	"AlarmClock",
+	"LibraryHintPaper",
+	"Smoothie",
+	"FuseObtain",
+	"BatteryPack",
+	"Glowsticks",
+	"StarVial",
+	"Shakelight",
+	"SkeletonKey",
+	"Compass",
+	"Shears",
+	"Lantern",
+    "Straplight",
+    "Bulklight",
+    "Toolshed_Small",
+    "LaserPointer",
+    "KeyIron",
+}
 local function getServerInfo()
 	local Players = game:GetService("Players")
 	local playerCount = #Players:GetPlayers()
@@ -216,6 +245,10 @@ if not part or not highlight or not billboard or not label or not line then retu
     if ActiveAvoidFigure then
         game:GetService("ReplicatedStorage").RemotesFolder.Crouch:FireServer(true)
     end
+    if AntiScreech then
+    if game.Workspace.CurrentCamera:FindFirstChild("Screech") then
+        game.Workspace.CurrentCamera:FindFirstChild("Screech"):Destroy()
+    end  end
     task.spawn(function()
     if ActiveAutoInteract then
 		for _, asset in pairs(workspace:GetDescendants()) do
@@ -553,14 +586,14 @@ Text =  "Items Esp",
 ActiveEspItems = Value 
 if ActiveEspItems then
   for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
-if Assets:isA("Model") and (Assets.Name == "KeyObtain" or Assets.Name == "LeverForGate" or Assets.Name == "Battery" or Assets.Name == "Flashlight" or Assets.Name == "Lighter" or Assets.Name == "Bandage" or Assets.Name == "Crucifix" or Assets.Name == "Vitamins" or Assets.Name == "Lockpick" or Assets.Name == "Candle" or Assets.Name == "AlarmClock" or Assets.Name == "LibraryHintPaper" or Assets.Name == "Smoothie" or Assets.Name == "FuseObtain" or Assets.Name == "BatteryPack" or Assets.Name == "Glowsticks" or Assets.Name == "StarVial" or Assets.Name == "Shakelight" or Assets.Name == "SkeletonKey" or Assets.Name == "Compass" or Assets.Name == "Shears" or Assets.Name == "Lantern" or Assets.Name == "Toolshed_Small" or Assets.Name == "Bulklight" or Assets.Name == "Straplight")  and not Assets:FindFirstChildOfClass("Highlight") 
+if Assets:isA("Model") and table.find(ItemNames, Assets.Name) and not Assets:FindFirstChildOfClass("Highlight") 
 and not  Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
 CreateEsp(Assets,Color3.fromRGB(255,255,0),Assets.Name,Assets.PrimaryPart) 
 end
 end  
 else
      for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
-if Assets:isA("Model") and (Assets.Name == "KeyObtain" or Assets.Name == "LeverForGate" or Assets.Name == "Battery" or Assets.Name == "Flashlight" or Assets.Name == "Lighter" or Assets.Name == "Bandage" or Assets.Name == "Crucifix" or Assets.Name == "Vitamins" or Assets.Name == "Lockpick" or Assets.Name == "Candle" or Assets.Name == "AlarmClock" or Assets.Name == "LibraryHintPaper" or Assets.Name == "Smoothie" or Assets.Name == "FuseObtain" or Assets.Name == "BatteryPack" or Assets.Name == "Glowsticks" or Assets.Name == "StarVial" or Assets.Name == "Shakelight" or Assets.Name == "SkeletonKey" or Assets.Name == "Compass" or Assets.Name == "Shears" or Assets.Name == "Lantern" or Assets.Name == "Toolshed_Small" or Assets.Name == "Bulklight" or Assets.Name == "Straplight")  and  Assets:FindFirstChildOfClass("Highlight") 
+if Assets:isA("Model") and table.find(ItemNames, Assets.Name)  and  Assets:FindFirstChildOfClass("Highlight") 
 and   Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
 KeepEsp(Assets,Assets.PrimaryPart) 
 end
@@ -579,14 +612,14 @@ Text =  "Candy Esp",
 ActiveEspCandy = Value 
 if ActiveEspCandy then
   for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
-if Assets:isA("Model") and (Assets.Name == "Candy")  and not Assets:FindFirstChildOfClass("Highlight") 
+if Assets:isA("Model") and (Assets.Name == "Candy" or Assets.Name == "CandyBag")  and not Assets:FindFirstChildOfClass("Highlight") 
 and not  Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
 CreateEsp(Assets,Color3.fromRGB(255,255,0),Assets.Name,Assets.PrimaryPart) 
 end
 end  
 else
      for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
-if Assets:isA("Model") and (Assets.Name == "Candy")  and  Assets:FindFirstChildOfClass("Highlight") 
+if Assets:isA("Model") and (Assets.Name == "Candy" or Assets.Name == "CandyBag")  and  Assets:FindFirstChildOfClass("Highlight") 
 and   Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
 KeepEsp(Assets,Assets.PrimaryPart) 
 end
@@ -835,6 +868,15 @@ end
 end
 end,
 })
+local AvoidScreechToggle = MonstersTab:AddToggle({
+Text =  "Anti Screech",
+   Name ="AntiScreechToggle",
+   Default = false,
+   Flag = "ButtonNoScreech", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  AntiScreech = Value
+end,
+})
 local ValueFieldOfView = 80
 local PlayerFieldOfViewSlider = PlayerTab:AddSlider({
 Text = "Field Of View(disabled!)",
@@ -959,33 +1001,7 @@ end
 end,
 })
 
-local ItemNames = {
-	"KeyObtain",
-	"LeverForGate",
-	"Battery",
-	"Flashlight",
-	"Lighter",
-	"Bandage",
-	"Crucifix",
-	"Vitamins",
-	"Lockpick",
-	"Candle",
-	"AlarmClock",
-	"LibraryHintPaper",
-	"Smoothie",
-	"FuseObtain",
-	"BatteryPack",
-	"Glowsticks",
-	"StarVial",
-	"Shakelight",
-	"SkeletonKey",
-	"Compass",
-	"Shears",
-	"Lantern",
-    "Straplight",
-    "Bulklight",
-    "Toolshed_Small"
-}
+
 
 
 workspace.DescendantAdded:Connect(function(child) 
@@ -1041,7 +1057,7 @@ if child:IsA("ProximityPrompt") then
             end
         end
     end
-    if ActiveEspCandy and child.Name == "Candy" 
+    if ActiveEspCandy and (child.Name == "Candy" or child.Name == "CandyBag" )
     and not child:FindFirstChildOfClass("Highlight")
     and not child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
         CreateEsp(child, Color3.fromRGB(255,255,0), child.Name, child.PrimaryPart)
@@ -1129,7 +1145,7 @@ workspace.DescendantRemoving:Connect(function(child)
              
         end
     end
-    if ActiveEspCandy and child.Name == "Candy" 
+    if ActiveEspCandy and ( child.Name == "Candy" or hild.Name == "CandyBag")
     and  child:FindFirstChildOfClass("Highlight")
     and  child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
    KeepEsp(child,child.PrimaryPart)
