@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.76"
+local V = "V.0.77"
 
 library:CreateWindow({
 	Title = "Doors - by Iliankytb",-- Title of the script
@@ -50,6 +50,7 @@ local ActiveEspCandy = false
 local ActiveFullBright = false
 local ActiveAvoidFigure = false
 local AntiSnare = false
+local AntiGiggle = false
 local ParagraphInfoServer = InfoTab:AddParagraph({Title = "",Content = "Loading",Name = "Paragraph1"})
 local Version = InfoTab:AddText({
 		Text = "Version:"..V,
@@ -713,7 +714,7 @@ end,
 local MonsterNames = {
 	"FigureRig", "SallyMoving", "RushMoving", "Eyes", "SeekMovingNewClone",
 	"BackdoorLookman", "BackdoorRush", "GloombatSwarm", "GiggleCeiling",
-	"AmbushMoving", "EyestalkMoving","Groundskeeper","MandrakeLive"
+	"AmbushMoving", "EyestalkMoving","Groundskeeper","MandrakeLive","Snare"
 }
 local EspMonstersToggle = EspTab:AddToggle({
 Text = "Monsters Esp",
@@ -804,7 +805,28 @@ end
 end
 end,
 })
-
+local AvoidGiggleToggle = MonstersTab:AddToggle({
+Text =  "Anti Giggles",
+   Name ="AntiGigglesToggle",
+   Default = false,
+   Flag = "ButtonNoGiggles", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  AntiGiggle = Value
+ if AntiGiggle then
+for _, Assets in pairs(workspace:GetDescendants()) do
+		if Assets:IsA("Model") and Assets.Name == "GiggleCeiling" and Assets:FindFirstChild("Hitbox") then
+	Assets:FindFirstChild("Hitbox").CanTouch = false
+end
+	end
+else
+for _, Assets in pairs(workspace:GetDescendants()) do
+		if Assets:IsA("Model") and Assets.Name == "GiggleCeiling" and Assets:FindFirstChild("Hitbox") then
+	Assets:FindFirstChild("Hitbox").CanTouch = true
+end
+	end
+end
+end,
+})
 local ValueFieldOfView = 80
 local PlayerFieldOfViewSlider = PlayerTab:AddSlider({
 Text = "Field Of View(disabled!)",
@@ -1017,6 +1039,12 @@ if child:IsA("ProximityPrompt") then
 
 if AntiSnare then
 	if child:IsA("Model") and child.Name == "Snare" and child:FindFirstChild("Hitbox") then
+	child:FindFirstChild("Hitbox").CanTouch = false
+	end
+end
+
+if AntiGiggle then
+	if child:IsA("Model") and child.Name == "GiggleCeiling" and child:FindFirstChild("Hitbox") then
 	child:FindFirstChild("Hitbox").CanTouch = false
 	end
 end
