@@ -1,0 +1,219 @@
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
+
+	local Version = "V.0.1"
+
+local RunService = game:GetService("RunService")
+local PlayersService = game:GetService("Players")
+local LocalPlayer = PlayersService.LocalPlayer
+local TweenService = game:GetService("TweenService")
+
+library:CreateWindow({
+	Title = "Blox Fruit scripted by Iliankytb",-- Title of the script
+	Theme = "Default",--View more theme in my dicord server!
+	Icon = 0,-- 0 = no icon or add number
+	Intro = false,--Intro or no
+	IntroTitle = "Zentrix Library Testing",--the intro title
+	KeyPC = Enum.KeyCode.K,--the key for pc for Open/close the frame
+	Data = {
+		EnableSavingData = true,--Enabling data saver or no
+		DisableNotifyingLoadedData = false,--set it to true for disable the notify when loaded data
+		FolderName = "BloxFruit",--Folder Name,you can change it
+		FileName = "Iliankytb",-- File name for the data saver,you can change it
+	},
+	Discord = {
+		Enabled = false,--enable to copy the discord
+		DiscordLink = "https://discord.gg/E2TqYRsRP4",-- put thr entire Link of discord
+		RememberJoin = true,-- Set this ti false to make them copy the link every time they load the script
+		Duration = 10,-- 5 is the default you can change the number only for remember join
+	},
+	KeySystem = false,--Key System or no
+	KeySettings = {
+		Title = "Zentrix Library Testing Key System",--Title of the key(just like that)
+		Note = "the key is Zentrix",-- The method for obtaining
+		FileName = "Key",-- File name or no for saving the key
+		SaveKey = true,-- saving the key or no
+		GrabKeyFromSite = false,--Coming soon
+		Key = {"Zentrix"},-- the name you can add many name, Exemple "Key","Key2" or you can add a function to add key but i don't really know
+		AddGetKeyButton = false,
+		AddDiscordButton = true,
+		DiscordLink = "NoInviteLink",
+		GetKeyLink = "NoKeyLink",
+	},
+}, function(window)
+	local InfoTab = window:CreateTab("Info",0)-- Tabs , 0 = no icon or add number
+	local PlayerTab = window:CreateTab("Player",0)-- Tabs , 0 = no icon or add number
+	local AutofarmTab = window:CreateTab("Autofarm",0)-- Tabs , 0 = no icon or add number
+	local ShopTab = window:CreateTab("Shop",0)-- Tabs , 0 = no icon or add number
+	local SeaEventTab = window:CreateTab("Sea Event",0)-- Tabs , 0 = no icon or add number
+	local MiscTab = window:CreateTab("Misc",0)-- Tabs , 0 = no icon or add number
+    local DiscordTab = window:CreateTab("Discord",0)-- Tabs , 0 = no icon or add number
+	 local SettingsTab = window:CreateTab("Settings",0)-- Tabs , 0 = no icon or add number
+	
+    local ActivatedAutofarm = false
+    local Autofarm = "Level"
+    local TweenSpeedValue = 3
+    local SpeedMultiplier = 1
+    local ActiveModifyingSpeed = false
+local WalkInWater = false
+local InTweaning = false
+
+local function TweenPlayerToPosition(targetPosition)
+	local character = LocalPlayer.Character
+	if not character then return end
+
+	local root = character:FindFirstChild("HumanoidRootPart")
+	if not root then return end
+
+
+	local tweenInfo = TweenInfo.new(
+		TweenSpeedValue,
+		Enum.EasingStyle.Quad, 
+		Enum.EasingDirection.Out, 
+		0, 
+		false, 
+		0
+	)
+
+	local goal = { CFrame = targetPosition}
+	local tween = TweenService:Create(root, tweenInfo, goal)
+
+	tween:Play()
+    InTweaning = true
+    tween.Complete:Connect(function()
+        InTweaning = false
+    end)
+end
+
+    --notif--
+	local Notif = window:Notify({
+		Title = "Version of the script",
+		Message = Version,
+		Duration = 5,
+	})
+
+RunService.RenderStepped:Connect(function ()
+    if ActivatedAutofarm then
+        if Autofarm == "Level" then
+            print("yess")
+        if LocalPlayer.Data.Level.Value < 10 then
+            print("zffesfe")
+            if LocalPlayer.Team == game:GetService("Teams"):FindFirstChild("Pirates") then
+                print("OKKK")
+            if LocalPlayer:GetAttribute("ExactLocation") ~= "Pirate Starter"  then
+                 print("OKKK 353")  
+                if not InTweaning then
+TweenPlayerToPosition(CFrame.new(1058.9939, 16.3048782, 1551.67297, 0.999884427, -0.00210065395, -0.0150566101, 0.00300460216, 0.998177588, 0.060268797, 0.0149025619, -0.0603070781, 0.998068631))
+                end
+            end
+            end
+        end
+    end
+    end
+end)
+
+    --Paragraph--
+	local Paragraph = InfoTab:AddParagraph({
+		Title = "Version of the script",
+		Content = Version,
+		Name = "Paragraph1"
+	})
+
+
+	local ButonDiscordLink = DiscordTab:AddButton({
+		Text = "Discord Link",
+		Name = "Button",
+		Callback = function() 	
+			library:CopyText("https://discord.gg/E2TqYRsRP4")
+		end
+	})
+	--Toggle--
+	local ToggleAFL = AutofarmTab:AddToggle({
+		Text = "Autofarm Level",
+		Name = "ToggleAFL",
+		Flag = "ToggleAFL",--Put a name flag for save data if you enabled saving data
+		Default = false,
+		Callback = function(state)
+        if not ActivatedAutofarm then
+Autofarm = "Level"
+ActivatedAutofarm = true
+else
+if Autofarm == "Level" then
+Autofarm = ""
+    ActivatedAutofarm = false
+end
+        end
+		end
+	})
+	--Slider--
+	local SliderSpeed = PlayerTab:AddSlider({
+        Text = "Speed Multiplier (don't go too fast you will be kicked by anti cheat!)",
+		Name = "Speed",
+		Min = 0,
+		Max = 1000,
+		Default = 1,
+		Flag = "SliderSpeed",--Put a name flag for save data if you enabled saving data
+		Callback = function(val)
+SpeedMultiplier = val
+		end
+	})
+	--Toggle--
+	local ToggleMS = PlayerTab:AddToggle({
+		Text = "Active Modifying Speed",
+		Name = "ToggleAMS",
+		Flag = "ToggleAMS",--Put a name flag for save data if you enabled saving data
+		Default = false,
+		Callback = function(state)
+        ActiveModifyingSpeed = state
+        if ActiveModifyingSpeed then
+         LocalPlayer.Character:SetAttribute("SpeedMultiplier",SpeedMultiplier)
+       else
+            LocalPlayer.Character:SetAttribute("SpeedMultiplier",1)
+       
+        end
+		end
+	})
+	--Slider--
+	local SliderTweenSpeed = SettingsTab:AddSlider({
+        Text = "Tween Speed",
+		Name = "Speed",
+		Min = 0,
+		Max = 20,
+		Default = 3,
+		Flag = "SliderTWSpeed",--Put a name flag for save data if you enabled saving data
+		Callback = function(val)
+TweenSpeedValue = val
+		end
+	})
+	
+	
+	local ChangeThemeDropdown = SettingsTab:AddDropdown({
+		Text = "Change Theme:",
+		Name = "Dropdown2",
+		Options = {"Default", "Light", "RedDark","BlueNeon","GreenMatrix","PurpleDream","Sunset",
+		"Ocean","Toxic","Storm","LimePop","Cyber","Chocolate","RoseGold","CottonCandy","NightSky","Steel",
+			"GoldLux","Ice","TealWave","FrostFire","DarkMatter","Lava","PinkCandy","Sakura","DeepSpace","Skyline","Crimson"
+			,"Desert","Camo","Plasma","Arctic","Slate","Vaporwave"
+			
+		},
+		Default = "Default",
+		MultiSelect = false,
+		Flag = "Dropdown2", --Put a name flag for save data if you enabled saving data
+		Callback = function(choice)
+window:ChangeTheme(choice)
+		end
+	})
+
+	--Toggle--
+	local ToggleWalkInWater = SettingsTab:AddToggle({
+		Text = "Walk In Water",
+		Name = "ToggleWIW",
+		Flag = "ToggleWIW",--Put a name flag for save data if you enabled saving data
+		Default = false,
+		Callback = function(state)
+     WalkInWater = state
+      LocalPlayer.Character:SetAttribute("WaterWalking",WalkInWater)
+		end
+	})
+	--Loading Data--
+	library:LoadData()--Add this if you want to load data and everytime at bottom of your code
+end)
