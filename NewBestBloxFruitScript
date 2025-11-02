@@ -6,6 +6,8 @@ local RunService = game:GetService("RunService")
 local PlayersService = game:GetService("Players")
 local LocalPlayer = PlayersService.LocalPlayer
 local TweenService = game:GetService("TweenService")
+local TeleportService = game:GetService("TeleportService")
+local HttpService = game:GetService("HttpService")
 
 library:CreateWindow({
 	Title = "Blox Fruit scripted by Iliankytb",-- Title of the script
@@ -56,6 +58,8 @@ library:CreateWindow({
     local ActiveModifyingSpeed = false
 local WalkInWater = false
 local InTweaning = false
+local TargetServerJobId = 0
+local placeId = game.PlaceId 
 
 local function TweenPlayerToPosition(targetPosition)
 	local character = LocalPlayer.Character
@@ -72,17 +76,35 @@ local function TweenPlayerToPosition(targetPosition)
 		0, 
 		false, 
 		0
-	)
+    )
 
 	local goal = { CFrame = targetPosition}
 	local tween = TweenService:Create(root, tweenInfo, goal)
 
 	tween:Play()
     InTweaning = true
-    tween.Complete:Connect(function()
+    tween.Completed:Connect(function()
         InTweaning = false
     end)
 end
+local function GetAnotherServer()
+	local servers = {}
+	local cursor = ""
+	repeat
+		local response = game:HttpGet("https://games.roblox.com/v1/games/" .. placeId .. "/servers/Public?sortOrder=Asc&limit=100&cursor=" .. cursor)
+		local data = HttpService:JSONDecode(response)
+		for _, server in ipairs(data.data) do
+			if server.playing < server.maxPlayers and server.id ~= game.JobId then
+				table.insert(servers, server.id)
+			end
+		end
+		cursor = data.nextPageCursor or ""
+	until cursor == "" or #servers > 0
+
+	return servers[math.random(1, #servers)]
+end
+
+
 
     --notif--
 	local Notif = window:Notify({
@@ -94,13 +116,9 @@ end
 RunService.RenderStepped:Connect(function ()
     if ActivatedAutofarm then
         if Autofarm == "Level" then
-            print("yess")
         if LocalPlayer.Data.Level.Value < 10 then
-            print("zffesfe")
             if LocalPlayer.Team == game:GetService("Teams"):FindFirstChild("Pirates") then
-                print("OKKK")
             if LocalPlayer:GetAttribute("ExactLocation") ~= "Pirate Starter"  then
-                 print("OKKK 353")  
                 if not InTweaning then
 TweenPlayerToPosition(CFrame.new(1058.9939, 16.3048782, 1551.67297, 0.999884427, -0.00210065395, -0.0150566101, 0.00300460216, 0.998177588, 0.060268797, 0.0149025619, -0.0603070781, 0.998068631))
                 end
@@ -125,6 +143,39 @@ end)
 		Callback = function() 	
 			library:CopyText("https://discord.gg/E2TqYRsRP4")
 		end
+	})
+    	local ButonRejoin = MiscTab:AddButton({
+		Text = "Rejoin",
+		Name = "Button1",
+		Callback = function() 	
+        local Notif2 = window:Notify({
+		Title = "Rejoin!",
+		Message = "Currently Rejoining",
+		Duration = 3,
+	})
+			TeleportService:TeleportToPlaceInstance(placeId, targetServerJobId, player)
+		end
+	})
+    	local ButonServerHop = MiscTab:AddButton({
+		Text = "Server Hop",
+		Name = "Button2",
+		Callback = function() 	
+		local serverId = GetAnotherServer()
+if serverId then
+    local Notif4 = window:Notify({
+		Title = "Server Hop!",
+		Message = "Currently Server hoping!",
+		Duration = 3,
+	})
+	TeleportService:TeleportToPlaceInstance(placeId, serverId, player)
+else
+local Notif3 = window:Notify({
+		Title = "Server Hop!",
+		Message = "it failed: Retry!",
+		Duration = 3,
+	})
+end
+end
 	})
 	--Toggle--
 	local ToggleAFL = AutofarmTab:AddToggle({
