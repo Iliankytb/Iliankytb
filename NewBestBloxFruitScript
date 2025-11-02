@@ -53,12 +53,12 @@ library:CreateWindow({
 	
     local ActivatedAutofarm = false
     local Autofarm = "Level"
-    local TweenSpeedValue = 3
+    local TweenSpeedValue = 1
     local SpeedMultiplier = 1
     local ActiveModifyingSpeed = false
 local WalkInWater = false
 local InTweaning = false
-local TargetServerJobId = 0
+local jobId = game.JobId
 local placeId = game.PlaceId 
 
 local function TweenPlayerToPosition(targetPosition)
@@ -68,24 +68,30 @@ local function TweenPlayerToPosition(targetPosition)
 	local root = character:FindFirstChild("HumanoidRootPart")
 	if not root then return end
 
+	local distance = (root.Position - targetPosition.Position).Magnitude
+
+	local tweenTime = distance * TweenSpeedValue
+
+	
+	if tweenTime < 0.1 then tweenTime = 0.1 end
 
 	local tweenInfo = TweenInfo.new(
-		TweenSpeedValue,
-		Enum.EasingStyle.Quad, 
-		Enum.EasingDirection.Out, 
-		0, 
-		false, 
+		tweenTime,
+		Enum.EasingStyle.Quad,
+		Enum.EasingDirection.Out,
+		0,
+		false,
 		0
-    )
+	)
 
-	local goal = { CFrame = targetPosition}
+	local goal = { CFrame = targetPosition }
 	local tween = TweenService:Create(root, tweenInfo, goal)
 
 	tween:Play()
-    InTweaning = true
-    tween.Completed:Connect(function()
-        InTweaning = false
-    end)
+	InTweaning = true
+	tween.Completed:Connect(function()
+		InTweaning = false
+	end)
 end
 local function GetAnotherServer()
 	local servers = {}
@@ -114,6 +120,10 @@ end
 	})
 
 RunService.RenderStepped:Connect(function ()
+if LocalPlayer and LocalPlayer.Character then
+ if ActiveModifyingSpeed then
+         LocalPlayer.Character:SetAttribute("SpeedMultiplier",SpeedMultiplier)
+ end
     if ActivatedAutofarm then
         if Autofarm == "Level" then
         if LocalPlayer.Data.Level.Value < 10 then
@@ -127,6 +137,7 @@ TweenPlayerToPosition(CFrame.new(1058.9939, 16.3048782, 1551.67297, 0.999884427,
         end
     end
     end
+end
 end)
 
     --Paragraph--
@@ -153,8 +164,8 @@ end)
 		Message = "Currently Rejoining",
 		Duration = 3,
 	})
-			TeleportService:TeleportToPlaceInstance(placeId, targetServerJobId, player)
-		end
+		TeleportService:TeleportToPlaceInstance(placeId, jobId, player)
+        end
 	})
     	local ButonServerHop = MiscTab:AddButton({
 		Text = "Server Hop",
@@ -227,9 +238,9 @@ SpeedMultiplier = val
 	local SliderTweenSpeed = SettingsTab:AddSlider({
         Text = "Tween Speed",
 		Name = "Speed",
-		Min = 0,
-		Max = 20,
-		Default = 3,
+		Min = 1,
+		Max = 3,
+		Default = 1,
 		Flag = "SliderTWSpeed",--Put a name flag for save data if you enabled saving data
 		Callback = function(val)
 TweenSpeedValue = val
