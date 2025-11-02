@@ -70,7 +70,7 @@ local function TweenPlayerToPosition(targetPosition)
 
 	local distance = (root.Position - targetPosition.Position).Magnitude
 
-	local tweenTime = distance * TweenSpeedValue
+	local tweenTime = distance / (125 * TweenSpeedValue)
 
 	
 	if tweenTime < 0.1 then tweenTime = 0.1 end
@@ -239,7 +239,7 @@ SpeedMultiplier = val
         Text = "Tween Speed",
 		Name = "Speed",
 		Min = 1,
-		Max = 3,
+		Max = 2,
 		Default = 1,
 		Flag = "SliderTWSpeed",--Put a name flag for save data if you enabled saving data
 		Callback = function(val)
