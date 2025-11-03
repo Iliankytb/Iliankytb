@@ -124,6 +124,16 @@ if LocalPlayer and LocalPlayer.Character then
  if ActiveModifyingSpeed then
          LocalPlayer.Character:SetAttribute("SpeedMultiplier",SpeedMultiplier)
  end
+ if LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
+    if  LocalPlayer.Character:FindFirstChildOfClass("Humanoid").Health == 0 then
+   if InTweaning then
+       InTweaning = false
+   end
+     end
+ end
+ if WalkInWater then
+  LocalPlayer.Character:SetAttribute("WaterWalking",true)
+ end
     if ActivatedAutofarm then
         if Autofarm == "Level" then
         if LocalPlayer.Data.Level.Value < 10 then
