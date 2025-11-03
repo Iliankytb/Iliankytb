@@ -158,16 +158,18 @@ if LocalPlayer and LocalPlayer.Character then
     if ActivatedAutofarm then
         if Autofarm == "Level" then
         if LocalPlayer.Data.Level.Value < 10 then
-            if LocalPlayer.Team == game:GetService("Teams"):FindFirstChild("Pirates") then
-            if LocalPlayer:GetAttribute("ExactLocation") ~= "Pirate Starter"  then
-                if LocalPlayer:GetAttribute("ExactLocation") == "Underwater City" then
+             if LocalPlayer:GetAttribute("ExactLocation") == "Underwater City" then
             if not InTweaning then
             InTweaning = true
              LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.new(61170.0469, -2, 1952.83398, 0.546648681, 0, 0.837362945, 0, 1, 0, -0.837362945, 0, 0.546648681)
             wait(1.5)
             InTweaning = false
             end
-               else
+            else
+            if LocalPlayer.Team == game:GetService("Teams"):FindFirstChild("Pirates") then
+            if LocalPlayer:GetAttribute("ExactLocation") ~= "Pirate Starter"  then
+             
+             
                 if not InTweaning then
 TweenPlayerToPosition(CFrame.new(1058.9939, 16.3048782, 1551.67297, 0.999884427, -0.00210065395, -0.0150566101, 0.00300460216, 0.998177588, 0.060268797, 0.0149025619, -0.0603070781, 0.998068631))
                 end
