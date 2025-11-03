@@ -334,35 +334,7 @@ CurrentChoosedIsland = choice
           WasInAutoFarm = true
           ActivatedAutofarm = false
       end
-      local CFrameFounded
-      if LocationsAllIslandModel:FindFirstChild(CurrentChoosedIsland) then
-      CFrameFounded = LocationsAllIslandModel:FindFirstChild(CurrentChoosedIsland).CFrame + Vector3.new(0,150,0)
-   
-       if LocalPlayer:GetAttribute("ExactLocation") == "Underwater City" then
-            if not InTweaning then
-            InTweaning = true
-             LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.new(61170.0469, -2, 1952.83398, 0.546648681, 0, 0.837362945, 0, 1, 0, -0.837362945, 0, 0.546648681)
-            wait(1.5)
-            InTweaning = false
-            if CurrentChoosedIsland == "Whirlpool" then
-               TweenPlayerToPosition(CFrameFounded)
-                else
-                   if CurrentChoosedIsland == "Underwater City" then
-          CurrentChoosedIsland == "Whirlpool"
-            CFrameFounded =   CFrameFounded - Vector3.new(0, 150, 0)
-     end
-              TweenPlayerToPosition(CFrameFounded)
-            end
-            end
-            else
-       if CurrentChoosedIsland == "Underwater City" then
-          CurrentChoosedIsland == "Whirlpool"
-            CFrameFounded =   CFrameFounded - Vector3.new(0, 150, 0)
-     end
-              TweenPlayerToPosition(CFrameFounded)
-            end
-       end
-     local CFrameFounded
+    local CFrameFounded
 
 local island = LocationsAllIslandModel:FindFirstChild(CurrentChoosedIsland)
 if island then
@@ -396,8 +368,7 @@ if island then
 		TweenPlayerToPosition(CFrameFounded)
 	end
 end
- end
-    end
+
       else
       if InTweaning then
         StopTween()
@@ -409,6 +380,7 @@ end
           end
         end
 		end
+        end
 	})
 	local ChangeThemeDropdown = SettingsTab:AddDropdown({
 		Text = "Change Theme:",
