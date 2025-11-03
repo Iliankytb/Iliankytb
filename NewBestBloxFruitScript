@@ -324,34 +324,46 @@ CurrentChoosedIsland = choice
 		Flag = "ToggleTPChoosedIsland",--Put a name flag for save data if you enabled saving data
 		Default = false,
 		Callback = function(state)
-        TweenToIslands = state
-        if TweenToIslands then
-            if CurrentChoosedIsland ~= "" then
-                if InTweaning then
-        StopTween()
-      end
-      if ActivatedAutofarm then
-          WasInAutoFarm = true
-          ActivatedAutofarm = false
-      end
-    local CFrameFounded
+      TweenToIslands = state
 
-local island = LocationsAllIslandModel:FindFirstChild(CurrentChoosedIsland)
-if island then
-	CFrameFounded = island.CFrame + Vector3.new(0, 150, 0)
+if TweenToIslands then
 
-	if LocalPlayer:GetAttribute("ExactLocation") == "Underwater City" then
-		if not InTweaning then
-			InTweaning = true
+	if CurrentChoosedIsland ~= "" then
+		
+		if InTweaning then
+			StopTween()
+		end
 
-			local root = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-			if root then
-				root.CFrame = CFrame.new(61170.0469, -2, 1952.83398, 0.546648681, 0, 0.837362945, 0, 1, 0, -0.837362945, 0, 0.546648681)
+		if ActivatedAutofarm then
+			WasInAutoFarm = true
+			ActivatedAutofarm = false
+		end
+
+		local island = LocationsAllIslandModel:FindFirstChild(CurrentChoosedIsland)
+		if island then
+			local CFrameFounded = island.CFrame + Vector3.new(0, 150, 0)
+
+				if LocalPlayer:GetAttribute("ExactLocation") == "Underwater City" then
+				if not InTweaning then
+					InTweaning = true
+
+					local root = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+					if root then
+						root.CFrame = CFrame.new(
+							61170.0469, -2, 1952.83398,
+							0.546648681, 0, 0.837362945,
+							0, 1, 0,
+							-0.837362945, 0, 0.546648681
+						)
+					end
+
+					task.wait(1.5)
+					InTweaning = false
+				end
 			end
-
-			task.wait(1.5)
-			InTweaning = false
-
+if not TweenToIslands then
+    return
+end
 			if CurrentChoosedIsland == "Underwater City" then
 				CurrentChoosedIsland = "Whirlpool"
 				CFrameFounded -= Vector3.new(0, 150, 0)
@@ -359,27 +371,19 @@ if island then
 
 			TweenPlayerToPosition(CFrameFounded)
 		end
-	else
-		if CurrentChoosedIsland == "Underwater City" then
-			CurrentChoosedIsland = "Whirlpool"
-			CFrameFounded -= Vector3.new(0, 150, 0)
-		end
+	end
 
-		TweenPlayerToPosition(CFrameFounded)
+else
+	if InTweaning then
+		StopTween()
+	end
+
+	if WasInAutoFarm then
+		ActivatedAutofarm = true
+		WasInAutoFarm = false
 	end
 end
 
-      else
-      if InTweaning then
-        StopTween()
-      end
-          if WasInAutoFarm then
-            
-              ActivatedAutofarm = true
-              WasInAutoFarm = false
-          end
-        end
-		end
         end
 	})
 	local ChangeThemeDropdown = SettingsTab:AddDropdown({
