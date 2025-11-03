@@ -59,6 +59,7 @@ local TeleportTab = window:CreateTab("Teleport Island",0)-- Tabs , 0 = no icon o
     local SpeedMultiplier = 1
     local ActiveModifyingSpeed = false
 local WalkInWater = false
+local DisabledInfStairs = false
 local InTweaning = false
 local jobId = game.JobId
 local placeId = game.PlaceId 
@@ -102,7 +103,6 @@ local function TweenPlayerToPosition(targetPosition)
 	end)
 end
 
-
 local function StopTween()
 	if CurrentTween then
 		CurrentTween:Cancel()
@@ -139,6 +139,11 @@ RunService.RenderStepped:Connect(function ()
 if LocalPlayer and LocalPlayer.Character then
  if ActiveModifyingSpeed then
          LocalPlayer.Character:SetAttribute("SpeedMultiplier",SpeedMultiplier)
+ end
+ if DisabledInfStairs then
+     if LocalPlayer.Character:FindFirstChild("InfiniteStairs") then
+         LocalPlayer.Character:FindFirstChild("InfiniteStairs").Enabled = false
+     end
  end
  if LocalPlayer.Character:FindFirstChildOfClass("Humanoid") then
     if  LocalPlayer.Character:FindFirstChildOfClass("Humanoid").Health == 0 then
@@ -363,7 +368,7 @@ window:ChangeTheme(choice)
 	})
 
 	--Toggle--
-	local ToggleWalkInWater = SettingsTab:AddToggle({
+	local ToggleWalkInWater = MiscTab:AddToggle({
 		Text = "Walk In Water",
 		Name = "ToggleWIW",
 		Flag = "ToggleWIW",--Put a name flag for save data if you enabled saving data
@@ -371,6 +376,25 @@ window:ChangeTheme(choice)
 		Callback = function(state)
      WalkInWater = state
       LocalPlayer.Character:SetAttribute("WaterWalking",WalkInWater)
+		end
+	})
+    	--Toggle--
+	local ToggleInfStairs = MiscTab:AddToggle({
+		Text = "Disable Infinite Stairs",
+		Name = "ToggleInfStairs",
+		Flag = "ToggleInfStairs",--Put a name flag for save data if you enabled saving data
+		Default = false,
+		Callback = function(state)
+     DisabledInfStairs = state
+ if DisabledInfStairs then
+     if LocalPlayer.Character:FindFirstChild("InfiniteStairs") then
+         LocalPlayer.Character:FindFirstChild("InfiniteStairs").Enabled = false
+     end
+     else
+          if LocalPlayer.Character:FindFirstChild("InfiniteStairs") then
+         LocalPlayer.Character:FindFirstChild("InfiniteStairs").Enabled = true
+     end
+ end
 		end
 	})
 	--Loading Data--
