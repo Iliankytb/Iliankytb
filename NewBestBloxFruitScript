@@ -63,6 +63,7 @@ local InTweaning = false
 local jobId = game.JobId
 local placeId = game.PlaceId 
 local LocationsAllIslandModel = workspace._WorldOrigin.Locations
+local CurrentTween 
 
 local function TweenPlayerToPosition(targetPosition)
 	local character = LocalPlayer.Character
@@ -70,33 +71,46 @@ local function TweenPlayerToPosition(targetPosition)
 
 	local root = character:FindFirstChild("HumanoidRootPart")
 	if not root then return end
-    LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame  =     LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame  + Vector3.new(0,15,0)
-    
-    	local distance = (root.Position - targetPosition.Position).Magnitude
 
+	root.CFrame = root.CFrame + Vector3.new(0, 15, 0)
+
+	local distance = (root.Position - targetPosition.Position).Magnitude
 	local tweenTime = distance / (125 * TweenSpeedValue)
-
-	
 	if tweenTime < 0.1 then tweenTime = 0.1 end
 
 	local tweenInfo = TweenInfo.new(
 		tweenTime,
 		Enum.EasingStyle.Linear,
-		Enum.EasingDirection.InOut,
-		0,
-		false,
-		0
+		Enum.EasingDirection.InOut
 	)
 
 	local goal = { CFrame = targetPosition }
 	local tween = TweenService:Create(root, tweenInfo, goal)
 
-	tween:Play()
+	if CurrentTween then
+		CurrentTween:Cancel()
+		CurrentTween = nil
+	end
+
+	CurrentTween = tween
 	InTweaning = true
+	tween:Play()
+
 	tween.Completed:Connect(function()
 		InTweaning = false
+		CurrentTween = nil
 	end)
 end
+
+
+local function StopTween()
+	if CurrentTween then
+		CurrentTween:Cancel()
+		CurrentTween = nil
+		InTweaning = false
+	end
+end
+
 local function GetAnotherServer()
 	local servers = {}
 	local cursor = ""
@@ -113,8 +127,6 @@ local function GetAnotherServer()
 
 	return servers[math.random(1, #servers)]
 end
-
-
 
     --notif--
 	local Notif = window:Notify({
@@ -223,8 +235,9 @@ Autofarm = "Level"
 ActivatedAutofarm = true
 else
 if Autofarm == "Level" then
+    StopTween()
 Autofarm = ""
-    ActivatedAutofarm = false
+    ActivatedAutofarm = false  
 end
         end
 		end
@@ -269,8 +282,64 @@ SpeedMultiplier = val
 TweenSpeedValue = val
 		end
 	})
-	
-	
+    local CurrentChoosedIsland = ""
+	   local CurrentIslandTable = {}
+		local TeleportDropdown = TeleportTab:AddDropdown({
+		Text = "Choosed Island:",
+		Name = "Dropdown3",
+		Options = CurrentIslandTable,
+		Default = "",
+		MultiSelect = false,
+		Flag = "Dropdown3", --Put a name flag for save data if you enabled saving data
+		Callback = function(choice)
+CurrentChoosedIsland = choice
+		end
+	})
+ 
+    for _, IslandsName in pairs(LocationsAllIslandModel:GetChildren()) do
+        if IslandsName and IslandsName:IsA("BasePart") then
+        if not table.find(CurrentIslandTable, IslandsName.Name) then
+        table.insert(CurrentIslandTable, IslandsName.Name)
+        end
+        end
+    end
+    task.spawn(function ()
+          print(table.concat(CurrentIslandTable, " "))
+    end)
+  
+    TeleportDropdown:Refresh(CurrentIslandTable)
+    local WasInAutoFarm = false
+    local TweenToIslands = false
+    --Toggle--
+	local ToggleTPChoosedIsland = AutofarmTab:AddToggle({
+		Text = "Teleport to the choosed island",
+		Name = "ToggleTPChoosedIsland",
+		Flag = "ToggleTPChoosedIsland",--Put a name flag for save data if you enabled saving data
+		Default = false,
+		Callback = function(state)
+        TweenToIslands = state
+        if TweenToIslands then
+            if CurrentChoosedIsland ~= "" then
+      if ActivatedAutofarm then
+          StopTween()
+          WasInAutoFarm = true
+          ActivatedAutofarm = false
+      end
+      local CFrameFounded
+      if LocationsAllIslandModel:FindFirstChild(CurrentChoosedIsland) then
+      CFrameFounded = LocationsAllIslandModel:FindFirstChild(CurrentChoosedIsland).CFrame
+      TweenPlayerToPosition(CFrameFounded)
+      end
+    end
+      else
+          if WasInAutoFarm then
+              StopTween()
+              ActivatedAutofarm = true
+              WasInAutoFarm = false
+          end
+        end
+		end
+	})
 	local ChangeThemeDropdown = SettingsTab:AddDropdown({
 		Text = "Change Theme:",
 		Name = "Dropdown2",
