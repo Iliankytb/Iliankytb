@@ -311,7 +311,7 @@ CurrentChoosedIsland = choice
     local WasInAutoFarm = false
     local TweenToIslands = false
     --Toggle--
-	local ToggleTPChoosedIsland = AutofarmTab:AddToggle({
+	local ToggleTPChoosedIsland = TeleportTab:AddToggle({
 		Text = "Teleport to the choosed island",
 		Name = "ToggleTPChoosedIsland",
 		Flag = "ToggleTPChoosedIsland",--Put a name flag for save data if you enabled saving data
@@ -320,8 +320,10 @@ CurrentChoosedIsland = choice
         TweenToIslands = state
         if TweenToIslands then
             if CurrentChoosedIsland ~= "" then
+                if InTweaning then
+        StopTween()
+      end
       if ActivatedAutofarm then
-          StopTween()
           WasInAutoFarm = true
           ActivatedAutofarm = false
       end
@@ -332,8 +334,11 @@ CurrentChoosedIsland = choice
       end
     end
       else
+      if InTweaning then
+        StopTween()
+      end
           if WasInAutoFarm then
-              StopTween()
+            
               ActivatedAutofarm = true
               WasInAutoFarm = false
           end
