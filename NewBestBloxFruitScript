@@ -46,7 +46,9 @@ library:CreateWindow({
 	local PlayerTab = window:CreateTab("Player",0)-- Tabs , 0 = no icon or add number
 	local AutofarmTab = window:CreateTab("Autofarm",0)-- Tabs , 0 = no icon or add number
 	local ShopTab = window:CreateTab("Shop",0)-- Tabs , 0 = no icon or add number
-	local SeaEventTab = window:CreateTab("Sea Event",0)-- Tabs , 0 = no icon or add number
+	local EspTab = window:CreateTab("Esp",0)-- Tabs , 0 = no icon or add number
+    local SeaEventTab = window:CreateTab("Sea Event",0)-- Tabs , 0 = no icon or add number
+local TeleportTab = window:CreateTab("Teleport Island",0)-- Tabs , 0 = no icon or add number
 	local MiscTab = window:CreateTab("Misc",0)-- Tabs , 0 = no icon or add number
     local DiscordTab = window:CreateTab("Discord",0)-- Tabs , 0 = no icon or add number
 	 local SettingsTab = window:CreateTab("Settings",0)-- Tabs , 0 = no icon or add number
@@ -60,6 +62,7 @@ local WalkInWater = false
 local InTweaning = false
 local jobId = game.JobId
 local placeId = game.PlaceId 
+local LocationsAllIslandModel = workspace._WorldOrigin.Locations
 
 local function TweenPlayerToPosition(targetPosition)
 	local character = LocalPlayer.Character
@@ -67,8 +70,9 @@ local function TweenPlayerToPosition(targetPosition)
 
 	local root = character:FindFirstChild("HumanoidRootPart")
 	if not root then return end
-
-	local distance = (root.Position - targetPosition.Position).Magnitude
+    LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame  =     LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame  + Vector3.new(0,15,0)
+    
+    	local distance = (root.Position - targetPosition.Position).Magnitude
 
 	local tweenTime = distance / (125 * TweenSpeedValue)
 
@@ -77,8 +81,8 @@ local function TweenPlayerToPosition(targetPosition)
 
 	local tweenInfo = TweenInfo.new(
 		tweenTime,
-		Enum.EasingStyle.Quad,
-		Enum.EasingDirection.Out,
+		Enum.EasingStyle.Linear,
+		Enum.EasingDirection.InOut,
 		0,
 		false,
 		0
@@ -143,7 +147,7 @@ if LocalPlayer and LocalPlayer.Character then
             if not InTweaning then
             InTweaning = true
              LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrame.new(61170.0469, -2, 1952.83398, 0.546648681, 0, 0.837362945, 0, 1, 0, -0.837362945, 0, 0.546648681)
-            wait(5)
+            wait(1.5)
             InTweaning = false
             end
                else
