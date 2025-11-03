@@ -52,8 +52,10 @@ local TeleportTab = window:CreateTab("Teleport Island",0)-- Tabs , 0 = no icon o
 	local MiscTab = window:CreateTab("Misc",0)-- Tabs , 0 = no icon or add number
     local DiscordTab = window:CreateTab("Discord",0)-- Tabs , 0 = no icon or add number
 	 local SettingsTab = window:CreateTab("Settings",0)-- Tabs , 0 = no icon or add number
-	
+	local ActiveDistanceEsp = false
+    local DisableLimitRangerEsp  = false
     local ActivatedAutofarm = false
+    local LimitRangerEsp  = 100
     local Autofarm = "Level"
     local TweenSpeedValue = 1
     local SpeedMultiplier = 1
@@ -63,9 +65,66 @@ local DisabledInfStairs = false
 local InTweaning = false
 local jobId = game.JobId
 local placeId = game.PlaceId 
+local ESPs = {}
+local Camera = workspace.CurrentCamera
+local LineESPEnabled = false 
 local LocationsAllIslandModel = workspace._WorldOrigin.Locations
 local CurrentTween 
 
+local ParagraphInfoServer = InfoTab:AddParagraph({Title = "",Content = "Loading",Name = "Paragraph1"})
+
+
+local function CreateEsp(Char, Color, Text, Parent)
+	if not Char or not Parent then return end
+	if Char:FindFirstChild("ESP") and Char:FindFirstChildOfClass("Highlight") then return end
+
+	
+	local highlight = Char:FindFirstChildOfClass("Highlight") or Instance.new("Highlight")
+	highlight.Name = "ESP_Highlight"
+	highlight.Adornee = Char
+	highlight.FillColor = Color
+	highlight.FillTransparency = 1
+	highlight.OutlineColor = Color
+	highlight.OutlineTransparency = 0
+	highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+	highlight.Enabled = false
+	highlight.Parent = Char
+
+	
+	local billboard = Char:FindFirstChild("ESP") or Instance.new("BillboardGui")
+	billboard.Name = "ESP"
+	billboard.Size = UDim2.new(0, 50, 0, 25)
+	billboard.AlwaysOnTop = true
+	billboard.StudsOffset = Vector3.new(0, -2, 0)
+	billboard.Adornee = Parent
+	billboard.Enabled = false
+	billboard.Parent = Parent
+
+	local label = billboard:FindFirstChildOfClass("TextLabel") or Instance.new("TextLabel")
+	label.Size = UDim2.new(1, 0, 1, 0)
+	label.BackgroundTransparency = 1
+	label.Text = Text
+	label.TextColor3 = Color
+	label.TextScaled = true
+	label.Parent = billboard
+
+	local line = Drawing.new("Line")
+	line.Visible = false
+	line.Color = Color
+	line.Thickness = 1.5
+	line.Transparency = 1
+
+	table.insert(ESPs, {
+		Char = Char,
+		Highlight = highlight,
+		Billboard = billboard,
+		Label = label,
+		Part = Parent,
+		Line = line,
+		Text = Text,
+		Color = Color
+	})
+end
 local function TweenPlayerToPosition(targetPosition)
 	local character = LocalPlayer.Character
 	if not character then return end
@@ -134,8 +193,78 @@ end
 		Message = Version,
 		Duration = 5,
 	})
+local function getServerInfo()
+	local Players = game:GetService("Players")
+	local playerCount = #Players:GetPlayers()
+local maxPlayers = game:GetService("Players").MaxPlayers
+local isStudio = game:GetService("RunService"):IsStudio()
 
+	return {
+		PlaceId = game.PlaceId,
+		JobId = game.JobId,
+		IsStudio = isStudio,
+		CurrentPlayers = playerCount,
+MaxPlayers =maxPlayers
+	}
+end
 RunService.RenderStepped:Connect(function ()
+task.spawn(function()
+	local updatedInfo = getServerInfo()
+	local updatedContent = string.format(
+		"📌 PlaceId: %s\n🔑 JobId: %s\n🧪 IsStudio: %s\n👥 Players: %d/%d",
+		updatedInfo.PlaceId,
+		updatedInfo.JobId,
+		
+		tostring(updatedInfo.IsStudio),
+		updatedInfo.CurrentPlayers,
+updatedInfo.MaxPlayers
+	)
+
+	ParagraphInfoServer:Set({
+		Title = "Info",
+		Content = updatedContent
+	})
+end)
+	local cameraPosition = Camera.CFrame.Position
+	local screenCenter = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y)
+task.spawn(function()
+	for _, esp in ipairs(ESPs) do
+		local part = esp.Part
+		local highlight = esp.Highlight
+		local billboard = esp.Billboard
+		local label = esp.Label
+		local line = esp.Line
+if not part or not highlight or not billboard or not label or not line then return end
+		if part and part.Parent and highlight and billboard then
+			local distance = (cameraPosition - part.Position).Magnitude
+			local screenPos, onScreen = Camera:WorldToViewportPoint(part.Position)
+			local withinRange = DisableLimitRangerEsp or distance <= LimitRangerEsp
+
+			highlight.Enabled = withinRange and onScreen
+			billboard.Enabled = withinRange and onScreen
+
+			if ActiveDistanceEsp then
+				label.Text = esp.Text .. " (" .. math.floor(distance + 0.5) .. " m)"
+			else
+				label.Text = esp.Text
+			end
+
+			if LineESPEnabled then
+				if onScreen and withinRange then
+					line.Visible = true
+					line.From = screenCenter
+					line.To = Vector2.new(screenPos.X, screenPos.Y)
+				else
+					line.Visible = false
+				end
+			else
+				line.Visible = false
+			end
+		else
+			if line then line.Visible = false end
+		end
+	end
+    end)
 if LocalPlayer and LocalPlayer.Character then
  if ActiveModifyingSpeed then
          LocalPlayer.Character:SetAttribute("SpeedMultiplier",SpeedMultiplier)
@@ -182,13 +311,10 @@ TweenPlayerToPosition(CFrame.new(1058.9939, 16.3048782, 1551.67297, 0.999884427,
 end
 end)
 
-    --Paragraph--
-	local Paragraph = InfoTab:AddParagraph({
-		Title = "Version of the script",
-		Content = Version,
-		Name = "Paragraph1"
+  local Version = InfoTab:AddText({
+		Text = "Version:"..Version,
+		Name = "VersionScript"
 	})
-
 
 	local ButonDiscordLink = DiscordTab:AddButton({
 		Text = "Discord Link",
@@ -414,6 +540,45 @@ window:ChangeTheme(choice)
       LocalPlayer.Character:SetAttribute("WaterWalking",WalkInWater)
 		end
 	})
+    local LimitRangerEspSlider = SettingsTab:AddSlider({
+Text =  "Limit Ranger for esp",
+   Name ="LimitRangerEspSlider",
+   Min =25,
+   Max = 1000,
+   Default = 100,
+   Flag = "LimitRangerEsp1",
+   Callback = function(Value)
+CurrentValue = Value
+LimitRangerEsp = Value
+end,  LimitRangerEsp = CurrentValue,
+})  
+local DisableLimitRangerEspToggle = SettingsTab:AddToggle({
+Text =  "Disable Limit Ranger Esp",
+   Name ="DisableLimitRangerEspToggle",
+   Default = false,
+   Flag = "ButtonDLRE", 
+   Callback = function(Value)
+  DisableLimitRangerEsp = Value 
+end,
+})
+local DistanceEspToggle = SettingsTab:AddToggle({
+Text =  "Activate Distance For Esp",
+   Name ="DistanceEspToggle",
+   Default = false,
+   Flag = "ButtonADFE", 
+   Callback = function(Value)
+  ActiveDistanceEsp = Value 
+end,
+})
+    local TraitsToggle = SettingsTab:AddToggle({
+Text =  "Trait for esp",
+   Name ="TraitToggle",
+   Default = false,
+   Flag = "ButtonTTR", 
+   Callback = function(Value)
+  LineESPEnabled = Value 
+end,
+})
     	--Toggle--
 	local ToggleInfStairs = MiscTab:AddToggle({
 		Text = "Disable Infinite Stairs",
