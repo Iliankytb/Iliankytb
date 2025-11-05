@@ -39,8 +39,8 @@ local InfoTab = window:CreateTab("Info",0)
 local PlayerTab = window:CreateTab("Player",0)
 local GameTab = window:CreateTab("Game",0)
 local EspTab = window:CreateTab("Esp",0)
-local DiscordTab = Window:CreateTab("Discord",0)
-local SettingsTab = Window:CreateTab("Settings",0)
+local DiscordTab = window:CreateTab("Discord",0)
+local SettingsTab = window:CreateTab("Settings",0)
 local ActiveSpeedBoost,ActiveAutoUseCoinFlip,ActiveEspSurvivors,ActiveNoStun,ActiveEspKillers,ActiveEspGenerator,ActiveEspItems,ActiveInfiniteStamina,ActiveEspRagdolls,ActiveAutoGenerator,AutoKillSurvivors,RemoveLags = false,false,false,false,false,false,false,false,false,false,false
 local ParagraphInfoServer = InfoTab:AddParagraph({Title = "",Content = "Loading",Name = "Paragraph1"})
 local ValueSpeed = 1
@@ -306,7 +306,6 @@ local EspKillersToggle = EspTab:AddToggle({
    Callback = function(Value)
   ActiveEspKillers = Value 
 if ActiveEspKillers then
-for _,Players in pairs(Game.Workspace.Players.Killers:GetChildren()) do 
 if Players:isA("Model") and (Players.Name == "1x1x1x1" or Players.Name == "Jason" or Players.Name == "John Doe") and Players:FindFirstChild("Head") and Players:FindFirstChildOfClass("Highlight") and not Players.Head:FindFirstChildOfClass("BillboardGui") then
 Players:FindFirstChildOfClass("Highlight"):Destroy()
 end
