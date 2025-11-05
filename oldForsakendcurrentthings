@@ -1,0 +1,617 @@
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
+local selectedTheme = "Default"
+local V = "V.0.41"
+
+library:CreateWindow({
+	Title = "Forsaken - by Iliankytb",-- Title of the script
+	Theme = selectedTheme,--View more theme in my dicord server!
+	Icon = 0,-- 0 = no icon or add number
+	Intro = false,--Intro or no
+	IntroTitle = "Zentrix Library Testing",--the intro title
+	KeyPC = Enum.KeyCode.K,--the key for pc for Open/close the frame
+	Data = {
+		EnableSavingData = true,--Enabling data saver or no
+		DisableNotifyingLoadedData = false,--set it to true for disable the notify when loaded data
+		FolderName = "SaverForsaken",--Folder Name,you can change it
+		FileName = "IliankYTB",-- File name for the data saver,you can change it
+	},
+	Discord = {
+		Enabled = false,--enable to copy the discord
+		DiscordLink = "https://discord.gg/E2TqYRsRP4",-- put thr entire Link of discord
+		RememberJoin = false,-- Set this ti false to make them copy the link every time they load the script
+		Duration = 5,-- 5 is the default you can change the number only for remember join
+	},
+	KeySystem = false,--Key System or no
+	KeySettings = {
+		Title = "Zentrix Library Testing Key System",--Title of the key(just like that)
+		Note = "the key is Zentrix",-- The method for obtaining
+		FileName = "Key",-- File name or no for saving the key
+		SaveKey = true,-- saving the key or no
+		GrabKeyFromSite = false,--Coming soon
+		Key = {"Zentrix"},-- the name you can add many name, Exemple "Key","Key2" or you can add a function to add key but i don't really know
+		AddGetKeyButton = false,
+		AddDiscordButton = true,
+		DiscordLink = "NoInviteLink",
+		GetKeyLink = "NoKeyLink",
+	},
+}, function(window)
+local InfoTab = window:CreateTab("Info",0)
+local PlayerTab = window:CreateTab("Player",0)
+local GameTab = window:CreateTab("Game",0)
+local EspTab = window:CreateTab("Esp",0)
+local DiscordTab = Window:CreateTab("Discord",0)
+local SettingsTab = Window:CreateTab("Settings",0)
+local ActiveSpeedBoost,ActiveAutoUseCoinFlip,ActiveEspSurvivors,ActiveNoStun,ActiveEspKillers,ActiveEspGenerator,ActiveEspItems,ActiveInfiniteStamina,ActiveEspRagdolls,ActiveAutoGenerator,AutoKillSurvivors,RemoveLags = false,false,false,false,false,false,false,false,false,false,false
+local ParagraphInfoServer = InfoTab:AddParagraph({Title = "",Content = "Loading",Name = "Paragraph1"})
+local ValueSpeed = 1
+local ValueFieldOfView = 80
+local ActiveModifiedFieldOfView = false 
+local OldFOV = Game.Players.LocalPlayer.PlayerData.Settings.Game.FieldOfView.Value
+
+local Version = InfoTab:AddText({
+		Text = "Version:"..V,
+		Name = "VersionScript"
+	})
+window:Notify({
+				Title = "Script Version!",
+				Message = V,
+				Duration = 7.5,
+})
+
+local ESPs = {}
+local LineESPEnabled = false 
+local RunService = game:GetService("RunService")
+
+local function getServerInfo()
+	local Players = game:GetService("Players")
+	local playerCount = #Players:GetPlayers()
+local maxPlayers = game:GetService("Players").MaxPlayers
+local isStudio = game:GetService("RunService"):IsStudio()
+
+	return {
+		PlaceId = game.PlaceId,
+		JobId = game.JobId,
+		IsStudio = isStudio,
+		CurrentPlayers = playerCount,
+MaxPlayers =maxPlayers
+	}
+end
+
+RunService.RenderStepped:Connect(function()
+task.spawn(function()
+	local updatedInfo = getServerInfo()
+	local updatedContent = string.format(
+		"📌 PlaceId: %s\n🔑 JobId: %s\n🧪 IsStudio: %s\n👥 Players: %d/%d",
+		updatedInfo.PlaceId,
+		updatedInfo.JobId,
+		
+		tostring(updatedInfo.IsStudio),
+		updatedInfo.CurrentPlayers,
+updatedInfo.MaxPlayers
+	)
+
+	ParagraphInfoServer:Set({
+		Title = "Info",
+		Content = updatedContent
+	})
+end)
+	local cameraPosition = Camera.CFrame.Position
+	local screenCenter = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y)
+task.spawn(function()
+	for _, esp in ipairs(ESPs) do
+		local part = esp.Part
+		local highlight = esp.Highlight
+		local billboard = esp.Billboard
+		local label = esp.Label
+		local line = esp.Line
+if not part or not highlight or not billboard or not label or not line then return end
+		if part and part.Parent and highlight and billboard then
+			local distance = (cameraPosition - part.Position).Magnitude
+			local screenPos, onScreen = Camera:WorldToViewportPoint(part.Position)
+			local withinRange = DisableLimitRangerEsp or distance <= LimitRangerEsp
+
+			highlight.Enabled = withinRange and onScreen
+			billboard.Enabled = withinRange and onScreen
+
+			if ActiveDistanceEsp then
+				label.Text = esp.Text .. " (" .. math.floor(distance + 0.5) .. " m)"
+			else
+				label.Text = esp.Text
+			end
+
+			if LineESPEnabled then
+				if onScreen and withinRange then
+					line.Visible = true
+					line.From = screenCenter
+					line.To = Vector2.new(screenPos.X, screenPos.Y)
+				else
+					line.Visible = false
+				end
+			else
+				line.Visible = false
+			end
+		else
+			if line then line.Visible = false end
+		end
+	end
+    end)
+    if ActiveModifiedFieldOfView then
+Game.Players.LocalPlayer.PlayerData.Settings.Game.FieldOfView.Value = ValueFieldOfView 
+else
+Game.Players.LocalPlayer.PlayerData.Settings.Game.FieldOfView.Value = OldFOV 
+end
+if ActiveFullBright then
+if Game.Lighting then 
+Game.Lighting.Brightness = 5
+Game.Lighting.Ambient = Color3.fromRGB(255, 255, 255)
+end  
+end
+    if ActiveAutoKillSurvivors then
+for _,Players in pairs(Game.Workspace.Players.Survivors:GetChildren()) do 
+if Players:isA("Model") then
+Game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = Players.HumanoidRootPart.CFrame
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RemoteEvent = ReplicatedStorage.Modules.Network.RemoteEvent
+RemoteEvent:FireServer(
+    "UseActorAbility",
+    "Slash"
+)
+end
+end
+end
+if ActiveAutoUseCoinFlip then
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RemoteEvent = ReplicatedStorage.Modules.Network.RemoteEvent  
+RemoteEvent:FireServer(
+    "UseActorAbility",
+    "CoinFlip"
+)
+end
+    if ActiveSpeedBoost then
+LocalPlayer.Character.SpeedMultipliers.Sprinting.Value = ValueSpeed
+end
+if ActiveNoStun then
+Game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+end
+if ActiveInfiniteStamina then
+local m = require(game.ReplicatedStorage.Systems.Character.Game.Sprinting)
+m.StaminaLossDisabled = true 
+m.Stamina = 9999999
+else
+local m = require(game.ReplicatedStorage.Systems.Character.Game.Sprinting)
+m.StaminaLossDisabled = false 
+m.Stamina = 100
+end
+  if ActiveAutoGenerator then
+      if CanAutoGenFixGlitchs then
+if Game.Workspace.Map.Ingame:FindFirstChild("Map") then
+for _,Players in pairs(Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildren()) do 
+if Players:isA("Model") and Players.name == "Generator"  then 
+    if Players:FindFirstChild("Remotes"):FindFirstChild("RE") then 
+          CanAutoGenFixGlitchs = false
+        Players:FindFirstChild("Remotes"):FindFirstChild("RE"):FireServer() 
+        wait(2.5)
+        CanAutoGenFixGlitchs = true
+        end
+end
+ end
+end
+end
+end
+    end)
+
+local function CreateEsp(Char, Color, Text, Parent,Num)
+	if not Char or not Parent then return end
+	if Char:FindFirstChild("ESP") and Char:FindFirstChildOfClass("Highlight") then return end
+
+	
+	local highlight = Char:FindFirstChildOfClass("Highlight") or Instance.new("Highlight")
+	highlight.Name = "ESP_Highlight"
+	highlight.Adornee = Char
+	highlight.FillColor = Color
+	highlight.FillTransparency = 0.5
+	highlight.OutlineColor = Color
+	highlight.OutlineTransparency = 0
+	highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+	highlight.Enabled = false
+	highlight.Parent = Char
+
+	
+	local billboard = Char:FindFirstChild("ESP") or Instance.new("BillboardGui")
+	billboard.Name = "ESP"
+	billboard.Size = UDim2.new(0, 50, 0, 25)
+	billboard.AlwaysOnTop = true
+	billboard.StudsOffset = Vector3.new(0, Num, 0)
+	billboard.Adornee = Parent
+	billboard.Enabled = false
+	billboard.Parent = Parent
+
+	local label = billboard:FindFirstChildOfClass("TextLabel") or Instance.new("TextLabel")
+	label.Size = UDim2.new(1, 0, 1, 0)
+	label.BackgroundTransparency = 1
+	label.Text = Text
+	label.TextColor3 = Color
+	label.TextScaled = true
+	label.Parent = billboard
+
+	local line = Drawing.new("Line")
+	line.Visible = false
+	line.Color = Color
+	line.Thickness = 1.5
+	line.Transparency = 1
+
+	table.insert(ESPs, {
+		Char = Char,
+		Highlight = highlight,
+		Billboard = billboard,
+		Label = label,
+		Part = Parent,
+		Line = line,
+		Text = Text,
+		Color = Color
+	})
+end
+
+local function KeepEsp(Char, Parent)
+	if not Char or not Char:FindFirstChildOfClass("Highlight") then return end
+	if not Parent or not Parent:FindFirstChildOfClass("BillboardGui") then return end
+
+	for i = #ESPs, 1, -1 do 
+		local esp = ESPs[i]
+		if esp.Char == Char then 
+			if esp.Highlight then esp.Highlight:Destroy() end
+			if esp.Billboard then esp.Billboard:Destroy() end
+			if esp.Line then esp.Line:Destroy() end
+
+			table.remove(ESPs, i) 
+		end
+	end
+end
+local function copyToClipboard(text)
+    if setclipboard then
+        setclipboard(text)
+    else
+        warn("setclipboard is not supported in this environment.")
+    end
+end
+local EspSurvivorsToggle = EspTab:CreateToggle({
+   Name = "Survivors Esp",
+   CurrentValue = false,
+   Flag = "EspSurvivors", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  ActiveEspSurvivors = Value 
+if ActiveEspSurvivors then 
+for _,Players in pairs(Game.Workspace.Players.Survivors:GetChildren()) do 
+if Players:isA("Model") and Players:FindFirstChild("Head") and not Players:FindFirstChildOfClass("Highlight") and not Players.Head:FindFirstChildOfClass("BillboardGui") then
+CreateEsp(Players,Color3.fromRGB(0,255,0),Players.Name.." ("..Players:GetAttribute("Username")..")",Players.Head,2)
+end
+end
+else 
+for _,Players in pairs(Game.Workspace.Players.Survivors:GetChildren()) do 
+if Players:isA("Model") and Players:FindFirstChild("Head") and Players:FindFirstChildOfClass("Highlight") and Players.Head:FindFirstChildOfClass("BillboardGui") then
+KeepEsp(Players,Players.Head)
+end
+end 
+end
+end,
+})
+
+local EspKillersToggle = EspTab:CreateToggle({
+   Name = "Killers Esp",
+   CurrentValue = false,
+   Flag = "EspKiller", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  ActiveEspKillers = Value 
+if ActiveEspKillers then
+for _,Players in pairs(Game.Workspace.Players.Killers:GetChildren()) do 
+if Players:isA("Model") and (Players.Name == "1x1x1x1" or Players.Name == "Jason" or Players.Name == "John Doe") and Players:FindFirstChild("Head") and Players:FindFirstChildOfClass("Highlight") and not Players.Head:FindFirstChildOfClass("BillboardGui") then
+Players:FindFirstChildOfClass("Highlight"):Destroy()
+end
+if Players:isA("Model") and Players:FindFirstChild("Head") and not Players:FindFirstChildOfClass("Highlight") and not Players.Head:FindFirstChildOfClass("BillboardGui") then
+CreateEsp(Players,Color3.fromRGB(255,0,0),Players.Name.." ("..Players:GetAttribute("Username")..")",Players.Head,2)
+end
+else
+ for _,Players in pairs(Game.Workspace.Players.Killers:GetChildren()) do 
+if Players:isA("Model") and Players:FindFirstChild("Head") and Players:FindFirstChildOfClass("Highlight") and Players.Head:FindFirstChildOfClass("BillboardGui") then
+KeepEsp(Players,Players.Head)
+end
+end 
+end
+end,
+}) local EspGeneratorToggle = EspTab:CreateToggle({
+   Name = "Generator Esp",
+   CurrentValue = false,
+   Flag = "EspGenerator", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  ActiveEspGenerator = Value 
+if ActiveEspGenerator then
+if Game.Workspace.Map.Ingame:FindFirstChild("Map") then
+for _,Players in pairs(Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildren()) do 
+if Players:isA("Model") and Players.PrimaryPart and Players.name == "Generator" and not Players:FindFirstChildOfClass("Highlight") and not Players.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+CreateEsp(Players,Color3.fromRGB(255,255,0),"Generator",Players.PrimaryPart,-2)
+end
+end
+end
+else
+if Game.Workspace.Map.Ingame:FindFirstChild("Map") then
+for _,Players in pairs(Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildren()) do 
+if Players:isA("Model") and Players.PrimaryPart and Players.name == "Generator" and Players:FindFirstChildOfClass("Highlight") and Players.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+KeepEsp(Players)
+end
+end
+end
+ end
+end,
+})
+local EspItemsToggle = EspTab:CreateToggle({
+   Name = "Items Esp",
+   CurrentValue = false,
+   Flag = "EspItems", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  ActiveEspItems = Value
+if ActiveEspItems then
+for _,Players in pairs(Game.Workspace.Map.Ingame:GetChildren()) do 
+if Players:isA("Tool") and Players:FindFirstChild("ItemRoot") and not Players:FindFirstChildOfClass("Highlight") and not Players:FindFirstChild("ItemRoot"):FindFirstChildOfClass("BillboardGui") then
+CreateEsp(Players,Color3.fromRGB(0,0,255),Players.Name,Players:FindFirstChild("ItemRoot"),1)
+end
+end
+if Game.Workspace.Map.Ingame:FindFirstChild("Map") then
+for _,Players in pairs(Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildren()) do 
+if Players:isA("Tool") and Players:FindFirstChild("ItemRoot") and not Players:FindFirstChildOfClass("Highlight") and not Players:FindFirstChild("ItemRoot"):FindFirstChildOfClass("BillboardGui") then
+CreateEsp(Players,Color3.fromRGB(0,0,255),Players.Name,Players:FindFirstChild("ItemRoot"),1)
+end
+end
+end
+else
+for _,Players in pairs(Game.Workspace.Map.Ingame:GetChildren()) do 
+if Players:isA("Tool") and Players:FindFirstChild("ItemRoot")  and  Players:FindFirstChildOfClass("Highlight") and Players:FindFirstChild("ItemRoot"):FindFirstChildOfClass("BillboardGui") then
+KeepEsp(Players,Players:FindFirstChild("ItemRoot"))
+end
+end
+if Game.Workspace.Map.Ingame:FindFirstChild("Map") then
+for _,Players in pairs(Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildren()) do 
+if Players:isA("Tool") and Players:FindFirstChild("ItemRoot")  and  Players:FindFirstChildOfClass("Highlight") and Players:FindFirstChild("ItemRoot"):FindFirstChildOfClass("BillboardGui") then
+KeepEsp(Players,Players:FindFirstChild("ItemRoot")) 
+end
+end
+end
+ end
+end,
+})
+
+
+local PlayerSpeedSlider = PlayerTab:CreateSlider({
+   Name = "Player Speed",
+   Range = {0, 15},
+   Increment = 1,
+   Suffix = "Speeds",
+   CurrentValue = 1,
+   Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+CurrentValue = Value
+ValueSpeed = Value
+end,  ValueSpeed = CurrentValue,
+})
+
+local PlayerActiveModifyingSpeedToggle = PlayerTab:CreateToggle({
+   Name = "Active Modifying Player Speed",
+   CurrentValue = false,
+   Flag = "ButtonSpeed", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  ActiveSpeedBoost = Value 
+if ActiveSpeedBoost then
+LocalPlayer.Character.SpeedMultipliers.Sprinting.Value = ValueSpeed
+end
+end,
+}) local function copyToClipboard(text)
+    if setclipboard then
+        setclipboard(text)
+    else
+        warn("setclipboard is not supported in this environment.")
+    end
+end
+local DiscordLink = DiscordTab:CreateButton({
+   Name = "Discord Link",
+   Callback = function()
+copyToClipboard("https://discord.gg/E2TqYRsRP4")
+end,
+})
+local PlayerActiveAutoGeneratorToggle = PlayerTab:CreateToggle({
+   Name = "Auto Generator(every 2.5 second)",
+   CurrentValue = false,
+   Flag = "ButtonAutoGen", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  ActiveAutoGenerator = Value 
+end,
+}) 
+
+local PlayerActiveInfStaminaToggle = PlayerTab:CreateToggle({
+   Name = "Infinite Stamina(Don't work on solara and xeno,verified on Krnl!)",
+   CurrentValue = false,
+   Flag = "ButtonInfiniteStamina", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  ActiveInfiniteStamina = Value 
+  if ActiveInfiniteStamina then
+      if LocalPlayer:GetAttribute("Device") == "PC" then
+  window:Notify({
+				Title = "Infinite stamina!",
+				Message = "the infinite stamina don't work on pc(normally if it work on you then its good!)",
+				Duration = 5,
+})
+  end
+  end
+end,
+})
+local PlayerNoStunToggle = PlayerTab:CreateToggle({
+   Name = "No Stun",
+   CurrentValue = false,
+   Flag = "NoStunButton", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  ActiveNoStun = Value 
+if ActiveNoStun then
+Game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+end
+end,
+})
+local PlayerAutoUseCoinFlipToggle = PlayerTab:CreateToggle({
+   Name = "Auto Use Coin Flip",
+   CurrentValue = false,
+   Flag = "AutoUseCoinFlipbutton", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  ActiveAutoUseCoinFlip = Value 
+end,
+})
+
+local PlayerActiveAutoKillSurvivorsToggle = PlayerTab:CreateToggle({
+   Name = "Auto Kill Survivors(Unverified!)",
+   CurrentValue = false,
+   Flag = "ButtonAutoKillSurvivors", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  ActiveAutoKillSurvivors = Value 
+end,
+})
+local DropdownTpGen = GameTab:CreateDropdown({
+   Name = "Dropdown TP To Generators",
+   Options = {},
+   CurrentOption = {""},
+   MultipleOptions = false,
+   Flag = nil,
+   Callback = function(Options) 
+for _,Players in pairs(Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildren()) do 
+if Players:isA("Model") and Players.name == "Generator"  then 
+if Players:FindFirstChild("GeneratorTP") then 
+if Players:FindFirstChild("GeneratorTP").Value == Options[1] then 
+Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Players.PrimaryPart.CFrame + Vector3.new(0,5,0)
+end  end 
+ end
+end  
+   end,
+})
+local PlayerRefreshGenButton = GameTab:CreateButton({
+   Name = "Refresh Dropdown Generator",
+   Callback = function(Value) 
+   local num = 1
+ local GenTable = {} 
+ for _,Players in pairs(Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildren()) do 
+if Players:isA("Model") and Players.name == "Generator"  then table.insert(GenTable,"Generator ".. num)
+ if not  Players:FindFirstChild("GeneratorTP") then
+local NewValue = Instance.new("StringValue",Players) NewValue.Name = "GeneratorTP" NewValue.Value = "Generator "..num 
+end)
+ end 
+ num = num +1
+ end
+end 
+    DropdownTpGen:Refresh(GenTable)
+end)
+end,
+})
+local EspRagdollsToggle = EspTab:CreateToggle({
+   Name = "Ragdolls & Enemy Rig Killer Esp",
+   CurrentValue = false,
+   Flag = "EspRagdolls", 
+   Callback = function(Value)
+  ActiveEspRagdolls = Value
+if ActiveEspRagdolls then
+for _,Players in pairs(Game.Workspace.Ragdolls:GetChildren()) do 
+if Players:isA("Model") and Players.PrimaryPart and not Players:FindFirstChildOfClass("Highlight") and not Players.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+CreateEsp(Players,Color3.fromRGB(47,47,47),Players.Name,Players.PrimaryPart,-1)
+end
+end
+else
+ for _,Players in pairs(Game.Workspace.Ragdolls:GetChildren()) do 
+if Players:isA("Model") and Players.PrimaryPart and Players:FindFirstChildOfClass("Highlight") and Players.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+KeepEsp(Players,Players.PrimaryPart)
+end
+end 
+end
+end,
+})
+
+local PlayerFieldOfViewSlider = PlayerTab:CreateSlider({
+   Name = "Field Of View",
+   Range = {80, 120},
+   Increment = 1,
+   Suffix = "FOV",
+   CurrentValue = 80,
+   Flag = "FOV1",
+   Callback = function(Value)
+CurrentValue = Value
+ValueFieldOfView = Value
+end,  ValueFieldOfView = CurrentValue,
+})
+
+local PlayerActiveModifyingFOVToggle = PlayerTab:CreateToggle({
+   Name = "Active Modifying Player FOV",
+   CurrentValue = false,
+   Flag = "ButtonFOV", 
+   Callback = function(Value)
+  ActiveModifiedFieldOfView = Value 
+end,
+}) 
+local ActiveFullBright = false
+local PlayerFullBright = PlayerTab:CreateToggle({
+   Name = "Full Bright",
+   CurrentValue = false,
+   Flag = "FullBright",
+   Callback = function(Value)
+ActiveFullBright = Value
+
+end,  
+})
+local PlayerRemoveLag = PlayerTab:CreateToggle({
+   Name = "Remove Lag",
+   CurrentValue = false,
+   Flag = "RemoveLag",
+   Callback = function(Value)
+RemoveLags = Value
+if RemoveLags then
+for _, asset in pairs(workspace:GetDescendants()) do
+	if (asset:IsA("Part") or asset:IsA("MeshPart")) and asset.Transparency < 1 then
+		if not asset:GetAttribute("OldMaterial") then
+			asset:SetAttribute("OldMaterial",asset.Material.Name)
+		end
+
+		asset.Material = Enum.Material.SmoothPlastic
+
+		if asset:IsA("MeshPart") then
+			if asset.TextureID and asset.TextureID ~= "" and not asset:GetAttribute("OldTextureID") then
+				asset:SetAttribute("OldTextureID", asset.TextureID)
+				asset.TextureID = ""
+			end
+		end
+	end
+end
+else
+for _, asset in pairs(workspace:GetDescendants()) do
+	if asset:IsA("Part") or asset:IsA("MeshPart") then
+		local oldMatName = asset:GetAttribute("OldMaterial")
+		if oldMatName then
+			for _, enumItem in ipairs(Enum.Material:GetEnumItems()) do
+				if enumItem.Name == oldMatName then
+					asset.Material = enumItem
+					break
+				end
+			end
+		end
+
+		if asset:IsA("MeshPart") then
+			local oldTex = asset:GetAttribute("OldTextureID")
+			if oldTex then
+				asset.TextureID = oldTex
+			end
+		end
+	end
+end
+end
+end,  
+})
+
+local ButtonUnloadCheat = SettingsTab:CreateButton({
+   Name = "Unload Cheat",
+   Callback = function()
+
+end,
+})
+
+
+end)
