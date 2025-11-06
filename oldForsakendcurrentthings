@@ -182,10 +182,6 @@ if ActiveInfiniteStamina then
 local m = require(game.ReplicatedStorage.Systems.Character.Game.Sprinting)
 m.StaminaLossDisabled = true 
 m.Stamina = 9999999
-else
-local m = require(game.ReplicatedStorage.Systems.Character.Game.Sprinting)
-m.StaminaLossDisabled = false 
-m.Stamina = 100
 end
   if ActiveAutoGenerator then
       if CanAutoGenFixGlitchs then
@@ -490,18 +486,20 @@ local DropdownTpGen = GameTab:AddDropdown({
  Text = "Dropdown TP To Generators",
 Name = "DropdownTpGen",
    Options = {},
-   CurrentOption = {""},
-   MultipleOptions = false,
-   Flag = nil,
+   Default = "",
+   MultiSelect = false,
+   Flag = "k",
    Callback = function(Options) 
+    if not Options[1] then return end
 for _,Players in pairs(Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildren()) do 
-if Players:isA("Model") and Players.name == "Generator"  then 
+if Players:isA("Model") and Players.Name == "Generator"  then 
 if Players:FindFirstChild("GeneratorTP") then 
 if Players:FindFirstChild("GeneratorTP").Value == Options[1] then 
 Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Players.PrimaryPart.CFrame + Vector3.new(0,5,0)
-end  end 
- end
 end  
+end 
+ end
+end 
    end,
 })
 local PlayerRefreshGenButton = GameTab:AddButton({
@@ -511,7 +509,7 @@ Name = "PlayerRefreshGenButton",
    local num = 1
  local GenTable = {} 
  for _,Players in pairs(Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildren()) do 
-if Players:isA("Model") and Players.name == "Generator"  then
+if Players:isA("Model") and Players.Name == "Generator"  then
      table.insert(GenTable,"Generator ".. num)
  if not  Players:FindFirstChild("GeneratorTP") then
 local NewValue = Instance.new("StringValue",Players) NewValue.Name = "GeneratorTP" NewValue.Value = "Generator "..num 
@@ -798,5 +796,21 @@ Name = "LineEsp",
 LineESPEnabled = Value
 end,  
 })
+task.spawn(function()
+if Game.Workspace.Map.Ingame:FindFirstChild("Map") then
+  local num2 = 1
+ local GenTable = {} 
+ for _,Players in pairs(Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildren()) do 
+if Players:isA("Model") and Players.Name == "Generator"  then
+     table.insert(GenTable,"Generator ".. num2)
+ if not  Players:FindFirstChild("GeneratorTP") then
+local NewValue = Instance.new("StringValue",Players) NewValue.Name = "GeneratorTP" NewValue.Value = "Generator "..num2
+ end 
+ num2 = num2 +1
+ end
+end 
+    DropdownTpGen:Refresh(GenTable)
+    end
+    end)
 library:LoadData()
 end)
