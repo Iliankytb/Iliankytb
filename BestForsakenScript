@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.42"
+local V = "V.0.43"
 
 library:CreateWindow({
 	Title = "Forsaken - by Iliankytb",-- Title of the script
@@ -48,6 +48,7 @@ local ValueFieldOfView = 80
 local ActiveFullBright = false
 local DisableLimitRangerEsp = false
 local ActiveModifiedFieldOfView = false 
+local CanAutoGenFixGlitchs = true
 local LimitRangerEsp = 25
 local Camera = Workspace.CurrentCamera
 local OldFOV = Game.Players.LocalPlayer.PlayerData.Settings.Game.FieldOfView.Value
@@ -84,8 +85,9 @@ local isStudio = game:GetService("RunService"):IsStudio()
 MaxPlayers =maxPlayers
 	}
 end
-
-RunService.RenderStepped:Connect(function()
+local Timer = 0
+local Delay = 2.5
+RunService.RenderStepped:Connect(function(dt)
 task.spawn(function()
 	local updatedInfo = getServerInfo()
 	local updatedContent = string.format(
@@ -200,22 +202,34 @@ local m = require(game.ReplicatedStorage.Systems.Character.Game.Sprinting)
 m.StaminaLossDisabled = true 
 m.Stamina = 9999999
 end
-  if ActiveAutoGenerator then
-      if CanAutoGenFixGlitchs then
-if Game.Workspace.Map.Ingame:FindFirstChild("Map") then
-for _,Players in pairs(Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildren()) do 
-if Players:IsA("Model") and Players.Name == "Generator"  then 
-    if Players:FindFirstChild("Remotes"):FindFirstChild("RE") then 
-          CanAutoGenFixGlitchs = false
-        Players:FindFirstChild("Remotes"):FindFirstChild("RE"):FireServer() 
-        wait(2.5)
-        CanAutoGenFixGlitchs = true
+task.spawn(function()
+ if ActiveAutoGenerator then
+        if CanAutoGenFixGlitchs then
+
+            Timer += dt
+            if Timer < Delay then return end 
+            Timer = 0
+
+            CanAutoGenFixGlitchs = false
+
+            local map = Game.Workspace.Map.Ingame:FindFirstChild("Map")
+            if map then
+                for _, Players in pairs(map:GetChildren()) do 
+                    if Players:IsA("Model") and Players.Name == "Generator" then
+                        local remoteFolder = Players:FindFirstChild("Remotes")
+                        if remoteFolder then
+                            local RE = remoteFolder:FindFirstChild("RE")
+                            if RE then
+                                RE:FireServer()
+                            end
+                        end
+                    end
+                end
+            end
+            CanAutoGenFixGlitchs = true
         end
-end
- end
-end
-end
-end
+    end
+    end)
     end)
 
 local function CreateEsp(Char, Color, Text, Parent,Num)
