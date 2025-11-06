@@ -52,6 +52,7 @@ local LimitRangerEsp = 25
 local Camera = Workspace.CurrentCamera
 local OldFOV = Game.Players.LocalPlayer.PlayerData.Settings.Game.FieldOfView.Value
 local LocalPlayer = game.Players.LocalPlayer
+local ActiveDistanceEsp = false
 
 local Version = InfoTab:AddText({
 		Text = "Version:"..V,
@@ -141,9 +142,9 @@ if not part or not highlight or not billboard or not label or not line then retu
 	end
     end)
     if ActiveModifiedFieldOfView then
-Game.Players.LocalPlayer.PlayerData.Settings.Game.FieldOfView.Value = ValueFieldOfView 
+game.Players.LocalPlayer.PlayerData.Settings.Game.FieldOfView.Value = ValueFieldOfView 
 else
-Game.Players.LocalPlayer.PlayerData.Settings.Game.FieldOfView.Value = OldFOV 
+game.Players.LocalPlayer.PlayerData.Settings.Game.FieldOfView.Value = OldFOV 
 end
 if ActiveFullBright then
 if Game.Lighting then 
@@ -789,6 +790,16 @@ Name = "DisableLimitEsp",
 DisableLimitRangerEsp = Value
 end,  
 })
+local ActiveDistEsp = SettingsTab:AddToggle({
+  Text = "Distance Esp",
+Name = "DistanceEsp",
+   CurrentValue = false,
+   Flag = "DistanceEsp",
+   Callback = function(Value)
+ActiveDistanceEsp = Value
+end,  
+})
+
 local LineEsp = SettingsTab:AddToggle({
   Text = "Line for esp",
 Name = "LineEsp",
