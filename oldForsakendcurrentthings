@@ -51,6 +51,7 @@ local ActiveModifiedFieldOfView = false
 local LimitRangerEsp = 25
 local Camera = Workspace.CurrentCamera
 local OldFOV = Game.Players.LocalPlayer.PlayerData.Settings.Game.FieldOfView.Value
+local LocalPlayer = game.Players.LocalPlayer
 
 local Version = InfoTab:AddText({
 		Text = "Version:"..V,
