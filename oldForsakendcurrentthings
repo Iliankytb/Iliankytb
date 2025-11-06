@@ -284,13 +284,13 @@ Name = "EspSurvivorsToggle",
   ActiveEspSurvivors = Value 
 if ActiveEspSurvivors then 
 for _,Players in pairs(Game.Workspace.Players.Survivors:GetChildren()) do 
-if Players:isA("Model") and Players:FindFirstChild("Head") and not Players:FindFirstChildOfClass("Highlight") and not Players.Head:FindFirstChildOfClass("BillboardGui") then
+if Players:IsA("Model") and Players:FindFirstChild("Head") and not Players:FindFirstChildOfClass("Highlight") and not Players.Head:FindFirstChildOfClass("BillboardGui") then
 CreateEsp(Players,Color3.fromRGB(0,255,0),Players.Name.." ("..Players:GetAttribute("Username")..")",Players.Head,2)
 end
 end
 else 
 for _,Players in pairs(Game.Workspace.Players.Survivors:GetChildren()) do 
-if Players:isA("Model") and Players:FindFirstChild("Head") and Players:FindFirstChildOfClass("Highlight") and Players.Head:FindFirstChildOfClass("BillboardGui") then
+if Players:IsA("Model") and Players:FindFirstChild("Head") and Players:FindFirstChildOfClass("Highlight") and Players.Head:FindFirstChildOfClass("BillboardGui") then
 KeepEsp(Players,Players.Head)
 end
 end 
@@ -306,15 +306,17 @@ Name = "EspKillers",
    Callback = function(Value)
   ActiveEspKillers = Value 
 if ActiveEspKillers then
-if Players:isA("Model") and (Players.Name == "1x1x1x1" or Players.Name == "Jason" or Players.Name == "John Doe") and Players:FindFirstChild("Head") and Players:FindFirstChildOfClass("Highlight") and not Players.Head:FindFirstChildOfClass("BillboardGui") then
+    for _,Players in pairs(Game.Workspace.Players.Killers:GetChildren()) do 
+if Players:IsA("Model") and (Players.Name == "1x1x1x1" or Players.Name == "Jason" or Players.Name == "John Doe") and Players:FindFirstChild("Head") and Players:FindFirstChildOfClass("Highlight") and not Players.Head:FindFirstChildOfClass("BillboardGui") then
 Players:FindFirstChildOfClass("Highlight"):Destroy()
 end
-if Players:isA("Model") and Players:FindFirstChild("Head") and not Players:FindFirstChildOfClass("Highlight") and not Players.Head:FindFirstChildOfClass("BillboardGui") then
+if  Players:IsA("Model") and Players:FindFirstChild("Head") and not Players:FindFirstChildOfClass("Highlight") and not Players.Head:FindFirstChildOfClass("BillboardGui") then
 CreateEsp(Players,Color3.fromRGB(255,0,0),Players.Name.." ("..Players:GetAttribute("Username")..")",Players.Head,2)
+end
 end
 else
  for _,Players in pairs(Game.Workspace.Players.Killers:GetChildren()) do 
-if Players:isA("Model") and Players:FindFirstChild("Head") and Players:FindFirstChildOfClass("Highlight") and Players.Head:FindFirstChildOfClass("BillboardGui") then
+if Players:IsA("Model") and Players:FindFirstChild("Head") and Players:FindFirstChildOfClass("Highlight") and Players.Head:FindFirstChildOfClass("BillboardGui") then
 KeepEsp(Players,Players.Head)
 end
 end 
@@ -330,7 +332,7 @@ Name = "EspGen",
 if ActiveEspGenerator then
 if Game.Workspace.Map.Ingame:FindFirstChild("Map") then
 for _,Players in pairs(Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildren()) do 
-if Players:isA("Model") and Players.PrimaryPart and Players.name == "Generator" and not Players:FindFirstChildOfClass("Highlight") and not Players.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+if Players:IsA("Model") and Players.PrimaryPart and Players.name == "Generator" and not Players:FindFirstChildOfClass("Highlight") and not Players.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
 CreateEsp(Players,Color3.fromRGB(255,255,0),"Generator",Players.PrimaryPart,-2)
 end
 end
@@ -338,7 +340,7 @@ end
 else
 if Game.Workspace.Map.Ingame:FindFirstChild("Map") then
 for _,Players in pairs(Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildren()) do 
-if Players:isA("Model") and Players.PrimaryPart and Players.name == "Generator" and Players:FindFirstChildOfClass("Highlight") and Players.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+if Players:IsA("Model") and Players.PrimaryPart and Players.name == "Generator" and Players:FindFirstChildOfClass("Highlight") and Players.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
 KeepEsp(Players)
 end
 end
@@ -355,26 +357,26 @@ Name = "EspItems",
   ActiveEspItems = Value
 if ActiveEspItems then
 for _,Players in pairs(Game.Workspace.Map.Ingame:GetChildren()) do 
-if Players:isA("Tool") and Players:FindFirstChild("ItemRoot") and not Players:FindFirstChildOfClass("Highlight") and not Players:FindFirstChild("ItemRoot"):FindFirstChildOfClass("BillboardGui") then
+if Players:IsA("Tool") and Players:FindFirstChild("ItemRoot") and not Players:FindFirstChildOfClass("Highlight") and not Players:FindFirstChild("ItemRoot"):FindFirstChildOfClass("BillboardGui") then
 CreateEsp(Players,Color3.fromRGB(0,0,255),Players.Name,Players:FindFirstChild("ItemRoot"),1)
 end
 end
 if Game.Workspace.Map.Ingame:FindFirstChild("Map") then
 for _,Players in pairs(Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildren()) do 
-if Players:isA("Tool") and Players:FindFirstChild("ItemRoot") and not Players:FindFirstChildOfClass("Highlight") and not Players:FindFirstChild("ItemRoot"):FindFirstChildOfClass("BillboardGui") then
+if Players:IsA("Tool") and Players:FindFirstChild("ItemRoot") and not Players:FindFirstChildOfClass("Highlight") and not Players:FindFirstChild("ItemRoot"):FindFirstChildOfClass("BillboardGui") then
 CreateEsp(Players,Color3.fromRGB(0,0,255),Players.Name,Players:FindFirstChild("ItemRoot"),1)
 end
 end
 end
 else
 for _,Players in pairs(Game.Workspace.Map.Ingame:GetChildren()) do 
-if Players:isA("Tool") and Players:FindFirstChild("ItemRoot")  and  Players:FindFirstChildOfClass("Highlight") and Players:FindFirstChild("ItemRoot"):FindFirstChildOfClass("BillboardGui") then
+if Players:IsA("Tool") and Players:FindFirstChild("ItemRoot")  and  Players:FindFirstChildOfClass("Highlight") and Players:FindFirstChild("ItemRoot"):FindFirstChildOfClass("BillboardGui") then
 KeepEsp(Players,Players:FindFirstChild("ItemRoot"))
 end
 end
 if Game.Workspace.Map.Ingame:FindFirstChild("Map") then
 for _,Players in pairs(Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildren()) do 
-if Players:isA("Tool") and Players:FindFirstChild("ItemRoot")  and  Players:FindFirstChildOfClass("Highlight") and Players:FindFirstChild("ItemRoot"):FindFirstChildOfClass("BillboardGui") then
+if Players:IsA("Tool") and Players:FindFirstChild("ItemRoot")  and  Players:FindFirstChildOfClass("Highlight") and Players:FindFirstChild("ItemRoot"):FindFirstChildOfClass("BillboardGui") then
 KeepEsp(Players,Players:FindFirstChild("ItemRoot")) 
 end
 end
@@ -492,7 +494,7 @@ Name = "DropdownTpGen",
    Callback = function(Options) 
     if not Options[1] then return end
 for _,Players in pairs(Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildren()) do 
-if Players:isA("Model") and Players.Name == "Generator"  then 
+if Players:IsA("Model") and Players.Name == "Generator"  then 
 if Players:FindFirstChild("GeneratorTP") then 
 if Players:FindFirstChild("GeneratorTP").Value == Options[1] then 
 Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Players.PrimaryPart.CFrame + Vector3.new(0,5,0)
@@ -509,7 +511,7 @@ Name = "PlayerRefreshGenButton",
    local num = 1
  local GenTable = {} 
  for _,Players in pairs(Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildren()) do 
-if Players:isA("Model") and Players.Name == "Generator"  then
+if Players:IsA("Model") and Players.Name == "Generator"  then
      table.insert(GenTable,"Generator ".. num)
  if not  Players:FindFirstChild("GeneratorTP") then
 local NewValue = Instance.new("StringValue",Players) NewValue.Name = "GeneratorTP" NewValue.Value = "Generator "..num 
@@ -529,13 +531,13 @@ Name = "EspRagdollsToggle",
   ActiveEspRagdolls = Value
 if ActiveEspRagdolls then
 for _,Players in pairs(Game.Workspace.Ragdolls:GetChildren()) do 
-if Players:isA("Model") and Players.PrimaryPart and not Players:FindFirstChildOfClass("Highlight") and not Players.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+if Players:IsA("Model") and Players.PrimaryPart and not Players:FindFirstChildOfClass("Highlight") and not Players.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
 CreateEsp(Players,Color3.fromRGB(47,47,47),Players.Name,Players.PrimaryPart,-1)
 end
 end
 else
  for _,Players in pairs(Game.Workspace.Ragdolls:GetChildren()) do 
-if Players:isA("Model") and Players.PrimaryPart and Players:FindFirstChildOfClass("Highlight") and Players.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+if Players:IsA("Model") and Players.PrimaryPart and Players:FindFirstChildOfClass("Highlight") and Players.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
 KeepEsp(Players,Players.PrimaryPart)
 end
 end 
@@ -653,7 +655,7 @@ workspace.DescendantAdded:Connect(function(child)
 task.wait(0.75)
 if ActiveEspSurvivors then 
  local GetPByChar = game:GetService("Players"):GetPlayerFromCharacter(child)
-if child.Parent.Name == "Survivors" and child:isA("Model") and child:FindFirstChild("Head") and not child:FindFirstChildOfClass("Highlight") and not child.Head:FindFirstChildOfClass("BillboardGui") then
+if child.Parent == workspace.Players.Survivors and child:IsA("Model") and child:FindFirstChild("Head") and not child:FindFirstChildOfClass("Highlight") and not child.Head:FindFirstChildOfClass("BillboardGui") then
 if GetPByChar then
 CreateEsp(child,Color3.fromRGB(0,255,0),child.Name.." ("..child:GetAttribute("Username")..")",child.Head,2)
 end
@@ -661,12 +663,12 @@ end
 end
 if ActiveEspKillers then
  local GetPByChar = game:GetService("Players"):GetPlayerFromCharacter(child)
-if child.Parent.Name == "Killers" and child:isA("Model") and (child.Name == "1x1x1x1" or child.Name == "Jason" or child.Name == "John Doe") and child:FindFirstChild("Head") and child:FindFirstChildOfClass("Highlight") and not child.Head:FindFirstChildOfClass("BillboardGui") then
+if child.Parent and child.Parent == workspace.Players.Killers and child:IsA("Model") and (child.Name == "1x1x1x1" or child.Name == "Jason" or child.Name == "John Doe") and child:FindFirstChild("Head") and child:FindFirstChildOfClass("Highlight") and not child.Head:FindFirstChildOfClass("BillboardGui") then
 if GetPByChar then
 child:FindFirstChildOfClass("Highlight"):Destroy()
 end
 end
-if child.Parent.Name == "Killers" and child:isA("Model") and child:FindFirstChild("Head") and not child:FindFirstChildOfClass("Highlight") and not child.Head:FindFirstChildOfClass("BillboardGui") then
+if child.Parent and child.Parent == workspace.Players.Killers and child:IsA("Model") and child:FindFirstChild("Head") and not child:FindFirstChildOfClass("Highlight") and not child.Head:FindFirstChildOfClass("BillboardGui") then
 if GetPByChar then
 CreateEsp(child,Color3.fromRGB(255,0,0),child.Name.." ("..child:GetAttribute("Username")..")",child.Head,2)
 end
@@ -674,21 +676,21 @@ end
 end
 if ActiveEspGenerator then
 if Game.Workspace.Map.Ingame:FindFirstChild("Map") then
-if child:isA("Model") and child.PrimaryPart and child.name == "Generator" and not child:FindFirstChildOfClass("Highlight") and not child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+if child:IsA("Model") and child.PrimaryPart and child.name == "Generator" and not child:FindFirstChildOfClass("Highlight") and not child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
 CreateEsp(child,Color3.fromRGB(255,255,0),"Generator",child.PrimaryPart,-2)
 end
 end
 end
 if ActiveEspItems then
-if child:isA("Tool") and child:FindFirstChild("ItemRoot") and not child:FindFirstChildOfClass("Highlight") and not child:FindFirstChild("ItemRoot"):FindFirstChildOfClass("BillboardGui") then
+if child:IsA("Tool") and child:FindFirstChild("ItemRoot") and not child:FindFirstChildOfClass("Highlight") and not child:FindFirstChild("ItemRoot"):FindFirstChildOfClass("BillboardGui") then
 CreateEsp(child,Color3.fromRGB(0,0,255),child.Name,child:FindFirstChild("ItemRoot"),1)
 end
-if child:isA("Tool") and child:FindFirstChild("ItemRoot") and not child:FindFirstChildOfClass("Highlight") and not child:FindFirstChild("ItemRoot"):FindFirstChildOfClass("BillboardGui") then
+if child:IsA("Tool") and child:FindFirstChild("ItemRoot") and not child:FindFirstChildOfClass("Highlight") and not child:FindFirstChild("ItemRoot"):FindFirstChildOfClass("BillboardGui") then
 CreateEsp(child,Color3.fromRGB(0,0,255),child.Name,child:FindFirstChild("ItemRoot"),1)
 end
 end
 if ActiveEspRagdolls then
-if child:isA("Model") and child.PrimaryPart and not child:FindFirstChildOfClass("Highlight") and not child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+if child.Parent and child.Parent == game.Workspace.Ragdolls and child:IsA("Model") and child.PrimaryPart and not child:FindFirstChildOfClass("Highlight") and not child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
 local GetPByChar = game:GetService("Players"):GetPlayerFromCharacter(child)
 if GetPByChar then
 CreateEsp(child,Color3.fromRGB(47,47,47),child.Name,child.PrimaryPart,-1)
@@ -715,7 +717,7 @@ end)
 workspace.DescendantRemoving:Connect(function(child)
 	if ActiveEspSurvivors then 
 		local GetPByChar = game:GetService("Players"):GetPlayerFromCharacter(child)
-		if child.Parent and child.Parent.Name == "Survivors" and child:IsA("Model") and child:FindFirstChild("Head") then
+		if child.Parent and child.Parent == workspace.Players.Survivors and child:IsA("Model") and child:FindFirstChild("Head") then
 			if GetPByChar then
 				if child:FindFirstChildOfClass("Highlight") and child.Head:FindFirstChildOfClass("BillboardGui") then
 					KeepEsp(child, child.Head)
@@ -727,7 +729,7 @@ workspace.DescendantRemoving:Connect(function(child)
 
 	if ActiveEspKillers then
 		local GetPByChar = game:GetService("Players"):GetPlayerFromCharacter(child)
-		if child.Parent and child.Parent.Name == "Killers" and child:IsA("Model") and child:FindFirstChild("Head") then
+		if child.Parent and child.Parent == workspace.Players.Killers and child:IsA("Model") and child:FindFirstChild("Head") then
 			if GetPByChar then
 				if child:FindFirstChildOfClass("Highlight") and child.Head:FindFirstChildOfClass("BillboardGui") then
 					KeepEsp(child, child.Head)
@@ -755,7 +757,7 @@ workspace.DescendantRemoving:Connect(function(child)
 	end
 
 	if ActiveEspRagdolls then
-		if child:IsA("Model") and child.PrimaryPart then
+		if child.Parent and child.Parent == workspace.Ragdolls and child:IsA("Model") and child.PrimaryPart then
 			local GetPByChar = game:GetService("Players"):GetPlayerFromCharacter(child)
 			if GetPByChar then
 				if child:FindFirstChildOfClass("Highlight") and child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
