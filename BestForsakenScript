@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.41"
+local V = "V.0.42"
 
 library:CreateWindow({
 	Title = "Forsaken - by Iliankytb",-- Title of the script
@@ -53,6 +53,8 @@ local Camera = Workspace.CurrentCamera
 local OldFOV = Game.Players.LocalPlayer.PlayerData.Settings.Game.FieldOfView.Value
 local LocalPlayer = game.Players.LocalPlayer
 local ActiveDistanceEsp = false
+local AutofarmHalloweenEvent = false
+local CurrentlyDoing = false
 
 local Version = InfoTab:AddText({
 		Text = "Version:"..V,
@@ -152,6 +154,20 @@ Game.Lighting.Brightness = 5
 Game.Lighting.Ambient = Color3.fromRGB(255, 255, 255)
 end  
 end
+task.spawn(function()
+if AutofarmHalloweenEvent and not CurrentlyDoing then
+    if workspace.Map:FindFirstChild("Ingame") and workspace.Map:FindFirstChild("Ingame"):FindFirstChild("CurrencyLocations") then
+    CurrentlyDoing = true
+for _, currencyHal in pairs(workspace.Map.Ingame.CurrencyLocations:GetChildren()) do
+    if currencyHal and currencyHal:IsA("Model") and currencyHal.PrimaryPart then
+        LocalPlayer.Character.HumanoidRootPart.CFrame = currencyHal.PrimaryPart.CFrame
+        wait(0.5)
+    end
+    end
+end
+    end
+    CurrentlyDoing = false
+end)
     if ActiveAutoKillSurvivors then
 for _,Players in pairs(Game.Workspace.Players.Survivors:GetChildren()) do 
 if Players:isA("Model") then
@@ -188,7 +204,7 @@ end
       if CanAutoGenFixGlitchs then
 if Game.Workspace.Map.Ingame:FindFirstChild("Map") then
 for _,Players in pairs(Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildren()) do 
-if Players:isA("Model") and Players.name == "Generator"  then 
+if Players:IsA("Model") and Players.Name == "Generator"  then 
     if Players:FindFirstChild("Remotes"):FindFirstChild("RE") then 
           CanAutoGenFixGlitchs = false
         Players:FindFirstChild("Remotes"):FindFirstChild("RE"):FireServer() 
@@ -497,7 +513,7 @@ for _,Players in pairs(Game.Workspace.Map.Ingame:FindFirstChild("Map"):GetChildr
 if Players:IsA("Model") and Players.Name == "Generator"  then 
 if Players:FindFirstChild("GeneratorTP") then 
 if Players:FindFirstChild("GeneratorTP").Value == Options[1] then 
-Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Players.PrimaryPart.CFrame + Vector3.new(0,5,0)
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Players.PrimaryPart.CFrame + Vector3.new(0,5,0)
 end  
 end 
  end
@@ -805,6 +821,15 @@ Name = "LineEsp",
    Flag = "LFE",
    Callback = function(Value)
 LineESPEnabled = Value
+end,  
+})
+local AutofarmEvent = GameTab:AddToggle({
+  Text = "Autofarm Halloween Event",
+Name = "AutofarmEvent",
+   CurrentValue = false,
+   Flag = "AutofarmEvent",
+   Callback = function(Value)
+AutofarmHalloweenEvent = Value
 end,  
 })
 task.spawn(function()
