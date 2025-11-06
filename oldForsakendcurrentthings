@@ -49,6 +49,7 @@ local ActiveFullBright = false
 local DisableLimitRangerEsp = false
 local ActiveModifiedFieldOfView = false 
 local LimitRangerEsp = 25
+local Camera = Workspace.CurrentCamera
 local OldFOV = Game.Players.LocalPlayer.PlayerData.Settings.Game.FieldOfView.Value
 
 local Version = InfoTab:AddText({
@@ -278,7 +279,8 @@ local function copyToClipboard(text)
     end
 end
 local EspSurvivorsToggle = EspTab:AddToggle({
-   Name = "Survivors Esp",
+ Text = "Esp Survivors",
+Name = "EspSurvivorsToggle",
    CurrentValue = false,
    Flag = "EspSurvivors", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
@@ -300,7 +302,8 @@ end,
 })
 
 local EspKillersToggle = EspTab:AddToggle({
-   Name = "Killers Esp",
+ Text = "Esp Killers", 
+Name = "EspKillers",
    CurrentValue = false,
    Flag = "EspKiller", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
@@ -321,7 +324,8 @@ end
 end
 end,
 }) local EspGeneratorToggle = EspTab:AddToggle({
-   Name = "Generator Esp",
+ Text = "Esp Generators",
+Name = "EspGen",
    CurrentValue = false,
    Flag = "EspGenerator", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
@@ -346,7 +350,8 @@ end
 end,
 })
 local EspItemsToggle = EspTab:AddToggle({
-   Name = "Items Esp",
+ Text = "Esp Items", 
+Name = "EspItems",
    CurrentValue = false,
    Flag = "EspItems", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
@@ -383,7 +388,8 @@ end,
 
 
 local PlayerSpeedSlider = PlayerTab:AddSlider({
-   Name = "Player Speed",
+Text = "Player Speed", 
+Name = "PSS",
    Range = {0, 15},
    Increment = 1,
    Suffix = "Speeds",
@@ -396,7 +402,8 @@ end,  ValueSpeed = CurrentValue,
 })
 
 local PlayerActiveModifyingSpeedToggle = PlayerTab:AddToggle({
-   Name = "Active Modifying Player Speed",
+Text = "Active Modifying Player Speed",  
+Name = "PlayerActiveModifyingSpeedToggle",
    CurrentValue = false,
    Flag = "ButtonSpeed", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
@@ -413,13 +420,15 @@ end,
     end
 end
 local DiscordLink = DiscordTab:AddButton({
-   Name = "Discord Link",
+Text = "Discord Link",
+Name = "DL",
    Callback = function()
 copyToClipboard("https://discord.gg/E2TqYRsRP4")
 end,
 })
 local PlayerActiveAutoGeneratorToggle = PlayerTab:AddToggle({
-   Name = "Auto Generator(every 2.5 second)",
+  Text = "Auto Generator(Every 2.5 seconds)",
+Name = "PlayerActiveAutoGeneratorToggle",
    CurrentValue = false,
    Flag = "ButtonAutoGen", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
@@ -428,7 +437,8 @@ end,
 }) 
 
 local PlayerActiveInfStaminaToggle = PlayerTab:AddToggle({
-   Name = "Infinite Stamina(Don't work on solara and xeno,verified on Krnl!)",
+ Text = "Infinite Stamina", 
+Name = "PlayerActiveInfStaminaToggle",
    CurrentValue = false,
    Flag = "ButtonInfiniteStamina", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
@@ -445,7 +455,8 @@ local PlayerActiveInfStaminaToggle = PlayerTab:AddToggle({
 end,
 })
 local PlayerNoStunToggle = PlayerTab:AddToggle({
-   Name = "No Stun",
+ Text = "No Stun",  
+Name = "PlayerNoStunToggle",
    CurrentValue = false,
    Flag = "NoStunButton", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
@@ -456,7 +467,8 @@ end
 end,
 })
 local PlayerAutoUseCoinFlipToggle = PlayerTab:AddToggle({
-   Name = "Auto Use Coin Flip",
+   Text = Auto Use Coin Flip",
+Name = "PlayerAutoUseCoinFlipToggle",
    CurrentValue = false,
    Flag = "AutoUseCoinFlipbutton", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
@@ -465,7 +477,8 @@ end,
 })
 
 local PlayerActiveAutoKillSurvivorsToggle = PlayerTab:AddToggle({
-   Name = "Auto Kill Survivors(Unverified!)",
+  Text = "Auto Kill Survivors(with jason)",
+Name = "PlayerActiveAutoKillSurvivorsToggle",
    CurrentValue = false,
    Flag = "ButtonAutoKillSurvivors", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
@@ -473,7 +486,8 @@ local PlayerActiveAutoKillSurvivorsToggle = PlayerTab:AddToggle({
 end,
 })
 local DropdownTpGen = GameTab:AddDropdown({
-   Name = "Dropdown TP To Generators",
+ Text = "Dropdown TP To Generators",
+Name = "DropdownTpGen",
    Options = {},
    CurrentOption = {""},
    MultipleOptions = false,
@@ -490,7 +504,8 @@ end
    end,
 })
 local PlayerRefreshGenButton = GameTab:AddButton({
-   Name = "Refresh Dropdown Generator",
+  Text = "Refresh Dropdown Generator",
+Name = "PlayerRefreshGenButton",
    Callback = function(Value) 
    local num = 1
  local GenTable = {} 
@@ -507,7 +522,8 @@ end
 end,
 })
 local EspRagdollsToggle = EspTab:AddToggle({
-   Name = "Ragdolls & Enemy Rig Killer Esp",
+ Text = "Ragdolls & Enemy Rig Killer Esp",
+Name = "EspRagdollsToggle",
    CurrentValue = false,
    Flag = "EspRagdolls", 
    Callback = function(Value)
@@ -529,7 +545,8 @@ end,
 })
 
 local PlayerFieldOfViewSlider = PlayerTab:AddSlider({
-   Name = "Field Of View",
+Text = "Field Of View",
+Name = "PlayerFieldOfViewSlider",
    Range = {80, 120},
    Increment = 1,
    Suffix = "FOV",
@@ -542,7 +559,8 @@ end,  ValueFieldOfView = CurrentValue,
 })
 
 local PlayerActiveModifyingFOVToggle = PlayerTab:AddToggle({
-   Name = "Active Modifying Player FOV",
+  Text =  "Active Modifying Player FOV",
+Name = "PlayerActiveModifyingFOVToggle",
    CurrentValue = false,
    Flag = "ButtonFOV", 
    Callback = function(Value)
@@ -551,16 +569,17 @@ end,
 }) 
 
 local PlayerFullBright = GameTab:AddToggle({
-   Name = "Full Bright",
+  Text = "Full Bright",
+Name = "PlayerFullBright",
    CurrentValue = false,
    Flag = "FullBright",
    Callback = function(Value)
 ActiveFullBright = Value
-
 end,  
 })
 local PlayerRemoveLag = GameTab:AddToggle({
-   Name = "Remove Lag",
+  Text = "Remove Lag", 
+Name = "PlayerRemoveLag",
    CurrentValue = false,
    Flag = "RemoveLag",
    Callback = function(Value)
@@ -608,7 +627,8 @@ end,
 })
 
 local ButtonUnloadCheat = SettingsTab:AddButton({
-   Name = "Unload Cheat",
+  Text = "Unload Cheat"
+Name = "ButtonUnloadCheat",
    Callback = function()
  
 end,
@@ -747,7 +767,8 @@ workspace.DescendantRemoving:Connect(function(child)
 	end
 end)
 local EspDistanceSlider = SettingsTab:AddSlider({
-   Name = "Distance for esp",
+  Text = "Distance for esp",
+Name = "EspDistanceSlider",
    Range = {25, 1000},
    Increment = 1,
    Suffix = "M",
@@ -759,7 +780,8 @@ LimitRangerEsp = Value
 end,  LimitRangerEsp = CurrentValue,
 })
 local DisableLimitEsp = SettingsTab:AddToggle({
-   Name = "Disable Esp Distance Limiter",
+  Text = "Disable Esp Distance Limiter",
+Name = "DisableLimitEsp",
    CurrentValue = false,
    Flag = "DEDL",
    Callback = function(Value)
@@ -767,7 +789,8 @@ DisableLimitRangerEsp = Value
 end,  
 })
 local LineEsp = SettingsTab:AddToggle({
-   Name = "Line for esp",
+  Text = "Line for esp",
+Name = "LineEsp",
    CurrentValue = false,
    Flag = "LFE",
    Callback = function(Value)
