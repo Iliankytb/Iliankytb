@@ -1296,5 +1296,89 @@ local ChangeThemeDropdown = SettingsTab:AddDropdown({
 window:ChangeTheme(choice)
 		end
 	})
+    workspace.DescendantAdded:Connect(function(child)
+    task.wait(0.75)
+    if ActiveNoFog then
+	if child.Parent == Workspace.Map.Boundaries and child:isA("Part") then
+		child:Destroy()
+	end
+    end
+    if ActiveNoCooldownPrompt then 
+if child:isA("ProximityPrompt") and child.HoldDuration ~= 0 then 
+child:SetAttribute("HoldDurationOld",child.HoldDuration)
+child.HoldDuration = 0
+    end
+end
+if ActiveEspPeltTrader then 
+if child.Parent == game.Workspace.Characters and child:isA("Model") and child.PrimaryPart and child.Name == "Pelt Trader" and not child:FindFirstChildOfClass("Highlight") and not child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+CreateEsp(child,Color3.fromRGB(0,255,255),child.Name,child.PrimaryPart) 
+end 
+end
+if ActiveEspChildren then 
+if child.Parent == game.Workspace.Characters and child:isA("Model") and child.PrimaryPart and (child.Name == "Lost Child" or child.Name == "Lost Child2" or child.Name == "Lost Child3" or child.Name == "Lost Child4") and not child:FindFirstChildOfClass("Highlight") and not child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+CreateEsp(child,Color3.fromRGB(0,255,0),child.Name,child.PrimaryPart) 
+end 
+end
+if ActiveEspItems then
+if child.Parent == game.Workspace.Items and child:isA("Model") and child.PrimaryPart and not child:FindFirstChildOfClass("Highlight") and not child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+CreateEsp(child,Color3.fromRGB(255,255,0),child.Name,child.PrimaryPart) 
+end 
+end
+if ActiveEspEnemy then 
+if child.Parent == game.Workspace.Characters and child:isA("Model") and child.PrimaryPart and (child.Name ~= "Lost Child" or child.Name ~= "Lost Child2" or child.Name ~= "Lost Child3" or child.Name ~= "Lost Child4" or child.Name ~= "Pelt Trader") and not child:FindFirstChildOfClass("Highlight") and not child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+CreateEsp(child,Color3.fromRGB(255,0,0),child.Name,child.PrimaryPart) 
+end 
+end
+    end)
+    workspace.DescendantRemoving:Connect(function(child)
+    if ActiveEspPeltTrader then
+        if child.Parent == workspace.Characters
+        and child:IsA("Model")
+        and child.PrimaryPart
+        and child.Name == "Pelt Trader"
+        and child:FindFirstChildOfClass("Highlight")
+        and child.PrimaryPart:FindFirstChildOfClass("BillboardGui")
+        then
+            KeepEsp(child, child.PrimaryPart)
+        end
+    end
+    if ActiveEspChildren then
+        if child.Parent == workspace.Characters
+        and child:IsA("Model")
+        and child.PrimaryPart
+        and (child.Name == "Lost Child" or child.Name == "Lost Child2" or child.Name == "Lost Child3" or child.Name == "Lost Child4")
+        and child:FindFirstChildOfClass("Highlight")
+        and child.PrimaryPart:FindFirstChildOfClass("BillboardGui")
+        then
+            KeepEsp(child, child.PrimaryPart)
+        end
+    end
+    if ActiveEspItems then
+        if child.Parent == workspace.Items
+        and child:IsA("Model")
+        and child.PrimaryPart
+        and child:FindFirstChildOfClass("Highlight")
+        and child.PrimaryPart:FindFirstChildOfClass("BillboardGui")
+        then
+            KeepEsp(child, child.PrimaryPart)
+        end
+    end
+    if ActiveEspEnemy then
+        if child.Parent == workspace.Characters
+        and child:IsA("Model")
+        and child.PrimaryPart
+        and not (child.Name == "Lost Child" 
+            or child.Name == "Lost Child2"
+            or child.Name == "Lost Child3"
+            or child.Name == "Lost Child4"
+            or child.Name == "Pelt Trader")
+        and child:FindFirstChildOfClass("Highlight")
+        and child.PrimaryPart:FindFirstChildOfClass("BillboardGui")
+        then
+            KeepEsp(child, child.PrimaryPart)
+        end
+    end
+end)
+
 	library:LoadData()--Add this if you want to load data and everytime at bottom of your code
 end)
