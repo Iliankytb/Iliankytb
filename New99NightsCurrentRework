@@ -49,6 +49,8 @@ local ParagraphInfoServer = InfoTab:AddParagraph({Title = "",Content = "Loading"
 local DistanceForKillAura = 25
 local DistanceForAutoChopTree = 25
 local isA = "IsA"
+local LimitRangerEsp = 100
+local DisableLimitRangerEsp = false
 local Version = InfoTab:AddText({
 		Text = "Version:"..V,
 		Name = "VersionScript"
@@ -1004,7 +1006,7 @@ local isInTheMap = "no"
 local HowManyItemCanShowUp = 0
 	local Label = BringItemTab:AddText({
 		Text = "Item Is In The Map: No (x"..HowManyItemCanShowUp..")",
-		Name = Label
+		Name = "Label"
 	})
 local TextboxBringNameItem = BringItemTab:AddTextbox({
     Text = "",
@@ -1240,13 +1242,42 @@ local ButtonUnloadCheat = SettingsTab:AddButton({
 
 end,
 })
-local ActiveEspDistanceToggle = SettingsTab:AddToggle({
-    Text = "Distance for esp",
-   Name = "ActiveEspDistanceToggle",
+local LimitRangerEspSlider = SettingsTab:AddSlider({
+Text =  "Limit Ranger for esp",
+   Name ="LimitRangerEspSlider",
+   Min =25,
+   Max = 1000,
+   Default = 100,
+   Flag = "LimitRangerEsp1",
+   Callback = function(Value)
+CurrentValue = Value
+LimitRangerEsp = Value
+end,  LimitRangerEsp = CurrentValue,
+})  local DisableLimitRangerEspToggle = SettingsTab:AddToggle({
+Text =  "Disable Limit Ranger Esp",
+   Name ="DisableLimitRangerEspToggle",
    Default = false,
-   Flag = "EspDistance",
+   Flag = "ButtonDLRE", 
+   Callback = function(Value)
+  DisableLimitRangerEsp = Value 
+end,
+})
+local DistanceEspToggle = SettingsTab:AddToggle({
+Text =  "Activate Distance For Esp",
+   Name ="DistanceEspToggle",
+   Default = false,
+   Flag = "ButtonADFE", 
    Callback = function(Value)
   ActiveDistanceEsp = Value 
+end,
+})
+local TraitsToggle = SettingsTab:AddToggle({
+Text =  "Trait for esp",
+   Name ="TraitToggle",
+   Default = false,
+   Flag = "ButtonTTR", 
+   Callback = function(Value)
+  LineESPEnabled = Value 
 end,
 })
 local ChangeThemeDropdown = SettingsTab:AddDropdown({
