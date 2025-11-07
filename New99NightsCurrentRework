@@ -409,6 +409,7 @@ if not part or not highlight or not billboard or not label or not line then retu
 			if line then line.Visible = false end
 		end
 	end
+    end)
     if ActiveNoclip then 
 if Game.Players.LocalPlayer.Character then
 for _, Parts in pairs(Game.Players.LocalPlayer.Character:GetDescendants()) do
@@ -490,8 +491,9 @@ local function copyToClipboard(text)
         warn("setclipboard is not supported in this environment.")
     end
 end
-local DiscordLink = DiscordTab:CreateButton({
-   Name = "Discord Link",
+local DiscordLink = DiscordTab:AddButton({
+    Text = "Discord Link",
+   Name = "DiscordLink",
    Callback = function()
 copyToClipboard("https://discord.gg/E2TqYRsRP4")
 end,
@@ -834,7 +836,7 @@ game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = OldCF
 end,
 })
 local ButtonBringAllMedkit = BringItemTab:AddButton({
-    Text = "Bring All Medkits"
+    Text = "Bring All Medkits",
    Name = "ButtonBringAllMedkit",
    Callback = function(Value)
  if DoingTheThings then return end
@@ -853,7 +855,7 @@ end,
 })
 
 local ButtonBringAllOldRadio = BringItemTab:AddButton({
-    Text = "Bring All Old Radio"
+    Text = "Bring All Old Radio",
    Name = "ButtonBringAllOldRadio",
    Callback = function(Value)
  if DoingTheThings then return end
