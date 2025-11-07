@@ -1002,7 +1002,10 @@ end,
 local TextBoxText = ""
 local isInTheMap = "no"
 local HowManyItemCanShowUp = 0
-local Label = BringItemTab:CreateLabel("Item Is In The Map: No (x"..HowManyItemCanShowUp..")", "rewind")
+	local Label = BringItemTab:AddText({
+		Text = "Item Is In The Map: No (x"..HowManyItemCanShowUp..")",
+		Name = Label
+	})
 local TextboxBringNameItem = BringItemTab:AddTextbox({
     Text = "",
    Name = "TextboxBringNameItem",
@@ -1018,7 +1021,7 @@ HowManyItemCanShowUp = HowManyItemCanShowUp +1
 isInTheMap ="yes"
 end 
 end
-Label:Set("Item Is In The Map: "..isInTheMap.." (x"..HowManyItemCanShowUp..")","rewind")
+Label:Set({"Item Is In The Map: "..isInTheMap.." (x"..HowManyItemCanShowUp..")"})
    end,
 })
 local ButtonBringAllThingsNamedInTextBox = BringItemTab:AddButton({
