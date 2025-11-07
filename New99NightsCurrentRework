@@ -51,6 +51,8 @@ local DistanceForAutoChopTree = 25
 local isA = "IsA"
 local LimitRangerEsp = 100
 local DisableLimitRangerEsp = false
+local ValueSpeed = 16
+local OldSpeed =nil
 local Version = InfoTab:AddText({
 		Text = "Version:"..V,
 		Name = "VersionScript"
@@ -1045,8 +1047,7 @@ game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = OldCF
 end,
 })
 
-local ValueSpeed = 16
-local OldSpeed =nil
+
 task.spawn(function()
 OldSpeed = game.Players.LocalPlayer.Character.Humanoid.WalkSpeed
 end)
@@ -1167,8 +1168,9 @@ end
 end,
 })
 local NoFogToggle = PlayerTab:AddToggle({
-   Name = "No Fog",
-   CurrentValue = false,
+    Text = "No Fog",
+   Name = "NoFogToggle",
+   Default = false,
    Flag = "NoFog1", 
    Callback = function(Value)
 ActiveNoFog = Value 
