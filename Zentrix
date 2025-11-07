@@ -1708,36 +1708,49 @@ function obj:ChangeTheme(ThemesName)
 				labelText.TextColor3 = selectedTheme.TextColor
 end
 			local moveConn, releaseConn
+local dragging = false
 
-			local function updateSlider(x)
-				local percent = math.clamp((x - sliderBar.AbsolutePosition.X) / sliderBar.AbsoluteSize.X, 0, 1)
-				local v = math.floor(min + (max - min) * percent)
-				obj:SetValue(v)
-				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
-					tab.SlidersValue = tab.SlidersValue or {}
-					tab.SlidersValue[flag] = v
-					SetFlag(flag, v)
+local function updateSlider(x)
+	local percent = math.clamp((x - sliderBar.AbsolutePosition.X) / sliderBar.AbsoluteSize.X, 0, 1)
+	local v = math.floor(min + (max - min) * percent)
+	obj:SetValue(v)
+	if settings1 and settings1.Data and settings1.Data.EnableSavingData then
+		tab.SlidersValue = tab.SlidersValue or {}
+		tab.SlidersValue[flag] = v
+		SetFlag(flag, v)
+	end
+end
+
+sliderBar.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+		dragging = true
+		updateSlider(input.Position.X)
+
+		moveConn = UserInputService.InputChanged:Connect(function(moveInput)
+			if dragging and (moveInput.UserInputType == Enum.UserInputType.MouseMovement or moveInput.UserInputType == Enum.UserInputType.Touch) then
+				updateSlider(moveInput.Position.X)
+			end
+		end)
+
+		releaseConn = UserInputService.InputEnded:Connect(function(endInput)
+			if endInput.UserInputType == Enum.UserInputType.MouseButton1 or endInput.UserInputType == Enum.UserInputType.Touch then
+				if dragging then
+					dragging = false
+					if moveConn then moveConn:Disconnect() moveConn = nil end
+					if releaseConn then releaseConn:Disconnect() releaseConn = nil end
 				end
 			end
+		end)
+	end
+end)
 
-			sliderBar.InputBegan:Connect(function(input)
-				if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-					updateSlider(input.Position.X)
-
-					moveConn = UserInputService.InputChanged:Connect(function(moveInput)
-						if moveInput.UserInputType == Enum.UserInputType.MouseMovement or moveInput.UserInputType == Enum.UserInputType.Touch then
-							updateSlider(moveInput.Position.X)
-						end
-					end)
-
-					releaseConn = UserInputService.InputEnded:Connect(function(endInput)
-						if endInput.UserInputType == Enum.UserInputType.MouseButton1 or endInput.UserInputType == Enum.UserInputType.Touch then
-							if moveConn then moveConn:Disconnect() end
-							if releaseConn then releaseConn:Disconnect() end
-						end
-					end)
-				end
-			end)
+UserInputService.WindowFocusReleased:Connect(function()
+	if dragging then
+		dragging = false
+		if moveConn then moveConn:Disconnect() moveConn = nil end
+		if releaseConn then releaseConn:Disconnect() releaseConn = nil end
+	end
+end)
 
 			tab.sliders[flag] = obj
 
@@ -2066,7 +2079,7 @@ end
 	
 end
 function library:CreateWindow(settings1, onLoad)
-	print("Library Version: 0.37")
+	print("Library Version: 0.38")
 	if game:GetService("RunService"):IsStudio() then
 		if game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary") then
 			game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary"):Destroy()
