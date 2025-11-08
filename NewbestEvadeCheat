@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.17"
+local V = "V.0.18"
 library:CreateWindow({
 	Title = "Evade - by Iliankytb",-- Title of the script
 	Theme = selectedTheme,--View more theme in my dicord server!
@@ -48,6 +48,22 @@ local DisableLimitRangerEsp = false
 local ValueSpeed = 16
 local cantdoingtheautowinsecurity = false
 local AutoRevive = false
+local ShowTimer = false
+local ScreenGuiTimer = Instance.new("ScreenGui")
+ScreenGuiTimer.Parent = game:GetService("CoreGui")
+
+
+local LabelTimer = Instance.new("TextLabel")
+LabelTimer.Size = UDim2.new(0.15, 0, 0.05, 0)          
+LabelTimer.Position = UDim2.new(0.85, 0, 0.5, -25)        
+LabelTimer.BackgroundTransparency = 1              
+LabelTimer.Text = "ffff"
+LabelTimer.TextColor3 = Color3.new(1, 1, 1)         
+LabelTimer.TextScaled = true          
+LabelTimer.TextStrokeTransparency = 0              
+LabelTimer.Font = Enum.Font.GothamBold
+LabelTimer.Visible = false
+LabelTimer.Parent = ScreenGuiTimer
 
 local Version = InfoTab:AddText({
 		Text = "Version:"..V,
@@ -89,7 +105,7 @@ local Camera = workspace.CurrentCamera
 local LineESPEnabled = false 
 local cantrevivebcidk = false
 
-local function CreateEsp(Char, Color, Text, Parent)
+local function CreateEsp(Char, Color, Text, Parent,num)
 	if not Char or not Parent then return end
 	if Char:FindFirstChild("ESP") and Char:FindFirstChildOfClass("Highlight") then return end
 
@@ -110,7 +126,7 @@ local function CreateEsp(Char, Color, Text, Parent)
 	billboard.Name = "ESP"
 	billboard.Size = UDim2.new(0, 50, 0, 25)
 	billboard.AlwaysOnTop = true
-	billboard.StudsOffset = Vector3.new(0, -2, 0)
+	billboard.StudsOffset = Vector3.new(0, num, 0)
 	billboard.Adornee = Parent
 	billboard.Enabled = false
 	billboard.Parent = Parent
@@ -216,6 +232,9 @@ if not part or not highlight or not billboard or not label or not line then retu
 	end
     end)
     if game.Players.LocalPlayer.Character then
+        if ShowTimer then
+            LabelTimer.Text = tonumber(workspace.Game.Stats:GetAttribute("Timer"))
+        end
     if ActiveAutoWin and not cantdoingtheautowinsecurity then
  if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and (not InReviving or game.Players.LocalPlayer.Character:GetAttribute("State") ~= "Downed") then
 local securityPart = game.Workspace:FindFirstChild("SecurityPart") or Instance.new("Part")
@@ -370,6 +389,9 @@ if AutoFarmSummerEvent then
 if  child and  child:IsA("Model") and child.PrimaryPart and child.Name == "Visual"  then 
  if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and (not InReviving or game.Players.LocalPlayer.Character:GetAttribute("State")~= "Downed") then
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = child.PrimaryPart.CFrame + Vector3.new(0, 3, 0)           
+game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+wait(0.5)
+game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
 end
 end
 end
@@ -453,6 +475,16 @@ Text =  "Trait for esp",
   LineESPEnabled = Value 
 end,
 })
+local ShowTimer = GameTab:AddToggle({
+Text =  "Show Timer",
+   Name ="ShowTimer",
+   Default = false,
+   Flag = "ShowTimer", 
+   Callback = function(Value)
+  ShowTimer = Value 
+  LabelTimer.Visible = ShowTimer
+end,
+})
 local ChangeThemeDropdown = SettingsTab:AddDropdown({
 		Text = "Change Theme:",
 		Name = "CTD",
@@ -475,12 +507,12 @@ workspace.DescendantAdded:Connect(function(child)
 task.wait(0.75)
 
 if ActiveEspPlayers then
+    local playerA = game:GetService("Players"):GetPlayerFromCharacter(child)
+    if playerA then
 if child and child:IsA("Model") and child:FindFirstChild("Head") and not child:FindFirstChildOfClass("Highlight") and not child.Head:FindFirstChildOfClass("BillboardGui") then 
-  local playerA = game:GetService("Players"):GetPlayerFromCharacter(child)
-  if playerA then
 CreateEsp(child,Color3.fromRGB(255,255,255),child.Name,child.Head,1) 
-  end
 end 
+    end
 end  
 
 if ActiveEspBots then
@@ -500,6 +532,9 @@ if AutoFarmSummerEvent then
 if  child and child:IsA("Model") and child.PrimaryPart and child.Name == "Visual" and child.Parent == game.Workspace.Game.Effects.Tickets then 
  if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and (not InReviving or game.Players.LocalPlayer.Character:GetAttribute("State")~= "Downed") then
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = child.PrimaryPart.CFrame + Vector3.new(0, 3, 0)           
+game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+wait(0.5)
+game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
 end
 end
 end
