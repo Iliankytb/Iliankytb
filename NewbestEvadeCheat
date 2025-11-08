@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.18"
+local V = "V.0.19"
 library:CreateWindow({
 	Title = "Evade - by Iliankytb",-- Title of the script
 	Theme = selectedTheme,--View more theme in my dicord server!
@@ -45,6 +45,7 @@ local LimitRangerEsp = 100
 local ActiveSpeedBoost,ActiveEspPlayers,ActiveEspBots,ActiveAutoWin,ActiveAutoFarmMoney,InReviving,AutoFarmSummerEvent,ActiveEspSummerEvent,InTickets,ActiveDistanceEsp = false,false,false,false,false,false,false,false,false,false
 local ParagraphInfoServer = InfoTab:AddParagraph({Title = "",Content = "Loading",Name = "Paragraph1"})
 local DisableLimitRangerEsp = false
+local Currentlydoingtheevent = false
 local ValueSpeed = 16
 local cantdoingtheautowinsecurity = false
 local AutoRevive = false
@@ -57,7 +58,7 @@ local LabelTimer = Instance.new("TextLabel")
 LabelTimer.Size = UDim2.new(0.15, 0, 0.05, 0)          
 LabelTimer.Position = UDim2.new(0.85, 0, 0.5, -25)        
 LabelTimer.BackgroundTransparency = 1              
-LabelTimer.Text = "ffff"
+LabelTimer.Text = "Time"
 LabelTimer.TextColor3 = Color3.new(1, 1, 1)         
 LabelTimer.TextScaled = true          
 LabelTimer.TextStrokeTransparency = 0              
@@ -76,7 +77,7 @@ window:Notify({
 })
 local function GetDownedPlayer()
         for _, v in pairs(game.Workspace.Game.Players:GetChildren()) do
-            if v:GetAttribute("State") == "Downed" then
+            if v:GetAttribute("State") == "Downed"  then
                 return v
             end
         end
@@ -237,7 +238,7 @@ if not part or not highlight or not billboard or not label or not line then retu
             LabelTimer.Text = tonumber(workspace.Game.Stats:GetAttribute("Timer"))
             end
         end
-    if ActiveAutoWin and not cantdoingtheautowinsecurity then
+    if ActiveAutoWin and not cantdoingtheautowinsecurity and not Currentlydoingtheevent then
  if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and (not InReviving or game.Players.LocalPlayer.Character:GetAttribute("State") ~= "Downed") then
 local securityPart = game.Workspace:FindFirstChild("SecurityPart") or Instance.new("Part")
             securityPart.Name = "SecurityPart"
@@ -253,6 +254,20 @@ local securityPart = game.Workspace:FindFirstChild("SecurityPart") or Instance.n
             cantdoingtheautowinsecurity = false
 end 
 end
+if AutoFarmSummerEvent and not Currentlydoingtheevent and not InReviving then
+Currentlydoingtheevent = true
+    for _, child in pairs(game.Workspace.Game.Effects.Tickets:GetChildren()) do
+if  child and  child:IsA("Model") and child.PrimaryPart and child.Name == "Visual"  then 
+ if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and (not InReviving or game.Players.LocalPlayer.Character:GetAttribute("State")~= "Downed") then
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = child.PrimaryPart.CFrame + Vector3.new(0, 3, 0)           
+game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+wait(0.5)
+game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+end
+end
+end
+Currentlydoingtheevent = false
+end
 if AutoRevive and not cantrevivebcidk then
    if game.Players.LocalPlayer.Character:GetAttribute("State") == "Downed" then
        game:GetService("ReplicatedStorage").Events.Player.ChangePlayerMode:FireServer(true)
@@ -261,10 +276,10 @@ if AutoRevive and not cantrevivebcidk then
   cantrevivebcidk = false
   end
 end
-if  ActiveAutoFarmMoney and not InReviving then
- if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and game.Players.LocalPlayer.Character:GetAttribute("State") == "Downed" then
+if  ActiveAutoFarmMoney and not InReviving and not Currentlydoingtheevent then
+ if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and game.Players.LocalPlayer.Character:GetAttribute("State") ~= "Downed" then
 local downedPlayer = GetDownedPlayer()
-          if downedPlayer and downedPlayer:FindFirstChild("HumanoidRootPart") then
+          if downedPlayer and downedPlayer:FindFirstChild("HumanoidRootPart") and downedPlayer ~= game.Players.LocalPlayer then
           InReviving = true    
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = downedPlayer.HumanoidRootPart.CFrame + Vector3.new(0, 3, 0)
              game:GetService("ReplicatedStorage").Events.Character.Interact:FireServer("Revive",true,downedPlayer)
@@ -530,16 +545,6 @@ CreateEsp(child,Color3.fromRGB(0,255,255),"Tickets",child.PrimaryPart,-2)
 end 
 end  
 
-if AutoFarmSummerEvent then
-if  child and child:IsA("Model") and child.PrimaryPart and child.Name == "Visual" and child.Parent == game.Workspace.Game.Effects.Tickets then 
- if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and (not InReviving or game.Players.LocalPlayer.Character:GetAttribute("State")~= "Downed") then
-    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = child.PrimaryPart.CFrame + Vector3.new(0, 3, 0)           
-game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
-wait(0.5)
-game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
-end
-end
-end
 end)
 workspace.DescendantRemoving:Connect(function(child)
     if ActiveEspPlayers then
