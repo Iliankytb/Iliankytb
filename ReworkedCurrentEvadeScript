@@ -440,16 +440,16 @@ Text =  "Auto Revive",
    Default = false,
    Flag = "AutoReviveToggle", 
    Callback = function(Value)
-  ActiveDistanceEsp = Value 
+  AutoRevive = Value 
 end,
 })
 local TraitsToggle = SettingsTab:AddToggle({
 Text =  "Trait for esp",
-   Name ="TraitToggle",
+   Name ="TraitTogglke",
    Default = false,
    Flag = "ButtonTTR", 
    Callback = function(Value)
-  AutoRevive = Value 
+  LineESPEnabled = Value 
 end,
 })
 local ChangeThemeDropdown = SettingsTab:AddDropdown({
