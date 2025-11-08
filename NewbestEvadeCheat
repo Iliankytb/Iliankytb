@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.25"
+local V = "V.0.26"
 library:CreateWindow({
 	Title = "Evade - by Iliankytb",-- Title of the script
 	Theme = selectedTheme,--View more theme in my dicord server!
@@ -50,6 +50,8 @@ local ValueSpeed = 16
 local cantdoingtheautowinsecurity = false
 local AutoRevive = false
 local ShowTimer = false
+local ActivateFly = false
+local AlrActivatedFlyPC = false
 local ScreenGuiTimer = Instance.new("ScreenGui")
 ScreenGuiTimer.Parent = game:GetService("CoreGui")
 
@@ -752,7 +754,7 @@ if not AlrActivatedFlyPC then
 AlrActivatedFlyPC = true
 	local Notif = window:Notify({
 		Title = "Fly!",
-		Message = "When you enable to fly you can press T to fly/unfly (it won't disable the button!)!",
+		Message = "When you enable to fly you can press F to fly/unfly (it won't disable the button!)!",
 		Duration = 5,
 	})
 end
@@ -773,7 +775,7 @@ end,
 })
 UserInputService.InputBegan:Connect(function(input, processed)
 	if processed then return end
-	if input.KeyCode == Enum.KeyCode.T then
+	if input.KeyCode == Enum.KeyCode.F then
 		if not FLYING and ActivateFly then
 			if UserInputService.TouchEnabled then
 				MobileFly()
