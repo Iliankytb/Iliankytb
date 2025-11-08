@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.30"
+local V = "V.0.31"
 library:CreateWindow({
 	Title = "Evade - by Iliankytb",-- Title of the script
 	Theme = selectedTheme,--View more theme in my dicord server!
@@ -426,7 +426,7 @@ if not part or not highlight or not billboard or not label or not line then retu
         end
     if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
     if ActiveAutoWin and not cantdoingtheautowinsecurity and not Currentlydoingtheevent then
- if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and (not InReviving or game.Players.LocalPlayer.Character:GetAttribute("State") ~= "Downed") then
+ if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and (not InReviving or game.Players.LocalPlayer.Character:GetAttribute("State") ~= "Downed") and not game.Players.LocalPlayer.Character:GetAttribute("Carrying") then
 local securityPart = game.Workspace:FindFirstChild("SecurityPart") or Instance.new("Part")
             securityPart.Name = "SecurityPart"
             securityPart.Size = Vector3.new(10, 1, 10)
@@ -445,7 +445,7 @@ if AutoFarmSummerEvent and not Currentlydoingtheevent and not InReviving then
 Currentlydoingtheevent = true
     for _, child in pairs(game.Workspace.Game.Effects.Tickets:GetChildren()) do
 if  child and  child:IsA("Model") and child.PrimaryPart and child.Name == "Visual"  then 
- if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and (not InReviving or game.Players.LocalPlayer.Character:GetAttribute("State")~= "Downed") then
+ if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and (not InReviving or game.Players.LocalPlayer.Character:GetAttribute("State")~= "Downed") and not game.Players.LocalPlayer.Character:GetAttribute("Carrying") then
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = child.PrimaryPart.CFrame + Vector3.new(0, 3, 0)           
 wait(0.75)
 end
@@ -462,7 +462,7 @@ if AutoRevive and not cantrevivebcidk then
   end
 end
 if  ActiveAutoFarmMoney and not InReviving and not Currentlydoingtheevent then
- if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and game.Players.LocalPlayer.Character:GetAttribute("State") ~= "Downed" then
+ if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and game.Players.LocalPlayer.Character:GetAttribute("State") ~= "Downed" and not game.Players.LocalPlayer.Character:GetAttribute("Carrying") then
 local downedPlayer = GetDownedPlayer()
           if downedPlayer and downedPlayer:FindFirstChild("HumanoidRootPart") and downedPlayer ~= game.Players.LocalPlayer then
           InReviving = true    
