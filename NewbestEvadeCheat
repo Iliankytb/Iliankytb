@@ -503,8 +503,6 @@ ActiveEspPlayers = Value
 if ActiveEspPlayers then
     for _, Assets in pairs(Players:GetChildren()) do
         if Assets and Assets.Character then
-
-       
             if Assets.Character:GetAttribute("RigType") == "R15" then
                 local Char = Assets.Character:FindFirstChildOfClass("Model")
                 if Char then
@@ -583,7 +581,6 @@ if ActiveEspBots then
         if Assets
         and Assets:IsA("Model")
         and Assets.PrimaryPart
-        and Assets.PrimaryPart:IsA("BasePart")
         and Assets:GetAttribute("Team") == "Nextbot"
         and not Assets:FindFirstChildOfClass("Highlight")
         and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
@@ -597,7 +594,6 @@ else
         if Assets
         and Assets:IsA("Model")
         and Assets.PrimaryPart
-        and Assets.PrimaryPart:IsA("BasePart")
         and Assets:GetAttribute("Team") == "Nextbot"
         and Assets:FindFirstChildOfClass("Highlight")
         and Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
@@ -871,12 +867,11 @@ task.wait(0.75)
 
         end
     end
-    
+
 if ActiveEspBots then
     if child
     and child:IsA("Model")
     and child.PrimaryPart
-    and child.PrimaryPart:IsA("BasePart")
     and child.Parent == game.Workspace.Game.Players
     and child:GetAttribute("Team") == "Nextbot"
     and not child:FindFirstChildOfClass("Highlight")
@@ -928,7 +923,6 @@ workspace.DescendantRemoving:Connect(function(child)
     and child:IsA("Model")
     and child.Parent == workspace.Game.Players
     and child.PrimaryPart
-    and child.PrimaryPart:IsA("BasePart")
     and child:GetAttribute("Team") == "Nextbot"
     and child:FindFirstChildOfClass("Highlight")
     and child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
