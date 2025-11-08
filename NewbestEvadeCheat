@@ -52,6 +52,7 @@ local AutoRevive = false
 local ShowTimer = false
 local ActivateFly = false
 local AlrActivatedFlyPC = false
+local UserInputService = game:GetService("UserInputService")
 local ScreenGuiTimer = Instance.new("ScreenGui")
 ScreenGuiTimer.Parent = game:GetService("CoreGui")
 
