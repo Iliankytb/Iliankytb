@@ -501,39 +501,73 @@ Text = "Players Esp",
    Callback = function(Value)
 ActiveEspPlayers = Value 
 if ActiveEspPlayers then
-for _,Assets in pairs(game:GetService("Players"):GetChildren()) do  
-if Assets and Assets.Character  then 
- if Assets.Character:GetAttribute("RigType") == "R15" then
-     local Char = Assets.Character:FindFirstChildOfClass("Model")
-     if Char then
-         if Char:FindFirstChild("Head") and not Char.Parent:FindFirstChildOfClass("Highlight") and not Char.Head:FindFirstChildOfClass("BillboardGui") then
-      CreateEsp(Char,Color3.fromRGB(255,255,255),Assets.Name,Char.Head,1) 
-      end
-     end
-        else
-      if Assets.Character:FindFirstChild("Head") and not Assets.Character:FindFirstChildOfClass("Highlight") and not Assets.Character.Head:FindFirstChildOfClass("BillboardGui") then
-      CreateEsp(Assets.Character,Color3.fromRGB(255,255,255),Assets.Name,Assets.Character.Head,1) 
-      end
+    for _, Assets in pairs(Players:GetChildren()) do
+        if Assets and Assets.Character then
+
+       
+            if Assets.Character:GetAttribute("RigType") == "R15" then
+                local Char = Assets.Character:FindFirstChildOfClass("Model")
+                if Char then
+                    local Head = Char:FindFirstChild("Head")
+
+                    if Head
+                    and not Char.Parent:FindFirstChildOfClass("Highlight")
+                    and not Head:FindFirstChildOfClass("BillboardGui") then
+
+                        CreateEsp(Char, Color3.fromRGB(255,255,255), Assets.Name, Head, 1)
+                    end
+                end
+
+            else
+                local Char = Assets.Character
+                local Head = Char:FindFirstChild("Head")
+
+                if Head
+                and not Char:FindFirstChildOfClass("Highlight")
+                and not Head:FindFirstChildOfClass("BillboardGui") then
+
+                    CreateEsp(Char, Color3.fromRGB(255,255,255), Assets.Name, Head, 1)
+                end
+            end
+
+        end
     end
-end 
-end  
+
 else
-for _,Assets in pairs(game:GetService("Players"):GetChildren()) do  
-if Assets and Assets.Character  then 
- if Assets.Character:GetAttribute("RigType") == "R15" then
-     local Char = Assets.Character:FindFirstChildOfClass("Model")
-     if Char then
-         if Char:FindFirstChild("Head") and  Char.Parent:FindFirstChildOfClass("Highlight") and  Char.Head:FindFirstChildOfClass("BillboardGui") then
-      KeepEsp(Char,Char.Head) 
-      end
-     end
-        else
-      if Assets.Character:FindFirstChild("Head") and  Assets.Character:FindFirstChildOfClass("Highlight") and  Assets.Character.Head:FindFirstChildOfClass("BillboardGui") then
-      KeepEsp(Assets.Character,Assets.Character.Head) 
-      end
+
+    for _, Assets in pairs(Players:GetChildren()) do
+        if Assets and Assets.Character then
+
+     
+            if Assets.Character:GetAttribute("RigType") == "R15" then
+                local Char = Assets.Character:FindFirstChildOfClass("Model")
+                if Char then
+                    local Head = Char:FindFirstChild("Head")
+
+                    if Head
+                    and Char.Parent:FindFirstChildOfClass("Highlight")
+                    and Head:FindFirstChildOfClass("BillboardGui") then
+
+                        KeepEsp(Char, Head)
+                    end
+                end
+
+     
+            else
+                local Char = Assets.Character
+                local Head = Char:FindFirstChild("Head")
+
+                if Head
+                and Char:FindFirstChildOfClass("Highlight")
+                and Head:FindFirstChildOfClass("BillboardGui") then
+
+                    KeepEsp(Char, Head)
+                end
+            end
+
+        end
     end
-end 
-end  
+
 end
 end,
 })
@@ -545,20 +579,35 @@ Text = "Bots Esp",
    Callback = function(Value)
 ActiveEspBots = Value 
 if ActiveEspBots then
-for _,Assets in pairs(game.Workspace.Game.Players:GetChildren()) do  
-if Assets and Assets:IsA("Model") and Assets.PrimaryPart and Assets:GetAttribute("Team") == "Nextbot" and not Assets:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
-Assets.PrimaryPart.Transparency = 0.99
-CreateEsp(Assets,Color3.fromRGB(255,0,0),Assets.Name,Assets.PrimaryPart,-2) 
-end 
-end  
+    for _, Assets in pairs(game.Workspace.Game.Players:GetChildren()) do  
+        if Assets
+        and Assets:IsA("Model")
+        and Assets.PrimaryPart
+        and Assets.PrimaryPart:IsA("BasePart")
+        and Assets:GetAttribute("Team") == "Nextbot"
+        and not Assets:FindFirstChildOfClass("Highlight")
+        and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+
+            Assets.PrimaryPart.Transparency = 0.99
+            CreateEsp(Assets, Color3.fromRGB(255,0,0), Assets.Name, Assets.PrimaryPart, -2)
+        end
+    end
 else
-for _,Assets in pairs(game.Workspace.Game.Players:GetChildren()) do  
-if Assets and Assets:IsA("Model") and Assets.PrimaryPart and Assets:GetAttribute("Team") == "Nextbot"  and Assets:FindFirstChildOfClass("Highlight") and Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
-Assets.PrimaryPart.Transparency = 1
-KeepEsp(Assets,Assets.PrimaryPart) 
-end 
-end   
+    for _, Assets in pairs(game.Workspace.Game.Players:GetChildren()) do  
+        if Assets
+        and Assets:IsA("Model")
+        and Assets.PrimaryPart
+        and Assets.PrimaryPart:IsA("BasePart")
+        and Assets:GetAttribute("Team") == "Nextbot"
+        and Assets:FindFirstChildOfClass("Highlight")
+        and Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+
+            Assets.PrimaryPart.Transparency = 1
+            KeepEsp(Assets, Assets.PrimaryPart)
+        end
+    end  
 end
+
 end,
 })
 local EspHalloweenEventToggle = EspTab:AddToggle({
@@ -822,12 +871,22 @@ task.wait(0.75)
 
         end
     end
+    
 if ActiveEspBots then
-if child and child:IsA("Model") and Assets.PrimaryPart and child.Parent == game.Workspace.Game.Players and child:GetAttribute("Team") == "Nextbot" and not child:FindFirstChildOfClass("Highlight") and not child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
-child.PrimaryPart.Transparency = 0.99
-CreateEsp(child,Color3.fromRGB(255,0,0),child.Name,child.PrimaryPart,-2) 
-end 
-end  
+    if child
+    and child:IsA("Model")
+    and child.PrimaryPart
+    and child.PrimaryPart:IsA("BasePart")
+    and child.Parent == game.Workspace.Game.Players
+    and child:GetAttribute("Team") == "Nextbot"
+    and not child:FindFirstChildOfClass("Highlight")
+    and not child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+
+        child.PrimaryPart.Transparency = 0.99
+        CreateEsp(child, Color3.fromRGB(255,0,0), child.Name, child.PrimaryPart, -2)
+    end
+end
+
 
 if ActiveEspSummerEvent then
 if child and child:IsA("Model") and child.PrimaryPart and child.Name == "Visual" and child.Parent == game.Workspace.Game.Effects.Tickets and not child:FindFirstChildOfClass("Highlight") and not child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
@@ -865,16 +924,19 @@ workspace.DescendantRemoving:Connect(function(child)
     end
 
     if ActiveEspBots then
-        if child
-          and child:IsA("Model") 
-        and child.Parent == workspace.Game.Players and Assets.PrimaryPart
-        and  child:GetAttribute("Team") == "Nextbot"
-        and child:FindFirstChildOfClass("Highlight")
-        and child.PrimaryPart:FindFirstChildOfClass("BillboardGui")
-        then
-            KeepEsp(child, child.PrimaryPart)
-        end
+    if child
+    and child:IsA("Model")
+    and child.Parent == workspace.Game.Players
+    and child.PrimaryPart
+    and child.PrimaryPart:IsA("BasePart")
+    and child:GetAttribute("Team") == "Nextbot"
+    and child:FindFirstChildOfClass("Highlight")
+    and child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+
+        KeepEsp(child, child.PrimaryPart)
     end
+end
+
     if ActiveEspSummerEvent then
         if child
           and child:IsA("Model") 
