@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.16"
+local V = "V.0.17"
 library:CreateWindow({
 	Title = "Evade - by Iliankytb",-- Title of the script
 	Theme = selectedTheme,--View more theme in my dicord server!
@@ -41,8 +41,14 @@ local GameTab = window:CreateTab("Game",0)
 local EspTab = window:CreateTab("Esp",0)
 local DiscordTab = window:CreateTab("Discord",0)
 local SettingsTab = window:CreateTab("Settings",0)
+local LimitRangerEsp = 100
 local ActiveSpeedBoost,ActiveEspPlayers,ActiveEspBots,ActiveAutoWin,ActiveAutoFarmMoney,InReviving,AutoFarmSummerEvent,ActiveEspSummerEvent,InTickets,ActiveDistanceEsp = false,false,false,false,false,false,false,false,false,false
 local ParagraphInfoServer = InfoTab:AddParagraph({Title = "",Content = "Loading",Name = "Paragraph1"})
+local DisableLimitRangerEsp = false
+local ValueSpeed = 16
+local cantdoingtheautowinsecurity = false
+local AutoRevive = false
+
 local Version = InfoTab:AddText({
 		Text = "Version:"..V,
 		Name = "VersionScript"
@@ -52,34 +58,63 @@ window:Notify({
 				Message = V,
 				Duration = 7.5,
 })
+local function GetDownedPlayer()
+        for _, v in pairs(game.Workspace.Game.Players:GetChildren()) do
+            if v:GetAttribute("State") == "Downed" then
+                return v
+            end
+        end
+        return nil
+    end
+local function getServerInfo()
+	local Players = game:GetService("Players")
+	local playerCount = #Players:GetPlayers()
+local maxPlayers = game:GetService("Players").MaxPlayers
+local isStudio = game:GetService("RunService"):IsStudio()
 
-local function CreateEsp(Char, Color, Text,Parent,Number)
-	if not Char then return end
+	return {
+		PlaceId = game.PlaceId,
+		JobId = game.JobId,
+		IsStudio = isStudio,
+		CurrentPlayers = playerCount,
+MaxPlayers =maxPlayers
+	}
+end
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local RunService = game:GetService("RunService")
+
+local ESPs = {}
+local Camera = workspace.CurrentCamera
+local LineESPEnabled = false 
+local cantrevivebcidk = false
+
+local function CreateEsp(Char, Color, Text, Parent)
+	if not Char or not Parent then return end
 	if Char:FindFirstChild("ESP") and Char:FindFirstChildOfClass("Highlight") then return end
 
 	
 	local highlight = Char:FindFirstChildOfClass("Highlight") or Instance.new("Highlight")
 	highlight.Name = "ESP_Highlight"
-highlight.Adornee = Char
-highlight.FillColor = Color
-highlight.FillTransparency = 1
-highlight.OutlineColor = Color
-highlight.OutlineTransparency = 0
-highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-highlight.Enabled = true
+	highlight.Adornee = Char
+	highlight.FillColor = Color
+	highlight.FillTransparency = 1
+	highlight.OutlineColor = Color
+	highlight.OutlineTransparency = 0
+	highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+	highlight.Enabled = false
 	highlight.Parent = Char
 
 	
 	local billboard = Char:FindFirstChild("ESP") or Instance.new("BillboardGui")
 	billboard.Name = "ESP"
-	billboard.Size = UDim2.new(0, 100, 0, 50)
+	billboard.Size = UDim2.new(0, 50, 0, 25)
 	billboard.AlwaysOnTop = true
-	billboard.StudsOffset = Vector3.new(0, Number, 0)
+	billboard.StudsOffset = Vector3.new(0, -2, 0)
 	billboard.Adornee = Parent
-	billboard.Enabled = true
+	billboard.Enabled = false
 	billboard.Parent = Parent
 
-	
 	local label = billboard:FindFirstChildOfClass("TextLabel") or Instance.new("TextLabel")
 	label.Size = UDim2.new(1, 0, 1, 0)
 	label.BackgroundTransparency = 1
@@ -87,38 +122,141 @@ highlight.Enabled = true
 	label.TextColor3 = Color
 	label.TextScaled = true
 	label.Parent = billboard
+
+	local line = Drawing.new("Line")
+	line.Visible = false
+	line.Color = Color
+	line.Thickness = 1.5
+	line.Transparency = 1
+
+	table.insert(ESPs, {
+		Char = Char,
+		Highlight = highlight,
+		Billboard = billboard,
+		Label = label,
+		Part = Parent,
+		Line = line,
+		Text = Text,
+		Color = Color
+	})
+end
+
+local function KeepEsp(Char, Parent)
+	if not Char or not Char:FindFirstChildOfClass("Highlight") then return end
+	if not Parent or not Parent:FindFirstChildOfClass("BillboardGui") then return end
+
+	for i = #ESPs, 1, -1 do 
+		local esp = ESPs[i]
+		if esp.Char == Char then 
+			if esp.Highlight then esp.Highlight:Destroy() end
+			if esp.Billboard then esp.Billboard:Destroy() end
+			if esp.Line then esp.Line:Destroy() end
+
+			table.remove(ESPs, i) 
+		end
+	end
+end
+
+RunService.RenderStepped:Connect(function()
 task.spawn(function()
-		local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
-local Workspace = game:GetService("Workspace")
+	local updatedInfo = getServerInfo()
+	local updatedContent = string.format(
+		"📌 PlaceId: %s\n🔑 JobId: %s\n🧪 IsStudio: %s\n👥 Players: %d/%d",
+		updatedInfo.PlaceId,
+		updatedInfo.JobId,
+		
+		tostring(updatedInfo.IsStudio),
+		updatedInfo.CurrentPlayers,
+updatedInfo.MaxPlayers
+	)
 
-local LocalPlayer = Players.LocalPlayer
-local Camera = Workspace.CurrentCamera
-
-while highlight and billboard and Parent and Parent.Parent do
-	local cameraPosition = Camera and Camera.CFrame.Position
-	if cameraPosition and Parent and Parent:IsA("BasePart") then
-	local distance = (cameraPosition - Parent.Position).Magnitude
-				task.spawn(function()
-if ActiveDistanceEsp then
-label.Text = Text.." ("..math.floor(distance + 0.5).." m)"
-else
-label.Text = Text
-end
+	ParagraphInfoServer:Set({
+		Title = "Info",
+		Content = updatedContent
+	})
 end)
-	end
+	local cameraPosition = Camera.CFrame.Position
+	local screenCenter = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y)
+task.spawn(function()
+	for _, esp in ipairs(ESPs) do
+		local part = esp.Part
+		local highlight = esp.Highlight
+		local billboard = esp.Billboard
+		local label = esp.Label
+		local line = esp.Line
+if not part or not highlight or not billboard or not label or not line then return end
+		if part and part.Parent and highlight and billboard then
+			local distance = (cameraPosition - part.Position).Magnitude
+			local screenPos, onScreen = Camera:WorldToViewportPoint(part.Position)
+			local withinRange = DisableLimitRangerEsp or distance <= LimitRangerEsp
 
-	RunService.Heartbeat:Wait()
-end
+			highlight.Enabled = withinRange and onScreen
+			billboard.Enabled = withinRange and onScreen
 
-	end)
-end
-local function KeepEsp(Char,Parent)
-	if Char and Char:FindFirstChildOfClass("Highlight") and Parent:FindFirstChildOfClass("BillboardGui") then
-		Char:FindFirstChildOfClass("Highlight"):Destroy()
-		Parent:FindFirstChildOfClass("BillboardGui"):Destroy()
+			if ActiveDistanceEsp then
+				label.Text = esp.Text .. " (" .. math.floor(distance + 0.5) .. " m)"
+			else
+				label.Text = esp.Text
+			end
+
+			if LineESPEnabled then
+				if onScreen and withinRange then
+					line.Visible = true
+					line.From = screenCenter
+					line.To = Vector2.new(screenPos.X, screenPos.Y)
+				else
+					line.Visible = false
+				end
+			else
+				line.Visible = false
+			end
+		else
+			if line then line.Visible = false end
+		end
 	end
+    end)
+    if game.Players.LocalPlayer.Character then
+    if ActiveAutoWin and not cantdoingtheautowinsecurity then
+ if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and (not InReviving or game.Players.LocalPlayer.Character:GetAttribute("State") ~= "Downed") then
+local securityPart = game.Workspace:FindFirstChild("SecurityPart") or Instance.new("Part")
+            securityPart.Name = "SecurityPart"
+            securityPart.Size = Vector3.new(10, 1, 10)
+            securityPart.Position = Vector3.new(0, 500, 0)
+            securityPart.Anchored = true
+            securityPart.Parent = game.Workspace
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = securityPart.CFrame + Vector3.new(0, 3, 0)  -- Téléporte le joueur au-dessus de la Part de sécurité
+         cantdoingtheautowinsecurity = true
+            wait(0.5)
+            securityPart:Destroy()
+            wait(0.25)
+            cantdoingtheautowinsecurity = false
+end 
 end
+if AutoRevive and not cantrevivebcidk then
+   if game.Players.LocalPlayer.Character:GetAttribute("State") == "Downed" then
+       game:GetService("ReplicatedStorage").Events.Player.ChangePlayerMode:FireServer(true)
+  cantrevivebcidk = true
+  wait(3)
+  cantrevivebcidk = false
+  end
+end
+if  ActiveAutoFarmMoney and not InReviving then
+ if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and game.Players.LocalPlayer.Character:GetAttribute("State") == "Downed" then
+local downedPlayer = GetDownedPlayer()
+          if downedPlayer and downedPlayer:FindFirstChild("HumanoidRootPart") then
+          InReviving = true    
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = downedPlayer.HumanoidRootPart.CFrame + Vector3.new(0, 3, 0)
+             game:GetService("ReplicatedStorage").Events.Character.Interact:FireServer("Revive",true,downedPlayer)
+                wait(0.5)
+        InReviving = false
+            end
+end 
+end
+if ActiveSpeedBoost then 
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = ValueSpeed 
+end
+    end
+    end)
 local function copyToClipboard(text)
     if setclipboard then
         setclipboard(text)
@@ -133,14 +271,7 @@ Text = "Discord Link",
 copyToClipboard("https://discord.gg/E2TqYRsRP4")
 end,
 })
-local function GetDownedPlayer()
-        for _, v in pairs(game.Workspace.Game.Players:GetChildren()) do
-            if v:GetAttribute("Downed") then
-                return v
-            end
-        end
-        return nil
-    end
+
 local EspPlayersToggle = EspTab:AddToggle({
 Text = "Players Esp",
    Name = "EspPlayersToggle",
@@ -148,22 +279,19 @@ Text = "Players Esp",
    Flag = "EspPlayers", 
    Callback = function(Value)
 ActiveEspPlayers = Value 
-task.spawn(function() 
-while ActiveEspPlayers do
-for _,Assets in pairs(Game.Players:GetChildren()) do  
-task.spawn(function()
+if ActiveEspPlayers then
+for _,Assets in pairs(game:GetService("Players"):GetChildren()) do  
 if Assets and Assets.Character and Assets.Character:FindFirstChild("Head") and not Assets.Character:FindFirstChildOfClass("Highlight") and not Assets.Character.Head:FindFirstChildOfClass("BillboardGui") then 
 CreateEsp(Assets.Character,Color3.fromRGB(255,255,255),Assets.Name,Assets.Character.Head,1) 
 end 
-end)
 end  
-wait(0.1) end
-for _,Assets in pairs(Game.Players:GetChildren()) do  
+else
+for _,Assets in pairs(game:GetService("Players"):GetChildren()) do  
 if Assets and Assets.Character and Assets.Character:FindFirstChild("Head") and Assets.Character:FindFirstChildOfClass("Highlight") and Assets.Character.Head:FindFirstChildOfClass("BillboardGui") then 
 KeepEsp(Assets.Character,Assets.Character.Head) 
 end 
 end   
-end)
+end
 end,
 })
 local EspBotsToggle = EspTab:AddToggle({
@@ -173,45 +301,43 @@ Text = "Bots Esp",
    Flag = "EspBots", 
    Callback = function(Value)
 ActiveEspBots = Value 
-task.spawn(function() 
-while ActiveEspBots do
-for _,Assets in pairs(Game.Workspace.Game.Players:GetChildren()) do  
-if Assets and Assets:FindFirstChild("Hitbox") and not Assets:FindFirstChildOfClass("Highlight") and not Assets:FindFirstChild("Hitbox"):FindFirstChildOfClass("BillboardGui") then 
-Assets.Hitbox.Transparency = 0
+if ActiveEspBots then
+for _,Assets in pairs(game.Workspace.Game.Players:GetChildren()) do  
+if Assets and Assets:IsA("Model") and Assets:FindFirstChild("Hitbox") and not Assets:FindFirstChildOfClass("Highlight") and not Assets:FindFirstChild("Hitbox"):FindFirstChildOfClass("BillboardGui") then 
+Assets.Hitbox.Transparency = 0.99
 CreateEsp(Assets,Color3.fromRGB(255,0,0),Assets.Name,Assets.Hitbox,-2) 
 end 
 end  
-wait(0.1) end
+else
 for _,Assets in pairs(Game.Workspace.Game.Players:GetChildren()) do  
-if Assets and Assets:FindFirstChild("Hitbox")  and Assets:FindFirstChildOfClass("Highlight") and Assets:FindFirstChild("Hitbox"):FindFirstChildOfClass("BillboardGui") then 
+if Assets and Assets:IsA("Model") and Assets:FindFirstChild("Hitbox")  and Assets:FindFirstChildOfClass("Highlight") and Assets:FindFirstChild("Hitbox"):FindFirstChildOfClass("BillboardGui") then 
 Assets.Hitbox.Transparency = 1
 KeepEsp(Assets,Assets.Hitbox) 
 end 
 end   
-end)
+end
 end,
 })
-local EspSummerEventToggle = EspTab:AddToggle({
-Text = "Summer Event Esp",
-   Name = "EspSummerEventToggle",
+local EspHalloweenEventToggle = EspTab:AddToggle({
+Text = "Halloween Event Esp",
+   Name = "EspHalloweenEventToggle",
    Default = false,
-   Flag = "EspSummerEvent", 
+   Flag = "EspHalloweenEvent", 
    Callback = function(Value)
 ActiveEspSummerEvent = Value 
-task.spawn(function() 
-while ActiveEspSummerEvent do
-for _,Assets in pairs(Game.Workspace.Game.Effects.Tickets:GetChildren()) do  
-if Assets and Assets.PrimaryPart and Assets.Name == "Visual" and not Assets:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
+if ActiveEspSummerEvent then
+for _,Assets in pairs(game.Workspace.Game.Effects.Tickets:GetChildren()) do  
+if Assets and Assets:IsA("Model") and Assets.PrimaryPart and Assets.Name == "Visual" and not Assets:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
 CreateEsp(Assets,Color3.fromRGB(0,255,255),"Tickets",Assets.PrimaryPart,-2) 
 end 
 end  
-wait(0.1) end
+else
 for _,Assets in pairs(Game.Workspace.Game.Effects.Tickets:GetChildren()) do  
-if Assets and Assets.PrimaryPart and Assets.Name == "Visual"  and Assets:FindFirstChildOfClass("Highlight") and Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
+if Assets and Assets:IsA("Model") and Assets.PrimaryPart and Assets.Name == "Visual"  and Assets:FindFirstChildOfClass("Highlight") and Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
 KeepEsp(Assets,Assets.PrimaryPart) 
 end 
 end   
-end)
+end
 end,
 })
 local AutoWinToggle = GameTab:AddToggle({
@@ -221,22 +347,6 @@ Text = "Auto Farm Win",
    Flag = "AutoWinToggle1", 
    Callback = function(Value)
 ActiveAutoWin = Value 
-task.spawn(function() 
-while ActiveAutoWin do
- if Game.Players.LocalPlayer.Character and Game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and (not InReviving or not Game.Players.LocalPlayer.Character:GetAttribute("Downed")) then
-local securityPart = game.Workspace:FindFirstChild("SecurityPart") or Instance.new("Part")
-            securityPart.Name = "SecurityPart"
-            securityPart.Size = Vector3.new(10, 1, 10)
-            securityPart.Position = Vector3.new(0, 500, 0)  -- Position en hauteur
-            securityPart.Anchored = true
-            securityPart.Parent = game.Workspace
-            Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = securityPart.CFrame + Vector3.new(0, 3, 0)  -- Téléporte le joueur au-dessus de la Part de sécurité
-            wait(0.5)
-            securityPart:Destroy()
-end 
-wait(0.1)
-end   
-end)
 end,
 })
 local AutoFarmMoneyToggle = GameTab:AddToggle({
@@ -246,21 +356,6 @@ Text = "Auto Farm Money",
    Flag = "AutoFarmMoneyToggle1", 
    Callback = function(Value)
 ActiveAutoFarmMoney = Value 
-task.spawn(function() 
-while ActiveAutoFarmMoney do
- if Game.Players.LocalPlayer.Character and Game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and not Game.Players.LocalPlayer.Character:GetAttribute("Downed") then
-local downedPlayer = GetDownedPlayer()
-          if downedPlayer and downedPlayer:FindFirstChild("HumanoidRootPart") then
-          InReviving = true    
-Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = downedPlayer.HumanoidRootPart.CFrame + Vector3.new(0, 3, 0)
-             game:GetService("ReplicatedStorage").Events.Character.Interact:FireServer("Revive",true,downedPlayer)
-                wait(0.5)
-        InReviving = false
-            end
-end 
-wait(0.1)
-end   
-end)
 end,
 })
 local AutoFarmSummerEventToggle = GameTab:AddToggle({
@@ -270,21 +365,18 @@ Text = "Auto Farm Summer Event",
    Flag = "AutoFarmSummerEventToggle1", 
    Callback = function(Value)
 AutoFarmSummerEvent = Value 
-task.spawn(function() 
-while AutoFarmSummerEvent do
-for _,Assets in pairs(Game.Workspace.Game.Effects.Tickets:GetChildren()) do  
-if Assets and Assets.PrimaryPart and Assets.Name == "Visual" then 
- if Game.Players.LocalPlayer.Character and Game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and (not InReviving or not Game.Players.LocalPlayer.Character:GetAttribute("Downed")) then
-    Game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Assets.PrimaryPart.CFrame + Vector3.new(0, 3, 0)           
-end 
+if AutoFarmSummerEvent then
+    for _, child in pairs(game.Workspace.Game.Effects.Tickets:GetChildren()) do
+if  child and  child:IsA("Model") and child.PrimaryPart and child.Name == "Visual"  then 
+ if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and (not InReviving or game.Players.LocalPlayer.Character:GetAttribute("State")~= "Downed") then
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = child.PrimaryPart.CFrame + Vector3.new(0, 3, 0)           
 end
 end
-wait(0.1)
-end   
-end)
+end
+end
 end,
 })
-local ValueSpeed = 16
+
 local PlayerSpeedSlider = PlayerTab:AddSlider({
 Text = "Player Speed",
    Name = "PlayerSpeedSlider",
@@ -293,9 +385,8 @@ Text = "Player Speed",
 		Default = 16,
    Flag = "PSSlider", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
-CurrentValue = Value
 ValueSpeed = Value
-end,  ValueSpeed = CurrentValue,
+end,
 })
 
 local PlayerActiveModifyingSpeedToggle = PlayerTab:AddToggle({
@@ -305,13 +396,6 @@ Text = "Active Modifying Player Speed",
    Flag = "ButtonSpeed1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
   ActiveSpeedBoost = Value 
-task.spawn(function()
-while ActiveSpeedBoost do 
-task.spawn(function()
-Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = ValueSpeed 
-end)
-task.wait(0.1)
-end end)
 end,
 })
 
@@ -322,13 +406,51 @@ Text = "Unload Cheat",
 
 end,
 })
-local DistanceEspToggle = SettingsTab:AddToggle({
-Text = "Distance For Esp",
-   Name = "DistanceEspToggle",
+local LimitRangerEspSlider = SettingsTab:AddSlider({
+Text =  "Limit Ranger for esp",
+   Name ="LimitRangerEspSlider",
+   Min =25,
+   Max = 1000,
+   Default = 100,
+   Flag = "LimitRangerEsp1",
+   Callback = function(Value)
+LimitRangerEsp = Value
+end, 
+})  
+local DisableLimitRangerEspToggle = SettingsTab:AddToggle({
+Text =  "Disable Limit Ranger Esp",
+   Name ="DisableLimitRangerEspToggle",
    Default = false,
-   Flag = "ButtonDistanceEsp1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Flag = "ButtonDLRE", 
+   Callback = function(Value)
+  DisableLimitRangerEsp = Value 
+end,
+})
+local DistanceEspToggle = SettingsTab:AddToggle({
+Text =  "Activate Distance For Esp",
+   Name ="DistanceEspToggle",
+   Default = false,
+   Flag = "ButtonADFE", 
    Callback = function(Value)
   ActiveDistanceEsp = Value 
+end,
+})
+local AutoReviveToggle = PlayerTab:AddToggle({
+Text =  "Auto Revive",
+   Name ="AutoReviveToggle",
+   Default = false,
+   Flag = "AutoReviveToggle", 
+   Callback = function(Value)
+  AutoRevive = Value 
+end,
+})
+local TraitsToggle = SettingsTab:AddToggle({
+Text =  "Trait for esp",
+   Name ="TraitTogglke",
+   Default = false,
+   Flag = "ButtonTTR", 
+   Callback = function(Value)
+  LineESPEnabled = Value 
 end,
 })
 local ChangeThemeDropdown = SettingsTab:AddDropdown({
@@ -349,41 +471,77 @@ window:ChangeTheme(choice)
 	})
 
 library:LoadData()
-local function getServerInfo()
-	local Players = game:GetService("Players")
-	local playerCount = #Players:GetPlayers()
-local maxPlayers = game:GetService("Players").MaxPlayers
-local isStudio = game:GetService("RunService"):IsStudio()
+workspace.DescendantAdded:Connect(function(child)
+task.wait(0.75)
 
-	return {
-		PlaceId = game.PlaceId,
-		JobId = game.JobId,
-		IsStudio = isStudio,
-		CurrentPlayers = playerCount,
-MaxPlayers =maxPlayers
-	}
+if ActiveEspPlayers then
+if child and child:IsA("Model") and child:FindFirstChild("Head") and not child:FindFirstChildOfClass("Highlight") and not child.Head:FindFirstChildOfClass("BillboardGui") then 
+  local playerA = game:GetService("Players"):GetPlayerFromCharacter(child)
+  if playerA then
+CreateEsp(child,Color3.fromRGB(255,255,255),child.Name,child.Head,1) 
+  end
+end 
+end  
+
+if ActiveEspBots then
+if child and child:IsA("Model") and child.Parent == game.Workspace.Game.Players and child:FindFirstChild("Hitbox") and not child:FindFirstChildOfClass("Highlight") and not child:FindFirstChild("Hitbox"):FindFirstChildOfClass("BillboardGui") then 
+child.Hitbox.Transparency = 0.99
+CreateEsp(child,Color3.fromRGB(255,0,0),child.Name,child.Hitbox,-2) 
+end 
+end  
+
+if ActiveEspSummerEvent then
+if child and child:IsA("Model") and child.PrimaryPart and child.Name == "Visual" and child.Parent == game.Workspace.Game.Effects.Tickets and not child:FindFirstChildOfClass("Highlight") and not child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then 
+CreateEsp(child,Color3.fromRGB(0,255,255),"Tickets",child.PrimaryPart,-2) 
+end 
+end  
+
+if AutoFarmSummerEvent then
+if  child and child:IsA("Model") and child.PrimaryPart and child.Name == "Visual" and child.Parent == game.Workspace.Game.Effects.Tickets then 
+ if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and (not InReviving or game.Players.LocalPlayer.Character:GetAttribute("State")~= "Downed") then
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = child.PrimaryPart.CFrame + Vector3.new(0, 3, 0)           
 end
-task.spawn(function()
-while true do
-	task.wait(1) 
-task.spawn(function()
-	local updatedInfo = getServerInfo()
-	local updatedContent = string.format(
-		"📌 PlaceId: %s\n🔑 JobId: %s\n🧪 IsStudio: %s\n👥 Players: %d/%d",
-		updatedInfo.PlaceId,
-		updatedInfo.JobId,
-		
-		tostring(updatedInfo.IsStudio),
-		updatedInfo.CurrentPlayers,
-updatedInfo.MaxPlayers
-	)
-
-	ParagraphInfoServer:Set({
-		Title = "Info",
-		Content = updatedContent
-	})
-end)
 end
-
+end
 end)
+workspace.DescendantRemoving:Connect(function(child)
+    if ActiveEspPlayers then
+        if child 
+        and child:IsA("Model") 
+        and child:FindFirstChild("Head")
+        and child:FindFirstChildOfClass("Highlight")
+        and child.Head:FindFirstChildOfClass("BillboardGui")
+        then
+            local playerA = game:GetService("Players"):GetPlayerFromCharacter(child)
+            if playerA then
+                KeepEsp(child, child.Head)
+            end
+        end
+    end
+
+    if ActiveEspBots then
+        if child
+          and child:IsA("Model") 
+        and child.Parent == workspace.Game.Players
+        and child:FindFirstChild("Hitbox")
+        and child:FindFirstChildOfClass("Highlight")
+        and child.Hitbox:FindFirstChildOfClass("BillboardGui")
+        then
+            KeepEsp(child, child.Hitbox)
+        end
+    end
+    if ActiveEspSummerEvent then
+        if child
+          and child:IsA("Model") 
+        and child.PrimaryPart
+        and child.Name == "Visual"
+        and child.Parent == workspace.Game.Effects.Tickets
+        and child:FindFirstChildOfClass("Highlight")
+        and child.PrimaryPart:FindFirstChildOfClass("BillboardGui")
+        then
+            KeepEsp(child, child.PrimaryPart)
+        end
+    end
+end)
+
 end)
