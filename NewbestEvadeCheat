@@ -233,7 +233,9 @@ if not part or not highlight or not billboard or not label or not line then retu
     end)
     if game.Players.LocalPlayer.Character then
         if ShowTimer then
+            if workspace.Game.Stats then
             LabelTimer.Text = tonumber(workspace.Game.Stats:GetAttribute("Timer"))
+            end
         end
     if ActiveAutoWin and not cantdoingtheautowinsecurity then
  if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and (not InReviving or game.Players.LocalPlayer.Character:GetAttribute("State") ~= "Downed") then
