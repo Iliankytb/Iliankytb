@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.19"
+local V = "V.0.20"
 library:CreateWindow({
 	Title = "Evade - by Iliankytb",-- Title of the script
 	Theme = selectedTheme,--View more theme in my dicord server!
@@ -52,7 +52,6 @@ local AutoRevive = false
 local ShowTimer = false
 local ScreenGuiTimer = Instance.new("ScreenGui")
 ScreenGuiTimer.Parent = game:GetService("CoreGui")
-
 
 local LabelTimer = Instance.new("TextLabel")
 LabelTimer.Size = UDim2.new(0.15, 0, 0.05, 0)          
@@ -232,7 +231,7 @@ if not part or not highlight or not billboard or not label or not line then retu
 		end
 	end
     end)
-    if game.Players.LocalPlayer.Character then
+    if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("Humanoid") then
         if ShowTimer then
             if workspace.Game.Stats then
             LabelTimer.Text = tonumber(workspace.Game.Stats:GetAttribute("Timer"))
