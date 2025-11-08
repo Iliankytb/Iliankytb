@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.23"
+local V = "V.0.22"
 library:CreateWindow({
 	Title = "Evade - by Iliankytb",-- Title of the script
 	Theme = selectedTheme,--View more theme in my dicord server!
@@ -336,12 +336,12 @@ if Assets and Assets.Character  then
      local Char = Assets.Character:FindFirstChildOfClass("Model")
      if Char then
          if Char:FindFirstChild("Head") and  Char.Parent:FindFirstChildOfClass("Highlight") and  Char.Head:FindFirstChildOfClass("BillboardGui") then
-      CreateEsp(Char,Char.Head) 
+      KeepEsp(Char,Char.Head) 
       end
      end
         else
       if Assets.Character:FindFirstChild("Head") and  Assets.Character:FindFirstChildOfClass("Highlight") and  Assets.Character.Head:FindFirstChildOfClass("BillboardGui") then
-      CreateEsp(Assets.Character,Assets.Character.Head) 
+      KeepEsp(Assets.Character,Assets.Character.Head) 
       end
     end
 end 
@@ -551,7 +551,7 @@ task.wait(0.75)
                     if subModel:FindFirstChild("Head") 
                     and not subModel:FindFirstChildOfClass("Highlight") 
                     and not subModel.Head:FindFirstChildOfClass("BillboardGui") then
-                        CreateEsp(subModel, Color3.fromRGB(255,255,255), subModel.Name, subModel.Head, 1)
+                        CreateEsp(subModel, Color3.fromRGB(255,255,255), playerA.Name, subModel.Head, 1)
                     end
                 end
             else
@@ -559,7 +559,7 @@ task.wait(0.75)
                 and child:FindFirstChild("Head") 
                 and not child:FindFirstChildOfClass("Highlight") 
                 and not child.Head:FindFirstChildOfClass("BillboardGui") then
-                    CreateEsp(child, Color3.fromRGB(255,255,255), child.Name, child.Head, 1)
+                    CreateEsp(child, Color3.fromRGB(255,255,255), playerA.Name, child.Head, 1)
                 end
             end
 
