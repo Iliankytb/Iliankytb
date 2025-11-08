@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.22"
+local V = "V.0.23"
 library:CreateWindow({
 	Title = "Evade - by Iliankytb",-- Title of the script
 	Theme = selectedTheme,--View more theme in my dicord server!
@@ -314,16 +314,38 @@ Text = "Players Esp",
 ActiveEspPlayers = Value 
 if ActiveEspPlayers then
 for _,Assets in pairs(game:GetService("Players"):GetChildren()) do  
-if Assets and Assets.Character and Assets.Character:FindFirstChild("Head") and not Assets.Character:FindFirstChildOfClass("Highlight") and not Assets.Character.Head:FindFirstChildOfClass("BillboardGui") then 
-CreateEsp(Assets.Character,Color3.fromRGB(255,255,255),Assets.Name,Assets.Character.Head,1) 
+if Assets and Assets.Character  then 
+ if Assets.Character:GetAttribute("RigType") == "R15" then
+     local Char = Assets.Character:FindFirstChildOfClass("Model")
+     if Char then
+         if Char:FindFirstChild("Head") and not Char.Parent:FindFirstChildOfClass("Highlight") and not Char.Head:FindFirstChildOfClass("BillboardGui") then
+      CreateEsp(Char,Color3.fromRGB(255,255,255),Assets.Name,Char.Head,1) 
+      end
+     end
+        else
+      if Assets.Character:FindFirstChild("Head") and not Assets.Character:FindFirstChildOfClass("Highlight") and not Assets.Character.Head:FindFirstChildOfClass("BillboardGui") then
+      CreateEsp(Assets.Character,Color3.fromRGB(255,255,255),Assets.Name,Assets.Character.Head,1) 
+      end
+    end
 end 
 end  
 else
 for _,Assets in pairs(game:GetService("Players"):GetChildren()) do  
-if Assets and Assets.Character and Assets.Character:FindFirstChild("Head") and Assets.Character:FindFirstChildOfClass("Highlight") and Assets.Character.Head:FindFirstChildOfClass("BillboardGui") then 
-KeepEsp(Assets.Character,Assets.Character.Head) 
+if Assets and Assets.Character  then 
+ if Assets.Character:GetAttribute("RigType") == "R15" then
+     local Char = Assets.Character:FindFirstChildOfClass("Model")
+     if Char then
+         if Char:FindFirstChild("Head") and  Char.Parent:FindFirstChildOfClass("Highlight") and  Char.Head:FindFirstChildOfClass("BillboardGui") then
+      CreateEsp(Char,Char.Head) 
+      end
+     end
+        else
+      if Assets.Character:FindFirstChild("Head") and  Assets.Character:FindFirstChildOfClass("Highlight") and  Assets.Character.Head:FindFirstChildOfClass("BillboardGui") then
+      CreateEsp(Assets.Character,Assets.Character.Head) 
+      end
+    end
 end 
-end   
+end  
 end
 end,
 })
@@ -520,15 +542,29 @@ library:LoadData()
 workspace.DescendantAdded:Connect(function(child)
 task.wait(0.75)
 
-if ActiveEspPlayers then
-    local playerA = game:GetService("Players"):GetPlayerFromCharacter(child)
-    if playerA then
-if child and child:IsA("Model") and child:FindFirstChild("Head") and not child:FindFirstChildOfClass("Highlight") and not child.Head:FindFirstChildOfClass("BillboardGui") then 
-CreateEsp(child,Color3.fromRGB(255,255,255),child.Name,child.Head,1) 
-end 
-    end
-end  
+ if ActiveEspPlayers then
+        local playerA = game:GetService("Players"):GetPlayerFromCharacter(child)
+        if playerA then
+            if child:GetAttribute("RigType") == "R15" then
+                local subModel = child:FindFirstChildOfClass("Model")
+                if subModel then
+                    if subModel:FindFirstChild("Head") 
+                    and not subModel:FindFirstChildOfClass("Highlight") 
+                    and not subModel.Head:FindFirstChildOfClass("BillboardGui") then
+                        CreateEsp(subModel, Color3.fromRGB(255,255,255), subModel.Name, subModel.Head, 1)
+                    end
+                end
+            else
+                if child:IsA("Model") 
+                and child:FindFirstChild("Head") 
+                and not child:FindFirstChildOfClass("Highlight") 
+                and not child.Head:FindFirstChildOfClass("BillboardGui") then
+                    CreateEsp(child, Color3.fromRGB(255,255,255), child.Name, child.Head, 1)
+                end
+            end
 
+        end
+    end
 if ActiveEspBots then
 if child and child:IsA("Model") and child.Parent == game.Workspace.Game.Players and child:FindFirstChild("Hitbox") and not child:FindFirstChildOfClass("Highlight") and not child:FindFirstChild("Hitbox"):FindFirstChildOfClass("BillboardGui") then 
 child.Hitbox.Transparency = 0.99
@@ -545,16 +581,29 @@ end
 end)
 workspace.DescendantRemoving:Connect(function(child)
     if ActiveEspPlayers then
-        if child 
-        and child:IsA("Model") 
-        and child:FindFirstChild("Head")
-        and child:FindFirstChildOfClass("Highlight")
-        and child.Head:FindFirstChildOfClass("BillboardGui")
-        then
-            local playerA = game:GetService("Players"):GetPlayerFromCharacter(child)
-            if playerA then
-                KeepEsp(child, child.Head)
+        local playerA = game:GetService("Players"):GetPlayerFromCharacter(child)
+        if playerA then
+
+            if child:GetAttribute("RigType") == "R15" then
+                local subModel = child:FindFirstChildOfClass("Model")
+                if subModel then
+                    if subModel:FindFirstChild("Head") 
+                    and  subModel:FindFirstChildOfClass("Highlight") 
+                    and  subModel.Head:FindFirstChildOfClass("BillboardGui") then
+                        KeepEsp(subModel, subModel.Head)
+                    end
+                end
+
+        
+            else
+                if child:IsA("Model") 
+                and child:FindFirstChild("Head") 
+                and  child:FindFirstChildOfClass("Highlight") 
+                and  child.Head:FindFirstChildOfClass("BillboardGui") then
+                    KeepEsp(child,child.Head)
+                end
             end
+
         end
     end
 
