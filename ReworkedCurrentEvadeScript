@@ -434,13 +434,22 @@ Text =  "Activate Distance For Esp",
   ActiveDistanceEsp = Value 
 end,
 })
+local AutoReviveToggle = PlayerTab:AddToggle({
+Text =  "Auto Revive",
+   Name ="AutoReviveToggle",
+   Default = false,
+   Flag = "AutoReviveToggle", 
+   Callback = function(Value)
+  ActiveDistanceEsp = Value 
+end,
+})
 local TraitsToggle = SettingsTab:AddToggle({
 Text =  "Trait for esp",
    Name ="TraitToggle",
    Default = false,
    Flag = "ButtonTTR", 
    Callback = function(Value)
-  LineESPEnabled = Value 
+  AutoRevive = Value 
 end,
 })
 local ChangeThemeDropdown = SettingsTab:AddDropdown({
