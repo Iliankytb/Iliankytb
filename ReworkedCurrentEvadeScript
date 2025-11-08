@@ -58,6 +58,14 @@ window:Notify({
 				Message = V,
 				Duration = 7.5,
 })
+local function GetDownedPlayer()
+        for _, v in pairs(game.Workspace.Game.Players:GetChildren()) do
+            if v:GetAttribute("State") == "Downed" then
+                return v
+            end
+        end
+        return nil
+    end
 local function getServerInfo()
 	local Players = game:GetService("Players")
 	local playerCount = #Players:GetPlayers()
@@ -263,14 +271,7 @@ Text = "Discord Link",
 copyToClipboard("https://discord.gg/E2TqYRsRP4")
 end,
 })
-local function GetDownedPlayer()
-        for _, v in pairs(game.Workspace.Game.Players:GetChildren()) do
-            if v:GetAttribute("State") == "Downed" then
-                return v
-            end
-        end
-        return nil
-    end
+
 local EspPlayersToggle = EspTab:AddToggle({
 Text = "Players Esp",
    Name = "EspPlayersToggle",
@@ -413,10 +414,10 @@ Text =  "Limit Ranger for esp",
    Default = 100,
    Flag = "LimitRangerEsp1",
    Callback = function(Value)
-CurrentValue = Value
 LimitRangerEsp = Value
-end,  LimitRangerEsp = CurrentValue,
-})  local DisableLimitRangerEspToggle = SettingsTab:AddToggle({
+end, 
+})  
+local DisableLimitRangerEspToggle = SettingsTab:AddToggle({
 Text =  "Disable Limit Ranger Esp",
    Name ="DisableLimitRangerEspToggle",
    Default = false,
