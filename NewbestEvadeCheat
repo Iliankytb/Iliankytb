@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.26"
+local V = "V.0.27"
 library:CreateWindow({
 	Title = "Evade - by Iliankytb",-- Title of the script
 	Theme = selectedTheme,--View more theme in my dicord server!
@@ -546,14 +546,14 @@ Text = "Bots Esp",
 ActiveEspBots = Value 
 if ActiveEspBots then
 for _,Assets in pairs(game.Workspace.Game.Players:GetChildren()) do  
-if Assets and Assets:IsA("Model") and Assets:FindFirstChild("Hitbox") and not Assets:FindFirstChildOfClass("Highlight") and not Assets:FindFirstChild("Hitbox"):FindFirstChildOfClass("BillboardGui") then 
+if Assets and Assets:IsA("Model") and Assets:GetAttribute("Team") == "Nextbot" and not Assets:FindFirstChildOfClass("Highlight") and not Assets:FindFirstChild("Hitbox"):FindFirstChildOfClass("BillboardGui") then 
 Assets.Hitbox.Transparency = 0.99
 CreateEsp(Assets,Color3.fromRGB(255,0,0),Assets.Name,Assets.Hitbox,-2) 
 end 
 end  
 else
 for _,Assets in pairs(Game.Workspace.Game.Players:GetChildren()) do  
-if Assets and Assets:IsA("Model") and Assets:FindFirstChild("Hitbox")  and Assets:FindFirstChildOfClass("Highlight") and Assets:FindFirstChild("Hitbox"):FindFirstChildOfClass("BillboardGui") then 
+if Assets and Assets:IsA("Model") and Assets:GetAttribute("Team") == "Nextbot"  and Assets:FindFirstChildOfClass("Highlight") and Assets:FindFirstChild("Hitbox"):FindFirstChildOfClass("BillboardGui") then 
 Assets.Hitbox.Transparency = 1
 KeepEsp(Assets,Assets.Hitbox) 
 end 
@@ -823,7 +823,7 @@ task.wait(0.75)
         end
     end
 if ActiveEspBots then
-if child and child:IsA("Model") and child.Parent == game.Workspace.Game.Players and child:FindFirstChild("Hitbox") and not child:FindFirstChildOfClass("Highlight") and not child:FindFirstChild("Hitbox"):FindFirstChildOfClass("BillboardGui") then 
+if child and child:IsA("Model") and child.Parent == game.Workspace.Game.Players and child:GetAttribute("Team") == "Nextbot" and not child:FindFirstChildOfClass("Highlight") and not child:FindFirstChild("Hitbox"):FindFirstChildOfClass("BillboardGui") then 
 child.Hitbox.Transparency = 0.99
 CreateEsp(child,Color3.fromRGB(255,0,0),child.Name,child.Hitbox,-2) 
 end 
@@ -868,7 +868,7 @@ workspace.DescendantRemoving:Connect(function(child)
         if child
           and child:IsA("Model") 
         and child.Parent == workspace.Game.Players
-        and child:FindFirstChild("Hitbox")
+        and  child:GetAttribute("Team") == "Nextbot"
         and child:FindFirstChildOfClass("Highlight")
         and child.Hitbox:FindFirstChildOfClass("BillboardGui")
         then
