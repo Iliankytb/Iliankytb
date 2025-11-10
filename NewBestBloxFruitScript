@@ -73,6 +73,20 @@ local CurrentTween
 
 local ParagraphInfoServer = InfoTab:AddParagraph({Title = "",Content = "Loading",Name = "Paragraph1"})
 
+local circle = Instance.new("Frame")
+math.randomseed(os.time())   
+circle.Name = tostring(math.random(1, 1e9))
+   circle.Size = UDim2.new(0, 40, 0, 40)
+    circle.Position = UDim2.new(0.5, -20, 0.5, -20)
+    circle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    circle.BackgroundTransparency = 1
+    circle.Active = true
+    circle.Parent = game:GetService("CoreGui")
+local VirtualInputManager = game:GetService("VirtualInputManager")
+local function clickAt(pos)
+    VirtualInputManager:SendMouseButtonEvent(pos.X, pos.Y, 0, true, game, 0)
+    VirtualInputManager:SendMouseButtonEvent(pos.X, pos.Y, 0, false, game, 0)
+end
 
 local function CreateEsp(Char, Color, Text, Parent)
 	if not Char or not Parent then return end
@@ -125,7 +139,7 @@ local function CreateEsp(Char, Color, Text, Parent)
 		Color = Color
 	})
 end
-local function TweenPlayerToPosition(targetPosition)
+local function TweenPlayerToPosition(targetPosition,Action)
 	local character = LocalPlayer.Character
 	if not character then return end
 
@@ -159,6 +173,9 @@ local function TweenPlayerToPosition(targetPosition)
 	tween.Completed:Connect(function()
 		InTweaning = false
 		CurrentTween = nil
+if Action == "Click" then
+  clickAt(Vector2.new(circle.AbsolutePosition.X + circle.AbsoluteSize.X/2, circle.AbsolutePosition.Y + circle.AbsoluteSize.Y/2))
+end
 	end)
 end
 
@@ -300,7 +317,7 @@ if LocalPlayer and LocalPlayer.Character then
              
              
                 if not InTweaning then
-TweenPlayerToPosition(CFrame.new(1058.9939, 16.3048782, 1551.67297, 0.999884427, -0.00210065395, -0.0150566101, 0.00300460216, 0.998177588, 0.060268797, 0.0149025619, -0.0603070781, 0.998068631))
+TweenPlayerToPosition(CFrame.new(1058.9939, 16.3048782, 1551.67297, 0.999884427, -0.00210065395, -0.0150566101, 0.00300460216, 0.998177588, 0.060268797, 0.0149025619, -0.0603070781, 0.998068631),"Click")
                 end
                 end
             end
