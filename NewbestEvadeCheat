@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.32"
+local V = "V.0.33"
 library:CreateWindow({
 	Title = "Evade - by Iliankytb",-- Title of the script
 	Theme = selectedTheme,--View more theme in my dicord server!
@@ -586,12 +586,13 @@ ActiveEspBots = Value
 if ActiveEspBots then
     for _, Assets in pairs(game.Workspace.Game.Players:GetChildren()) do  
         if  Assets:IsA("Model") and Assets.PrimaryPart and Assets:GetAttribute("Team") == "Nextbot"  then
-            if  not Assets:FindFirstChildOfClass("Highlight") and  Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")
+            if  not Assets:FindFirstChildOfClass("Highlight") and  Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
              Assets.PrimaryPart.Transparency = 0.99
             CreateEsp(Assets, Color3.fromRGB(255,0,0), Assets.Name, Assets.PrimaryPart, -2)
-             elseif not Assets:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")
+             elseif not Assets:FindFirstChildOfClass("Highlight") and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
             Assets.PrimaryPart.Transparency = 0.99
             CreateEsp(Assets, Color3.fromRGB(255,0,0), Assets.Name, Assets.PrimaryPart, -2)
+             end
         end
     end
 else
