@@ -2,7 +2,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.7"
+local V = "V.0.8"
 library:CreateWindow({
 	Title = "Antartic Expedition - by Iliankytb",-- Title of the script
 	Theme = selectedTheme,--View more theme in my dicord server!
@@ -42,9 +42,11 @@ local GameTab = window:CreateTab("Game",0)
 local DiscordTab = window:CreateTab("Discord",0)
 local SettingsTab = window:CreateTab("Settings",0)
 local ActiveSpeedBoost = false
+local ActiveJumpPower = false
 local noWaterDMG = false
 local noFallDMG = false
 local ValueSpeed = 16
+local ValueJumpPower = 50
 local ParagraphInfoServer = InfoTab:AddParagraph({Title = "",Content = "Loading",Name = "Paragraph1"})
 local Version = InfoTab:AddText({
 		Text = "Version:"..V,
@@ -91,6 +93,9 @@ if game.Players.LocalPlayer.Character then
 if ActiveSpeedBoost then 
 game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = ValueSpeed 
 end
+if ActiveJumpPower then 
+game.Players.LocalPlayer.Character.Humanoid.JumpPower = ValueJumpPower 
+end
 if noFallDMG then
 game:GetService("Players").LocalPlayer.Character.Client_Fall_Damage.Enabled = false
 end
@@ -123,9 +128,8 @@ Min = 0,
 		Default = 16,
    Flag = "PSSlider", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
-CurrentValue = Value
 ValueSpeed = Value
-end,  ValueSpeed = CurrentValue,
+end,  
 })
 
 local PlayerActiveModifyingSpeedToggle = PlayerTab:AddToggle({
@@ -135,6 +139,27 @@ Text ="Active Modifying Player Speed",
    Flag = "ButtonSpeed1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
   ActiveSpeedBoost = Value 
+end,
+})
+local PlayerJPSlider = PlayerTab:AddSlider({
+Text = "Player Jump Power",
+   Name = "PlayerJPSlider",
+Min = 0,
+		Max = 250,
+		Default = 50,
+   Flag = "PlayerJPSlider", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+ValueJumpPower = Value
+end, 
+})
+
+local PlayerActiveModifyingJPToggle = PlayerTab:AddToggle({
+Text ="Active Modifying Player Jump Power",
+   Name = "PlayerActiveModifyingJPToggle",
+   Default = false,
+   Flag = "PlayerActiveModifyingJPToggle", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  ActiveJumpPower = Value 
 end,
 })
 local NoWaterDMGAndFreeze = PlayerTab:AddToggle({
