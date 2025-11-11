@@ -37,25 +37,72 @@ local PlaceIdPiggyGame2 = 5661005779
 local PlaceIdEvadeMainGame = 9872472334
 
 local player = game.Players.LocalPlayer
-local playerGui = player:WaitForChild("PlayerGui")
+local playerGui = game:GetService("CoreGui")
+
 
 local screenGui = Instance.new("ScreenGui")
 screenGui.Name = "CenterTextGui"
 screenGui.ResetOnSpawn = false
+screenGui.IgnoreGuiInset = true
 screenGui.Parent = playerGui
 
-local textLabel = Instance.new("TextLabel")
-textLabel.Name = "CenterText"
-textLabel.Parent = screenGui
-textLabel.AnchorPoint = Vector2.new(0.5, 0.5)
-textLabel.Position = UDim2.new(0.5, 0, 0.5, 0) -- Milieu de l'écran
-textLabel.Size = UDim2.new(0.6, 0, 0.1, 0)
-textLabel.BackgroundTransparency = 0.3
-textLabel.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-textLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-textLabel.Font = Enum.Font.GothamBold
-textLabel.TextScaled = true
-textLabel.Text = "Loading Cheat(It Take only 1 seconds)"
+
+local mainFrame = Instance.new("TextLabel")
+mainFrame.Name = "MainLabel"
+mainFrame.Parent = screenGui
+mainFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+mainFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+mainFrame.Size = UDim2.new(0.6, 0, 0.12, 0)
+mainFrame.BackgroundTransparency = 0.3
+mainFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+mainFrame.TextColor3 = Color3.fromRGB(255, 255, 255)
+mainFrame.Font = Enum.Font.GothamBold
+mainFrame.TextScaled = true
+mainFrame.Text = "Loading Cheat (It takes only 1 second)"
+
+
+local corner = Instance.new("UICorner")
+corner.CornerRadius = UDim.new(0, 10)
+corner.Parent = mainFrame
+
+
+local loadingText = Instance.new("TextLabel")
+loadingText.Name = "LoadingText"
+loadingText.Parent = mainFrame
+loadingText.AnchorPoint = Vector2.new(0.5, 1)
+loadingText.Position = UDim2.new(0.5, 0, 0, -5) 
+loadingText.Size = UDim2.new(0.5, 0, 0.75, 0)
+loadingText.BackgroundTransparency = 1
+loadingText.Text = "Loading"
+loadingText.TextColor3 = Color3.fromRGB(250, 250, 250)
+loadingText.Font = Enum.Font.GothamSemibold
+loadingText.TextScaled = true
+loadingText.TextTransparency = 0
+
+local credit = Instance.new("TextLabel")
+credit.Name = "CreditText"
+credit.Parent = mainFrame
+credit.AnchorPoint = Vector2.new(1, 0)
+credit.Position = UDim2.new(1, -10, 1, -5) 
+credit.Size = UDim2.new(0.3, 0, 0.3, 0)
+credit.BackgroundTransparency = 1
+credit.Text = "by Iliankytb"
+credit.TextColor3 = Color3.fromRGB(130, 130, 130)
+credit.Font = Enum.Font.Gotham
+credit.TextScaled = true
+credit.TextTransparency = 0.2
+credit.ZIndex = 3
+
+local stop = false
+task.spawn(function()
+	local dots = 0
+	while task.wait(0.4) do
+        if stop then break end
+		dots = (dots + 1) % 4
+		loadingText.Text = "Loading" .. string.rep(".", dots)
+	end
+end)
+
 task.wait(1)
 if PlaceService.PlaceId == PlaceIdForsaken then
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/BestForsakenScript"))()
@@ -64,7 +111,8 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/m
 elseif PlaceService.PlaceId == PlaceIdDoorsGame then
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/NewBestDoorsScriptIliankytb"))()
 elseif PlaceService.PlaceId == PlaceIdDoorsLobby then
-textLabel.Text = "Loading Universale Cheat Because you're not ingame(it take Some Times)"
+loadingText.Visible = false
+mainFrame.Text = "Loading Universale Cheat Because you're not ingame(it take Some Times)"
 task.wait(1)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/IliankytbUniversalNew"))()   
 elseif PlaceService.PlaceId == PlaceIdEvadeMainGame then
@@ -74,19 +122,23 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/m
 elseif PlaceService.PlaceId == PlaceIdRainbowFriend2Game then
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/BestRainbowFriendsTwo"))()
 elseif PlaceService.PlaceId == PlaceIdRainbowFriend2Lobby then
-textLabel.Text = "Loading Universale Cheat Because you're not ingame(it take Some Times)"
+loadingText.Visible = false
+mainFrame.Text = "Loading Universale Cheat Because you're not ingame(it take Some Times)"
 task.wait(1)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/IliankytbUniversalNew"))()   
 elseif PlaceService.PlaceId == PlaceId99NightsInTheForestLobby then
-textLabel.Text = "Loading Universale Cheat Because you're not ingame(it take Some Times)"
+loadingText.Visible = false
+mainFrame.Text = "Loading Universale Cheat Because you're not ingame(it take Some Times)"
 task.wait(1)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/IliankytbUniversalNew"))()   
 elseif PlaceService.PlaceId == PlaceIdInkGameLobby then
-textLabel.Text = "Loading Universale Cheat Because you're not ingame(it take Some Times)"
+loadingText.Visible = false
+mainFrame.Text = "Loading Universale Cheat Because you're not ingame(it take Some Times)"
 task.wait(1)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/IliankytbUniversalNew"))()   
 elseif PlaceService.PlaceId == PlaceIDLobbyHZ then
-textLabel.Text = "Loading Universale Cheat Because you're not ingame(it take Some Times)"
+loadingText.Visible = false
+mainFrame.Text = "Loading Universale Cheat Because you're not ingame(it take Some Times)"
 task.wait(1)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/IliankytbUniversalNew"))()   
 elseif PlaceService.PlaceId == PlaceIdInkGame then
@@ -100,6 +152,10 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/m
 elseif PlaceService.PlaceId == PlaceIdAntarcticExpedition then
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/BestAntarticaExpedition"))()
 else
+loadingText.Visible = false
+mainFrame.Text = "Loading Universale Cheat Because the script don't support this game(for the moment)"
+task.wait(1)
  loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/IliankytbUniversalNew"))()   
 end
+stop = true
 screenGui:Destroy()
