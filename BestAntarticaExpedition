@@ -2,7 +2,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.3"
+local V = "V.0.4"
 library:CreateWindow({
 	Title = "Antartic Expedition - by Iliankytb",-- Title of the script
 	Theme = selectedTheme,--View more theme in my dicord server!
@@ -42,6 +42,9 @@ local GameTab = window:CreateTab("Game",0)
 local DiscordTab = window:CreateTab("Discord",0)
 local SettingsTab = window:CreateTab("Settings",0)
 local ActiveSpeedBoost = false
+local noWaterDMG = false
+local noFallDMG = false
+local ValueSpeed = 16
 local ParagraphInfoServer = InfoTab:AddParagraph({Title = "",Content = "Loading",Name = "Paragraph1"})
 local Version = InfoTab:AddText({
 		Text = "Version:"..V,
@@ -52,7 +55,6 @@ window:Notify({
 				Message = V,
 				Duration = 7.5,
 })
-
 local function getServerInfo()
 	local Players = game:GetService("Players")
 	local playerCount = #Players:GetPlayers()
@@ -67,6 +69,29 @@ local isStudio = game:GetService("RunService"):IsStudio()
 MaxPlayers =maxPlayers
 	}
 end
+game:GetService("RunService").RenderStepped:Connect(function()
+task.spawn(function()
+	local updatedInfo = getServerInfo()
+	local updatedContent = string.format(
+		"📌 PlaceId: %s\n🔑 JobId: %s\n🧪 IsStudio: %s\n👥 Players: %d/%d",
+		updatedInfo.PlaceId,
+		updatedInfo.JobId,
+		
+		tostring(updatedInfo.IsStudio),
+		updatedInfo.CurrentPlayers,
+updatedInfo.MaxPlayers
+	)
+
+	ParagraphInfoServer:Set({
+		Title = "Info",
+		Content = updatedContent
+	})
+end)
+if ActiveSpeedBoost do 
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = ValueSpeed 
+end 
+end)
+
 local function copyToClipboard(text)
     if setclipboard then
         setclipboard(text)
@@ -81,12 +106,12 @@ Text = "Discord Link",
 copyToClipboard("https://discord.gg/E2TqYRsRP4")
 end,
 })
-local ValueSpeed = 16
+
 local PlayerSpeedSlider = PlayerTab:AddSlider({
 Text = "Player Speed",
    Name = "PlayerSpeedSlider",
 Min = 0,
-		Max = 100,
+		Max = 250,
 		Default = 16,
    Flag = "PSSlider", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
@@ -102,13 +127,26 @@ Text ="Active Modifying Player Speed",
    Flag = "ButtonSpeed1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
   ActiveSpeedBoost = Value 
-task.spawn(function()
-while ActiveSpeedBoost do 
-task.spawn(function()
-Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = ValueSpeed 
-end)
-task.wait(0.1)
-end end)
+end,
+})
+local NoWaterDMGAndFreeze = PlayerTab:AddToggle({
+Text ="No Water Damage & Freeze",
+   Name = "NoWaterDMGAndFreeze",
+   Default = false,
+   Flag = "NoWaterDMGAndFreeze", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  noWaterDMG = Value 
+game:GetService("Players").LocalPlayer.PlayerGui["Water freeze damage"].Enabled = noWaterDMG
+end,
+})
+local NoFallDmg = PlayerTab:AddToggle({
+Text ="No Fall Damage",
+   Name = "NoFallDmg",
+   Default = false,
+   Flag = "NoFallDmg", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  noFallDMG = Value 
+game:GetService("Players").LocalPlayer.Character.Client_Fall_Damage.Enabled = noFallDMG
 end,
 })
 local GameTeleportToCamp1 = GameTab:AddButton({
@@ -235,27 +273,4 @@ window:ChangeTheme(choice)
 	})
 
 library:LoadData()
-task.spawn(function()
-while true do
-	task.wait(1) 
-task.spawn(function()
-	local updatedInfo = getServerInfo()
-	local updatedContent = string.format(
-		"📌 PlaceId: %s\n🔑 JobId: %s\n🧪 IsStudio: %s\n👥 Players: %d/%d",
-		updatedInfo.PlaceId,
-		updatedInfo.JobId,
-		
-		tostring(updatedInfo.IsStudio),
-		updatedInfo.CurrentPlayers,
-updatedInfo.MaxPlayers
-	)
-
-	ParagraphInfoServer:Set({
-		Title = "Info",
-		Content = updatedContent
-	})
-end)
-end
-
-end)
 end)
