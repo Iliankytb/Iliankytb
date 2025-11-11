@@ -2,7 +2,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.6"
+local V = "V.0.7"
 library:CreateWindow({
 	Title = "Antartic Expedition - by Iliankytb",-- Title of the script
 	Theme = selectedTheme,--View more theme in my dicord server!
@@ -144,7 +144,12 @@ Text ="No Water Damage & Freeze",
    Flag = "NoWaterDMGAndFreeze", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
   noWaterDMG = Value 
-game:GetService("Players").LocalPlayer.PlayerGui["Water freeze damage"].Enabled = noWaterDMG
+game:GetService("Players").LocalPlayer.PlayerGui["Water freeze damage"].Enabled = not noWaterDMG
+ for _, part in pairs(workspace["Water_Damage%"]:GetChildren()) do
+     if part and part:IsA("BasePart") then
+         part.CanTouch = not noWaterDMG 
+     end
+     end
 end,
 })
 local NoFallDmg = PlayerTab:AddToggle({
@@ -154,7 +159,7 @@ Text ="No Fall Damage",
    Flag = "NoFallDmg", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
   noFallDMG = Value 
-game:GetService("Players").LocalPlayer.Character.Client_Fall_Damage.Enabled = noFallDMG
+game:GetService("Players").LocalPlayer.Character.Client_Fall_Damage.Enabled = not noFallDMG
 end,
 })
 local GameTeleportToCamp1 = GameTab:AddButton({
