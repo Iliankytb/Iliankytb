@@ -92,10 +92,10 @@ if ActiveSpeedBoost then
 game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = ValueSpeed 
 end
 if noFallDMG then
-game:GetService("Players").LocalPlayer.Character.Client_Fall_Damage.Enabled = true
+game:GetService("Players").LocalPlayer.Character.Client_Fall_Damage.Enabled = false
 end
 if noWaterDMG then
-game:GetService("Players").LocalPlayer.PlayerGui["Water freeze damage"].Enabled = true
+game:GetService("Players").LocalPlayer.PlayerGui["Water freeze damage"].Enabled = false
 end
 end
 end)
