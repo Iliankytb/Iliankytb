@@ -306,7 +306,9 @@ if LocalPlayer and LocalPlayer.Character then
      end
  end
   if InfiniteSkyJump then
-         LocalPlayer.Character:SetAttribute("SkyJumps",99999999)
+         LocalPlayer.Character:SetAttribute("SkyJumpBoost",99999999)
+          LocalPlayer.Character:SetAttribute("SkyJumps",99999999)
+         LocalPlayer.Character:SetAttribute("SkyJumpCost",0)
   end
  if WalkInWater then
   LocalPlayer.Character:SetAttribute("WaterWalking",true)
@@ -391,7 +393,7 @@ end
 		Default = false,
 		Callback = function(state)
         ActivatedAutofarm = state
-        if not ActivatedAutofarm then
+        if ActivatedAutofarm then
 Autofarm = "Level"
 else
 if Autofarm == "Level" then
@@ -482,9 +484,13 @@ DashSpeed = val
 		Callback = function(state)
         InfiniteSkyJump = state
         if InfiniteSkyJump then
-         LocalPlayer.Character:SetAttribute("SkyJumps",99999999)
+        LocalPlayer.Character:SetAttribute("SkyJumpBoost",99999999)
+          LocalPlayer.Character:SetAttribute("SkyJumps",99999999)
+         LocalPlayer.Character:SetAttribute("SkyJumpCost",0)
        else
-            LocalPlayer.Character:SetAttribute("SkyJumps",0)
+             LocalPlayer.Character:SetAttribute("SkyJumpBoost",0)
+          LocalPlayer.Character:SetAttribute("SkyJumps",1)
+         LocalPlayer.Character:SetAttribute("SkyJumpCost",0)
        
         end
 		end
