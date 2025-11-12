@@ -57,6 +57,7 @@ local TeleportTab = window:CreateTab("Teleport Island",0)-- Tabs , 0 = no icon o
     local ActivatedAutofarm = false
     local LimitRangerEsp  = 100
     local Autofarm = "Level"
+    local NoCooldownFlashStep = false
     local TweenSpeedValue = 1
     local SpeedMultiplier = 1
     local ActiveModifyingSpeed = false
@@ -68,9 +69,11 @@ local placeId = game.PlaceId
 local ESPs = {}
 local Camera = workspace.CurrentCamera
 local LineESPEnabled = false 
+local DashSpeed = 1
+local ActiveDashSpeedMultiplier = false
 local LocationsAllIslandModel = workspace._WorldOrigin.Locations
 local CurrentTween 
-
+local InfiniteSkyJump = false
 local ParagraphInfoServer = InfoTab:AddParagraph({Title = "",Content = "Loading",Name = "Paragraph1"})
 
 local circle = Instance.new("Frame")
@@ -173,6 +176,7 @@ local function TweenPlayerToPosition(targetPosition,Action)
 	tween.Completed:Connect(function()
 		InTweaning = false
 		CurrentTween = nil
+        wait(1)
 if Action == "Click" then
   clickAt(Vector2.new(circle.AbsolutePosition.X + circle.AbsoluteSize.X/2, circle.AbsolutePosition.Y + circle.AbsoluteSize.Y/2))
 end
@@ -286,6 +290,9 @@ if LocalPlayer and LocalPlayer.Character then
  if ActiveModifyingSpeed then
          LocalPlayer.Character:SetAttribute("SpeedMultiplier",SpeedMultiplier)
  end
+   if ActiveDashSpeedMultiplier then
+         LocalPlayer.Character:SetAttribute("DashLength",DashSpeed)
+         end
  if DisabledInfStairs then
      if LocalPlayer.Character:FindFirstChild("InfiniteStairs") then
          LocalPlayer.Character:FindFirstChild("InfiniteStairs").Enabled = false
@@ -298,6 +305,9 @@ if LocalPlayer and LocalPlayer.Character then
    end
      end
  end
+  if InfiniteSkyJump then
+         LocalPlayer.Character:SetAttribute("SkyJumps",math.huge)
+  end
  if WalkInWater then
   LocalPlayer.Character:SetAttribute("WaterWalking",true)
  end
@@ -416,6 +426,66 @@ SpeedMultiplier = val
          LocalPlayer.Character:SetAttribute("SpeedMultiplier",SpeedMultiplier)
        else
             LocalPlayer.Character:SetAttribute("SpeedMultiplier",1)
+       
+        end
+		end
+	})
+    --Slider--
+	local SliderDSpeed = PlayerTab:AddSlider({
+        Text = "Dash Length",
+		Name = "SliderDSpeed",
+		Min = 0,
+		Max = 500,
+		Default = 1,
+		Flag = "SliderDSpeed",--Put a name flag for save data if you enabled saving data
+		Callback = function(val)
+DashSpeed = val
+		end
+	})
+	--Toggle--
+	local ToggleMDS = PlayerTab:AddToggle({
+		Text = "Active Modifying Dash Speed",
+		Name = "ToggleMDS",
+		Flag = "ToggleMDS",--Put a name flag for save data if you enabled saving data
+		Default = false,
+		Callback = function(state)
+        ActiveDashSpeedMultiplier = state
+        if ActiveDashSpeedMultiplier then
+         LocalPlayer.Character:SetAttribute("DashLength",DashSpeed)
+       else
+            LocalPlayer.Character:SetAttribute("DashLength",1)
+       
+        end
+		end
+	})
+    	--Toggle--
+	local ToggleNoCooldownFlashstep = MiscTab:AddToggle({
+		Text = "No Cooldown Flashstep",
+		Name = "ToggleNoCooldownFlashstep",
+		Flag = "ToggleNoCooldownFlashstep",--Put a name flag for save data if you enabled saving data
+		Default = false,
+		Callback = function(state)
+        NoCooldownFlashStep = state
+        if NoCooldownFlashStep then
+         LocalPlayer.Character:SetAttribute("FlashstepCooldown",1)
+       else
+            LocalPlayer.Character:SetAttribute("FlashstepCooldown",0)
+       
+        end
+		end
+	})
+    	--Toggle--
+	local ToggleINFJ = MiscTab:AddToggle({
+		Text = "Infinite Jump",
+		Name = "ToggleINFJ",
+		Flag = "ToggleINFJ",--Put a name flag for save data if you enabled saving data
+		Default = false,
+		Callback = function(state)
+        InfiniteSkyJump = state
+        if InfiniteSkyJump then
+         LocalPlayer.Character:SetAttribute("SkyJumps",math.huge)
+       else
+            LocalPlayer.Character:SetAttribute("SkyJumps",0)
        
         end
 		end
@@ -565,9 +635,8 @@ Text =  "Limit Ranger for esp",
    Default = 100,
    Flag = "LimitRangerEsp1",
    Callback = function(Value)
-CurrentValue = Value
 LimitRangerEsp = Value
-end,  LimitRangerEsp = CurrentValue,
+end,  
 })  
 local DisableLimitRangerEspToggle = SettingsTab:AddToggle({
 Text =  "Disable Limit Ranger Esp",
