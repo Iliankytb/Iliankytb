@@ -306,14 +306,14 @@ if LocalPlayer and LocalPlayer.Character then
      end
  end
   if InfiniteSkyJump then
-         LocalPlayer.Character:SetAttribute("SkyJumps",math.huge)
+         LocalPlayer.Character:SetAttribute("SkyJumps",99999999)
   end
  if WalkInWater then
   LocalPlayer.Character:SetAttribute("WaterWalking",true)
  end
     if ActivatedAutofarm then
         if Autofarm == "Level" then
-        if LocalPlayer.Data.Level.Value < 10 then
+        if LocalPlayer.Data.Level.Value < 2000 then
              if LocalPlayer:GetAttribute("ExactLocation") == "Underwater City" then
             if not InTweaning then
             InTweaning = true
@@ -390,14 +390,13 @@ end
 		Flag = "ToggleAFL",--Put a name flag for save data if you enabled saving data
 		Default = false,
 		Callback = function(state)
+        ActivatedAutofarm = state
         if not ActivatedAutofarm then
 Autofarm = "Level"
-ActivatedAutofarm = true
 else
 if Autofarm == "Level" then
     StopTween()
 Autofarm = ""
-    ActivatedAutofarm = false  
 end
         end
 		end
@@ -483,7 +482,7 @@ DashSpeed = val
 		Callback = function(state)
         InfiniteSkyJump = state
         if InfiniteSkyJump then
-         LocalPlayer.Character:SetAttribute("SkyJumps",math.huge)
+         LocalPlayer.Character:SetAttribute("SkyJumps",99999999)
        else
             LocalPlayer.Character:SetAttribute("SkyJumps",0)
        
