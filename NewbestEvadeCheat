@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.33"
+local V = "V.0.34"
 library:CreateWindow({
 	Title = "Evade - by Iliankytb",-- Title of the script
 	Theme = selectedTheme,--View more theme in my dicord server!
@@ -454,14 +454,14 @@ Currentlydoingtheevent = true
 if  child and  child:IsA("Model") and child.PrimaryPart and child.Name == "Visual"  then 
  if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and (not InReviving or game.Players.LocalPlayer.Character:GetAttribute("State")~= "Downed") and not game.Players.LocalPlayer.Character:GetAttribute("Carrying") then
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = child.PrimaryPart.CFrame + Vector3.new(0, 3, 0)           
-wait(0.75)
+wait(0.5)
 end
 end
 end
 Currentlydoingtheevent = false
 end
 if AutoRevive and not cantrevivebcidk then
-   if game.Players.LocalPlayer.Character:GetAttribute("State") == "Downed" then
+   if game.Players.LocalPlayer.Character:GetAttribute("Downed") then
        game:GetService("ReplicatedStorage").Events.Player.ChangePlayerMode:FireServer(true)
   cantrevivebcidk = true
   wait(3)
@@ -660,16 +660,24 @@ Text = "Auto Farm Summer Event",
    Callback = function(Value)
 AutoFarmSummerEvent = Value 
 if AutoFarmSummerEvent then
+Currentlydoingtheevent = true
     for _, child in pairs(game.Workspace.Game.Effects.Tickets:GetChildren()) do
 if  child and  child:IsA("Model") and child.PrimaryPart and child.Name == "Visual"  then 
  if game.Players.LocalPlayer.Character and game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and (not InReviving or game.Players.LocalPlayer.Character:GetAttribute("State")~= "Downed") then
-    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = child.PrimaryPart.CFrame + Vector3.new(0, 3, 0)           
-game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = child.PrimaryPart.CFrame + Vector3.new(0, 3, 0) 
+if not AutoFarmSummerEvent then
+Currentlydoingtheevent = false
+break
+end
 wait(0.5)
-game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+if not AutoFarmSummerEvent then
+Currentlydoingtheevent = false
+break
 end
 end
 end
+end
+Currentlydoingtheevent = false
 end
 end,
 })
@@ -678,8 +686,8 @@ local PlayerSpeedSlider = PlayerTab:AddSlider({
 Text = "Player Speed",
    Name = "PlayerSpeedSlider",
   Min = 0,
-		Max = 100,
-		Default = 16,
+		Max = 2500,
+		Default = 0,
    Flag = "PSSlider", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
 ValueSpeed = Value
@@ -789,10 +797,10 @@ window:ChangeTheme(choice)
 local PlayerFlySpeedSlider = PlayerTab:AddSlider({
     Text = "Fly Speed(Recommended to put 1 or below 5!)",
    Name = "PlayerFlySpeedSlider",
-  Min = 0,
+  Min = 1,
 		Max = 10,
-		Default = 0,
-   Flag = "Slider2", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+		Default = 1,
+   Flag = "PlayerFlySpeedSlider", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
 iyflyspeed = Value
 end, 
