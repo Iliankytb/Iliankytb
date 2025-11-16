@@ -1,56 +1,78 @@
 
-local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local Window = Rayfield:CreateWindow({
-   Name = "Universal Hub Cheats - Script By Iliankytb",
-   Icon = 0, -- Icon in Topbar. Can use Lucide Icons (string) or Roblox Image (number). 0 to use no icon (default).
-   LoadingTitle = "Universal Hub Cheats",
-   LoadingSubtitle = "Script By Iliankytb",
-   Theme = selectedTheme, -- Check https://docs.sirius.menu/rayfield/configuration/themes
+local V = "V.0.12"
 
-   DisableRayfieldPrompts = false,
-   DisableBuildWarnings = false, -- Prevents Rayfield from warning when the script has a version mismatch with the interface
+library:CreateWindow({
+	Title = "Universel - by Iliankytb",-- Title of the script
+	Theme = selectedTheme,--View more theme in my dicord server!
+	Icon = 0,-- 0 = no icon or add number
+	Intro = false,--Intro or no
+	IntroTitle = "Zentrix Library Testing",--the intro title
+	KeyPC = Enum.KeyCode.K,--the key for pc for Open/close the frame
+	Data = {
+		EnableSavingData = true,--Enabling data saver or no
+		DisableNotifyingLoadedData = false,--set it to true for disable the notify when loaded data
+		FolderName = "SaverUniversalScript",--Folder Name,you can change it
+		FileName = "IliankYTB",-- File name for the data saver,you can change it
+	},
+	Discord = {
+		Enabled = false,--enable to copy the discord
+		DiscordLink = "https://discord.gg/E2TqYRsRP4",-- put thr entire Link of discord
+		RememberJoin = false,-- Set this ti false to make them copy the link every time they load the script
+		Duration = 5,-- 5 is the default you can change the number only for remember join
+	},
+	KeySystem = false,--Key System or no
+	KeySettings = {
+		Title = "Zentrix Library Testing Key System",--Title of the key(just like that)
+		Note = "the key is Zentrix",-- The method for obtaining
+		FileName = "Key",-- File name or no for saving the key
+		SaveKey = true,-- saving the key or no
+		GrabKeyFromSite = false,--Coming soon
+		Key = {"Zentrix"},-- the name you can add many name, Exemple "Key","Key2" or you can add a function to add key but i don't really know
+		AddGetKeyButton = false,
+		AddDiscordButton = true,
+		DiscordLink = "NoInviteLink",
+		GetKeyLink = "NoKeyLink",
+	},
+}, function(window)
+local InfoTab = window:CreateTab("Info",0)
+local PlayerTab = window:CreateTab("Player",0)
+local GameTab = window:CreateTab("Game",0)
+local EspTab = window:CreateTab("Esp",0)
+local AimbotTab = window:CreateTab("Aimbot",0)
+local DiscordTab = window:CreateTab("Discord",0)
+local SettingsTab = window:CreateTab("Settings",0)
+local ActiveSpeedBoost,ActiveNoclip,ActiveEspPlayers,ActivateFly,ActivateInfiniteJump,AlrActivatedFlyPC,ActiveNoCooldownPrompt,ActiveAimbot,HowAim,MaxDistanceForAimbot = false,false,false,false,false,false,false,false,"Camera",0
+local ParagraphInfoServer = InfoTab:AddParagraph({Title = "",Content = "Loading",Name = "Paragraph1"})
+local LocalPlayer = game.Players.LocalPlayer
+local LimitRangerEsp = 25
+local DisableLimitRangerEsp = false
+local Camera = Workspace.CurrentCamera
+local ActiveDistanceEsp = false
+local ValueSpeed = 16
+local OldSpeed = game.Players.LocalPlayer.Character.Humanoid.WalkSpeed
+local ActiveFullBright = false
+local OldBrightness = Game.Lighting.Brightness
+local OldAmbient = Game.Lighting.Ambient
 
-   ConfigurationSaving = {
-      Enabled = true,
-      FolderName = "SaverUVHC", -- Create a custom folder for your hub/game
-      FileName = "K"
-   },
-
-   Discord = {
-      Enabled = false, -- Prompt the user to join your Discord server if their executor supports it
-      Invite = "noinvitelink", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ ABCD would be ABCD
-      RememberJoins = true -- Set this to false to make them join the discord every time they load it up
-   },
-
-   KeySystem = false, -- Set this to true to use our key system
-   KeySettings = {
-      Title = "Untitled",
-      Subtitle = "Key System",
-      Note = "No method of obtaining the key is provided", -- Use this to tell the user how to get a key
-      FileName = "Key", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
-      SaveKey = true, -- The user's key will be saved, but if you change the key, they will be unable to use your script
-      GrabKeyFromSite = false, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
-      Key = {"Hello"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
-   }
+local Version = InfoTab:AddText({
+		Text = "Version:"..V,
+		Name = "VersionScript"
+	})
+window:Notify({
+				Title = "Script Version!",
+				Message = V,
+				Duration = 7.5,
 })
-local InfoTab = Window:CreateTab("Info")
-local PlayerTab = Window:CreateTab("Player")
-local GameTab = Window:CreateTab("Game")
-local EspTab = Window:CreateTab("Esp")
-local AimbotTab = Window:CreateTab("Aimbot")
-local DiscordTab = Window:CreateTab("Discord")
-local SettingsTab = Window:CreateTab("Settings")
-local ActiveSpeedBoost,ActiveNoclip,ActiveEspPlayers,ActiveDistanceEsp,ActivateFly,ActivateInfiniteJump,AlrActivatedFlyPC,ActiveNoCooldownPrompt,ActiveAimbot,HowAim,VerifyTeamColor,VerifyWall,ShootBot,InfiniteDistance,MaxDistanceForAimbot = false,false,false,false,false,false,false,false,false,"Camera",false,false,false,false,0
-local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "Loading"})
-
-Rayfield:Notify({
-   Title = "Universal Version",
-   Content = "V.0.11",
-   Duration = 2.5,
-   Image = "rewind",
-})
-
+local AimbotSettings = {
+    ["Verify Wall"] = false,
+    ["Verify Team Color"] = false,
+    ["Target Bot"] = false,
+    ["Infinite Aimbot Distance"] = false,
+}
+local ESPs = {}
+local LineESPEnabled = false 
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
 local RunService = game:GetService("RunService")
@@ -60,6 +82,110 @@ local FLYING = false
 local QEfly = true
 local iyflyspeed = 1
 local vehicleflyspeed = 1
+
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local Camera = workspace.CurrentCamera
+
+local function getDistance(a, b)
+	return (a.Position - b.Position).Magnitude
+end
+
+local function hasClearLineOfSight(from, to)
+	local rayParams = RaycastParams.new()
+	rayParams.FilterType = Enum.RaycastFilterType.Blacklist
+	rayParams.FilterDescendantsInstances = {LocalPlayer.Character}
+	local result = workspace:Raycast(from.Position, (to.Position - from.Position), rayParams)
+	return not (result and result.Instance and result.Instance.Transparency < 1)
+end
+
+local function isValidTarget(char)
+	if not char or char == LocalPlayer.Character then return false end
+	local humanoid = char:FindFirstChildWhichIsA("Humanoid")
+	local head = char:FindFirstChild("Head")
+	if not humanoid or not head then return false end
+	if humanoid.Health == 0 then return false end
+	if AimbotSettings["Verify Team Color"] then
+		local player = Players:GetPlayerFromCharacter(char)
+		if player and player.TeamColor == LocalPlayer.TeamColor then return false end
+	end
+	if AimbotSettings["Verify Wall"] then
+		local myHead = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Head")
+		if myHead and not hasClearLineOfSight(myHead, head) then return false end
+	end
+	return true
+end
+
+local function aimToClosestTarget()
+	local myCharacter = LocalPlayer.Character
+	local myHead = myCharacter and myCharacter:FindFirstChild("Head")
+	local myRoot = myCharacter and myCharacter:FindFirstChild("HumanoidRootPart")
+	if not (myHead and myRoot) then return end
+
+	local closestTarget = nil
+	local shortestDistance = 0
+if AimbotSettings["Infinite Aimbot Distance"] then
+shortestDistance = math.huge
+else
+shortestDistance = MaxDistanceForAimbot
+end 
+if AimbotSettings["Target Bot"] then
+	for _, instance in pairs(workspace:GetDescendants()) do
+		if instance:IsA("Humanoid") and instance.Health > 0 then
+if isValidTarget(instance.Parent) then
+			local head = instance.Parent:FindFirstChild("Head")
+			if head then
+				local distance = getDistance(myHead, head)
+				if distance < shortestDistance then
+					shortestDistance = distance
+					closestTarget = head
+				end
+end
+			end
+		end
+	end
+else
+for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
+	local character = player.Character
+	local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+	local head = character and character:FindFirstChild("Head")
+
+	if humanoid and humanoid.Health > 0 and head and isValidTarget(character) then
+		local distance = getDistance(myHead, head)
+		if distance < shortestDistance then
+			shortestDistance = distance
+			closestTarget = head
+		end
+	end
+end
+
+end
+	if closestTarget then
+		if HowAim == "Camera" then
+			Camera.CFrame = CFrame.new(Camera.CFrame.Position, closestTarget.Position)
+		elseif HowAim == "Character" then
+			local lookVector = (closestTarget.Position - myRoot.Position).Unit
+			local newCFrame = CFrame.new(myRoot.Position, myRoot.Position + Vector3.new(lookVector.X, 0, lookVector.Z))
+			myRoot.CFrame = newCFrame
+		end
+	end
+end
+
+
+local function getServerInfo()
+	local Players = game:GetService("Players")
+	local playerCount = #Players:GetPlayers()
+local maxPlayers = game:GetService("Players").MaxPlayers
+local isStudio = game:GetService("RunService"):IsStudio()
+
+	return {
+		PlaceId = game.PlaceId,
+		JobId = game.JobId,
+		IsStudio = isStudio,
+		CurrentPlayers = playerCount,
+MaxPlayers =maxPlayers
+	}
+end
 
 local function sFLY(vfly)
 	repeat wait() until Players.LocalPlayer and Players.LocalPlayer.Character and Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart") and Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
@@ -241,19 +367,102 @@ local function MobileFly()
 		end
 	end)
 end
+RunService.RenderStepped:Connect(function(dt)
+task.spawn(function()
+	local updatedInfo = getServerInfo()
+	local updatedContent = string.format(
+		"📌 PlaceId: %s\n🔑 JobId: %s\n🧪 IsStudio: %s\n👥 Players: %d/%d",
+		updatedInfo.PlaceId,
+		updatedInfo.JobId,
+		
+		tostring(updatedInfo.IsStudio),
+		updatedInfo.CurrentPlayers,
+updatedInfo.MaxPlayers
+	)
 
-local function CreateEsp(Char, Color, Text,Parent,number)
-	if not Char then return end
+	ParagraphInfoServer:Set({
+		Title = "Info",
+		Content = updatedContent
+	})
+end)
+	local cameraPosition = Camera.CFrame.Position
+	local screenCenter = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y)
+task.spawn(function()
+	for _, esp in ipairs(ESPs) do
+		local part = esp.Part
+		local highlight = esp.Highlight
+		local billboard = esp.Billboard
+		local label = esp.Label
+		local line = esp.Line
+if not part or not highlight or not billboard or not label or not line then return end
+		if part and part.Parent and highlight and billboard then
+			local distance = (cameraPosition - part.Position).Magnitude
+			local screenPos, onScreen = Camera:WorldToViewportPoint(part.Position)
+			local withinRange = DisableLimitRangerEsp or distance <= LimitRangerEsp
+
+			highlight.Enabled = withinRange and onScreen
+			billboard.Enabled = withinRange and onScreen
+
+			if ActiveDistanceEsp then
+				label.Text = esp.Text .. " (" .. math.floor(distance + 0.5) .. " m)"
+			else
+				label.Text = esp.Text
+			end
+
+			if LineESPEnabled then
+				if onScreen and withinRange then
+					line.Visible = true
+					line.From = screenCenter
+					line.To = Vector2.new(screenPos.X, screenPos.Y)
+				else
+					line.Visible = false
+				end
+			else
+				line.Visible = false
+			end
+		else
+			if line then line.Visible = false end
+		end
+	end
+    end)
+if ActiveAimbot then
+aimToClosestTarget()
+end
+if ActiveFullBright then
+if game.Lighting then 
+game.Lighting.Brightness = 5
+game.Lighting.Ambient = Color3.fromRGB(255, 255, 255)
+end  
+end
+if game.Players.LocalPlayer.Character then
+if ActiveSpeedBoost then 
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = ValueSpeed 
+end
+if ActiveNoclip then 
+if game.Players.LocalPlayer.Character then
+for _, Parts in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+if Parts:IsA("BasePart") and Parts.CanCollide then
+Parts.CanCollide = false
+end
+end
+end
+end
+end
+end)
+local function CreateEsp(Char, Color, Text, Parent,Num)
+	if not Char or not Parent then return end
 	if Char:FindFirstChild("ESP") and Char:FindFirstChildOfClass("Highlight") then return end
+
+	
 	local highlight = Char:FindFirstChildOfClass("Highlight") or Instance.new("Highlight")
 	highlight.Name = "ESP_Highlight"
-highlight.Adornee = Char
-highlight.FillColor = Color
-highlight.FillTransparency = 1
-highlight.OutlineColor = Color
-highlight.OutlineTransparency = 0
-highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-highlight.Enabled = true
+	highlight.Adornee = Char
+	highlight.FillColor = Color
+	highlight.FillTransparency = 1
+	highlight.OutlineColor = Color
+	highlight.OutlineTransparency = 0
+	highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+	highlight.Enabled = false
 	highlight.Parent = Char
 
 	
@@ -261,12 +470,11 @@ highlight.Enabled = true
 	billboard.Name = "ESP"
 	billboard.Size = UDim2.new(0, 50, 0, 25)
 	billboard.AlwaysOnTop = true
-	billboard.StudsOffset = Vector3.new(0, number, 0)
+	billboard.StudsOffset = Vector3.new(0, Num, 0)
 	billboard.Adornee = Parent
-	billboard.Enabled = true
+	billboard.Enabled = false
 	billboard.Parent = Parent
 
-	
 	local label = billboard:FindFirstChildOfClass("TextLabel") or Instance.new("TextLabel")
 	label.Size = UDim2.new(1, 0, 1, 0)
 	label.BackgroundTransparency = 1
@@ -275,56 +483,39 @@ highlight.Enabled = true
 	label.TextScaled = true
 	label.Parent = billboard
 
-	task.spawn(function()
-		local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
-local Workspace = game:GetService("Workspace")
+	local line = Drawing.new("Line")
+	line.Visible = false
+	line.Color = Color
+	line.Thickness = 1.5
+	line.Transparency = 1
 
-local LocalPlayer = Players.LocalPlayer
-local Camera = Workspace.CurrentCamera
-
-while highlight and billboard and Parent and Parent.Parent do
-	local cameraPosition = Camera and Camera.CFrame.Position
-	if cameraPosition and Parent and Parent:IsA("BasePart") then
-	local distance = (cameraPosition - Parent.Position).Magnitude
-				task.spawn(function()
-if ActiveDistanceEsp then
-label.Text = Text.." ("..math.floor(distance + 0.5).." m)"
-else
-label.Text = Text
+	table.insert(ESPs, {
+		Char = Char,
+		Highlight = highlight,
+		Billboard = billboard,
+		Label = label,
+		Part = Parent,
+		Line = line,
+		Text = Text,
+		Color = Color
+	})
 end
-end)
 
+local function KeepEsp(Char, Parent)
+	if not Char or not Char:FindFirstChildOfClass("Highlight") then return end
+	if not Parent or not Parent:FindFirstChildOfClass("BillboardGui") then return end
+
+	for i = #ESPs, 1, -1 do 
+		local esp = ESPs[i]
+		if esp.Char == Char then 
+			if esp.Highlight then esp.Highlight:Destroy() end
+			if esp.Billboard then esp.Billboard:Destroy() end
+			if esp.Line then esp.Line:Destroy() end
+
+			table.remove(ESPs, i) 
+		end
 	end
-
-	RunService.Heartbeat:Wait()
 end
-
-	end)
-end
-
-local function KeepEsp(Char,Parent)
-	if Char and Char:FindFirstChildOfClass("Highlight") and Parent:FindFirstChildOfClass("BillboardGui") then
-		Char:FindFirstChildOfClass("Highlight"):Destroy()
-		Parent:FindFirstChildOfClass("BillboardGui"):Destroy()
-	end
-end
-
-local function getServerInfo()
-	local Players = game:GetService("Players")
-	local playerCount = #Players:GetPlayers()
-local maxPlayers = game:GetService("Players").MaxPlayers
-local isStudio = game:GetService("RunService"):IsStudio()
-
-	return {
-		PlaceId = game.PlaceId,
-		JobId = game.JobId,
-		IsStudio = isStudio,
-		CurrentPlayers = playerCount,
-MaxPlayers =maxPlayers
-	}
-end
-
 
 local function copyToClipboard(text)
     if setclipboard then
@@ -333,86 +524,82 @@ local function copyToClipboard(text)
         warn("setclipboard is not supported in this environment.")
     end
 end
-local DiscordLink = DiscordTab:CreateButton({
-   Name = "Discord Link",
+
+local DiscordLink = DiscordTab:AddButton({
+    Text = "Discord Link",
+   Name = "DiscordLink",
    Callback = function()
 copyToClipboard("https://discord.gg/E2TqYRsRP4")
 end,
 })
 
-local PlayerActiveEspPlayersToggle = EspTab:CreateToggle({
-   Name = "Esp Players",
-   CurrentValue = false,
-   Flag = "ButtonEspPlayers", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+local PlayerActiveEspPlayersToggle = EspTab:AddToggle({
+    Text = "Esp Players",
+   Name = "PlayerActiveEspPlayersToggle",
+   Default = false,
+   Flag = "PlayerActiveEspPlayersToggle", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
   ActiveEspPlayers = Value 
-task.spawn(function()
-while ActiveEspPlayers do 
-task.spawn(function()
+if ActiveEspPlayers  then
 for _, Players in pairs(Game:GetService("Players"):GetChildren()) do
 if Players:isA("Player") and Players.Character and Players.Character:FindFirstChild("Head") and not Players.Character:FindFirstChildOfClass("Highlight") and not Players.Character.Head:FindFirstChildOfClass("BillboardGui") then
 CreateEsp(Players.Character,Color3.fromRGB(255,255,255),Players.Name,Players.Character.Head,2)
 end
 end
-end)
-task.wait(0.1)
-end
+else
 for _, Players in pairs(Game:GetService("Players"):GetChildren()) do
 if Players:isA("Player") and Players.Character and Players.Character:FindFirstChild("Head") and  Players.Character:FindFirstChildOfClass("Highlight") and  Players.Character.Head:FindFirstChildOfClass("BillboardGui") then
 KeepEsp(Players.Character,Players.Character.Head)
 end
 end
-end)
+end
 end,
 })
 
-local PlayerNoclipToggle = PlayerTab:CreateToggle({
-   Name = "Noclip",
-   CurrentValue = false,
-   Flag = "ButtonNoclip", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+local PlayerNoclipToggle = PlayerTab:AddToggle({
+    Text = "Noclip",
+   Name = "PlayerNoclipToggle",
+   Default = false,
+   Flag = "PlayerNoclipToggle", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
   ActiveNoclip = Value 
-task.spawn(function()
-while ActiveNoclip do 
-task.spawn(function()
-if Game.Players.LocalPlayer.Character then
-for _, Parts in pairs(Game.Players.LocalPlayer.Character:GetDescendants()) do
-if Parts:isA("BasePart") and Parts.CanCollide then
+if ActiveNoclip then 
+if game.Players.LocalPlayer.Character then
+for _, Parts in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+if Parts:IsA("BasePart") and Parts.CanCollide then
 Parts.CanCollide = false
 end
 end
 end
-end)
-task.wait(0.1)
-end 
-if Game.Players.LocalPlayer.Character then
-for _, Parts in pairs(Game.Players.LocalPlayer.Character:GetDescendants()) do
-if Parts:isA("BasePart") and not Parts.CanCollide then
+else
+if game.Players.LocalPlayer.Character then
+for _, Parts in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+if Parts:IsA("BasePart") and not Parts.CanCollide then
 Parts.CanCollide = true
 end
 end
 end
-end)
+end
 end,
 })
 
-local PlayerFlySpeedSlider = PlayerTab:CreateSlider({
-   Name = "Fly Speed(Recommended to put 1 or below 5!)",
-   Range = {0, 10},
-   Increment = 0.1,
-   Suffix = "Fly Speed",
-   CurrentValue = 1,
-   Flag = "Slider2", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+local PlayerFlySpeedSlider = PlayerTab:AddSlider({
+    Text = "Fly Speed(Recommended to put 1 or below 5!)",
+   Name = "PlayerFlySpeedSlider",
+  Min = 1,
+   Max = 10,
+   Default = 1,
+   Flag = "PlayerFlySpeedSlider", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
-CurrentValue = Value
 iyflyspeed = Value
-end,  iyflyspeed = CurrentValue,
+end, 
 })
 
-local PlayerFlyToggle = PlayerTab:CreateToggle({
-   Name = "Fly",
-   CurrentValue = false,
-   Flag = "ButtonFly", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+local PlayerFlyToggle = PlayerTab:AddToggle({
+    Text = "Fly",
+   Name = "PlayerFlyToggle",
+   Default = false,
+   Flag = "PlayerFlyToggle", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
   ActivateFly = Value 
 task.spawn(function()
@@ -423,11 +610,10 @@ if not FLYING and ActivateFly then
 task.spawn(function()
 if not AlrActivatedFlyPC then 
 AlrActivatedFlyPC = true
-Rayfield:Notify({
-   Title = "Fly",
-   Content = "When you enable to fly you can press F to fly/unfly (it won't disable the button!)",
-   Duration = 5,
-   Image = "rewind",
+window:Notify({
+				Title = "Fly!",
+				Message = "When you enable to fly you can press F to fly/unfly (it won't disable the button!)",
+				Duration = 5,
 })
 end
 end)
@@ -446,27 +632,13 @@ end)
 end,
 })
 
-local PlayerInfiniteJumpToggle = PlayerTab:CreateToggle({
-   Name = "Infinite Jump",
-   CurrentValue = false,
-   Flag = "ButtonInfiniteJump", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+local PlayerInfiniteJumpToggle = PlayerTab:AddToggle({
+    Text = "Infinite Jump",
+   Name = "PlayerInfiniteJumpToggle",
+   Default = false,
+   Flag = "PlayerInfiniteJumpToggle", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
   ActivateInfiniteJump = Value 
-while ActivateInfiniteJump do
-local plr = game:GetService('Players').LocalPlayer
-	local m = plr:GetMouse()
-	m.KeyDown:connect(function(k)
-		if ActivateInfiniteJump then
-			if k:byte() == 32 then
-			humanoid = game:GetService'Players'.LocalPlayer.Character:FindFirstChildOfClass('Humanoid')
-			humanoid:ChangeState('Jumping')
-			wait()
-			humanoid:ChangeState('Seated')
-			end
-		end
-	end)
-wait(0.1)
-end
 end,
 })
 
@@ -491,212 +663,131 @@ UserInputService.InputBegan:Connect(function(input, processed)
 	end
 end)
 
-local ValueSpeed = 16
-local OldSpeed = Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed
-local PlayerSpeedSlider = PlayerTab:CreateSlider({
-   Name = "Player Speed(Recommended to put it below 500!)",
-   Range = {0, 1000},
-   Increment = 1,
-   Suffix = "Speeds",
-   CurrentValue = 16,
-   Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+
+local PlayerSpeedSlider = PlayerTab:AddSlider({
+    Text = "Player Speed",
+   Name = "PlayerSpeedSlider",
+  Min = 0,
+  Max = 2500,
+   Default = 16,
+   Flag = "PlayerSpeedSlider", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
-CurrentValue = Value
 ValueSpeed = Value
-end,  ValueSpeed = CurrentValue,
+end, 
 })
 
-local PlayerActiveModifyingSpeedToggle = PlayerTab:CreateToggle({
-   Name = "Active Modifying Player Speed",
-   CurrentValue = false,
-   Flag = "ButtonSpeed", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+local PlayerActiveModifyingSpeedToggle = PlayerTab:AddToggle({
+    Text = "Active Modifying Player Speed",
+   Name = "PlayerActiveModifyingSpeedToggle",
+   Default = false,
+   Flag = "PlayerActiveModifyingSpeedToggle", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
   ActiveSpeedBoost = Value 
-task.spawn(function()
-while ActiveSpeedBoost do 
-task.spawn(function()
-Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = ValueSpeed 
-Game.Players.LocalPlayer.Character.Humanoid:SetAttribute("BaseSpeed",ValueSpeed)
-end)
-task.wait(0.1)
+if ActiveSpeedBoost then 
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = ValueSpeed 
+else
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = OldSpeed 
 end
-Game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = OldSpeed 
-Game.Players.LocalPlayer.Character.Humanoid:SetAttribute("BaseSpeed",OldSpeed)
-end)
 end,
 })
 
-local Players = game:GetService("Players")
-local LocalPlayer = Players.LocalPlayer
-local Camera = workspace.CurrentCamera
-
-local function getDistance(a, b)
-	return (a.Position - b.Position).Magnitude
-end
-
-local function hasClearLineOfSight(from, to)
-	local rayParams = RaycastParams.new()
-	rayParams.FilterType = Enum.RaycastFilterType.Blacklist
-	rayParams.FilterDescendantsInstances = {LocalPlayer.Character}
-	local result = workspace:Raycast(from.Position, (to.Position - from.Position), rayParams)
-	return not (result and result.Instance and result.Instance.Transparency < 1)
-end
-
-local function isValidTarget(char)
-	if not char or char == LocalPlayer.Character then return false end
-	local humanoid = char:FindFirstChildWhichIsA("Humanoid")
-	local head = char:FindFirstChild("Head")
-	if not humanoid or not head then return false end
-	if humanoid.Health == 0 then return false end
-	if VerifyTeamColor then
-		local player = Players:GetPlayerFromCharacter(char)
-		if player and player.TeamColor == LocalPlayer.TeamColor then return false end
-	end
-	if VerifyWall then
-		local myHead = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Head")
-		if myHead and not hasClearLineOfSight(myHead, head) then return false end
-	end
-	return true
-end
-
-local function aimToClosestTarget()
-	local myCharacter = LocalPlayer.Character
-	local myHead = myCharacter and myCharacter:FindFirstChild("Head")
-	local myRoot = myCharacter and myCharacter:FindFirstChild("HumanoidRootPart")
-	if not (myHead and myRoot) then return end
-
-	local closestTarget = nil
-	local shortestDistance = 0
-if InfiniteDistance then
-shortestDistance = math.huge
-else
-shortestDistance = MaxDistanceForAimbot
-end 
-if ShootBot then
-	for _, instance in pairs(workspace:GetDescendants()) do
-		if instance:IsA("Model") and instance:FindFirstChildOfClass("Humanoid") and instance:FindFirstChildOfClass("Humanoid").Health > 0 then
-if isValidTarget(instance) then
-			local head = instance:FindFirstChild("Head")
-			if head then
-				local distance = getDistance(myHead, head)
-				if distance < shortestDistance then
-					shortestDistance = distance
-					closestTarget = head
-				end
-end
-			end
-		end
-	end
-else
-for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
-	local character = player.Character
-	local humanoid = character and character:FindFirstChildOfClass("Humanoid")
-	local head = character and character:FindFirstChild("Head")
-
-	if humanoid and humanoid.Health > 0 and head and isValidTarget(character) then
-		local distance = getDistance(myHead, head)
-		if distance < shortestDistance then
-			shortestDistance = distance
-			closestTarget = head
-		end
-	end
-end
-
-end
-	if closestTarget then
-		if HowAim == "Camera" then
-			Camera.CFrame = CFrame.new(Camera.CFrame.Position, closestTarget.Position)
-		elseif HowAim == "Character" then
-			local lookVector = (closestTarget.Position - myRoot.Position).Unit
-			local newCFrame = CFrame.new(myRoot.Position, myRoot.Position + Vector3.new(lookVector.X, 0, lookVector.Z))
-			myRoot.CFrame = newCFrame
-		end
-	end
-end
 
 
 
-local PlayerActiveAimbot = AimbotTab:CreateToggle({
-   Name = "Active Aimbot",
-   CurrentValue = false,
-   Flag = "ButtonAimbot", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+local PlayerActiveAimbot = AimbotTab:AddToggle({
+    Text = "Active Aimbot",
+   Name = "PlayerActiveAimbot",
+   Default = false,
+   Flag = "PlayerActiveAimbot", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
   ActiveAimbot = Value 
 end,
 })
 
-local AimbotDropdown = AimbotTab:CreateDropdown({
-    Name = "Aimbot Settings",
-    Options = {"Verify Wall", "Verify Team Color","Target Bot","Infinite Aimbot Distance"},
-    CurrentOption = {},
-    MultipleOptions = true,
-    Flag = "AimbotDropdown2",
-    Callback = function(Options)
-        VerifyWall = table.find(Options, "Verify Wall") ~= nil
-        VerifyTeamColor = table.find(Options, "Verify Team Color") ~= nil
-      ShootBot = table.find(Options, "Target Bot") ~= nil
- InfiniteDistance = table.find(Options, "Infinite Aimbot Distance") ~= nil
+
+
+local AimbotDropdown = AimbotTab:AddDropdown({
+    Text = "Aimbot Settings",
+    Name = "AimbotDropdown",
+    Options = {"Verify Wall", "Verify Team Color", "Target Bot", "Infinite Aimbot Distance"},
+    Default = "",
+    MultiSelect = true,
+    Flag = "AimbotDropdown",
+    Callback = function(Options1)
+        if AimbotSettings[Options1] == nil then
+            return
+        end
+
+    
+        AimbotSettings[Options1] = not AimbotSettings[Options1]
+
+       
     end,
 })
 
 
-local AimbotDropdown2 = AimbotTab:CreateDropdown({
-    Name = "How Aim",
+local AimbotDropdown2 = AimbotTab:AddDropdown({
+    Text = "Aiming Settings",
+    Name = "AimbotDropdown2",
     Options = {"Camera", "Character"},
-    CurrentOption = {"Camera"},
-    MultipleOptions = false,
-    Flag = "AimbotDropdown",
+    Default = "Camera",
+    MultiSelect = false,
+    Flag = "AimbotDropdown2",
     Callback = function(Options)
-        if Options[1] == "Camera" then
+        if Options == "Camera" then
             HowAim = "Camera"
-        elseif Options[1] == "Character" then
+        elseif Options == "Character" then
             HowAim = "Character"
         end
     end,
 })
 
-local DistanceAimbotSlider = AimbotTab:CreateSlider({
-   Name = "Distance Aimbot(Work Only if Infinite Aimbot Distance Is Disabled!)",
-   Range = {0, 1000},
-   Increment = 1,
-   Suffix = "Distance",
-   CurrentValue = 0,
-   Flag = "SliderAIMBOT", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+local DistanceAimbotSlider = AimbotTab:AddSlider({
+    Text = "Distance Aimbot(Work Only if Infinite Aimbot Distance Is Disabled!)",
+   Name = "DistanceAimbotSlider",
+  Min = 10,
+  Max = 1500,
+   Default = 0,
+   Flag = "DistanceAimbotSlider", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
-CurrentValue = Value
 MaxDistanceForAimbot = Value
-end,  MaxDistanceForAimbot = CurrentValue,
+end,
 })
 
-local ButtonLoadForsakenCheat = GameTab:CreateButton({
-   Name = "Forsaken Cheat Iliankytb",
+local ButtonLoadForsakenCheat = GameTab:AddButton({
+    Text = "Forsaken Cheat(by Iliankytb)",
+   Name = "ButtonLoadForsakenCheat",
      Callback = function(Value)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/BestForsakenScript"))()
 end,
 })
 
-local ButtonLoadFiveNightsCheat = GameTab:CreateButton({
-   Name = "Five Nights:Hunted Cheat Iliankytb",
+local ButtonLoadFiveNightsCheat = GameTab:AddButton({
+    Text = "Five Nights:Hunted Cheat(by Iliankytb)",
+   Name = "ButtonLoadFiveNightsCheat",
      Callback = function(Value)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatFiveNightHunted"))()
 end,
 })
 
 
-local ButtonLoadRFTwoCheat = GameTab:CreateButton({
-   Name = "Rainbow Friends 2 Cheat Iliankytb",
+local ButtonLoadRFTwoCheat = GameTab:AddButton({
+    Text = "Rainbow Friends 2 Cheat(by Iliankytb)",
+   Name = "ButtonLoadRFTwoCheat",
      Callback = function(Value)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/BestRainbowFriendsTwo"))()
 end,
 })
-local ButtonLoadDoorsCheat = GameTab:CreateButton({
-   Name = "Doors Cheat Iliankytb",
+local ButtonLoadDoorsCheat = GameTab:AddButton({
+    Text = "Doors Cheat(by Iliankytb)",
+   Name = "ButtonLoadDoorsCheat",
      Callback = function(Value)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/NewBestDoorsScriptIliankytb"))()
 end,
 })
-local ButtonLoadHZCheat = GameTab:CreateButton({
-   Name = "Hunty Zombies Cheat Iliankytb",
+local ButtonLoadHZCheat = GameTab:AddButton({
+    Text = "Hunty Zombies Cheat(by Iliankytb)",
+   Name = "ButtonLoadHZCheat",
      Callback = function(Value)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/BestFreeHuntyZombies"))()
 end,
@@ -707,126 +798,139 @@ end,
 copyToClipboard(game.PlaceId)
 end,
 })]]
-local ButtonLoadInkGameCheat = GameTab:CreateButton({
-   Name = "Ink Game Cheat Iliankytb",
+local ButtonLoadInkGameCheat = GameTab:AddButton({
+    Text = "Ink Game Cheat(by Iliankytb)",
+   Name = "ButtonLoadInkGameCheat",
      Callback = function(Value)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/BestInkGameCheat"))()
 end,
 })
-local ButtonLoadEvadeCheat = GameTab:CreateButton({
-   Name = "Evade Cheat Iliankytb",
+local ButtonLoadEvadeCheat = GameTab:AddButton({
+    Text = "Evade Cheat(by Iliankytb)",
+   Name = "ButtonLoadEvadeCheat",
      Callback = function(Value)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/NewbestEvadeCheat"))()
 end,
 })
 
-local ButtonLoadEvadeCheat = GameTab:CreateButton({
-   Name = "Rainbow Friend Chapter 1 Cheat Iliankytb",
+local ButtonLoadRBC1Cheat = GameTab:AddButton({
+    Text ="Rainbow Friends Chapter 1 Cheat(by Iliankytb)",
+   Name = "ButtonLoadRBC1Cheat",
      Callback = function(Value)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/BestRainbowFriendOne"))()
 end,
 })
-local ButtonLoadGAGCheat = GameTab:CreateButton({
-   Name = "Grow A Garden Cheat Iliankytb(Coming Soon)",
+local ButtonLoadGAGCheat = GameTab:AddButton({
+    Text ="Grow a garden Cheat(by Iliankytb)",
+   Name = "ButtonLoadGAGCheat",
      Callback = function(Value)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/cheatgrowagarden"))()
 end,
 })
-local ButtonLoad99NightsInTheForestCheat = GameTab:CreateButton({
-   Name = "99 Nights in the forest Cheat Iliankytb",
+local ButtonLoad99NightsInTheForestCheat = GameTab:AddButton({
+    Text ="99 Nights in the forest Cheat(by Iliankytb)",
+   Name = "ButtonLoad99NightsInTheForestCheat",
      Callback = function(Value)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Best99NightsInTheForest"))()
 end,
 })
-local ButtonLoadInfiniteYieldCheat = PlayerTab:CreateButton({
-   Name = "Infinite Yield",
+local ButtonLoadInfiniteYieldCheat = PlayerTab:AddButton({
+    Text = "Infinite Yield",
+   Name = "ButtonLoadInfiniteYieldCheat",
      Callback = function(Value)
 loadstring(game:HttpGet(('https://raw.githubusercontent.com/EdgeIY/infiniteyield/master/source'),true))()
 end,
 })
-local ButtonLoadPiggyCheat = GameTab:CreateButton({
-   Name = "Piggy Cheat Iliankytb",
+local ButtonLoadPiggyCheat = GameTab:AddButton({
+    Text = "Piggy Cheat(by Iliankytb)",
+   Name = "ButtonLoadPiggyCheat",
      Callback = function(Value)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatPiggy"))()
 end,
 })
-local ButtonLoadAntarcticaExpeditionCheat = GameTab:CreateButton({
-   Name = "Antarctica Expedition Cheat Iliankytb",
+local ButtonLoadAntarcticaExpeditionCheat = GameTab:AddButton({
+    Text ="Antartica Expedition Cheat(by Iliankytb)",
+   Name = "ButtonLoadAntarcticaExpeditionCheat",
      Callback = function(Value)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/BestAntarticaExpedition"))()
 end,
 })
-local ButtonLoadBloxFruitCheat = GameTab:CreateButton({
-   Name = "Blox Fruit Cheat Iliankytb(Coming Soon)",
-     Callback = function(Value)
---loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/BestRainbowFriendsTwo"))()
-end,
-})
 
-local ButtonLoadsecretCheat = GameTab:CreateButton({
-   Name = "Pig 64 Cheat Iliankytb(Coming Soon)",
-     Callback = function(Value)
---loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/BestRainbowFriendsTwo"))()
-end,
-})
-local ButtonLoadsecretCheat = GameTab:CreateButton({
-   Name = "strongest battleground Cheat Iliankytb(Coming Soon)",
-     Callback = function(Value)
---loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/BestRainbowFriendsTwo"))()
-end,
-})
-
-local ButtonLoadsecretCheat = GameTab:CreateButton({
-   Name = "??? Cheat Iliankytb(Coming Soon)",
-     Callback = function(Value)
---loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/BestRainbowFriendsTwo"))()
-end,
-})
-local ButtonUnloadCheat = SettingsTab:CreateButton({
-   Name = "Unload Cheat",
+local ButtonUnloadCheat = SettingsTab:AddButton({
+    Text = "Unload Cheat",
+   Name = "ButtonUnloadCheat",
    Callback = function()
-  Rayfield:Destroy()
+
 end,
 })
-local PlayerActiveDistanceEspToggle = SettingsTab:CreateToggle({
-   Name = "Distance For Esp",
-   CurrentValue = false,
-   Flag = "ButtonDistanceEsp", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+local EspDistanceSlider = SettingsTab:AddSlider({
+  Text = "Distance for esp",
+Name = "EspDistanceSlider",
+  Min = 25,
+Max = 1500,
+   Default = 25,
+   Flag = "EspDistanceSlider",
    Callback = function(Value)
-  ActiveDistanceEsp = Value 
-end,
-})
-local ActiveFullBright = false
-local OldBrightness = Game.Lighting.Brightness
-local OldAmbient = Game.Lighting.Ambient
-local PlayerFullBright = PlayerTab:CreateToggle({
-   Name = "Full Bright(unverified!)",
-   CurrentValue = false,
-   Flag = "FullBright",
-   Callback = function(Value)
-ActiveFullBright = Value 
-task.spawn(function() 
-while ActiveFullBright do 
-if Game.Lighting then 
-Game.Lighting.Brightness = 5
-Game.Lighting.Ambient = Color3.fromRGB(255, 255, 255) 
-end  
-wait(0.1)
-end 
-if Game.Lighting then 
-Game.Lighting.Brightness = OldBrightness
-Game.Lighting.Ambient = OldAmbient
-end  
-end)
+LimitRangerEsp = Value
 end,  
 })
-local NoCooldownpromptToggle = PlayerTab:CreateToggle({
-   Name = "Instant Interact",
+local DisableLimitEsp = SettingsTab:AddToggle({
+  Text = "Disable Esp Distance Limiter",
+Name = "DisableLimitEsp",
    CurrentValue = false,
-   Flag = "NoCooldownPrompt1", 
+   Flag = "DEDL",
+   Callback = function(Value)
+DisableLimitRangerEsp = Value
+end,  
+})
+local ActiveDistEsp = SettingsTab:AddToggle({
+  Text = "Distance Esp",
+Name = "DistanceEsp",
+   CurrentValue = false,
+   Flag = "DistanceEsp",
+   Callback = function(Value)
+ActiveDistanceEsp = Value
+end,  
+})
+
+local LineEsp = SettingsTab:AddToggle({
+  Text = "Line for esp",
+Name = "LineEsp",
+   CurrentValue = false,
+   Flag = "LFE",
+   Callback = function(Value)
+LineESPEnabled = Value
+end,  
+})
+
+local PlayerFullBright = PlayerTab:AddToggle({
+    Text = "Full Bright",
+   Name = "PlayerFullBright",
+   Default = false,
+   Flag = "PlayerFullBright",
+   Callback = function(Value)
+ActiveFullBright = Value 
+if ActiveFullBright then 
+if game.Lighting then 
+game.Lighting.Brightness = 5
+game.Lighting.Ambient = Color3.fromRGB(255, 255, 255) 
+end  
+else
+if game.Lighting then 
+game.Lighting.Brightness = OldBrightness
+game.Lighting.Ambient = OldAmbient
+end  
+end
+end,  
+})
+local NoCooldownpromptToggle = PlayerTab:AddToggle({
+    Text = "Instant Interact",
+   Name = "NoCooldownpromptToggle",
+   Default = false,
+   Flag = "NoCooldownpromptToggle", 
    Callback = function(Value)
 ActiveNoCooldownPrompt = Value  
-while ActiveNoCooldownPrompt do
+if ActiveNoCooldownPrompt then
 for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
 if Assets:isA("ProximityPrompt") then 
 if Assets.HoldDuration ~= 0 then
@@ -835,8 +939,7 @@ Assets.HoldDuration = 0
 end
 end 
 end  
-wait(0.1) 
-end 
+else
 for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
 if Assets:isA("ProximityPrompt") then 
 if Assets:GetAttribute("HoldDurationOld") and Assets:GetAttribute("HoldDurationOld") ~= 0 then
@@ -844,31 +947,25 @@ Assets.HoldDuration = Assets:GetAttribute("HoldDurationOld")
 end
 end 
 end   
+end
 end,
 })
-local Themes = {
-   ["Default"] = "Default",
-   ["Amber Glow"] = "AmberGlow",
-   ["Amethyst"] = "Amethyst",
-   ["Bloom"] = "Bloom",
-   ["Dark Blue"] = "DarkBlue",
-   ["Green"] = "Green",
-   ["Light"] = "Light",
-   ["Ocean"] = "Ocean",
-   ["Serenity"] = "Serenity"
-}
-
-local Dropdown = SettingsTab:CreateDropdown({
-   Name = "Change Theme",
-   Options = {"Default", "Amber Glow", "Amethyst", "Bloom", "Dark Blue", "Green", "Light", "Ocean", "Serenity"},
-   CurrentOption = selectedTheme,  -- pour afficher ce qui est réellement chargé
-   Flag = "ThemeSelection",
-   Callback = function(Selected)
-      local ident = Themes[Selected[1]]
-      Window.ModifyTheme(ident)  -- <— Applique le thème en direct
-   end, 
-})
-
+local ChangeThemeDropdown = SettingsTab:AddDropdown({
+		Text = "Change Theme:",
+		Name = "CTD",
+		Options = {"Default", "Light", "RedDark","BlueNeon","GreenMatrix","PurpleDream","Sunset",
+		"Ocean","Toxic","Storm","LimePop","Cyber","Chocolate","RoseGold","CottonCandy","NightSky","Steel",
+			"GoldLux","Ice","TealWave","FrostFire","DarkMatter","Lava","PinkCandy","Sakura","DeepSpace","Skyline","Crimson"
+			,"Desert","Camo","Plasma","Arctic","Slate","Vaporwave"
+			
+		},
+		Default = "Default",
+		MultiSelect = false,
+		Flag = "CTD", --Put a name flag for save data if you enabled saving data
+		Callback = function(choice)
+window:ChangeTheme(choice)
+		end
+	})
 
 	local plr = game:GetService('Players').LocalPlayer
 	local m = plr:GetMouse()
@@ -884,34 +981,38 @@ end
 	end)
 
 
-Rayfield:LoadConfiguration()
-task.spawn(function()
-game:GetService("RunService").RenderStepped:Connect(function()
-if ActiveAimbot then
-aimToClosestTarget()
+library:LoadData()
+workspace.DescendantAdded:Connect(function(child)
+if ActiveNoCooldownPrompt then
+if child:isA("ProximityPrompt") then 
+if child.HoldDuration ~= 0 then
+child:SetAttribute("HoldDurationOld",child.HoldDuration)
+child.HoldDuration = 0
+end
+end 
+end  
+task.wait(0.75)
+if ActiveEspPlayers  then
+if   child and child.PrimaryPart then
+    local Players = game:GetService("Players"):GetPlayerFromCharacter(child)
+    if Players then
+ if Players.Character:FindFirstChild("Head") and not Players.Character:FindFirstChildOfClass("Highlight") and not Players.Character.Head:FindFirstChildOfClass("BillboardGui") then
+CreateEsp(Players.Character,Color3.fromRGB(255,255,255),Players.Name,Players.Character.Head,2)
+end
+end
+end
 end
 end)
-end)
-task.spawn(function()
-while true do
-	task.wait(1) 
-task.spawn(function()
-	local updatedInfo = getServerInfo()
-	local updatedContent = string.format(
-		"📌 PlaceId: %s\n🔑 JobId: %s\n🧪 IsStudio: %s\n👥 Players: %d/%d",
-		updatedInfo.PlaceId,
-		updatedInfo.JobId,
-		
-		tostring(updatedInfo.IsStudio),
-		updatedInfo.CurrentPlayers,
-updatedInfo.MaxPlayers
-	)
-
-	ParagraphInfoServer:Set({
-		Title = "Info",
-		Content = updatedContent
-	})
-end)
+workspace.DescendantRemoving:Connect(function(child)
+if ActiveEspPlayers  then
+if   child and child.PrimaryPart then
+    local Players = game:GetService("Players"):GetPlayerFromCharacter(child)
+    if Players then
+ if Players.Character:FindFirstChild("Head") and Players.Character:FindFirstChildOfClass("Highlight") and  Players.Character.Head:FindFirstChildOfClass("BillboardGui") then
+KeepEsp(Players.Character,Players.Character.Head)
 end
-
+end
+end
+end
+end)
 end)
