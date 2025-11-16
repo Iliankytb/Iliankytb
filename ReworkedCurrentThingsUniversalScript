@@ -65,7 +65,12 @@ window:Notify({
 				Message = V,
 				Duration = 7.5,
 })
-
+local AimbotSettings = {
+    ["Verify Wall"] = false,
+    ["Verify Team Color"] = false,
+    ["Target Bot"] = false,
+    ["Infinite Aimbot Distance"] = false,
+}
 local ESPs = {}
 local LineESPEnabled = false 
 local Players = game:GetService("Players")
@@ -699,18 +704,24 @@ local PlayerActiveAimbot = AimbotTab:AddToggle({
 end,
 })
 
+
+
 local AimbotDropdown = AimbotTab:AddDropdown({
     Text = "Aimbot Settings",
     Name = "AimbotDropdown",
-    Options = {"Verify Wall", "Verify Team Color","Target Bot","Infinite Aimbot Distance"},
+    Options = {"Verify Wall", "Verify Team Color", "Target Bot", "Infinite Aimbot Distance"},
     Default = "",
     MultiSelect = true,
     Flag = "AimbotDropdown",
-    Callback = function(Options)
-        VerifyWall = table.find(Options, "Verify Wall") ~= nil
-        VerifyTeamColor = table.find(Options, "Verify Team Color") ~= nil
-      ShootBot = table.find(Options, "Target Bot") ~= nil
- InfiniteDistance = table.find(Options, "Infinite Aimbot Distance") ~= nil
+    Callback = function(Options1)
+        if AimbotSettings[Options1] == nil then
+            return
+        end
+
+    
+        AimbotSettings[Options1] = not AimbotSettings[Options1]
+
+       
     end,
 })
 
@@ -723,9 +734,9 @@ local AimbotDropdown2 = AimbotTab:AddDropdown({
     MultiSelect = false,
     Flag = "AimbotDropdown2",
     Callback = function(Options)
-        if Options[1] == "Camera" then
+        if Options == "Camera" then
             HowAim = "Camera"
-        elseif Options[1] == "Character" then
+        elseif Options == "Character" then
             HowAim = "Character"
         end
     end,
@@ -997,7 +1008,7 @@ if ActiveEspPlayers  then
 if   child and child.PrimaryPart then
     local Players = game:GetService("Players"):GetPlayerFromCharacter(child)
     if Players then
- if Players.Character:FindFirstChild("Head") and not Players.Character:FindFirstChildOfClass("Highlight") and not Players.Character.Head:FindFirstChildOfClass("BillboardGui") then
+ if Players.Character:FindFirstChild("Head") and Players.Character:FindFirstChildOfClass("Highlight") and  Players.Character.Head:FindFirstChildOfClass("BillboardGui") then
 KeepEsp(Players.Character,Players.Character.Head)
 end
 end
