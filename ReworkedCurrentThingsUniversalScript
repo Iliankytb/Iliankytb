@@ -43,7 +43,7 @@ local EspTab = window:CreateTab("Esp",0)
 local AimbotTab = window:CreateTab("Aimbot",0)
 local DiscordTab = window:CreateTab("Discord",0)
 local SettingsTab = window:CreateTab("Settings",0)
-local ActiveSpeedBoost,ActiveNoclip,ActiveEspPlayers,ActivateFly,ActivateInfiniteJump,AlrActivatedFlyPC,ActiveNoCooldownPrompt,ActiveAimbot,HowAim,VerifyTeamColor,VerifyWall,ShootBot,InfiniteDistance,MaxDistanceForAimbot = false,false,false,false,false,false,false,false,"Camera",false,false,false,false,0
+local ActiveSpeedBoost,ActiveNoclip,ActiveEspPlayers,ActivateFly,ActivateInfiniteJump,AlrActivatedFlyPC,ActiveNoCooldownPrompt,ActiveAimbot,HowAim,MaxDistanceForAimbot = false,false,false,false,false,false,false,false,"Camera",0
 local ParagraphInfoServer = InfoTab:AddParagraph({Title = "",Content = "Loading",Name = "Paragraph1"})
 local LocalPlayer = game.Players.LocalPlayer
 local LimitRangerEsp = 25
@@ -105,11 +105,11 @@ local function isValidTarget(char)
 	local head = char:FindFirstChild("Head")
 	if not humanoid or not head then return false end
 	if humanoid.Health == 0 then return false end
-	if VerifyTeamColor then
+	if AimbotSettings["Verify Team Color"] then
 		local player = Players:GetPlayerFromCharacter(char)
 		if player and player.TeamColor == LocalPlayer.TeamColor then return false end
 	end
-	if VerifyWall then
+	if AimbotSettings["Verify Wall"] then
 		local myHead = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Head")
 		if myHead and not hasClearLineOfSight(myHead, head) then return false end
 	end
@@ -124,16 +124,16 @@ local function aimToClosestTarget()
 
 	local closestTarget = nil
 	local shortestDistance = 0
-if InfiniteDistance then
+if AimbotSettings["Infinite Aimbot Distance"] then
 shortestDistance = math.huge
 else
 shortestDistance = MaxDistanceForAimbot
 end 
-if ShootBot then
+if AimbotSettings["Target Bot"] then
 	for _, instance in pairs(workspace:GetDescendants()) do
-		if instance:IsA("Model") and instance:FindFirstChildOfClass("Humanoid") and instance:FindFirstChildOfClass("Humanoid").Health > 0 then
-if isValidTarget(instance) then
-			local head = instance:FindFirstChild("Head")
+		if instance:IsA("Humanoid") and instance.Health > 0 then
+if isValidTarget(instance.Parent) then
+			local head = instance.Parent:FindFirstChild("Head")
 			if head then
 				local distance = getDistance(myHead, head)
 				if distance < shortestDistance then
