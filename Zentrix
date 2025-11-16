@@ -1569,10 +1569,10 @@ end
 
 			end)
 
-			-- Init state
+	
 			setToggleState(value)
 
-			-- Renvoi de l'objet
+			
 			local obj = {}
 
 			function obj:Set(newValue)
@@ -1616,7 +1616,7 @@ end
 
 			local value = default
 
-			-- Conteneur principal du slider
+		
 			local slider = createUI("TextButton", {
 				Text = "";
 				Size = UDim2.new(1, 0, 0, 40);
@@ -1626,7 +1626,7 @@ end
 			})
 			createUI("UICorner", { Parent = slider })
 
-			-- Padding interne
+			
 			createUI("UIPadding", {
 				PaddingLeft = UDim.new(0, 10),
 				PaddingRight = UDim.new(0, 10),
@@ -1635,14 +1635,14 @@ end
 				Parent = slider,
 			})
 
-			-- Layout pour organiser les éléments verticalement
+		
 			local layout = Instance.new("UIListLayout")
 			layout.FillDirection = Enum.FillDirection.Vertical
 			layout.SortOrder = Enum.SortOrder.LayoutOrder
 			layout.VerticalAlignment = Enum.VerticalAlignment.Center
 			layout.Parent = slider
 
-			-- Label du texte (ex: "Volume")
+		
 			local labelText = createUI("TextLabel", {
 				Text = opts.Text or "Slider",
 				Size = UDim2.new(1, 0, 0, 14),
@@ -1654,7 +1654,7 @@ end
 				Parent = slider,
 			})
 
-			-- Label de la valeur (au-dessus de la barre)
+		
 			local label = createUI("TextLabel", {
 				Size = UDim2.new(1, 0, 0, 12),
 				BackgroundTransparency = 1,
@@ -1666,7 +1666,7 @@ end
 				Parent = slider,
 			})
 
-			-- Barre de fond (pleine largeur du bouton)
+	
 			local sliderBar = createUI("Frame", {
 				Size = UDim2.new(1, 0, 0, 6),
 				BackgroundColor3 = Color3.fromRGB(80, 80, 80),
@@ -1674,7 +1674,7 @@ end
 			})
 			createUI("UICorner", { CornerRadius = UDim.new(1, 0), Parent = sliderBar })
 
-			-- Barre de remplissage
+		
 			local fillBar = createUI("Frame", {
 				Size = UDim2.new((value - min) / (max - min), 0, 1, 0),
 				BackgroundColor3 = Color3.fromRGB(0, 170, 255),
@@ -1835,7 +1835,7 @@ end
 				TextColor3 = selectedTheme.TextColor,
 				Font = Enum.Font.Gotham;
 				TextScaled = true;
-				TextXAlignment = Enum.TextXAlignment.Center,
+				TextXAlignment = Enum.TextXAlignment.Right,
 				Parent = tab.content;
 			})
 			createUI("UICorner", {Parent = button})
@@ -1848,10 +1848,9 @@ end
 			})
 
 
-			-- Retourne un objet avec une méthode Set pour changer le texte
 			local obj = {}
 			function obj:Set(t)
-				-- t est une table avec un seul élément string, ex: {"nouveaux"}
+			
 				if type(t) == "table" and type(t[1]) == "string" then
 					button.Text = t[1]
 				else
@@ -2041,7 +2040,7 @@ end
 				end
 
 				if changed then
-					-- Sauvegarde
+					
 					if settings1 and settings1.Data and settings1.Data.EnableSavingData then
 						tab.dropdownValue = tab.dropdownValue or {}
 						tab.dropdownValue[flag] = dropdown.Selected
@@ -2065,8 +2064,8 @@ end
 				btn.TextColor3 = selectedTheme.TextColor
 				createOptions(dropdown.Options)
 			end
-			tab.dropdowns[flag] = dropdown -- ✅ Sauvegarde du dropdown pour LoadData
-			return dropdown -- ✅ Très important !
+			tab.dropdowns[flag] = dropdown 
+			return dropdown
 		end
 
 
@@ -2079,7 +2078,7 @@ end
 	
 end
 function library:CreateWindow(settings1, onLoad)
-	print("Library Version: 0.38")
+	print("Library Version: 0.39")
 	if game:GetService("RunService"):IsStudio() then
 		if game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary") then
 			game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary"):Destroy()
@@ -2089,6 +2088,47 @@ function library:CreateWindow(settings1, onLoad)
 			game:GetService("CoreGui"):FindFirstChild("UILibrary"):Destroy()
 		end
 	end
+local gui544 = Instance.new("ScreenGui")
+gui544.Parent = game:GetService("CoreGui")
+
+local txt = Instance.new("TextLabel")
+txt.Parent = gui544
+txt.Size = UDim2.new(0, 400, 0, 80)
+txt.Position = UDim2.new(0.5, -200, 0.5, -40)
+txt.BackgroundTransparency = 1
+txt.Text = "Powered by Zentrix"
+txt.TextColor3 = Color3.fromRGB(0, 255, 0)
+txt.Font = Enum.Font.GothamBold
+txt.TextScaled = true
+txt.TextTransparency = 1 
+txt.TextStrokeTransparency = 0
+
+txt.AnchorPoint = Vector2.new(0, 0)
+txt.Size = UDim2.new(0, 350, 0, 70)
+
+local TweenService = game:GetService("TweenService")
+
+local inTween = TweenService:Create(txt, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+	TextTransparency = 0,
+	Size = UDim2.new(0, 400, 0, 80)
+})
+
+inTween:Play()
+inTween.Completed:Wait()
+
+task.wait(0.75)
+
+
+local outTween = TweenService:Create(txt, TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+	TextTransparency = 1,
+	Size = UDim2.new(0, 350, 0, 70)
+})
+
+outTween:Play()
+outTween.Completed:Wait()
+
+gui544:Destroy()
+
 	local window = {}
 	window.tabs = {}
 
@@ -2111,12 +2151,12 @@ function library:CreateWindow(settings1, onLoad)
 	if settings1.KeySystem then
 		local TweenService = game:GetService("TweenService")
 
-		-- Récupération des valeurs
+
 		local Title = settings1.KeySettings.Title
 		local Note = settings1.KeySettings.Note
 		local Key = settings1.KeySettings.Key
 
-		-- Création du cadre principal
+	
 		local KeyFrame = createUI("Frame", {
 			Size = UDim2.new(0, 0, 0, 0),
 			Position = UDim2.new(0.5, 0, 0.5, 0),
@@ -2126,7 +2166,7 @@ function library:CreateWindow(settings1, onLoad)
 		})
 		createUI("UICorner", {Parent = KeyFrame})
 
-		-- Bouton de fermeture (croix rouge)
+	
 		local closeButton = createUI("TextButton", {
 			Size = UDim2.new(0, 25, 0, 25),
 			Position = UDim2.new(1, -30, 0, 5),
@@ -2142,13 +2182,13 @@ function library:CreateWindow(settings1, onLoad)
 			gui:Destroy()
 		end)
 
-		-- Animation d'ouverture
+
 		TweenService:Create(KeyFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
 			Size = UDim2.new(0, 500, 0, 200),
 			Position = UDim2.new(0.5, 0, 0.5, 0),
 		}):Play()
 
-		-- Titre
+
 		createUI("TextLabel", {
 			Size = UDim2.new(1, -20, 0, 30),
 			Position = UDim2.new(0, 10, 0, 10),
@@ -2160,7 +2200,7 @@ function library:CreateWindow(settings1, onLoad)
 			Parent = KeyFrame,
 		})
 
-		-- Note d'instruction
+
 		createUI("TextLabel", {
 			Size = UDim2.new(1, -20, 0, 40),
 			Position = UDim2.new(0, 10, 0, 45),
@@ -2173,7 +2213,7 @@ function library:CreateWindow(settings1, onLoad)
 			Parent = KeyFrame,
 		})
 
-		-- Zone de texte pour entrer la clé
+		
 		local TextBox = createUI("TextBox", {
 			Size = UDim2.new(1, -20, 0, 30),
 			Position = UDim2.new(0, 10, 0, 95),
@@ -2187,7 +2227,7 @@ function library:CreateWindow(settings1, onLoad)
 		})
 		createUI("UICorner", {Parent = TextBox})
 
-		-- Bouton de confirmation
+		
 		local ConfirmButton = createUI("TextButton", {
 			Size = UDim2.new(1, -20, 0, 30),
 			Position = UDim2.new(0, 10, 0, 135),
@@ -2200,19 +2240,19 @@ function library:CreateWindow(settings1, onLoad)
 		})
 		createUI("UICorner", {Parent = ConfirmButton})
 
-		-- Gestion des boutons Discord / GetKey
+		
 		local AddDiscord = settings1.KeySettings.AddDiscordButton
 		local AddGetKey = settings1.KeySettings.AddGetKeyButton
 
-		-- Espace de base entre les deux (si les deux sont actifs)
+	
 		local spacing = 10
 		local baseY = 170
-		local totalWidth = 500 - 20 -- largeur totale du cadre - padding
+		local totalWidth = 500 - 20 
 
 		if AddDiscord and AddGetKey then
 			local halfWidth = (totalWidth - spacing) / 2
 
-			-- GetKey button
+		
 			local GetKeyBtn = createUI("TextButton", {
 				Size = UDim2.new(0, halfWidth, 0, 30),
 				Position = UDim2.new(0, 10, 0, baseY),
@@ -2225,7 +2265,7 @@ function library:CreateWindow(settings1, onLoad)
 			})
 			createUI("UICorner", {Parent = GetKeyBtn})
 
-			-- Discord button
+		
 			local DiscordBtn = createUI("TextButton", {
 				Size = UDim2.new(0, halfWidth, 0, 30),
 				Position = UDim2.new(0, 10 + halfWidth + spacing, 0, baseY),
@@ -2371,7 +2411,7 @@ DiscordBtn.MouseButton1Click:Connect(function()
 					end
 				end
 
-				-- Animation de fermeture
+			
 				local closeTween = TweenService:Create(KeyFrame, TweenInfo.new(0.3, Enum.EasingStyle.Sine, Enum.EasingDirection.In), {
 					Size = UDim2.new(0, 0, 0, 0),
 					Position = UDim2.new(0.5, 0, 0.5, 0)
@@ -2383,7 +2423,7 @@ DiscordBtn.MouseButton1Click:Connect(function()
 						local TweenService = game:GetService("TweenService")
 						local IntroTitle = settings1.IntroTitle
 
-						-- Création de l'IntroFrame
+					
 						local IntroFrame = createUI("Frame", {
 							Size = UDim2.new(0, 0, 0, 0),
 							Position = UDim2.new(0.5, 0, 0.5, 0),
@@ -2433,7 +2473,6 @@ DiscordBtn.MouseButton1Click:Connect(function()
 			local TweenService = game:GetService("TweenService")
 			local IntroTitle = settings1.IntroTitle
 
-			-- Création de l'IntroFrame
 			local IntroFrame = createUI("Frame", {
 				Size = UDim2.new(0, 0, 0, 0),
 				Position = UDim2.new(0.5, 0, 0.5, 0),
