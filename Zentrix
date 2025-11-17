@@ -2061,7 +2061,7 @@ local dragStart
 local startPos
 
 mainFrame.InputBegan:Connect(function(input)
-	if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and not dragging then
+	if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then
 		dragging = true
 		dragStart = Vector2.new(input.Position.X, input.Position.Y)
 		startPos = mainFrame.Position
@@ -2069,14 +2069,14 @@ mainFrame.InputBegan:Connect(function(input)
 end)
 
 mainFrame.InputEnded:Connect(function(input)
-	if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and dragging then
+	if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch)  then
 		dragging = false
 	end
 end)
 
 
 UIS.InputEnded:Connect(function(input)
-	if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and draggingthen
+	if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then
 		dragging = false
 	end
 end)
