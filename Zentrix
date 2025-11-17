@@ -349,10 +349,8 @@ local function VisibleWindow(window,settings1,gui)
 		AnchorPoint = Vector2.new(0.5, 0.5),
 		Interactable = true,
 		Parent = gui,
-		Draggable = true,
 	})
 
-	-- Notify container frame
 	local NotifyFrame = createUI("Frame", {
 		Size = UDim2.new(0.25, 0, 1, 0),
 		Position = UDim2.new(0.75, 0, -0.05, 0),
@@ -363,15 +361,13 @@ local function VisibleWindow(window,settings1,gui)
 		Parent = gui,
 	})
 
-	-- UIListLayout to stack notifications top to bottom
-
+	
 	function window:Destroy()
 		gui:Destroy()
 	end
 	function window:IsVisbility()
 		return mainFrame.Visible	
 	end
-	-- Ajoute ce layout une seule fois quand tu crées NotifyFrame :
 	local listLayout = Instance.new("UIListLayout")
 	listLayout.Padding = UDim.new(0, 5)
 	listLayout.SortOrder = Enum.SortOrder.LayoutOrder
@@ -385,8 +381,7 @@ local function VisibleWindow(window,settings1,gui)
 
 		local tweenService = game:GetService("TweenService")
 
-		-- Panneau principal fixé par UIListLayout
-		local notifyPanel = createUI("Frame", {
+	local notifyPanel = createUI("Frame", {
 			Size = UDim2.new(1, 0, 0.15, 0),
 			BackgroundTransparency = 1,
 			BorderSizePixel = 0,
@@ -394,8 +389,7 @@ local function VisibleWindow(window,settings1,gui)
 			Parent = NotifyFrame,
 		})
 
-		-- Conteneur interne animé (slide in/out)
-		local content = createUI("Frame", {
+			local content = createUI("Frame", {
 			Size = UDim2.new(1, 0, 1, 0),
 			Position = UDim2.new(1, 20, 0, 0), -- hors écran à droite
 			BackgroundColor3 = selectedTheme.NotifyFrame,
@@ -404,7 +398,6 @@ local function VisibleWindow(window,settings1,gui)
 			Parent = notifyPanel,
 		})
 
-		-- Titre
 		createUI("TextLabel", {
 			Size = UDim2.new(1, -10, 0.2, 0),
 			Position = UDim2.new(0, 5, 0, 2),
@@ -417,7 +410,6 @@ local function VisibleWindow(window,settings1,gui)
 			Parent = content,
 		})
 
-		-- Message
 		createUI("TextLabel", {
 			Size = UDim2.new(1, -10, 0.6, 0),
 			Position = UDim2.new(0, 5, 0.2, 0),
@@ -431,7 +423,6 @@ local function VisibleWindow(window,settings1,gui)
 			Parent = content,
 		})
 
-		-- Icône
 		createUI("ImageLabel", {
 			Size = UDim2.new(0.15, 0, 0.6, 0),
 			Position = UDim2.new(0.85, -5, 0.2, 0),
@@ -440,7 +431,6 @@ local function VisibleWindow(window,settings1,gui)
 			Parent = content,
 		})
 
-		-- Barre de durée
 		local durationBar = createUI("Frame", {
 			Size = UDim2.new(1, 0, 0.05, 0),
 			Position = UDim2.new(0, 0, 0.95, 0),
@@ -449,13 +439,12 @@ local function VisibleWindow(window,settings1,gui)
 			Parent = content,
 		})
 
-		-- Animation de slide in (droite vers gauche)
 		local enterTween = tweenService:Create(content, TweenInfo.new(0.4, Enum.EasingStyle.Quint, Enum.EasingDirection.Out), {
 			Position = UDim2.new(0, 0, 0, 0)
 		})
 		enterTween:Play()
 
-		-- Barre de progression
+
 		durationBar.AnchorPoint = Vector2.new(1, 0)
 		durationBar.Position = UDim2.new(1, 0, 0.95, 0)
 		local durationTween = tweenService:Create(durationBar, TweenInfo.new(duration, Enum.EasingStyle.Linear), {
@@ -492,7 +481,7 @@ local function VisibleWindow(window,settings1,gui)
 	})
 	
 
-	-- Tabs list (gauche)
+
 	local tabsFrame = createUI("ScrollingFrame", {
 		Size = UDim2.new(0, 150, 1, 0);
 		CanvasSize = UDim2.new(0, 0, 0, 0);
@@ -522,7 +511,7 @@ AutomaticCanvasSize = Enum.AutomaticSize.Y;
 		Parent = tabsFrame
 	})
 
-	-- Contenu des tabs (droite)
+
 	local contentHolder = createUI("Frame", {
 		Position = UDim2.new(0, 150, 0, 0);
 		Size = UDim2.new(1, -150, 1, 0);
@@ -531,7 +520,7 @@ AutomaticCanvasSize = Enum.AutomaticSize.Y;
 		Parent = mainFrame;
 	})
 	local titleBar = createUI("Frame", {
-		Size = UDim2.new(1, 0, 0, 40),  -- en largeur complète, hauteur 40px
+		Size = UDim2.new(1, 0, 0, 40), 
 		BackgroundColor3 = selectedTheme.Top,
 		Interactable = true,
 		Parent = mainFrame,
@@ -540,14 +529,12 @@ AutomaticCanvasSize = Enum.AutomaticSize.Y;
 	createUI("UICorner", {Parent = titleBar})
 	local titleLabel
 	if settings1.Icon ~= 0 then
-		-- Conteneur pour regrouper l'image et le texte
 		local titleContainer = createUI("Frame", {
 			BackgroundTransparency = 1,
 			Size = UDim2.new(1, 0, 1, 0),
 			Parent = titleBar
 		})
 
-		-- UIListLayout pour aligner image + texte horizontalement
 		local layout = Instance.new("UIListLayout")
 		layout.FillDirection = Enum.FillDirection.Horizontal
 		layout.HorizontalAlignment = Enum.HorizontalAlignment.Left
@@ -556,7 +543,7 @@ AutomaticCanvasSize = Enum.AutomaticSize.Y;
 		layout.Padding = UDim.new(0, 6)
 		layout.Parent = titleContainer
 
-		-- Image à gauche
+		
 		local imageIcon2 = Instance.new("ImageLabel")
 		imageIcon2.Name = "Icon"
 		imageIcon2.Size = UDim2.new(0, 20, 0, 20)
@@ -564,7 +551,7 @@ AutomaticCanvasSize = Enum.AutomaticSize.Y;
 		imageIcon2.Image = "rbxassetid://"..settings1.Icon
 		imageIcon2.Parent = titleContainer
 
-		-- Texte à droite de l'image
+	
 		titleLabel = createUI("TextLabel", {
 			Name = "TitleLabel",
 			Text = settings1.Title,
@@ -844,7 +831,6 @@ local TabButtons = {}
 
 		local flags = {}
 
-		-- Structure UI
 		local tab = {
 			sliders = {},
 			textboxes = {},
@@ -862,18 +848,14 @@ local TabButtons = {}
 			dropdownValue = {},
 		}
 
-		-- Settings
 		local settingsData = settings1 and settings1.Data or {}
 		local FolderName = settingsData.FolderName or "UnknownFolder"
 		local fileName = settingsData.FileName or "UnknownFile"
 
-		-- Chemin complet avec dossier (ajoute l'extension .json)
 		local fullPath = FolderName .. "/" .. fileName .. ".json"
 
-		-- Fonction pour sauvegarder les flags dans un fichier JSON
 		local function SaveData()
 			local success, err = pcall(function()
-				-- Encode flags en JSON, gérer Color3 en format table RGB pour éviter erreur JSON
 				local serializableFlags = {}
 
 				for key, value in pairs(flags) do
@@ -925,7 +907,7 @@ local TabButtons = {}
 					local fileName = settingsData.FileName or "UnknownFile"
 					local fullPath = FolderName .. "/" .. fileName .. ".json"
 
-					-- Check if file exists
+					
 					if not isfile(fullPath) then
 						warn("No saved data file found at: " .. fullPath)
 						window:Notify({
@@ -936,7 +918,7 @@ local TabButtons = {}
 						return
 					end
 
-					-- Read file content
+				
 					local success, content = pcall(readfile, fullPath)
 					if not success or not content or content == "" then
 						warn("Failed to read data file or file is empty: " .. tostring(content))
@@ -948,7 +930,7 @@ local TabButtons = {}
 						return
 					end
 
-					-- Decode JSON data
+			
 					local loadedData
 					success, loadedData = pcall(function()
 						return HttpService:JSONDecode(content)
@@ -964,15 +946,15 @@ local TabButtons = {}
 						return
 					end
 
-					-- Deserialize values (handle Color3 and other types)
+				
 					for k, v in pairs(loadedData) do
 						loadedData[k] = DeserializeValue(v)
 					end
 
-					-- Update flags
+			
 					flags = loadedData
 
-					-- Apply loaded data to all tabs
+				
 					for _, tab in pairs(window.tabs) do
 				
 						tab.SlidersValue = tab.SlidersValue or {}
@@ -990,7 +972,7 @@ local TabButtons = {}
 						tab.toggles = tab.toggles or {}
 						tab.ColorPicker = tab.ColorPicker or {}
 
-						-- Apply saved values to UI elements
+					
 						for name, value in pairs(flags) do
 							print("Processing flag:", name, value)
 							if tab.sliders[name] then
@@ -1047,7 +1029,7 @@ local TabButtons = {}
 
 
 
-		-- Frame de contenu scrollable
+
 		local scroll = createUI("ScrollingFrame", {
 			Size = UDim2.new(1, 0, 1, 0);
 			CanvasSize = UDim2.new(0, 0, 0, 0);
@@ -1079,16 +1061,16 @@ local TabButtons = {}
 		local tabButton 
 		if icon ~= 0 then 
 			tabButton = createUI("TextButton", {
-				Text = ""; -- Le texte sera mis dans un Label séparé
+				Text = "";
 				Size = UDim2.new(1, 0, 0, 30);
 				BackgroundColor3 = selectedTheme.TabButtons;
 				TextColor3 = selectedTheme.TextColor,
 				Font = Enum.Font.GothamBold;
-				TextSize = 14; -- inutile ici car on va utiliser un Label
+				TextSize = 14; 
 				Parent = tabsFrame;
 			})
 
-			-- Layout pour bien aligner l’image et le texte
+		
 			local uiListLayout = Instance.new("UIListLayout")
 			uiListLayout.Parent = tabButton
 			uiListLayout.FillDirection = Enum.FillDirection.Horizontal
@@ -1097,7 +1079,7 @@ local TabButtons = {}
 			uiListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 			uiListLayout.Padding = UDim.new(0, 5)
 
-			-- Image à gauche
+	
 			local Imageicon = Instance.new("ImageLabel")
 			Imageicon.Name = "Icon"
 			Imageicon.Size = UDim2.new(0, 20, 0, 20)
@@ -1105,7 +1087,7 @@ local TabButtons = {}
 			Imageicon.Image = "rbxassetid://"..icon -- Remplace par l’ID de ton image
 			Imageicon.Parent = tabButton
 
-			-- Texte à droite
+	
 			local textLabel = Instance.new("TextLabel")
 			textLabel.Name = name
 			textLabel.Text = name
@@ -1139,10 +1121,10 @@ local TabButtons = {}
 			tab.content.Visible = true
 		end)
 
-		-- Ajout dans la liste de tabs
+	
 		table.insert(window.tabs, tab)
 
-		-- Affiche automatiquement le premier
+
 		if #window.tabs == 1 then
 			tab.content.Visible = true
 		end
@@ -1179,12 +1161,11 @@ local TabButtons = {}
 			})
 			button.MouseButton1Click:Connect(function()
 				if opts.Callback then opts.Callback() end
-
 			end)
-			-- Retourne un objet avec une méthode Set pour changer le texte
+		
 			local obj = {}
 			function obj:Set(t)
-				-- t est une table avec un seul élément string, ex: {"nouveaux"}
+			
 				if type(t) == "table" and type(t[1]) == "string" then
 					button.Text = t[1]
 				else
@@ -1221,10 +1202,10 @@ local TabButtons = {}
 			})
 
 
-			-- Retourne un objet avec une méthode Set pour changer le texte
+	
 			local obj = {}
 			function obj:Set(t)
-				-- t est une table avec un seul élément string, ex: {"nouveaux"}
+			
 				if type(t) == "table" and type(t[1]) == "string" then
 					button.Text = t[1]
 				else
@@ -1245,15 +1226,15 @@ end
 			assert(type(opts.Title) == "string", "Title must be a string")
 			assert(type(opts.Content) == "string", "Content must be a string")
 
-			-- Création de la frame conteneur
+	
 			local frame = createUI("Frame", {
-				Size = UDim2.new(1, 0, 0, 50), -- hauteur temporaire, on va ajuster après
+				Size = UDim2.new(1, 0, 0, 50), 
 				BackgroundColor3 = selectedTheme.Buttons,
 				Parent = tab.content,
 			})
 			createUI("UICorner", {Parent = frame})
 
-			-- Padding interne pour un peu d’espace autour
+		
 			local padding = createUI("UIPadding", {
 				PaddingLeft = UDim.new(0, 10),
 				PaddingRight = UDim.new(0, 10),
@@ -1262,7 +1243,7 @@ end
 				Parent = frame,
 			})
 
-			-- Label du titre
+	
 			local titleLabel = createUI("TextLabel", {
 				Text = opts.Title,
 				Size = UDim2.new(1, 0, 0, 25),
@@ -1275,7 +1256,7 @@ end
 				Parent = frame,
 			})
 
-			-- Label du contenu (multi-line)
+		
 			local contentLabel = createUI("TextLabel", {
 				Text = opts.Content,
 				Size = UDim2.new(1, 0, 0, 0), -- taille temporaire
@@ -1289,12 +1270,11 @@ end
 			})
 
 
-			-- Calcul de la hauteur nécessaire pour le contenu (avec un petit délai pour s'assurer du rendu)
-			-- On peut utiliser TextBounds pour calculer la taille
+		
 			local textSize = contentLabel.TextBounds
 			contentLabel.Size = UDim2.new(1, 0, 0, textSize.Y)
 
-			-- Ajustement de la taille de la frame conteneur (titre + contenu + padding)
+		
 			frame.Size = UDim2.new(1, 0, 0, 25 + textSize.Y + 25) -- 25 pour le titre, 20 pour padding haut+bas
 
 	
@@ -1325,12 +1305,11 @@ end
 		local TweenService = game:GetService("TweenService")
 		local UserInputService = game:GetService("UserInputService")
 
-		-- Convertit Color3 en table pour sauvegarde
+	
 		local function Color3ToTable(color)
 			return {color.R, color.G, color.B}
 		end
 
-		-- Convertit table en Color3 pour chargement
 		local function TableToColor3(t)
 			if type(t) == "table" and #t == 3 then
 				return Color3.new(t[1], t[2], t[3])
@@ -1346,7 +1325,7 @@ end
 			tab.ColorPicker = tab.ColorPicker or {}
 			tab.ColorPickerValue = tab.ColorPickerValue or {}
 
-			-- UI Elements
+		
 			local container = createUI("TextButton", {
 				Text = opts.Text;
 				Size = UDim2.new(1, 0, 0, 30);
@@ -1377,7 +1356,7 @@ end
 			colorDisplay.Parent = container
 			createUI("UICorner", {Parent = colorDisplay})
 
-			-- Color Picker Window
+
 			local colorWindow = Instance.new("Frame")
 			colorWindow.Size = UDim2.new(0, 250, 0, 250)
 			colorWindow.Position = UDim2.new(0.5, 0, 0.5, 0)
@@ -2075,10 +2054,51 @@ end
 		
 	end
 	
-	
+local UIS = game:GetService("UserInputService")
+local RunService = game:GetService("RunService")
+
+local dragging = false
+local dragStart
+local startPos
+
+mainFrame.InputBegan:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		dragging = true
+		dragStart = Vector2.new(input.Position.X, input.Position.Y)
+		startPos = mainFrame.Position
+	end
+end)
+
+mainFrame.InputEnded:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		dragging = false
+	end
+end)
+
+
+UIS.InputEnded:Connect(function(input)
+	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+		dragging = false
+	end
+end)
+
+RunService.RenderStepped:Connect(function()
+	if dragging then
+		local mousePos = UIS:GetMouseLocation()
+		local delta = mousePos - dragStart
+
+		mainFrame.Position = UDim2.new(
+			startPos.X.Scale,
+			startPos.X.Offset + delta.X,
+			startPos.Y.Scale,
+			startPos.Y.Offset + delta.Y
+		)
+	end
+end)
+
 end
 function library:CreateWindow(settings1, onLoad)
-	print("Library Version: 0.39")
+	print("Library Version: 0.40")
 	if game:GetService("RunService"):IsStudio() then
 		if game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary") then
 			game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary"):Destroy()
