@@ -2084,7 +2084,7 @@ end)
 RunService.RenderStepped:Connect(function()
 	if dragging then
 if not mainFrame.Visible then
-dragging
+dragging = false
 return
 end
 		local mousePos = UIS:GetMouseLocation()
