@@ -637,8 +637,6 @@ AutomaticCanvasSize = Enum.AutomaticSize.Y;
 	end)
 	OpenButton.MouseButton1Click:Connect(function()
 		mainFrame.Visible = true
-	
-		
 			if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
 	animOpenMobile:Play()
 else
@@ -899,6 +897,7 @@ local TabButtons = {}
 		if settingsData.EnableSavingData then
 
 			function library:LoadData()
+wait(1)
 				if not game:GetService("RunService"):IsStudio() then
 					print("Loading Data...")
 
@@ -2062,7 +2061,7 @@ local dragStart
 local startPos
 
 mainFrame.InputBegan:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+	if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and not dragging then
 		dragging = true
 		dragStart = Vector2.new(input.Position.X, input.Position.Y)
 		startPos = mainFrame.Position
@@ -2070,20 +2069,24 @@ mainFrame.InputBegan:Connect(function(input)
 end)
 
 mainFrame.InputEnded:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+	if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and dragging then
 		dragging = false
 	end
 end)
 
 
 UIS.InputEnded:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.MouseButton1 then
+	if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) and draggingthen
 		dragging = false
 	end
 end)
 
 RunService.RenderStepped:Connect(function()
 	if dragging then
+if not mainFrame.Visible then
+dragging
+return
+end
 		local mousePos = UIS:GetMouseLocation()
 		local delta = mousePos - dragStart
 
@@ -2098,7 +2101,7 @@ end)
 
 end
 function library:CreateWindow(settings1, onLoad)
-	print("Library Version: 0.40")
+	print("Library Version: 0.41")
 	if game:GetService("RunService"):IsStudio() then
 		if game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary") then
 			game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary"):Destroy()
