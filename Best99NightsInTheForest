@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.32"
+local V = "V.0.33"
 
 library:CreateWindow({
 	Title = "99 Nights in the forest - by Iliankytb",-- Title of the script
@@ -53,6 +53,9 @@ local LimitRangerEsp = 100
 local DisableLimitRangerEsp = false
 local ValueSpeed = 16
 local OldSpeed =nil
+local MarketplaceService = game:GetService("MarketplaceService")
+local infoGameName = MarketplaceService:GetProductInfo(game.GameId)
+
 local Version = InfoTab:AddText({
 		Text = "Version:"..V,
 		Name = "VersionScript"
@@ -360,8 +363,9 @@ RunService.RenderStepped:Connect(function()
 task.spawn(function()
 	local updatedInfo = getServerInfo()
 	local updatedContent = string.format(
-		"📌 PlaceId: %s\n🔑 JobId: %s\n🧪 IsStudio: %s\n👥 Players: %d/%d",
-		updatedInfo.PlaceId,
+		"🎮 Game: %s\n📌 PlaceId: %s\n🔑 JobId: %s\n🧪 IsStudio: %s\n👥 Players: %d/%d",
+	infoGameName.Name,	
+updatedInfo.PlaceId,
 		updatedInfo.JobId,
 		
 		tostring(updatedInfo.IsStudio),
