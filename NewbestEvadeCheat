@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.34"
+local V = "V.0.35"
 library:CreateWindow({
 	Title = "Evade - by Iliankytb",-- Title of the script
 	Theme = selectedTheme,--View more theme in my dicord server!
@@ -53,6 +53,9 @@ local AutoRevive = false
 local ShowTimer = false
 local ActivateFly = false
 local AlrActivatedFlyPC = false
+local MarketplaceService = game:GetService("MarketplaceService")
+local infoGameName = MarketplaceService:GetProductInfo(game.GameId)
+
 local UserInputService = game:GetService("UserInputService")
 local ScreenGuiTimer = Instance.new("ScreenGui")
 ScreenGuiTimer.Parent = game:GetService("CoreGui")
@@ -366,8 +369,9 @@ RunService.RenderStepped:Connect(function()
 task.spawn(function()
 	local updatedInfo = getServerInfo()
 	local updatedContent = string.format(
-		"📌 PlaceId: %s\n🔑 JobId: %s\n🧪 IsStudio: %s\n👥 Players: %d/%d",
-		updatedInfo.PlaceId,
+		"🎮 Game: %s\n📌 PlaceId: %s\n🔑 JobId: %s\n🧪 IsStudio: %s\n👥 Players: %d/%d",
+infoGameName.Name,		
+updatedInfo.PlaceId,
 		updatedInfo.JobId,
 		
 		tostring(updatedInfo.IsStudio),
