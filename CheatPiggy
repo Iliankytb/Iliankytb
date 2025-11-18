@@ -42,7 +42,7 @@ local ActiveSpeedBoost,ActiveNoclip,ActiveEspBot,ActiveEspItems,ActiveEspPlayers
 local ParagraphInfoServer = InfoTab:CreateParagraph({Title = "Info", Content = "Loading"})
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.3",
+   Content = "V.0.4",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -555,6 +555,9 @@ local Dropdown = SettingsTab:CreateDropdown({
    end, 
 })
 Rayfield:LoadConfiguration()
+local MarketplaceService = game:GetService("MarketplaceService")
+local infoGameName = MarketplaceService:GetProductInfo(game.GameId)
+
 local function getServerInfo()
 	local Players = game:GetService("Players")
 	local playerCount = #Players:GetPlayers()
@@ -575,8 +578,9 @@ while true do
 task.spawn(function()
 	local updatedInfo = getServerInfo()
 	local updatedContent = string.format(
-		"📌 PlaceId: %s\n🔑 JobId: %s\n🧪 IsStudio: %s\n👥 Players: %d/%d",
-		updatedInfo.PlaceId,
+		"🎮 Game: %s\n📌 PlaceId: %s\n🔑 JobId: %s\n🧪 IsStudio: %s\n👥 Players: %d/%d",
+infoGameName.Name,	
+updatedInfo.PlaceId,
 		updatedInfo.JobId,
 		
 		tostring(updatedInfo.IsStudio),
