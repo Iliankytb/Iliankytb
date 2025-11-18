@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.13"
+local V = "V.0.14"
 
 library:CreateWindow({
 	Title = "Universel - by Iliankytb",-- Title of the script
@@ -54,7 +54,7 @@ local ValueSpeed = 16
 local ValueJP = 50
 local ActivateEditJumpPower = false
 local MarketplaceService = game:GetService("MarketplaceService")
-local infoGameName = MarketplaceService:GetProductInfo(game.PlaceId)
+local infoGameName = MarketplaceService:GetProductInfo(game.GameId)
 local OldSpeed = game.Players.LocalPlayer.Character.Humanoid.WalkSpeed
 local OldJP = game.Players.LocalPlayer.Character.Humanoid.JumpPower
 local ActiveFullBright = false
