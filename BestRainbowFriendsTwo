@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.17"
+local V = "V.0.18"
 library:CreateWindow({
 	Title = "Rainbow Friend 2 - by Iliankytb",-- Title of the script
 	Theme = selectedTheme,--View more theme in my dicord server!
@@ -41,6 +41,9 @@ local DiscordTab = window:CreateTab("Discord",0)
 local SettingsTab = window:CreateTab("Settings",0)
 local ActiveEspItems,ActiveEspMonsters,ActiveAutoPickupItems = false,false,false
 local ParagraphInfoServer = InfoTab:AddParagraph({Title = "",Content = "Loading",Name = "Paragraph1"})
+local MarketplaceService = game:GetService("MarketplaceService")
+local infoGameName = MarketplaceService:GetProductInfo(game.GameId)
+
 local Version = InfoTab:AddText({
 		Text = "Version:"..V,
 		Name = "VersionScript"
@@ -241,8 +244,9 @@ while true do
 task.spawn(function()
 	local updatedInfo = getServerInfo()
 	local updatedContent = string.format(
-		"📌 PlaceId: %s\n🔑 JobId: %s\n🧪 IsStudio: %s\n👥 Players: %d/%d",
-		updatedInfo.PlaceId,
+		"🎮 Game: %s\n📌 PlaceId: %s\n🔑 JobId: %s\n🧪 IsStudio: %s\n👥 Players: %d/%d",
+	infoGameName.Name,	
+updatedInfo.PlaceId,
 		updatedInfo.JobId,
 		
 		tostring(updatedInfo.IsStudio),
