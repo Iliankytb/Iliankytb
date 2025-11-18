@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.12"
+local V = "V.0.13"
 
 library:CreateWindow({
 	Title = "Universel - by Iliankytb",-- Title of the script
@@ -51,7 +51,12 @@ local DisableLimitRangerEsp = false
 local Camera = Workspace.CurrentCamera
 local ActiveDistanceEsp = false
 local ValueSpeed = 16
+local ValueJP = 50
+local ActivateEditJumpPower = false
+local MarketplaceService = game:GetService("MarketplaceService")
+local infoGameName = MarketplaceService:GetProductInfo(game.PlaceId)
 local OldSpeed = game.Players.LocalPlayer.Character.Humanoid.WalkSpeed
+local OldJP = game.Players.LocalPlayer.Character.Humanoid.JumpPower
 local ActiveFullBright = false
 local OldBrightness = Game.Lighting.Brightness
 local OldAmbient = Game.Lighting.Ambient
@@ -371,13 +376,14 @@ RunService.RenderStepped:Connect(function(dt)
 task.spawn(function()
 	local updatedInfo = getServerInfo()
 	local updatedContent = string.format(
-		"📌 PlaceId: %s\n🔑 JobId: %s\n🧪 IsStudio: %s\n👥 Players: %d/%d",
+		"📌 PlaceId: %s\n🔑 JobId: %s\n🧪 IsStudio: %s\n👥 Players: %d/%d🎮 Game Name: %s\n",
 		updatedInfo.PlaceId,
 		updatedInfo.JobId,
 		
 		tostring(updatedInfo.IsStudio),
 		updatedInfo.CurrentPlayers,
-updatedInfo.MaxPlayers
+updatedInfo.MaxPlayers,
+infoGameName.Name
 	)
 
 	ParagraphInfoServer:Set({
@@ -437,6 +443,9 @@ end
 if game.Players.LocalPlayer.Character then
 if ActiveSpeedBoost then 
 game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = ValueSpeed 
+end
+if ActivateEditJumpPower then 
+game.Players.LocalPlayer.Character.Humanoid.JumpPower = ValueJP
 end
 if ActiveNoclip then 
 if game.Players.LocalPlayer.Character then
@@ -691,7 +700,32 @@ end
 end,
 })
 
+local PlayerSpeedSlider2 = PlayerTab:AddSlider({
+    Text = "Player Jump Power",
+   Name = "PlayerSpeedSlider2",
+  Min = 0,
+  Max = 1000,
+   Default = 50,
+   Flag = "PlayerSpeedSlider2", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+ValueJP = Value
+end, 
+})
 
+local PlayerActiveModifyingSpeedToggle = PlayerTab:AddToggle({
+    Text = "Active Modifying Player Speed",
+   Name = "PlayerActiveModifyingSpeedToggle2",
+   Default = false,
+   Flag = "PlayerActiveModifyingSpeedToggle2", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  ActivateEditJumpPower = Value 
+if ActivateEditJumpPower then 
+game.Players.LocalPlayer.Character.Humanoid.JumpPower = ValueJP
+else
+game.Players.LocalPlayer.Character.Humanoid.JumpPower = OldJP
+end
+end,
+})
 
 
 local PlayerActiveAimbot = AimbotTab:AddToggle({
