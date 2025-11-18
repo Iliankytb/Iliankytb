@@ -376,14 +376,15 @@ RunService.RenderStepped:Connect(function(dt)
 task.spawn(function()
 	local updatedInfo = getServerInfo()
 	local updatedContent = string.format(
-		"📌 PlaceId: %s\n🔑 JobId: %s\n🧪 IsStudio: %s\n👥 Players: %d/%d🎮 Game Name: %s\n",
-		updatedInfo.PlaceId,
+		"🎮 Game: %s\n📌 PlaceId: %s\n🔑 JobId: %s\n🧪 IsStudio: %s\n👥 Players: %d/%d",
+	infoGameName.Name,
+    	updatedInfo.PlaceId,
 		updatedInfo.JobId,
 		
 		tostring(updatedInfo.IsStudio),
 		updatedInfo.CurrentPlayers,
-updatedInfo.MaxPlayers,
-infoGameName.Name
+updatedInfo.MaxPlayers
+
 	)
 
 	ParagraphInfoServer:Set({
