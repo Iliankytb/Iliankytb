@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.43"
+local V = "V.0.44"
 
 library:CreateWindow({
 	Title = "Forsaken - by Iliankytb",-- Title of the script
@@ -56,6 +56,8 @@ local LocalPlayer = game.Players.LocalPlayer
 local ActiveDistanceEsp = false
 local AutofarmHalloweenEvent = false
 local CurrentlyDoing = false
+local MarketplaceService = game:GetService("MarketplaceService")
+local infoGameName = MarketplaceService:GetProductInfo(game.GameId)
 
 local Version = InfoTab:AddText({
 		Text = "Version:"..V,
@@ -91,8 +93,9 @@ RunService.RenderStepped:Connect(function(dt)
 task.spawn(function()
 	local updatedInfo = getServerInfo()
 	local updatedContent = string.format(
-		"📌 PlaceId: %s\n🔑 JobId: %s\n🧪 IsStudio: %s\n👥 Players: %d/%d",
-		updatedInfo.PlaceId,
+		"🎮 Game: %s\n📌 PlaceId: %s\n🔑 JobId: %s\n🧪 IsStudio: %s\n👥 Players: %d/%d",
+	infoGameName.Name,	
+updatedInfo.PlaceId,
 		updatedInfo.JobId,
 		
 		tostring(updatedInfo.IsStudio),
