@@ -65,7 +65,7 @@ local executor, version = identifyexecutor()
 print('Running on:', executor, version)
 
 local Executor = InfoTab:AddText({
-		Text = "Executor: "..executor.."Version: "..version,
+		Text = "Executor: "..executor.." Version: "..version,
 		Name = "VersionScript"
 	})
 end)
