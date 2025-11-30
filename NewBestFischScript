@@ -45,7 +45,7 @@ library:CreateWindow({
 game.Players.LocalPlayer.PlayerGui.reel.bar.fish.Size = UDim2.new(99,0,1,0)
 end
     end
-    end
+    end)
    
     local ButonDiscordLink = DiscordTab:AddButton({
         Text = "Discord Link",
