@@ -1,0 +1,89 @@
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
+      
+library:CreateWindow({
+    Title = "Fisch by Iliankytb",-- Title of the script
+    Theme = "Default",--View more theme in my dicord server!
+    Icon = 0,-- 0 = no icon or add number
+    Intro = false,--Intro or no
+    IntroTitle = "Zentrix Library Testing",--the intro title
+    KeyPC = Enum.KeyCode.K,--the key for pc for Open/close the frame
+    Data = {
+        EnableSavingData = true,--Enabling data saver or no
+        DisableNotifyingLoadedData = false,--set it to true for disable the notify when loaded data
+        FolderName = "SaverFisch",--Folder Name,you can change it
+        FileName = "Iliankytb",-- File name for the data saver,you can change it
+    },
+    Discord = {
+    Enabled = false,--enable to copy the discord
+        DiscordLink = "https://discord.gg/E2TqYRsRP4",-- put the entire Link of discord
+        RememberJoin = true,-- Set this ti false to make them copy the link every time they load the script
+        Duration = 10,-- 5 is the default you can change the number only for remember join
+    },
+    KeySystem = false,--Key System or no
+    KeySettings = {
+        Title = "Zentrix Library Testing Key System",--Title of the key(just like that)
+        Note = "the key is Zentrix",-- The method for obtaining
+        FileName = "Key",-- File name or no for saving the key
+        SaveKey = true,-- saving the key or no
+        GrabKeyFromSite = false,--Coming soon
+        Key = {"Zentrix"},-- the name you can add many name, Exemple "Key","Key2" or you can add a function to add key but i don't really know
+        AddGetKeyButton = false,
+        AddDiscordButton = true,
+        DiscordLink = "NoInviteLink",
+        GetKeyLink = "NoKeyLink",
+    },
+}, function(window)
+    local MainTab = window:CreateTab("Main",0)-- Tabs , 0 = no icon or add number
+    local DiscordTab = window:CreateTab("Discord",0)-- Tabs , 0 = no icon or add number
+     local SettingsTab = window:CreateTab("Settings",0)-- Tabs , 0 = no icon or add number
+    
+    local AutoFishValue = false
+    
+    game:GetService("RunService").RenderStepped:Connect(function()
+    if AutoFishValue then
+    if game.Players.LocalPlayer.PlayerGui:FindFirstChild("reel") then
+game.Players.LocalPlayer.PlayerGui.reel.bar.fish.Size = UDim2.new(99,0,1,0)
+end
+    end
+    end
+   
+    local ButonDiscordLink = DiscordTab:AddButton({
+        Text = "Discord Link",
+        Name = "Button",
+        Callback = function()   
+            library:CopyText("https://discord.gg/E2TqYRsRP4")
+        end
+    })
+    --Toggle--
+    local AutoFish = MainTab:AddToggle({
+    Text = "Auto Fish",
+        Name = "AutoFish",
+        Flag = "AutoFish",--Put a name flag for save data if you enabled saving data
+        Default = false,
+        Callback = function(state)
+        AutoFishValue = state
+        end
+    })
+
+  
+    local ChangeThemeDropdown = SettingsTab:AddDropdown({
+        Text = "Change Theme:",
+        Name = "Dropdown2",
+        Options = {"Default", "Light", "RedDark","BlueNeon","GreenMatrix","PurpleDream","Sunset",
+        "Ocean","Toxic","Storm","LimePop","Cyber","Chocolate","RoseGold","CottonCandy","NightSky","Steel",
+            "GoldLux","Ice","TealWave","FrostFire","DarkMatter","Lava","PinkCandy","Sakura","DeepSpace","Skyline","Crimson"
+            ,"Desert","Camo","Plasma","Arctic","Slate","Vaporwave"
+            
+        },
+        Default = "Default",
+        MultiSelect = false,
+        Flag = "Dropdown2", --Put a name flag for save data if you enabled saving data
+        Callback = function(choice)
+window:ChangeTheme(choice)
+        end
+    })
+
+
+    --Loading Data--
+    library:LoadData()--Add this if you want to load data and everytime at bottom of your code
+end)
