@@ -38,6 +38,10 @@ library:CreateWindow({
      local SettingsTab = window:CreateTab("Settings",0)-- Tabs , 0 = no icon or add number
     
     local AutoFishValue = false
+    local AutoSellEquippedFish = false
+    local AutoSellAll = false
+    local AutoShake = false
+    local AutoCast = false
     
     game:GetService("RunService").RenderStepped:Connect(function()
     if AutoFishValue then
@@ -45,6 +49,20 @@ library:CreateWindow({
 game.Players.LocalPlayer.PlayerGui.reel.bar.fish.Size = UDim2.new(99,0,1,0)
 end
     end
+  if AutoSellEquippedFish then
+     game:GetService("ReplicatedStorage").events.Sell:InvokeServer()
+     end
+     if AutoSellAll then
+       game:GetService("ReplicatedStorage").events.SellAll:InvokeServer()
+     end
+     if AutoShake then
+     if     game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("shakeui") then
+     game:GetService("Players").LocalPlayer.PlayerGui.shakeui.safezone.button.shake:FireServer()
+    end
+     end
+     if AutoCast then
+     game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool").events.castAsync:InvokeServer(100,1)
+     end
     end)
    
     local ButonDiscordLink = DiscordTab:AddButton({
@@ -63,9 +81,64 @@ end
         Callback = function(state)
         AutoFishValue = state
         end
+        })
+         --Toggle--
+         local AutoShake1 = MainTab:AddToggle({
+         Text = "Auto Shake",
+         Name = "AutoShake1",
+         Flag = "AutoShake1",--Put a name flag for save data if you enabled saving data
+        Default = false,
+        Callback = function(state)
+        AutoShake = state
+        end
+        })
+              --Toggle--
+              local AutoCast1 = MainTab:AddToggle({
+              Text = "Auto Cast",
+        Name = "AutoCast1",
+        Flag = "AutoCast1",--Put a name flag for save data if you enabled saving data
+        Default = false,
+        Callback = function(state)
+        AutoCast = state
+        end
+        })
+        
+        local SellAll = MainTab:AddButton({
+        Text = "Sell All",
+        Name = "SellAll",
+        Callback = function()
+        game:GetService("ReplicatedStorage").events.SellAll:InvokeServer()
+        end
     })
 
-  
+    local SellEquippedFish = MainTab:AddButton({
+    Text = "Sell Equipped Fish",
+        Name = "SellEquippedFish",
+        Callback = function()
+        game:GetService("ReplicatedStorage").events.Sell:InvokeServer()
+      end
+    })
+ --Toggle--
+ local AutoSellAll = MainTab:AddToggle({
+ Text = "Auto Sell All",
+        Name = "AutoSellAll",
+        Flag = "AutoSellAll",--Put a name flag for save data if you enabled saving data
+        Default = false,
+        Callback = function(state)
+        AutoSellAll = state
+        end
+        })
+        --Toggle--
+        local AutoSellEquippedFish = MainTab:AddToggle({
+        Text = "Auto Sell Equipped Fish",
+        Name = "AutoSellEquippedFish",
+        Flag = "AutoSellEquippedFish",--Put a name flag for save data if you enabled saving data
+        Default = false,
+        Callback = function(state)
+        AutoSellEquippedFish = state
+        end
+        })
+
     local ChangeThemeDropdown = SettingsTab:AddDropdown({
         Text = "Change Theme:",
         Name = "Dropdown2",
