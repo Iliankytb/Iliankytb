@@ -34,16 +34,22 @@ library:CreateWindow({
     },
 }, function(window)
     local MainTab = window:CreateTab("Main",0)-- Tabs , 0 = no icon or add number
+    local TPTab = window:CreateTab("Teleport",0)-- Tabs , 0 = no icon or add number
+    local MiscTab = window:CreateTab("MiscTab",0)-- Tabs , 0 = no icon or add number
     local DiscordTab = window:CreateTab("Discord",0)-- Tabs , 0 = no icon or add number
      local SettingsTab = window:CreateTab("Settings",0)-- Tabs , 0 = no icon or add number
-    
+     local CanSpawnBoat = true
     local AutoFishValue = false
     local AutoSellEquippedFish = false
     local AutoSellAll = false
     local AutoShake = false
     local AutoCast = false
     local InfOxygen = false
-    
+    local AntiAfk = false
+    local AutoCastSelectedZone = false
+      local CastChoosed = ""
+      local SelectedBoat = "Rowboat"
+      
     game:GetService("RunService").RenderStepped:Connect(function()
     if AutoFishValue then
     if game.Players.LocalPlayer.PlayerGui:FindFirstChild("reel") then
@@ -61,18 +67,62 @@ end
      game:GetService("Players").LocalPlayer.PlayerGui.shakeui.safezone.button.shake:FireServer()
     end
      end
+     if AntiAfk then
+     game:GetService("ReplicatedStorage").events.afk:FireServer(false)
+     end
      if   game.Players.LocalPlayer.Character then
      if AutoCast then
      if  game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool") then
-     game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool").events.castAsync:InvokeServer(100,1)
-    end
+     game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool").events.castAsync:InvokeServer(100,100)
+     end
      end
 if InfOxygen then
 game.Players.LocalPlayer.Character.Resources.oxygen.Enabled = false
 end
 end
+if AutoCastSelectedZone then
+task.spawn(function()
+if not workspace.active.boats:FindFirstChild(game.Players.LocalPlayer.Name) then
+if CanSpawnBoat then
+CanSpawnBoat = false
+workspace.world.npcs[game.Players.LocalPlayer:GetAttribute("LastIsland").." Shipwright"].shipwright.giveUI:InvokeServer()
+game:GetService("ReplicatedStorage").packages.Net["RF/Boats/Spawn"]:InvokeServer(SelectedBoat)
+wait(1)
+CanSpawnBoat = true
+game:GetService("Players").LocalPlayer.PlayerGui.hud.safezone.shipwright.Visible = false
+end
+end
+end)
+if  workspace.active.boats:FindFirstChild(game.Players.LocalPlayer.Name) then
+  if workspace.active.boats:FindFirstChild(game.Players.LocalPlayer.Name):FindFirstChildOfClass("Model") then
+if CastChoosed == "" then
+        return end
+        for _, IslandName in pairs(workspace.zones.fishing:GetChildren()) do
+     if IslandName and IslandName:IsA("BasePart") and CastChoosed == IslandName.Name then
+    workspace.active.boats:FindFirstChild(game.Players.LocalPlayer.Name):FindFirstChildOfClass("Model").HitBox.Anchored = true
+    workspace.active.boats:FindFirstChild(game.Players.LocalPlayer.Name):FindFirstChildOfClass("Model").HitBox.CFrame = IslandName.CFrame + Vector3.new(0,20,0)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.active.boats:FindFirstChild(game.Players.LocalPlayer.Name):FindFirstChildOfClass("Model").HitBox.CFrame
+    workspace.active.boats:FindFirstChild(game.Players.LocalPlayer.Name):FindFirstChildOfClass("Model").HitBox.Massless = false
+        workspace.active.boats:FindFirstChild(game.Players.LocalPlayer.Name):FindFirstChildOfClass("Model").PlanePart.Anchored = false
+    end
+     end
+      end
+      end
+end
     end)
-   
+    local IslandTP = {}
+    local IslandZoneCast = {}
+    
+    for _, IslandName in pairs(workspace.zones.player:GetChildren()) do
+    if IslandName and IslandName:IsA("BasePart") and not table.find(IslandTP,IslandName.Name) then
+    table.insert(IslandTP,IslandName.Name)
+    end
+    end
+        for _, IslandName in pairs(workspace.zones.fishing:GetChildren()) do
+        if IslandName and IslandName:IsA("BasePart") and not table.find(IslandZoneCast,IslandName.Name) then
+    table.insert(IslandZoneCast,IslandName.Name)
+    end
+    end
     local ButonDiscordLink = DiscordTab:AddButton({
         Text = "Discord Link",
         Name = "Button",
@@ -88,6 +138,11 @@ end
         Default = false,
         Callback = function(state)
         AutoFishValue = state
+        if not AutoFishValue then
+        if game.Players.LocalPlayer.PlayerGui:FindFirstChild("reel") then
+        game.Players.LocalPlayer.PlayerGui.reel.bar.fish.Size = UDim2.new(0.01,0,2,0)
+end
+        end
         end
         })
          --Toggle--
@@ -146,7 +201,32 @@ end
         AutoSellEquippedFish = state
         end
         })
-
+   --Toggle--
+   local InfOxy1 = MainTab:AddToggle({
+   Text = "Infinite Oxygen",
+   Name = "InfOxy1",
+   Flag = "InfOxy1",--Put a name flag for save data if you enabled saving data
+        Default = false,
+        Callback = function(state)
+        InfOxygen = state
+        if InfOxygen then
+        game.Players.LocalPlayer.Character.Resources.oxygen.Enabled = false
+        else
+        game.Players.LocalPlayer.Character.Resources.oxygen.Enabled = true
+        end
+        end
+        })
+          --Toggle--
+          local AntiAfk1 = MainTab:AddToggle({
+          Text = "Anti Afk",
+   Name = "AntiAfk1",
+   Flag = "AntiAfk1",--Put a name flag for save data if you enabled saving data
+        Default = false,
+        Callback = function(state)
+        AntiAfk = state
+        end
+        })
+        
     local ChangeThemeDropdown = SettingsTab:AddDropdown({
         Text = "Change Theme:",
         Name = "Dropdown2",
@@ -163,8 +243,63 @@ end
 window:ChangeTheme(choice)
         end
     })
-
-
+    local IslandChoosed = ""
+    local TPDropdown = TPTab:AddDropdown({
+    Text = "Teleport to Island:",
+        Name = "TPDropdown",
+        Options = IslandTP,
+        Default = "",
+        MultiSelect = false,
+        Flag = "TPDropdown", --Put a name flag for save data if you enabled saving data
+        Callback = function(choice)
+        IslandChoosed = choice
+        end
+    })
+    
+    local TeleportToSelectedIsland = TPTab:AddButton({
+    Text = "Teleport To Selected Island",
+        Name = "TeleportToSelectedIsland",
+        Callback = function()
+        if IslandChoosed == "" then
+        return end
+     for _, IslandName in pairs(workspace.zones.player:GetChildren()) do
+     if IslandName and IslandName:IsA("BasePart") and IslandChoosed == IslandName.Name then
+     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = IslandName.CFrame
+    end
+      end
+      end
+    })
+    
+    local CastDropdown = MiscTab:AddDropdown({
+    Text = "Teleport to Island:",
+        Name = "CastDropdown",
+        Options = IslandZoneCast,
+        Default = "",
+        MultiSelect = false,
+        Flag = "CastDropdown", --Put a name flag for save data if you enabled saving data
+        Callback = function(choice)
+        CastChoosed = choice
+        end
+    })
+            --Toggle--
+            local AutoCastBoat = MiscTab:AddToggle({
+            Text = "Auto Cast Selected Zone",
+   Name = "AutoCastBoat",
+   Flag = "AutoCastBoat",--Put a name flag for save data if you enabled saving data
+        Default = false,
+        Callback = function(state)
+        AutoCastSelectedZone = state
+        if not AutoCastSelectedZone then
+        if  workspace.active.boats:FindFirstChild(game.Players.LocalPlayer.Name) then
+  if workspace.active.boats:FindFirstChild(game.Players.LocalPlayer.Name):FindFirstChildOfClass("Model") then
+  workspace.active.boats:FindFirstChild(game.Players.LocalPlayer.Name):FindFirstChildOfClass("Model").HitBox.Anchored = false
+  end
+  end
+        end
+        end
+        })
+        
+   
     --Loading Data--
     library:LoadData()--Add this if you want to load data and everytime at bottom of your code
-end)
+    end)
