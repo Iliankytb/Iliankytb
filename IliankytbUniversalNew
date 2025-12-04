@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.15"
+local V = "V.0.16"
 
 library:CreateWindow({
 	Title = "Universel - by Iliankytb",-- Title of the script
@@ -1036,9 +1036,9 @@ end
 end  
 task.wait(0.75)
 if ActiveEspPlayers  then
-if   child and child.PrimaryPart then
     local Players = game:GetService("Players"):GetPlayerFromCharacter(child)
     if Players then
+if   child and child.PrimaryPart then
  if Players.Character:FindFirstChild("Head") and not Players.Character:FindFirstChildOfClass("Highlight") and not Players.Character.Head:FindFirstChildOfClass("BillboardGui") then
 CreateEsp(Players.Character,Color3.fromRGB(255,255,255),Players.Name,Players.Character.Head,2)
 end
@@ -1048,9 +1048,9 @@ end
 end)
 workspace.DescendantRemoving:Connect(function(child)
 if ActiveEspPlayers  then
-if   child and child.PrimaryPart then
     local Players = game:GetService("Players"):GetPlayerFromCharacter(child)
     if Players then
+if   child and child.PrimaryPart then
  if Players.Character:FindFirstChild("Head") and Players.Character:FindFirstChildOfClass("Highlight") and  Players.Character.Head:FindFirstChildOfClass("BillboardGui") then
 KeepEsp(Players.Character,Players.Character.Head)
 end
