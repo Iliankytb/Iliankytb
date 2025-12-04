@@ -118,6 +118,13 @@ MaxPlayers =maxPlayers
     }
 end
 
+
+local IYMouse = Players.LocalPlayer:GetMouse()
+local FLYING = false
+local QEfly = true
+local iyflyspeed = 1
+local vehicleflyspeed = 1
+
 local function sFLY(vfly)
     repeat wait() until Players.LocalPlayer and Players.LocalPlayer.Character and Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart") and Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
     repeat wait() until IYMouse
@@ -719,13 +726,13 @@ window:ChangeTheme(choice)
   ActiveEspPlayers = Value 
 if ActiveEspPlayers  then
 for _, Players in pairs(Game:GetService("Players"):GetChildren()) do
-if Players:isA("Player") and Players.Character and Players.Character:FindFirstChild("Head") and not Players.Character:FindFirstChildOfClass("Highlight") and not Players.Character.Head:FindFirstChildOfClass("BillboardGui") then
+if Players:IsA("Player") and Players.Character and Players.Character:FindFirstChild("Head") and not Players.Character:FindFirstChildOfClass("Highlight") and not Players.Character.Head:FindFirstChildOfClass("BillboardGui") then
 CreateEsp(Players.Character,Color3.fromRGB(255,255,255),Players.Name,Players.Character.Head,2)
 end
 end
 else
 for _, Players in pairs(Game:GetService("Players"):GetChildren()) do
-if Players:isA("Player") and Players.Character and Players.Character:FindFirstChild("Head") and  Players.Character:FindFirstChildOfClass("Highlight") and  Players.Character.Head:FindFirstChildOfClass("BillboardGui") then
+if Players:IsA("Player") and Players.Character and Players.Character:FindFirstChild("Head") and  Players.Character:FindFirstChildOfClass("Highlight") and  Players.Character.Head:FindFirstChildOfClass("BillboardGui") then
 KeepEsp(Players.Character,Players.Character.Head)
 end
 end
@@ -965,9 +972,9 @@ end,
 workspace.DescendantAdded:Connect(function(child) 
 task.wait(0.75)
 if ActiveEspPlayers  then
-if   child and child.PrimaryPart then
     local Players = game:GetService("Players"):GetPlayerFromCharacter(child)
     if Players then
+    if   child and child.PrimaryPart then
  if Players.Character:FindFirstChild("Head") and not Players.Character:FindFirstChildOfClass("Highlight") and not Players.Character.Head:FindFirstChildOfClass("BillboardGui") then
 CreateEsp(Players.Character,Color3.fromRGB(255,255,255),Players.Name,Players.Character.Head,2)
 end
@@ -977,9 +984,9 @@ end
 end)
 workspace.DescendantRemoving:Connect(function(child)
 if ActiveEspPlayers  then
-if   child and child.PrimaryPart then
     local Players = game:GetService("Players"):GetPlayerFromCharacter(child)
     if Players then
+    if   child and child.PrimaryPart then
  if Players.Character:FindFirstChild("Head") and Players.Character:FindFirstChildOfClass("Highlight") and  Players.Character.Head:FindFirstChildOfClass("BillboardGui") then
 KeepEsp(Players.Character,Players.Character.Head)
 end
