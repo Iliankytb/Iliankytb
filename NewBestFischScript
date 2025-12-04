@@ -104,7 +104,14 @@ if CastChoosed == "" then
     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.active.boats:FindFirstChild(game.Players.LocalPlayer.Name):FindFirstChildOfClass("Model").HitBox.CFrame
     workspace.active.boats:FindFirstChild(game.Players.LocalPlayer.Name):FindFirstChildOfClass("Model").HitBox.Massless = false
         workspace.active.boats:FindFirstChild(game.Players.LocalPlayer.Name):FindFirstChildOfClass("Model").PlanePart.Anchored = false
-    end
+        local prompt = workspace.active.boats:FindFirstChild(game.Players.LocalPlayer.Name):FindFirstChildOfClass("Model"):FindFirstChild("owner"):FindFirstChildOfClass("ProximityPrompt")
+        if prompt and prompt.Enabled then
+        if not prompt:GetAttribute("OldPrompt") then
+        prompt:SetAttribute("OldPrompt",prompt.MaxActivationDistance)
+        end
+        fireproximityprompt(prompt)
+        end
+        end
      end
       end
       end
@@ -293,6 +300,12 @@ window:ChangeTheme(choice)
         if  workspace.active.boats:FindFirstChild(game.Players.LocalPlayer.Name) then
   if workspace.active.boats:FindFirstChild(game.Players.LocalPlayer.Name):FindFirstChildOfClass("Model") then
   workspace.active.boats:FindFirstChild(game.Players.LocalPlayer.Name):FindFirstChildOfClass("Model").HitBox.Anchored = false
+    local prompt = workspace.active.boats:FindFirstChild(game.Players.LocalPlayer.Name):FindFirstChildOfClass("Model"):FindFirstChild("owner"):FindFirstChildOfClass("ProximityPrompt")
+    if prompt then
+      if prompt:GetAttribute("OldPrompt") then
+      prompt.MaxActivationDistance = prompt:GetAttribute("OldPrompt")
+        end
+    end
   end
   end
         end
