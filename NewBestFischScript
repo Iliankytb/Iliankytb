@@ -70,6 +70,7 @@ local ESPs = {}
 local LineESPEnabled = false 
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
+local CantMove = false
 local RunService = game:GetService("RunService")
      local CanSpawnBoat = true
      local AutoFishValue = false
@@ -80,8 +81,10 @@ local RunService = game:GetService("RunService")
     local InfOxygen = false
     local AntiAfk = false
     local AutoCastSelectedZone = false
-    
-      local CastChoosed = ""
+    task.spawn(function()
+    local PromptEnchant =  workspace.world.interactables["Enchant Altar"].PromptTemplate
+    end)  
+    local CastChoosed = ""
       local SelectedBoat = "Rowboat"
       task.spawn(function()
 local executor, version = identifyexecutor()
@@ -392,6 +395,9 @@ end
      game:GetService("ReplicatedStorage").events.afk:FireServer(false)
      end
      if   game.Players.LocalPlayer.Character then
+         if CantMove then
+             game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Anchored=  true
+         end
      if AutoCast then
      if  game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool") then
      game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool").events.castAsync:InvokeServer(100,100)
@@ -409,7 +415,7 @@ end
 if ActiveNoclip then 
 if game.Players.LocalPlayer.Character then
 for _, Parts in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
-if Parts:IsA("BasePart") and Parts.CanCollide then
+if Parts:IsA("BasePart") and Parts.CanCollide and Parts ~= game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 Parts.CanCollide = false
 end
 end
@@ -535,6 +541,8 @@ end
     table.insert(IslandZoneCast,IslandName.Name)
     end
     end
+  
+    
     local ButonDiscordLink = DiscordTab:AddButton({
         Text = "Discord Link",
         Name = "Button",
@@ -716,8 +724,64 @@ window:ChangeTheme(choice)
         end
         end
         })
-        
-        local PlayerActiveEspPlayersToggle = EspTab:AddToggle({
+           
+        local SkinCrate = MiscTab:AddButton({
+        Text = "Open Skins Crates",
+        Name = "SkinCrate",
+        Callback = function()
+        game:GetService("Players").LocalPlayer.PlayerGui.SkinCrate.Crates.Visible = not game:GetService("Players").LocalPlayer.PlayerGui.SkinCrate.Crates.Visible
+      end
+    })
+           local AdventChristmas = MiscTab:AddButton({
+           Text = "Open Christmas Event",
+        Name = "AdventChristmas",
+        Callback = function()
+      game:GetService("Players").LocalPlayer.PlayerGui.hud.safezone.AdventCalendar2025.Visible = not game:GetService("Players").LocalPlayer.PlayerGui.hud.safezone.AdventCalendar2025.Visible
+      end
+    })
+     local BlackMarket = MiscTab:AddButton({
+     Text = "Open Blackmarket",
+        Name = "BlackMarket",
+        Callback = function()
+        game:GetService("Players").LocalPlayer.PlayerGui.hud.safezone.BlackMarket.Visible = not game:GetService("Players").LocalPlayer.PlayerGui.hud.safezone.BlackMarket.Visible
+        end
+    })
+         local Challenges = MiscTab:AddButton({
+     Text = "Open Challenges",
+        Name = "Challenges",
+        Callback = function()
+       game:GetService("Players").LocalPlayer.PlayerGui.hud.safezone.Challenges.Visible = not game:GetService("Players").LocalPlayer.PlayerGui.hud.safezone.Challenges.Visible
+    end
+    })
+          local DailyShop = MiscTab:AddButton({
+          Text = "Open Daily Shop",
+        Name = "DailyShop",
+        Callback = function()
+      game:GetService("Players").LocalPlayer.PlayerGui.hud.safezone.DailyShop.Visible = not game:GetService("Players").LocalPlayer.PlayerGui.hud.safezone.DailyShop.Visible
+   end
+    })
+             local FastTravel = MiscTab:AddButton({
+             Text = "Open the Fast Travel",
+        Name = "FastTravel",
+        Callback = function()
+     game:GetService("Players").LocalPlayer.PlayerGui.hud.safezone.FastTravel.Visible = not  game:GetService("Players").LocalPlayer.PlayerGui.hud.safezone.FastTravel.Visible
+    end
+    })
+          local SpearCrafting = MiscTab:AddButton({
+          Text = "Open Spear Crafting",
+        Name = "SpearCrafting",
+        Callback = function()
+    game:GetService("Players").LocalPlayer.PlayerGui.hud.safezone.SpearCrafting.Visible = not game:GetService("Players").LocalPlayer.PlayerGui.hud.safezone.SpearCrafting.Visible
+    end
+    })
+            local PotionsCrafting = MiscTab:AddButton({
+            Text = "Open Crafting Potions",
+        Name = "PotionsCrafting",
+        Callback = function()
+    game:GetService("Players").LocalPlayer.PlayerGui.Potions.Enabled = not game:GetService("Players").LocalPlayer.PlayerGui.Potions.Enabled
+     end
+    })
+               local PlayerActiveEspPlayersToggle = EspTab:AddToggle({
     Text = "Esp Players",
    Name = "PlayerActiveEspPlayersToggle",
    Default = false,
@@ -750,7 +814,7 @@ local PlayerNoclipToggle = PlayerTab:AddToggle({
 if ActiveNoclip then 
 if game.Players.LocalPlayer.Character then
 for _, Parts in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
-if Parts:IsA("BasePart") and Parts.CanCollide then
+if Parts:IsA("BasePart") and Parts.CanCollide and Parts ~= game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 Parts.CanCollide = false
 end
 end
@@ -758,7 +822,7 @@ end
 else
 if game.Players.LocalPlayer.Character then
 for _, Parts in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
-if Parts:IsA("BasePart") and not Parts.CanCollide then
+if Parts:IsA("BasePart") and not Parts.CanCollide and Parts ~= game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 Parts.CanCollide = true
 end
 end
@@ -969,6 +1033,21 @@ end
 end
 end,  
 })
+local PlayerAFIP = MainTab:AddToggle({
+    Text = "Auto farm  in position",
+   Name = "PlayerAFIP",
+   Default = false,
+   Flag = "PlayerAFIP",
+   Callback = function(Value)
+CantMove = Value 
+  if CantMove then
+             game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Anchored=  true
+       else
+          game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Anchored=  false
+         end
+end,  
+})
+
 workspace.DescendantAdded:Connect(function(child) 
 task.wait(0.75)
 if ActiveEspPlayers  then
@@ -994,7 +1073,42 @@ end
 end
 end
 end)
-   
+     workspace.zones.player.DescendantAdded:Connect(function()
+    IslandTP = {}
+     for _, IslandName in pairs(workspace.zones.player:GetChildren()) do
+    if IslandName and IslandName:IsA("BasePart") and not table.find(IslandTP,IslandName.Name) then
+    table.insert(IslandTP,IslandName.Name)
+    end
+    end
+      TPDropdown:Refresh(IslandTP)
+    end)
+    workspace.zones.player.DescendantRemoving:Connect(function()
+    IslandTP = {}
+     for _, IslandName in pairs(workspace.zones.player:GetChildren()) do
+    if IslandName and IslandName:IsA("BasePart") and not table.find(IslandTP,IslandName.Name) then
+    table.insert(IslandTP,IslandName.Name)
+    end
+    end
+    TPDropdown:Refresh(IslandTP)
+    end)
+    workspace.zones.fishing.DescendantAdded:Connect(function()
+    IslandZoneCast = {}
+     for _, IslandName in pairs(workspace.zones.fishing:GetChildren()) do
+        if IslandName and IslandName:IsA("BasePart") and not table.find(IslandZoneCast,IslandName.Name) then
+    table.insert(IslandZoneCast,IslandName.Name)
+    end
+    end
+      CastDropdown:Refresh(IslandZoneCast)
+    end)
+    workspace.zones.fishing.DescendantRemoving:Connect(function()
+    IslandZoneCast = {}
+     for _, IslandName in pairs(workspace.zones.fishing:GetChildren()) do
+        if IslandName and IslandName:IsA("BasePart") and not table.find(IslandZoneCast,IslandName.Name) then
+    table.insert(IslandZoneCast,IslandName.Name)
+    end
+    end
+    CastDropdown:Refresh(IslandZoneCast)
+    end)
     --Loading Data--
     library:LoadData()--Add this if you want to load data and everytime at bottom of your code
     end)
