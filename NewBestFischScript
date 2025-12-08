@@ -81,9 +81,11 @@ local RunService = game:GetService("RunService")
     local InfOxygen = false
     local AntiAfk = false
     local AutoCastSelectedZone = false
+    local CurrentPosition = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame
     task.spawn(function()
     local PromptEnchant =  workspace.world.interactables["Enchant Altar"].PromptTemplate
     end)  
+
     local CastChoosed = ""
       local SelectedBoat = "Rowboat"
       task.spawn(function()
@@ -396,7 +398,7 @@ end
      end
      if   game.Players.LocalPlayer.Character then
          if CantMove then
-             game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Anchored=  true
+             game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = CurrentPosition
          end
      if AutoCast then
      if  game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool") then
@@ -1040,11 +1042,7 @@ local PlayerAFIP = MainTab:AddToggle({
    Flag = "PlayerAFIP",
    Callback = function(Value)
 CantMove = Value 
-  if CantMove then
-             game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Anchored=  true
-       else
-          game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Anchored=  false
-         end
+  CurrentPosition = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame
 end,  
 })
 
