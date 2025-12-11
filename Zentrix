@@ -2101,16 +2101,18 @@ end)
 
 end
 function library:CreateWindow(settings1, onLoad)
-	print("Library Version: 0.42")
+	print("Library Version: 0.43")
 	if game:GetService("RunService"):IsStudio() then
 		if game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary") then
 			game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary"):Destroy()
 		end
 	else
-		if game:GetService("CoreGui"):FindFirstChild("UILibrary") then
-			game:GetService("CoreGui"):FindFirstChild("UILibrary"):Destroy()
+for _, Gui in pairs(game:GetService("CoreGui"):GetChildren()) do
+		if Gui.Name == "UILibrary" and Gui:IsA("ScreenGui") then
+			Gui:Destroy()
 		end
 	end
+end
 local gui544 = Instance.new("ScreenGui")
 gui544.Parent = game:GetService("CoreGui")
 
