@@ -695,7 +695,7 @@ window:ChangeTheme(choice)
       end
       end
     })
-  local TextBoxCoordinate = TPTab:AddButton({
+  local TextBoxCoordinate = TPTab:AddTextbox({
     Text = "",
 Placeholder = "ex: -123, 555, 5353",
         Name = "TextBoxCoordinate",
