@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.1"
+local V = "V.0.2"
       
 library:CreateWindow({
     Title = "Fisch by Iliankytb",-- Title of the script
@@ -815,7 +815,7 @@ local PlayerNoclipToggle = PlayerTab:AddToggle({
   ActiveNoclip = Value 
 if ActiveNoclip then 
 if game.Players.LocalPlayer.Character then
-for _, Parts in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+for _, Parts in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
 if Parts:IsA("BasePart") and Parts.CanCollide and Parts ~= game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 Parts.CanCollide = false
 end
@@ -823,7 +823,7 @@ end
 end
 else
 if game.Players.LocalPlayer.Character then
-for _, Parts in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+for _, Parts in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
 if Parts:IsA("BasePart") and not Parts.CanCollide and Parts ~= game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 Parts.CanCollide = true
 end
@@ -967,7 +967,35 @@ game.Players.LocalPlayer.Character.Humanoid.JumpPower = OldJP
 end
 end,
 })
+local CFrameOfTPCoordinate = CFrame.new(0,0,0)
+local TextBoxCoordinate = TPTab:AddTextbox({
+ Text = "",
+ Placeholder = "ex: -123, 555, 5353",
+ Name = "TextBoxCoordinate",
+ Flag = "TextBoxCoordinate", 
+Callback = function(Text)
 
+    Text = Text:gsub("%s+", "")
+
+   
+    local x, y, z = Text:match("(-?%d+%.?%d*),(-?%d+%.?%d*),(-?%d+%.?%d*)")
+
+    if x and y and z then
+        CFrameOfTPCoordinate = CFrame.new(tonumber(x), tonumber(y), tonumber(z))
+        print("CFrame:", CFrameOfTPCoordinate)
+    else
+        warn("Format incorrect ! Utilise : -123, 555, 5353")
+    end
+end
+
+})
+local ButtonTPtoSelectedCoordinate = TPTab:AddButton({
+    Text = "Teleport to selected coordinate",
+   Name = "ButtonTPtoSelectedCoordinate",
+   Callback = function()
+   game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = CFrameOfTPCoordinate
+end,
+})
 local ButtonUnloadCheat = SettingsTab:AddButton({
     Text = "Unload Cheat",
    Name = "ButtonUnloadCheat",
