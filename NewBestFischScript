@@ -71,8 +71,6 @@ local LineESPEnabled = false
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
 local CantMove = false
-local CFrameOfTPCoordinate = CFrame.new(0,0,0)
-
 local RunService = game:GetService("RunService")
      local CanSpawnBoat = true
      local AutoFishValue = false
@@ -404,9 +402,7 @@ end
          end
      if AutoCast then
      if  game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool") then
-if      game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool"):FindFirstChild("events") then
      game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool").events.castAsync:InvokeServer(100,100)
-end
      end
      end
 if InfOxygen then
@@ -420,7 +416,7 @@ game.Players.LocalPlayer.Character.Humanoid.JumpPower = ValueJP
 end
 if ActiveNoclip then 
 if game.Players.LocalPlayer.Character then
-for _, Parts in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+for _, Parts in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
 if Parts:IsA("BasePart") and Parts.CanCollide and Parts ~= game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 Parts.CanCollide = false
 end
@@ -695,42 +691,7 @@ window:ChangeTheme(choice)
       end
       end
     })
-  local TextBoxCoordinate = TPTab:AddTextbox({
-    Text = "",
-Placeholder = "ex: -123, 555, 5353",
-        Name = "TextBoxCoordinate",
-Flag = "TextBoxCoordinate",
-      Callback = function(Text)
-
-    Text = Text:gsub("%s+", "")
-
-   
-    local x, y, z = Text:match("(-?%d+%.?%d*),(-?%d+%.?%d*),(-?%d+%.?%d*)")
-
-    if x and y and z then
-        CFrameOfTPCoordinate = CFrame.new(tonumber(x), tonumber(y), tonumber(z))
-        print("CFrame:", CFrameOfTPCoordinate)
-    else
-        warn("Format incorrect ! Utilise : -123, 555, 5353")
-    end
-end
-
-    })
-       local TPToSelectedCFrame = TPTab:AddButton({
-    Text = "Teleport To Selected Coordinate",
-        Name = "TPToSelectedCFrame",
-        Callback = function()
-    if CFrameOfTPCoordinate == CFrame.new(0, 0, 0) then
-    return
-end
-
-local hrp = game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-if hrp then
-    hrp.CFrame = CFrameOfTPCoordinate
-end
-
-      end
-    })
+    
     local CastDropdown = MiscTab:AddDropdown({
     Text = "Teleport to Island:",
         Name = "CastDropdown",
@@ -854,7 +815,7 @@ local PlayerNoclipToggle = PlayerTab:AddToggle({
   ActiveNoclip = Value 
 if ActiveNoclip then 
 if game.Players.LocalPlayer.Character then
-for _, Parts in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+for _, Parts in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
 if Parts:IsA("BasePart") and Parts.CanCollide and Parts ~= game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 Parts.CanCollide = false
 end
@@ -862,7 +823,7 @@ end
 end
 else
 if game.Players.LocalPlayer.Character then
-for _, Parts in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+for _, Parts in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
 if Parts:IsA("BasePart") and not Parts.CanCollide and Parts ~= game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 Parts.CanCollide = true
 end
