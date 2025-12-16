@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.3"
+local V = "V.0.4"
       
 library:CreateWindow({
     Title = "Fisch by Iliankytb",-- Title of the script
@@ -723,9 +723,9 @@ TPCFrame = CFrame.new(-13535.4336, -11050.1885, 121.152855, 0.0208024047, -5.069
 local function TeleportToIsland(islandName)
     local island = IslandTable[islandName]
     if island and island.TPCFrame then
-        hrp.CFrame = island.TPCFrame
+        game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = island.TPCFrame
     else
-        warn("Île introuvable :", islandName)
+        warn(islandName)
     end
 end
 
@@ -852,9 +852,10 @@ window:ChangeTheme(choice)
 
 local IslandOptions = {}
 
-for islandName, _ in pairs(IslandTable) do
-    table.insert(IslandOptions, islandName)
+for i, islandName in ipairs(IslandOrder) do
+    IslandOptions[i] = islandName
 end
+
 
 local IslandChoosed = ""
     local TPDropdown = TPTab:AddDropdown({
