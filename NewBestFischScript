@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.2"
+local V = "V.0.3"
       
 library:CreateWindow({
     Title = "Fisch by Iliankytb",-- Title of the script
@@ -402,7 +402,9 @@ end
          end
      if AutoCast then
      if  game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool") then
-     game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool").events.castAsync:InvokeServer(100,100)
+if game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool"):FindFirstChild("events") then
+     game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool"):FindFirstChild("events").castAsync:InvokeServer(100,100)
+end
      end
      end
 if InfOxygen then
@@ -431,7 +433,7 @@ if CanSpawnBoat then
 CanSpawnBoat = false
 workspace.world.npcs[game.Players.LocalPlayer:GetAttribute("LastIsland").." Shipwright"].shipwright.giveUI:InvokeServer()
 game:GetService("ReplicatedStorage").packages.Net["RF/Boats/Spawn"]:InvokeServer(SelectedBoat)
-wait(1)
+wait(2)
 CanSpawnBoat = true
 game:GetService("Players").LocalPlayer.PlayerGui.hud.safezone.shipwright.Visible = false
 end
@@ -530,21 +532,203 @@ local function KeepEsp(Char, Parent)
     end
 end
 
-    local IslandTP = {}
+ local IslandTable = {
+Moosewood = {
+TPCFrame = CFrame.new(383.738892, 134.500519, 240.739456, -0.027013842, -4.16907824e-08, 0.999635041, -6.24253005e-08, 1, 4.00190387e-08, -0.999635041, -6.1321451e-08, -0.027013842)
+},
+Sunstone = {
+TPCFrame = CFrame.new(-936.569275, 131.078827, -1110.95117, -0.859151125, 2.0550857e-08, 0.511721969, 3.47674067e-08, 1, 1.82122317e-08, -0.511721969, 3.34383046e-08, -0.859151125)
+},
+["Castaway Cliffs"] = {
+TPCFrame = CFrame.new(368.576874, 200.293625, -1812.97644, -0.989015222, -4.5056602e-08, -0.147813872, -5.52607453e-08, 1, 6.4927022e-08, 0.147813872, 7.23821145e-08, -0.989015222)
+},
+["Lost Jungle"] = {
+TPCFrame = CFrame.new(-2707.89941, 149.698257, -2059.5271, -0.901607037, 1.28831203e-08, -0.432556093, 5.71399852e-08, 1, -8.9317183e-08, 0.432556093, -1.05245249e-07, -0.901607037)
+},
+["Northern Expedition"] = {
+TPCFrame = CFrame.new(19596.3438, 132.670105, 5294.04736, 0.885424674, 4.52826789e-08, -0.464782923, -8.16542123e-09, 1, 8.18722299e-08, 0.464782923, -6.86965436e-08, 0.885424674)
+},
+["In Top of Northern Expedition"] = {
+TPCFrame = CFrame.new(19960.291, 1142.63428, 5567.06592, -0.321551859, -6.05232202e-08, 0.946891963, -2.30547723e-08, 1, 5.60886768e-08, -0.946891963, -3.79495946e-09, -0.321551859)
+},
+["Cursed Isle"] = {
+TPCFrame = CFrame.new(1896.62878, 142.383347, 1138.4928, -0.880204082, 4.61915377e-08, -0.474595368, 5.55007098e-08, 1, -5.6056404e-09, 0.474595368, -3.12744852e-08, -0.880204082)
+},
+Roslit = {
+TPCFrame = CFrame.new(-1463.29761, 132.525513, 721.535645, -0.585317016, -4.14673451e-08, -0.810804546, 1.08510285e-08, 1, -5.89767737e-08, 0.810804546, -4.33181739e-08, -0.585317016)
+},
+["Roslit Volcano"] = {
+TPCFrame = CFrame.new(-1897.93079, 175.407623, 297.784851, -0.0762324929, 5.86716347e-08, 0.997090042, 4.11686152e-08, 1, -5.56953204e-08, -0.997090042, 3.68030229e-08, -0.0762324929)
+},
+["Keeper Altar"] = {
+TPCFrame = CFrame.new(1309.36877, -802.427002, -84.0851593, -0.948322475, 1.05407549e-08, -0.317308158, 6.71438238e-09, 1, 1.31523707e-08, 0.317308158, 1.03421609e-08, -0.948322475)
+},
+["The Keeper's Secret"] = {
+TPCFrame = CFrame.new(2234.24536, -803.432312, 1041.31909, 0.987917781, 5.31961071e-08, -0.154978812, -4.87517475e-08, 1, 3.24779066e-08, 0.154978812, -2.45300154e-08, 0.987917781)
+},
+["The Arch"] = {
+TPCFrame = CFrame.new(1006.63397, 131.320236, -1241.8667, -0.878287852, -1.08204103e-08, -0.478132278, -2.79356449e-08, 1, 2.8684795e-08, 0.478132278, 3.85504393e-08, -0.878287852)
+},
+["Earmark Island"] = {
+TPCFrame = CFrame.new(1248.01355, 147.101303, 518.330017, -0.64566505, -7.79368658e-09, -0.763620734, -1.580357e-08, 1, 3.1561822e-09, 0.763620734, 1.41057708e-08, -0.64566505)
+},
+["Snowcap Island"] = {
+TPCFrame = CFrame.new(2809.22876, 280.783783, 2555.76758, 0.82412523, 1.36697498e-08, -0.566407621, -1.31483635e-11, 1, 2.41149891e-08, 0.566407621, -1.98663237e-08, 0.82412523)
+},
+["Cryogenic Canal"] = {
+TPCFrame = CFrame.new(19975.9922, 918.423462, 5369.7666, -0.950685084, -2.58386876e-08, -0.310157806, 1.60512714e-09, 1, -8.82281839e-08, 0.310157806, -8.43750598e-08, -0.950685084)
+},
+["Forsaken Shores"] = {
+TPCFrame = CFrame.new(-2601.39746, 133, 1530.10144, 0.725113809, -5.30040012e-08, 0.688629031, 5.46162262e-08, 1, 1.94604333e-08, -0.688629031, 2.34992896e-08, 0.725113809)
+},
+["Forsaken Veil"] = {
+TPCFrame = CFrame.new(-4520.86914, -11221.4688, 6902.3999, -0.487331748, -1.17655459e-08, -0.873216927, -5.58044722e-09, 1, -1.03594155e-08, 0.873216927, -1.75531187e-10, -0.487331748)
+},
+["The Bunker"] = {
+TPCFrame = CFrame.new(1850.58533, -327.755737, -2396.67676, -0.857167542, -5.57794984e-08, 0.515037656, -7.38822763e-08, 1, -1.46591068e-08, -0.515037656, -5.06174658e-08, -0.857167542)
+},
+["Passage of Oaths"] = {
+TPCFrame = CFrame.new(4232.87793, -2479.1853, -4695.25635, -0.86600858, -1.44707677e-08, -0.500029087, -2.74104881e-08, 1, 1.85328233e-08, 0.500029087, 2.97556255e-08, -0.86600858)
+},
+["Sunken Trial"] = {
+TPCFrame = CFrame.new(-4957.47461, -583.894104, 1872.96387, 0.717766583, -5.00708737e-08, 0.696283817, -6.12367934e-09, 1, 7.8224204e-08, -0.696283817, -6.04105352e-08, 0.717766583)
+},
+["Advent Event"] = {
+TPCFrame = CFrame.new(396.737946, 136.700424, 312.862915, -0.537231386, -2.16928756e-13, -0.84343493, 6.67268432e-13, 1, -6.82217791e-13, 0.84343493, -9.29306328e-13, -0.537231386)
+},
+["Cryoshock Serpent"] = {
+TPCFrame = CFrame.new(-7640.91992, -737.0401, -17919.4375, 0.258691162, 3.58012784e-08, -0.965960085, 1.97040451e-09, 1, 3.75905849e-08, 0.965960085, -1.16276846e-08, 0.258691162)
+},
+["Northstar Village"] = {
+TPCFrame = CFrame.new(-7800.45215, 170.110291, -17643.6543, -0.147765309, 4.38586909e-08, -0.989022434, 1.02966624e-07, 1, 2.89617237e-08, 0.989022434, -9.75567644e-08, -0.147765309)
+},
+["Northstar Station"] = {
+TPCFrame = CFrame.new(-6667.53564, 156.218185, -18133.2988, 0.0436194725, -5.84007083e-08, 0.999048233, -4.31508163e-08, 1, 6.03403549e-08, -0.999048233, -4.57417606e-08, 0.0436194725)
+},
+["Toy Factory"] = {
+TPCFrame =CFrame.new(-8084.62793, 191.117661, -17833.7129, -0.00883325748, -9.10255693e-08, 0.999960959, -6.69029205e-08, 1, 9.04381281e-08, -0.999960959, -6.61014496e-08, -0.00883325748)
+},
+["Glacial Ridge"] = {
+TPCFrame = CFrame.new(-7012.93701, 145.9487, -17977.0352, 0.919093132, 2.99908827e-08, 0.394040316, -1.83075919e-08, 1, -3.3409016e-08, -0.394040316, 2.3492067e-08, 0.919093132)
+},
+["Crimson Cavern"] = {
+TPCFrame =CFrame.new(-994.661255, -338.955566, -4940.3291, -0.999879301, -3.76392872e-09, -0.015537492, -3.40631701e-09, 1, -2.30425172e-08, 0.015537492, -2.29868089e-08, -0.999879301)
+},
+["Luminescent Cavern"] = {
+TPCFrame = CFrame.new(-1006.04578, -333.128998, -4318.4248, -0.393309593, 8.48383408e-08, 0.919406116, 2.93628304e-08, 1, -7.9714134e-08, -0.919406116, -4.35596892e-09, -0.393309593)
+},
+["Nessie Catacomb(void!)"] = {
+TPCFrame = CFrame.new(172.764404, -650.613586, -11164.2178, 0.842248082, -7.1307773e-09, 0.539090157, 3.21438365e-09, 1, 8.20543455e-09, -0.539090157, -5.178169e-09, 0.842248082)
+},
+["Havesters Spike"] = {
+TPCFrame = CFrame.new(-1303.78955, 227.981674, 1555.53149, 0.661283314, 3.85140666e-08, -0.750136256, -1.59815343e-08, 1, 3.72542246e-08, 0.750136256, -1.26472672e-08, 0.661283314)
+},
+["Moosjaw Rest"] = {
+TPCFrame = CFrame.new(-4859.19141, -1793.56616, -10122.9512, 0.998245835, -1.42454102e-08, -0.0592049882, 1.07300746e-08, 1, -5.96935692e-08, 0.0592049882, 5.89535851e-08, 0.998245835)
+},
+["Terrapin Island"] = {
+TPCFrame = CFrame.new(-227.313202, 141.848312, 1949.84912, 0.108718306, -9.87016264e-08, 0.994072616, -5.67829561e-09, 1, 9.99111691e-08, -0.994072616, -1.65068119e-08, 0.108718306)
+},
+["Brine Pool"] = {
+TPCFrame = CFrame.new(-1798.27771, -142.69281, -3411.43604, -0.998134613, 1.33370666e-08, 0.0610512644, 1.29883828e-08, 1, -6.10817263e-09, -0.0610512644, -5.30382138e-09, -0.998134613)
+},
+["Trident Room"] = {
+TPCFrame = CFrame.new(-1480.86609, -225.929581, -2240.52856, -1, -4.46429596e-08, -8.86813911e-09, -4.46429596e-08, 1, 1.0103782e-07, 8.86813467e-09, 1.0103782e-07, -1)
+},
+["Grand Reef"] = {
+TPCFrame = CFrame.new(-3576.05957, 151.144669, 524.78302, -0.887024522, 2.56957851e-08, -0.461722344, -7.93033728e-09, 1, 7.08871681e-08, 0.461722344, 6.65402666e-08, -0.887024522)
+},
+["Grand Reef Farm Spot"] = {
+TPCFrame = CFrame.new(-3525.97339, 132.119781, 545.217163, -0.154331416, -5.65873073e-08, -0.988019109, -1.46017838e-08, 1, -5.4992654e-08, 0.988019109, 5.9397478e-09, -0.154331416)
+},
+Mushgrove = {
+TPCFrame = CFrame.new(2697.28101, 133.000015, -756.5495, -1, 0, 0, 0, 1, 0, 0, 0, -1)
+},
+["Hall Of Whispers"] = {
+TPCFrame = CFrame.new(4371.89209, -2234.81714, -4657.97021, 0.998152137, -3.96213089e-08, 0.06076454, 3.43771198e-08, 1, 8.73488659e-08, -0.06076454, -8.50985487e-08, 0.998152137)
+},
+["Ancient Isle"] = {
+TPCFrame = CFrame.new(6050.39893, 195.259857, 278.061707, -0.798433483, -8.48698321e-08, 0.602082968, -4.50391759e-08, 1, 8.12330541e-08, -0.602082968, 3.77418736e-08, -0.798433483)
+},
+["The Depths"] = {
+TPCFrame = CFrame.new(966.078369, -730.134888, 1396.11731, -0.995616376, 2.65273261e-08, -0.0935306475, 2.59402704e-08, 1, 7.49238005e-09, 0.0935306475, 5.03332576e-09, -0.995616376)
+},
+["Atlantean Storm"] = {
+TPCFrame = CFrame.new(-3505.61401, 5.91512012, 354.568909, 0.867834508, 0.0267570633, -0.496132344, -0.00783721264, 0.999161839, 0.0401772484, 0.496791512, -0.0309789106, 0.867316842)
+},
+Atlantis = {
+TPCFrame = CFrame.new(-4262.16016, -603.404175, 1826.37927, 0.293767244, 8.35761114e-08, -0.955877006, -7.06935026e-08, 1, 6.57079013e-08, 0.955877006, 4.82714633e-08, 0.293767244)
+},
+["Zeus Rod Room"] = {
+TPCFrame = CFrame.new(-4295.19531, -627.37085, 2682.771, 0.930898547, 2.79725469e-08, 0.365277886, -4.5826031e-08, 1, 4.02073006e-08, -0.365277886, -5.41681544e-08, 0.930898547)
+},
+["Poseidon Trial"] = {
+TPCFrame = CFrame.new(-3802.78711, -550.689697, 1071.83057, 0.881061256, 2.20581651e-08, 0.473002195, 9.88116811e-10, 1, -4.84749449e-08, -0.473002195, 4.31767795e-08, 0.881061256)
+},
+["Ethereal Abyss"] = {
+TPCFrame = CFrame.new(-3804.44409, -566.771729, 1833.90356, 0.481722325, -1.88765039e-08, 0.876323938, -2.49631924e-08, 1, 3.52630245e-08, -0.876323938, -3.88628294e-08, 0.481722325)
+},
+["Blue Moon Spot"] = {
+TPCFrame = CFrame.new(2746.65186, 131.499985, 2512.8501, -0.0450788923, 5.87682472e-08, 0.998983443, 2.9056098e-08, 1, -5.75168997e-08, -0.998983443, 2.64337618e-08, -0.0450788923)
+},
+["Challenger Deep"] = {
+TPCFrame = CFrame.new(-644.997742, -3283.21118, -793.620483, -0.317816556, -7.50890692e-08, 0.948152244, -1.72842451e-09, 1, 7.86157983e-08, -0.948152244, 2.33465922e-08, -0.317816556)
+},
+["Challenger Deep 2"] = {
+TPCFrame = CFrame.new(716.386353, -3350.21045, -1554.25952, 0.560422242, 3.35350547e-09, -0.828207076, -1.36550526e-12, 1, 4.04819067e-09, 0.828207076, -2.26756525e-09, 0.560422242)
+},
+["Crystal Cove"] = {
+TPCFrame = CFrame.new(1368.61658, -614.295715, 2450.10156, 0.947306752, 3.78324607e-08, -0.320327818, -1.56249822e-08, 1, 7.18976167e-08, 0.320327818, -6.31039825e-08, 0.947306752)
+},
+["Underground Music Venue"] = {
+TPCFrame = CFrame.new(2042.245, -644.859131, 2470.92627, -0.130531356, 2.61819526e-08, 0.99144417, 6.28940882e-08, 1, -1.81273965e-08, -0.99144417, 5.99897874e-08, -0.130531356)
+},
+["Carrot Garden"] = {
+TPCFrame = CFrame.new(3705.96558, -1127.95703, -1092.05835, -0.771626234, 1.91973299e-08, -0.636076212, 1.5641147e-08, 1, 1.12065344e-08, 0.636076212, -1.30170552e-09, -0.771626234)
+},
+Mineshaft = {
+TPCFrame = CFrame.new(-717.418396, -862.002808, -92.4738464, 0.0087394407, 1.12023884e-07, -0.999961793, 2.27678587e-08, 1, 1.12227148e-07, 0.999961793, -2.37477931e-08, 0.0087394407)
+},
+["Calm Zone"] = {
+TPCFrame = CFrame.new(-4318.20068, -11183.5771, 3685.47632, 0.713947117, -1.75177117e-08, -0.700199604, 4.72328878e-08, 1, 2.31420749e-08, 0.700199604, -4.95946679e-08, 0.713947117)
+},
+Vertigo = {
+TPCFrame = CFrame.new(-111.696884, -515.299377, 1030.85132, -0.977859318, -3.79571539e-08, -0.209263355, -3.79456111e-08, 1, -4.0699133e-09, 0.209263355, 3.96082367e-09, -0.977859318)
+},
+["Vertigo Dip"] = {
+TPCFrame = CFrame.new(-21.5978279, -705.123718, 1227.84082, -0.0428805761, -1.05021059e-07, -0.999080181, 1.08017737e-08, 1, -1.05581357e-07, 0.999080181, -1.53192268e-08, -0.0428805761)
+},
+["Kraken  Pool"] = {
+TPCFrame = CFrame.new(-4378.24219, -996.260437, 2054.80762, 0.203324586, 5.61852929e-08, -0.979111373, -3.69684883e-09, 1, 5.6616269e-08, 0.979111373, -7.8918525e-09, 0.203324586)
+},
+["Cultist Lair"] = {
+TPCFrame = CFrame.new(4317.18994, -2016.46484, -4676.19189, 0.366252184, -2.82345827e-08, 0.930515647, -9.25697918e-09, 1, 3.39865025e-08, -0.930515647, -2.10613944e-08, 0.366252184)
+},
+["Ancient Archives"] = {
+TPCFrame = CFrame.new(-3158.82446, -747.214355, 1701.80322, 0.992598057, 6.79486689e-08, 0.121445812, -7.24722327e-08, 1, 3.28304743e-08, -0.121445812, -4.13889154e-08, 0.992598057)
+},
+["Abyssal Zenith"] = {
+TPCFrame = CFrame.new(-13535.4336, -11050.1885, 121.152855, 0.0208024047, -5.06924991e-08, 0.999783635, -5.61334623e-09, 1, 5.08202653e-08, -0.999783635, -6.66931532e-09, 0.0208024047)
+},
+}
     local IslandZoneCast = {}
     
-    for _, IslandName in pairs(workspace.zones.player:GetChildren()) do
-    if IslandName and IslandName:IsA("BasePart") and not table.find(IslandTP,IslandName.Name) then
-    table.insert(IslandTP,IslandName.Name)
-    end
-    end
+ 
         for _, IslandName in pairs(workspace.zones.fishing:GetChildren()) do
         if IslandName and IslandName:IsA("BasePart") and not table.find(IslandZoneCast,IslandName.Name) then
     table.insert(IslandZoneCast,IslandName.Name)
     end
     end
   
-    
+local function TeleportToIsland(islandName)
+    local island = IslandTable[islandName]
+    if island and island.TPCFrame then
+        hrp.CFrame = island.TPCFrame
+    else
+        warn("Île introuvable :", islandName)
+    end
+end
+
     local ButonDiscordLink = DiscordTab:AddButton({
         Text = "Discord Link",
         Name = "Button",
@@ -665,11 +849,18 @@ end
 window:ChangeTheme(choice)
         end
     })
-    local IslandChoosed = ""
+
+local IslandOptions = {}
+
+for islandName, _ in pairs(IslandTable) do
+    table.insert(IslandOptions, islandName)
+end
+
+local IslandChoosed = ""
     local TPDropdown = TPTab:AddDropdown({
     Text = "Teleport to Island:",
         Name = "TPDropdown",
-        Options = IslandTP,
+        Options = IslandOptions,
         Default = "",
         MultiSelect = false,
         Flag = "TPDropdown", --Put a name flag for save data if you enabled saving data
@@ -684,11 +875,7 @@ window:ChangeTheme(choice)
         Callback = function()
         if IslandChoosed == "" then
         return end
-     for _, IslandName in pairs(workspace.zones.player:GetChildren()) do
-     if IslandName and IslandName:IsA("BasePart") and IslandChoosed == IslandName.Name then
-     game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = IslandName.CFrame
-    end
-      end
+    TeleportToIsland(IslandChoosed)
       end
     })
     
@@ -815,7 +1002,7 @@ local PlayerNoclipToggle = PlayerTab:AddToggle({
   ActiveNoclip = Value 
 if ActiveNoclip then 
 if game.Players.LocalPlayer.Character then
-for _, Parts in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+for _, Parts in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
 if Parts:IsA("BasePart") and Parts.CanCollide and Parts ~= game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 Parts.CanCollide = false
 end
@@ -823,7 +1010,7 @@ end
 end
 else
 if game.Players.LocalPlayer.Character then
-for _, Parts in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+for _, Parts in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
 if Parts:IsA("BasePart") and not Parts.CanCollide and Parts ~= game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 Parts.CanCollide = true
 end
@@ -1099,24 +1286,6 @@ end
 end
 end
 end)
-     workspace.zones.player.DescendantAdded:Connect(function()
-    IslandTP = {}
-     for _, IslandName in pairs(workspace.zones.player:GetChildren()) do
-    if IslandName and IslandName:IsA("BasePart") and not table.find(IslandTP,IslandName.Name) then
-    table.insert(IslandTP,IslandName.Name)
-    end
-    end
-      TPDropdown:Refresh(IslandTP)
-    end)
-    workspace.zones.player.DescendantRemoving:Connect(function()
-    IslandTP = {}
-     for _, IslandName in pairs(workspace.zones.player:GetChildren()) do
-    if IslandName and IslandName:IsA("BasePart") and not table.find(IslandTP,IslandName.Name) then
-    table.insert(IslandTP,IslandName.Name)
-    end
-    end
-    TPDropdown:Refresh(IslandTP)
-    end)
     workspace.zones.fishing.DescendantAdded:Connect(function()
     IslandZoneCast = {}
      for _, IslandName in pairs(workspace.zones.fishing:GetChildren()) do
