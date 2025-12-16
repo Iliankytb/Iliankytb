@@ -852,8 +852,8 @@ window:ChangeTheme(choice)
 
 local IslandOptions = {}
 
-for i, islandName in ipairs(IslandOrder) do
-    IslandOptions[i] = islandName
+for islandName, _ in pairs(IslandTable) do
+    table.insert(IslandOptions, islandName)
 end
 
 
