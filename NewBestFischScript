@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.5"
+local V = "V.0.6"
       
 library:CreateWindow({
     Title = "Fisch by Iliankytb",-- Title of the script
@@ -550,6 +550,12 @@ TPCFrame = CFrame.new(19596.3438, 132.670105, 5294.04736, 0.885424674, 4.5282678
 },
 ["In Top of Northern Expedition"] = {
 TPCFrame = CFrame.new(19960.291, 1142.63428, 5567.06592, -0.321551859, -6.05232202e-08, 0.946891963, -2.30547723e-08, 1, 5.60886768e-08, -0.946891963, -3.79495946e-09, -0.321551859)
+},
+["Boreal Pines"] = {
+TPCFrame = CFrame.new(21886.5586, 137.402191, 4175.64111, -0.939684033, -3.47768747e-08, 0.342043728, -1.24593198e-08, 1, 6.74447378e-08, -0.342043728, 5.91151128e-08, -0.939684033)
+},
+["Boreal Pines Cave"] = {
+TPCFrame = CFrame.new(21740.5566, 134.469269, 4002.06274, 0.803158581, 4.5172392e-08, 0.595765293, -1.99204795e-08, 1, -4.8967415e-08, -0.595765293, 2.74606702e-08, 0.803158581)
 },
 ["Cursed Isle"] = {
 TPCFrame = CFrame.new(1896.62878, 142.383347, 1138.4928, -0.880204082, 4.61915377e-08, -0.474595368, 5.55007098e-08, 1, -5.6056404e-09, 0.474595368, -3.12744852e-08, -0.880204082)
