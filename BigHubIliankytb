@@ -36,6 +36,9 @@ local PlaceIdPiggyGame2 = 5661005779
 --Evade--
 local PlaceIdEvadeMainGame = 9872472334
 
+--Fisch--
+local PlaceIdFisch = 16732694052
+
 local player = game.Players.LocalPlayer
 local playerGui = game:GetService("CoreGui")
 
@@ -151,6 +154,8 @@ elseif PlaceService.PlaceId == PlaceIdPiggyGame2 then
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/CheatPiggy"))()
 elseif PlaceService.PlaceId == PlaceIdAntarcticExpedition then
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/BestAntarticaExpedition"))()
+elseif PlaceService.PlaceId == PlaceIdFisch then
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/NewBestFischScript"))()
 else
 loadingText.Visible = false
 mainFrame.Text = "Loading Universale Cheat Because the script don't support this game(for the moment)"
