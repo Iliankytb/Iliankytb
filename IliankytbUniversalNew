@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.16"
+local V = "V.0.17"
 
 library:CreateWindow({
 	Title = "Universel - by Iliankytb",-- Title of the script
@@ -130,6 +130,70 @@ local function isValidTarget(char)
 end
 
 local function aimToClosestTarget()
+	local myCharacter = LocalPlayer.Character
+	local myHead = myCharacter and myCharacter:FindFirstChild("Head")
+	local myRoot = myCharacter and myCharacter:FindFirstChild("HumanoidRootPart")
+	if not (myHead and myRoot) then return end
+
+	local Camera = workspace.CurrentCamera
+
+	local function isInCameraView(part)
+		local screenPos, onScreen = Camera:WorldToViewportPoint(part.Position)
+		return onScreen and screenPos.Z > 0
+	end
+
+	local closestTarget = nil
+	local shortestDistance = AimbotSettings["Infinite Aimbot Distance"] and math.huge or MaxDistanceForAimbot
+
+	if AimbotSettings["Target Bot"] then
+		for _, instance in pairs(workspace:GetDescendants()) do
+			if instance:IsA("Humanoid") and instance.Health > 0 and isValidTarget(instance.Parent) then
+				local character = instance.Parent
+				local head = character:FindFirstChild("Head")
+				local root = character:FindFirstChild("HumanoidRootPart")
+
+				if head and root and (isInCameraView(head) or isInCameraView(root)) then
+					local distance = getDistance(myHead, head)
+					if distance < shortestDistance then
+						shortestDistance = distance
+						closestTarget = head
+					end
+				end
+			end
+		end
+	else
+		for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
+			local character = player.Character
+			local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+			local head = character and character:FindFirstChild("Head")
+			local root = character and character:FindFirstChild("HumanoidRootPart")
+
+			if humanoid and humanoid.Health > 0 and head and root and isValidTarget(character) then
+				if isInCameraView(head) or isInCameraView(root) then
+					local distance = getDistance(myHead, head)
+					if distance < shortestDistance then
+						shortestDistance = distance
+						closestTarget = head
+					end
+				end
+			end
+		end
+	end
+
+	if closestTarget then
+		if HowAim == "Camera" then
+			Camera.CFrame = CFrame.new(Camera.CFrame.Position, closestTarget.Position)
+		elseif HowAim == "Character" then
+			local lookVector = (closestTarget.Position - myRoot.Position).Unit
+			myRoot.CFrame = CFrame.new(
+				myRoot.Position,
+				myRoot.Position + Vector3.new(lookVector.X, 0, lookVector.Z)
+			)
+		end
+	end
+end
+
+local function aimToClosestTargetOld()
 	local myCharacter = LocalPlayer.Character
 	local myHead = myCharacter and myCharacter:FindFirstChild("Head")
 	local myRoot = myCharacter and myCharacter:FindFirstChild("HumanoidRootPart")
@@ -896,6 +960,13 @@ local ButtonLoadAntarcticaExpeditionCheat = GameTab:AddButton({
    Name = "ButtonLoadAntarcticaExpeditionCheat",
      Callback = function(Value)
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/BestAntarticaExpedition"))()
+end,
+})
+local ButtonLoadFischCheat = GameTab:AddButton({
+    Text ="Fisch Cheat(by Iliankytb)",
+   Name = "ButtonLoadFischCheat",
+     Callback = function(Value)
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/NewBestFischScript"))()
 end,
 })
 
