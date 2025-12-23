@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.81"
+local V = "V.0.82"
 
 library:CreateWindow({
     Title = "Doors - by Iliankytb",-- Title of the script
@@ -49,9 +49,11 @@ local ValueSpeed = 16
 local ActiveEspCandy = false
 local ActiveFullBright = false
 local ActiveAvoidFigure = false
+local EspAnchor = false
 local AntiSnare = false
 local AntiGiggle = false
 local AntiScreech = false
+local AutoAnchorCode = false
 local ParagraphInfoServer = InfoTab:AddParagraph({Title = "",Content = "Loading",Name = "Paragraph1"})
 local MarketplaceService = game:GetService("MarketplaceService")
 local infoGameName = MarketplaceService:GetProductInfo(game.PlaceId)
@@ -95,6 +97,7 @@ local ItemNames = {
     "KeyIron",
     "LiveBreakerPolePickup",
     "CringlePresent",
+"WaterPump",
 }
 local function getServerInfo()
     local Players = game:GetService("Players")
@@ -258,7 +261,19 @@ end
     game.Players.LocalPlayer.Character:SetAttribute("CanJump",ActiveCanJump)
     end
     end
-  
+  if AutoAnchorCode then
+if workspace.CurrentRooms:FindFirstChild("50") then
+if workspace.CurrentRooms:FindFirstChild("50"):FindFirstChild("_NestHandler")
+for _, Anchor in pairs(workspace.CurrentRooms["50"]._NestHandler:GetChildren()) do
+if Anchor:IsA("Model") and Anchor.Name == "MinesAnchor" then
+Anchor.AnchorRemote:InvokeServer(game:GetService("Players").LocalPlayer.PlayerGui.MainUI.AnchorHintFrame.Code.Text)
+end
+wait(0.25)
+end
+end
+end
+end
+
 end)
 
 
@@ -277,24 +292,6 @@ local function KeepEsp(Char, Parent)
         end
     end
 end
-
-local ProximityPromptService = game:GetService("ProximityPromptService")
-
-ProximityPromptService.PromptShown:Connect(function(prompt)
-    if not ActiveAutoInteract then return end
-  if prompt.Name == "HidePrompt" then return end
-
-    local parentPart = prompt.Parent
-    if not parentPart or not parentPart:IsA("BasePart") then return end
-    if not hrp then return end
-
-    local distance = (parentPart.Position - hrp.Position).Magnitude
-    if distance > prompt.MaxActivationDistance then return end
-
-    task.spawn(function()
-     fireproximityprompt(prompt, prompt.HoldDuration)
-    end)
-end)
 
 local function copyToClipboard(text)
     if setclipboard then
@@ -1021,6 +1018,47 @@ end
 end,
 })
 
+local EspAnchorToggle = EspTab:AddToggle({
+Text = "Anchor Esp",
+   Name = "EspAnchorToggle",
+   Default = false,
+   Flag = "EspAnchor", 
+   Callback = function(Value)
+EspAnchor = Value 
+if EspAnchor then
+    if game.Workspace:FindFirstChild("CurrentRooms") then
+        for _, Rooms in pairs(game.Workspace.CurrentRooms:GetChildren()) do
+            if Rooms:IsA("Model") and Rooms:FindFirstChild("Assets") then
+                for _, Assets in pairs(Rooms.Assets:GetDescendant()) do
+                    if Assets:IsA("Model")
+                    and Assets.Name == "MinesAnchor"
+                   and (not Assets:FindFirstChildOfClass("Highlight") or  Assets:FindFirstChildOfClass("Highlight") )
+                    and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+                        CreateEsp(Assets, Color3.fromRGB(255, 255, 0), "Anchor", Assets.PrimaryPart)
+                    end
+                end
+            end
+        end
+    end
+else
+    if game.Workspace:FindFirstChild("CurrentRooms") then
+        for _, Rooms in pairs(game.Workspace.CurrentRooms:GetChildren()) do
+            if Rooms:IsA("Model") and Rooms:FindFirstChild("Assets") then
+                for _, Assets in pairs(Rooms.Assets:GetDescendant()) do
+                    if Assets:IsA("Model")
+                    and Assets.Name == "MinesAnchor"
+                    and Assets:FindFirstChildOfClass("Highlight")
+                    and Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+                        KeepEsp(Assets, Assets.PrimaryPart)
+                    end
+                end
+            end
+        end
+    end
+end
+
+end,
+})
 
 
 
@@ -1048,6 +1086,24 @@ if child:IsA("ProximityPrompt") and child.HoldDuration ~= 0 then
 child:SetAttribute("HoldDurationOld",child.HoldDuration)
 child.HoldDuration = 0
 end  
+end
+if child:IsA("ProximityPrompt") then
+child.PromptShown:Connect(function()
+    if not ActiveAutoInteract then return end
+  if child.Name == "HidePrompt" then return end
+
+    local parentPart = child.Parent
+    if not parentPart or not parentPart:IsA("BasePart") then return end
+    if not hrp then return end
+
+    local distance = (parentPart.Position - hrp.Position).Magnitude
+    if distance > child.MaxActivationDistance then return end
+
+    task.spawn(function()
+     fireproximityprompt(child, prompt.HoldDuration)
+    end)
+end)
+
 end
  if ActiveBigPrompt then
 if child:IsA("ProximityPrompt") then
@@ -1150,6 +1206,11 @@ end
     and not child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
         CreateEsp(child, Color3.fromRGB(255,255,0), child.Name, child.PrimaryPart)
     end
+  if EspAnchor and child.Name == "MinesAnchor"
+    and not (child:FindFirstChildOfClass("Highlight") or child:FindFirstChildOfClass("Highlight"))
+    and not child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+        CreateEsp(child, Color3.fromRGB(255,255,0), "Anchor", child.PrimaryPart)
+    end
 
   
   
@@ -1226,7 +1287,11 @@ workspace.DescendantRemoving:Connect(function(child)
     and  child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
         KeepEsp(child,child.PrimaryPart)
     end
-   
+     if EspAnchor and child.Name == "MinesAnchor"
+    and  child:FindFirstChildOfClass("Highlight")
+    and  child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+        KeepEsp(child,child.PrimaryPart)
+    end
 end)
 workspace.ChildAdded:Connect(function(child)
  if ActiveMonsterSpawnAlert then
