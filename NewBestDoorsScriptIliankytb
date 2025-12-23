@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.82"
+local V = "V.0.83"
 
 library:CreateWindow({
     Title = "Doors - by Iliankytb",-- Title of the script
@@ -263,7 +263,7 @@ end
     end
   if AutoAnchorCode then
 if workspace.CurrentRooms:FindFirstChild("50") then
-if workspace.CurrentRooms:FindFirstChild("50"):FindFirstChild("_NestHandler")
+if workspace.CurrentRooms:FindFirstChild("50"):FindFirstChild("_NestHandler") then
 for _, Anchor in pairs(workspace.CurrentRooms["50"]._NestHandler:GetChildren()) do
 if Anchor:IsA("Model") and Anchor.Name == "MinesAnchor" then
 Anchor.AnchorRemote:InvokeServer(game:GetService("Players").LocalPlayer.PlayerGui.MainUI.AnchorHintFrame.Code.Text)
