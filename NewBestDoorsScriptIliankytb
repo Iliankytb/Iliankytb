@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.83"
+local V = "V.0.84"
 
 library:CreateWindow({
     Title = "Doors - by Iliankytb",-- Title of the script
@@ -1029,7 +1029,7 @@ if EspAnchor then
     if game.Workspace:FindFirstChild("CurrentRooms") then
         for _, Rooms in pairs(game.Workspace.CurrentRooms:GetChildren()) do
             if Rooms:IsA("Model") and Rooms:FindFirstChild("Assets") then
-                for _, Assets in pairs(Rooms.Assets:GetDescendant()) do
+                for _, Assets in pairs(Rooms.Assets:GetDescendants()) do
                     if Assets:IsA("Model")
                     and Assets.Name == "MinesAnchor"
                    and (not Assets:FindFirstChildOfClass("Highlight") or  Assets:FindFirstChildOfClass("Highlight") )
@@ -1044,7 +1044,7 @@ else
     if game.Workspace:FindFirstChild("CurrentRooms") then
         for _, Rooms in pairs(game.Workspace.CurrentRooms:GetChildren()) do
             if Rooms:IsA("Model") and Rooms:FindFirstChild("Assets") then
-                for _, Assets in pairs(Rooms.Assets:GetDescendant()) do
+                for _, Assets in pairs(Rooms.Assets:GetDescendants()) do
                     if Assets:IsA("Model")
                     and Assets.Name == "MinesAnchor"
                     and Assets:FindFirstChildOfClass("Highlight")
@@ -1404,6 +1404,15 @@ Text = "Can Jump",
    Callback = function(Value)
 ActiveCanJump = Value 
 game.Players.LocalPlayer.Character:SetAttribute("CanJump",ActiveCanJump)
+end,
+}) 
+local AutoAnchorButton = GameTab:AddToggle({
+Text = "Auto Anchor",
+   Name = "AutoAnchorButton",
+   Default = false,
+   Flag = "AutoAnchorButton", 
+   Callback = function(Value)
+AutoAnchorCode = Value 
 end,
 }) 
 
