@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.85"
+local V = "V.0.86"
 
 library:CreateWindow({
     Title = "Doors - by Iliankytb",-- Title of the script
@@ -130,7 +130,7 @@ local ESPs = {}
 local Camera = nil
 task.spawn(function()
 Camera = workspace.CurrentCamera
-end
+end)
 local LineESPEnabled = false 
 
 local function CreateEsp(Char, Color, Text, Parent)
@@ -250,7 +250,7 @@ task.spawn(function()
 if workspace:FindFirstChild("CurrentCamera") then
 Camera = workspace.CurrentCamera
 end
-end
+end)
 end
     end)
       if ActiveFullBright then 
