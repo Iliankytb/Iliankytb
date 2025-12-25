@@ -95,7 +95,7 @@ credit.Font = Enum.Font.Gotham
 credit.TextScaled = true
 credit.TextTransparency = 0.2
 credit.ZIndex = 3
-
+game:GetService("Debris"):AddItem(screenGui,10)
 local stop = false
 task.spawn(function()
 	local dots = 0
