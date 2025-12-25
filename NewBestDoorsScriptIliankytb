@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.84"
+local V = "V.0.85"
 
 library:CreateWindow({
     Title = "Doors - by Iliankytb",-- Title of the script
@@ -57,6 +57,7 @@ local AutoAnchorCode = false
 local ParagraphInfoServer = InfoTab:AddParagraph({Title = "",Content = "Loading",Name = "Paragraph1"})
 local MarketplaceService = game:GetService("MarketplaceService")
 local infoGameName = MarketplaceService:GetProductInfo(game.PlaceId)
+local ActiveEspPlayers = false
 
 local Version = InfoTab:AddText({
         Text = "Version:"..V,
@@ -126,7 +127,10 @@ window:Notify({
 end
 local OptionNotif = {}
 local ESPs = {}
-local Camera = workspace.CurrentCamera
+local Camera = nil
+task.spawn(function()
+Camera = workspace.CurrentCamera
+end
 local LineESPEnabled = false 
 
 local function CreateEsp(Char, Color, Text, Parent)
@@ -200,9 +204,11 @@ updatedInfo.MaxPlayers
         Content = updatedContent
     })
 end)
+
+task.spawn(function()
+if Camera then
     local cameraPosition = Camera.CFrame.Position
     local screenCenter = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y)
-task.spawn(function()
     for _, esp in ipairs(ESPs) do
         local part = esp.Part
         local highlight = esp.Highlight
@@ -239,6 +245,13 @@ if not part or not highlight or not billboard or not label or not line then retu
             if line then line.Visible = false end
         end
     end
+else
+task.spawn(function()
+if workspace:FindFirstChild("CurrentCamera") then
+Camera = workspace.CurrentCamera
+end
+end
+end
     end)
       if ActiveFullBright then 
     if game.Lighting then 
@@ -465,6 +478,29 @@ if Options == "A-120" and not table.find(OptionNotif, "A120") then
             end
         end
     end,
+})
+
+local PlayerActiveEspPlayersToggle = EspTab:AddToggle({
+    Text = "Esp Players",
+   Name = "PlayerActiveEspPlayersToggle",
+   Default = false,
+   Flag = "PlayerActiveEspPlayersToggle", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  ActiveEspPlayers = Value 
+if ActiveEspPlayers  then
+for _, Players in pairs(Game:GetService("Players"):GetChildren()) do
+if Players:isA("Player") and Players.Character and Players.Character:FindFirstChild("Head") and not Players.Character:FindFirstChildOfClass("Highlight") and not Players.Character.Head:FindFirstChildOfClass("BillboardGui") then
+CreateEsp(Players.Character,Color3.fromRGB(255,255,255),Players.Name,Players.Character.Head,2)
+end
+end
+else
+for _, Players in pairs(Game:GetService("Players"):GetChildren()) do
+if Players:isA("Player") and Players.Character and Players.Character:FindFirstChild("Head") and  Players.Character:FindFirstChildOfClass("Highlight") and  Players.Character.Head:FindFirstChildOfClass("BillboardGui") then
+KeepEsp(Players.Character,Players.Character.Head)
+end
+end
+end
+end,
 })
 
 local EspDoorToggle = EspTab:AddToggle({
@@ -1105,6 +1141,16 @@ child.PromptShown:Connect(function()
 end)
 
 end
+if ActiveEspPlayers  then
+    local Players = game:GetService("Players"):GetPlayerFromCharacter(child)
+    if Players then
+if   child and child.PrimaryPart then
+ if Players.Character:FindFirstChild("Head") and not Players.Character:FindFirstChildOfClass("Highlight") and not Players.Character.Head:FindFirstChildOfClass("BillboardGui") then
+CreateEsp(Players.Character,Color3.fromRGB(255,255,255),Players.Name,Players.Character.Head,2)
+end
+end
+end
+end
  if ActiveBigPrompt then
 if child:IsA("ProximityPrompt") then
                 if child.MaxActivationDistance ~= 13 then
@@ -1234,7 +1280,17 @@ workspace.DescendantRemoving:Connect(function(child)
    KeepEsp(child,child.PrimaryPart)
      end
 
-   
+   if ActiveEspPlayers  then
+    local Players = game:GetService("Players"):GetPlayerFromCharacter(child)
+    if Players then
+if   child and child.PrimaryPart then
+ if Players.Character:FindFirstChild("Head") and Players.Character:FindFirstChildOfClass("Highlight") and  Players.Character.Head:FindFirstChildOfClass("BillboardGui") then
+KeepEsp(Players.Character,Players.Character.Head)
+end
+end
+end
+end
+
     if ActiveEspHidingSpots and (child.Name == "Bed" or child.Name == "Wardrobe" or child.Name == "Backdoor_Wardrobe" or child.Name == "Locker_Large" or child.Name == "Rooms_Locker" or child.Name == "Toolshed")
     and  child:FindFirstChildOfClass("Highlight")
     and  child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
