@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.88"
+local V = "V.0.89"
 
 library:CreateWindow({
     Title = "Doors - by Iliankytb",-- Title of the script
@@ -326,7 +326,7 @@ local Section2 = EspTab:AddSection({Text = "General",Name = "General"})
 local DropdownMonsterSpawnAlert = GameTab:AddDropdown({
 Text =  "Monster Spawn Alert Dropdown",
     Name ="DropdownMonsterSpawnAlert",
-    Options = {"Rush","Seek","Figure","Sally","Eyes","Screech","LookMan","BackdoorRush","Giggle","GloombatSwarm","Ambush","A-60","A-120","Eye stalk","Groundskeeper","Mandrake","Grumbo","FrozenAmbush"},
+    Options = {"Rush","Seek","Figure","Sally","Eyes","Screech","LookMan","BackdoorRush","Giggle","GloombatSwarm","Ambush","A-60","A-120","Eye stalk","Groundskeeper","Mandrake","Grumble","FrozenAmbush","Bramble"},
     Default = "",
     MultiSelect  = true,
     Flag = "MonsterSpawnAlertDropdown",
@@ -356,17 +356,25 @@ Text =  "Monster Spawn Alert Dropdown",
                 table.remove(OptionNotif, index)
             end
         end
-          if  Options == "Grumbo" and not table.find(OptionNotif, "Grumbo") then
+          if  Options == "Grumble" and not table.find(OptionNotif, "Grumbo") then
             table.insert(OptionNotif, "Grumbo")
-        elseif not  Options ==  "Grumbo" then
+        elseif not  Options ==  "Grumble" then
             local index = table.find(OptionNotif, "Grumbo")
+            if index then
+                table.remove(OptionNotif, index)
+            end
+        end
+   if  Options == "Bramble" and not table.find(OptionNotif, "LiveEntityBramble") then
+            table.insert(OptionNotif, "LiveEntityBramble")
+        elseif not  Options ==  "Bramble" then
+            local index = table.find(OptionNotif, "LiveEntityBramble")
             if index then
                 table.remove(OptionNotif, index)
             end
         end
 if  Options == "Mandrake" and not table.find(OptionNotif, "MandrakeLive") then
             table.insert(OptionNotif, "MandrakeLive")
-        elseif not  Options ==  "Rush" then
+        elseif not  Options ==  "Mandrake" then
             local index = table.find(OptionNotif, "MandrakeLive")
             if index then
                 table.remove(OptionNotif, index)
@@ -765,7 +773,7 @@ if ActiveEspChest then
             if Rooms:IsA("Model") and Rooms:FindFirstChild("Assets") then
                 for _, Assets in pairs(Rooms:GetDescendants()) do
                     if Assets:IsA("Model")
-                    and (Assets.Name == "ChestBoxLocked" or Assets.Name == "ChestBox")
+                    and (Assets.Name == "ChestBoxLocked" or Assets.Name == "ChestBox" or Assets.Name == "Chest_Vine")
                     and not Assets:FindFirstChildOfClass("Highlight")
                     and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
                         CreateEsp(Assets, Color3.fromRGB(255, 255, 0), Assets.Name, Assets.PrimaryPart)
@@ -780,7 +788,7 @@ else
             if Rooms:IsA("Model") and Rooms:FindFirstChild("Assets") then
                 for _, Assets in pairs(Rooms:GetDescendants()) do
                     if Assets:IsA("Model")
-                    and (Assets.Name == "ChestBoxLocked" or Assets.Name == "ChestBox")
+                    and (Assets.Name == "ChestBoxLocked" or Assets.Name == "ChestBox" or Assets.Name == "Chest_Vine")
                     and Assets:FindFirstChildOfClass("Highlight")
                     and Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
                         KeepEsp(Assets, Assets.PrimaryPart)
@@ -838,7 +846,7 @@ end,
 local MonsterNames = {
     "FigureRig", "SallyMoving", "RushMoving", "Eyes", "SeekMovingNewClone",
     "BackdoorLookman", "BackdoorRush", "GloombatSwarm", "GiggleCeiling",
-    "AmbushMoving", "EyestalkMoving","Groundskeeper","MandrakeLive","Snare","Screech","Grumbo","FrozenAmbush"
+    "AmbushMoving", "EyestalkMoving","Groundskeeper","MandrakeLive","Snare","Screech","Grumbo","FrozenAmbush","LiveEntityBramble"
 }
 local EspMonstersToggle = EspTab:AddToggle({
 Text = "Monsters Esp",
@@ -1163,7 +1171,9 @@ NotifMonsterSpawned("Mandrake",3)
 elseif child.Name == "Screech" then
 NotifMonsterSpawned("Screech",3)
 elseif child.Name == "Grumbo" then
-NotifMonsterSpawned("Grumbo",3)
+NotifMonsterSpawned("Grumble",3)
+elseif child.Name == "LiveEntityBramble" then
+NotifMonsterSpawned("Bramble",3)
 end
 end
 end
@@ -1285,7 +1295,7 @@ end
     end
 
 
-    if ActiveEspChest and (child.Name == "ChestBoxLocked" or child.Name == "ChestBox")
+    if ActiveEspChest and (child.Name == "ChestBoxLocked" or child.Name == "ChestBox" or child.Name == "Chest_Vine")
     and not child:FindFirstChildOfClass("Highlight")
     and not child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
         CreateEsp(child, Color3.fromRGB(255,255,0), child.Name, child.PrimaryPart)
@@ -1385,7 +1395,7 @@ end
       end
 
 
-    if ActiveEspChest and (child.Name == "ChestBoxLocked" or child.Name == "ChestBox")
+    if ActiveEspChest and (child.Name == "ChestBoxLocked" or child.Name == "ChestBox" or child.Name == "Chest_Vine")
     and child:FindFirstChildOfClass("Highlight")
     and  child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
      KeepEsp(child,child.PrimaryPart)
