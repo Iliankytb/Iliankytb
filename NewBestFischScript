@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.6"
+local V = "V.0.7"
       
 library:CreateWindow({
     Title = "Fisch by Iliankytb",-- Title of the script
@@ -715,6 +715,9 @@ TPCFrame = CFrame.new(-3158.82446, -747.214355, 1701.80322, 0.992598057, 6.79486
 },
 ["Abyssal Zenith"] = {
 TPCFrame = CFrame.new(-13535.4336, -11050.1885, 121.152855, 0.0208024047, -5.06924991e-08, 0.999783635, -5.61334623e-09, 1, 5.08202653e-08, -0.999783635, -6.66931532e-09, 0.0208024047)
+},
+["Astraeus Void"] = {
+TPCFrame = CFrame.new(-178.091858, -1550.49902, 6386.13818, -0.995398879, -2.14900542e-08, 0.0958177373, -2.06031849e-08, 1, 1.02451496e-08, -0.0958177373, 8.22385982e-09, -0.995398879)
 },
 }
     local IslandZoneCast = {}
