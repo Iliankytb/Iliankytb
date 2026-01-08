@@ -33,8 +33,92 @@ library:CreateWindow({
 		DiscordLink = "NoInviteLink",
 		GetKeyLink = "NoKeyLink",
 	},
-}, function(window)
+}, function(window) local InfoTab = window:CreateTab("Info",0)-- Tabs , 0 = no icon or add number
 	local MainTab = window:CreateTab("Main",0)-- Tabs , 0 = no icon or add number
+	local DiscordTab = window:CreateTab("Discord",0)-- Tabs , 0 = no icon or add number
+local AutoParryValue = false 
+local AutoParryDistanceValue = 5
+local CanParry = true
+
+local Version = InfoTab:AddText({
+        Text = "Version:"..V,
+        Name = "VersionScript"
+    })
+window:Notify({
+                Title = "Script Version!",
+                Message = V,
+                Duration = 7.5,
+})
+game:GetService("RunService").RenderStepped:Connect(function(dt)
+if AutoParryValue then
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local hrp = character:WaitForChild("HumanoidRootPart")
+if CanParry then
+for _, ball in pairs(workspace.TrainingBalls:GetChildren()) do 
+	if ball:IsA("BasePart") and ball:FindFirstChildOfClass("Highlight") and ball:FindFirstChildOfClass("Highlight").FillColor == Color3.fromRGB(255,0,0) then 
+		local distance = (ball.Position - hrp.Position).Magnitude
+		
+		if distance <= AutoParryDistanceValue then print("youhouuuu")
+			CanParry = false
+game:GetService("ReplicatedStorage").Remotes.ParryButtonPress:Event()
+	task.wait(dt)
+CanParry = true
+end
+	end
+end 
+end end
+end)
+	local ButonDiscordLink = DiscordTab:AddButton({
+		Text = "Discord Link",
+		Name = "Button",
+		Callback = function() 	
+			library:CopyText("https://discord.gg/E2TqYRsRP4")
+		end
+	})
+	
+	local AutoParry = MainTab:AddToggle({
+		Text = "Auto Parry",
+		Name = "AutoParry",
+		Flag = "AutoParry",--Put a name flag for save data if you enabled saving data
+		Default = false,
+		Callback = function(state)
+AutoParryValue = state
+		end
+	})
+
+	local AutoParryDistance = MainTab:AddSlider({ 
+Text = "Auto Parry Distance",
+		Name = "AutoParryDistance",
+		Min = 1,
+		Max = 10,
+		Default = 5,
+		Flag = "AutoParryDistance",--Put a name flag for save data if you enabled saving data
+		Callback = function(val)
+AutoParryDistanceValue = val
+		end
+	})
+	
+	local ChangeThemeDropdown = MainTab:AddDropdown({
+		Text = "Change Theme:",
+		Name = "Dropdown2",
+		Options = {"Default", "Light", "RedDark","BlueNeon","GreenMatrix","PurpleDream","Sunset",
+		"Ocean","Toxic","Storm","LimePop","Cyber","Chocolate","RoseGold","CottonCandy","NightSky","Steel",
+			"GoldLux","Ice","TealWave","FrostFire","DarkMatter","Lava","PinkCandy","Sakura","DeepSpace","Skyline","Crimson"
+			,"Desert","Camo","Plasma","Arctic","Slate","Vaporwave"
+			
+		},
+		Default = "Default",
+		MultiSelect = false,
+		Flag = "Dropdown2", --Put a name flag for save data if you enabled saving data
+		Callback = function(choice)
+window:ChangeTheme(choice)
+		end
+	})
+
+	--Loading Data--
+	library:LoadData()--Add this if you want to load data and everytime at bottom of your code
+end)	local MainTab = window:CreateTab("Main",0)-- Tabs , 0 = no icon or add number
 	local DiscordTab = window:CreateTab("Discord",0)-- Tabs , 0 = no icon or add number
 local AutoParryValue = false 
 local AutoParryDistanceValue = 5
