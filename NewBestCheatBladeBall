@@ -59,9 +59,9 @@ for _, ball in pairs(workspace.TrainingBalls:GetChildren()) do
 	if ball:IsA("BasePart") and ball:FindFirstChildOfClass("Highlight") and ball:FindFirstChildOfClass("Highlight").FillColor == Color3.fromRGB(255,0,0) then 
 		local distance = (ball.Position - hrp.Position).Magnitude
 		
-		if distance <= AutoParryDistanceValue then print("youhouuuu")
+		if distance <= AutoParryDistanceValue then
 			CanParry = false
-game:GetService("ReplicatedStorage").Remotes.ParryButtonPress:Event()
+game:GetService("ReplicatedStorage").Remotes.ParryButtonPress:Fire()
 	task.wait(dt)
 CanParry = true
 end
