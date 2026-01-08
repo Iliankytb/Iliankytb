@@ -1,8 +1,8 @@
 local	library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local version = "V.0.1"
+local V = "V.0.1"
 
 library:CreateWindow({
-	Title = "Blade Ball script by Iliankytb",-- Title of the script
+	Title = "Blade Ball - by Iliankytb",-- Title of the script
 	Theme = "Default",--View more theme in my dicord server!
 	Icon = 0,-- 0 = no icon or add number
 	Intro = false,--Intro or no
@@ -39,6 +39,15 @@ library:CreateWindow({
 local AutoParryValue = false 
 local AutoParryDistanceValue = 5
 local CanParry = true
+local Version = InfoTab:AddText({
+        Text = "Version:"..V,
+        Name = "VersionScript"
+    })
+window:Notify({
+                Title = "Script Version!",
+                Message = V,
+                Duration = 7.5,
+})
 game:GetService("RunService").RenderStepped:Connect(function(dt)
 if AutoParryValue then
 local player = game.Players.LocalPlayer
