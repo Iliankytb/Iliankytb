@@ -38,7 +38,29 @@ library:CreateWindow({
 	local DiscordTab = window:CreateTab("Discord",0)-- Tabs , 0 = no icon or add number
 local AutoParryValue = false 
 local AutoParryDistanceValue = 5
+local CanParry = true
+game:GetService("RunService").RenderStepped:Connect(function(dt)
+if AutoParryValue then
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local hrp = character:WaitForChild("HumanoidRootPart")
+if CanParry then
+for _, ball in pairs(workspace.Balls:GetChildren()) do
+	if ball:IsA("BasePart") then
+		local distance = (ball.Position - hrp.Position).Magnitude
+		
+		if distance <= AutoParryDistanceValue then
+			CanParry = false
+game:GetService("ReplicatedStorage").Remotes.ParryButtonPress:Fire()
+	task.wait(dt)
+CanParry = true
+end
+	end
+end
+end
 
+end
+end)
 	local ButonDiscordLink = DiscordTab:AddButton({
 		Text = "Discord Link",
 		Name = "Button",
