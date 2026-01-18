@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.7"
+local V = "V.0.8"
       
 library:CreateWindow({
     Title = "Fisch by Iliankytb",-- Title of the script
@@ -107,7 +107,6 @@ window:Notify({
                 Duration = 7.5,
 })
 
-
 local function getServerInfo()
     local Players = game:GetService("Players")
     local playerCount = #Players:GetPlayers()
@@ -123,6 +122,9 @@ MaxPlayers =maxPlayers
     }
 end
 
+
+local bg = nil
+local bv = nil
 
 local IYMouse = Players.LocalPlayer:GetMouse()
 local FLYING = false
@@ -142,15 +144,17 @@ local function sFLY(vfly)
 
     local function FLY()
         FLYING = true
-        local BG = Instance.new('BodyGyro')
-        local BV = Instance.new('BodyVelocity')
-        BG.P = 9e4
-        BG.Parent = T
-        BV.Parent = T
-        BG.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
-        BG.CFrame = T.CFrame
-        BV.Velocity = Vector3.new(0, 0, 0)
-        BV.MaxForce = Vector3.new(9e9, 9e9, 9e9)
+         bg = Instance.new('BodyGyro')
+       bv = Instance.new('BodyVelocity')
+        bg.P = 9e4
+        bg.Parent = T
+        bv.Parent = T
+        bg.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
+        bg.CFrame = T.CFrame
+        bv.Velocity = Vector3.new(0, 0, 0)
+        bv.MaxForce = Vector3.new(9e9, 9e9, 9e9)
+local BG = bg
+local BV = bv
         task.spawn(function()
             repeat wait()
                 if not vfly and Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid') then
@@ -169,7 +173,7 @@ local function sFLY(vfly)
                 else
                     BV.Velocity = Vector3.new(0, 0, 0)
                 end
-                BG.CFrame = workspace.CurrentCamera.CoordinateFrame
+                bg.CFrame = workspace.CurrentCamera.CoordinateFrame
             until not FLYING
             CONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
             lCONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
@@ -226,8 +230,6 @@ end
 
 local velocityHandlerName = "BodyVelocity"
 local gyroHandlerName = "BodyGyro"
-local mfly1
-local mfly2
 
 local function UnMobileFly()
     pcall(function()
@@ -236,10 +238,9 @@ local function UnMobileFly()
         root:FindFirstChild(velocityHandlerName):Destroy()
         root:FindFirstChild(gyroHandlerName):Destroy()
         Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid").PlatformStand = false
-        mfly1:Disconnect()
-        mfly2:Disconnect()
     end)
 end
+
 
 local function MobileFly()
     UnMobileFly()
@@ -252,63 +253,18 @@ local function MobileFly()
     local v3inf = Vector3.new(9e9, 9e9, 9e9)
 
     local controlModule = require(Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule"))
-    local bv = Instance.new("BodyVelocity")
+     bv = Instance.new("BodyVelocity")
     bv.Name = velocityHandlerName
     bv.Parent = root
     bv.MaxForce = v3zero
     bv.Velocity = v3zero
 
-    local bg = Instance.new("BodyGyro")
+ bg = Instance.new("BodyGyro")
     bg.Name = gyroHandlerName
     bg.Parent = root
     bg.MaxTorque = v3inf
     bg.P = 1000
     bg.D = 50
-
-    mfly1 = Players.LocalPlayer.CharacterAdded:Connect(function()
-        local bv = Instance.new("BodyVelocity")
-        bv.Name = velocityHandlerName
-        bv.Parent = root
-        bv.MaxForce = v3zero
-        bv.Velocity = v3zero
-
-        local bg = Instance.new("BodyGyro")
-        bg.Name = gyroHandlerName
-        bg.Parent = root
-        bg.MaxTorque = v3inf
-        bg.P = 1000
-        bg.D = 50
-    end)
-
-    mfly2 = RunService.RenderStepped:Connect(function()
-        root = Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
-        camera = workspace.CurrentCamera
-        if Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid") and root and root:FindFirstChild(velocityHandlerName) and root:FindFirstChild(gyroHandlerName) then
-            local humanoid = Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid")
-            local VelocityHandler = root:FindFirstChild(velocityHandlerName)
-            local GyroHandler = root:FindFirstChild(gyroHandlerName)
-
-            VelocityHandler.MaxForce = v3inf
-            GyroHandler.MaxTorque = v3inf
-            humanoid.PlatformStand = true
-            GyroHandler.CFrame = camera.CoordinateFrame
-            VelocityHandler.Velocity = v3none
-
-            local direction = controlModule:GetMoveVector()
-            if direction.X > 0 then
-                VelocityHandler.Velocity = VelocityHandler.Velocity + camera.CFrame.RightVector * (direction.X * ((iyflyspeed) * 50))
-            end
-            if direction.X < 0 then
-                VelocityHandler.Velocity = VelocityHandler.Velocity + camera.CFrame.RightVector * (direction.X * ((iyflyspeed) * 50))
-            end
-            if direction.Z > 0 then
-                VelocityHandler.Velocity = VelocityHandler.Velocity - camera.CFrame.LookVector * (direction.Z * ((iyflyspeed) * 50))
-            end
-            if direction.Z < 0 then
-                VelocityHandler.Velocity = VelocityHandler.Velocity - camera.CFrame.LookVector * (direction.Z * ((iyflyspeed) * 50))
-            end
-        end
-    end)
 end
 
     game:GetService("RunService").RenderStepped:Connect(function()
@@ -373,9 +329,38 @@ if not part or not highlight or not billboard or not label or not line then retu
     end)
     if AutoFishValue then
     if game.Players.LocalPlayer.PlayerGui:FindFirstChild("reel") then
-game.Players.LocalPlayer.PlayerGui.reel.bar.fish.Size = UDim2.new(99,0,1,0)
+       game.Players.LocalPlayer.PlayerGui.reel.bar.fish.Size = UDim2.new(99,0,3,0)
 end
     end
+task.spawn(function()
+  root = Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+        camera = workspace.CurrentCamera
+        if Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid") and root and root:FindFirstChild(velocityHandlerName) and root:FindFirstChild(gyroHandlerName) then
+            local humanoid = Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid")
+            local VelocityHandler = root:FindFirstChild(velocityHandlerName)
+            local GyroHandler = root:FindFirstChild(gyroHandlerName)
+
+            VelocityHandler.MaxForce = v3inf
+            GyroHandler.MaxTorque = v3inf
+            humanoid.PlatformStand = true
+            GyroHandler.CFrame = camera.CoordinateFrame
+            VelocityHandler.Velocity = v3none
+
+            local direction = controlModule:GetMoveVector()
+            if direction.X > 0 then
+                VelocityHandler.Velocity = VelocityHandler.Velocity + camera.CFrame.RightVector * (direction.X * ((iyflyspeed) * 50))
+            end
+            if direction.X < 0 then
+                VelocityHandler.Velocity = VelocityHandler.Velocity + camera.CFrame.RightVector * (direction.X * ((iyflyspeed) * 50))
+            end
+            if direction.Z > 0 then
+                VelocityHandler.Velocity = VelocityHandler.Velocity - camera.CFrame.LookVector * (direction.Z * ((iyflyspeed) * 50))
+            end
+            if direction.Z < 0 then
+                VelocityHandler.Velocity = VelocityHandler.Velocity - camera.CFrame.LookVector * (direction.Z * ((iyflyspeed) * 50))
+            end
+        end
+end)
   if AutoSellEquippedFish then
      game:GetService("ReplicatedStorage").events.Sell:InvokeServer()
      end
