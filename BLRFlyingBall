@@ -1,0 +1,248 @@
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+local player = Players.LocalPlayer
+local playerGui = game:GetService("CoreGui")
+local camera = workspace.CurrentCamera
+local UserInputService = game:GetService("UserInputService")
+local TweenService = game:GetService("TweenService")
+
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+task.spawn(function()
+local gui = Instance.new("ScreenGui")
+gui.Name = "CreditGui"
+gui.ResetOnSpawn = false
+gui.Parent = playerGui
+
+local text = Instance.new("TextLabel")
+text.Size = UDim2.new(0, 400, 0, 80)
+text.Position = UDim2.new(0.5, -200, 0.5, -40)
+text.BackgroundTransparency = 1
+text.Text = "Made By Iliankytb"
+text.TextColor3 = Color3.fromRGB(255, 255, 255)
+text.TextTransparency = 1
+text.TextScaled = true
+text.Font = Enum.Font.GothamBold
+text.Parent = gui
+
+
+text.Size = UDim2.new(0, 350, 0, 70)
+
+
+local fadeIn = TweenService:Create(
+    text,
+    TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+    {
+        TextTransparency = 0,
+        Size = UDim2.new(0, 420, 0, 90)
+    }
+)
+
+local bounce = TweenService:Create(
+    text,
+    TweenInfo.new(0.25, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+    {
+        Size = UDim2.new(0, 400, 0, 80)
+    }
+)
+
+local fadeOut = TweenService:Create(
+    text,
+    TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In),
+    {
+        TextTransparency = 1
+    }
+)
+
+
+fadeIn:Play()
+fadeIn.Completed:Wait()
+bounce:Play()
+
+task.delay(3, function()
+    fadeOut:Play()
+    fadeOut.Completed:Wait()
+    gui:Destroy()
+    task.spawn(function()
+local gui = Instance.new("ScreenGui")
+gui.Name = "CreditGui"
+gui.ResetOnSpawn = false
+gui.Parent = playerGui
+
+local text = Instance.new("TextLabel")
+text.Size = UDim2.new(0, 400, 0, 80)
+text.Position = UDim2.new(0.5, -200, 0.5, -40)
+text.BackgroundTransparency = 1
+text.Text = "Press L for pc!"
+text.TextColor3 = Color3.fromRGB(255, 255, 255)
+text.TextTransparency = 1
+text.TextScaled = true
+text.Font = Enum.Font.GothamBold
+text.Parent = gui
+
+
+text.Size = UDim2.new(0, 350, 0, 70)
+
+
+local fadeIn = TweenService:Create(
+    text,
+    TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+    {
+        TextTransparency = 0,
+        Size = UDim2.new(0, 420, 0, 90)
+    }
+)
+
+local bounce = TweenService:Create(
+    text,
+    TweenInfo.new(0.25, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+    {
+        Size = UDim2.new(0, 400, 0, 80)
+    }
+)
+
+local fadeOut = TweenService:Create(
+    text,
+    TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.In),
+    {
+        TextTransparency = 1
+    }
+)
+
+
+fadeIn:Play()
+fadeIn.Completed:Wait()
+bounce:Play()
+
+task.delay(3, function()
+    fadeOut:Play()
+    fadeOut.Completed:Wait()
+    gui:Destroy()
+end)
+end)
+
+end)
+end)
+
+if playerGui:FindFirstChild("MoveBallGui") then
+playerGui:FindFirstChild("MoveBallGui"):Destroy()
+end
+if player.PlayerGui:FindFirstChild("MoveBallGui") then
+player.PlayerGui:FindFirstChild("MoveBallGui"):Destroy()
+end
+wait(1)
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "MoveBallGui"
+screenGui.ResetOnSpawn = false
+screenGui.Parent = playerGui
+
+local button = Instance.new("TextButton")
+button.Size = UDim2.new(0, 160, 0, 60)
+button.Position = UDim2.new(0.5, -80, 0.8, 0)
+button.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+button.TextColor3 = Color3.fromRGB(255, 255, 255)
+button.TextScaled = true
+button.Text = "OFF"
+button.Parent = screenGui
+
+
+local enabled = false
+local connection = nil
+local bodyVelocity = nil
+local bodyGyro = nil
+
+local SPEED = 200
+local CAMERA_OFFSET = Vector3.new(0, 6, -14)
+local function enableMove()
+ if  workspace:FindFirstChild("Football") and workspace:FindFirstChild("Football"):FindFirstChildOfClass("BodyGyro") and workspace:FindFirstChild("Football"):FindFirstChildOfClass("BodyVelocity") then
+      workspace:FindFirstChild("Football"):FindFirstChildOfClass("BodyGyro"):Destroy()       workspace:FindFirstChild("Football"):FindFirstChildOfClass("BodyVelocity"):Destroy()   end
+      repeat task.wait(0.01) if not enabled then break end until workspace:FindFirstChild("Football")
+      if enabled then
+      bodyVelocity = Instance.new("BodyVelocity")
+    bodyVelocity.MaxForce = Vector3.new(1e9, 1e9, 1e9)
+    bodyVelocity.Parent = workspace:FindFirstChild("Football")
+
+    bodyGyro = Instance.new("BodyGyro")
+    bodyGyro.MaxTorque = Vector3.new(1e9, 1e9, 1e9)
+    bodyGyro.P = 10000
+    bodyGyro.Parent = workspace:FindFirstChild("Football")
+
+   
+    camera.CameraType = Enum.CameraType.Custom
+    camera.CameraSubject =  workspace:FindFirstChild("Football")
+
+    connection = RunService.RenderStepped:Connect(function()
+        local lookDir = camera.CFrame.LookVector
+       if not workspace:FindFirstChild("Football") and workspace:FindFirstChild("Football"):FindFirstChildOfClass("BodyGyro") and workspace:FindFirstChild("Football"):FindFirstChildOfClass("BodyVelocity") then
+      workspace:FindFirstChild("Football"):FindFirstChildOfClass("BodyGyro"):Destroy()       workspace:FindFirstChild("Football"):FindFirstChildOfClass("BodyVelocity"):Destroy() 
+        repeat task.wait(0.5)    until workspace:FindFirstChild("Football") end
+      task.spawn(function()
+        if  workspace:FindFirstChild("Football") and workspace:FindFirstChild("Football"):FindFirstChildOfClass("BodyGyro") and workspace:FindFirstChild("Football"):FindFirstChildOfClass("BodyVelocity") then
+        if bodyVelocity ~=   workspace:FindFirstChild("Football"):FindFirstChildOfClass("BodyVelocity") or bodyGyro ~=   workspace:FindFirstChild("Football"):FindFirstChildOfClass("bodyGyro") then
+      workspace:FindFirstChild("Football"):FindFirstChildOfClass("BodyGyro"):Destroy()       workspace:FindFirstChild("Football"):FindFirstChildOfClass("BodyVelocity"):Destroy()  
+        end
+        end
+        end)
+        if not workspace:FindFirstChild("Football"):FindFirstChildOfClass("BodyGyro") or not workspace:FindFirstChild("Football"):FindFirstChildOfClass("BodyVelocity") then
+    bodyVelocity = Instance.new("BodyVelocity")
+    bodyVelocity.MaxForce = Vector3.new(1e9, 1e9, 1e9)
+    bodyVelocity.Parent = workspace:FindFirstChild("Football")
+
+    bodyGyro = Instance.new("BodyGyro")
+    bodyGyro.MaxTorque = Vector3.new(1e9, 1e9, 1e9)
+    bodyGyro.P = 10000
+    bodyGyro.Parent = workspace:FindFirstChild("Football")
+        end
+        
+        bodyVelocity.Velocity = lookDir * SPEED
+        bodyGyro.CFrame = CFrame.lookAt(workspace:FindFirstChild("Football").Position,workspace:FindFirstChild("Football").Position + lookDir)
+    end)
+   end 
+end
+
+local function disableMove()
+    if connection then
+        connection:Disconnect()
+        connection = nil
+    end
+
+    if bodyVelocity then
+        bodyVelocity:Destroy()
+        bodyVelocity = nil
+    end
+
+    if bodyGyro then
+        bodyGyro:Destroy()
+        bodyGyro = nil
+    end
+
+   
+    camera.CameraType = Enum.CameraType.Custom
+    camera.CameraSubject = humanoid
+end
+
+local function toggle()
+    enabled = not enabled
+
+    if enabled then
+        button.Text = "ON"
+        button.BackgroundColor3 = Color3.fromRGB(0, 170, 0)
+        enableMove()
+    else
+        button.Text = "OFF"
+        button.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+        disableMove()
+    end
+end
+
+button.MouseButton1Click:Connect(toggle)
+
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+    if gameProcessed then return end
+
+    if input.KeyCode == Enum.KeyCode.L then
+        toggle()
+    end
+end)
+
