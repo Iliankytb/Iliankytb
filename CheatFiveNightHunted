@@ -278,7 +278,7 @@ RunService.RenderStepped:Connect(function()
             -- PROGRESS
             local progressText = ""
 
-            if char:GetAttribute("Progress") and then
+            if char:GetAttribute("Progress") and ComputerProgress then
             local rawProgress = char:GetAttribute("Progress") or 0
                 local maxProgress = 150
                 local percentProgress = math.clamp((rawProgress / maxProgress) * 100, 0, 100)
