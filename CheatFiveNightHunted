@@ -36,7 +36,7 @@ local Window = Rayfield:CreateWindow({
 })
 Rayfield:Notify({
    Title = "Cheat Version",
-   Content = "V.0.26",
+   Content = "V.0.27",
    Duration = 2.5,
    Image = "rewind",
 })
@@ -256,7 +256,7 @@ RunService.RenderStepped:Connect(function()
     local cameraPosition = Camera.CFrame.Position
     local screenCenter = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y)
 
-    -- ESP LOOP
+ 
     for _, esp in ipairs(ESPs) do
 
         local part = esp.Part
@@ -319,7 +319,6 @@ RunService.RenderStepped:Connect(function()
     end
 
 
-    -- FLY SYSTEM
     local char = Players.LocalPlayer.Character
     if char then
 
@@ -358,7 +357,7 @@ RunService.RenderStepped:Connect(function()
     end
 
 
-    -- SPEED BOOST
+
     if ActiveSpeedBoost then
         local char = Players.LocalPlayer.Character
         if char and char:FindFirstChild("Humanoid") then
@@ -367,7 +366,7 @@ RunService.RenderStepped:Connect(function()
     end
 
 
-    -- JUMP POWER
+
     --[[ if ActivateEditJumpPower then
         local char = Players.LocalPlayer.Character
         if char and char:FindFirstChild("Humanoid") then
@@ -376,7 +375,7 @@ RunService.RenderStepped:Connect(function()
         end]]
 
 
-    -- NOCLIP
+  
     if ActiveNoclip then
 
         local char = Players.LocalPlayer.Character
@@ -416,7 +415,7 @@ local function CreateEsp(Char, Color, Text, Parent)
 
     local billboard = Char:FindFirstChild("ESP") or Instance.new("BillboardGui")
     billboard.Name = "ESP"
-    billboard.Size = UDim2.new(2.5, 0, 1, 0)
+    billboard.Size = UDim2.new(10 0, 5, 0)
     billboard.AlwaysOnTop = true
     billboard.StudsOffset = Vector3.new(0, 3, 0)
     billboard.Adornee = Parent
@@ -722,7 +721,7 @@ end,
 
 local PlayerSpeedSlider = PlayerTab:CreateSlider({
    Name = "Player Speed(Recommended to put 21 for not be a exploiter) ",
-   Range = {0, 25},
+   Range = {0, 30},
    Increment = 1,
    Suffix = "Speeds",
    CurrentValue = 16,
