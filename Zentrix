@@ -831,7 +831,17 @@ local function VisibleWindow(window,settings1,gui)
 	local function GetFlagKey(tabName, elementName)
 		return tabName .. "_" .. elementName
 	end
+	
+	local function GetFlag(tabName, name)
+		local key = GetFlagKey(tabName, name)
+		local data = flags[key]
 
+		if type(data) == "table" then
+			return data.value
+		end
+
+		return data
+	end
 
 	local function SaveData()
 		local success, err = pcall(function()
@@ -842,18 +852,25 @@ local function VisibleWindow(window,settings1,gui)
 
 			local serializableFlags = {}
 
-			for key, value in pairs(flags) do
-				if typeof(value) == "Color3" then
-					serializableFlags[key] = {
-						__type = "Color3",
-						R = value.R,
-						G = value.G,
-						B = value.B
-					}
-				elseif typeof(value) == "table" then
-					serializableFlags[key] = table.clone(value)
+			for key, data in pairs(flags) do
+				if type(data) == "table" and data.type then
+
+					if data.type == "Color3" then
+						serializableFlags[key] = {
+							__type = "Color3",
+							R = data.value.R,
+							G = data.value.G,
+							B = data.value.B
+						}
+					else
+						serializableFlags[key] = {
+							__type = data.type,
+							value = data.value
+						}
+					end
+
 				else
-					serializableFlags[key] = value
+					serializableFlags[key] = data
 				end
 			end
 
@@ -866,14 +883,17 @@ local function VisibleWindow(window,settings1,gui)
 			warn("Error saving:", err)
 		end
 	end
-
-
+	
 	local function SetFlag(tabName, name, value)
 		local key = GetFlagKey(tabName, name)
-		flags[key] = value
+
+		flags[key] = {
+			value = value,
+			type = typeof(value)
+		}
+
 		SaveData()
 	end
-
 	library.SetFlag = SetFlag
 
 	local function DeserializeValue(val)
@@ -1403,7 +1423,7 @@ local function VisibleWindow(window,settings1,gui)
 					print("Saving color: ", color)
 					local colorTable = Color3ToTable(color)
 					tab.ColorPickerValue[flag] = colorTable
-					SetFlag(flag, colorTable)
+					SetFlag(tab.name, flag, colorTable)
 				end
 				if opts.Callback then
 					opts.Callback(color)
@@ -1479,7 +1499,6 @@ local function VisibleWindow(window,settings1,gui)
 			return api
 		end
 
-
 		function tab:AddToggle(opts)
 			local flag = opts.Flag or opts.Name or "Button"
 			local value = opts.Default or false
@@ -1488,7 +1507,7 @@ local function VisibleWindow(window,settings1,gui)
 				Text = opts.Text;
 				Size = UDim2.new(1, 0, 0, 30);
 				BackgroundColor3 = selectedTheme.Buttons;
-				TextColor3 = selectedTheme.TextColor,
+				TextColor3 = selectedTheme.TextColor;
 				Font = Enum.Font.Gotham;
 				TextSize = 14;
 				TextXAlignment = Enum.TextXAlignment.Left;
@@ -1496,6 +1515,7 @@ local function VisibleWindow(window,settings1,gui)
 			})
 
 			createUI("UICorner", {Parent = button})
+
 			createUI("UIPadding", {
 				PaddingLeft = UDim.new(0, 10),
 				PaddingRight = UDim.new(0, 10),
@@ -1511,7 +1531,11 @@ local function VisibleWindow(window,settings1,gui)
 				BackgroundColor3 = Color3.fromRGB(80, 80, 80),
 				Parent = button,
 			})
-			createUI("UICorner", {CornerRadius = UDim.new(1, 0), Parent = toggleContainer})
+
+			createUI("UICorner", {
+				CornerRadius = UDim.new(1, 0),
+				Parent = toggleContainer
+			})
 
 			local toggleCircle = createUI("Frame", {
 				Size = UDim2.new(0, 16, 0, 16),
@@ -1519,10 +1543,13 @@ local function VisibleWindow(window,settings1,gui)
 				BackgroundColor3 = value and Color3.fromRGB(0, 170, 0) or Color3.fromRGB(200, 200, 200),
 				Parent = toggleContainer,
 			})
+
 			createUI("UICorner", {CornerRadius = UDim.new(1, 0), Parent = toggleCircle})
 
+			
 			local function setToggleState(state)
 				value = state
+
 				local goalPos = state and UDim2.new(1, -18, 0.5, -8) or UDim2.new(0, 2, 0.5, -8)
 				local goalColor = state and Color3.fromRGB(0, 170, 0) or Color3.fromRGB(200, 200, 200)
 
@@ -1532,57 +1559,59 @@ local function VisibleWindow(window,settings1,gui)
 				}):Play()
 			end
 
-			button.MouseButton1Click:Connect(function(State)
-				if State then
-					value = State
-				else
-					value = not value
-				end
+			
+			button.MouseButton1Click:Connect(function()
+				value = not value
+
+				setToggleState(value)
+
 				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
-					print("Saving Toggle "..flag.." to "..tostring(value))
 					tab.TogglesValue = tab.TogglesValue or {}
 					tab.TogglesValue[flag] = value
-					SetFlag(flag, value)
+					SetFlag(tab.name, flag, value)
 				end
-				setToggleState(value)
-				if opts.Callback then opts.Callback(value) end
 
+				if opts.Callback then
+					opts.Callback(value)
+				end
 			end)
 
-
-			setToggleState(value)
-
+		
+			task.defer(function()
+				setToggleState(value)
+			end)
 
 			local obj = {}
 
 			function obj:Set(newValue)
 				if type(newValue) ~= "boolean" then
-					warn("Set attend un booléen.")
+					warn("Toggle:Set expects boolean")
 					return
 				end
-				print("load Toggle " ..tostring(newValue))
 
+				value = newValue
 				setToggleState(newValue)
 
 				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
 					tab.TogglesValue = tab.TogglesValue or {}
 					tab.TogglesValue[flag] = newValue
-					SetFlag(flag, newValue)
+					SetFlag(tab.name, flag, value)
 				end
 
 				if opts.Callback then
 					opts.Callback(newValue)
 				end
 			end
-			function obj:ChangeTheme(ThemesName)
+
+			function obj:ChangeTheme()
 				button.BackgroundColor3 = selectedTheme.Buttons
 				button.TextColor3 = selectedTheme.TextColor
 			end
+
 			tab.toggles[flag] = obj
 
 			return obj
 		end
-
 		local UserInputService = game:GetService("UserInputService")
 
 		function tab:AddSlider(opts)
@@ -1711,7 +1740,7 @@ local function VisibleWindow(window,settings1,gui)
 								if settings1 and settings1.Data and settings1.Data.EnableSavingData then
 									tab.SlidersValue = tab.SlidersValue or {}
 									tab.SlidersValue[flag] = v
-									SetFlag(flag, v)
+									SetFlag(tab.name, flag, v)
 								end
 								dragging = false
 								if moveConn then moveConn:Disconnect() moveConn = nil end
@@ -1761,7 +1790,7 @@ local function VisibleWindow(window,settings1,gui)
 				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
 					tab.textboxesText = tab.textboxesText or {}
 					tab.textboxesText[flag] = newValue
-					SetFlag(flag, newValue)
+					SetFlag(tab.name, flag, newValue)
 				end
 				if opts.Callback then opts.Callback(newValue) end
 			end
@@ -1957,7 +1986,7 @@ local function VisibleWindow(window,settings1,gui)
 						if settings1 and settings1.Data and settings1.Data.EnableSavingData then
 							tab.dropdownValue = tab.dropdownValue or {}
 							tab.dropdownValue[flag] = dropdown.Selected
-							SetFlag(flag, dropdown.Selected)
+							SetFlag(tab.name, flag, dropdown.Selected)
 						end
 
 
@@ -2039,7 +2068,7 @@ local function VisibleWindow(window,settings1,gui)
 					if settings1 and settings1.Data and settings1.Data.EnableSavingData then
 						tab.dropdownValue = tab.dropdownValue or {}
 						tab.dropdownValue[flag] = dropdown.Selected
-						SetFlag(flag, dropdown.Selected)
+						SetFlag(tab.name, flag, dropdown.Selected)
 					end
 
 					updateButtonText()
