@@ -902,6 +902,16 @@ local function VisibleWindow(window,settings1,gui)
 						tab.texts[name]:Set({value})
 					end)
 				end
+				if tab.sections[name] then
+					pcall(function()
+						tab.sections[name]:Set({value})
+					end)
+				end
+				if tab.paragraphs[name] then
+					pcall(function()
+						tab.paragraphs[name]:Set(value)
+					end)
+				end
 				if tab.ColorPicker[name] then
 					pcall(function()
 						tab.ColorPicker[name]:Set(value)
@@ -1209,20 +1219,19 @@ local function VisibleWindow(window,settings1,gui)
 
 		function tab:AddParagraph(opts)
 			local flag = opts.Name
+
 			assert(type(opts) == "table", "Expected table as argument")
 			assert(type(opts.Title) == "string", "Title must be a string")
 			assert(type(opts.Content) == "string", "Content must be a string")
 
-
 			local frame = createUI("Frame", {
-				Size = UDim2.new(1, 0, 0, 50), 
+				Size = UDim2.new(1, 0, 0, 50),
 				BackgroundColor3 = selectedTheme.Buttons,
 				Parent = tab.content,
 			})
-			createUI("UICorner", {Parent = frame})
+			createUI("UICorner", { Parent = frame })
 
-
-			local padding = createUI("UIPadding", {
+			createUI("UIPadding", {
 				PaddingLeft = UDim.new(0, 10),
 				PaddingRight = UDim.new(0, 10),
 				PaddingTop = UDim.new(0, 10),
@@ -1230,11 +1239,10 @@ local function VisibleWindow(window,settings1,gui)
 				Parent = frame,
 			})
 
-
 			local titleLabel = createUI("TextLabel", {
 				Text = opts.Title,
 				Size = UDim2.new(1, 0, 0, 25),
-				Position = UDim2.new(0, 5, 0, 5), 
+				Position = UDim2.new(0, 5, 0, 5),
 				BackgroundTransparency = 1,
 				TextColor3 = Color3.new(1, 1, 1),
 				Font = Enum.Font.GothamBold,
@@ -1243,45 +1251,53 @@ local function VisibleWindow(window,settings1,gui)
 				Parent = frame,
 			})
 
-
 			local contentLabel = createUI("TextLabel", {
 				Text = opts.Content,
 				Size = UDim2.new(1, 0, 0, 0),
-				Position = UDim2.new(0, 5, 0, 35), 
+				Position = UDim2.new(0, 5, 0, 35),
 				BackgroundTransparency = 1,
 				TextColor3 = Color3.new(1, 1, 1),
 				Font = Enum.Font.Gotham,
 				TextSize = 14,
 				TextXAlignment = Enum.TextXAlignment.Left,
+				TextWrapped = true,
 				Parent = frame,
 			})
 
+			-- auto size
+			task.defer(function()
+				local textSize = contentLabel.TextBounds
+				contentLabel.Size = UDim2.new(1, 0, 0, textSize.Y)
+				frame.Size = UDim2.new(1, 0, 0, 25 + textSize.Y + 25)
+			end)
 
-
-			local textSize = contentLabel.TextBounds
-			contentLabel.Size = UDim2.new(1, 0, 0, textSize.Y)
-
-
-			frame.Size = UDim2.new(1, 0, 0, 25 + textSize.Y + 25)
-
-
-			local Api = {Frame = frame,
+			local Api = {
+				Frame = frame,
 				TitleLabel = titleLabel,
 				ContentLabel = contentLabel,
+
 				Set = function(self, newOpts)
+					assert(type(newOpts) == "table", "Set expects a table")
+
 					if newOpts.Title then
+						assert(type(newOpts.Title) == "string", "Title must be a string")
 						self.TitleLabel.Text = newOpts.Title
 					end
+
 					if newOpts.Content then
+						assert(type(newOpts.Content) == "string", "Content must be a string")
 						self.ContentLabel.Text = newOpts.Content
+
 						local newSize = self.ContentLabel.TextBounds
 						self.ContentLabel.Size = UDim2.new(1, 0, 0, newSize.Y)
-						self.Frame.Size = UDim2.new(1, 0, 0, 25 + newSize.Y + 20)
+						self.Frame.Size = UDim2.new(1, 0, 0, 25 + newSize.Y + 25)
 					end
 				end,
-				ChangeTheme = function(ThemesName)
+
+				ChangeTheme = function()
 					frame.BackgroundColor3 = selectedTheme.Buttons
-				end}
+				end
+			}
 
 			tab.paragraphs[flag] = Api
 
@@ -2097,7 +2113,7 @@ local function VisibleWindow(window,settings1,gui)
 
 end
 function library:CreateWindow(settings1, onLoad)
-	print("Library Version: 0.44")
+	print("Library Version: 0.45")
 	if game:GetService("RunService"):IsStudio() then
 		if game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary") then
 			game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary"):Destroy()
