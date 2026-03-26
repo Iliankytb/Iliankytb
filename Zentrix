@@ -1969,6 +1969,11 @@ local function VisibleWindow(window,settings1,gui)
 					button.BackgroundColor3 = selectedTheme.Buttons
 					button.TextColor3 = selectedTheme.TextColor
 				end
+				if multi then
+					btn.Text = opts.Text .. " (" .. tostring(#dropdown.Selected) .. ")"
+				else
+					btn.Text = opts.Text .. ": " .. tostring(dropdown.Selected[1] or "None")
+				end
 			end
 			
 			local function UpdateOptionVisual()
