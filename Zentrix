@@ -897,7 +897,11 @@ local function VisibleWindow(window,settings1,gui)
 						tab.SlidersValue[name] = value
 					end)
 				end
-
+				if tab.texts[name] then
+					pcall(function()
+						tab.texts[name]:Set({value})
+					end)
+				end
 				if tab.ColorPicker[name] then
 					pcall(function()
 						tab.ColorPicker[name]:Set(value)
@@ -970,6 +974,9 @@ local function VisibleWindow(window,settings1,gui)
 						tab.dropdownValue = tab.dropdownValue or {}
 						tab.TogglesValue = tab.TogglesValue or {}
 						tab.ColorPickerValue = tab.ColorPickerValue or {}
+						tab.texts = tab.texts or {}
+						tab.paragraphs = tab.paragraphs or {}
+						tab.sections = tab.sections or {}
 
 						applyFlagsToTab(tab)
 
@@ -997,12 +1004,14 @@ local function VisibleWindow(window,settings1,gui)
 			dropdowns = {},
 			toggles = {},
 			ColorPicker = {},
-
 			SlidersValue = {},
 			ColorPickerValue = {},
 			textboxesText = {},
 			TogglesValue = {},
 			dropdownValue = {},
+			texts = {},
+			paragraphs = {},
+			sections = {},
 		}
 
 		table.insert(self.tabs, tab)
