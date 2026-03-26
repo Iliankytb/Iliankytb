@@ -1729,7 +1729,7 @@ local function VisibleWindow(window,settings1,gui)
 					releaseConn = UserInputService.InputEnded:Connect(function(endInput)
 						if endInput.UserInputType == Enum.UserInputType.MouseButton1 or endInput.UserInputType == Enum.UserInputType.Touch then
 							if dragging then
-								local X = moveInput.Position.X
+								local X = endInput.Position.X
 								local percent = math.clamp((x - sliderBar.AbsolutePosition.X) / sliderBar.AbsoluteSize.X, 0, 1)
 								local v = math.floor(min + (max - min) * percent)
 								if settings1 and settings1.Data and settings1.Data.EnableSavingData then
