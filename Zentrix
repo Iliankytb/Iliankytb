@@ -817,28 +817,187 @@ local function VisibleWindow(window,settings1,gui)
 	function window:UnlockButton()
 		OpenButton.Draggable = true
 	end
-	function window:CreateTab(name,icon)
-		local HttpService = game:GetService("HttpService")
+	local HttpService = game:GetService("HttpService")
 
-		if  not game:GetService("RunService"):IsStudio() then
-			if not writefile or not readfile then
-				warn("writefile/readfile non disponibles.")
-				return
+	
+	local flags = {}
+
+
+	local settingsData = settings1 and settings1.Data or {}
+	local FolderName = settingsData.FolderName or "UnknownFolder"
+	local fileName = settingsData.FileName or "UnknownFile"
+	local fullPath = FolderName .. "/" .. fileName .. ".json"
+
+	local function GetFlagKey(tabName, elementName)
+		return tabName .. "_" .. elementName
+	end
+
+
+	local function SaveData()
+		local success, err = pcall(function()
+
+			if not isfolder(FolderName) then
+				makefolder(FolderName)
+			end
+
+			local serializableFlags = {}
+
+			for key, value in pairs(flags) do
+				if typeof(value) == "Color3" then
+					serializableFlags[key] = {
+						__type = "Color3",
+						R = value.R,
+						G = value.G,
+						B = value.B
+					}
+				elseif typeof(value) == "table" then
+					serializableFlags[key] = table.clone(value)
+				else
+					serializableFlags[key] = value
+				end
+			end
+
+			local jsonData = HttpService:JSONEncode(serializableFlags)
+			writefile(fullPath, jsonData)
+
+		end)
+
+		if not success then
+			warn("Error saving:", err)
+		end
+	end
+
+
+	local function SetFlag(tabName, name, value)
+		local key = GetFlagKey(tabName, name)
+		flags[key] = value
+		SaveData()
+	end
+
+	library.SetFlag = SetFlag
+
+	local function DeserializeValue(val)
+		if type(val) == "table" and val.__type == "Color3" then
+			return Color3.new(val.R, val.G, val.B)
+		end
+		return val
+	end
+
+	local function applyFlagsToTab(tab)
+		for key, value in pairs(flags) do
+
+			local prefix = tab.name .. "_"
+
+			if string.sub(key, 1, #prefix) == prefix then
+				local name = string.sub(key, #prefix + 1)
+
+				if tab.sliders[name] then
+					pcall(function()
+						tab.sliders[name]:SetValue(value)
+						tab.SlidersValue[name] = value
+					end)
+				end
+
+				if tab.ColorPicker[name] then
+					pcall(function()
+						tab.ColorPicker[name]:Set(value)
+						tab.ColorPickerValue[name] = value
+					end)
+				end
+
+				if tab.textboxes[name] then
+					pcall(function()
+						tab.textboxes[name]:SetText(value)
+						tab.textboxesText[name] = value
+					end)
+				end
+
+				if tab.dropdowns[name] then
+					pcall(function()
+						tab.dropdowns[name]:Select(value)
+						tab.dropdownValue[name] = value
+					end)
+				end
+
+				if tab.toggles[name] then
+					pcall(function()
+						tab.toggles[name]:Set(value)
+						tab.TogglesValue[name] = value
+					end)
+				end
+
+				task.wait(0.03)
 			end
 		end
+	end
 
-		local flags = {}
+	if settingsData.EnableSavingData then
+		function library:LoadData()
+			task.spawn(function()
+
+				if game:GetService("RunService"):IsStudio() then
+					return
+				end
+
+				if not isfile(fullPath) then
+					warn("No save file")
+					return
+				end
+
+				local success, content = pcall(readfile, fullPath)
+				if not success or not content then
+					warn("Read error")
+					return
+				end
+
+				local loadedData = HttpService:JSONDecode(content)
+
+				for k, v in pairs(loadedData) do
+					loadedData[k] = DeserializeValue(v)
+				end
+
+				flags = loadedData
+
+				repeat task.wait() until window and window.tabs and next(window.tabs)
+
+				for _, tab in pairs(window.tabs) do
+					task.spawn(function()
+
+						repeat task.wait() until tab.sliders and tab.toggles and tab.dropdowns
+
+						tab.SlidersValue = tab.SlidersValue or {}
+						tab.textboxesText = tab.textboxesText or {}
+						tab.dropdownValue = tab.dropdownValue or {}
+						tab.TogglesValue = tab.TogglesValue or {}
+						tab.ColorPickerValue = tab.ColorPickerValue or {}
+
+						applyFlagsToTab(tab)
+
+					end)
+				end
+
+				if not settingsData.DisableNotifyingLoadedData then
+					window:Notify({
+						Title = "Data!",
+						Message = "Loaded successfully!",
+						Duration = 5,
+					})
+				end
+
+			end)
+		end
+	end
+
+	function window:CreateTab(name, icon)
 
 		local tab = {
+			name = name, 
 			sliders = {},
 			textboxes = {},
 			dropdowns = {},
 			toggles = {},
-			texts = {},
-			sections = {},
-			buttons = {},
-			paragraphs = {},
 			ColorPicker = {},
+
 			SlidersValue = {},
 			ColorPickerValue = {},
 			textboxesText = {},
@@ -846,217 +1005,8 @@ local function VisibleWindow(window,settings1,gui)
 			dropdownValue = {},
 		}
 
-		local settingsData = settings1 and settings1.Data or {}
-		local FolderName = settingsData.FolderName or "UnknownFolder"
-		local fileName = settingsData.FileName or "UnknownFile"
+		table.insert(self.tabs, tab)
 
-		local fullPath = FolderName .. "/" .. fileName .. ".json"
-
-		local function SaveData()
-			local success, err = pcall(function()
-
-				if not isfolder(FolderName) then
-					makefolder(FolderName)
-				end
-
-				local serializableFlags = {}
-
-				for key, value in pairs(flags) do
-					if typeof(value) == "Color3" then
-						serializableFlags[key] = {
-							__type = "Color3",
-							R = value.R,
-							G = value.G,
-							B = value.B
-						}
-					elseif typeof(value) == "table" then
-						serializableFlags[key] = table.clone(value)
-					else
-						serializableFlags[key] = value
-					end
-				end
-
-				local successEncode, jsonData = pcall(function()
-					return HttpService:JSONEncode(serializableFlags)
-				end)
-
-				if not successEncode then
-					warn("JSON Encode failed")
-					return
-				end
-
-				writefile(fullPath, jsonData)
-				print("Saved data in:", fullPath)
-
-			end)
-
-			if not success then
-				warn("Error when saving the data :", err)
-			end
-		end
-
-		local function DeserializeValue(val)
-			if type(val) == "table" and val.__type == "Color3" and val.R and val.G and val.B then
-				return Color3.new(val.R, val.G, val.B)
-			end
-			return val
-		end
-
-		local function SetFlag(name, value)
-			print("SetFlag", name, value)
-			flags[name] = value
-			SaveData()
-		end
-
-		if settingsData.EnableSavingData then
-			function library:LoadData()
-				task.spawn(function()
-
-					if game:GetService("RunService"):IsStudio() then
-						return
-					end
-
-					print("Loading Data...")
-
-					local settingsData = settings1 and settings1.Data or {}
-					local FolderName = settingsData.FolderName or "UnknownFolder"
-					local fileName = settingsData.FileName or "UnknownFile"
-					local fullPath = FolderName .. "/" .. fileName .. ".json"
-
-					
-					if not isfile(fullPath) then
-						warn("No saved data file found at: " .. fullPath)
-						window:Notify({
-							Title = "Data!",
-							Message = "No saved data found!",
-							Duration = 5,
-						})
-						return
-					end
-
-				
-					local success, content = pcall(readfile, fullPath)
-					if not success or not content or content == "" then
-						warn("Failed to read data file or file is empty: " .. tostring(content))
-						window:Notify({
-							Title = "Data!",
-							Message = "Failed to load data or file is empty!",
-							Duration = 10,
-						})
-						return
-					end
-
-				
-					local loadedData
-					success, loadedData = pcall(function()
-						return HttpService:JSONDecode(content)
-					end)
-
-					if not success or type(loadedData) ~= "table" then
-						warn("Failed to decode JSON data or invalid data format.")
-						window:Notify({
-							Title = "Data!",
-							Message = "Failed to decode saved data!",
-							Duration = 10,
-						})
-						return
-					end
-
-					
-					for k, v in pairs(loadedData) do
-						loadedData[k] = DeserializeValue(v)
-					end
-
-					flags = loadedData
-
-					
-					local function applyFlagsToTab(tab)
-						for name, value in pairs(flags) do
-
-						
-							if tab.sliders and tab.sliders[name] then
-								pcall(function()
-									tab.sliders[name]:SetValue(value)
-									tab.SlidersValue[name] = value
-								end)
-							end
-
-							
-							if tab.ColorPicker and tab.ColorPicker[name] then
-								pcall(function()
-									tab.ColorPicker[name]:Set(value)
-									tab.ColorPickerValue[name] = value
-								end)
-							end
-
-							
-							if tab.textboxes and tab.textboxes[name] then
-								pcall(function()
-									tab.textboxes[name]:SetText(value)
-									tab.textboxesText[name] = value
-								end)
-							end
-
-							
-							if tab.dropdowns and tab.dropdowns[name] then
-								pcall(function()
-									tab.dropdowns[name]:Select(value)
-									tab.dropdownValue[name] = value
-								end)
-							end
-
-							
-							if tab.toggles and tab.toggles[name] then
-								pcall(function()
-									tab.toggles[name]:Set(value)
-									tab.TogglesValue[name] = value
-								end)
-							end
-
-							task.wait(0.03) 
-						end
-					end
-
-					
-					repeat task.wait() until window and window.tabs and next(window.tabs)
-
-					for _, tab in pairs(window.tabs) do
-						task.spawn(function()
-
-							
-							repeat task.wait() until tab.dropdowns and tab.sliders and tab.toggles
-
-						
-							tab.SlidersValue = tab.SlidersValue or {}
-							tab.textboxesText = tab.textboxesText or {}
-							tab.dropdownValue = tab.dropdownValue or {}
-							tab.TogglesValue = tab.TogglesValue or {}
-							tab.ColorPickerValue = tab.ColorPickerValue or {}
-
-							tab.sliders = tab.sliders or {}
-							tab.textboxes = tab.textboxes or {}
-							tab.dropdowns = tab.dropdowns or {}
-							tab.toggles = tab.toggles or {}
-							tab.ColorPicker = tab.ColorPicker or {}
-
-							applyFlagsToTab(tab)
-						end)
-					end
-
-					
-					if not settingsData.DisableNotifyingLoadedData then
-						window:Notify({
-							Title = "Data!",
-							Message = "Successfully loaded saved data!",
-							Duration = 5,
-						})
-					end
-
-				end)
-			end
-		end
-
-		library.SetFlag = SetFlag
 
 		local scroll = createUI("ScrollingFrame", {
 			Size = UDim2.new(1, 0, 1, 0);
@@ -1729,8 +1679,8 @@ local function VisibleWindow(window,settings1,gui)
 					releaseConn = UserInputService.InputEnded:Connect(function(endInput)
 						if endInput.UserInputType == Enum.UserInputType.MouseButton1 or endInput.UserInputType == Enum.UserInputType.Touch then
 							if dragging then
-							local X = endInput.Position.X
-local percent = math.clamp((X - sliderBar.AbsolutePosition.X) / sliderBar.AbsoluteSize.X, 0, 1)
+								local X = endInput.Position.X
+								local percent = math.clamp((X - sliderBar.AbsolutePosition.X) / sliderBar.AbsoluteSize.X, 0, 1)
 								local v = math.floor(min + (max - min) * percent)
 								if settings1 and settings1.Data and settings1.Data.EnableSavingData then
 									tab.SlidersValue = tab.SlidersValue or {}
@@ -1970,7 +1920,7 @@ local percent = math.clamp((X - sliderBar.AbsolutePosition.X) / sliderBar.Absolu
 							updateCanvas()
 						end
 
-					
+
 						for _, child in ipairs(optionHolder:GetChildren()) do
 							if child:IsA("TextButton") then
 								local isSelected = table.find(dropdown.Selected, child.Text)
@@ -2088,7 +2038,6 @@ local percent = math.clamp((X - sliderBar.AbsolutePosition.X) / sliderBar.Absolu
 		end
 
 		return tab
-
 	end
 
 	local UIS = game:GetService("UserInputService")
@@ -2194,7 +2143,6 @@ function library:CreateWindow(settings1, onLoad)
 
 	local window = {}
 	window.tabs = {}
-
 
 	local gui
 
