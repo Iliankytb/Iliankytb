@@ -818,31 +818,86 @@ local function VisibleWindow(window,settings1,gui)
 		OpenButton.Draggable = true
 	end
 	local HttpService = game:GetService("HttpService")
+	local RunService = game:GetService("RunService")
 
-	
 	local flags = {}
-
 
 	local settingsData = settings1 and settings1.Data or {}
 	local FolderName = settingsData.FolderName or "UnknownFolder"
 	local fileName = settingsData.FileName or "UnknownFile"
 	local fullPath = FolderName .. "/" .. fileName .. ".json"
+	
+	local function EncodeValue(v)
+		local t = typeof(v)
+
+		if t == "Color3" then
+			return { __type = "Color3", R = v.R, G = v.G, B = v.B }
+
+		elseif t == "Vector2" then
+			return { __type = "Vector2", X = v.X, Y = v.Y }
+
+		elseif t == "Vector3" then
+			return { __type = "Vector3", X = v.X, Y = v.Y, Z = v.Z }
+
+		elseif t == "UDim2" then
+			return {
+				__type = "UDim2",
+				XScale = v.X.Scale,
+				XOffset = v.X.Offset,
+				YScale = v.Y.Scale,
+				YOffset = v.Y.Offset
+			}
+
+		elseif t == "table" then
+			local newTable = {}
+
+			for k, val in pairs(v) do
+				newTable[k] = EncodeValue(val)
+			end
+
+			return {
+				__type = "table",
+				value = newTable
+			}
+		end
+
+		return v
+	end
+
+
+	local function DecodeValue(v)
+		if type(v) ~= "table" or not v.__type then
+			return v
+		end
+
+		if v.__type == "Color3" then
+			return Color3.new(v.R, v.G, v.B)
+
+		elseif v.__type == "Vector2" then
+			return Vector2.new(v.X, v.Y)
+
+		elseif v.__type == "Vector3" then
+			return Vector3.new(v.X, v.Y, v.Z)
+
+		elseif v.__type == "UDim2" then
+			return UDim2.new(v.XScale, v.XOffset, v.YScale, v.YOffset)
+
+		elseif v.__type == "table" then
+			local t = {}
+			for k, val in pairs(v.value or {}) do
+				t[k] = DecodeValue(val)
+			end
+			return t
+		end
+
+		return v
+	end
+
 
 	local function GetFlagKey(tabName, elementName)
 		return tabName .. "_" .. elementName
 	end
 	
-	local function GetFlag(tabName, name)
-		local key = GetFlagKey(tabName, name)
-		local data = flags[key]
-
-		if type(data) == "table" then
-			return data.value
-		end
-
-		return data
-	end
-
 	local function SaveData()
 		local success, err = pcall(function()
 
@@ -850,66 +905,48 @@ local function VisibleWindow(window,settings1,gui)
 				makefolder(FolderName)
 			end
 
-			local serializableFlags = {}
-
-			for key, data in pairs(flags) do
-				if type(data) == "table" and data.type then
-
-					if data.type == "Color3" then
-						serializableFlags[key] = {
-							__type = "Color3",
-							R = data.value.R,
-							G = data.value.G,
-							B = data.value.B
-						}
-					else
-						serializableFlags[key] = {
-							__type = data.type,
-							value = data.value
-						}
-					end
-
-				else
-					serializableFlags[key] = data
-				end
-			end
-
-			local jsonData = HttpService:JSONEncode(serializableFlags)
-			writefile(fullPath, jsonData)
+			local json = HttpService:JSONEncode(flags)
+			writefile(fullPath, json)
 
 		end)
 
 		if not success then
-			warn("Error saving:", err)
+			warn("[SaveSystem] Save error:", err)
 		end
 	end
-	
+
+
 	local function SetFlag(tabName, name, value)
 		local key = GetFlagKey(tabName, name)
 
 		flags[key] = {
-			value = value,
-			type = typeof(value)
+			value = EncodeValue(value)
 		}
 
 		SaveData()
 	end
+
 	library.SetFlag = SetFlag
 
-	local function DeserializeValue(val)
-		if type(val) == "table" and val.__type == "Color3" then
-			return Color3.new(val.R, val.G, val.B)
-		end
-		return val
-	end
 
+	local function GetFlag(tabName, name)
+		local key = GetFlagKey(tabName, name)
+		local data = flags[key]
+
+		if not data then return nil end
+
+		return DecodeValue(data.value)
+	end
+	
 	local function applyFlagsToTab(tab)
-		for key, value in pairs(flags) do
+		for key, data in pairs(flags) do
 
 			local prefix = tab.name .. "_"
 
 			if string.sub(key, 1, #prefix) == prefix then
 				local name = string.sub(key, #prefix + 1)
+
+				local value = DecodeValue(data.value)
 
 				if tab.sliders[name] then
 					pcall(function()
@@ -917,21 +954,25 @@ local function VisibleWindow(window,settings1,gui)
 						tab.SlidersValue[name] = value
 					end)
 				end
+
 				if tab.texts[name] then
 					pcall(function()
 						tab.texts[name]:Set({value})
 					end)
 				end
+
 				if tab.sections[name] then
 					pcall(function()
 						tab.sections[name]:Set({value})
 					end)
 				end
+
 				if tab.paragraphs[name] then
 					pcall(function()
 						tab.paragraphs[name]:Set(value)
 					end)
 				end
+
 				if tab.ColorPicker[name] then
 					pcall(function()
 						tab.ColorPicker[name]:Set(value)
@@ -960,37 +1001,33 @@ local function VisibleWindow(window,settings1,gui)
 					end)
 				end
 
-				task.wait(0.03)
+				task.wait(0.02)
 			end
 		end
 	end
 
 	if settingsData.EnableSavingData then
+
 		function library:LoadData()
 			task.spawn(function()
 
-				if game:GetService("RunService"):IsStudio() then
-					return
-				end
-
+				if RunService:IsStudio() then return end
 				if not isfile(fullPath) then
-					warn("No save file")
+					warn("[SaveSystem] No save file found")
 					return
 				end
 
 				local success, content = pcall(readfile, fullPath)
 				if not success or not content then
-					warn("Read error")
+					warn("[SaveSystem] Read error")
 					return
 				end
 
-				local loadedData = HttpService:JSONDecode(content)
+				local loaded = HttpService:JSONDecode(content)
 
-				for k, v in pairs(loadedData) do
-					loadedData[k] = DeserializeValue(v)
+				for k, v in pairs(loaded) do
+					flags[k] = v
 				end
-
-				flags = loadedData
 
 				repeat task.wait() until window and window.tabs and next(window.tabs)
 
@@ -1004,6 +1041,7 @@ local function VisibleWindow(window,settings1,gui)
 						tab.dropdownValue = tab.dropdownValue or {}
 						tab.TogglesValue = tab.TogglesValue or {}
 						tab.ColorPickerValue = tab.ColorPickerValue or {}
+
 						tab.texts = tab.texts or {}
 						tab.paragraphs = tab.paragraphs or {}
 						tab.sections = tab.sections or {}
@@ -1015,7 +1053,7 @@ local function VisibleWindow(window,settings1,gui)
 
 				if not settingsData.DisableNotifyingLoadedData then
 					window:Notify({
-						Title = "Data!",
+						Title = "Data",
 						Message = "Loaded successfully!",
 						Duration = 5,
 					})
@@ -1024,6 +1062,9 @@ local function VisibleWindow(window,settings1,gui)
 			end)
 		end
 	end
+
+	library.GetFlag = GetFlag
+	library.SaveData = SaveData
 
 	function window:CreateTab(name, icon)
 
@@ -1074,7 +1115,6 @@ local function VisibleWindow(window,settings1,gui)
 		})
 
 		tab.content = scroll
-
 
 		local tabButton 
 		if icon ~= 0 then 
@@ -1198,7 +1238,8 @@ local function VisibleWindow(window,settings1,gui)
 			return obj
 
 		end
-		function tab:AddText(opts)
+	
+	function tab:AddText(opts)
 			local flag = opts.Name
 			local button = createUI("TextLabel", {
 				Text = opts.Text;
@@ -1218,8 +1259,6 @@ local function VisibleWindow(window,settings1,gui)
 				PaddingBottom = UDim.new(0, 5),
 				Parent = button;
 			})
-
-
 
 			local obj = {}
 			function obj:Set(t)
