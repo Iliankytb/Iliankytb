@@ -361,7 +361,7 @@ local function VisibleWindow(window,settings1,gui)
 		Parent = gui,
 	})
 
-	
+
 	function window:Destroy()
 		gui:Destroy()
 	end
@@ -381,7 +381,7 @@ local function VisibleWindow(window,settings1,gui)
 
 		local tweenService = game:GetService("TweenService")
 
-	local notifyPanel = createUI("Frame", {
+		local notifyPanel = createUI("Frame", {
 			Size = UDim2.new(1, 0, 0.15, 0),
 			BackgroundTransparency = 1,
 			BorderSizePixel = 0,
@@ -389,7 +389,7 @@ local function VisibleWindow(window,settings1,gui)
 			Parent = NotifyFrame,
 		})
 
-			local content = createUI("Frame", {
+		local content = createUI("Frame", {
 			Size = UDim2.new(1, 0, 1, 0),
 			Position = UDim2.new(1, 20, 0, 0), -- hors écran à droite
 			BackgroundColor3 = selectedTheme.NotifyFrame,
@@ -452,10 +452,10 @@ local function VisibleWindow(window,settings1,gui)
 		})
 		durationTween:Play()
 
-	local NewSound = Instance.new("Sound",workspace)
-	NewSound.SoundId = "rbxassetid://6647898215"
-	NewSound:Play()
-	game:GetService("Debris"):AddItem(NewSound,NewSound.TimeLength)
+		local NewSound = Instance.new("Sound",workspace)
+		NewSound.SoundId = "rbxassetid://6647898215"
+		NewSound:Play()
+		game:GetService("Debris"):AddItem(NewSound,NewSound.TimeLength)
 		task.delay(duration, function()
 			local exitTween = tweenService:Create(content, TweenInfo.new(0.4, Enum.EasingStyle.Quint, Enum.EasingDirection.In), {
 				Position = UDim2.new(1, 20, 0, 0)
@@ -479,14 +479,14 @@ local function VisibleWindow(window,settings1,gui)
 		Size = UDim2.new(0, 500, 0, 250);
 		Position = UDim2.new(0.5, 0, 0.5, 0);
 	})
-	
+
 
 
 	local tabsFrame = createUI("ScrollingFrame", {
 		Size = UDim2.new(0, 150, 1, 0);
 		CanvasSize = UDim2.new(0, 0, 0, 0);
 		ScrollBarThickness = 6;
-AutomaticCanvasSize = Enum.AutomaticSize.Y;
+		AutomaticCanvasSize = Enum.AutomaticSize.Y;
 		BackgroundColor3 =selectedTheme.TabContent;
 		BorderSizePixel = 0;
 		Parent = mainFrame;
@@ -543,7 +543,7 @@ AutomaticCanvasSize = Enum.AutomaticSize.Y;
 		layout.Padding = UDim.new(0, 6)
 		layout.Parent = titleContainer
 
-		
+
 		local imageIcon2 = Instance.new("ImageLabel")
 		imageIcon2.Name = "Icon"
 		imageIcon2.Size = UDim2.new(0, 20, 0, 20)
@@ -551,7 +551,7 @@ AutomaticCanvasSize = Enum.AutomaticSize.Y;
 		imageIcon2.Image = "rbxassetid://"..settings1.Icon
 		imageIcon2.Parent = titleContainer
 
-	
+
 		titleLabel = createUI("TextLabel", {
 			Name = "TitleLabel",
 			Text = settings1.Title,
@@ -637,22 +637,22 @@ AutomaticCanvasSize = Enum.AutomaticSize.Y;
 	end)
 	OpenButton.MouseButton1Click:Connect(function()
 		mainFrame.Visible = true
-			if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
-	animOpenMobile:Play()
-else
-	animOpenPC:Play()
-end
-		
+		if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
+			animOpenMobile:Play()
+		else
+			animOpenPC:Play()
+		end
+
 		OpenButton.Visible = false
 
 	end)
-	
+
 	if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
-	animOpenMobile:Play()
-else
-	animOpenPC:Play()
-end
-	
+		animOpenMobile:Play()
+	else
+		animOpenPC:Play()
+	end
+
 	local UserInputService = game:GetService("UserInputService")
 
 
@@ -663,10 +663,10 @@ end
 			if not mainFrame.Visible then
 				mainFrame.Visible = true
 				if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
-	animOpenMobile:Play()
-else
-	animOpenPC:Play()
-end
+					animOpenMobile:Play()
+				else
+					animOpenPC:Play()
+				end
 
 			else
 				animClose:Play()
@@ -705,7 +705,7 @@ end
 		end
 	end
 
-local TabButtons = {}
+	local TabButtons = {}
 	function window:ChangeTheme(themeName)
 		if Theme[themeName] then
 			selectedTheme = Theme[themeName]
@@ -722,50 +722,50 @@ local TabButtons = {}
 				if tab.sliders then
 					for _, name in pairs(tab.sliders) do
 						pcall(function()
-					
+
 							name:ChangeTheme(selectedTheme)
 
 						end)
-					
+
 					end
 				end
 				if tab.ColorPicker then
 					for _, name in pairs(tab.ColorPicker) do
 						pcall(function()
-					
+
 							name:ChangeTheme(selectedTheme)
 
 						end)
-					
+
 					end
 
 				end
 				if tab.textboxes then
 					for _, name in pairs(tab.textboxes) do
 						pcall(function()
-					
+
 							name:ChangeTheme(selectedTheme)
 
 						end)
-					
+
 					end
 
 				end
 				if tab.dropdowns then
 					for _, name in pairs(tab.dropdowns) do
 						pcall(function()
-					
+
 							name:ChangeTheme(selectedTheme)
 
 						end)
-					
+
 					end
 
 				end
 				if tab.toggles then
 					for _, name in pairs(tab.toggles) do
 						pcall(function()
-						
+
 							name:ChangeTheme(selectedTheme)
 
 						end)
@@ -775,31 +775,31 @@ local TabButtons = {}
 				if tab.texts then
 					for _, name in pairs(tab.texts) do
 						pcall(function()
-					
+
 							name:ChangeTheme(selectedTheme)
 
 						end)
-				
+
 					end
 				end
 				if tab.paragraphs then
 					for _, name in pairs(tab.paragraphs) do
 						pcall(function()
-							
+
 							name:ChangeTheme(selectedTheme)
 
 						end)
-					
+
 					end
 				end
 				if tab.buttons then
 					for _, name in pairs(tab.buttons) do
 						pcall(function()
-					
+
 							name:ChangeTheme(selectedTheme)
 
 						end)
-						
+
 					end
 				end
 			end
@@ -835,7 +835,7 @@ local TabButtons = {}
 			dropdowns = {},
 			toggles = {},
 			texts = {},
-	sections = {},
+			sections = {},
 			buttons = {},
 			paragraphs = {},
 			ColorPicker = {},
@@ -854,6 +854,11 @@ local TabButtons = {}
 
 		local function SaveData()
 			local success, err = pcall(function()
+
+				if not isfolder(FolderName) then
+					makefolder(FolderName)
+				end
+
 				local serializableFlags = {}
 
 				for key, value in pairs(flags) do
@@ -864,20 +869,31 @@ local TabButtons = {}
 							G = value.G,
 							B = value.B
 						}
+					elseif typeof(value) == "table" then
+						serializableFlags[key] = table.clone(value)
 					else
 						serializableFlags[key] = value
 					end
 				end
 
-				local jsonData = HttpService:JSONEncode(serializableFlags)
+				local successEncode, jsonData = pcall(function()
+					return HttpService:JSONEncode(serializableFlags)
+				end)
+
+				if not successEncode then
+					warn("JSON Encode failed")
+					return
+				end
+
 				writefile(fullPath, jsonData)
 				print("Saved data in:", fullPath)
+
 			end)
+
 			if not success then
 				warn("Error when saving the data :", err)
 			end
 		end
-
 
 		local function DeserializeValue(val)
 			if type(val) == "table" and val.__type == "Color3" and val.R and val.G and val.B then
@@ -886,19 +902,20 @@ local TabButtons = {}
 			return val
 		end
 
-
 		local function SetFlag(name, value)
 			print("SetFlag", name, value)
 			flags[name] = value
 			SaveData()
 		end
 
-
 		if settingsData.EnableSavingData then
-
 			function library:LoadData()
-wait(1)
-				if not game:GetService("RunService"):IsStudio() then
+				task.spawn(function()
+
+					if game:GetService("RunService"):IsStudio() then
+						return
+					end
+
 					print("Loading Data...")
 
 					local settingsData = settings1 and settings1.Data or {}
@@ -929,7 +946,7 @@ wait(1)
 						return
 					end
 
-			
+				
 					local loadedData
 					success, loadedData = pcall(function()
 						return HttpService:JSONDecode(content)
@@ -945,73 +962,88 @@ wait(1)
 						return
 					end
 
-				
+					
 					for k, v in pairs(loadedData) do
 						loadedData[k] = DeserializeValue(v)
 					end
 
-			
 					flags = loadedData
 
-				
-					for _, tab in pairs(window.tabs) do
-				
-						tab.SlidersValue = tab.SlidersValue or {}
-						tab.textboxesText = tab.textboxesText or {}
-						tab.dropdownValue = tab.dropdownValue or {}
-						tab.TogglesValue = tab.TogglesValue or {}
-						tab.ColorPickerValue = tab.ColorPickerValue or {}
-						tab.sliders = tab.sliders or {}
-						tab.textboxes = tab.textboxes or {}
-						tab.dropdowns = tab.dropdowns or {}
-						tab.buttons = tab.buttons or {}
-						tab.texts = tab.texts or {}
-		tab.sections = tab.sections or {}
-						tab.paragraphs = tab.paragraphs or {}
-						tab.toggles = tab.toggles or {}
-						tab.ColorPicker = tab.ColorPicker or {}
-
 					
+					local function applyFlagsToTab(tab)
 						for name, value in pairs(flags) do
-							print("Processing flag:", name, value)
-							if tab.sliders[name] then
+
+						
+							if tab.sliders and tab.sliders[name] then
 								pcall(function()
-									print("Set slider", name, "to", value)
 									tab.sliders[name]:SetValue(value)
 									tab.SlidersValue[name] = value
 								end)
 							end
-							if tab.ColorPicker[name] then
+
+							
+							if tab.ColorPicker and tab.ColorPicker[name] then
 								pcall(function()
-									print("Set color picker", name, "to", value)
 									tab.ColorPicker[name]:Set(value)
 									tab.ColorPickerValue[name] = value
 								end)
 							end
-							if tab.textboxes[name] then
+
+							
+							if tab.textboxes and tab.textboxes[name] then
 								pcall(function()
-									print("Set textbox", name, "to", value)
 									tab.textboxes[name]:SetText(value)
 									tab.textboxesText[name] = value
 								end)
 							end
-							if tab.dropdowns[name] then
+
+							
+							if tab.dropdowns and tab.dropdowns[name] then
 								pcall(function()
-									print("Set dropdown", name, "to", value)
 									tab.dropdowns[name]:Select(value)
 									tab.dropdownValue[name] = value
 								end)
 							end
-							if tab.toggles[name] then
+
+							
+							if tab.toggles and tab.toggles[name] then
 								pcall(function()
-									print("Set toggle", name, "to", value)
 									tab.toggles[name]:Set(value)
 									tab.TogglesValue[name] = value
 								end)
 							end
+
+							task.wait(0.03) 
 						end
 					end
 
+					
+					repeat task.wait() until window and window.tabs and next(window.tabs)
+
+					for _, tab in pairs(window.tabs) do
+						task.spawn(function()
+
+							
+							repeat task.wait() until tab.dropdowns and tab.sliders and tab.toggles
+
+						
+							tab.SlidersValue = tab.SlidersValue or {}
+							tab.textboxesText = tab.textboxesText or {}
+							tab.dropdownValue = tab.dropdownValue or {}
+							tab.TogglesValue = tab.TogglesValue or {}
+							tab.ColorPickerValue = tab.ColorPickerValue or {}
+
+							tab.sliders = tab.sliders or {}
+							tab.textboxes = tab.textboxes or {}
+							tab.dropdowns = tab.dropdowns or {}
+							tab.toggles = tab.toggles or {}
+							tab.ColorPicker = tab.ColorPicker or {}
+
+							applyFlagsToTab(tab)
+						end)
+					end
+
+					
 					if not settingsData.DisableNotifyingLoadedData then
 						window:Notify({
 							Title = "Data!",
@@ -1019,15 +1051,12 @@ wait(1)
 							Duration = 5,
 						})
 					end
-				end
+
+				end)
 			end
 		end
 
-
 		library.SetFlag = SetFlag
-
-
-
 
 		local scroll = createUI("ScrollingFrame", {
 			Size = UDim2.new(1, 0, 1, 0);
@@ -1069,7 +1098,7 @@ wait(1)
 				Parent = tabsFrame;
 			})
 
-		
+
 			local uiListLayout = Instance.new("UIListLayout")
 			uiListLayout.Parent = tabButton
 			uiListLayout.FillDirection = Enum.FillDirection.Horizontal
@@ -1078,19 +1107,19 @@ wait(1)
 			uiListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 			uiListLayout.Padding = UDim.new(0, 5)
 
-	
+
 			local Imageicon = Instance.new("ImageLabel")
 			Imageicon.Name = "Icon"
 			Imageicon.Size = UDim2.new(0, 20, 0, 20)
 			Imageicon.BackgroundTransparency = 1
-			Imageicon.Image = "rbxassetid://"..icon -- Remplace par l’ID de ton image
+			Imageicon.Image = "rbxassetid://"..icon 
 			Imageicon.Parent = tabButton
 
-	
+
 			local textLabel = Instance.new("TextLabel")
 			textLabel.Name = name
 			textLabel.Text = name
-			textLabel.Size = UDim2.new(1, -30, 1, 0) -- laisse de la place pour l'image + padding
+			textLabel.Size = UDim2.new(1, -30, 1, 0) 
 			textLabel.BackgroundTransparency = 1
 			textLabel.TextColor3 = selectedTheme.TextColor
 			textLabel.Font = Enum.Font.Gotham
@@ -1108,7 +1137,7 @@ wait(1)
 				TextSize = 14;
 				Parent = tabsFrame;
 			})
-		
+
 		end
 		TabButtons[name] = tabButton
 		createUI("UICorner", {Parent = tabButton})
@@ -1120,7 +1149,7 @@ wait(1)
 			tab.content.Visible = true
 		end)
 
-	
+
 		table.insert(window.tabs, tab)
 
 
@@ -1161,10 +1190,10 @@ wait(1)
 			button.MouseButton1Click:Connect(function()
 				if opts.Callback then opts.Callback() end
 			end)
-		
+
 			local obj = {}
 			function obj:Set(t)
-			
+
 				if type(t) == "table" and type(t[1]) == "string" then
 					button.Text = t[1]
 				else
@@ -1201,20 +1230,20 @@ wait(1)
 			})
 
 
-	
+
 			local obj = {}
 			function obj:Set(t)
-			
+
 				if type(t) == "table" and type(t[1]) == "string" then
 					button.Text = t[1]
 				else
 					warn("Set attend une table avec un string en premier élément")
 				end
 			end
-function obj:ChangeTheme(ThemesName)
+			function obj:ChangeTheme(ThemesName)
 				button.BackgroundColor3 = selectedTheme.Buttons
 				button.TextColor3 = selectedTheme.TextColor
-end
+			end
 			tab.texts[flag] = obj
 			return obj
 		end
@@ -1225,7 +1254,7 @@ end
 			assert(type(opts.Title) == "string", "Title must be a string")
 			assert(type(opts.Content) == "string", "Content must be a string")
 
-	
+
 			local frame = createUI("Frame", {
 				Size = UDim2.new(1, 0, 0, 50), 
 				BackgroundColor3 = selectedTheme.Buttons,
@@ -1233,7 +1262,7 @@ end
 			})
 			createUI("UICorner", {Parent = frame})
 
-		
+
 			local padding = createUI("UIPadding", {
 				PaddingLeft = UDim.new(0, 10),
 				PaddingRight = UDim.new(0, 10),
@@ -1242,11 +1271,11 @@ end
 				Parent = frame,
 			})
 
-	
+
 			local titleLabel = createUI("TextLabel", {
 				Text = opts.Title,
 				Size = UDim2.new(1, 0, 0, 25),
-				Position = UDim2.new(0, 5, 0, 5), -- position locale ajoutée
+				Position = UDim2.new(0, 5, 0, 5), 
 				BackgroundTransparency = 1,
 				TextColor3 = Color3.new(1, 1, 1),
 				Font = Enum.Font.GothamBold,
@@ -1255,11 +1284,11 @@ end
 				Parent = frame,
 			})
 
-		
+
 			local contentLabel = createUI("TextLabel", {
 				Text = opts.Content,
-				Size = UDim2.new(1, 0, 0, 0), -- taille temporaire
-				Position = UDim2.new(0, 5, 0, 35), -- position locale ajoutée (juste en dessous du titre)
+				Size = UDim2.new(1, 0, 0, 0),
+				Position = UDim2.new(0, 5, 0, 35), 
 				BackgroundTransparency = 1,
 				TextColor3 = Color3.new(1, 1, 1),
 				Font = Enum.Font.Gotham,
@@ -1269,14 +1298,14 @@ end
 			})
 
 
-		
+
 			local textSize = contentLabel.TextBounds
 			contentLabel.Size = UDim2.new(1, 0, 0, textSize.Y)
 
-		
-			frame.Size = UDim2.new(1, 0, 0, 25 + textSize.Y + 25) -- 25 pour le titre, 20 pour padding haut+bas
 
-	
+			frame.Size = UDim2.new(1, 0, 0, 25 + textSize.Y + 25)
+
+
 			local Api = {Frame = frame,
 				TitleLabel = titleLabel,
 				ContentLabel = contentLabel,
@@ -1294,7 +1323,7 @@ end
 				ChangeTheme = function(ThemesName)
 					frame.BackgroundColor3 = selectedTheme.Buttons
 				end}
-			
+
 			tab.paragraphs[flag] = Api
 
 			return Api
@@ -1304,7 +1333,7 @@ end
 		local TweenService = game:GetService("TweenService")
 		local UserInputService = game:GetService("UserInputService")
 
-	
+
 		local function Color3ToTable(color)
 			return {color.R, color.G, color.B}
 		end
@@ -1313,7 +1342,7 @@ end
 			if type(t) == "table" and #t == 3 then
 				return Color3.new(t[1], t[2], t[3])
 			else
-				return Color3.fromRGB(255, 255, 255) -- couleur par défaut
+				return Color3.fromRGB(255, 255, 255)
 			end
 		end
 
@@ -1324,7 +1353,6 @@ end
 			tab.ColorPicker = tab.ColorPicker or {}
 			tab.ColorPickerValue = tab.ColorPickerValue or {}
 
-		
 			local container = createUI("TextButton", {
 				Text = opts.Text;
 				Size = UDim2.new(1, 0, 0, 30);
@@ -1374,7 +1402,7 @@ end
 			colorWheel.Position = UDim2.new(0.5, 0, 0, 10)
 			colorWheel.AnchorPoint = Vector2.new(0.5, 0)
 			colorWheel.BackgroundTransparency = 1
-			colorWheel.Image = "rbxassetid://6020299385" -- roue des couleurs
+			colorWheel.Image = "rbxassetid://6020299385" 
 			colorWheel.ZIndex = 11
 			colorWheel.Parent = colorWindow
 
@@ -1399,7 +1427,7 @@ end
 					print("Saving color: ", color)
 					local colorTable = Color3ToTable(color)
 					tab.ColorPickerValue[flag] = colorTable
-					SetFlag(flag, colorTable) -- sauvegarde la table, pas Color3 direct
+					SetFlag(flag, colorTable)
 				end
 				if opts.Callback then
 					opts.Callback(color)
@@ -1447,7 +1475,7 @@ end
 				colorWindow.Visible = false
 			end)
 
-	
+
 			local api = {
 				Set = function(_, color)
 					if typeof(color) == "table" then
@@ -1467,12 +1495,10 @@ end
 				end,
 				ChangeTheme = function(ThemeName)
 					container.BackgroundColor3 = selectedTheme.Buttons
-				container.TextColor3 = selectedTheme.TextColor
+					container.TextColor3 = selectedTheme.TextColor
 				end
 			}
 			tab.ColorPicker[flag] = api
-
-
 
 			return api
 		end
@@ -1547,10 +1573,10 @@ end
 
 			end)
 
-	
+
 			setToggleState(value)
 
-			
+
 			local obj = {}
 
 			function obj:Set(newValue)
@@ -1574,7 +1600,7 @@ end
 			end
 			function obj:ChangeTheme(ThemesName)
 				button.BackgroundColor3 = selectedTheme.Buttons
-			button.TextColor3 = selectedTheme.TextColor
+				button.TextColor3 = selectedTheme.TextColor
 			end
 			tab.toggles[flag] = obj
 
@@ -1594,7 +1620,7 @@ end
 
 			local value = default
 
-		
+
 			local slider = createUI("TextButton", {
 				Text = "";
 				Size = UDim2.new(1, 0, 0, 40);
@@ -1604,7 +1630,7 @@ end
 			})
 			createUI("UICorner", { Parent = slider })
 
-			
+
 			createUI("UIPadding", {
 				PaddingLeft = UDim.new(0, 10),
 				PaddingRight = UDim.new(0, 10),
@@ -1613,14 +1639,14 @@ end
 				Parent = slider,
 			})
 
-		
+
 			local layout = Instance.new("UIListLayout")
 			layout.FillDirection = Enum.FillDirection.Vertical
 			layout.SortOrder = Enum.SortOrder.LayoutOrder
 			layout.VerticalAlignment = Enum.VerticalAlignment.Center
 			layout.Parent = slider
 
-		
+
 			local labelText = createUI("TextLabel", {
 				Text = opts.Text or "Slider",
 				Size = UDim2.new(1, 0, 0, 14),
@@ -1632,7 +1658,7 @@ end
 				Parent = slider,
 			})
 
-		
+
 			local label = createUI("TextLabel", {
 				Size = UDim2.new(1, 0, 0, 12),
 				BackgroundTransparency = 1,
@@ -1644,7 +1670,7 @@ end
 				Parent = slider,
 			})
 
-	
+
 			local sliderBar = createUI("Frame", {
 				Size = UDim2.new(1, 0, 0, 6),
 				BackgroundColor3 = Color3.fromRGB(80, 80, 80),
@@ -1652,7 +1678,7 @@ end
 			})
 			createUI("UICorner", { CornerRadius = UDim.new(1, 0), Parent = sliderBar })
 
-		
+
 			local fillBar = createUI("Frame", {
 				Size = UDim2.new((value - min) / (max - min), 0, 1, 0),
 				BackgroundColor3 = Color3.fromRGB(0, 170, 255),
@@ -1672,71 +1698,66 @@ end
 				value = v
 				obj.value = v
 
-				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
-					tab.SlidersValue = tab.SlidersValue or {}
-					tab.SlidersValue[flag] = value
-					SetFlag(flag, value)
-				end
 				if opts.Callback then
 					opts.Callback(v)
 				end
 			end
-function obj:ChangeTheme(ThemesName)
+			function obj:ChangeTheme(ThemesName)
 				slider.BackgroundColor3 = selectedTheme.Buttons
 				labelText.TextColor3 = selectedTheme.TextColor
-end
-			local moveConn, releaseConn
-local dragging = false
-
-local function updateSlider(x)
-	local percent = math.clamp((x - sliderBar.AbsolutePosition.X) / sliderBar.AbsoluteSize.X, 0, 1)
-	local v = math.floor(min + (max - min) * percent)
-	obj:SetValue(v)
-	if settings1 and settings1.Data and settings1.Data.EnableSavingData then
-		tab.SlidersValue = tab.SlidersValue or {}
-		tab.SlidersValue[flag] = v
-		SetFlag(flag, v)
-	end
-end
-
-sliderBar.InputBegan:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
-		dragging = true
-		updateSlider(input.Position.X)
-
-		moveConn = UserInputService.InputChanged:Connect(function(moveInput)
-			if dragging and (moveInput.UserInputType == Enum.UserInputType.MouseMovement or moveInput.UserInputType == Enum.UserInputType.Touch) then
-				updateSlider(moveInput.Position.X)
 			end
-		end)
+			local moveConn, releaseConn
+			local dragging = false
 
-		releaseConn = UserInputService.InputEnded:Connect(function(endInput)
-			if endInput.UserInputType == Enum.UserInputType.MouseButton1 or endInput.UserInputType == Enum.UserInputType.Touch then
+			local function updateSlider(x)
+				local percent = math.clamp((x - sliderBar.AbsolutePosition.X) / sliderBar.AbsoluteSize.X, 0, 1)
+				local v = math.floor(min + (max - min) * percent)
+				obj:SetValue(v)
+			end
+
+			sliderBar.InputBegan:Connect(function(input)
+				if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+					dragging = true
+					updateSlider(input.Position.X)
+
+					moveConn = UserInputService.InputChanged:Connect(function(moveInput)
+						if dragging and (moveInput.UserInputType == Enum.UserInputType.MouseMovement or moveInput.UserInputType == Enum.UserInputType.Touch) then
+							updateSlider(moveInput.Position.X)
+						end
+					end)
+
+					releaseConn = UserInputService.InputEnded:Connect(function(endInput)
+						if endInput.UserInputType == Enum.UserInputType.MouseButton1 or endInput.UserInputType == Enum.UserInputType.Touch then
+							if dragging then
+								local X = moveInput.Position.X
+								local percent = math.clamp((x - sliderBar.AbsolutePosition.X) / sliderBar.AbsoluteSize.X, 0, 1)
+								local v = math.floor(min + (max - min) * percent)
+								if settings1 and settings1.Data and settings1.Data.EnableSavingData then
+									tab.SlidersValue = tab.SlidersValue or {}
+									tab.SlidersValue[flag] = v
+									SetFlag(flag, v)
+								end
+								dragging = false
+								if moveConn then moveConn:Disconnect() moveConn = nil end
+								if releaseConn then releaseConn:Disconnect() releaseConn = nil end
+							end
+						end
+					end)
+				end
+			end)
+
+			UserInputService.WindowFocusReleased:Connect(function()
 				if dragging then
 					dragging = false
 					if moveConn then moveConn:Disconnect() moveConn = nil end
 					if releaseConn then releaseConn:Disconnect() releaseConn = nil end
 				end
-			end
-		end)
-	end
-end)
-
-UserInputService.WindowFocusReleased:Connect(function()
-	if dragging then
-		dragging = false
-		if moveConn then moveConn:Disconnect() moveConn = nil end
-		if releaseConn then releaseConn:Disconnect() releaseConn = nil end
-	end
-end)
+			end)
 
 			tab.sliders[flag] = obj
 
 			return obj
 		end
-
-
-
 
 		function tab:AddTextbox(opts)
 			local flag = opts.Flag or opts.Name or "Textbox"
@@ -1795,16 +1816,16 @@ end)
 					warn("SetText attend une string")
 				end
 			end
-function obj:ChangeTheme(ThemesName)
+			function obj:ChangeTheme(ThemesName)
 				txt.BackgroundColor3 = selectedTheme.Buttons
 				txt.TextColor3 = selectedTheme.TextColor
-	
-end
+
+			end
 			tab.textboxes[flag] = obj
 
 			return obj
 		end
-	function tab:AddSection(opts)
+		function tab:AddSection(opts)
 			local flag = opts.Name
 			local button = createUI("TextLabel", {
 				Text = opts.Text;
@@ -1828,17 +1849,17 @@ end
 
 			local obj = {}
 			function obj:Set(t)
-			
+
 				if type(t) == "table" and type(t[1]) == "string" then
 					button.Text = t[1]
 				else
 					warn("Set attend une table avec un string en premier élément")
 				end
 			end
-function obj:ChangeTheme(ThemesName)
+			function obj:ChangeTheme(ThemesName)
 				button.BackgroundColor3 = selectedTheme.Buttons
 				button.TextColor3 = selectedTheme.TextColor
-end
+			end
 			tab.sections[flag] = obj
 			return obj
 		end
@@ -1864,7 +1885,7 @@ end
 				Parent = tab.content
 			})
 			createUI("UICorner", { Parent = btn })
-		
+
 
 			local container = createUI("Frame", {
 				Size = UDim2.new(0.9, 0, 0, 0),
@@ -1908,7 +1929,15 @@ end
 					btn.TextSize = btn.TextSize - HM
 				end
 			end
-
+			local function updateOptionVisual(button, isSelected)
+				if isSelected then
+					button.BackgroundColor3 = selectedTheme.Accent or Color3.fromRGB(0, 170, 255)
+					button.TextColor3 = Color3.new(1,1,1)
+				else
+					button.BackgroundColor3 = selectedTheme.Buttons
+					button.TextColor3 = selectedTheme.TextColor
+				end
+			end
 			local function createOptions(optionList)
 				for _, child in ipairs(optionHolder:GetChildren()) do
 					if child:IsA("TextButton") then
@@ -1927,7 +1956,7 @@ end
 						Parent = optionHolder
 					})
 					createUI("UICorner", { Parent = optBtn })
-
+					updateOptionVisual(optBtn, table.find(dropdown.Selected, option))
 					optBtn.MouseButton1Click:Connect(function()
 						if multi then
 							if table.find(dropdown.Selected, option) then
@@ -1940,13 +1969,25 @@ end
 							dropdown.FrameOpen = false
 							updateCanvas()
 						end
+
+					
+						for _, child in ipairs(optionHolder:GetChildren()) do
+							if child:IsA("TextButton") then
+								local isSelected = table.find(dropdown.Selected, child.Text)
+								updateOptionVisual(child, isSelected)
+							end
+						end
+
 						if settings1 and settings1.Data and settings1.Data.EnableSavingData then
 							tab.dropdownValue = tab.dropdownValue or {}
 							tab.dropdownValue[flag] = dropdown.Selected
 							SetFlag(flag, dropdown.Selected)
 						end
-						updateButtonText()
-						if opts.Callback then opts.Callback(option, dropdown.Selected) end
+
+
+						if opts.Callback then 
+							opts.Callback(option, dropdown.Selected) 
+						end
 					end)
 				end
 			end
@@ -2018,7 +2059,7 @@ end
 				end
 
 				if changed then
-					
+
 					if settings1 and settings1.Data and settings1.Data.EnableSavingData then
 						tab.dropdownValue = tab.dropdownValue or {}
 						tab.dropdownValue[flag] = dropdown.Selected
@@ -2046,113 +2087,110 @@ end
 			return dropdown
 		end
 
-
-		
-
 		return tab
-		
+
 	end
-	
-local UIS = game:GetService("UserInputService")
-local RunService = game:GetService("RunService")
 
-local dragging = false
-local dragStart
-local startPos
+	local UIS = game:GetService("UserInputService")
+	local RunService = game:GetService("RunService")
 
-mainFrame.InputBegan:Connect(function(input)
-	if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then
-		dragging = true
-		dragStart = UIS:GetMouseLocation()
-		startPos = mainFrame.Position
-	end
-end)
+	local dragging = false
+	local dragStart
+	local startPos
 
-mainFrame.InputEnded:Connect(function(input)
-	if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then
-		dragging = false
-	end
-end)
-
-UIS.InputEnded:Connect(function(input)
-	if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then
-		dragging = false
-	end
-end)
-
-RunService.RenderStepped:Connect(function()
-	if dragging then
-		if not mainFrame.Visible then
-			dragging = false
-			return
+	mainFrame.InputBegan:Connect(function(input)
+		if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then
+			dragging = true
+			dragStart = UIS:GetMouseLocation()
+			startPos = mainFrame.Position
 		end
+	end)
 
-		local mousePos = UIS:GetMouseLocation()
-		local delta = mousePos - dragStart
+	mainFrame.InputEnded:Connect(function(input)
+		if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then
+			dragging = false
+		end
+	end)
 
-		mainFrame.Position = UDim2.new(
-			startPos.X.Scale,
-			startPos.X.Offset + delta.X,
-			startPos.Y.Scale,
-			startPos.Y.Offset + delta.Y
-		)
-	end
-end)
+	UIS.InputEnded:Connect(function(input)
+		if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then
+			dragging = false
+		end
+	end)
+
+	RunService.RenderStepped:Connect(function()
+		if dragging then
+			if not mainFrame.Visible then
+				dragging = false
+				return
+			end
+
+			local mousePos = UIS:GetMouseLocation()
+			local delta = mousePos - dragStart
+
+			mainFrame.Position = UDim2.new(
+				startPos.X.Scale,
+				startPos.X.Offset + delta.X,
+				startPos.Y.Scale,
+				startPos.Y.Offset + delta.Y
+			)
+		end
+	end)
 
 end
 function library:CreateWindow(settings1, onLoad)
-	print("Library Version: 0.43")
+	print("Library Version: 0.44")
 	if game:GetService("RunService"):IsStudio() then
 		if game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary") then
 			game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary"):Destroy()
 		end
 	else
-for _, Gui in pairs(game:GetService("CoreGui"):GetChildren()) do
-		if Gui.Name == "UILibrary" and Gui:IsA("ScreenGui") then
-			Gui:Destroy()
+		for _, Gui in pairs(game:GetService("CoreGui"):GetChildren()) do
+			if Gui.Name == "UILibrary" and Gui:IsA("ScreenGui") then
+				Gui:Destroy()
+			end
 		end
 	end
-end
-local gui544 = Instance.new("ScreenGui")
-gui544.Parent = game:GetService("CoreGui")
+	local gui544 = Instance.new("ScreenGui")
+	gui544.Parent = game:GetService("CoreGui")
 
-local txt = Instance.new("TextLabel")
-txt.Parent = gui544
-txt.Size = UDim2.new(0, 400, 0, 80)
-txt.Position = UDim2.new(0.5, -200, 0.5, -40)
-txt.BackgroundTransparency = 1
-txt.Text = "Powered by Zentrix"
-txt.TextColor3 = Color3.fromRGB(0, 255, 0)
-txt.Font = Enum.Font.GothamBold
-txt.TextScaled = true
-txt.TextTransparency = 1 
-txt.TextStrokeTransparency = 0
+	local txt = Instance.new("TextLabel")
+	txt.Parent = gui544
+	txt.Size = UDim2.new(0, 400, 0, 80)
+	txt.Position = UDim2.new(0.5, -200, 0.5, -40)
+	txt.BackgroundTransparency = 1
+	txt.Text = "Powered by Zentrix"
+	txt.TextColor3 = Color3.fromRGB(0, 255, 0)
+	txt.Font = Enum.Font.GothamBold
+	txt.TextScaled = true
+	txt.TextTransparency = 1 
+	txt.TextStrokeTransparency = 0
 
-txt.AnchorPoint = Vector2.new(0, 0)
-txt.Size = UDim2.new(0, 350, 0, 70)
+	txt.AnchorPoint = Vector2.new(0, 0)
+	txt.Size = UDim2.new(0, 350, 0, 70)
 
-local TweenService = game:GetService("TweenService")
+	local TweenService = game:GetService("TweenService")
 
-local inTween = TweenService:Create(txt, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
-	TextTransparency = 0,
-	Size = UDim2.new(0, 400, 0, 80)
-})
+	local inTween = TweenService:Create(txt, TweenInfo.new(0.8, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {
+		TextTransparency = 0,
+		Size = UDim2.new(0, 400, 0, 80)
+	})
 
-inTween:Play()
-inTween.Completed:Wait()
+	inTween:Play()
+	inTween.Completed:Wait()
 
-task.wait(0.75)
+	task.wait(0.75)
 
 
-local outTween = TweenService:Create(txt, TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
-	TextTransparency = 1,
-	Size = UDim2.new(0, 350, 0, 70)
-})
+	local outTween = TweenService:Create(txt, TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
+		TextTransparency = 1,
+		Size = UDim2.new(0, 350, 0, 70)
+	})
 
-outTween:Play()
-outTween.Completed:Wait()
+	outTween:Play()
+	outTween.Completed:Wait()
 
-gui544:Destroy()
+	gui544:Destroy()
 
 	local window = {}
 	window.tabs = {}
@@ -2181,7 +2219,7 @@ gui544:Destroy()
 		local Note = settings1.KeySettings.Note
 		local Key = settings1.KeySettings.Key
 
-	
+
 		local KeyFrame = createUI("Frame", {
 			Size = UDim2.new(0, 0, 0, 0),
 			Position = UDim2.new(0.5, 0, 0.5, 0),
@@ -2191,7 +2229,7 @@ gui544:Destroy()
 		})
 		createUI("UICorner", {Parent = KeyFrame})
 
-	
+
 		local closeButton = createUI("TextButton", {
 			Size = UDim2.new(0, 25, 0, 25),
 			Position = UDim2.new(1, -30, 0, 5),
@@ -2238,7 +2276,7 @@ gui544:Destroy()
 			Parent = KeyFrame,
 		})
 
-		
+
 		local TextBox = createUI("TextBox", {
 			Size = UDim2.new(1, -20, 0, 30),
 			Position = UDim2.new(0, 10, 0, 95),
@@ -2252,7 +2290,7 @@ gui544:Destroy()
 		})
 		createUI("UICorner", {Parent = TextBox})
 
-		
+
 		local ConfirmButton = createUI("TextButton", {
 			Size = UDim2.new(1, -20, 0, 30),
 			Position = UDim2.new(0, 10, 0, 135),
@@ -2265,11 +2303,11 @@ gui544:Destroy()
 		})
 		createUI("UICorner", {Parent = ConfirmButton})
 
-		
+
 		local AddDiscord = settings1.KeySettings.AddDiscordButton
 		local AddGetKey = settings1.KeySettings.AddGetKeyButton
 
-	
+
 		local spacing = 10
 		local baseY = 170
 		local totalWidth = 500 - 20 
@@ -2277,7 +2315,7 @@ gui544:Destroy()
 		if AddDiscord and AddGetKey then
 			local halfWidth = (totalWidth - spacing) / 2
 
-		
+
 			local GetKeyBtn = createUI("TextButton", {
 				Size = UDim2.new(0, halfWidth, 0, 30),
 				Position = UDim2.new(0, 10, 0, baseY),
@@ -2290,7 +2328,7 @@ gui544:Destroy()
 			})
 			createUI("UICorner", {Parent = GetKeyBtn})
 
-		
+
 			local DiscordBtn = createUI("TextButton", {
 				Size = UDim2.new(0, halfWidth, 0, 30),
 				Position = UDim2.new(0, 10 + halfWidth + spacing, 0, baseY),
@@ -2324,7 +2362,7 @@ gui544:Destroy()
 				Parent = KeyFrame,
 			})
 			createUI("UICorner", {Parent = DiscordBtn})
-DiscordBtn.MouseButton1Click:Connect(function()
+			DiscordBtn.MouseButton1Click:Connect(function()
 				if settings1.KeySettings.DiscordLink and settings1.KeySettings.DiscordLink ~= "NoInviteLink" then
 					copyToClipboard(settings1.KeySettings.DiscordLink)
 				end
@@ -2436,7 +2474,7 @@ DiscordBtn.MouseButton1Click:Connect(function()
 					end
 				end
 
-			
+
 				local closeTween = TweenService:Create(KeyFrame, TweenInfo.new(0.3, Enum.EasingStyle.Sine, Enum.EasingDirection.In), {
 					Size = UDim2.new(0, 0, 0, 0),
 					Position = UDim2.new(0.5, 0, 0.5, 0)
@@ -2448,7 +2486,7 @@ DiscordBtn.MouseButton1Click:Connect(function()
 						local TweenService = game:GetService("TweenService")
 						local IntroTitle = settings1.IntroTitle
 
-					
+
 						local IntroFrame = createUI("Frame", {
 							Size = UDim2.new(0, 0, 0, 0),
 							Position = UDim2.new(0.5, 0, 0.5, 0),
