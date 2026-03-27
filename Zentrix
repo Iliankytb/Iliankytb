@@ -3,8 +3,6 @@
 local HttpService = game:GetService("HttpService")
 local UserInputService = game:GetService("UserInputService")
 
-
-
 local function createUI(class, props)
 	local inst = Instance.new(class)
 	for prop, val in pairs(props) do
@@ -26,6 +24,7 @@ end
 function library:CopyText(Text)
 	copyToClipboard(Text)
 end
+
 local Theme = {
 	Default = {
 		mainFrame = Color3.fromRGB(30, 30, 30),
@@ -45,7 +44,7 @@ local Theme = {
 		Top = Color3.fromRGB(200, 205, 210),
 		Buttons = Color3.fromRGB(160, 170, 180), 
 	},
-	RedDark = {
+	["Red Dark"] = {
 		mainFrame = Color3.fromRGB(45, 0, 0),
 		NotifyFrame = Color3.fromRGB(30, 0, 0),
 		TextColor = Color3.fromRGB(255, 200, 200),
@@ -54,7 +53,7 @@ local Theme = {
 		Top = Color3.fromRGB(50, 0, 0),
 		Buttons = Color3.fromRGB(70, 0, 0),
 	},
-	BlueNeon = {
+	["Blue Neon"] = {
 		mainFrame = Color3.fromRGB(10, 10, 30),
 		NotifyFrame = Color3.fromRGB(15, 15, 40),
 		TextColor = Color3.fromRGB(0, 200, 255),
@@ -63,7 +62,7 @@ local Theme = {
 		Top = Color3.fromRGB(0, 120, 255),
 		Buttons = Color3.fromRGB(0, 100, 200),
 	},
-	GreenMatrix = {
+	["Green Matrix"] = {
 		mainFrame = Color3.fromRGB(0, 20, 0),
 		NotifyFrame = Color3.fromRGB(0, 30, 0),
 		TextColor = Color3.fromRGB(255, 255, 255),
@@ -72,7 +71,7 @@ local Theme = {
 		Top = Color3.fromRGB(0, 180, 0),
 		Buttons = Color3.fromRGB(0, 200, 0),
 	},
-	PurpleDream = {
+	["Purple Dream"] = {
 		mainFrame = Color3.fromRGB(40, 0, 50),
 		NotifyFrame = Color3.fromRGB(30, 0, 40),
 		TextColor = Color3.fromRGB(255, 200, 255),
@@ -108,7 +107,7 @@ local Theme = {
 		Top = Color3.fromRGB(50, 50, 70),
 		Buttons = Color3.fromRGB(80, 80, 100),
 	},
-	LimePop = {
+	["Lime Pop"] = {
 		mainFrame = Color3.fromRGB(30, 50, 30),
 		NotifyFrame = Color3.fromRGB(40, 70, 40),
 		TextColor = Color3.fromRGB(200, 255, 200),
@@ -135,7 +134,7 @@ local Theme = {
 		Top = Color3.fromRGB(0, 200, 160),
 		Buttons = Color3.fromRGB(0, 180, 140),
 	},
-	RoseGold = {
+	["Rose Gold"] = {
 		mainFrame = Color3.fromRGB(183, 110, 121),
 		NotifyFrame = Color3.fromRGB(153, 90, 101),
 		TextColor = Color3.fromRGB(255, 230, 240),
@@ -144,7 +143,7 @@ local Theme = {
 		Top = Color3.fromRGB(173, 100, 111),
 		Buttons = Color3.fromRGB(213, 140, 151),
 	},
-	CottonCandy = {
+	["Cotton Candy"] = {
 		mainFrame = Color3.fromRGB(255, 182, 193),
 		NotifyFrame = Color3.fromRGB(255, 192, 203),
 		TextColor = Color3.fromRGB(100, 0, 50),
@@ -153,7 +152,7 @@ local Theme = {
 		Top = Color3.fromRGB(255, 160, 215),
 		Buttons = Color3.fromRGB(255, 105, 180),
 	},
-	NightSky = {
+	["Night Sky"] = {
 		mainFrame = Color3.fromRGB(10, 10, 30),
 		NotifyFrame = Color3.fromRGB(20, 20, 40),
 		TextColor = Color3.fromRGB(200, 200, 255),
@@ -171,7 +170,7 @@ local Theme = {
 		Top = Color3.fromRGB(110, 110, 115),
 		Buttons = Color3.fromRGB(95, 95, 100),
 	},
-	GoldLux = {
+	["Gold Lux"] = {
 		mainFrame = Color3.fromRGB(70, 60, 0),
 		NotifyFrame = Color3.fromRGB(90, 70, 0),
 		TextColor = Color3.fromRGB(255, 220, 100),
@@ -180,7 +179,7 @@ local Theme = {
 		Top = Color3.fromRGB(180, 150, 0),
 		Buttons = Color3.fromRGB(220, 180, 0),
 	},
-	TealWave = {
+	["Teal Wave"] = {
 		mainFrame = Color3.fromRGB(0, 80, 80),
 		NotifyFrame = Color3.fromRGB(0, 90, 90),
 		TextColor = Color3.fromRGB(200, 255, 255),
@@ -198,7 +197,7 @@ local Theme = {
 		Top = Color3.fromRGB(120, 190, 220),
 		Buttons = Color3.fromRGB(100, 180, 210),
 	},
-	FrostFire = {
+	["Frost Fire"] = {
 		mainFrame = Color3.fromRGB(40, 40, 60),
 		NotifyFrame = Color3.fromRGB(60, 60, 80),
 		TextColor = Color3.fromRGB(255, 100, 100),
@@ -207,7 +206,7 @@ local Theme = {
 		Top = Color3.fromRGB(120, 180, 255),
 		Buttons = Color3.fromRGB(255, 120, 120),
 	},
-	DarkMatter = {
+	["Dark Matter"] = {
 		mainFrame = Color3.fromRGB(10, 5, 20),
 		NotifyFrame = Color3.fromRGB(15, 10, 30),
 		TextColor = Color3.fromRGB(180, 0, 255),
@@ -225,7 +224,7 @@ local Theme = {
 		Top = Color3.fromRGB(220, 60, 0),
 		Buttons = Color3.fromRGB(255, 100, 10),
 	},
-	PinkCandy = {
+	["Pink Candy"] = {
 		mainFrame = Color3.fromRGB(255, 170, 200),
 		NotifyFrame = Color3.fromRGB(255, 180, 210),
 		TextColor = Color3.fromRGB(100, 0, 50),
@@ -234,7 +233,7 @@ local Theme = {
 		Top = Color3.fromRGB(255, 150, 190),
 		Buttons = Color3.fromRGB(255, 100, 170),
 	},
-	DeepSpace = {
+	["Deep Space"] = {
 		mainFrame = Color3.fromRGB(5, 5, 10),
 		NotifyFrame = Color3.fromRGB(10, 10, 15),
 		TextColor = Color3.fromRGB(100, 200, 255),
@@ -335,7 +334,6 @@ local Theme = {
 	},
 }
 
-
 local function VisibleWindow(window,settings1,gui)
 	local themeName = settings1.Theme 
 	local selectedTheme = Theme[themeName] or Theme.Default
@@ -391,7 +389,7 @@ local function VisibleWindow(window,settings1,gui)
 
 		local content = createUI("Frame", {
 			Size = UDim2.new(1, 0, 1, 0),
-			Position = UDim2.new(1, 20, 0, 0), -- hors écran à droite
+			Position = UDim2.new(1, 20, 0, 0),
 			BackgroundColor3 = selectedTheme.NotifyFrame,
 			BackgroundTransparency = 0.25,
 			BorderSizePixel = 0,
@@ -451,11 +449,20 @@ local function VisibleWindow(window,settings1,gui)
 			Size = UDim2.new(0, 0, 0.05, 0)
 		})
 		durationTween:Play()
-
+		if settings1.Notifications then
+		if not settings1.Notifications.NoSound then
 		local NewSound = Instance.new("Sound",workspace)
-		NewSound.SoundId = "rbxassetid://6647898215"
+		if  settings1.Notifications.CustomSound then
+		NewSound.SoundId = settings1.Notifications.CustomSoundId
+		else
+			NewSound.SoundId = "rbxassetid://106553517979212"
+		end
+		if NewSound.IsLoaded then
 		NewSound:Play()
 		game:GetService("Debris"):AddItem(NewSound,NewSound.TimeLength)
+		end
+		end
+		end
 		task.delay(duration, function()
 			local exitTween = tweenService:Create(content, TweenInfo.new(0.4, Enum.EasingStyle.Quint, Enum.EasingDirection.In), {
 				Position = UDim2.new(1, 20, 0, 0)
@@ -479,8 +486,6 @@ local function VisibleWindow(window,settings1,gui)
 		Size = UDim2.new(0, 500, 0, 250);
 		Position = UDim2.new(0.5, 0, 0.5, 0);
 	})
-
-
 
 	local tabsFrame = createUI("ScrollingFrame", {
 		Size = UDim2.new(0, 150, 1, 0);
@@ -510,7 +515,6 @@ local function VisibleWindow(window,settings1,gui)
 		PaddingRight = UDim.new(0, 6),
 		Parent = tabsFrame
 	})
-
 
 	local contentHolder = createUI("Frame", {
 		Position = UDim2.new(0, 150, 0, 0);
@@ -543,7 +547,6 @@ local function VisibleWindow(window,settings1,gui)
 		layout.Padding = UDim.new(0, 6)
 		layout.Parent = titleContainer
 
-
 		local imageIcon2 = Instance.new("ImageLabel")
 		imageIcon2.Name = "Icon"
 		imageIcon2.Size = UDim2.new(0, 20, 0, 20)
@@ -551,15 +554,14 @@ local function VisibleWindow(window,settings1,gui)
 		imageIcon2.Image = "rbxassetid://"..settings1.Icon
 		imageIcon2.Parent = titleContainer
 
-
 		titleLabel = createUI("TextLabel", {
 			Name = "TitleLabel",
 			Text = settings1.Title,
 			TextColor3 = Color3.new(1, 1, 1),
 			BackgroundTransparency = 1,
 			Font = Enum.Font.GothamBold,
-			TextSize = 15, -- Réduit un peu la taille
-			Size = UDim2.new(1, -30, 1, 0), -- Laisse de l'espace pour l’image
+			TextSize = 15,
+			Size = UDim2.new(1, -30, 1, 0),
 			TextXAlignment = Enum.TextXAlignment.Left,
 			Parent = titleContainer
 		})
@@ -654,8 +656,6 @@ local function VisibleWindow(window,settings1,gui)
 	end
 
 	local UserInputService = game:GetService("UserInputService")
-
-
 
 	UserInputService.InputBegan:Connect(function(input, gameProcessed)
 		if gameProcessed then return end
@@ -802,6 +802,16 @@ local function VisibleWindow(window,settings1,gui)
 
 					end
 				end
+				if tab.sections then
+					for _, name in pairs(tab.sections) do
+						pcall(function()
+
+							name:ChangeTheme(selectedTheme)
+
+						end)
+
+					end
+				end	
 			end
 
 		else
@@ -826,7 +836,7 @@ local function VisibleWindow(window,settings1,gui)
 	local FolderName = settingsData.FolderName or "UnknownFolder"
 	local fileName = settingsData.FileName or "UnknownFile"
 	local fullPath = FolderName .. "/" .. fileName .. ".json"
-	
+
 	local function EncodeValue(v)
 		local t = typeof(v)
 
@@ -897,7 +907,7 @@ local function VisibleWindow(window,settings1,gui)
 	local function GetFlagKey(tabName, elementName)
 		return tabName .. "_" .. elementName
 	end
-	
+
 	local function SaveData()
 		local success, err = pcall(function()
 
@@ -937,7 +947,7 @@ local function VisibleWindow(window,settings1,gui)
 
 		return DecodeValue(data.value)
 	end
-	
+
 	local function applyFlagsToTab(tab)
 		for key, data in pairs(flags) do
 
@@ -1005,9 +1015,66 @@ local function VisibleWindow(window,settings1,gui)
 			end
 		end
 	end
-
+	
+	function library:GetAllThemes()
+		local AvailableTheme = {}
+		for Name, _ in pairs(Theme) do
+			if Name then
+				table.insert(AvailableTheme,Name)
+			end
+		end
+		return AvailableTheme
+	end
+	
+	function library:GetTheme(ThemeFind)
+		if Theme[ThemeFind] then
+		return Theme[ThemeFind]
+		else
+			return nil
+		end
+	end
+	
+	function library:CreateTheme(name,Table)
+		if not Theme[name] then
+		local function Printer(name)
+				print("[Zentrix Library System]: You forgot to add "..name.." Or isn't a Color3.fromRGB")
+		end
+			if not Table.mainFrame or typeof(Table.mainFrame) ~= "Color3" then
+				Printer("mainFrame")
+				return nil
+			end
+			if not Table.NotifyFrame or typeof(Table.NotifyFrame) ~= "Color3" then
+				Printer("NotifyFrame")
+				return nil
+			end
+			if not Table.TextColor or typeof(Table.TextColor) ~= "Color3" then
+				Printer("TextColor")
+				return nil
+			end
+			if not Table.TabContent or typeof(Table.TabContent) ~= "Color3" then
+				Printer("TabContent")
+				return nil
+			end
+			if not Table.TabButtons or typeof(Table.TabButtons) ~= "Color3" then
+				Printer("TabButtons")
+				return nil
+			end
+			if not Table.Top or typeof(Table.Top) ~= "Color3" then
+				Printer("Top")
+				return nil
+			end
+			if not Table.Buttons or typeof(Table.Buttons) ~= "Color3" then
+				Printer("Buttons")
+				return nil
+			end
+			Theme[name] = Table
+		else
+			print("The theme "..name.." already exist!")
+			return nil
+		end
+	end
+	
 	if settingsData.EnableSavingData then
-
 		function library:LoadData()
 			task.spawn(function()
 
@@ -1087,7 +1154,6 @@ local function VisibleWindow(window,settings1,gui)
 		}
 
 		table.insert(self.tabs, tab)
-
 
 		local scroll = createUI("ScrollingFrame", {
 			Size = UDim2.new(1, 0, 1, 0);
@@ -1238,8 +1304,8 @@ local function VisibleWindow(window,settings1,gui)
 			return obj
 
 		end
-	
-	function tab:AddText(opts)
+
+		function tab:AddText(opts)
 			local flag = opts.Name
 			local button = createUI("TextLabel", {
 				Text = opts.Text;
@@ -1324,7 +1390,7 @@ local function VisibleWindow(window,settings1,gui)
 				Parent = frame,
 			})
 
-			
+
 			task.defer(function()
 				local textSize = contentLabel.TextBounds
 				contentLabel.Size = UDim2.new(1, 0, 0, textSize.Y)
@@ -1585,7 +1651,7 @@ local function VisibleWindow(window,settings1,gui)
 
 			createUI("UICorner", {CornerRadius = UDim.new(1, 0), Parent = toggleCircle})
 
-			
+
 			local function setToggleState(state)
 				value = state
 
@@ -1598,7 +1664,7 @@ local function VisibleWindow(window,settings1,gui)
 				}):Play()
 			end
 
-			
+
 			button.MouseButton1Click:Connect(function()
 				value = not value
 
@@ -1615,7 +1681,7 @@ local function VisibleWindow(window,settings1,gui)
 				end
 			end)
 
-		
+
 			task.defer(function()
 				setToggleState(value)
 			end)
@@ -1954,13 +2020,13 @@ local function VisibleWindow(window,settings1,gui)
 				Parent = optionHolder
 			})
 
-
 			local function updateCanvas()
 				local newHeight = layout.AbsoluteContentSize.Y + 10
 				TweenService:Create(container, TweenInfo.new(0.2), {
 					Size = dropdown.FrameOpen and UDim2.new(1, 0, 0, newHeight) or UDim2.new(1, 0, 0, 0)
 				}):Play()
 			end
+			
 			local function updateOptionVisual(button, isSelected)
 				if isSelected then
 					button.BackgroundColor3 = selectedTheme.Accent or Color3.fromRGB(0, 170, 255)
@@ -1975,9 +2041,9 @@ local function VisibleWindow(window,settings1,gui)
 					btn.Text = opts.Text .. ": " .. tostring(dropdown.Selected[1] or "None")
 				end
 			end
-			
+
 			local function UpdateOptionVisual()
-			
+
 				for _, child in ipairs(optionHolder:GetChildren()) do
 					if child:IsA("TextButton") then
 						local isSelected = table.find(dropdown.Selected, child.Text)
@@ -1991,7 +2057,7 @@ local function VisibleWindow(window,settings1,gui)
 					btn.Text = opts.Text .. ": " .. tostring(dropdown.Selected[1] or "None")
 				end
 			end
-			
+
 			local function createOptions(optionList)
 				for _, child in ipairs(optionHolder:GetChildren()) do
 					if child:IsA("TextButton") then
@@ -2266,7 +2332,6 @@ function library:CreateWindow(settings1, onLoad)
 	if settings1.KeySystem then
 		local TweenService = game:GetService("TweenService")
 
-
 		local Title = settings1.KeySettings.Title
 		local Note = settings1.KeySettings.Note
 		local Key = settings1.KeySettings.Key
@@ -2355,10 +2420,8 @@ function library:CreateWindow(settings1, onLoad)
 		})
 		createUI("UICorner", {Parent = ConfirmButton})
 
-
 		local AddDiscord = settings1.KeySettings.AddDiscordButton
 		local AddGetKey = settings1.KeySettings.AddGetKeyButton
-
 
 		local spacing = 10
 		local baseY = 170
@@ -2366,7 +2429,6 @@ function library:CreateWindow(settings1, onLoad)
 
 		if AddDiscord and AddGetKey then
 			local halfWidth = (totalWidth - spacing) / 2
-
 
 			local GetKeyBtn = createUI("TextButton", {
 				Size = UDim2.new(0, halfWidth, 0, 30),
