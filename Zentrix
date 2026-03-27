@@ -2398,8 +2398,9 @@ end
 		RenderConnection = nil
 	end)
 end
+
 function library:CreateWindow(settings1, onLoad)
-	print("Library Version: 0.46")
+	print("Library Version: 0.47")
 	if game:GetService("RunService"):IsStudio() then
 		if game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary") then
 			game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary"):Destroy()
@@ -2441,7 +2442,6 @@ function library:CreateWindow(settings1, onLoad)
 
 	task.wait(0.75)
 
-
 	local outTween = TweenService:Create(txt, TweenInfo.new(0.6, Enum.EasingStyle.Quad, Enum.EasingDirection.In), {
 		TextTransparency = 1,
 		Size = UDim2.new(0, 350, 0, 70)
@@ -2476,8 +2476,22 @@ function library:CreateWindow(settings1, onLoad)
 		local Title = settings1.KeySettings.Title
 		local Note = settings1.KeySettings.Note
 		local Key = settings1.KeySettings.Key
+		local url = settings1.KeySettings.Url
+		local HttpService = game:GetService("HttpService")
+		local GrabKeyFromSite = settings1.KeySettings.GrabKeyFromSite
+		
+		local function CheckKey(key)
+			local success, response = pcall(function()
+				return game:HttpGet(url)
+			end)
 
+			if not success then return false end
 
+			local data = HttpService:JSONDecode(response)
+
+			return data.valid
+		end
+		
 		local KeyFrame = createUI("Frame", {
 			Size = UDim2.new(0, 0, 0, 0),
 			Position = UDim2.new(0.5, 0, 0.5, 0),
@@ -2486,7 +2500,6 @@ function library:CreateWindow(settings1, onLoad)
 			Parent = gui,
 		})
 		createUI("UICorner", {Parent = KeyFrame})
-
 
 		local closeButton = createUI("TextButton", {
 			Size = UDim2.new(0, 25, 0, 25),
@@ -2498,17 +2511,16 @@ function library:CreateWindow(settings1, onLoad)
 			TextScaled = true,
 			Parent = KeyFrame,
 		})
+		
 		createUI("UICorner", {Parent = closeButton})
 		closeButton.MouseButton1Click:Connect(function()
 			gui:Destroy()
 		end)
 
-
 		TweenService:Create(KeyFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
 			Size = UDim2.new(0, 500, 0, 200),
 			Position = UDim2.new(0.5, 0, 0.5, 0),
 		}):Play()
-
 
 		createUI("TextLabel", {
 			Size = UDim2.new(1, -20, 0, 30),
@@ -2521,7 +2533,6 @@ function library:CreateWindow(settings1, onLoad)
 			Parent = KeyFrame,
 		})
 
-
 		createUI("TextLabel", {
 			Size = UDim2.new(1, -20, 0, 40),
 			Position = UDim2.new(0, 10, 0, 45),
@@ -2533,7 +2544,6 @@ function library:CreateWindow(settings1, onLoad)
 			Font = Enum.Font.Gotham,
 			Parent = KeyFrame,
 		})
-
 
 		local TextBox = createUI("TextBox", {
 			Size = UDim2.new(1, -20, 0, 30),
@@ -2649,8 +2659,6 @@ function library:CreateWindow(settings1, onLoad)
 				writefile(fileName, key)
 			end)
 		end
-
-
 		local function loadKey()
 			if isfile(fileName) then
 				local key = readfile(fileName)
@@ -2658,72 +2666,99 @@ function library:CreateWindow(settings1, onLoad)
 			end
 			return nil
 		end
+	
+	local function ConfirmedKey(savedKey)
+			print("✅ correct key :", savedKey)
+			KeyFrame:Destroy()
+			if settings1.Intro then
+				local TweenService = game:GetService("TweenService")
+				local IntroTitle = settings1.IntroTitle
 
+				local IntroFrame = createUI("Frame", {
+					Size = UDim2.new(0, 0, 0, 0),
+					Position = UDim2.new(0.5, 0, 0.5, 0),
+					AnchorPoint = Vector2.new(0.5, 0.5),
+					BackgroundColor3 = Color3.fromRGB(30, 30, 30),
+					Parent = gui,
+				})
+				createUI("UICorner", {Parent = IntroFrame})
+
+
+				local anim = TweenService:Create(IntroFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+					Size = UDim2.new(0, 500, 0, 200),
+					Position = UDim2.new(0.5, 0, 0.5, 0),
+				})
+
+				createUI("TextLabel", {
+					Size = UDim2.new(1, -20, 0, 40),
+					Position = UDim2.new(0, 10, 0.5, -20),
+					BackgroundTransparency = 1,
+					Text = IntroTitle,
+					TextColor3 = Color3.new(1, 1, 1),
+					TextScaled = true,
+					Font = Enum.Font.GothamBold,
+					Parent = IntroFrame,
+				})
+				anim:Play()
+				anim.Completed:Connect(function()
+					wait(1.5)
+					IntroFrame:Destroy()
+					VisibleWindow(window,settings1,gui)
+					if onLoad then onLoad(window) end
+				end)
+
+			else
+				VisibleWindow(window,settings1,gui)
+				if onLoad then onLoad(window) end
+			end
+		end
+		
 		if  not game:GetService("RunService"):IsStudio() then
 			local savedKey = loadKey()
 			if savedKey and savedKey ~= ""  then
+				if not GrabKeyFromSite then
 				if table.find(Key, savedKey) then
-					print("✅ correct key :", savedKey)
-					KeyFrame:Destroy()
-					if settings1.Intro then
-						local TweenService = game:GetService("TweenService")
-						local IntroTitle = settings1.IntroTitle
-
-
-						local IntroFrame = createUI("Frame", {
-							Size = UDim2.new(0, 0, 0, 0),
-							Position = UDim2.new(0.5, 0, 0.5, 0),
-							AnchorPoint = Vector2.new(0.5, 0.5),
-							BackgroundColor3 = Color3.fromRGB(30, 30, 30),
-							Parent = gui,
-						})
-						createUI("UICorner", {Parent = IntroFrame})
-
-
-						local anim = TweenService:Create(IntroFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
-							Size = UDim2.new(0, 500, 0, 200),
-							Position = UDim2.new(0.5, 0, 0.5, 0),
-						})
-
-						createUI("TextLabel", {
-							Size = UDim2.new(1, -20, 0, 40),
-							Position = UDim2.new(0, 10, 0.5, -20),
-							BackgroundTransparency = 1,
-							Text = IntroTitle,
-							TextColor3 = Color3.new(1, 1, 1),
-							TextScaled = true,
-							Font = Enum.Font.GothamBold,
-							Parent = IntroFrame,
-						})
-						anim:Play()
-						anim.Completed:Connect(function()
-							wait(1.5)
-							IntroFrame:Destroy()
-							VisibleWindow(window,settings1,gui)
-							if onLoad then onLoad(window) end
-						end)
-
-					else
-						VisibleWindow(window,settings1,gui)
-						if onLoad then onLoad(window) end
-					end
-
+					ConfirmedKey(savedKey)
 				else
 					TextBox.Text = ""
 					TextBox.PlaceholderText = "❌ Incorrect/Invalid Key"
 				end
+				else
+					local Worked = CheckKey(savedKey)
+					if Worked then
+						if settings1.KeySettings.SaveKey then
+							if settings1.KeySettings.FileName and not game:GetService("RunService"):IsStudio() then
+								local key2 = TextBox.Text
+								saveKey(key2)
+							end
+						end
 
+
+						local closeTween = TweenService:Create(KeyFrame, TweenInfo.new(0.3, Enum.EasingStyle.Sine, Enum.EasingDirection.In), {
+							Size = UDim2.new(0, 0, 0, 0),
+							Position = UDim2.new(0.5, 0, 0.5, 0)
+						})
+						closeTween:Play()
+						closeTween.Completed:Connect(function()
+							KeyFrame:Destroy()
+							ConfirmedKey(savedKey)
+						end)
+					else
+						TextBox.Text = ""
+						TextBox.PlaceholderText = "❌ Incorrect/Invalid Key"
+					end
+				end
 			end
 		end
 
 		ConfirmButton.MouseButton1Click:Connect(function()
 			local inputKey = TextBox.Text
+			if not GrabKeyFromSite then
 			if table.find(Key, inputKey) then
-				print("✅ correct key :", inputKey)
-				if settings1.KeySettings.SaveKey then
+			if settings1.KeySettings.SaveKey then
 					if settings1.KeySettings.FileName and not game:GetService("RunService"):IsStudio() then
-						local key = TextBox.Text
-						saveKey(key)
+						local key2 = TextBox.Text
+						saveKey(key2)
 					end
 				end
 
@@ -2735,55 +2770,38 @@ function library:CreateWindow(settings1, onLoad)
 				closeTween:Play()
 				closeTween.Completed:Connect(function()
 					KeyFrame:Destroy()
-					if settings1.Intro then
-						local TweenService = game:GetService("TweenService")
-						local IntroTitle = settings1.IntroTitle
-
-
-						local IntroFrame = createUI("Frame", {
-							Size = UDim2.new(0, 0, 0, 0),
-							Position = UDim2.new(0.5, 0, 0.5, 0),
-							AnchorPoint = Vector2.new(0.5, 0.5),
-							BackgroundColor3 = Color3.fromRGB(30, 30, 30),
-							Parent = gui,
-						})
-						createUI("UICorner", {Parent = IntroFrame})
-
-
-						local anim = TweenService:Create(IntroFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
-							Size = UDim2.new(0, 500, 0, 200),
-							Position = UDim2.new(0.5, 0, 0.5, 0),
-						})
-
-						createUI("TextLabel", {
-							Size = UDim2.new(1, -20, 0, 40),
-							Position = UDim2.new(0, 10, 0.5, -20),
-							BackgroundTransparency = 1,
-							Text = IntroTitle,
-							TextColor3 = Color3.new(1, 1, 1),
-							TextScaled = true,
-							Font = Enum.Font.GothamBold,
-							Parent = IntroFrame,
-						})
-						anim:Play()
-						anim.Completed:Connect(function()
-							wait(1.5)
-							IntroFrame:Destroy()
-							VisibleWindow(window,settings1,gui)
-							if onLoad then onLoad(window) end
-						end)
-
-					else
-						VisibleWindow(window,settings1,gui)
-						if onLoad then onLoad(window) end
-					end
+					ConfirmedKey(inputKey)
 				end)
 			else
 				TextBox.Text = ""
 				TextBox.PlaceholderText = "❌ Incorrect/Invalid Key"
 			end
-		end)
+			else
+			local Worked = CheckKey(inputKey)
+			if Worked then
+					if settings1.KeySettings.SaveKey then
+						if settings1.KeySettings.FileName and not game:GetService("RunService"):IsStudio() then
+							local key2 = TextBox.Text
+							saveKey(key2)
+						end
+					end
 
+
+					local closeTween = TweenService:Create(KeyFrame, TweenInfo.new(0.3, Enum.EasingStyle.Sine, Enum.EasingDirection.In), {
+						Size = UDim2.new(0, 0, 0, 0),
+						Position = UDim2.new(0.5, 0, 0.5, 0)
+					})
+					closeTween:Play()
+					closeTween.Completed:Connect(function()
+						KeyFrame:Destroy()
+						ConfirmedKey(inputKey)
+					end)
+			else
+					TextBox.Text = ""
+					TextBox.PlaceholderText = "❌ Incorrect/Invalid Key"
+			end
+			end				
+			end)
 	else
 		if settings1.Intro then
 			local TweenService = game:GetService("TweenService")
