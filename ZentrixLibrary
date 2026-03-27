@@ -35,8 +35,9 @@ library:CreateWindow({
 		Note = "the key is Zentrix",-- The method for obtaining
 		FileName = "Key",-- File name or no for saving the key
 		SaveKey = true,-- saving the key or no
-		GrabKeyFromSite = false,--Coming
+		GrabKeyFromSite = false,--is in early access and it may not work
 		Key = {"Zentrix"},-- the name you can add many name, Exemple "Key","Key2" or you can add a function to add key but i don't really know
+		Url = "",-- the url idk
 		AddGetKeyButton = false,
 		AddDiscordButton = true,
 		DiscordLink = "NoInviteLink",
