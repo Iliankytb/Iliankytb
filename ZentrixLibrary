@@ -6,11 +6,12 @@ else
 end
 library:CreateWindow({
 	Title = "Zentrix Library Testing",-- Title of the script
-	Theme = "Default",--View more theme in my dicord server!
+	Theme = "Default",--View more theme in my discord server!
 	Icon = 0,-- 0 = no icon or add number
-	Intro = true,--Intro or no
+	Intro = true,-- Intro or no
 	IntroTitle = "Zentrix Library Testing",--the intro title
-	KeyPC = Enum.KeyCode.K,--the key for pc for Open/close the frame
+	KeyPC = Enum.KeyCode.K,--the key for pc to Open/close the frame
+	CustomSize = UDim2.new(0, 600, 0, 500), -- You can custom size but only for pc(for the moment lol!)
 	Data = {
 		EnableSavingData = true,--Enabling data saver or no
 		DisableNotifyingLoadedData = false,--set it to true for disable the notify when loaded data
@@ -19,22 +20,22 @@ library:CreateWindow({
 	},
 	Discord = {
 		Enabled = true,--enable to copy the discord
-		DiscordLink = "https://discord.gg/E2TqYRsRP4",-- put thr entire Link of discord
-		RememberJoin = true,-- Set this ti false to make them copy the link every time they load the script
+		DiscordLink = "https://discord.gg/E2TqYRsRP4",-- put the entire Link of discord
+		RememberJoin = true,-- Set this to false to make them copy the link every time they load the script
 		Duration = 10,-- 5 is the default you can change the number only for remember join
 	},
 	Notifications = {
-		NoSound = false, -- only boolen
-	CustomSound = false,-- only boolen true or false, false = the default true = the CustomSoundId
+		NoSound = false, -- only booleen
+	CustomSound = false,-- only booleen true or false, false = the default true = the CustomSoundId
 		CustomSoundId = "rbxassetid://106553517979212",	--Only Roblox Sound public
 	},
 	KeySystem = true,--Key System or no
 	KeySettings = {
-		Title = "Zentrix Library Testing Key System",--Title of the key(just like that)
+		Title = "Zentrix Library Testing Key System",--Title of the key or script
 		Note = "the key is Zentrix",-- The method for obtaining
 		FileName = "Key",-- File name or no for saving the key
 		SaveKey = true,-- saving the key or no
-		GrabKeyFromSite = false,--Coming soon
+		GrabKeyFromSite = false,--Coming
 		Key = {"Zentrix"},-- the name you can add many name, Exemple "Key","Key2" or you can add a function to add key but i don't really know
 		AddGetKeyButton = false,
 		AddDiscordButton = true,
@@ -62,6 +63,11 @@ library:CreateWindow({
 		end
 	})
 	--Buttons--
+	local sections = tab:AddSection({
+		Text = "This is a Section",
+		Name = "section",
+	})
+	--Buttons--
 	local Button = ResetPositionShowButtonTab:AddButton({
 		Text = "Reset Position Button",
 		Name = "Button3",
@@ -77,6 +83,7 @@ library:CreateWindow({
 				Title = "Testing!",
 				Message = "notif!",
 				Duration = 10,
+				UseSound = true,
 			})
 
 		end
@@ -178,7 +185,7 @@ library:CreateWindow({
 	
 	local AllAvailableThemes = library:GetAllThemes()
 	local SearchTheme = library:GetTheme("Default")
-	
+	library:EnableFPSCounter(true)
 	local ChangeThemeDropdown = tab:AddDropdown({
 		Text = "Change Theme:",
 		Name = "Dropdown2",
@@ -196,6 +203,7 @@ library:CreateWindow({
 		Title = "Testing!",
 		Message = "notif!",
 		Duration = 5,
+		UseSound = true,
 	})
 
 	--Loading Data--
