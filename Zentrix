@@ -337,7 +337,7 @@ local Theme = {
 local function VisibleWindow(window,settings1,gui)
 	local themeName = settings1.Theme 
 	local selectedTheme = Theme[themeName] or Theme.Default
-
+local RenderConnection = nil
 	local TweenService = game:GetService("TweenService")
 
 	local mainFrame = createUI("Frame", {
@@ -359,6 +359,16 @@ local function VisibleWindow(window,settings1,gui)
 		Parent = gui,
 	})
 
+	local FpsCounterLabel = createUI("TextLabel", {
+		Size = UDim2.new(0, 100, 0, 30),
+		Position = UDim2.new(0, 10, 0, 10),
+		BackgroundTransparency = 1,
+		AnchorPoint = Vector2.new(0, 0),
+		Name = "FPSCounter",
+		TextScaled = true,
+		Visible = false,
+		Parent = gui,
+	})
 
 	function window:Destroy()
 		gui:Destroy()
@@ -376,6 +386,7 @@ local function VisibleWindow(window,settings1,gui)
 		local message = opts.Message or "No message provided."
 		local icon = opts.Icon or "rbxassetid://0"
 		local duration = opts.Duration or 5
+local UseSound = opts.UseSound or true
 
 		local tweenService = game:GetService("TweenService")
 
@@ -449,18 +460,28 @@ local function VisibleWindow(window,settings1,gui)
 			Size = UDim2.new(0, 0, 0.05, 0)
 		})
 		durationTween:Play()
+		if UseSound then
 		if settings1.Notifications then
-		if not settings1.Notifications.NoSound then
-		local NewSound = Instance.new("Sound",workspace)
-		if  settings1.Notifications.CustomSound then
-		NewSound.SoundId = settings1.Notifications.CustomSoundId
-		else
-			NewSound.SoundId = "rbxassetid://106553517979212"
-		end
-		if NewSound.IsLoaded then
-		NewSound:Play()
-		game:GetService("Debris"):AddItem(NewSound,NewSound.TimeLength)
-		end
+			if not settings1.Notifications.NoSound then
+				local NewSound = Instance.new("Sound",gui)
+				NewSound.Name = "Notif"
+				if  settings1.Notifications.CustomSound then
+					NewSound.SoundId = settings1.Notifications.CustomSoundId
+				else
+					NewSound.SoundId = "rbxassetid://106553517979212"
+				end
+					NewSound:Play()
+				if NewSound.IsLoaded then
+					game:GetService("Debris"):AddItem(NewSound,NewSound.TimeLength)
+				else
+						task.spawn(function()
+							task.wait(5)
+							if NewSound then
+								NewSound:Destroy()
+							end
+						end)
+				end
+			end
 		end
 		end
 		task.delay(duration, function()
@@ -470,12 +491,15 @@ local function VisibleWindow(window,settings1,gui)
 			exitTween:Play()
 			exitTween.Completed:Wait()
 			notifyPanel:Destroy()
+
 		end)
 	end
+	
+local CurrentSizePC = UDim2.new(0, 600, 0, 500) or settings1.CustomSize
 
 	createUI("UICorner", {Parent = mainFrame})
 	local animOpenPC = TweenService:Create(mainFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
-		Size = UDim2.new(0, 600, 0, 500);
+		Size = CurrentSizePC;
 		Position = UDim2.new(0.5, 0, 0.5, 0);
 	})
 	local animClose = TweenService:Create(mainFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
@@ -496,6 +520,7 @@ local function VisibleWindow(window,settings1,gui)
 		BorderSizePixel = 0;
 		Parent = mainFrame;
 	})
+	
 	if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
 		tabsFrame.Size = UDim2.new(0,75,1,0)
 	elseif UserInputService.TouchEnabled and UserInputService.KeyboardEnabled then
@@ -1015,7 +1040,9 @@ local function VisibleWindow(window,settings1,gui)
 			end
 		end
 	end
-	
+
+local FPS = 0
+
 	function library:GetAllThemes()
 		local AvailableTheme = {}
 		for Name, _ in pairs(Theme) do
@@ -1025,20 +1052,28 @@ local function VisibleWindow(window,settings1,gui)
 		end
 		return AvailableTheme
 	end
-	
+
 	function library:GetTheme(ThemeFind)
 		if Theme[ThemeFind] then
-		return Theme[ThemeFind]
+			return Theme[ThemeFind]
 		else
 			return nil
 		end
 	end
-	
+
+function library:FPSCounter()
+	return FPS
+end
+
+function library:EnableFPSCounter(boolen)
+	FpsCounterLabel.Visible = boolen
+end
+
 	function library:CreateTheme(name,Table)
 		if not Theme[name] then
-		local function Printer(name)
+			local function Printer(name)
 				print("[Zentrix Library System]: You forgot to add "..name.." Or isn't a Color3.fromRGB")
-		end
+			end
 			if not Table.mainFrame or typeof(Table.mainFrame) ~= "Color3" then
 				Printer("mainFrame")
 				return nil
@@ -1073,7 +1108,7 @@ local function VisibleWindow(window,settings1,gui)
 			return nil
 		end
 	end
-	
+
 	if settingsData.EnableSavingData then
 		function library:LoadData()
 			task.spawn(function()
@@ -1224,13 +1259,16 @@ local function VisibleWindow(window,settings1,gui)
 			textLabel.Parent = tabButton
 
 		else
-			tabButton =  createUI("TextButton", {
+			 tabButton = createUI("TextButton", {
 				Text = name;
 				Size = UDim2.new(1, 0, 0, 30);
 				BackgroundColor3 = selectedTheme.TabButtons;
-				TextColor3 =selectedTheme.TextColor,
+				TextColor3 = selectedTheme.TextColor;
 				Font = Enum.Font.GothamBold;
+				TextScaled = false;
 				TextSize = 14;
+				TextTruncate = Enum.TextTruncate.AtEnd; -- "..."
+				TextXAlignment = Enum.TextXAlignment.Left;
 				Parent = tabsFrame;
 			})
 
@@ -1248,9 +1286,9 @@ local function VisibleWindow(window,settings1,gui)
 
 		table.insert(window.tabs, tab)
 
-
 		if #window.tabs == 1 then
 			tab.content.Visible = true
+			print("OK")
 		end
 
 		function tab:AddButton(opts)
@@ -1430,11 +1468,6 @@ local function VisibleWindow(window,settings1,gui)
 			return Api
 		end
 
-
-		local TweenService = game:GetService("TweenService")
-		local UserInputService = game:GetService("UserInputService")
-
-
 		local function Color3ToTable(color)
 			return {color.R, color.G, color.B}
 		end
@@ -1525,7 +1558,6 @@ local function VisibleWindow(window,settings1,gui)
 				}):Play()
 
 				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
-					print("Saving color: ", color)
 					local colorTable = Color3ToTable(color)
 					tab.ColorPickerValue[flag] = colorTable
 					SetFlag(tab.name, flag, colorTable)
@@ -1717,7 +1749,6 @@ local function VisibleWindow(window,settings1,gui)
 
 			return obj
 		end
-		local UserInputService = game:GetService("UserInputService")
 
 		function tab:AddSlider(opts)
 			local flag = opts.Flag or opts.Name or "Slider"
@@ -1956,7 +1987,6 @@ local function VisibleWindow(window,settings1,gui)
 				Parent = button;
 			})
 
-
 			local obj = {}
 			function obj:Set(t)
 
@@ -2026,7 +2056,7 @@ local function VisibleWindow(window,settings1,gui)
 					Size = dropdown.FrameOpen and UDim2.new(1, 0, 0, newHeight) or UDim2.new(1, 0, 0, 0)
 				}):Play()
 			end
-			
+
 			local function updateOptionVisual(button, isSelected)
 				if isSelected then
 					button.BackgroundColor3 = selectedTheme.Accent or Color3.fromRGB(0, 170, 255)
@@ -2217,34 +2247,141 @@ local function VisibleWindow(window,settings1,gui)
 	local dragStart
 	local startPos
 
+	local resizing = false
+	local resizeStart
+	local startSize
+	local resizeDir = {X = false, Y = false}
+	local RESIZE_MARGIN = 6
+
+	local Resizing = false
+	local oldMouseIcon = ""
+
+	function library:CanResize(booleen)
+		dragging = false
+		Resizing = booleen
+	end
+
 	mainFrame.InputBegan:Connect(function(input)
-		if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then
-			dragging = true
-			dragStart = UIS:GetMouseLocation()
-			startPos = mainFrame.Position
+		if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then 
+		local mousePos = UIS:GetMouseLocation()
+		local absPos = mainFrame.AbsolutePosition
+		local absSize = mainFrame.AbsoluteSize
+			if	input.UserInputType ~= Enum.UserInputType.Touch then
+
+		local onRight = math.abs(mousePos.X - (absPos.X + absSize.X)) <= RESIZE_MARGIN
+		local onBottom = math.abs(mousePos.Y - (absPos.Y + absSize.Y)) <= RESIZE_MARGIN
+		
+		if onRight or onBottom then
+			resizing = true
+			dragging = false
+
+			resizeDir = {
+				X = onRight,
+				Y = onBottom
+			}
+
+			resizeStart = mousePos
+			startSize = mainFrame.Size
+
+			return
+		end
+end
+		if Resizing then return end
+
+		dragging = true
+		dragStart = mousePos
+		startPos = mainFrame.Position
 		end
 	end)
-
 	mainFrame.InputEnded:Connect(function(input)
-		if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then
+		if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then 
 			dragging = false
+			resizing = false
 		end
 	end)
 
 	UIS.InputEnded:Connect(function(input)
-		if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then
+		if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then 
 			dragging = false
+			resizing = false
 		end
 	end)
 
-	RunService.RenderStepped:Connect(function()
-		if dragging then
+	local DeltaTime = 0
+
+	RenderConnection = RunService.RenderStepped:Connect(function(dt)
+	
+		DeltaTime = DeltaTime + (dt - DeltaTime) * 0.1
+		local fps = math.floor(1 / DeltaTime)
+		FPS = fps
+		FpsCounterLabel.Text = "Fps: "..FPS
+
+		local mousePos = UIS:GetMouseLocation()
+		local absPos = mainFrame.AbsolutePosition
+		local absSize = mainFrame.AbsoluteSize
+
+		local onRight = math.abs(mousePos.X - (absPos.X + absSize.X)) <= RESIZE_MARGIN
+		local onBottom = math.abs(mousePos.Y - (absPos.Y + absSize.Y)) <= RESIZE_MARGIN
+
+		if (onRight or onBottom) and not resizing then
+			if oldMouseIcon == "" then
+				oldMouseIcon = UIS.MouseIcon
+			end
+
+			if onRight and onBottom then
+				UIS.MouseIcon = "rbxassetid://DiagonalResizeIcon"
+			elseif onRight then
+				UIS.MouseIcon = "rbxassetid://HorizontalResizeIcon"
+			elseif onBottom then
+				UIS.MouseIcon = "rbxassetid://VerticalResizeIcon"
+			end
+		else
+			if oldMouseIcon ~= "" and not resizing then
+				UIS.MouseIcon = oldMouseIcon
+				oldMouseIcon = ""
+			end
+		end
+
+		if resizing then
 			if not mainFrame.Visible then
+				resizing = false
 				dragging = false
 				return
 			end
+			local delta = mousePos - resizeStart
 
-			local mousePos = UIS:GetMouseLocation()
+			local newX = startSize.X.Offset
+			local newY = startSize.Y.Offset
+
+			if resizeDir.X then
+				newX = math.clamp(newX + delta.X, 200, 1000)
+			end
+
+			if resizeDir.Y then
+				newY = math.clamp(newY + delta.Y, 150, 800)
+			end
+
+			mainFrame.Size = UDim2.new(
+				startSize.X.Scale,
+				newX,
+				startSize.Y.Scale,
+				newY
+			)
+
+			CurrentSizePC = mainFrame.Size
+			animOpenPC = TweenService:Create(mainFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
+				Size = CurrentSizePC;
+				Position = UDim2.new(0.5, 0, 0.5, 0);
+			})
+		end
+
+		if dragging then
+			if not mainFrame.Visible then
+				dragging = false
+				Resizing = false
+				return
+			end
+
 			local delta = mousePos - dragStart
 
 			mainFrame.Position = UDim2.new(
@@ -2256,9 +2393,13 @@ local function VisibleWindow(window,settings1,gui)
 		end
 	end)
 
+	gui.Destroying:Connect(function()
+		RenderConnection:Disconnect()
+		RenderConnection = nil
+	end)
 end
 function library:CreateWindow(settings1, onLoad)
-	print("Library Version: 0.45")
+	print("Library Version: 0.46")
 	if game:GetService("RunService"):IsStudio() then
 		if game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary") then
 			game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary"):Destroy()
@@ -2574,8 +2715,6 @@ function library:CreateWindow(settings1, onLoad)
 
 			end
 		end
-
-
 
 		ConfirmButton.MouseButton1Click:Connect(function()
 			local inputKey = TextBox.Text
