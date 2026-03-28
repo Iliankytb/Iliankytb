@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.90"
+local V = "V.0.91"
 
 library:CreateWindow({
     Title = "Doors - by Iliankytb",-- Title of the script
@@ -68,6 +68,7 @@ window:Notify({
                 Message = V,
                 Duration = 7.5,
 })
+
 local ItemNames = {
     "KeyObtain",
     "LeverForGate",
@@ -100,6 +101,7 @@ local ItemNames = {
     "CringlePresent",
 "WaterPump",
 }
+
 local function getServerInfo()
     local Players = game:GetService("Players")
     local playerCount = #Players:GetPlayers()
@@ -1555,16 +1557,11 @@ Text = "Auto Anchor",
 AutoAnchorCode = Value 
 end,
 }) 
-
+	local AllAvailableThemes = library:GetAllThemes()
 local ChangeThemeDropdown = SettingsTab:AddDropdown({
         Text = "Change Theme:",
         Name = "CTD",
-        Options = {"Default", "Light", "RedDark","BlueNeon","GreenMatrix","PurpleDream","Sunset",
-        "Ocean","Toxic","Storm","LimePop","Cyber","Chocolate","RoseGold","CottonCandy","NightSky","Steel",
-            "GoldLux","Ice","TealWave","FrostFire","DarkMatter","Lava","PinkCandy","Sakura","DeepSpace","Skyline","Crimson"
-            ,"Desert","Camo","Plasma","Arctic","Slate","Vaporwave"
-            
-        },
+        Options = AllAvailableThemes,
         Default = "Default",
         MultiSelect = false,
         Flag = "CTD", --Put a name flag for save data if you enabled saving data
