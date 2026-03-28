@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.5"
+local V = "V.0.6"
 
 library:CreateWindow({
 	Title = "Rainbow Friend 1 - by Iliankytb",-- Title of the script
@@ -43,7 +43,7 @@ local SettingsTab = window:CreateTab("Settings",0)
 local ActiveEspItems,ActiveEspMonsters,ActiveAutoPickupItems = false,false,false
 local ParagraphInfoServer = InfoTab:AddParagraph({Title = "",Content = "Loading",Name = "Paragraph1"})
 local MarketplaceService = game:GetService("MarketplaceService")
-local infoGameName = MarketplaceService:GetProductInfo(game.GameId)
+local infoGameName = MarketplaceService:GetProductInfo(game.PlaceId)
 
 local Version = InfoTab:AddText({
 		Text = "Version:"..V,
@@ -255,15 +255,11 @@ local ButtonUnloadCheat = SettingsTab:AddButton({
  window:Destroy()
 end,
 })
+  	local AllAvailableThemes = library:GetAllThemes()
 local ChangeThemeDropdown = SettingsTab:AddDropdown({
 		Text = "Change Theme:",
 		Name = "CTD",
-		Options = {"Default", "Light", "RedDark","BlueNeon","GreenMatrix","PurpleDream","Sunset",
-		"Ocean","Toxic","Storm","LimePop","Cyber","Chocolate","RoseGold","CottonCandy","NightSky","Steel",
-			"GoldLux","Ice","TealWave","FrostFire","DarkMatter","Lava","PinkCandy","Sakura","DeepSpace","Skyline","Crimson"
-			,"Desert","Camo","Plasma","Arctic","Slate","Vaporwave"
-			
-		},
+		Options = AllAvailableThemes,
 		Default = "Default",
 		MultiSelect = false,
 		Flag = "CTD", --Put a name flag for save data if you enabled saving data
