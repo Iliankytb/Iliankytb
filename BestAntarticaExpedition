@@ -2,7 +2,8 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.9"
+local V = "V.0.10"
+
 library:CreateWindow({
 	Title = "Antartic Expedition - by Iliankytb",-- Title of the script
 	Theme = selectedTheme,--View more theme in my dicord server!
@@ -49,7 +50,7 @@ local ValueSpeed = 16
 local ValueJumpPower = 50
 local ParagraphInfoServer = InfoTab:AddParagraph({Title = "",Content = "Loading",Name = "Paragraph1"})
 local MarketplaceService = game:GetService("MarketplaceService")
-local infoGameName = MarketplaceService:GetProductInfo(game.GameId)
+local infoGameName = MarketplaceService:GetProductInfo(game.PlaceId)
 
 local Version = InfoTab:AddText({
 		Text = "Version:"..V,
@@ -296,16 +297,11 @@ Text = "Unload Cheat",
 
 end,
 })
-
+  	local AllAvailableThemes = library:GetAllThemes()
 local ChangeThemeDropdown = SettingsTab:AddDropdown({
 		Text = "Change Theme:",
 		Name = "CTD",
-		Options = {"Default", "Light", "RedDark","BlueNeon","GreenMatrix","PurpleDream","Sunset",
-		"Ocean","Toxic","Storm","LimePop","Cyber","Chocolate","RoseGold","CottonCandy","NightSky","Steel",
-			"GoldLux","Ice","TealWave","FrostFire","DarkMatter","Lava","PinkCandy","Sakura","DeepSpace","Skyline","Crimson"
-			,"Desert","Camo","Plasma","Arctic","Slate","Vaporwave"
-			
-		},
+		Options = AllAvailableThemes,
 		Default = "Default",
 		MultiSelect = false,
 		Flag = "CTD", --Put a name flag for save data if you enabled saving data
