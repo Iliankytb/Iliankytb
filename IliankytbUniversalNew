@@ -1,7 +1,7 @@
 
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.17"
+local V = "V.0.18"
 
 library:CreateWindow({
 	Title = "Universel - by Iliankytb",-- Title of the script
@@ -1064,15 +1064,11 @@ end
 end
 end,
 })
+  	local AllAvailableThemes = library:GetAllThemes()
 local ChangeThemeDropdown = SettingsTab:AddDropdown({
 		Text = "Change Theme:",
 		Name = "CTD",
-		Options = {"Default", "Light", "RedDark","BlueNeon","GreenMatrix","PurpleDream","Sunset",
-		"Ocean","Toxic","Storm","LimePop","Cyber","Chocolate","RoseGold","CottonCandy","NightSky","Steel",
-			"GoldLux","Ice","TealWave","FrostFire","DarkMatter","Lava","PinkCandy","Sakura","DeepSpace","Skyline","Crimson"
-			,"Desert","Camo","Plasma","Arctic","Slate","Vaporwave"
-			
-		},
+		Options = AllAvailableThemes,
 		Default = "Default",
 		MultiSelect = false,
 		Flag = "CTD", --Put a name flag for save data if you enabled saving data
