@@ -482,6 +482,21 @@ local UseSound = opts.UseSound or true
 						end)
 				end
 			end
+		else
+					local NewSound = Instance.new("Sound",gui)
+					NewSound.Name = "Notif"	
+						NewSound.SoundId = "rbxassetid://106553517979212"
+					NewSound:Play()
+					if NewSound.IsLoaded then
+						game:GetService("Debris"):AddItem(NewSound,NewSound.TimeLength)
+					else
+						task.spawn(function()
+							task.wait(5)
+							if NewSound then
+								NewSound:Destroy()
+							end
+						end)
+					end
 		end
 		end
 		task.delay(duration, function()
@@ -2007,10 +2022,18 @@ end
 			local flag = opts.Flag or opts.Name or "Dropdown"
 			local multi = opts.MultiSelect or false
 			local dropdown = {}
+			local Default = opts.Default
 			dropdown.Selected = {}
 			dropdown.Options = opts.Options or {}
 			dropdown.FrameOpen = false
 
+if Default and (Default ~= "" and Default ~= {}) then
+if multi then
+dropdown.Selected = Default
+else
+dropdown.Selected = {Default}
+end
+end
 			tab.dropdowns = tab.dropdowns or {}
 			tab.dropdownValue = tab.dropdownValue or {}
 
@@ -2025,7 +2048,6 @@ end
 				Parent = tab.content
 			})
 			createUI("UICorner", { Parent = btn })
-
 
 			local container = createUI("Frame", {
 				Size = UDim2.new(0.9, 0, 0, 0),
@@ -2073,7 +2095,6 @@ end
 			end
 
 			local function UpdateOptionVisual()
-
 				for _, child in ipairs(optionHolder:GetChildren()) do
 					if child:IsA("TextButton") then
 						local isSelected = table.find(dropdown.Selected, child.Text)
@@ -2310,7 +2331,6 @@ end
 	local DeltaTime = 0
 
 	RenderConnection = RunService.RenderStepped:Connect(function(dt)
-	
 		DeltaTime = DeltaTime + (dt - DeltaTime) * 0.1
 		local fps = math.floor(1 / DeltaTime)
 		FPS = fps
@@ -2400,7 +2420,7 @@ end
 end
 
 function library:CreateWindow(settings1, onLoad)
-	print("Library Version: 0.47")
+	print("Library Version: 0.48")
 	if game:GetService("RunService"):IsStudio() then
 		if game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary") then
 			game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary"):Destroy()
@@ -2592,7 +2612,6 @@ function library:CreateWindow(settings1, onLoad)
 				Parent = KeyFrame,
 			})
 			createUI("UICorner", {Parent = GetKeyBtn})
-
 
 			local DiscordBtn = createUI("TextButton", {
 				Size = UDim2.new(0, halfWidth, 0, 30),
