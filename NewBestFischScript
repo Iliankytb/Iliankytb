@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.8"
+local V = "V.0.9"
       
 library:CreateWindow({
     Title = "Fisch by Iliankytb",-- Title of the script
@@ -826,16 +826,11 @@ end
         AntiAfk = state
         end
         })
-        
+        	local AllAvailableThemes = library:GetAllThemes()
     local ChangeThemeDropdown = SettingsTab:AddDropdown({
         Text = "Change Theme:",
         Name = "Dropdown2",
-        Options = {"Default", "Light", "RedDark","BlueNeon","GreenMatrix","PurpleDream","Sunset",
-        "Ocean","Toxic","Storm","LimePop","Cyber","Chocolate","RoseGold","CottonCandy","NightSky","Steel",
-            "GoldLux","Ice","TealWave","FrostFire","DarkMatter","Lava","PinkCandy","Sakura","DeepSpace","Skyline","Crimson"
-            ,"Desert","Camo","Plasma","Arctic","Slate","Vaporwave"
-            
-        },
+        Options = AllAvailableThemes,
         Default = "Default",
         MultiSelect = false,
         Flag = "Dropdown2", --Put a name flag for save data if you enabled saving data
