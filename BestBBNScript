@@ -11,7 +11,7 @@ library:CreateWindow({
 	KeyPC = Enum.KeyCode.K,--the key for pc to Open/close the frame
 	CustomSize = UDim2.new(0, 600, 0, 500), -- You can custom size but only for pc(for the moment lol!)
 	Data = {
-		EnableSavingData = true,--Enabling data saver or no
+		EnableSavingData = True,--Enabling data saver or no
 		DisableNotifyingLoadedData = false,--set it to true for disable the notify when loaded data
 		FolderName = "SaverBBN",--Folder Name,you can change it
 		FileName = "Iliankytb",-- File name for the data saver,you can change it
@@ -348,7 +348,17 @@ end
 end
 end,
 })
-	
+	local DeleteDoorsButtons = MainTab:AddButton({
+ Text = "Delete Doors", 
+Name = "DeleteDoorsButtons",
+  Callback = function()
+ if workspace.MAPS:FindFirstChild("GAME MAP") then
+if game.Workspace.MAPS["GAME MAP"].Doors then 
+    game.Workspace.MAPS["GAME MAP"].Doors:Destroy()
+ end
+ end
+end,
+})
 	local ButonDiscordLink = DiscordTab:AddButton({
 		Text = "Discord Link",
 		Name = "Button",
