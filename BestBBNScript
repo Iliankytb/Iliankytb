@@ -1,6 +1,7 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local V = "V.0.1"
 local selectedTheme = "Default"
+
 library:CreateWindow({
 	Title = "Bite by night by Iliankytb",-- Title of the script
 	Theme = selectedTheme,--View more theme in my discord server!
@@ -10,7 +11,7 @@ library:CreateWindow({
 	KeyPC = Enum.KeyCode.K,--the key for pc to Open/close the frame
 	CustomSize = UDim2.new(0, 600, 0, 500), -- You can custom size but only for pc(for the moment lol!)
 	Data = {
-		EnableSavingData = false,--Enabling data saver or no
+		EnableSavingData = true,--Enabling data saver or no
 		DisableNotifyingLoadedData = false,--set it to true for disable the notify when loaded data
 		FolderName = "SaverBBN",--Folder Name,you can change it
 		FileName = "Iliankytb",-- File name for the data saver,you can change it
@@ -59,6 +60,7 @@ local ActiveSpeedBoost2 = false
 local ActiveEspKillers = false
 local ActiveEspSurvivors = false
 local ActiveEspGen = false
+local AutoEscape = false
 
 local Version = InfoTab:AddText({
         Text = "Version:"..V,
@@ -95,6 +97,8 @@ local LineESPEnabled = false
 task.spawn(function()
 Camera = workspace.CurrentCamera
 end)
+local Teleported = false
+
 local function CreateEsp(Char, Color, Text, Parent)
     if not Char or not Parent then return end
     if Char:FindFirstChild("ESP") and Char:FindFirstChildOfClass("Highlight") then return end
@@ -222,6 +226,27 @@ end)
      if ActiveSpeedBoost2 then
     game.Players.LocalPlayer.Character:SetAttribute("WalkSpeed",ValueWalkSpeed)
     end
+    if AutoEscape and not Teleported and workspace.GAME.CAN_ESCAPE.Value == true then
+        if workspace.MAPS:FindFirstChild("GAME MAP") then
+            if game.Players.LocalPlayer.Character.Parent == workspace.PLAYERS.ALIVE then
+         for _, Part in pairs(workspace.MAPS:FindFirstChild("GAME MAP"):FindFirstChild("Escapes"):GetChildren()) do
+             if Part and Part:IsA("BasePart") and Part:GetAttribute("Enabled") and Part:FindFirstChildOfClass("Highlight") and Part:FindFirstChildOfClass("Highlight").Enabled then
+          if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+           Teleported = true
+           game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Anchored = true
+               game.Players.LocalPlayer.Character.PrimaryPart.CFrame = Part.CFrame
+               task.spawn(function()
+          wait(1.5)
+          game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Anchored = false
+          end)
+           wait(10)
+            Teleported = false
+             end
+             end
+            end
+        end
+    end
+ end
  end
 end)
 local function KeepEsp(Char, Parent)
@@ -334,7 +359,7 @@ end,
 
 	--Toggle--
 	local ToggleAG = MainTab:AddToggle({
-		Text = "Auto Generator",
+		Text = "Auto Generator (Coming soon!)",
 		Name = "ToggleAG",
 		Flag = "ToggleAG",--Put a name flag for save data if you enabled saving data
 		Default = false,
@@ -429,6 +454,16 @@ Text =  "Big Distance Prompt",
 ActiveBigPrompt = Value 
 end,
 })
+local AutoAutoEscapeButton = MainTab:AddToggle({
+Text =  "Auto Escape",
+   Name ="AutoAutoEscapeButton",
+   Default = false,
+   Flag = "AutoAutoEscapeButton", 
+   Callback = function(Value)
+AutoEscape = Value 
+end,
+})
+
 local ButtonUnloadCheat = SettingsTab:AddButton({
 Text = "Unload Cheat",
    Name = "ButtonUnloadCheat",
