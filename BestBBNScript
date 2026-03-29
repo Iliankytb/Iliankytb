@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.1"
+local V = "V.0.2"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -61,6 +61,7 @@ local ActiveEspKillers = false
 local ActiveEspSurvivors = false
 local ActiveEspGen = false
 local AutoEscape = false
+local AutoGen = false
 
 local Version = InfoTab:AddText({
         Text = "Version:"..V,
@@ -226,6 +227,11 @@ end)
      if ActiveSpeedBoost2 then
     game.Players.LocalPlayer.Character:SetAttribute("WalkSpeed",ValueWalkSpeed)
     end
+    if  AutoGen then
+    if  game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("Gen") then
+    game:GetService("Players").LocalPlayer.PlayerGui.Gen.GeneratorMain.Event:FireServer(true)
+     end
+    end
     if AutoEscape and not Teleported and workspace.GAME.CAN_ESCAPE.Value == true then
         if workspace.MAPS:FindFirstChild("GAME MAP") then
             if game.Players.LocalPlayer.Character.Parent == workspace.PLAYERS.ALIVE then
@@ -369,12 +375,12 @@ end,
 
 	--Toggle--
 	local ToggleAG = MainTab:AddToggle({
-		Text = "Auto Generator (Coming soon!)",
+		Text = "Auto Generator",
 		Name = "ToggleAG",
 		Flag = "ToggleAG",--Put a name flag for save data if you enabled saving data
 		Default = false,
 		Callback = function(state)
-
+AutoGen = state
 		end
 	})
 
