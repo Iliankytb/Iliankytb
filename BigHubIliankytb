@@ -4,6 +4,9 @@ local PlaceService = Game
 local PlaceIdDoorsLobby = 6516141723
 local PlaceIdDoorsGame = 6839171747
 
+--BBN--
+local PlaceIdBBNGame = 70845479499574
+
 --Hunted--
 local PlaceIdFNAFHuntedGame =74161468227974
 
@@ -124,6 +127,8 @@ elseif PlaceService.PlaceId == PlaceIdGameHZ then
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/BestFreeHuntyZombies"))()
 elseif PlaceService.PlaceId == PlaceIdRainbowFriend2Game then
 loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/BestRainbowFriendsTwo"))()
+elseif PlaceService.PlaceId == PlaceIdBBNGame then
+loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/BestBBNScript"))()   
 elseif PlaceService.PlaceId == PlaceIdRainbowFriend2Lobby then
 loadingText.Visible = false
 mainFrame.Text = "Loading Universale Cheat Because you're not ingame(it take Some Times)"
