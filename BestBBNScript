@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.3"
+local V = "V.0.4"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -11,13 +11,13 @@ library:CreateWindow({
 	KeyPC = Enum.KeyCode.K,--the key for pc to Open/close the frame
 	CustomSize = UDim2.new(0, 600, 0, 500), -- You can custom size but only for pc(for the moment lol!)
 	Data = {
-		EnableSavingData = True,--Enabling data saver or no
+		EnableSavingData = true,--Enabling data saver or no
 		DisableNotifyingLoadedData = false,--set it to true for disable the notify when loaded data
 		FolderName = "SaverBBN",--Folder Name,you can change it
 		FileName = "Iliankytb",-- File name for the data saver,you can change it
 	},
 	Discord = {
-		Enabled = true,--enable to copy the discord
+		Enabled = false,--enable to copy the discord
 		DiscordLink = "https://discord.gg/E2TqYRsRP4",-- put the entire Link of discord
 		RememberJoin = true,-- Set this to false to make them copy the link every time they load the script
 		Duration = 10,-- 5 is the default you can change the number only for remember join
@@ -65,6 +65,10 @@ local AutoGen = false
 local ActiveEspFuseBoxes = false
 local FighterAutoParry = false
 local ActiveEspBattery = false
+local AutoBarricade = false
+local AutoSafeSpot = false
+local HitboxExpender = false
+local ValueHE = 15
 
 local Version = InfoTab:AddText({
         Text = "Version:"..V,
@@ -97,11 +101,23 @@ local RunService = game:GetService("RunService")
 local ESPs = {}
 local Camera = nil
 local LineESPEnabled = false 
+local SavedCFrame = nil
 
 task.spawn(function()
 Camera = workspace.CurrentCamera
 end)
 local Teleported = false
+
+local function getNewestDot()
+    local newest = nil
+    local newestTime = -math.huge
+    for _, child in ipairs(game:GetService("Players").LocalPlayer.PlayerGui:GetChildren()) do
+        if child.Name == "Dot" then
+            newest = child
+        end
+    end
+    return newest
+end
 
 local function CreateEsp(Char, Color, Text, Parent)
     if not Char or not Parent then return end
@@ -224,6 +240,32 @@ end)
 end
 end)
  if game.Players.LocalPlayer.Character then
+     if AutoBarricade then
+         task.spawn(function()
+     local dot = getNewestDot()
+    if not dot then return end
+    local container = dot:FindFirstChild("Container")
+    if not container then return end
+    local frame = container:FindFirstChild("Frame")
+    local box = container:FindFirstChild("Box")
+    if not frame or not box then return end
+
+    local boxAbs = box.AbsolutePosition
+    local boxSize = box.AbsoluteSize
+    local conAbs = container.AbsolutePosition
+
+    frame.Position = UDim2.new(
+        0, (boxAbs.X + boxSize.X * 0.5) - conAbs.X,
+        0, (boxAbs.Y + boxSize.Y * 0.5) - conAbs.Y
+    )
+     end)
+     end
+     if AutoSafeSpot then
+     if game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid").Health <= 35 then
+     game.Players.LocalPlayer.Character.PrimaryPart.Anchored = true
+     game.Players.LocalPlayer.Character.PrimaryPart.CFrame = CFrame.new(Vector3.new(0,200,0))
+     end
+     end
     if ActiveSpeedBoost then
     game.Players.LocalPlayer.Character:SetAttribute("RunSpeed",ValueRunSpeed)
     end
@@ -371,7 +413,7 @@ if  Players2:IsA("Model") and Players2.PrimaryPart and not Players2.PrimaryPart:
 if  Players2:FindFirstChildOfClass("Highlight") then
     Players2:FindFirstChildOfClass("Highlight"):Destroy()
 end
-CreateEsp(Players2,Color3.fromRGB(255,255,0),"Generators",Players2.PrimaryPart,2)
+CreateEsp(Players2,Color3.fromRGB(0,0,255),"Fuse Boxe",Players2.PrimaryPart,2)
 end
 end
 end
@@ -416,6 +458,32 @@ AutoGen = state
 		end
 	})
 
+	local ToggleBarricade = MainTab:AddToggle({
+		Text = "Auto Barricade",
+		Name = "ToggleBarricade",
+		Flag = "ToggleBarricade",--Put a name flag for save data if you enabled saving data
+		Default = false,
+		Callback = function(state)
+AutoBarricade = state
+		end
+	})
+	local ToggleAutoSafeSpot = MainTab:AddToggle({
+		Text = "Auto Safe spot EXPERIMENT! (when near to die)",
+		Name = "ToggleAutoSafeSpot",
+		Flag = "ToggleAutoSafeSpot",--Put a name flag for save data if you enabled saving data
+		Default = false,
+		Callback = function(state)
+        if not AutoSafeSpot then
+SavedCFrame = game.Players.LocalPlayer.Character.PrimaryPart.CFrame
+        end
+AutoSafeSpot = state
+if not AutoSafeSpot then
+   game.Players.LocalPlayer.Character.PrimaryPart.CFrame = SavedCFrame
+   game.Players.LocalPlayer.Character.PrimaryPart.Anchored = false
+end
+		end
+	})
+
 	local NoCooldownpromptToggle = MainTab:AddToggle({
 Text =  "Instant Prompt",
    Name ="NoCooldownpromptToggle",
@@ -449,6 +517,7 @@ end
 end)
 end,
 })
+
 local PlayerSpeedSlider = PlayerTab:AddSlider({
 Text = "Run Speed",
    Name = "PlayerSpeedSlider",
@@ -471,6 +540,30 @@ Text = "Active Modifying Run Speed",
   ActiveSpeedBoost = Value
 end,
 })
+
+local HESlider = MainTab:AddSlider({
+Text = "Hitbox Size",
+   Name = "HESlider",
+   Min = 0,
+   Max = 30,
+   Default = 15,
+   Flag = "HESlider", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+CurrentValue = Value
+ValueHE = Value
+end, 
+})
+
+local HitboxExpenderToggle = MainTab:AddToggle({
+Text = "Active Hitbox Expender",
+   Name = "HitboxExpenderToggle",
+   Default = false,
+   Flag = "HitboxExpenderToggle", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  HitboxExpender = Value
+end,
+})
+
 local PlayerSpeedSlider = PlayerTab:AddSlider({
 Text = "Walk Speed",
    Name = "PlayerSpeedSlider2",
@@ -573,11 +666,11 @@ end,
 		end
 	})
 	
---library:LoadData()
+library:LoadData()
  workspace.DescendantAdded:Connect(function(child) 
  local HrpPlayer = game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
- if FighterAutoParry then
  if child:IsA("BoxHandleAdornment") then
+      if FighterAutoParry then
      task.spawn(function()
      local Distance = (child.Position - HrpPlayer.Position).Magnitude
      if Distance <= 15 then
@@ -585,6 +678,11 @@ end,
      end
  end)
  end
+  if HitboxExpender then
+      task.spawn(function()
+      child.Size = Vector3.new(ValueHE,ValueHE,ValueHE)
+  end)
+  end
  end
 task.wait(0.75)
 if ActiveNoCooldownPrompt then
@@ -625,30 +723,28 @@ if child.Parent and child.Parent == workspace.MAPS["GAME MAP"].FuseBoxes and chi
 if child:FindFirstChildOfClass("Highlight") then
     child:FindFirstChildOfClass("Highlight"):Destroy()
 end
-CreateEsp(child,Color3.fromRGB(255,255,0),"Generator",child.PrimaryPart,2)
+CreateEsp(child,Color3.fromRGB(0,0,255),"Fuse Boxe",child.PrimaryPart,2)
 end
 end
 end
 end)
+
 local Players = game:GetService("Players")
 
 workspace.DescendantRemoving:Connect(function(child)
-
 	if child:IsA("Model") then
 		local player = Players:GetPlayerFromCharacter(child)
-
 		
 		if ActiveEspSurvivors and player then
-			if child:IsDescendantOf(workspace.PLAYERS.ALIVE) and child.PrimaryPart then
+			if child:IsDescendantOf(workspace.PLAYERS) and child.PrimaryPart then
 				if child:FindFirstChildOfClass("Highlight") and child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
 					KeepEsp(child, child.PrimaryPart)
 				end
 			end
 		end
 
-	
 		if ActiveEspKillers and player then
-			if child:IsDescendantOf(workspace.PLAYERS.KILLER) and child:FindFirstChild("RootPart") then
+			if child:IsDescendantOf(workspace.PLAYERS) and child:FindFirstChild("RootPart") then
 				if child:FindFirstChildOfClass("Highlight") and child.RootPart:FindFirstChildOfClass("BillboardGui") then
 					KeepEsp(child, child.RootPart)
 				end
