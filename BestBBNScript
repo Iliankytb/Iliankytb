@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.10"
+local V = "V.0.11"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -69,6 +69,8 @@ local AutoBarricade = false
 local AutoSafeSpot = false
 local HitboxExpender = false
 local ValueHE = 15
+local ActiveEspBattery = false
+local ActiveEspTraps = false
 
 local Version = InfoTab:AddText({
         Text = "Version:"..V,
@@ -432,6 +434,56 @@ end
 end
 end,
 })
+local EspBatteryToggle = EspTab:AddToggle({
+ Text = "Esp Battery", 
+Name = "EspBatteryToggle",
+   CurrentValue = false,
+   Flag = "EspBatteryToggle", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  ActiveEspBattery = Value 
+if ActiveEspBattery then
+ for _,Players2 in pairs(game.Workspace.IGNORE:GetChildren()) do 
+if  Players2:IsA("BasePart") and Players2.Name == "Battery" and not Players2:FindFirstChildOfClass("BillboardGui") then
+if  Players2:FindFirstChildOfClass("Highlight") then
+    Players2:FindFirstChildOfClass("Highlight"):Destroy()
+end
+CreateEsp(Players2,Color3.fromRGB(0,0,255),"Battery",Players2,2)
+end
+end
+else
+ for _,Players2 in pairs(game.Workspace.IGNORE:GetChildren()) do 
+if Players2:IsA("BasePart") and Players2.Name == "Battery" and Players2 and Players2:FindFirstChildOfClass("Highlight") and Players2:FindFirstChildOfClass("BillboardGui") then
+KeepEsp(Players2,Players2)
+end
+end 
+end
+end,
+})
+local EspTrapToggle = EspTab:AddToggle({
+ Text = "Esp Traps", 
+Name = "EspTrapToggle",
+   CurrentValue = false,
+   Flag = "EspTrapToggle", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  ActiveEspTraps = Value 
+if ActiveEspTraps then
+ for _,Players2 in pairs(game.Workspace.IGNORE:GetChildren()) do 
+if  Players2:IsA("Model") and Players2.Name == "Trap" and not Players2.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+if  Players2:FindFirstChildOfClass("Highlight") then
+    Players2:FindFirstChildOfClass("Highlight"):Destroy()
+end
+CreateEsp(Players2,Color3.fromRGB(255,0,0),"Trap",Players2.PrimaryPart,2)
+end
+end
+else
+ for _,Players2 in pairs(game.Workspace.IGNORE:GetChildren()) do 
+if Players2:IsA("Model") and Players2.Name == "Trap" and Players2 and Players2:FindFirstChildOfClass("Highlight") and Players2.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+KeepEsp(Players2,Players2.PrimaryPart)
+end
+end 
+end
+end,
+})
 	local DeleteDoorsButtons = MainTab:AddButton({
  Text = "Delete Doors", 
 Name = "DeleteDoorsButtons",
@@ -504,9 +556,9 @@ if ActiveNoCooldownPrompt then
 for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
 if Assets:isA("ProximityPrompt") then 
 task.spawn(function()
-if Assets.HoldDuration ~= 0 then
+if Assets.HoldDuration ~= 0.1 then
 Assets:SetAttribute("HoldDurationOld",Assets.HoldDuration)
-Assets.HoldDuration = 0
+Assets.HoldDuration = 0.1
 end
 end)
 end 
@@ -691,7 +743,7 @@ if child:IsA("BoxHandleAdornment") then
         task.wait(0.5)
         CanParry = true
         end)
-             local Module = require(game:GetService("ReplciatedStorage").Modules.Keybinds)
+             local Module = require(game:GetService("ReplicatedStorage").Modules.Keybinds)
                if Module then
                    Module:Fire(true,{"Ability",2})
                end
@@ -704,9 +756,9 @@ if child:IsA("BoxHandleAdornment") then
  end
 task.wait(0.75)
 if ActiveNoCooldownPrompt then
-if child:IsA("ProximityPrompt") and child.HoldDuration ~= 0 then
+if child:IsA("ProximityPrompt") and child.HoldDuration ~= 0.1 then
 child:SetAttribute("HoldDurationOld",child.HoldDuration)
-child.HoldDuration = 0
+child.HoldDuration = .1
 end  
 end
 if ActiveEspSurvivors then 
@@ -743,6 +795,22 @@ if child:FindFirstChildOfClass("Highlight") then
 end
 CreateEsp(child,Color3.fromRGB(0,0,255),"Fuse Boxe",child.PrimaryPart,2)
 end
+end
+end
+if ActiveEspTraps then
+if child.Parent and child.Name == "Trap" and child.Parent == workspace.IGNORE and child:IsA("Model") and child.PrimaryPart  and not child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+if child:FindFirstChildOfClass("Highlight") then
+    child:FindFirstChildOfClass("Highlight"):Destroy()
+end
+CreateEsp(child,Color3.fromRGB(255,0,0),"Trap",child.PrimaryPart,2)
+end
+end
+if ActiveEspBattery then
+if child.Parent and child.Name == "Battery" and child.Parent == workspace.IGNORE and child:IsA("BasePart") and child  and not child:FindFirstChildOfClass("BillboardGui") then
+if child:FindFirstChildOfClass("Highlight") then
+    child:FindFirstChildOfClass("Highlight"):Destroy()
+end
+CreateEsp(child,Color3.fromRGB(0,0,255),"Battery",child,2)
 end
 end
 end)
@@ -783,6 +851,21 @@ workspace.DescendantRemoving:Connect(function(child)
 			if child:IsDescendantOf(map.FuseBoxes) and child.PrimaryPart then
 				if child:FindFirstChildOfClass("Highlight") and child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
 					KeepEsp(child, child.PrimaryPart)
+				end
+			end
+		end
+          if ActiveEspTraps then
+			if child:IsDescendantOf(workspace.IGNORE) and child.PrimaryPart then
+				if child:FindFirstChildOfClass("Highlight") and child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+					KeepEsp(child, child.PrimaryPart)
+				end
+			end
+		end
+        elseif child:IsA("BasePart") then
+	  if ActiveEspBattery  then
+			if child:IsDescendantOf(workspace.IGNORE) and child.Name == "Battery"then
+				if child:FindFirstChildOfClass("Highlight") and child:FindFirstChildOfClass("BillboardGui") then
+					KeepEsp(child, child)
 				end
 			end
 		end
