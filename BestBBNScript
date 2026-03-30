@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.5"
+local V = "V.0.6"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -17,7 +17,7 @@ library:CreateWindow({
 		FileName = "Iliankytb",-- File name for the data saver,you can change it
 	},
 	Discord = {
-		Enabled = false,--enable to copy the discord
+		Enabled = true,--enable to copy the discord
 		DiscordLink = "https://discord.gg/E2TqYRsRP4",-- put the entire Link of discord
 		RememberJoin = true,-- Set this to false to make them copy the link every time they load the script
 		Duration = 10,-- 5 is the default you can change the number only for remember join
@@ -241,14 +241,13 @@ end
 end)
  if game.Players.LocalPlayer.Character then
      if AutoBarricade then
-         task.spawn(function()
      local dot = getNewestDot()
-    if not dot then return end
+    if  dot then 
     local container = dot:FindFirstChild("Container")
-    if not container then return end
+    if  container then
     local frame = container:FindFirstChild("Frame")
     local box = container:FindFirstChild("Box")
-    if not frame or not box then return end
+    if frame and  box then 
 
     local boxAbs = box.AbsolutePosition
     local boxSize = box.AbsoluteSize
@@ -258,14 +257,15 @@ end)
         0, (boxAbs.X + boxSize.X * 0.5) - conAbs.X,
         0, (boxAbs.Y + boxSize.Y * 0.5) - conAbs.Y
     )
-     end)
+end
+end
+end
      end
      if AutoSafeSpot then
           if game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid").Health > 35 then
          SavedCFrame = game.Players.LocalPlayer.Character.PrimaryPart.CFrame
           end
      if game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid").Health <= 35 then
-     game.Players.LocalPlayer.Character.PrimaryPart.Anchored = true
      game.Players.LocalPlayer.Character.PrimaryPart.CFrame = CFrame.new(Vector3.new(0,200,0))
      end
      end
@@ -290,7 +290,7 @@ end)
            game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Anchored = true
                game.Players.LocalPlayer.Character.PrimaryPart.CFrame = Part.CFrame
                task.spawn(function()
-          wait(1.5)
+          wait(0.15)
           game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Anchored = false
           end)
            wait(10)
@@ -303,6 +303,7 @@ end)
  end
  end
 end)
+
 local function KeepEsp(Char, Parent)
     if not Char or not Char:FindFirstChildOfClass("Highlight") then return end
     if not Parent or not Parent:FindFirstChildOfClass("BillboardGui") then return end
@@ -479,7 +480,6 @@ AutoBarricade = state
 AutoSafeSpot = state
 if not AutoSafeSpot then
    game.Players.LocalPlayer.Character.PrimaryPart.CFrame = SavedCFrame
-   game.Players.LocalPlayer.Character.PrimaryPart.Anchored = false
 end
 		end
 	})
@@ -674,7 +674,7 @@ library:LoadData()
      task.spawn(function()
      local Distance = (child.Position - HrpPlayer.Position).Magnitude
      if Distance <= 15 then
-     
+     Print("Auto Parry Work (Coming soon)")
      end
  end)
  end
@@ -730,13 +730,12 @@ end
 end)
 
 local Players = game:GetService("Players")
-
 workspace.DescendantRemoving:Connect(function(child)
 	if child:IsA("Model") then
 		local player = Players:GetPlayerFromCharacter(child)
 		
 		if ActiveEspSurvivors and player then
-			if child:IsDescendantOf(workspace.PLAYERS) and child.PrimaryPart then
+			if child:IsDescendantOf(workspace.PLAYERS.ALIVE) and child.PrimaryPart then
 				if child:FindFirstChildOfClass("Highlight") and child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
 					KeepEsp(child, child.PrimaryPart)
 				end
@@ -744,7 +743,7 @@ workspace.DescendantRemoving:Connect(function(child)
 		end
 
 		if ActiveEspKillers and player then
-			if child:IsDescendantOf(workspace.PLAYERS) and child:FindFirstChild("RootPart") then
+			if child:IsDescendantOf(workspace.PLAYERS.KILLER) and child:FindFirstChild("RootPart") then
 				if child:FindFirstChildOfClass("Highlight") and child.RootPart:FindFirstChildOfClass("BillboardGui") then
 					KeepEsp(child, child.RootPart)
 				end
