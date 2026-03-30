@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.9"
+local V = "V.0.10"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -462,7 +462,7 @@ AutoGen = state
 		end
 	})
 	local ToggleAutoParry = MainTab:AddToggle({
-		Text = "Fighter - Auto Parry (Coming!)",
+		Text = "Fighter - Auto Parry",
 		Name = "ToggleAutoParry",
 		Flag = "ToggleAutoParry",--Put a name flag for save data if you enabled saving data
 		Default = false,
@@ -680,16 +680,22 @@ local CanParry = true
  workspace.DescendantAdded:Connect(function(child) 
  local HrpPlayer = game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
 if child:IsA("BoxHandleAdornment") then
-    if FighterAutoParry and HrpPlayer and CanParry then
+    local Character = game.Players.LocalPlayer.Character
+    if FighterAutoParry and HrpPlayer and CanParry and not Character:GetAttribute("IFrames")  and not Character:GetAttribute("InAbility") and not Character:GetAttribute("Stun") and  Character:GetAttribute("Team") == "Survivor" and Character:GetAttribute("Character") == "Survivor-Fighter" then
         local Distance = (child.CFrame.Position - HrpPlayer.Position).Magnitude
         
         if Distance <= 5 then
             CanParry = false
-            print("Auto Parry Work (Coming soon)")
             task.spawn(function()
+               task.spawn(function()
         task.wait(0.5)
         CanParry = true
         end)
+             local Module = require(game:GetService("ReplciatedStorage").Modules.Keybinds)
+               if Module then
+                   Module:Fire(true,{"Ability",2})
+               end
+    end)
         end
     end
   if HitboxExpender then
@@ -746,7 +752,7 @@ workspace.DescendantRemoving:Connect(function(child)
 	if child:IsA("Model") then
 		local player = Players:GetPlayerFromCharacter(child)
 		
-		if ActiveEspSurvivors and player then
+		if ActiveEspSurvivors then
 			if child:IsDescendantOf(workspace.PLAYERS.ALIVE) and child.PrimaryPart then
 				if child:FindFirstChildOfClass("Highlight") and child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
 					KeepEsp(child, child.PrimaryPart)
@@ -754,7 +760,7 @@ workspace.DescendantRemoving:Connect(function(child)
 			end
 		end
 
-		if ActiveEspKillers and player then
+		if ActiveEspKillers then
 			if child:IsDescendantOf(workspace.PLAYERS.KILLER) and child:FindFirstChild("RootPart") then
 				if child:FindFirstChildOfClass("Highlight") and child.RootPart:FindFirstChildOfClass("BillboardGui") then
 					KeepEsp(child, child.RootPart)
