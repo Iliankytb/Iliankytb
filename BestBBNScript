@@ -685,11 +685,8 @@ if child:IsA("BoxHandleAdornment") then
             print("Auto Parry Work (Coming soon)")
         end
     end
-end
   if HitboxExpender then
-      task.spawn(function()
       child.Size = Vector3.new(ValueHE,ValueHE,ValueHE)
-  end)
   end
  end
 task.wait(0.75)
