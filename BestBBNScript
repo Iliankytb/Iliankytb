@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.8"
+local V = "V.0.9"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -266,7 +266,7 @@ end
          SavedCFrame = game.Players.LocalPlayer.Character.PrimaryPart.CFrame
           end
      if game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid").Health <= 35 then
-     game.Players.LocalPlayer.Character.PrimaryPart.CFrame = CFrame.new(Vector3.new(0,200,0))
+     game.Players.LocalPlayer.Character.PrimaryPart.CFrame = CFrame.new(0,500,0)
      end
      end
     if ActiveSpeedBoost then
@@ -675,14 +675,21 @@ end,
 	})
 	
 library:LoadData()
+
+local CanParry = true
  workspace.DescendantAdded:Connect(function(child) 
  local HrpPlayer = game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
 if child:IsA("BoxHandleAdornment") then
-    if FighterAutoParry and HrpPlayer then
+    if FighterAutoParry and HrpPlayer and CanParry then
         local Distance = (child.CFrame.Position - HrpPlayer.Position).Magnitude
         
-        if Distance <= 15 then
+        if Distance <= 5 then
+            CanParry = false
             print("Auto Parry Work (Coming soon)")
+            task.spawn(function()
+        task.wait(0.5)
+        CanParry = true
+        end)
         end
     end
   if HitboxExpender then
