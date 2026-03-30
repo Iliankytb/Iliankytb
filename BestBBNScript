@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.2"
+local V = "V.0.3"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -62,6 +62,9 @@ local ActiveEspSurvivors = false
 local ActiveEspGen = false
 local AutoEscape = false
 local AutoGen = false
+local ActiveEspFuseBoxes = false
+local FighterAutoParry = false
+local ActiveEspBattery = false
 
 local Version = InfoTab:AddText({
         Text = "Version:"..V,
@@ -354,6 +357,35 @@ end
 end
 end,
 })
+local EspFuseBoxwesToggle = EspTab:AddToggle({
+ Text = "Esp Fuse Boxes", 
+Name = "EspFuseBoxes",
+   CurrentValue = false,
+   Flag = "EspFuseBoxes", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  ActiveEspFuseBoxes = Value 
+if ActiveEspFuseBoxes then
+ if workspace.MAPS:FindFirstChild("GAME MAP") then
+for _,Players2 in pairs(game.Workspace.MAPS["GAME MAP"].FuseBoxes:GetChildren()) do 
+if  Players2:IsA("Model") and Players2.PrimaryPart and not Players2.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+if  Players2:FindFirstChildOfClass("Highlight") then
+    Players2:FindFirstChildOfClass("Highlight"):Destroy()
+end
+CreateEsp(Players2,Color3.fromRGB(255,255,0),"Generators",Players2.PrimaryPart,2)
+end
+end
+end
+else
+if workspace.MAPS:FindFirstChild("GAME MAP") then
+ for _,Players2 in pairs(game.Workspace.MAPS["GAME MAP"].FuseBoxes:GetChildren()) do 
+if Players2:IsA("Model") and Players2.PrimaryPart and Players2:FindFirstChildOfClass("Highlight") and Players2.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+KeepEsp(Players2,Players2.PrimaryPart)
+end
+end
+end 
+end
+end,
+})
 	local DeleteDoorsButtons = MainTab:AddButton({
  Text = "Delete Doors", 
 Name = "DeleteDoorsButtons",
@@ -543,6 +575,17 @@ end,
 	
 --library:LoadData()
  workspace.DescendantAdded:Connect(function(child) 
+ local HrpPlayer = game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+ if FighterAutoParry then
+ if child:IsA("BoxHandleAdornment") then
+     task.spawn(function()
+     local Distance = (child.Position - HrpPlayer.Position).Magnitude
+     if Distance <= 15 then
+     
+     end
+ end)
+ end
+ end
 task.wait(0.75)
 if ActiveNoCooldownPrompt then
 if child:IsA("ProximityPrompt") and child.HoldDuration ~= 0 then
@@ -576,13 +619,55 @@ CreateEsp(child,Color3.fromRGB(255,255,0),"Generator",child.PrimaryPart,2)
 end
 end
 end
+if ActiveEspFuseBoxes then
+if workspace.MAPS:FindFirstChild("GAME MAP") then
+if child.Parent and child.Parent == workspace.MAPS["GAME MAP"].FuseBoxes and child:IsA("Model") and child.PrimaryPart  and not child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+if child:FindFirstChildOfClass("Highlight") then
+    child:FindFirstChildOfClass("Highlight"):Destroy()
+end
+CreateEsp(child,Color3.fromRGB(255,255,0),"Generator",child.PrimaryPart,2)
+end
+end
+end
 end)
+local Players = game:GetService("Players")
 
 workspace.DescendantRemoving:Connect(function(child)
-   if ActiveEspSurvivors then 
-		local GetPByChar = game:GetService("Players"):GetPlayerFromCharacter(child)
-		if child.Parent and child.Parent == workspace.PLAYERS.ALIVE and child:IsA("Model") and child.PrimaryPart then
-			if GetPByChar then
+
+	if child:IsA("Model") then
+		local player = Players:GetPlayerFromCharacter(child)
+
+		
+		if ActiveEspSurvivors and player then
+			if child:IsDescendantOf(workspace.PLAYERS.ALIVE) and child.PrimaryPart then
+				if child:FindFirstChildOfClass("Highlight") and child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+					KeepEsp(child, child.PrimaryPart)
+				end
+			end
+		end
+
+	
+		if ActiveEspKillers and player then
+			if child:IsDescendantOf(workspace.PLAYERS.KILLER) and child:FindFirstChild("RootPart") then
+				if child:FindFirstChildOfClass("Highlight") and child.RootPart:FindFirstChildOfClass("BillboardGui") then
+					KeepEsp(child, child.RootPart)
+				end
+			end
+		end
+
+		if ActiveEspGen and workspace.MAPS:FindFirstChild("GAME MAP") then
+			local map = workspace.MAPS["GAME MAP"]
+
+			if child:IsDescendantOf(map.Generators) and child.PrimaryPart then
+				if child:FindFirstChildOfClass("Highlight") and child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+					KeepEsp(child, child.PrimaryPart)
+				end
+			end
+		end
+        if ActiveEspFuseBoxes and workspace.MAPS:FindFirstChild("GAME MAP") then
+			local map = workspace.MAPS["GAME MAP"]
+
+			if child:IsDescendantOf(map.FuseBoxes) and child.PrimaryPart then
 				if child:FindFirstChildOfClass("Highlight") and child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
 					KeepEsp(child, child.PrimaryPart)
 				end
@@ -590,33 +675,5 @@ workspace.DescendantRemoving:Connect(function(child)
 		end
 	end
 
-	if ActiveEspKillers then
-		local GetPByChar = game:GetService("Players"):GetPlayerFromCharacter(child)
-		if child.Parent and child.Parent == workspace.PLAYERS.KILLER and child:IsA("Model") and child:FindFirstChild("RootPart") then
-			if GetPByChar then
-				if child:FindFirstChildOfClass("Highlight") and child.RootPart:FindFirstChildOfClass("BillboardGui") then
-					KeepEsp(child, child.RootPart)
-				end
-			end
-		end
-	end
-    	if ActiveEspKillers then
-		local GetPByChar = game:GetService("Players"):GetPlayerFromCharacter(child)
-		if child.Parent and child.Parent == workspace.PLAYERS.KILLER and child:IsA("Model") and child:FindFirstChild("RootPart") then
-			if GetPByChar then
-				if child:FindFirstChildOfClass("Highlight") and child.RootPart:FindFirstChildOfClass("BillboardGui") then
-					KeepEsp(child, child.RootPart)
-				end
-			end
-		end
-	end
-
-if ActiveEspGen then
-if workspace.MAPS:FindFirstChild("GAME MAP") then
-    if child:IsA("Model") and child.PrimaryPart  and child.Parent == workspace.MAPS["GAME MAP"].Generators and child:FindFirstChildOfClass("Highlight") and child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
-KeepEsp(child,child.PrimaryPart)
-end
-end
-end
 end)
 end)
