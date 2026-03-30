@@ -1298,7 +1298,6 @@ end
 			tab.content.Visible = true
 		end)
 
-
 		table.insert(window.tabs, tab)
 
 		if #window.tabs == 1 then
@@ -2343,25 +2342,6 @@ end
 		local onRight = math.abs(mousePos.X - (absPos.X + absSize.X)) <= RESIZE_MARGIN
 		local onBottom = math.abs(mousePos.Y - (absPos.Y + absSize.Y)) <= RESIZE_MARGIN
 
-		if (onRight or onBottom) and not resizing then
-			if oldMouseIcon == "" then
-				oldMouseIcon = UIS.MouseIcon
-			end
-
-			if onRight and onBottom then
-				UIS.MouseIcon = "rbxassetid://DiagonalResizeIcon"
-			elseif onRight then
-				UIS.MouseIcon = "rbxassetid://HorizontalResizeIcon"
-			elseif onBottom then
-				UIS.MouseIcon = "rbxassetid://VerticalResizeIcon"
-			end
-		else
-			if oldMouseIcon ~= "" and not resizing then
-				UIS.MouseIcon = oldMouseIcon
-				oldMouseIcon = ""
-			end
-		end
-
 		if resizing then
 			if not mainFrame.Visible then
 				resizing = false
@@ -2420,7 +2400,7 @@ end
 end
 
 function library:CreateWindow(settings1, onLoad)
-	print("Library Version: 0.48")
+	print("Library Version: 0.49")
 	if game:GetService("RunService"):IsStudio() then
 		if game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary") then
 			game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary"):Destroy()
