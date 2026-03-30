@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.4"
+local V = "V.0.5"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -261,6 +261,9 @@ end)
      end)
      end
      if AutoSafeSpot then
+          if game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid").Health > 35 then
+         SavedCFrame = game.Players.LocalPlayer.Character.PrimaryPart.CFrame
+          end
      if game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid").Health <= 35 then
      game.Players.LocalPlayer.Character.PrimaryPart.Anchored = true
      game.Players.LocalPlayer.Character.PrimaryPart.CFrame = CFrame.new(Vector3.new(0,200,0))
@@ -473,9 +476,6 @@ AutoBarricade = state
 		Flag = "ToggleAutoSafeSpot",--Put a name flag for save data if you enabled saving data
 		Default = false,
 		Callback = function(state)
-        if not AutoSafeSpot then
-SavedCFrame = game.Players.LocalPlayer.Character.PrimaryPart.CFrame
-        end
 AutoSafeSpot = state
 if not AutoSafeSpot then
    game.Players.LocalPlayer.Character.PrimaryPart.CFrame = SavedCFrame
