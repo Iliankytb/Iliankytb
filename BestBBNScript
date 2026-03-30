@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.6"
+local V = "V.0.7"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -411,7 +411,7 @@ Name = "EspFuseBoxes",
    Callback = function(Value)
   ActiveEspFuseBoxes = Value 
 if ActiveEspFuseBoxes then
- if workspace.MAPS:FindFirstChild("GAME MAP") then
+ if workspace.MAPS:FindFirstChild("GAME MAP") and game.Workspace.MAPS["GAME MAP"]:FindFirstChild("FuseBoxes") then
 for _,Players2 in pairs(game.Workspace.MAPS["GAME MAP"].FuseBoxes:GetChildren()) do 
 if  Players2:IsA("Model") and Players2.PrimaryPart and not Players2.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
 if  Players2:FindFirstChildOfClass("Highlight") then
@@ -422,7 +422,7 @@ end
 end
 end
 else
-if workspace.MAPS:FindFirstChild("GAME MAP") then
+if workspace.MAPS:FindFirstChild("GAME MAP") and game.Workspace.MAPS["GAME MAP"]:FindFirstChild("FuseBoxes") then
  for _,Players2 in pairs(game.Workspace.MAPS["GAME MAP"].FuseBoxes:GetChildren()) do 
 if Players2:IsA("Model") and Players2.PrimaryPart and Players2:FindFirstChildOfClass("Highlight") and Players2.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
 KeepEsp(Players2,Players2.PrimaryPart)
@@ -461,7 +461,15 @@ end,
 AutoGen = state
 		end
 	})
-
+	local ToggleAutoParry = MainTab:AddToggle({
+		Text = "Fighter - Auto Parry (Coming!)",
+		Name = "ToggleAutoParry",
+		Flag = "ToggleAutoParry",--Put a name flag for save data if you enabled saving data
+		Default = false,
+		Callback = function(state)
+FighterAutoParry = state
+		end
+	})
 	local ToggleBarricade = MainTab:AddToggle({
 		Text = "Auto Barricade",
 		Name = "ToggleBarricade",
@@ -718,7 +726,7 @@ end
 end
 end
 if ActiveEspFuseBoxes then
-if workspace.MAPS:FindFirstChild("GAME MAP") then
+if workspace.MAPS:FindFirstChild("GAME MAP") and workspace.MAPS["GAME MAP"]:FindFirstChild("FuseBoxes") then
 if child.Parent and child.Parent == workspace.MAPS["GAME MAP"].FuseBoxes and child:IsA("Model") and child.PrimaryPart  and not child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
 if child:FindFirstChildOfClass("Highlight") then
     child:FindFirstChildOfClass("Highlight"):Destroy()
