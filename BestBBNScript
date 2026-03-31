@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.12"
+local V = "V.0.13"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -109,6 +109,8 @@ task.spawn(function()
 Camera = workspace.CurrentCamera
 end)
 local Teleported = false
+
+
 
 local function getNewestDot()
     local newest = nil
@@ -321,7 +323,14 @@ local function KeepEsp(Char, Parent)
         end
     end
 end
-
+local function SetupCharacter(child,Map,Part)
+	if not child:IsA("Model") then return end
+	child.AncestryChanged:Connect(function(_, newParent)
+			if not child:IsDescendantOf(Map) then
+				KeepEsp(child, Part)
+			end
+	end)
+end
 local function copyToClipboard(text)
     if setclipboard then
         setclipboard(text)
@@ -343,6 +352,7 @@ if Players2:IsA("Model") and Players2.PrimaryPart and not Players2.PrimaryPart:F
 if Players2:FindFirstChildOfClass("Highlight") then
     Players2:FindFirstChildOfClass("Highlight"):Destroy()
 end
+	SetupCharacter(Players2,workspace.PLAYERS.ALIVE,Players2.PrimaryPart)
 CreateEsp(Players2,Color3.fromRGB(0,255,0),Players2.Name,Players2.PrimaryPart,2)
 end
 end
@@ -365,7 +375,11 @@ Name = "EspKillers",
   ActiveEspKillers = Value 
 if ActiveEspKillers then
     for _,Players2 in pairs(game.Workspace.PLAYERS.KILLER:GetChildren()) do 
-if  Players2:IsA("Model") and Players2:FindFirstChild("RootPart") and not Players2:FindFirstChildOfClass("Highlight") and not Players2.RootPart:FindFirstChildOfClass("BillboardGui") then
+if  Players2:IsA("Model") and Players2:FindFirstChild("RootPart") and not Players2.RootPart:FindFirstChildOfClass("BillboardGui") then
+	if Players2:FindFirstChildOfClass("Highlight") then
+    Players2:FindFirstChildOfClass("Highlight"):Destroy()
+end
+    SetupCharacter(Players2,workspace.PLAYERS.Killer,Players2.RootPart)
 CreateEsp(Players2,Color3.fromRGB(255,0,0),Players2.Name,Players2.RootPart,2)
 end
 end
@@ -728,6 +742,7 @@ end,
 	
 library:LoadData()
 
+
 local CanParry = true
  workspace.DescendantAdded:Connect(function(child) 
  local HrpPlayer = game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
@@ -736,7 +751,7 @@ if child:IsA("BoxHandleAdornment") then
     if FighterAutoParry and HrpPlayer and CanParry and not Character:GetAttribute("IFrames")  and not Character:GetAttribute("InAbility") and not Character:GetAttribute("Stun") and  Character:GetAttribute("Team") == "Survivor" and Character:GetAttribute("Character") == "Survivor-Fighter" then
         local Distance = (child.CFrame.Position - HrpPlayer.Position).Magnitude
         
-        if Distance <= 5 then
+        if Distance <= 10 then
             CanParry = false
             task.spawn(function()
                task.spawn(function()
@@ -768,14 +783,19 @@ if GetPByChar then
 if child:FindFirstChildOfClass("Highlight") then
       child:FindFirstChildOfClass("Highlight"):Destroy()
  end
+ 	SetupCharacter(child,workspace.PLAYERS.ALIVE,child.PrimaryPart)
 CreateEsp(child,Color3.fromRGB(0,255,0),child.Name,child.PrimaryPart,2)
 end
 end
 end
 if ActiveEspKillers then
  local GetPByChar = game:GetService("Players"):GetPlayerFromCharacter(child)
-if child.Parent and child.Parent == workspace.PLAYERS.KILLER and child:IsA("Model") and child:FindFirstChild("RootPart") and not child:FindFirstChildOfClass("Highlight") and not child.RootPart:FindFirstChildOfClass("BillboardGui") then
+if child.Parent and child.Parent == workspace.PLAYERS.KILLER and child:IsA("Model") and child:FindFirstChild("RootPart") and not child.RootPart:FindFirstChildOfClass("BillboardGui") then
 if GetPByChar then
+    if child:FindFirstChildOfClass("Highlight") then
+    child:FindFirstChildOfClass("Highlight"):Destroy()
+end
+    	SetupCharacter(child,workspace.PLAYERS.KILLER,child.RootPart)
 CreateEsp(child,Color3.fromRGB(255,0,0),child.Name,child.RootPart,2)
 end
 end
