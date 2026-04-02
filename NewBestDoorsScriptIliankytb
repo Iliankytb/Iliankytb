@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.92"
+local V = "V.0.93"
 
 library:CreateWindow({
     Title = "Doors - by Iliankytb",-- Title of the script
@@ -102,6 +102,7 @@ local ItemNames = {
     "CringlePresent",
 "WaterPump",
 "GoldGun",
+"AloeVera",
 }
 local WardrobesName = {
    "Wardrobe-FOOLS26",
@@ -1181,10 +1182,17 @@ end
 
 end,
 })
+
 local ProximityPromptService = game:GetService("ProximityPromptService")
-ProximityPromptService.PromptShown:Connect(function(prompt)
-if ActiveAutoInteract then
-    task.spawn(function()
+
+local PromptNames = {
+    "HidePrompt",
+    "InteractPrompt",
+}
+local ItemPromptName = "ModulePrompt"
+
+local function Prompting(prompt)
+task.spawn(function()
         local holdTime = prompt.HoldDuration
 
         if holdTime <= 0 then
@@ -1203,6 +1211,21 @@ if ActiveAutoInteract then
 
         fireproximityprompt(prompt)
     end)
+end
+ProximityPromptService.PromptShown:Connect(function(prompt)
+if ActiveAutoInteract then
+    if not table.find(PromptNames,prompt.Name) then
+        if prompt.Enabled then
+            if prompt.Name == "ActivateEventPrompt" then
+                if prompt.ActionText == "Open" then
+                    Prompting(prompt)
+                    
+                    else 
+                    Prompting(prompt)
+                end
+            end
+end
+    end
 end
 end)
 
@@ -1497,9 +1520,9 @@ end
 end
 end)
 local DropdownAutoInteract = GameTab:AddDropdown({
-Text = "Auto Interact Settings(Coming Soon)",
+Text = "Auto Interact Settings (Coming Very SOON!)",
    Name = "DropdownAutoInteract",
-   Options = {"Drawer", "Pickup Items", "???"},
+   Options = {"Drawer", "Pickup Items", "Jeff Shop"},
    Default = "", 
    Flag = "AIS",
    Callback = function(Selected)
