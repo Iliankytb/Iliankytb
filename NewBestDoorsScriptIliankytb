@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.93"
+local V = "V.0.94"
 
 library:CreateWindow({
     Title = "Doors - by Iliankytb",-- Title of the script
@@ -1219,10 +1219,9 @@ if ActiveAutoInteract then
             if prompt.Name == "ActivateEventPrompt" then
                 if prompt.ActionText == "Open" then
                     Prompting(prompt)
-                    
+                end
                     else 
                     Prompting(prompt)
-                end
             end
 end
     end
