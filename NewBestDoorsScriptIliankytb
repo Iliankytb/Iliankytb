@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.95"
+local V = "V.0.96"
 
 library:CreateWindow({
     Title = "Doors - by Iliankytb",-- Title of the script
@@ -1196,7 +1196,9 @@ task.spawn(function()
         local holdTime = prompt.HoldDuration
 
         if holdTime <= 0 then
+                prompt.Enabled = true
             fireproximityprompt(prompt)
+            prompt.Enabled = true
             return
         end
 
@@ -1208,8 +1210,9 @@ task.spawn(function()
             end
             task.wait()
         end
-
+    prompt.Enabled = true
         fireproximityprompt(prompt)
+        prompt.Enabled = true
     end)
 end
 ProximityPromptService.PromptShown:Connect(function(prompt)
