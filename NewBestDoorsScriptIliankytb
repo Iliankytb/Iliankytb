@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.96"
+local V = "V.0.97"
 
 library:CreateWindow({
     Title = "Doors - by Iliankytb",-- Title of the script
@@ -78,6 +78,7 @@ local ItemNames = {
     "Bandage",
 "BandagePack",
     "Crucifix",
+"CrucifixWall",
     "Vitamins",
     "Lockpick",
     "Candle",
@@ -1539,6 +1540,16 @@ Text = "Auto Interact",
 ActiveAutoInteract = Value 
 end,
 })
+
+local AutoLibaryCodeToggle = GameTab:AddToggle({
+Text = "Auto Library Code (Coming very Soon!)",
+   Name = "AutoLibraryToggle",
+   Default = false,
+   Flag = "AutoLibraryToggle", 
+   Callback = function(Value)
+end,
+})
+
 local BigDistancePromptToggle = GameTab:AddToggle({
 Text =  "Big Distance Prompt",
    Name ="BigDistancePromptToggle",
