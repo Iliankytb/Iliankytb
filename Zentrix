@@ -1,4 +1,4 @@
-
+local LibraryVersion = "0.50"
 
 local HttpService = game:GetService("HttpService")
 local UserInputService = game:GetService("UserInputService")
@@ -337,7 +337,7 @@ local Theme = {
 local function VisibleWindow(window,settings1,gui)
 	local themeName = settings1.Theme 
 	local selectedTheme = Theme[themeName] or Theme.Default
-local RenderConnection = nil
+	local RenderConnection = nil
 	local TweenService = game:GetService("TweenService")
 
 	local mainFrame = createUI("Frame", {
@@ -370,9 +370,6 @@ local RenderConnection = nil
 		Parent = gui,
 	})
 
-	function window:Destroy()
-		gui:Destroy()
-	end
 	function window:IsVisbility()
 		return mainFrame.Visible	
 	end
@@ -386,7 +383,7 @@ local RenderConnection = nil
 		local message = opts.Message or "No message provided."
 		local icon = opts.Icon or "rbxassetid://0"
 		local duration = opts.Duration or 5
-local UseSound = opts.UseSound or true
+		local UseSound = opts.UseSound or true
 
 		local tweenService = game:GetService("TweenService")
 
@@ -461,31 +458,15 @@ local UseSound = opts.UseSound or true
 		})
 		durationTween:Play()
 		if UseSound then
-		if settings1.Notifications then
-			if not settings1.Notifications.NoSound then
-				local NewSound = Instance.new("Sound",gui)
-				NewSound.Name = "Notif"
-				if  settings1.Notifications.CustomSound then
-					NewSound.SoundId = settings1.Notifications.CustomSoundId
-				else
-					NewSound.SoundId = "rbxassetid://106553517979212"
-				end
-					NewSound:Play()
-				if NewSound.IsLoaded then
-					game:GetService("Debris"):AddItem(NewSound,NewSound.TimeLength)
-				else
-						task.spawn(function()
-							task.wait(5)
-							if NewSound then
-								NewSound:Destroy()
-							end
-						end)
-				end
-			end
-		else
+			if settings1.Notifications then
+				if not settings1.Notifications.NoSound then
 					local NewSound = Instance.new("Sound",gui)
-					NewSound.Name = "Notif"	
+					NewSound.Name = "Notif"
+					if  settings1.Notifications.CustomSound then
+						NewSound.SoundId = settings1.Notifications.CustomSoundId
+					else
 						NewSound.SoundId = "rbxassetid://106553517979212"
+					end
 					NewSound:Play()
 					if NewSound.IsLoaded then
 						game:GetService("Debris"):AddItem(NewSound,NewSound.TimeLength)
@@ -497,7 +478,23 @@ local UseSound = opts.UseSound or true
 							end
 						end)
 					end
-		end
+				end
+			else
+				local NewSound = Instance.new("Sound",gui)
+				NewSound.Name = "Notif"	
+				NewSound.SoundId = "rbxassetid://106553517979212"
+				NewSound:Play()
+				if NewSound.IsLoaded then
+					game:GetService("Debris"):AddItem(NewSound,NewSound.TimeLength)
+				else
+					task.spawn(function()
+						task.wait(5)
+						if NewSound then
+							NewSound:Destroy()
+						end
+					end)
+				end
+			end
 		end
 		task.delay(duration, function()
 			local exitTween = tweenService:Create(content, TweenInfo.new(0.4, Enum.EasingStyle.Quint, Enum.EasingDirection.In), {
@@ -509,8 +506,8 @@ local UseSound = opts.UseSound or true
 
 		end)
 	end
-	
-local CurrentSizePC = UDim2.new(0, 600, 0, 500) or settings1.CustomSize
+
+	local CurrentSizePC = UDim2.new(0, 600, 0, 500) or settings1.CustomSize
 
 	createUI("UICorner", {Parent = mainFrame})
 	local animOpenPC = TweenService:Create(mainFrame, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
@@ -535,7 +532,7 @@ local CurrentSizePC = UDim2.new(0, 600, 0, 500) or settings1.CustomSize
 		BorderSizePixel = 0;
 		Parent = mainFrame;
 	})
-	
+
 	if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
 		tabsFrame.Size = UDim2.new(0,75,1,0)
 	elseif UserInputService.TouchEnabled and UserInputService.KeyboardEnabled then
@@ -914,7 +911,6 @@ local CurrentSizePC = UDim2.new(0, 600, 0, 500) or settings1.CustomSize
 		return v
 	end
 
-
 	local function DecodeValue(v)
 		if type(v) ~= "table" or not v.__type then
 			return v
@@ -942,7 +938,6 @@ local CurrentSizePC = UDim2.new(0, 600, 0, 500) or settings1.CustomSize
 
 		return v
 	end
-
 
 	local function GetFlagKey(tabName, elementName)
 		return tabName .. "_" .. elementName
@@ -1056,7 +1051,7 @@ local CurrentSizePC = UDim2.new(0, 600, 0, 500) or settings1.CustomSize
 		end
 	end
 
-local FPS = 0
+	local FPS = 0
 
 	function library:GetAllThemes()
 		local AvailableTheme = {}
@@ -1076,13 +1071,13 @@ local FPS = 0
 		end
 	end
 
-function library:FPSCounter()
-	return FPS
-end
+	function library:FPSCounter()
+		return FPS
+	end
 
-function library:EnableFPSCounter(boolen)
-	FpsCounterLabel.Visible = boolen
-end
+	function library:EnableFPSCounter(boolen)
+		FpsCounterLabel.Visible = boolen
+	end
 
 	function library:CreateTheme(name,Table)
 		if not Theme[name] then
@@ -1123,6 +1118,21 @@ end
 			return nil
 		end
 	end
+
+function library:Destroy()
+	if window and gui then
+			for _, tab in pairs(window.tabs) do
+				if tab.toggles then
+					for _, name in pairs(tab.toggles) do
+						pcall(function()
+							name:LibraryDestroyed()
+						end)
+					end
+				end
+				end
+	gui:Destroy()
+	end
+end
 
 	if settingsData.EnableSavingData then
 		function library:LoadData()
@@ -1274,7 +1284,7 @@ end
 			textLabel.Parent = tabButton
 
 		else
-			 tabButton = createUI("TextButton", {
+			tabButton = createUI("TextButton", {
 				Text = name;
 				Size = UDim2.new(1, 0, 0, 30);
 				BackgroundColor3 = selectedTheme.TabButtons;
@@ -1753,7 +1763,11 @@ end
 					opts.Callback(newValue)
 				end
 			end
-
+			function obj:LibraryDestroyed()
+				if opts.Callback then
+					opts.Callback(false)
+				end
+			end
 			function obj:ChangeTheme()
 				button.BackgroundColor3 = selectedTheme.Buttons
 				button.TextColor3 = selectedTheme.TextColor
@@ -1785,7 +1799,6 @@ end
 			})
 			createUI("UICorner", { Parent = slider })
 
-
 			createUI("UIPadding", {
 				PaddingLeft = UDim.new(0, 10),
 				PaddingRight = UDim.new(0, 10),
@@ -1794,13 +1807,11 @@ end
 				Parent = slider,
 			})
 
-
 			local layout = Instance.new("UIListLayout")
 			layout.FillDirection = Enum.FillDirection.Vertical
 			layout.SortOrder = Enum.SortOrder.LayoutOrder
 			layout.VerticalAlignment = Enum.VerticalAlignment.Center
 			layout.Parent = slider
-
 
 			local labelText = createUI("TextLabel", {
 				Text = opts.Text or "Slider",
@@ -2026,13 +2037,21 @@ end
 			dropdown.Options = opts.Options or {}
 			dropdown.FrameOpen = false
 
-if Default and (Default ~= "" and Default ~= {}) then
-if multi then
-dropdown.Selected = Default
-else
-dropdown.Selected = {Default}
-end
-end
+			if Default ~= nil and Default ~= "" then
+				if multi then
+					if typeof(Default) == "table" then
+						dropdown.Selected = table.clone(Default)
+					else
+						dropdown.Selected = {Default}
+					end
+				else
+					if typeof(Default) == "table" then
+						dropdown.Selected = {Default[1]}
+					else
+						dropdown.Selected = {Default}
+					end
+				end
+			end
 			tab.dropdowns = tab.dropdowns or {}
 			tab.dropdownValue = tab.dropdownValue or {}
 
@@ -2283,34 +2302,36 @@ end
 
 	mainFrame.InputBegan:Connect(function(input)
 		if (input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch) then 
-		local mousePos = UIS:GetMouseLocation()
-		local absPos = mainFrame.AbsolutePosition
-		local absSize = mainFrame.AbsoluteSize
-			if	input.UserInputType ~= Enum.UserInputType.Touch then
+			local mousePos = UIS:GetMouseLocation()
+			local absPos = mainFrame.AbsolutePosition
+			local absSize = mainFrame.AbsoluteSize
+			if input.UserInputType ~= Enum.UserInputType.Touch then
+				local onRight = math.abs(mousePos.X - (absPos.X + absSize.X)) <= RESIZE_MARGIN
+				local onLeft = math.abs(mousePos.X - absPos.X) <= RESIZE_MARGIN
 
-		local onRight = math.abs(mousePos.X - (absPos.X + absSize.X)) <= RESIZE_MARGIN
-		local onBottom = math.abs(mousePos.Y - (absPos.Y + absSize.Y)) <= RESIZE_MARGIN
-		
-		if onRight or onBottom then
-			resizing = true
-			dragging = false
+				local onBottom = math.abs(mousePos.Y - (absPos.Y + absSize.Y)) <= RESIZE_MARGIN
+				local onTop = math.abs(mousePos.Y - absPos.Y) <= RESIZE_MARGIN
 
-			resizeDir = {
-				X = onRight,
-				Y = onBottom
-			}
+				if onRight or onLeft or onBottom or onTop then
+					resizing = true
+					dragging = false
 
-			resizeStart = mousePos
-			startSize = mainFrame.Size
+					resizeDir = {
+						X = onRight or onLeft,
+						Y = onBottom or onTop
+					}
 
-			return
-		end
-end
-		if Resizing then return end
+					resizeStart = mousePos
+					startSize = mainFrame.Size
 
-		dragging = true
-		dragStart = mousePos
-		startPos = mainFrame.Position
+					return
+				end
+			end
+			if Resizing then return end
+
+			dragging = true
+			dragStart = mousePos
+			startPos = mainFrame.Position
 		end
 	end)
 	mainFrame.InputEnded:Connect(function(input)
@@ -2400,7 +2421,7 @@ end
 end
 
 function library:CreateWindow(settings1, onLoad)
-	print("Library Version: 0.49")
+	print("Library Version: "..LibraryVersion)
 	if game:GetService("RunService"):IsStudio() then
 		if game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary") then
 			game.Players.LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("UILibrary"):Destroy()
@@ -2479,7 +2500,7 @@ function library:CreateWindow(settings1, onLoad)
 		local url = settings1.KeySettings.Url
 		local HttpService = game:GetService("HttpService")
 		local GrabKeyFromSite = settings1.KeySettings.GrabKeyFromSite
-		
+
 		local function CheckKey(key)
 			local success, response = pcall(function()
 				return game:HttpGet(url)
@@ -2491,7 +2512,7 @@ function library:CreateWindow(settings1, onLoad)
 
 			return data.valid
 		end
-		
+
 		local KeyFrame = createUI("Frame", {
 			Size = UDim2.new(0, 0, 0, 0),
 			Position = UDim2.new(0.5, 0, 0.5, 0),
@@ -2511,7 +2532,7 @@ function library:CreateWindow(settings1, onLoad)
 			TextScaled = true,
 			Parent = KeyFrame,
 		})
-		
+
 		createUI("UICorner", {Parent = closeButton})
 		closeButton.MouseButton1Click:Connect(function()
 			gui:Destroy()
@@ -2665,8 +2686,8 @@ function library:CreateWindow(settings1, onLoad)
 			end
 			return nil
 		end
-	
-	local function ConfirmedKey(savedKey)
+
+		local function ConfirmedKey(savedKey)
 			print("✅ correct key :", savedKey)
 			KeyFrame:Destroy()
 			if settings1.Intro then
@@ -2711,17 +2732,17 @@ function library:CreateWindow(settings1, onLoad)
 				if onLoad then onLoad(window) end
 			end
 		end
-		
+
 		if  not game:GetService("RunService"):IsStudio() then
 			local savedKey = loadKey()
 			if savedKey and savedKey ~= ""  then
 				if not GrabKeyFromSite then
-				if table.find(Key, savedKey) then
-					ConfirmedKey(savedKey)
-				else
-					TextBox.Text = ""
-					TextBox.PlaceholderText = "❌ Incorrect/Invalid Key"
-				end
+					if table.find(Key, savedKey) then
+						ConfirmedKey(savedKey)
+					else
+						TextBox.Text = ""
+						TextBox.PlaceholderText = "❌ Incorrect/Invalid Key"
+					end
 				else
 					local Worked = CheckKey(savedKey)
 					if Worked then
@@ -2753,31 +2774,7 @@ function library:CreateWindow(settings1, onLoad)
 		ConfirmButton.MouseButton1Click:Connect(function()
 			local inputKey = TextBox.Text
 			if not GrabKeyFromSite then
-			if table.find(Key, inputKey) then
-			if settings1.KeySettings.SaveKey then
-					if settings1.KeySettings.FileName and not game:GetService("RunService"):IsStudio() then
-						local key2 = TextBox.Text
-						saveKey(key2)
-					end
-				end
-
-
-				local closeTween = TweenService:Create(KeyFrame, TweenInfo.new(0.3, Enum.EasingStyle.Sine, Enum.EasingDirection.In), {
-					Size = UDim2.new(0, 0, 0, 0),
-					Position = UDim2.new(0.5, 0, 0.5, 0)
-				})
-				closeTween:Play()
-				closeTween.Completed:Connect(function()
-					KeyFrame:Destroy()
-					ConfirmedKey(inputKey)
-				end)
-			else
-				TextBox.Text = ""
-				TextBox.PlaceholderText = "❌ Incorrect/Invalid Key"
-			end
-			else
-			local Worked = CheckKey(inputKey)
-			if Worked then
+				if table.find(Key, inputKey) then
 					if settings1.KeySettings.SaveKey then
 						if settings1.KeySettings.FileName and not game:GetService("RunService"):IsStudio() then
 							local key2 = TextBox.Text
@@ -2795,12 +2792,36 @@ function library:CreateWindow(settings1, onLoad)
 						KeyFrame:Destroy()
 						ConfirmedKey(inputKey)
 					end)
-			else
+				else
 					TextBox.Text = ""
 					TextBox.PlaceholderText = "❌ Incorrect/Invalid Key"
-			end
+				end
+			else
+				local Worked = CheckKey(inputKey)
+				if Worked then
+					if settings1.KeySettings.SaveKey then
+						if settings1.KeySettings.FileName and not game:GetService("RunService"):IsStudio() then
+							local key2 = TextBox.Text
+							saveKey(key2)
+						end
+					end
+
+
+					local closeTween = TweenService:Create(KeyFrame, TweenInfo.new(0.3, Enum.EasingStyle.Sine, Enum.EasingDirection.In), {
+						Size = UDim2.new(0, 0, 0, 0),
+						Position = UDim2.new(0.5, 0, 0.5, 0)
+					})
+					closeTween:Play()
+					closeTween.Completed:Connect(function()
+						KeyFrame:Destroy()
+						ConfirmedKey(inputKey)
+					end)
+				else
+					TextBox.Text = ""
+					TextBox.PlaceholderText = "❌ Incorrect/Invalid Key"
+				end
 			end				
-			end)
+		end)
 	else
 		if settings1.Intro then
 			local TweenService = game:GetService("TweenService")
