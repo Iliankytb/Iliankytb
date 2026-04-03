@@ -1,4 +1,4 @@
-local LibraryVersion = "0.50"
+local LibraryVersion = "0.51"
 
 local HttpService = game:GetService("HttpService")
 local UserInputService = game:GetService("UserInputService")
@@ -1192,7 +1192,9 @@ end
 
 	library.GetFlag = GetFlag
 	library.SaveData = SaveData
-
+if window.tabs == nil then
+	window.tabs = {}
+end
 	function window:CreateTab(name, icon)
 
 		local tab = {
@@ -1213,8 +1215,7 @@ end
 			buttons = {},
 		}
 
-		table.insert(self.tabs, tab)
-
+	
 		local scroll = createUI("ScrollingFrame", {
 			Size = UDim2.new(1, 0, 1, 0);
 			CanvasSize = UDim2.new(0, 0, 0, 0);
@@ -1241,7 +1242,7 @@ end
 		})
 
 		tab.content = scroll
-
+		
 		local tabButton 
 		if icon ~= 0 then 
 			tabButton = createUI("TextButton", {
@@ -1309,11 +1310,6 @@ end
 		end)
 
 		table.insert(window.tabs, tab)
-
-		if #window.tabs == 1 then
-			tab.content.Visible = true
-			print("OK")
-		end
 
 		function tab:AddButton(opts)
 			local flag = opts.Name
@@ -2275,7 +2271,11 @@ end
 			tab.dropdowns[flag] = dropdown 
 			return dropdown
 		end
-
+			if #window.tabs == 1 then
+				if tab.content then
+				tab.content.Visible = true
+				end
+			end
 		return tab
 	end
 
