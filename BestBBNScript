@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.14"
+local V = "V.0.15"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -71,6 +71,11 @@ local HitboxExpender = false
 local ValueHE = 15
 local ActiveEspBattery = false
 local ActiveEspTraps = false
+local ActiveEspWireEyes = false
+local AutoShakeWireEyes = false
+local ActiveInfiniteStamina = false
+local CanShake = true
+local NoBlindness = false
 
 local Version = InfoTab:AddText({
         Text = "Version:"..V,
@@ -83,6 +88,26 @@ local Version = InfoTab:AddText({
 		Duration = 7.5,
 		UseSound = true,
 	})
+
+local function doShake(wireyesUI)
+    task.spawn(function()
+        local wireyesClient = wireyesUI:WaitForChild("WireyesClient")
+        if  wireyesClient then
+        local remote = wireyesClient:WaitForChild("WireyesEvent")
+      if remote then
+CanShake = false
+tas.spawn(function() 
+wait(3)
+CanShake = true
+end)
+        pcall(function() remote:FireServer("Shaking") end)
+        task.wait(0.05)
+        pcall(function() remote:FireServer("TakeOff", workspace:GetServerTimeNow()) end)
+end
+end
+    end)
+end
+
 local function getServerInfo()
     local Players = game:GetService("Players")
     local playerCount = #Players:GetPlayers()
@@ -109,8 +134,6 @@ task.spawn(function()
 Camera = workspace.CurrentCamera
 end)
 local Teleported = false
-
-
 
 local function getNewestDot()
     local newest = nil
@@ -265,6 +288,25 @@ end
 end
 end
      end
+if ActiveInfiniteStamina then
+ local mx = game.Players.LocalPlayer.Character:GetAttribute("MaxStamina") or 100
+        if (game.Players.LocalPlayer.Character:GetAttribute("Stamina") or mx) < mx then
+            game.Players.LocalPlayer.Character:SetAttribute("Stamina", mx)
+        end
+end
+if AutoShakeWireEyes and CanShake then
+local existing = game.Players.LocalPlayer.PlayerGui:FindFirstChild("WireyesUI")
+if existing then
+    doShake(existing)
+end
+end
+if NoBlindness then
+if game:GetService("ReplicatedStorage").Modules.BlindnessModule:FindFirstAncestorOfClass("Atmosphere")  then
+    game:GetService("ReplicatedStorage").Modules.BlindnessModule:FindFirstAncestorOfClass("Atmosphere").Glare = 0
+    game:GetService("ReplicatedStorage").Modules.BlindnessModule:FindFirstAncestorOfClass("Atmosphere").Offset = 0
+    game:GetService("ReplicatedStorage").Modules.BlindnessModule:FindFirstAncestorOfClass("Atmosphere").Haze = 0
+end
+end
      if AutoSafeSpot then
           if game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid").Health > 35 then
          SavedCFrame = game.Players.LocalPlayer.Character.PrimaryPart.CFrame
@@ -498,6 +540,32 @@ end
 end
 end,
 })
+local EspWireEyesToggle = EspTab:AddToggle({
+ Text = "Esp Wire Eyes", 
+Name = "EspWireEyesToggle",
+   CurrentValue = false,
+   Flag = "EspWireEyesToggle", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  ActiveEspWireEyes = Value 
+if ActiveEspWireEyes then
+ for _,Players2 in pairs(game.Workspace.IGNORE:GetChildren()) do 
+if  Players2:IsA("Model") and Players2.Name == "Minion" and not Players2.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+if  Players2:FindFirstChildOfClass("Highlight") then
+    Players2:FindFirstChildOfClass("Highlight"):Destroy()
+end
+SetupCharacter(Players2,game.Workspace.IGNORE,Players2.PrimaryPart)
+CreateEsp(Players2,Color3.fromRGB(255,0,0),"Wire Eyes",Players2.PrimaryPart,2)
+end
+end
+else
+ for _,Players2 in pairs(game.Workspace.IGNORE:GetChildren()) do 
+if Players2:IsA("Model") and Players2.Name == "Minion" and Players2 and Players2:FindFirstChildOfClass("Highlight") and Players2.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+KeepEsp(Players2,Players2.PrimaryPart)
+end
+end 
+end
+end,
+})
 	local DeleteDoorsButtons = MainTab:AddButton({
  Text = "Delete Doors", 
 Name = "DeleteDoorsButtons",
@@ -660,6 +728,15 @@ Text = "Active Modifying Walk Speed",
   ActiveSpeedBoost2 = Value
 end,
 })
+local PlayerInfiniteStaminaToggle = PlayerTab:AddToggle({
+Text = "Infinite Stamina",
+   Name = "PlayerInfiniteStaminaToggle",
+   Default = false,
+   Flag = "PlayerInfiniteStaminaToggle", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  ActiveInfiniteStamina = Value
+end,
+})
 local BigDistancePromptToggle = MainTab:AddToggle({
 Text =  "Big Distance Prompt",
    Name ="BigDistancePromptToggle",
@@ -678,12 +755,29 @@ Text =  "Auto Escape",
 AutoEscape = Value 
 end,
 })
-
+local AutoShakeButton = MainTab:AddToggle({
+Text =  "Auto Shake Wire Eyes",
+   Name ="AutoShakeButton",
+   Default = false,
+   Flag = "AutoShakeButton", 
+   Callback = function(Value)
+AutoShakeWireEyes = Value 
+end,
+})
+local NoBlindnessButton = MainTab:AddToggle({
+Text =  "No Blindness",
+   Name ="NoBlindnessButton",
+   Default = false,
+   Flag = "NoBlindnessButton", 
+   Callback = function(Value)
+NoBlindness = Value 
+end,
+})
 local ButtonUnloadCheat = SettingsTab:AddButton({
 Text = "Unload Cheat",
    Name = "ButtonUnloadCheat",
    Callback = function()
-
+library:Destroy()
 end,
 })
 local LimitRangerEspSlider = SettingsTab:AddSlider({
@@ -825,6 +919,15 @@ end
 CreateEsp(child,Color3.fromRGB(255,0,0),"Trap",child.PrimaryPart,2)
 end
 end
+if ActiveEspWireEyes then
+if child.Parent and child.Name == "Minion" and child.Parent == workspace.IGNORE and child:IsA("Model") and child.PrimaryPart  and not child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+if child:FindFirstChildOfClass("Highlight") then
+    child:FindFirstChildOfClass("Highlight"):Destroy()
+end
+SetupCharacter(child,workspace.IGNORE,child.PrimaryPart)
+CreateEsp(child,Color3.fromRGB(255,0,0),"Wire Eyes",child.PrimaryPart,2)
+end
+end
 if ActiveEspBattery then
 if child.Parent and child.Name == "Battery" and child.Parent == workspace.IGNORE and child:IsA("BasePart") and child  and not child:FindFirstChildOfClass("BillboardGui") then
 if child:FindFirstChildOfClass("Highlight") then
@@ -875,7 +978,14 @@ workspace.DescendantRemoving:Connect(function(child)
 			end
 		end
           if ActiveEspTraps then
-			if child:IsDescendantOf(workspace.IGNORE) and child.PrimaryPart then
+			if child:IsDescendantOf(workspace.IGNORE) and child.Name == "Traps" and child.PrimaryPart then
+				if child:FindFirstChildOfClass("Highlight") and child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+					KeepEsp(child, child.PrimaryPart)
+				end
+			end
+		end
+       if ActiveEspWireEyes then
+			if child:IsDescendantOf(workspace.IGNORE) and child.Name == "Minion" and child.PrimaryPart then
 				if child:FindFirstChildOfClass("Highlight") and child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
 					KeepEsp(child, child.PrimaryPart)
 				end
