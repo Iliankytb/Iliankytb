@@ -1,4 +1,3 @@
-local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 
@@ -10,6 +9,10 @@ if PlayerGui:FindFirstChild("ZentrixSpyUI") then
 end
 
 local isMobile = UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled
+local SelectedLog = nil
+local Blacklist = {}
+local LogCache = {} 
+local SmartFilterEnabled = false 
 
 local Themes = {
     Default = {Main = Color3.fromRGB(15,15,15), Accent = Color3.fromRGB(0,255,170)},
@@ -32,6 +35,13 @@ Instance.new("UICorner", Main)
 local function Tween(obj, props)
     TweenService:Create(obj, TweenInfo.new(0.2), props):Play()
 end
+local function copyToClipboard(text)
+    if setclipboard then
+        setclipboard(text)
+    else
+        warn("setclipboard is not supported in this environment.")
+    end
+end
 
 local TopBar = Instance.new("Frame", Main)
 TopBar.Size = UDim2.new(1,0,0,40)
@@ -49,6 +59,7 @@ local Close = Instance.new("TextButton", TopBar)
 Close.Size = UDim2.new(0,40,1,0)
 Close.Position = UDim2.new(1,-40,0,0)
 Close.Text = "X"
+Close.TextScaled = true
 Close.BackgroundColor3 = Color3.fromRGB(120,0,0)
 Instance.new("UICorner", Close)
 Close.MouseButton1Click:Connect(function()
@@ -59,6 +70,7 @@ local Minimize = Instance.new("TextButton", TopBar)
 Minimize.Size = UDim2.new(0,40,1,0)
 Minimize.Position = UDim2.new(1,-80,0,0)
 Minimize.Text = "-"
+Minimize.TextScaled = true
 Minimize.BackgroundColor3 = Color3.fromRGB(60,60,60)
 Instance.new("UICorner", Minimize)
 
@@ -66,6 +78,7 @@ local SettingsBtn = Instance.new("TextButton", TopBar)
 SettingsBtn.Size = UDim2.new(0,40,1,0)
 SettingsBtn.Position = UDim2.new(1,-120,0,0)
 SettingsBtn.Text = "⚙"
+SettingsBtn.TextScaled = true
 SettingsBtn.BackgroundColor3 = Color3.fromRGB(40,40,40)
 Instance.new("UICorner", SettingsBtn)
 
@@ -74,26 +87,53 @@ SettingsFrame.Size = UDim2.new(0,200,0,150)
 SettingsFrame.Position = UDim2.new(1,-210,0,50)
 SettingsFrame.BackgroundColor3 = Color3.fromRGB(25,25,25)
 SettingsFrame.Visible = false
+SettingsFrame.ZIndex = 999
+SettingsFrame.ClipsDescendants = true
 Instance.new("UICorner", SettingsFrame)
 
-for name,_ in pairs(Themes) do
+local SettingsLayout = Instance.new("UIListLayout", SettingsFrame)
+SettingsLayout.Padding = UDim.new(0,6)
+SettingsLayout.SortOrder = Enum.SortOrder.LayoutOrder
+
+for name,data in pairs(Themes) do
     local Btn = Instance.new("TextButton", SettingsFrame)
-    Btn.Size = UDim2.new(1,0,0,30)
+    Btn.Size = UDim2.new(1,-10,0,35)
     Btn.Text = name
-    Btn.BackgroundColor3 = Color3.fromRGB(50,50,50)
+    Btn.BackgroundColor3 = data.Main
+    Btn.TextColor3 = data.Accent
+    Btn.Font = Enum.Font.GothamBold
+    Btn.TextScaled = true
+    Btn.BorderSizePixel = 0
+
     Instance.new("UICorner", Btn)
+
+    Btn.MouseEnter:Connect(function()
+        Tween(Btn, {
+            BackgroundColor3 = data.Accent,
+            TextColor3 = Color3.new(0,0,0)
+        })
+    end)
+
+    Btn.MouseLeave:Connect(function()
+        Tween(Btn, {
+            BackgroundColor3 = data.Main,
+            TextColor3 = data.Accent
+        })
+    end)
 
     Btn.MouseButton1Click:Connect(function()
         CurrentTheme = name
-        Main.BackgroundColor3 = Themes[name].Main
-        Title.TextColor3 = Themes[name].Accent
+        Main.BackgroundColor3 = data.Main
+        Title.TextColor3 = data.Accent
     end)
 end
+local SettingsOpen = false
 
 SettingsBtn.MouseButton1Click:Connect(function()
-    SettingsFrame.Visible = true
+    SettingsOpen = not SettingsOpen
 
-    if SettingsFrame.Size.Y.Offset == 0 then
+    if SettingsOpen then
+        SettingsFrame.Visible = true
         SettingsFrame.Size = UDim2.new(0,200,0,0)
         Tween(SettingsFrame, {Size = UDim2.new(0,200,0,150)})
     else
@@ -108,6 +148,16 @@ LogsFrame.Position = UDim2.new(0,0,0,40)
 LogsFrame.Size = isMobile and UDim2.new(1,0,0.4,0) or UDim2.new(0.35,0,1,-40)
 LogsFrame.BackgroundColor3 = Color3.fromRGB(20,20,20)
 Instance.new("UIListLayout", LogsFrame).Padding = UDim.new(0,5)
+
+local SearchBox = Instance.new("TextBox", LogsFrame)
+SearchBox.Size = UDim2.new(1,-10,0,30)
+SearchBox.PlaceholderText = "Search remote..."
+SearchBox.Text = ""
+SearchBox.BackgroundColor3 = Color3.fromRGB(30,30,30)
+SearchBox.TextColor3 = Color3.new(1,1,1)
+SearchBox.TextScaled = true
+SearchBox.ClearTextOnFocus = false
+Instance.new("UICorner", SearchBox)
 
 local DetailsFrame = Instance.new("Frame", Main)
 DetailsFrame.Position = isMobile and UDim2.new(0,0,0.4,40) or UDim2.new(0.35,0,0,40)
@@ -142,33 +192,13 @@ local function CreateActionBtn(text)
     return Btn
 end
 
-local CopyPathBtn = CreateActionBtn("Copy Path")
-local CopyCodeBtn = CreateActionBtn("Copy Code")
-local BlacklistBtn = CreateActionBtn("Blacklist")
 local ClearBtn = CreateActionBtn("Clear Logs")
+local SmartBtn = CreateActionBtn("Smart Filter: OFF")
 
-CopyPathBtn.MouseButton1Click:Connect(function()
-    if SelectedLog then
-        setclipboard(SelectedLog.Path)
-    end
-end)
+SmartBtn.MouseButton1Click:Connect(function()
+    SmartFilterEnabled = not SmartFilterEnabled
 
-CopyCodeBtn.MouseButton1Click:Connect(function()
-    if SelectedLog then
-        setclipboard(GenerateCode(SelectedLog.Remote, SelectedLog.Method, SelectedLog.Args))
-    end
-end)
-
-BlacklistBtn.MouseButton1Click:Connect(function()
-    if SelectedLog then
-        Blacklist[SelectedLog.Name] = true
-        InfoLabel.Text = "Blacklisted: "..SelectedLog.Name
-    end
-end)
-
-ClearBtn.MouseButton1Click:Connect(function()
-    LogsFrame:ClearAllChildren()
-    Instance.new("UIListLayout", LogsFrame).Padding = UDim.new(0,5)
+    SmartBtn.Text = SmartFilterEnabled and "Smart Filter: ON" or "Smart Filter: OFF"
 end)
 
 local InfoLabel = Instance.new("TextLabel", DetailsFrame)
@@ -182,6 +212,139 @@ InfoLabel.TextWrapped = true
 InfoLabel.TextXAlignment = Enum.TextXAlignment.Left
 InfoLabel.TextYAlignment = Enum.TextYAlignment.Top
 InfoLabel.Text = "Select a remote..."
+
+local InfoButtons = Instance.new("Frame", DetailsFrame)
+InfoButtons.Size = UDim2.new(1, -10, 0, 120)
+InfoButtons.Position = UDim2.new(0, 5, 1, -120)
+InfoButtons.BackgroundTransparency = 1
+
+local InfoLayout = Instance.new("UIListLayout", InfoButtons)
+InfoLayout.Padding = UDim.new(0, 8)
+
+local function FormatTable(tbl, indent)
+    indent = indent or 0
+    local str = ""
+
+    for k,v in pairs(tbl) do
+        local spacing = string.rep("  ", indent)
+
+        if typeof(v) == "table" then
+            str = str..spacing..tostring(k)..": {\n"
+            str = str..FormatTable(v, indent + 1)
+            str = str..spacing.."}\n"
+        else
+            str = str..spacing..tostring(k)..": "..tostring(v).."\n"
+        end
+    end
+
+    return str
+end
+
+local function FormatArgs(args)
+    local str = ""
+
+    for i,v in ipairs(args) do
+        if typeof(v) == "table" then
+            str = str..i..": {\n"..FormatTable(v,1).."}\n"
+        else
+            str = str..i..": "..tostring(v).."\n"
+        end
+    end
+
+    return str
+end
+
+local function ValueToString(v)
+    if typeof(v) == "table" then
+        local s = "{"
+        for _,val in pairs(v) do
+            s = s..tostring(val)..", "
+        end
+        return s.."}"
+    else
+        return tostring(v)
+    end
+end
+
+local function GenerateCode(remote, method, args)
+    local str = remote:GetFullName()..":"..method.."("
+
+    for i,v in ipairs(args) do
+        str = str..ValueToString(v)
+        if i < #args then str = str..", " end
+    end
+
+    return str..")"
+end
+
+local function CreateInfoBtn(text)
+    local Btn = Instance.new("TextButton", InfoButtons)
+    Btn.Size = UDim2.new(1, 0, 0, 30)
+    Btn.Text = text
+    Btn.BackgroundColor3 = Color3.fromRGB(50,50,50)
+    Btn.TextColor3 = Color3.new(1,1,1)
+    Btn.TextScaled = true
+    Instance.new("UICorner", Btn)
+
+    Btn.MouseEnter:Connect(function()
+        Tween(Btn, {BackgroundColor3 = Themes[CurrentTheme].Accent})
+    end)
+
+    Btn.MouseLeave:Connect(function()
+        Tween(Btn, {BackgroundColor3 = Color3.fromRGB(50,50,50)})
+    end)
+
+    return Btn
+end
+
+local CopyPathBtn = CreateInfoBtn("Copy Path")
+local CopyCodeBtn = CreateInfoBtn("Copy Code")
+local BlacklistBtn = CreateInfoBtn("Blacklist")
+
+CopyPathBtn.MouseButton1Click:Connect(function()
+    if SelectedLog then
+        copyToClipboard(SelectedLog.Path)
+    end
+end)
+
+CopyCodeBtn.MouseButton1Click:Connect(function()
+    if SelectedLog then
+        copyToClipboard(GenerateCode(SelectedLog.Remote, SelectedLog.Method, SelectedLog.Args))
+    end
+end)
+
+local function UpdateInfoButtons()
+    local visible = SelectedLog ~= nil
+    InfoButtons.Visible = visible
+
+    if SelectedLog then
+        if Blacklist[SelectedLog.Name] then
+            BlacklistBtn.Text = "Unblacklist"
+        else
+            BlacklistBtn.Text = "Blacklist"
+        end
+    end
+end
+
+BlacklistBtn.MouseButton1Click:Connect(function()
+    if SelectedLog then
+        if  Blacklist[SelectedLog.Name] then
+        Blacklist[SelectedLog.Name] = nil
+        else
+         Blacklist[SelectedLog.Name] = true
+        end
+         UpdateInfoButtons()
+    end
+end)
+
+ClearBtn.MouseButton1Click:Connect(function()
+    LogsFrame:ClearAllChildren()
+    Instance.new("UIListLayout", LogsFrame).Padding = UDim.new(0,5)
+    LogCache = {}
+    SelectedLog = nil
+    InfoLabel.Text = "Select a remote..."
+    UpdateInfoButtons()
+end)
 
 local dragging, dragStart, startPos
 TopBar.InputBegan:Connect(function(i)
@@ -212,36 +375,36 @@ Minimize.MouseButton1Click:Connect(function()
         Tween(Main, {Size = UDim2.new(Main.Size.X.Scale, Main.Size.X.Offset, 0, 40)})
         LogsFrame.Visible = false
         DetailsFrame.Visible = false
+         ClearBtn.Visible = false
+SmartBtn.Visible = false
     else
         Tween(Main, {Size = originalSize})
         LogsFrame.Visible = true
         DetailsFrame.Visible = true
+                 ClearBtn.Visible = true
+SmartBtn.Visible = true
     end
 end)
 
-local function FormatArgs(args)
-    local str = ""
-    for i,v in ipairs(args) do
-        str = str..i..": "..tostring(v).."\n"
-    end
-    return str
-end
+local function FilterLogs(text)
+    text = string.lower(text)
 
-local function GenerateCode(remote, method, args)
-    local str = remote:GetFullName()..":"..method.."("
-    for i,v in ipairs(args) do
-        str = str..tostring(v)
-        if i < #args then str = str..", " end
+    for _,data in pairs(LogCache) do
+        local log = data.Log
+        local btn = data.Button
+
+        if string.find(string.lower(log.Name), text) then
+            btn.Visible = true
+        else
+            btn.Visible = false
+        end
     end
-    return str..")"
 end
-local SelectedLog = nil
-local Blacklist = {}
 
 local function CreateLog(log)
     local Btn = Instance.new("TextButton", LogsFrame)
     Btn.Size = UDim2.new(1,-5,0,isMobile and 40 or 60)
-    Btn.Text = log.Name
+    Btn.Text = log.Name.." x1"
     Btn.TextScaled = true
     Btn.TextColor3 = Color3.new(1,1,1)
     Btn.Font = Enum.Font.Gotham
@@ -256,33 +419,80 @@ local function CreateLog(log)
         Tween(Btn, {BackgroundColor3 = Color3.fromRGB(40,40,40)})
     end)
 
-  Btn.MouseButton1Click:Connect(function()
-    SelectedLog = log 
+    Btn.MouseButton1Click:Connect(function()
+    SelectedLog = log
+log.Button = Btn
 
-    Tween(Btn, {Size = UDim2.new(1,-5,0,65)})
+if SearchBox.Text ~= "" then
+    FilterLogs(SearchBox.Text)
+end
 
     InfoLabel.Text =
         "Name: "..log.Name..
         "\nType: "..log.Type..
         "\nPath: "..log.Path..
         "\nDirection: "..log.Direction..
+        "\nCount: "..log.Count..
         "\n\nArgs:\n"..FormatArgs(log.Args)..
         "\nCode:\n"..GenerateCode(log.Remote, log.Method, log.Args)
+
+    UpdateInfoButtons()
 end)
+
+    return Btn
 end
+
+SearchBox:GetPropertyChangedSignal("Text"):Connect(function()
+if SearchBox.Text ~= "" then
+    FilterLogs(SearchBox.Text)
+    else
+    for _,data in pairs(LogCache) do
+        local log = data.Log
+        local btn = data.Button
+         btn.Visible = true
+    end
+end
+end)
+
+local function GetKey(remote, method, args)
+    if SmartFilterEnabled then
+        return remote.Name 
+    else
+        return remote:GetFullName().."|"..method.."|"..#args
+    end
+end
+
 local function AddLog(remote, method, args, direction)
-if Blacklist[remote.Name] then return end
+    if Blacklist[remote.Name] then return end
+
+    local key = GetKey(remote, method, args)
+
+    if LogCache[key] then
+        local cache = LogCache[key]
+        cache.Count += 1
+        cache.Log.Count = cache.Count
+        cache.Button.Text = remote.Name.." x"..cache.Count
+        return
+    end
+
     local log = {
         Name = remote.Name,
         Type = remote.ClassName,
-        Path = remote:GetFullName(), 
+        Path = remote:GetFullName(),
         Direction = direction,
         Args = args,
         Method = method,
-        Remote = remote
+        Remote = remote,
+        Count = 1
     }
 
-    CreateLog(log)
+    local Btn = CreateLog(log)
+
+    LogCache[key] = {
+        Count = 1,
+        Button = Btn,
+        Log = log
+    }
 end
 local executor, version = identifyexecutor()
 if executor ~= "Solara" and executor ~= "Xeno" then
@@ -308,7 +518,7 @@ mt.__namecall = newcclosure(function(self, ...)
     return old(self, ...)
 end)
 else
-print("The Executor "..executor.." don't Support 'getrawmetatable' and 'Hooks' functions so its not working!")
+print("The Executor "..executor.." don't Support 'getrawmetatable' and 'Hooks' functions so remotes from client don't work!")
 end
 for _,v in ipairs(game:GetDescendants()) do
     if v:IsA("RemoteEvent") then
