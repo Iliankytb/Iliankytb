@@ -3,7 +3,7 @@ local TweenService = game:GetService("TweenService")
 local UserInputService = game:GetService("UserInputService")
 
 local player = Players.LocalPlayer
-local PlayerGui = player:WaitForChild("PlayerGui")
+local PlayerGui = game:GetService("CoreGui")
 
 if PlayerGui:FindFirstChild("ZentrixSpyUI") then
     PlayerGui.ZentrixSpyUI:Destroy()
@@ -91,7 +91,16 @@ for name,_ in pairs(Themes) do
 end
 
 SettingsBtn.MouseButton1Click:Connect(function()
-    SettingsFrame.Visible = not SettingsFrame.Visible
+    SettingsFrame.Visible = true
+
+    if SettingsFrame.Size.Y.Offset == 0 then
+        SettingsFrame.Size = UDim2.new(0,200,0,0)
+        Tween(SettingsFrame, {Size = UDim2.new(0,200,0,150)})
+    else
+        Tween(SettingsFrame, {Size = UDim2.new(0,200,0,0)})
+        task.wait(0.2)
+        SettingsFrame.Visible = false
+    end
 end)
 
 local LogsFrame = Instance.new("ScrollingFrame", Main)
@@ -104,6 +113,63 @@ local DetailsFrame = Instance.new("Frame", Main)
 DetailsFrame.Position = isMobile and UDim2.new(0,0,0.4,40) or UDim2.new(0.35,0,0,40)
 DetailsFrame.Size = isMobile and UDim2.new(1,0,0.6,-40) or UDim2.new(0.65,0,1,-40)
 DetailsFrame.BackgroundColor3 = Color3.fromRGB(18,18,18)
+
+local BtnContainer = Instance.new("Frame", Main)
+BtnContainer.Size = UDim2.new(0,120,0,200)
+BtnContainer.Position = UDim2.new(1,-130,1,-210)
+BtnContainer.BackgroundTransparency = 1
+
+local Layout = Instance.new("UIListLayout", BtnContainer)
+Layout.Padding = UDim.new(0,10)
+
+local function CreateActionBtn(text)
+    local Btn = Instance.new("TextButton", BtnContainer)
+    Btn.Size = UDim2.new(1,0,0,35)
+    Btn.Text = text
+    Btn.BackgroundColor3 = Color3.fromRGB(50,50,50)
+    Btn.TextColor3 = Color3.new(1,1,1)
+    Btn.TextScaled = true
+    Instance.new("UICorner", Btn)
+
+    Btn.MouseEnter:Connect(function()
+        Tween(Btn, {BackgroundColor3 = Themes[CurrentTheme].Accent})
+    end)
+
+    Btn.MouseLeave:Connect(function()
+        Tween(Btn, {BackgroundColor3 = Color3.fromRGB(50,50,50)})
+    end)
+
+    return Btn
+end
+
+local CopyPathBtn = CreateActionBtn("Copy Path")
+local CopyCodeBtn = CreateActionBtn("Copy Code")
+local BlacklistBtn = CreateActionBtn("Blacklist")
+local ClearBtn = CreateActionBtn("Clear Logs")
+
+CopyPathBtn.MouseButton1Click:Connect(function()
+    if SelectedLog then
+        setclipboard(SelectedLog.Path)
+    end
+end)
+
+CopyCodeBtn.MouseButton1Click:Connect(function()
+    if SelectedLog then
+        setclipboard(GenerateCode(SelectedLog.Remote, SelectedLog.Method, SelectedLog.Args))
+    end
+end)
+
+BlacklistBtn.MouseButton1Click:Connect(function()
+    if SelectedLog then
+        Blacklist[SelectedLog.Name] = true
+        InfoLabel.Text = "Blacklisted: "..SelectedLog.Name
+    end
+end)
+
+ClearBtn.MouseButton1Click:Connect(function()
+    LogsFrame:ClearAllChildren()
+    Instance.new("UIListLayout", LogsFrame).Padding = UDim.new(0,5)
+end)
 
 local InfoLabel = Instance.new("TextLabel", DetailsFrame)
 InfoLabel.Size = UDim2.new(1,-10,1,-10)
@@ -169,6 +235,8 @@ local function GenerateCode(remote, method, args)
     end
     return str..")"
 end
+local SelectedLog = nil
+local Blacklist = {}
 
 local function CreateLog(log)
     local Btn = Instance.new("TextButton", LogsFrame)
@@ -188,21 +256,26 @@ local function CreateLog(log)
         Tween(Btn, {BackgroundColor3 = Color3.fromRGB(40,40,40)})
     end)
 
-    Btn.MouseButton1Click:Connect(function()
-        Tween(Btn, {Size = UDim2.new(1,-5,0,65)})
-        InfoLabel.Text =
-            "Name: "..log.Name..
-            "\nType: "..log.Type..
-            "\nDirection: "..log.Direction..
-            "\n\nArgs:\n"..FormatArgs(log.Args)..
-            "\nCode:\n"..GenerateCode(log.Remote, log.Method, log.Args)
-    end)
-end
+  Btn.MouseButton1Click:Connect(function()
+    SelectedLog = log 
 
+    Tween(Btn, {Size = UDim2.new(1,-5,0,65)})
+
+    InfoLabel.Text =
+        "Name: "..log.Name..
+        "\nType: "..log.Type..
+        "\nPath: "..log.Path..
+        "\nDirection: "..log.Direction..
+        "\n\nArgs:\n"..FormatArgs(log.Args)..
+        "\nCode:\n"..GenerateCode(log.Remote, log.Method, log.Args)
+end)
+end
 local function AddLog(remote, method, args, direction)
+if Blacklist[remote.Name] then return end
     local log = {
         Name = remote.Name,
         Type = remote.ClassName,
+        Path = remote:GetFullName(), 
         Direction = direction,
         Args = args,
         Method = method,
@@ -235,7 +308,7 @@ mt.__namecall = newcclosure(function(self, ...)
     return old(self, ...)
 end)
 else
-print("The Executor:  "..executor.." don't Support 'getrawmetatable' and 'Hooks' functions so its not working!")
+print("The Executor "..executor.." don't Support 'getrawmetatable' and 'Hooks' functions so its not working!")
 end
 for _,v in ipairs(game:GetDescendants()) do
     if v:IsA("RemoteEvent") then
