@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.97"
+local V = "V.0.98"
 
 library:CreateWindow({
     Title = "Doors - by Iliankytb",-- Title of the script
@@ -58,6 +58,7 @@ local MarketplaceService = game:GetService("MarketplaceService")
 local infoGameName = MarketplaceService:GetProductInfo(game.PlaceId)
 local ActiveEspPlayers = false
 local EspGuidingLight = false
+local AutoLibraryCode = false
 
 local Version = InfoTab:AddText({
         Text = "Version:"..V,
@@ -71,6 +72,7 @@ window:Notify({
 
 local ItemNames = {
     "KeyObtain",
+    "Bread",
     "LeverForGate",
     "Battery",
     "Flashlight",
@@ -280,6 +282,51 @@ end
     end
     if ActiveAvoidFigure then
         game:GetService("ReplicatedStorage").RemotesFolder.Crouch:FireServer(true)
+    end
+    if AutoLibraryCode then
+        task.spawn(function()
+    local Paper = game.Players.LocalPlayer.Character:FindFirstChild("LibraryHintPaper")
+
+if Paper then
+    local Code = {}
+
+    local function SameOffset(a, b)
+        return a.X == b.X and a.Y == b.Y
+    end
+
+    local RawHints = game:GetService("Players").LocalPlayer.PlayerGui.PermUI.Hints:GetChildren()
+    local Hints = {}
+
+    for _, v in pairs(RawHints) do
+        if v:IsA("ImageLabel") then
+            table.insert(Hints, v)
+        end
+    end
+
+    table.sort(Hints, function(a, b)
+        return a.LayoutOrder < b.LayoutOrder
+    end)
+ for i = 1,5 do
+    for _, Coded in ipairs(Hints) do
+            local P = Paper.UI[tostring(i)]
+            if SameOffset(Coded.ImageRectOffset, P.ImageRectOffset) then
+                table.insert(Code, Coded.TextLabel.Text)
+                break
+            end
+        end
+    end
+
+    local FinalCode = table.concat(Code, "")
+    print(FinalCode)
+
+    Code = {FinalCode} 
+
+    game:GetService("ReplicatedStorage")
+        :WaitForChild("RemotesFolder")
+        :WaitForChild("PL")
+        :FireServer(unpack(Code))
+end
+end)
     end
     if AntiScreech then
     if game.Workspace.CurrentCamera:FindFirstChild("Screech") then
@@ -1285,9 +1332,9 @@ if child:IsA("ProximityPrompt") then
                         CreateEsp(child, Color3.fromRGB(100, 255, 255), "Guiding Light", child)
                     end
  end
-    if not child:IsA("Model") then return end
+    if  child:IsA("Model") then 
    if ActiveEspDoor and child:FindFirstChild("Door")  then
-  if not child.Door.PrimaryPart then repeat task.wait(1) until child.Door.PrimaryPart end 
+  if child.Door.PrimaryPart == nil then repeat task.wait(1) until child.Door.PrimaryPart ~= nil end 
         local Door = child.Door
         local Assets = child:FindFirstChild("Assets")
         if not Door:FindFirstChildOfClass("Highlight") and not Door.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
@@ -1307,8 +1354,7 @@ if child:IsA("ProximityPrompt") then
             end
         end
     end
-  if not child.PrimaryPart then repeat task.wait(1) until child.PrimaryPart end 
-
+  if  child.PrimaryPart == nil then repeat task.wait(1) until child.PrimaryPart ~= nil end 
     if ActiveEspCandy and (child.Name == "Candy" or child.Name == "CandyBag" )
     and not child:FindFirstChildOfClass("Highlight")
     and not child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
@@ -1394,6 +1440,7 @@ child:FindFirstChildOfClass("Highlight"):Destroy()
 end
         CreateEsp(child, Color3.fromRGB(255,255,0), "Anchor", child.PrimaryPart)
     end
+   end
 end)
 
 workspace.DescendantRemoving:Connect(function(child)
@@ -1405,17 +1452,15 @@ workspace.DescendantRemoving:Connect(function(child)
                       KeepEsp(child, child)
                     end
  end
-     if not child:IsA("Model") then return end
- if ActiveEspDoor and child:FindFirstChild("Door") then
+     if  child:IsA("Model") then 
+ if ActiveEspDoor and child:FindFirstChild("Door") and child:FindFirstChild("Door").PrimaryPart then
         local Door = child.Door
         local Assets = child:FindFirstChild("Assets")
         if  Door:FindFirstChildOfClass("Highlight") and Door.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
-         
               KeepEsp(child,child.PrimaryPart)
-             
         end
     end
-   if not child.PrimaryPart then return end 
+   if  child.PrimaryPart then 
     if ActiveEspCandy and ( child.Name == "Candy" or hild.Name == "CandyBag")
     and  child:FindFirstChildOfClass("Highlight")
     and  child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
@@ -1490,6 +1535,8 @@ end
     and  child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
         KeepEsp(child,child.PrimaryPart)
     end
+   end
+     end
 end)
 workspace.ChildAdded:Connect(function(child)
  if ActiveMonsterSpawnAlert then
@@ -1542,11 +1589,12 @@ end,
 })
 
 local AutoLibaryCodeToggle = GameTab:AddToggle({
-Text = "Auto Library Code (Coming very Soon!)",
+Text = "Auto Library Code",
    Name = "AutoLibraryToggle",
    Default = false,
    Flag = "AutoLibraryToggle", 
    Callback = function(Value)
+   AutoLibraryCode = Value
 end,
 })
 
@@ -1563,7 +1611,7 @@ local ButtonUnloadCheat = SettingsTab:AddButton({
 Text = "Unload Cheat",
    Name = "ButtonUnloadCheat",
    Callback = function()
-
+library:Destroy()
 end,
 })
 local LimitRangerEspSlider = SettingsTab:AddSlider({
