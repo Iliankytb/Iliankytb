@@ -1,0 +1,134 @@
+
+
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+local PlayerGui = player:WaitForChild("PlayerGui")
+
+
+local ScreenGui = Instance.new("ScreenGui", PlayerGui)
+ScreenGui.Name = "RemoteSpyUI"
+
+local Main = Instance.new("Frame", ScreenGui)
+Main.Size = UDim2.new(0, 800, 0, 400)
+Main.Position = UDim2.new(0.5, -400, 0.5, -200)
+Main.BackgroundColor3 = Color3.fromRGB(20,20,20)
+
+local LogsFrame = Instance.new("ScrollingFrame", Main)
+LogsFrame.Size = UDim2.new(0.4, 0, 1, 0)
+LogsFrame.BackgroundColor3 = Color3.fromRGB(30,30,30)
+
+local UIListLayout = Instance.new("UIListLayout", LogsFrame)
+
+
+local DetailsFrame = Instance.new("Frame", Main)
+DetailsFrame.Position = UDim2.new(0.4, 0, 0, 0)
+DetailsFrame.Size = UDim2.new(0.6, 0, 1, 0)
+DetailsFrame.BackgroundColor3 = Color3.fromRGB(25,25,25)
+
+local InfoLabel = Instance.new("TextLabel", DetailsFrame)
+InfoLabel.Size = UDim2.new(1,0,1,0)
+InfoLabel.TextColor3 = Color3.new(1,1,1)
+InfoLabel.TextXAlignment = Enum.TextXAlignment.Left
+InfoLabel.TextYAlignment = Enum.TextYAlignment.Top
+InfoLabel.Text = "Select a remote..."
+InfoLabel.TextWrapped = true
+
+
+local ClearBtn = Instance.new("TextButton", Main)
+ClearBtn.Size = UDim2.new(0,100,0,30)
+ClearBtn.Position = UDim2.new(1,-110,0,10)
+ClearBtn.Text = "CLEAR"
+ClearBtn.BackgroundColor3 = Color3.fromRGB(100,0,0)
+
+local Logs = {}
+local Blacklist = {}
+
+
+local function FormatArgs(args)
+    local str = ""
+    for i,v in ipairs(args) do
+        str = str..i..": "..tostring(v).."\n"
+    end
+    return str
+end
+
+local function GenerateCode(remote, method, args)
+    local str = remote:GetFullName()..":"..method.."("
+    for i,v in ipairs(args) do
+        str = str..tostring(v)
+        if i < #args then str = str..", " end
+    end
+    return str..")"
+end
+
+
+local function CreateLog(log)
+    local Btn = Instance.new("TextButton", LogsFrame)
+    Btn.Size = UDim2.new(1,0,0,50)
+    Btn.TextColor3 = Color3.new(1,1,1)
+    Btn.Text = log.Name.."\n"..log.Direction
+    
+
+    if log.Type == "RemoteEvent" then
+        Btn.BackgroundColor3 = Color3.fromRGB(120,0,0)
+    elseif log.Type == "RemoteFunction" then
+        Btn.BackgroundColor3 = Color3.fromRGB(0,0,120)
+    else
+        Btn.BackgroundColor3 = Color3.fromRGB(80,0,80)
+    end
+
+    Btn.MouseButton1Click:Connect(function()
+        InfoLabel.Text = "Name: "..log.Name.."\nType: "..log.Type.."\nDirection: "..log.Direction.."\n\nArgs:\n"..FormatArgs(log.Args).."\nCode:\n"..GenerateCode(log.Remote, log.Method, log.Args)
+    end)
+end
+
+local function AddLog(remote, method, args, direction)
+    if Blacklist[remote.Name] then return end
+
+    local log = {
+        Name = remote.Name,
+        Type = remote.ClassName,
+        Direction = direction,
+        Args = args,
+        Method = method,
+        Remote = remote
+    }
+
+    table.insert(Logs, log)
+    CreateLog(log)
+end
+
+
+ClearBtn.MouseButton1Click:Connect(function()
+    LogsFrame:ClearAllChildren()
+    Instance.new("UIListLayout", LogsFrame)
+    Logs = {}
+end)
+
+
+local mt = getrawmetatable(game)
+setreadonly(mt, false)
+
+local old = mt.__namecall
+
+mt.__namecall = newcclosure(function(self, ...)
+    local method = getnamecallmethod()
+    local args = {...}
+
+    if typeof(self) == "Instance" and (method == "FireServer" or method == "InvokeServer") then
+        AddLog(self, method, args, "Client → Server")
+    end
+
+    return old(self, ...)
+end)
+
+
+for _,v in ipairs(game:GetDescendants()) do
+    if v:IsA("RemoteEvent") then
+        v.OnClientEvent:Connect(function(...)
+            AddLog(v, "OnClientEvent", {...}, "Server → Client")
+        end)
+    end
+end
+
+print("Zentrix Spy Loaded")
