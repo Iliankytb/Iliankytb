@@ -1,0 +1,408 @@
+local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
+local V = "V.0.1"
+local selectedTheme = "Default"
+
+library:CreateWindow({
+	Title = "Sol's rng By Iliankytb",-- Title of the script
+	Theme = selectedTheme,--View more theme in my discord server!
+	Icon = 0,-- 0 = no icon or add number
+	Intro = false,-- Intro or no
+	IntroTitle = "Zentrix Library Testing",--the intro title
+	KeyPC = Enum.KeyCode.K,--the key for pc to Open/close the frame
+	CustomSize = UDim2.new(0, 600, 0, 500), -- You can custom size but only for pc(for the moment lol!)
+	Data = {
+		EnableSavingData = false,--Enabling data saver or no
+		DisableNotifyingLoadedData = false,--set it to true for disable the notify when loaded data
+		FolderName = "FolderName",--Folder Name,you can change it
+		FileName = "FileName",-- File name for the data saver,you can change it
+	},
+	Discord = {
+		Enabled = false,--enable to copy the discord
+		DiscordLink = "https://discord.gg/E2TqYRsRP4",-- put the entire Link of discord
+		RememberJoin = true,-- Set this to false to make them copy the link every time they load the script
+		Duration = 10,-- 5 is the default you can change the number only for remember join
+	},
+	Notifications = {
+		NoSound = false, -- only booleen
+	CustomSound = false,-- only booleen true or false, false = the default true = the CustomSoundId
+		CustomSoundId = "rbxassetid://106553517979212",	--Only Roblox Sound public
+	},
+	KeySystem = false,--Key System or no
+	KeySettings = {
+		Title = "Zentrix Library Testing Key System",--Title of the key or script
+		Note = "the key is Zentrix",-- The method for obtaining
+		FileName = "Key",-- File name or no for saving the key
+		SaveKey = true,-- saving the key or no
+		GrabKeyFromSite = false,--is in early access and it may not work
+		Key = {"Zentrix"},-- the name you can add many name, Exemple "Key","Key2" or you can add a function to add key but i don't really know
+		Url = "",-- the url idk
+		AddGetKeyButton = false,
+		AddDiscordButton = true,
+		DiscordLink = "NoInviteLink",
+		GetKeyLink = "NoKeyLink",
+	},
+}, function(window)
+local InfoTab = window:CreateTab("Info",0)-- Tabs , 0 = no icon or add number
+	local MainTab = window:CreateTab("Main",0)-- Tabs , 0 = no icon or add number
+	local EspTab = window:CreateTab("Esp",0)-- Tabs , 0 = no icon or add number
+    local DiscordTab = window:CreateTab("Discord",0)-- Tabs , 0 = no icon or add number
+local SettingsTab = window:CreateTab("Settings",0)-- Tabs , 0 = no icon or add number
+local ActiveEspEggs = false
+local ActiveNoCooldownPrompt,ActiveDistanceEsp,ActiveBigPrompt,DisableLimitRangerEsp = false,false,false,false
+local LimitRangerEsp = 100
+local ParagraphInfoServer = InfoTab:AddParagraph({Title = "",Content = "Loading",Name = "Paragraph1"})
+local MarketplaceService = game:GetService("MarketplaceService")
+local infoGameName = MarketplaceService:GetProductInfo(game.PlaceId)
+local Version = InfoTab:AddText({
+        Text = "Version:"..V,
+        Name = "VersionScript"
+    })
+    --notif--
+	local Notif = window:Notify({
+		Title = "Script Version",
+		Message = V,
+		Duration = 7.5,
+		UseSound = true,
+	})
+    local function getServerInfo()
+    local Players = game:GetService("Players")
+    local playerCount = #Players:GetPlayers()
+local maxPlayers = game:GetService("Players").MaxPlayers
+local isStudio = game:GetService("RunService"):IsStudio()
+
+    return {
+        PlaceId = game.PlaceId,
+        JobId = game.JobId,
+        IsStudio = isStudio,
+        CurrentPlayers = playerCount,
+MaxPlayers =maxPlayers
+    }
+end
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local RunService = game:GetService("RunService")
+local ESPs = {}
+local Camera = nil
+local LineESPEnabled = false 
+
+task.spawn(function()
+Camera = workspace.CurrentCamera
+end)
+
+local function CreateEsp(Char, Color, Text, Parent,num)
+    if not Char or not Parent then return end
+    if Char:FindFirstChild("ESP") and Char:FindFirstChildOfClass("Highlight") then return end
+
+    
+    local highlight = Char:FindFirstChildOfClass("Highlight") or Instance.new("Highlight")
+    highlight.Name = "ESP_Highlight"
+    highlight.Adornee = Char
+    highlight.FillColor = Color
+    highlight.FillTransparency = 1
+    highlight.OutlineColor = Color
+    highlight.OutlineTransparency = 0
+    highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+    highlight.Enabled = false
+    highlight.Parent = Char
+
+    
+    local billboard = Char:FindFirstChild("ESP") or Instance.new("BillboardGui")
+    billboard.Name = "ESP"
+    billboard.Size = UDim2.new(20, 0, 5, 0)
+    billboard.AlwaysOnTop = true
+    billboard.StudsOffset = Vector3.new(0, num, 0)
+    billboard.Adornee = Parent
+    billboard.Enabled = false
+    billboard.Parent = Parent
+
+    local label = billboard:FindFirstChildOfClass("TextLabel") or Instance.new("TextLabel")
+    label.Size = UDim2.new(1, 0, 1, 0)
+    label.BackgroundTransparency = 1
+    label.Text = Text
+    label.TextColor3 = Color
+    label.TextScaled = true
+    label.Parent = billboard
+
+    local line = Drawing.new("Line")
+    line.Visible = false
+    line.Color = Color
+    line.Thickness = 1.5
+    line.Transparency = 1
+
+    table.insert(ESPs, {
+        Char = Char,
+        Highlight = highlight,
+        Billboard = billboard,
+        Label = label,
+        Part = Parent,
+        Line = line,
+        Text = Text,
+        Color = Color
+    })
+end
+
+RunService.RenderStepped:Connect(function()
+task.spawn(function()
+    local updatedInfo = getServerInfo()
+    local updatedContent = string.format(
+        "🎮 Game: %s\n📌 PlaceId: %s\n🔑 JobId: %s\n🧪 IsStudio: %s\n👥 Players: %d/%d",
+infoGameName.Name,      
+updatedInfo.PlaceId,
+        updatedInfo.JobId,
+        
+        tostring(updatedInfo.IsStudio),
+        updatedInfo.CurrentPlayers,
+updatedInfo.MaxPlayers
+    )
+
+    ParagraphInfoServer:Set({
+        Title = "Info",
+        Content = updatedContent
+    })
+end)
+
+task.spawn(function()
+if Camera then
+    local cameraPosition = Camera.CFrame.Position
+    local screenCenter = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y)
+    for _, esp in ipairs(ESPs) do
+        local part = esp.Part
+        local highlight = esp.Highlight
+        local billboard = esp.Billboard
+        local label = esp.Label
+        local line = esp.Line
+if not part or not highlight or not billboard or not label or not line then return end
+        if part and part.Parent and highlight and billboard then
+            local distance = (cameraPosition - part.Position).Magnitude
+            local screenPos, onScreen = Camera:WorldToViewportPoint(part.Position)
+            local withinRange = DisableLimitRangerEsp or distance <= LimitRangerEsp
+
+            highlight.Enabled = withinRange and onScreen
+            billboard.Enabled = withinRange and onScreen
+
+            if ActiveDistanceEsp then
+                label.Text = esp.Text .. " (" .. math.floor(distance + 0.5) .. " m)"
+            else
+                label.Text = esp.Text
+            end
+
+            if LineESPEnabled then
+                if onScreen and withinRange then
+                    line.Visible = true
+                    line.From = screenCenter
+                    line.To = Vector2.new(screenPos.X, screenPos.Y)
+                else
+                    line.Visible = false
+                end
+            else
+                line.Visible = false
+            end
+        else
+            if line then line.Visible = false end
+        end
+    end
+else
+task.spawn(function()
+if workspace:FindFirstChild("CurrentCamera") then
+Camera = workspace.CurrentCamera
+end
+end)
+end
+end)
+ if game.Players.LocalPlayer.Character then
+ end
+ end)
+
+ local function KeepEsp(Char, Parent)
+    if not Char or not Char:FindFirstChildOfClass("Highlight") then return end
+    if not Parent or not Parent:FindFirstChildOfClass("BillboardGui") then return end
+
+    for i = #ESPs, 1, -1 do 
+        local esp = ESPs[i]
+        if esp.Char == Char then 
+            if esp.Highlight then esp.Highlight:Destroy() end
+            if esp.Billboard then esp.Billboard:Destroy() end
+            if esp.Line then esp.Line:Destroy() end
+
+            table.remove(ESPs, i) 
+        end
+    end
+end
+
+ local function SetupCharacter(child,Map,Part)
+	if not child:IsA("Model") then return end
+	child.AncestryChanged:Connect(function(_, newParent)
+			if not child:IsDescendantOf(Map) then
+				KeepEsp(child, Part)
+			end
+	end)
+end
+local function copyToClipboard(text)
+    if setclipboard then
+        setclipboard(text)
+    else
+        warn("setclipboard is not supported in this environment.")
+    end
+end
+
+	local NoCooldownpromptToggle = MainTab:AddToggle({
+Text =  "Instant Prompt",
+   Name ="NoCooldownpromptToggle",
+   Default = false,
+   Flag = "NoCooldownPrompt1", 
+   Callback = function(Value)
+ActiveNoCooldownPrompt = Value 
+task.spawn(function()  
+if ActiveNoCooldownPrompt then
+for _,Assets in pairs(Game.Workspace:GetDescendants()) do  
+if Assets:isA("ProximityPrompt") then 
+task.spawn(function()
+if Assets.HoldDuration ~= 0 then
+Assets:SetAttribute("HoldDurationOld",Assets.HoldDuration)
+Assets.HoldDuration = 0
+end
+end)
+end 
+end  
+else
+for _,Assets in pairs(game.Workspace:GetDescendants()) do  
+if Assets:isA("ProximityPrompt") then 
+task.spawn(function()
+if Assets:GetAttribute("HoldDurationOld") and Assets:GetAttribute("HoldDurationOld") ~= 0 then
+Assets.HoldDuration = Assets:GetAttribute("HoldDurationOld")
+end
+end)
+end 
+end   
+end
+end)
+end,
+})
+local BigDistancePromptToggle = MainTab:AddToggle({
+Text =  "Big Distance Prompt",
+   Name ="BigDistancePromptToggle",
+   Default = false,
+   Flag = "AutoBigDistancePrompt", 
+   Callback = function(Value)
+ActiveBigPrompt = Value 
+end,
+})
+local EspEggsToggle = EspTab:AddToggle({
+ Text = "Esp Eggs",
+Name = "EspEggsToggle",
+   CurrentValue = false,
+   Flag = "EspEggsToggle", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  ActiveEspEggs = Value 
+if ActiveEspEggs then 
+for _,Players2 in pairs(game.Workspace:GetChildren()) do 
+if Players2:IsA("MeshPart") and not Players2:FindFirstChildOfClass("Highlight") and not Players2:FindFirstChild("ESP") then
+CreateEsp(Players2,Color3.fromRGB(0,0,255),Players2.Name,Players2,2)
+end
+end
+else 
+for _,Players2 in pairs(game.Workspace:GetChildren()) do 
+if Players2:IsA("MeshPart") and Players2 and Players2:FindFirstChildOfClass("Highlight") and Players2:FindFirstChild("ESP") then
+KeepEsp(Players2,Players2)
+end
+end 
+end
+end,
+})
+
+
+	local ButonDiscordLink = DiscordTab:AddButton({
+		Text = "Discord Link",
+		Name = "Button",
+		Callback = function() 	
+			library:CopyText("https://discord.gg/E2TqYRsRP4")
+		end
+	})
+
+local ButtonUnloadCheat = SettingsTab:AddButton({
+Text = "Unload Cheat",
+   Name = "ButtonUnloadCheat",
+   Callback = function()
+library:Destroy()
+end,
+})
+local LimitRangerEspSlider = SettingsTab:AddSlider({
+Text =  "Limit Ranger for esp",
+   Name ="LimitRangerEspSlider",
+   Min =25,
+   Max = 1000,
+   Default = 100,
+   Flag = "LimitRangerEsp1",
+   Callback = function(Value)
+CurrentValue = Value
+LimitRangerEsp = Value
+end,  LimitRangerEsp = CurrentValue,
+}) 
+local DisableLimitRangerEspToggle = SettingsTab:AddToggle({
+Text =  "Disable Limit Ranger Esp",
+   Name ="DisableLimitRangerEspToggle",
+   Default = false,
+   Flag = "ButtonDLRE", 
+   Callback = function(Value)
+  DisableLimitRangerEsp = Value 
+end,
+})
+local DistanceEspToggle = SettingsTab:AddToggle({
+Text =  "Activate Distance For Esp",
+   Name ="DistanceEspToggle",
+   Default = false,
+   Flag = "ButtonADFE", 
+   Callback = function(Value)
+  ActiveDistanceEsp = Value 
+end,
+})
+local TraitsToggle = SettingsTab:AddToggle({
+Text =  "Trait for esp",
+   Name ="TraitToggle",
+   Default = false,
+   Flag = "ButtonTTR", 
+   Callback = function(Value)
+  LineESPEnabled = Value 
+end,
+})
+	local AllAvailableThemes = library:GetAllThemes()
+	library:EnableFPSCounter(true)
+	local ChangeThemeDropdown = SettingsTab:AddDropdown({
+		Text = "Change Theme:",
+		Name = "Dropdown2",
+		Options = AllAvailableThemes,
+		Default = "Default",
+		MultiSelect = false,
+		Flag = "Dropdown2", --Put a name flag for save data if you enabled saving data
+		Callback = function(choice)
+			window:ChangeTheme(choice)
+		end
+	})
+
+	--library:LoadData()--Add this if you want to load data and everytime at bottom of your code
+ workspace.DescendantAdded:Connect(function(child) 
+task.wait(0.75)
+if ActiveNoCooldownPrompt then
+if child:IsA("ProximityPrompt") and child.HoldDuration ~= 0 then
+child:SetAttribute("HoldDurationOld",child.HoldDuration)
+child.HoldDuration = 0
+end  
+end
+if ActiveEspEggs then 
+ if child.Parent == workspace and child:IsA("MeshPart") and not child:FindFirstChildOfClass("Highlight") and not child:FindFirstChild("ESP") then
+CreateEsp(child,Color3.fromRGB(0,0,255),child.Name,child,2)
+end
+end
+end)
+workspace.DescendantRemoving:Connect(function(child)
+	if child:IsA("BasePart") then
+		if ActiveEspEggs then
+			if child:IsDescendantOf(workspace) and child:IsA("MeshPart") then
+				if child:FindFirstChildOfClass("Highlight") and child:FindFirstChild("ESP") then
+					KeepEsp(child, child)
+				end
+			end
+		end
+    end
+end)
+end)
