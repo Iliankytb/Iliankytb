@@ -6,7 +6,7 @@ local PlayerGui = player:WaitForChild("PlayerGui")
 
 
 local ScreenGui = Instance.new("ScreenGui", PlayerGui)
-ScreenGui.Name = "RemoteSpyUI"
+ScreenGui.Name = "ZentrixSpyUI"
 
 local Main = Instance.new("Frame", ScreenGui)
 Main.Size = UDim2.new(0, 800, 0, 400)
@@ -18,7 +18,6 @@ LogsFrame.Size = UDim2.new(0.4, 0, 1, 0)
 LogsFrame.BackgroundColor3 = Color3.fromRGB(30,30,30)
 
 local UIListLayout = Instance.new("UIListLayout", LogsFrame)
-
 
 local DetailsFrame = Instance.new("Frame", Main)
 DetailsFrame.Position = UDim2.new(0.4, 0, 0, 0)
