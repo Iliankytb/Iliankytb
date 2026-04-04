@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.15"
+local V = "V.0.16"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -968,7 +968,7 @@ workspace.DescendantRemoving:Connect(function(child)
 				end
 			end
 		end
-        if ActiveEspFuseBoxes and workspace.MAPS:FindFirstChild("GAME MAP") then
+        if ActiveEspFuseBoxes and workspace.MAPS:FindFirstChild("GAME MAP") and workspace.MAPS:FindFirstChild("GAME MAP"):FindFirstChild("FuseBoxes") then
 			local map = workspace.MAPS["GAME MAP"]
 
 			if child:IsDescendantOf(map.FuseBoxes) and child.PrimaryPart then
