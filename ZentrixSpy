@@ -154,6 +154,7 @@ local SearchBox = Instance.new("TextBox", LogsFrame)
 SearchBox.Size = UDim2.new(1,-10,0,30)
 SearchBox.PlaceholderText = "Search remote..."
 SearchBox.Text = ""
+SearchBox.LayoutOrder = -1
 SearchBox.BackgroundColor3 = Color3.fromRGB(30,30,30)
 SearchBox.TextColor3 = Color3.new(1,1,1)
 SearchBox.TextScaled = true
@@ -285,6 +286,7 @@ local function CreateInfoBtn(text)
     Btn.BackgroundColor3 = Color3.fromRGB(50,50,50)
     Btn.TextColor3 = Color3.new(1,1,1)
     Btn.TextScaled = true
+    Btn.Visible = false
     Instance.new("UICorner", Btn)
 
     Btn.MouseEnter:Connect(function()
@@ -339,8 +341,11 @@ BlacklistBtn.MouseButton1Click:Connect(function()
 end)
 
 ClearBtn.MouseButton1Click:Connect(function()
-    LogsFrame:ClearAllChildren()
-    Instance.new("UIListLayout", LogsFrame).Padding = UDim.new(0,5)
+for _, Buttons in pairs(LogsFrame:GetChildren()) do
+    if Buttons and Buttons:IsA("TextButton") then
+        Buttons:Destroy()
+    end
+end
     LogCache = {}
     SelectedLog = nil
     InfoLabel.Text = "Select a remote..."
