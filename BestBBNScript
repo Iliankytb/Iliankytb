@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.16"
+local V = "V.0.17"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -96,7 +96,7 @@ local function doShake(wireyesUI)
         local remote = wireyesClient:WaitForChild("WireyesEvent")
       if remote then
 CanShake = false
-tas.spawn(function() 
+task.spawn(function() 
 wait(3)
 CanShake = true
 end)
@@ -301,10 +301,10 @@ if existing then
 end
 end
 if NoBlindness then
-if game:GetService("ReplicatedStorage").Modules.BlindnessModule:FindFirstAncestorOfClass("Atmosphere")  then
-    game:GetService("ReplicatedStorage").Modules.BlindnessModule:FindFirstAncestorOfClass("Atmosphere").Glare = 0
-    game:GetService("ReplicatedStorage").Modules.BlindnessModule:FindFirstAncestorOfClass("Atmosphere").Offset = 0
-    game:GetService("ReplicatedStorage").Modules.BlindnessModule:FindFirstAncestorOfClass("Atmosphere").Haze = 0
+if game:GetService("ReplicatedStorage").Modules.BlindnessModule:FindFirstChildOfClass("Atmosphere")  then
+    game:GetService("ReplicatedStorage").Modules.BlindnessModule:FindFirstChildOfClass("Atmosphere").Glare = 0
+    game:GetService("ReplicatedStorage").Modules.BlindnessModule:FindFirstChildOfClass("Atmosphere").Offset = 0
+    game:GetService("ReplicatedStorage").Modules.BlindnessModule:FindFirstChildOfClass("Atmosphere").Haze = 0
 end
 end
      if AutoSafeSpot then
