@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.17"
+local V = "V.0.18"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -97,7 +97,7 @@ local function doShake(wireyesUI)
       if remote then
 CanShake = false
 task.spawn(function() 
-wait(3)
+wait(0.5)
 CanShake = true
 end)
         pcall(function() remote:FireServer("Shaking") end)
