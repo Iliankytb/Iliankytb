@@ -39,13 +39,12 @@ TopBar.BackgroundTransparency = 1
 
 local Title = Instance.new("TextLabel", TopBar)
 Title.Size = UDim2.new(1,0,1,0)
-Title.Text = "Zentrix Spy V6"
+Title.Text = "Zentrix Spy"
 Title.TextColor3 = Themes[CurrentTheme].Accent
 Title.Font = Enum.Font.GothamBold
 Title.TextScaled = true
 Title.BackgroundTransparency = 1
 
--- CLOSE
 local Close = Instance.new("TextButton", TopBar)
 Close.Size = UDim2.new(0,40,1,0)
 Close.Position = UDim2.new(1,-40,0,0)
@@ -212,7 +211,8 @@ local function AddLog(remote, method, args, direction)
 
     CreateLog(log)
 end
-
+local executor, version = identifyexecutor()
+if executor ~= "Solara" and executor ~= "Xeno" then
 local mt = getrawmetatable(game)
 setreadonly(mt, false)
 local old = mt.__namecall
@@ -234,7 +234,9 @@ mt.__namecall = newcclosure(function(self, ...)
 
     return old(self, ...)
 end)
-
+else
+print("The Executor:  "..executor.." don't Support 'getrawmetatable' and 'Hooks' functions so its not working!")
+end
 for _,v in ipairs(game:GetDescendants()) do
     if v:IsA("RemoteEvent") then
         v.OnClientEvent:Connect(function(...)
