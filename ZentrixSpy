@@ -1,48 +1,102 @@
-
+--// Zentrix Spy V2 (Clean + Aesthetic + Advanced)
 
 local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
 local player = Players.LocalPlayer
 local PlayerGui = player:WaitForChild("PlayerGui")
 
+--// REMOVE OLD UI
+if PlayerGui:FindFirstChild("ZentrixSpyUI") then
+    PlayerGui.ZentrixSpyUI:Destroy()
+end
 
-local ScreenGui = Instance.new("ScreenGui", PlayerGui)
+--// UI CREATION
+local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Name = "ZentrixSpyUI"
+ScreenGui.Parent = PlayerGui
 
+-- MAIN
 local Main = Instance.new("Frame", ScreenGui)
-Main.Size = UDim2.new(0, 800, 0, 400)
-Main.Position = UDim2.new(0.5, -400, 0.5, -200)
-Main.BackgroundColor3 = Color3.fromRGB(20,20,20)
+Main.Size = UDim2.new(0, 900, 0, 500)
+Main.Position = UDim2.new(0.5, -450, 0.5, -250)
+Main.BackgroundColor3 = Color3.fromRGB(15,15,15)
+Main.BorderSizePixel = 0
 
+-- TITLE
+local Title = Instance.new("TextLabel", Main)
+Title.Size = UDim2.new(1,0,0,40)
+Title.BackgroundTransparency = 1
+Title.Text = "Zentrix Spy"
+Title.TextColor3 = Color3.fromRGB(0,255,170)
+Title.Font = Enum.Font.GothamBold
+Title.TextSize = 20
+
+-- CLOSE BUTTON
+local Close = Instance.new("TextButton", Main)
+Close.Size = UDim2.new(0,40,0,40)
+Close.Position = UDim2.new(1,-45,0,0)
+Close.Text = "X"
+Close.BackgroundColor3 = Color3.fromRGB(120,0,0)
+Close.TextColor3 = Color3.new(1,1,1)
+
+Close.MouseButton1Click:Connect(function()
+    ScreenGui:Destroy()
+end)
+
+-- LEFT PANEL
 local LogsFrame = Instance.new("ScrollingFrame", Main)
-LogsFrame.Size = UDim2.new(0.4, 0, 1, 0)
-LogsFrame.BackgroundColor3 = Color3.fromRGB(30,30,30)
+LogsFrame.Position = UDim2.new(0,0,0,40)
+LogsFrame.Size = UDim2.new(0.35,0,1,-40)
+LogsFrame.BackgroundColor3 = Color3.fromRGB(20,20,20)
+LogsFrame.BorderSizePixel = 0
 
 local UIListLayout = Instance.new("UIListLayout", LogsFrame)
+UIListLayout.Padding = UDim.new(0,5)
 
+-- RIGHT PANEL
 local DetailsFrame = Instance.new("Frame", Main)
-DetailsFrame.Position = UDim2.new(0.4, 0, 0, 0)
-DetailsFrame.Size = UDim2.new(0.6, 0, 1, 0)
-DetailsFrame.BackgroundColor3 = Color3.fromRGB(25,25,25)
+DetailsFrame.Position = UDim2.new(0.35,0,0,40)
+DetailsFrame.Size = UDim2.new(0.65,0,1,-40)
+DetailsFrame.BackgroundColor3 = Color3.fromRGB(18,18,18)
 
+-- INFO TEXT
 local InfoLabel = Instance.new("TextLabel", DetailsFrame)
-InfoLabel.Size = UDim2.new(1,0,1,0)
-InfoLabel.TextColor3 = Color3.new(1,1,1)
+InfoLabel.Size = UDim2.new(1,-10,1,-10)
+InfoLabel.Position = UDim2.new(0,5,0,5)
+InfoLabel.BackgroundTransparency = 1
+InfoLabel.TextColor3 = Color3.fromRGB(200,200,200)
+InfoLabel.Font = Enum.Font.Code
+InfoLabel.TextSize = 14
 InfoLabel.TextXAlignment = Enum.TextXAlignment.Left
 InfoLabel.TextYAlignment = Enum.TextYAlignment.Top
-InfoLabel.Text = "Select a remote..."
 InfoLabel.TextWrapped = true
+InfoLabel.Text = "Select a remote..."
 
-
+-- BUTTONS
 local ClearBtn = Instance.new("TextButton", Main)
-ClearBtn.Size = UDim2.new(0,100,0,30)
-ClearBtn.Position = UDim2.new(1,-110,0,10)
-ClearBtn.Text = "CLEAR"
-ClearBtn.BackgroundColor3 = Color3.fromRGB(100,0,0)
+ClearBtn.Size = UDim2.new(0,90,0,30)
+ClearBtn.Position = UDim2.new(1,-100,0,50)
+ClearBtn.Text = "Clear"
+ClearBtn.BackgroundColor3 = Color3.fromRGB(50,50,50)
 
+local CopyBtn = Instance.new("TextButton", Main)
+CopyBtn.Size = UDim2.new(0,90,0,30)
+CopyBtn.Position = UDim2.new(1,-100,0,90)
+CopyBtn.Text = "Copy Code"
+CopyBtn.BackgroundColor3 = Color3.fromRGB(50,50,50)
+
+local BlockBtn = Instance.new("TextButton", Main)
+BlockBtn.Size = UDim2.new(0,90,0,30)
+BlockBtn.Position = UDim2.new(1,-100,0,130)
+BlockBtn.Text = "Blacklist"
+BlockBtn.BackgroundColor3 = Color3.fromRGB(50,50,50)
+
+-- DATA
 local Logs = {}
 local Blacklist = {}
+local SelectedLog = nil
 
-
+-- UTILS
 local function FormatArgs(args)
     local str = ""
     for i,v in ipairs(args) do
@@ -60,27 +114,30 @@ local function GenerateCode(remote, method, args)
     return str..")"
 end
 
-
+-- CREATE LOG
 local function CreateLog(log)
     local Btn = Instance.new("TextButton", LogsFrame)
-    Btn.Size = UDim2.new(1,0,0,50)
+    Btn.Size = UDim2.new(1,-5,0,60)
     Btn.TextColor3 = Color3.new(1,1,1)
+    Btn.Font = Enum.Font.Gotham
+    Btn.TextSize = 14
     Btn.Text = log.Name.."\n"..log.Direction
-    
 
     if log.Type == "RemoteEvent" then
-        Btn.BackgroundColor3 = Color3.fromRGB(120,0,0)
+        Btn.BackgroundColor3 = Color3.fromRGB(150,40,40)
     elseif log.Type == "RemoteFunction" then
-        Btn.BackgroundColor3 = Color3.fromRGB(0,0,120)
+        Btn.BackgroundColor3 = Color3.fromRGB(40,40,150)
     else
-        Btn.BackgroundColor3 = Color3.fromRGB(80,0,80)
+        Btn.BackgroundColor3 = Color3.fromRGB(100,40,120)
     end
 
     Btn.MouseButton1Click:Connect(function()
+        SelectedLog = log
         InfoLabel.Text = "Name: "..log.Name.."\nType: "..log.Type.."\nDirection: "..log.Direction.."\n\nArgs:\n"..FormatArgs(log.Args).."\nCode:\n"..GenerateCode(log.Remote, log.Method, log.Args)
     end)
 end
 
+-- ADD LOG
 local function AddLog(remote, method, args, direction)
     if Blacklist[remote.Name] then return end
 
@@ -97,14 +154,28 @@ local function AddLog(remote, method, args, direction)
     CreateLog(log)
 end
 
-
+-- BUTTONS ACTIONS
 ClearBtn.MouseButton1Click:Connect(function()
     LogsFrame:ClearAllChildren()
     Instance.new("UIListLayout", LogsFrame)
     Logs = {}
+    InfoLabel.Text = "Cleared"
 end)
 
+CopyBtn.MouseButton1Click:Connect(function()
+    if SelectedLog then
+        setclipboard(GenerateCode(SelectedLog.Remote, SelectedLog.Method, SelectedLog.Args))
+    end
+end)
 
+BlockBtn.MouseButton1Click:Connect(function()
+    if SelectedLog then
+        Blacklist[SelectedLog.Name] = true
+        InfoLabel.Text = "Blacklisted: "..SelectedLog.Name
+    end
+end)
+
+-- HOOK
 local mt = getrawmetatable(game)
 setreadonly(mt, false)
 
@@ -121,7 +192,7 @@ mt.__namecall = newcclosure(function(self, ...)
     return old(self, ...)
 end)
 
-
+-- SERVER EVENTS
 for _,v in ipairs(game:GetDescendants()) do
     if v:IsA("RemoteEvent") then
         v.OnClientEvent:Connect(function(...)
@@ -130,4 +201,4 @@ for _,v in ipairs(game:GetDescendants()) do
     end
 end
 
-print("Zentrix Spy Loaded")
+print("Zentrix Spy V2 Loaded")
