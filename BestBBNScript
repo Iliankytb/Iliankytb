@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.20"
+local V = "V.0.21"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -588,8 +588,7 @@ end,
 
 	--Toggle--
 	local ToggleAG = MainTab:AddToggle({
-		Text = "Auto Generator (disabled until i bypass)
-!)",
+		Text = "Auto Generator (disabled until i bypass!)",
 		Name = "ToggleAG",
 		Flag = "ToggleAG",--Put a name flag for save data if you enabled saving data
 		Default = false,
