@@ -1,4 +1,4 @@
-local LibraryVersion = "0.51"
+local LibraryVersion = "0.52"
 
 local HttpService = game:GetService("HttpService")
 local UserInputService = game:GetService("UserInputService")
@@ -716,13 +716,14 @@ local function VisibleWindow(window,settings1,gui)
 	end)
 
 	if settings1.Discord.Enabled then
-		if settings1.Discord.RememberJoin and settings1.Discord.DiscordLink and  settings1.Discord.DiscordLink ~= "NoInviteLink" then
+		if settings1.Discord.RememberJoin and settings1.Discord.DiscordLink and  settings1.Discord.DiscordLink ~= "NoInviteLink" and settings1.Discord.DiscordLink ~= nil then
 			window:Notify({
 				Title = "Discord!",
 				Message = "Remember to join the discord,discord link: "..settings1.Discord.DiscordLink,
 				Duration = settings1.Discord.Duration,
 			})
-		elseif not settings1.Discord.RememberJoin and settings1.Discord.DiscordLink and  settings1.Discord.DiscordLink ~= "NoInviteLink" then
+			end
+		if settings1.Discord.CopyLink and settings1.Discord.DiscordLink and  settings1.Discord.DiscordLink ~= "NoInviteLink" and settings1.Discord.DiscordLink ~= nil  then
 			copyToClipboard(settings1.Discord.DiscordLink )
 		end
 	end
@@ -1045,7 +1046,12 @@ local function VisibleWindow(window,settings1,gui)
 						tab.TogglesValue[name] = value
 					end)
 				end
-
+				if tab.ColorToggle[name] then
+					pcall(function()
+						tab.ColorToggle[name]:Set(value.Enabled, value.Color)
+						tab.ColorToggleValue[name] = value
+					end)
+				end
 				task.wait(0.02)
 			end
 		end
@@ -1119,8 +1125,8 @@ local function VisibleWindow(window,settings1,gui)
 		end
 	end
 
-function library:Destroy()
-	if window and gui then
+	function library:Destroy()
+		if window and gui then
 			for _, tab in pairs(window.tabs) do
 				if tab.toggles then
 					for _, name in pairs(tab.toggles) do
@@ -1129,10 +1135,10 @@ function library:Destroy()
 						end)
 					end
 				end
-				end
-	gui:Destroy()
+			end
+			gui:Destroy()
+		end
 	end
-end
 
 	if settingsData.EnableSavingData then
 		function library:LoadData()
@@ -1168,7 +1174,7 @@ end
 						tab.dropdownValue = tab.dropdownValue or {}
 						tab.TogglesValue = tab.TogglesValue or {}
 						tab.ColorPickerValue = tab.ColorPickerValue or {}
-
+						tab.ColorToggleValue = tab.ColorToggleValue or {}
 						tab.texts = tab.texts or {}
 						tab.paragraphs = tab.paragraphs or {}
 						tab.sections = tab.sections or {}
@@ -1192,9 +1198,9 @@ end
 
 	library.GetFlag = GetFlag
 	library.SaveData = SaveData
-if window.tabs == nil then
-	window.tabs = {}
-end
+	if window.tabs == nil then
+		window.tabs = {}
+	end
 	function window:CreateTab(name, icon)
 
 		local tab = {
@@ -1208,6 +1214,8 @@ end
 			ColorPickerValue = {},
 			textboxesText = {},
 			TogglesValue = {},
+			ColorToggle = {},
+			ColorToggleValue = {},
 			dropdownValue = {},
 			texts = {},
 			paragraphs = {},
@@ -1215,7 +1223,6 @@ end
 			buttons = {},
 		}
 
-	
 		local scroll = createUI("ScrollingFrame", {
 			Size = UDim2.new(1, 0, 1, 0);
 			CanvasSize = UDim2.new(0, 0, 0, 0);
@@ -1242,7 +1249,7 @@ end
 		})
 
 		tab.content = scroll
-		
+
 		local tabButton 
 		if icon ~= 0 then 
 			tabButton = createUI("TextButton", {
@@ -1323,6 +1330,20 @@ end
 				TextXAlignment = Enum.TextXAlignment.Left,
 				Parent = tab.content;
 			})
+			if opts.Note then
+				button.TextYAlignment = Enum.TextYAlignment.Top
+				button.Size = UDim2.new(1, 0, 0, 35)
+				local TextNote = createUI("TextLabel", {
+					Text = opts.Note;
+					Size = UDim2.new(0.15, 0, 0.25, 0);
+					Position = UDim2.new(0,0,0.7,0);
+					BackgroundTransparency = 1;
+					TextColor3 = Color3.new(0.670588, 0.670588, 0.670588);
+					Font = Enum.Font.Gotham;
+					TextSize = 12;
+					Parent = button;
+				})
+			end
 			local TextButonn = createUI("TextLabel", {
 				Text = "Button";
 				Size = UDim2.new(0.15, 0, 0.35, 0);
@@ -1670,7 +1691,20 @@ end
 				TextXAlignment = Enum.TextXAlignment.Left;
 				Parent = tab.content;
 			})
-
+			if opts.Note then
+				button.TextYAlignment = Enum.TextYAlignment.Top
+				button.Size = UDim2.new(1, 0, 0, 35)
+				local TextNote = createUI("TextLabel", {
+					Text = opts.Note;
+					Size = UDim2.new(0.15, 0, 0.25, 0);
+					Position = UDim2.new(0,0,0.7,0);
+					BackgroundTransparency = 1;
+					TextColor3 = Color3.new(0.670588, 0.670588, 0.670588);
+					Font = Enum.Font.Gotham;
+					TextSize = 12;
+					Parent = button;
+				})
+			end
 			createUI("UICorner", {Parent = button})
 
 			createUI("UIPadding", {
@@ -1770,6 +1804,221 @@ end
 			end
 
 			tab.toggles[flag] = obj
+
+			return obj
+		end
+
+		function tab:AddColorToggle(opts)
+			local flag = opts.Flag or opts.Name or "ColorToggle"
+			local defaultColor = opts.Color or Color3.fromRGB(255,255,255)
+			local defaultToggle = opts.Default or false
+
+			tab.ColorToggle = tab.ColorToggle or {}
+			tab.ColorToggleValue = tab.ColorToggleValue or {}
+
+			local value = defaultToggle
+			local color = defaultColor
+
+			local container = createUI("TextButton", {
+				Text = opts.Text;
+				Size = UDim2.new(1, 0, 0, 30);
+				BackgroundColor3 = selectedTheme.Buttons;
+				TextColor3 = selectedTheme.TextColor,
+				Font = Enum.Font.Gotham;
+				TextSize = 14;
+				TextXAlignment = Enum.TextXAlignment.Left,
+				Parent = tab.content;
+			})
+			if opts.Note then
+				container.TextYAlignment = Enum.TextYAlignment.Top
+				container.Size = UDim2.new(1, 0, 0, 35)
+				local TextNote = createUI("TextLabel", {
+					Text = opts.Note;
+					Size = UDim2.new(0.15, 0, 0.25, 0);
+					Position = UDim2.new(0,0,0.7,0);
+					BackgroundTransparency = 1;
+					TextColor3 = Color3.new(0.670588, 0.670588, 0.670588);
+					Font = Enum.Font.Gotham;
+					TextSize = 12;
+					Parent = container;
+				})
+			end
+			createUI("UICorner", {Parent = container})
+			createUI("UIPadding", {
+				PaddingLeft = UDim.new(0, 10),
+				PaddingRight = UDim.new(0, 10),
+				PaddingTop = UDim.new(0, 5),
+				PaddingBottom = UDim.new(0, 5),
+				Parent = container;
+			})
+
+			local colorDisplay = Instance.new("TextButton")
+			colorDisplay.Size = UDim2.new(0, 25, 0, 25)
+			colorDisplay.Position = UDim2.new(1, -90, 0.5, -12)
+			colorDisplay.BackgroundColor3 = color
+			colorDisplay.Text = ""
+			colorDisplay.AutoButtonColor = false
+			colorDisplay.Parent = container
+			createUI("UICorner", {Parent = colorDisplay})
+
+			local toggleContainer = createUI("Frame", {
+				AnchorPoint = Vector2.new(1, 0.5),
+				Position = UDim2.new(1, -10, 0.5, 0),
+				Size = UDim2.new(0, 40, 0, 20),
+				BackgroundColor3 = Color3.fromRGB(80, 80, 80),
+				Parent = container,
+			})
+			createUI("UICorner", {CornerRadius = UDim.new(1,0), Parent = toggleContainer})
+
+			local toggleCircle = createUI("Frame", {
+				Size = UDim2.new(0, 16, 0, 16),
+				Position = value and UDim2.new(1,-18,0.5,-8) or UDim2.new(0,2,0.5,-8),
+				BackgroundColor3 = value and Color3.fromRGB(0,170,0) or Color3.fromRGB(200,200,200),
+				Parent = toggleContainer
+			})
+			createUI("UICorner", {CornerRadius = UDim.new(1,0), Parent = toggleCircle})
+
+			local colorWindow = Instance.new("Frame")
+			colorWindow.Size = UDim2.new(0, 250, 0, 250)
+			colorWindow.Position = UDim2.new(0.5, 0, 0.5, 0)
+			colorWindow.AnchorPoint = Vector2.new(0.5, 0.5)
+			colorWindow.BackgroundColor3 = Color3.fromRGB(30,30,30)
+			colorWindow.Visible = false
+			colorWindow.ZIndex = 10
+			colorWindow.Parent = gui
+			createUI("UICorner", {Parent = colorWindow})
+
+			local colorWheel = Instance.new("ImageLabel")
+			colorWheel.Size = UDim2.new(0,200,0,200)
+			colorWheel.Position = UDim2.new(0.5,0,0,10)
+			colorWheel.AnchorPoint = Vector2.new(0.5,0)
+			colorWheel.BackgroundTransparency = 1
+			colorWheel.Image = "rbxassetid://6020299385"
+			colorWheel.ZIndex = 11
+			colorWheel.Parent = colorWindow
+
+			local closeBtn = Instance.new("TextButton")
+			closeBtn.Size = UDim2.new(0, 60, 0, 30)
+			closeBtn.Position = UDim2.new(0.5, -30, 1, -35)
+			closeBtn.Text = "Close"
+			closeBtn.ZIndex = 11
+			closeBtn.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+			closeBtn.TextColor3 = Color3.new(1, 1, 1)
+			closeBtn.Parent = colorWindow
+			Instance.new("UICorner", closeBtn)
+
+			local selecting = false
+
+			local function fireCallback()
+				if opts.Callback then
+					opts.Callback(value, color)
+				end
+			end
+
+			local function setToggle(state)
+				value = state
+
+				local pos = state and UDim2.new(1,-18,0.5,-8) or UDim2.new(0,2,0.5,-8)
+				local col = state and Color3.fromRGB(0,170,0) or Color3.fromRGB(200,200,200)
+
+				TweenService:Create(toggleCircle, TweenInfo.new(0.2), {
+					Position = pos,
+					BackgroundColor3 = col
+				}):Play()
+
+				
+				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
+					tab.ColorToggleValue[flag] = {
+						Enabled = value,
+						Color = Color3ToTable(color)
+					}
+					SetFlag(tab.name, flag, tab.ColorToggleValue[flag])
+				end
+
+				fireCallback()
+			end
+			local function applyColor(c)
+				color = c
+
+				TweenService:Create(colorDisplay, TweenInfo.new(0.15), {
+					BackgroundColor3 = c
+				}):Play()
+
+				
+				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
+					tab.ColorToggleValue[flag] = {
+						Enabled = value,
+						Color = Color3ToTable(color)
+					}
+					SetFlag(tab.name, flag, tab.ColorToggleValue[flag])
+				end
+
+				fireCallback()
+			end
+
+			local function updateColor(input)
+				local rel = Vector2.new(
+					input.Position.X - colorWheel.AbsolutePosition.X,
+					input.Position.Y - colorWheel.AbsolutePosition.Y
+				)
+
+				local radius = colorWheel.AbsoluteSize.X/2
+				local center = Vector2.new(radius,radius)
+
+				if (rel - center).Magnitude <= radius then
+					local angle = math.atan2(rel.Y-center.Y, rel.X-center.X)
+					local hue = (angle/(2*math.pi))%1
+					applyColor(Color3.fromHSV(hue,1,1))
+				end
+			end
+
+			container.MouseButton1Click:Connect(function()
+				setToggle(not value)
+			end)
+
+			colorDisplay.MouseButton1Click:Connect(function()
+				colorWindow.Visible = not colorWindow.Visible
+			end)
+
+			colorWheel.InputBegan:Connect(function(input)
+				if input.UserInputType == Enum.UserInputType.MouseButton1 then
+					selecting = true
+					updateColor(input)
+				end
+			end)
+
+			colorWheel.InputChanged:Connect(function(input)
+				if selecting then
+					updateColor(input)
+				end
+			end)
+
+			UserInputService.InputEnded:Connect(function(input)
+				if input.UserInputType == Enum.UserInputType.MouseButton1 then
+					selecting = false
+				end
+			end)
+
+closeBtn.MouseButton1Click:Connect(function()
+	colorWindow.Visible = false
+end)
+
+			local obj = {}
+
+			function obj:Set(state, newColor)
+				if state ~= nil then
+					setToggle(state)
+				end
+				if newColor then
+					applyColor(newColor)
+				end
+			end
+
+			function obj:Get()
+				return value, color
+			end
+
+			tab.ColorToggle[flag] = obj
 
 			return obj
 		end
@@ -2255,8 +2504,14 @@ end
 
 					if opts.Callback then
 						local selectedCopy = table.clone(dropdown.Selected)
-						local firstValue = (typeof(value) == "table" and value[1]) or value
-						opts.Callback(firstValue, selectedCopy)
+
+						if typeof(value) == "table" then
+							for _, v in ipairs(value) do
+								opts.Callback(v, selectedCopy)
+							end
+						else
+							opts.Callback(value, selectedCopy)
+						end
 					end
 
 
@@ -2271,11 +2526,11 @@ end
 			tab.dropdowns[flag] = dropdown 
 			return dropdown
 		end
-			if #window.tabs == 1 then
-				if tab.content then
+		if #window.tabs == 1 then
+			if tab.content then
 				tab.content.Visible = true
-				end
 			end
+		end
 		return tab
 	end
 
