@@ -19,7 +19,8 @@ library:CreateWindow({
 		FileName = "FileName",-- File name for the data saver,you can change it
 	},
 	Discord = {
-		Enabled = true,--enable to copy the discord
+		Enabled = true,-- enable to use discord settings down below!
+		CopyLink = true,-- enable to copy the discord
 		DiscordLink = "https://discord.gg/E2TqYRsRP4",-- put the entire Link of discord
 		RememberJoin = true,-- Set this to false to make them copy the link every time they load the script
 		Duration = 10,-- 5 is the default you can change the number only for remember join
@@ -49,7 +50,7 @@ library:CreateWindow({
 	local ShowButton = window:CreateTab("Show Button",0)-- Tabs , 0 = no icon or add number
 	local ResetPositionShowButtonTab = window:CreateTab("Reset Position Show Button",0)-- Tabs , 0 = no icon or add number
 	local DiscordTab = window:CreateTab("Discord",0)-- Tabs , 0 = no icon or add number
-
+local TRY = false
 	--Text--
 	local Text = tab:AddText({
 		Text = "This is a Text",
@@ -64,9 +65,38 @@ library:CreateWindow({
 		end
 	})
 	--Buttons--
+	local Button2 = tab:AddButton({
+		Text = "This is a button",
+		Name = "Button",
+		Note = "Note",
+		Callback = function() 
+
+		end
+	})
+	
+	--Buttons--
 	local sections = tab:AddSection({
 		Text = "This is a Section",
 		Name = "section",
+	})
+	
+	--Buttons--
+	local colorToggle = tab:AddColorToggle({
+		Text = "This is a Color Toggle",
+		Name = "colortoogle",
+		Callback = function(State,Color) 
+
+		end
+	})
+	
+	--Buttons--
+	local colorToggle2 = tab:AddColorToggle({
+		Text = "This is a Color Toggle",
+		Name = "colortoogle2",
+		Note = "Note",
+		Callback = function(State,Color) 
+
+		end
 	})
 	--Buttons--
 	local Button = ResetPositionShowButtonTab:AddButton({
@@ -103,7 +133,6 @@ library:CreateWindow({
 		Flag = "Toggle",--Put a name flag for save data if you enabled saving data
 		Default = false,
 		Callback = function(state)
-
 		end
 	})
 	--Toggle--
@@ -167,7 +196,7 @@ library:CreateWindow({
 		Text = "This is a Dropdown:",
 		Name = "Dropdown",
 		Options = {"Option 1", "Option 2", "Option 3"},
-		Default = "This is a Dropdown",
+		Default = "",
 		MultiSelect = true,
 		Flag = "Dropdown", --Put a name flag for save data if you enabled saving data
 		Callback = function(choice)
@@ -198,7 +227,14 @@ library:CreateWindow({
 			window:ChangeTheme(choice)
 		end
 	})
-
+	--Buttons--
+	local DestroyScript = tab:AddButton({
+		Text = "Close completly the script",
+		Name = "DestroyScript",
+		Callback = function() 
+			library:Destroy()
+		end
+	})
 	--notif--
 	local Notif = window:Notify({
 		Title = "Testing!",
