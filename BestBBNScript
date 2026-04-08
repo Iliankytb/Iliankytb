@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.21"
+local V = "V.0.22"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -76,6 +76,10 @@ local AutoShakeWireEyes = false
 local ActiveInfiniteStamina = false
 local CanShake = true
 local NoBlindness = false
+local CanGenerator = true
+local TimeForGenerator = 0.5
+local ShakeTime = 0.5
+local SizeBoxBarricade = 0.3
 
 local Version = InfoTab:AddText({
         Text = "Version:"..V,
@@ -97,7 +101,7 @@ local function doShake(wireyesUI)
       if remote then
 CanShake = false
 task.spawn(function() 
-wait(0.5)
+task.wait(ShakeTime)
 CanShake = true
 end)
         pcall(function() remote:FireServer("Shaking") end)
@@ -284,6 +288,7 @@ end)
         0, (boxAbs.X + boxSize.X * 0.5) - conAbs.X,
         0, (boxAbs.Y + boxSize.Y * 0.5) - conAbs.Y
     )
+box.Size = UDim2.new(SizeBoxBarricade,0,SizeBoxBarricade,0)
 end
 end
 end
@@ -302,10 +307,7 @@ end
 end
 if NoBlindness then
 if game:GetService("ReplicatedStorage").Modules.BlindnessModule:FindFirstChildOfClass("Atmosphere")  then
-    game:GetService("ReplicatedStorage").Modules.BlindnessModule:FindFirstChildOfClass("Atmosphere").Glare = 0
-    game:GetService("ReplicatedStorage").Modules.BlindnessModule:FindFirstChildOfClass("Atmosphere").Offset = 0
-game:GetService("ReplicatedStorage").Modules.BlindnessModule:FindFirstChildOfClass("Atmosphere").Density = 0
-    game:GetService("ReplicatedStorage").Modules.BlindnessModule:FindFirstChildOfClass("Atmosphere").Haze = 0
+  game:GetService("ReplicatedStorage").Modules.BlindnessModule:FindFirstChildOfClass("Atmosphere"):Destroy()
 end
 end
      if AutoSafeSpot then
@@ -322,11 +324,21 @@ end
      if ActiveSpeedBoost2 then
     game.Players.LocalPlayer.Character:SetAttribute("WalkSpeed",ValueWalkSpeed)
     end
-   --[[ if  AutoGen then
+  if AutoGen and CanGenerator then
     if  game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("Gen") then
-    game:GetService("Players").LocalPlayer.PlayerGui.Gen.GeneratorMain.Event:FireServer(true)
+CanGenerator = false
+task.wait(TimeForGenerator)
+    game:GetService("Players").LocalPlayer.PlayerGui.Gen.GeneratorMain.Event:FireServer({
+        Wires = true,
+        Switches = true,
+        Lever = true
+    })
+task.spawn(function()
+task.wait(TimeForGenerator)
+CanGenerator = true
+end)
      end
-    end]]
+    end
     if AutoEscape and not Teleported and workspace.GAME.CAN_ESCAPE.Value == true then
         if workspace.MAPS:FindFirstChild("GAME MAP") then
             if game.Players.LocalPlayer.Character.Parent == workspace.PLAYERS.ALIVE then
@@ -588,7 +600,7 @@ end,
 
 	--Toggle--
 	local ToggleAG = MainTab:AddToggle({
-		Text = "Auto Generator (disabled until i bypass!)",
+		Text = "Auto Generator EXPIREMENT! (maybe i bypassed try it yourself and tell me in my discord server!)",
 		Name = "ToggleAG",
 		Flag = "ToggleAG",--Put a name flag for save data if you enabled saving data
 		Default = false,
@@ -596,8 +608,22 @@ end,
 AutoGen = state
 		end
 	})
+
+local GenTimeSlider = MainTab:AddSlider({
+Text = "Time for generator EXPIREMENT!",
+   Name = "GenTimeSlider",
+   Min = 0.1,
+   Max = 2,
+   Default = 0.5,
+   Flag = "GenTimeSlider", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+TimeForGenerator = Value
+end, 
+})
+
+
 	local ToggleAutoParry = MainTab:AddToggle({
-		Text = "Fighter - Auto Parry",
+		Text = "Fighter - Auto Parry EXPIREMENT! (Got Improved!)",
 		Name = "ToggleAutoParry",
 		Flag = "ToggleAutoParry",--Put a name flag for save data if you enabled saving data
 		Default = false,
@@ -614,8 +640,19 @@ FighterAutoParry = state
 AutoBarricade = state
 		end
 	})
+local SizeBoxBarricadeSlider = MainTab:AddSlider({
+Text = "Size for the box of the barricade",
+   Name = "SizeBoxBarricadeSlider",
+   Min = 0.3,
+   Max = 1.5,
+   Default = 0.3,
+   Flag = "SizeBoxBarricadeSlider", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+SizeBoxBarricade = Value
+end, 
+})
 	local ToggleAutoSafeSpot = MainTab:AddToggle({
-		Text = "Auto Safe spot EXPERIMENT! (when near to die)",
+		Text = "Auto Safe spot (when near to die)",
 		Name = "ToggleAutoSafeSpot",
 		Flag = "ToggleAutoSafeSpot",--Put a name flag for save data if you enabled saving data
 		Default = false,
@@ -669,7 +706,6 @@ Text = "Run Speed",
    Default = 24,
    Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
-CurrentValue = Value
 ValueRunSpeed = Value
 end, 
 })
@@ -692,7 +728,6 @@ Text = "Hitbox Size",
    Default = 15,
    Flag = "HESlider", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
-CurrentValue = Value
 ValueHE = Value
 end, 
 })
@@ -715,7 +750,6 @@ Text = "Walk Speed",
    Default = 15,
    Flag = "Slider2", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
-CurrentValue = Value
 ValueWalkSpeed = Value
 end, 
 })
@@ -765,6 +799,17 @@ Text =  "Auto Shake Wire Eyes",
 AutoShakeWireEyes = Value 
 end,
 })
+local ShakeTimeSlider = MainTab:AddSlider({
+Text = "Wire eyes Shake time",
+   Name = "ShakeTimeSlider",
+   Min = 0.1,
+   Max = 1,
+   Default = 0.5,
+   Flag = "ShakeTimeSlider", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+ShakeTime = Value
+end, 
+})
 local NoBlindnessButton = MainTab:AddToggle({
 Text =  "No Blindness",
    Name ="NoBlindnessButton",
@@ -789,9 +834,8 @@ Text =  "Limit Ranger for esp",
    Default = 100,
    Flag = "LimitRangerEsp1",
    Callback = function(Value)
-CurrentValue = Value
 LimitRangerEsp = Value
-end,  LimitRangerEsp = CurrentValue,
+end, 
 }) 
 local DisableLimitRangerEspToggle = SettingsTab:AddToggle({
 Text =  "Disable Limit Ranger Esp",
@@ -841,12 +885,13 @@ library:LoadData()
 local CanParry = true
  workspace.DescendantAdded:Connect(function(child) 
  local HrpPlayer = game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-if child:IsA("BoxHandleAdornment") then
+if child:IsA("Highlight") and child.Name == "Highlight" and child.Parent == workspace.PLAYERS.KILLER:FindFirstChildOfClass("Model") then
     local Character = game.Players.LocalPlayer.Character
     if FighterAutoParry and HrpPlayer and CanParry and not Character:GetAttribute("IFrames")  and not Character:GetAttribute("InAbility") and not Character:GetAttribute("Stun") and  Character:GetAttribute("Team") == "Survivor" and Character:GetAttribute("Character") == "Survivor-Fighter" then
-        local Distance = (child.CFrame.Position - HrpPlayer.Position).Magnitude
+local RootPart = child.Parent:FindFirstChild("RootPart")      
+local Distance = (RootPart.Position - HrpPlayer.Position).Magnitude
         
-        if Distance <= 10 then
+        if Distance <= 20 then
             CanParry = false
             task.spawn(function()
                task.spawn(function()
@@ -860,10 +905,12 @@ if child:IsA("BoxHandleAdornment") then
     end)
         end
     end
+ end
+if child:IsA("BoxHandleAdornment") then
   if HitboxExpender then
       child.Size = Vector3.new(ValueHE,ValueHE,ValueHE)
   end
- end
+end
 task.wait(0.75)
 if ActiveNoCooldownPrompt then
 if child:IsA("ProximityPrompt") and child.HoldDuration ~= 0.1 then
