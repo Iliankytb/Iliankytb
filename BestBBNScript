@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.24"
+local V = "V.0.25"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -642,19 +642,21 @@ updateCutscenes()
 end,
 })
 
-local Players = game:GetService("Players")
+local player = game.Players.LocalPlayer
 local RunService = game:GetService("RunService")
 
+local animationTrack
 local steppedConnection
 local cameraConnection
-local animationTrack
-
 local bodyParts = {}
 
 local function ApplyInvisibility(enabled)
+    local character = player.Character or player.CharacterAdded:Wait()
+    local humanoid = character:WaitForChild("Humanoid")
+    local rootPart = character:WaitForChild("HumanoidRootPart")
 
     if not enabled then
-     
+        
         if animationTrack then
             animationTrack:Stop()
             animationTrack = nil
@@ -673,28 +675,24 @@ local function ApplyInvisibility(enabled)
         workspace.CurrentCamera.CameraSubject = humanoid
 
     else
+  
         steppedConnection = RunService.RenderStepped:Connect(function()
-local player = game.Players.LocalPlayer
-local character = player.Character or player.CharacterAdded:Wait()
-local humanoid = character:WaitForChild("Humanoid")
-local rootPart = character:WaitForChild("HumanoidRootPart")
 
-if character and rootPart and Character:GetAttribute("Character") == "Mimic" and Character:GetAttribute("Team") == "Killer" then
- bodyParts = {}
-for _, part in ipairs(character:GetDescendants()) do
-    if part:IsA("BasePart") and part.Name ~= "HumanoidRootPart" then
-        table.insert(bodyParts, part)
-    end
-end
-            for _, part in ipairs(bodyParts) do
-                part.CanCollide = false
+            if character and rootPart and character:GetAttribute("Character") == "Mimic"
+            and character:GetAttribute("Team") == "Killer" then
+                  bodyParts = {}
+        for _, part in ipairs(character:GetDescendants()) do
+            if part:IsA("BasePart") and part.Name ~= "HumanoidRootPart" then
+                table.insert(bodyParts, part)
             end
+        end
 
-            rootPart.CanCollide = true
-        end)
+                for _, part in ipairs(bodyParts) do
+                    part.CanCollide = false
+                end
 
- 
-        workspace.CurrentCamera.CameraSubject = rootPart
+                rootPart.CanCollide = true
+ workspace.CurrentCamera.CameraSubject = rootPart
 
         cameraConnection = workspace.CurrentCamera:GetPropertyChangedSignal("CameraSubject"):Connect(function()
             if workspace.CurrentCamera.CameraSubject ~= rootPart then
@@ -702,7 +700,7 @@ end
             end
         end)
 
-        
+      
         local animation = Instance.new("Animation")
         animation.AnimationId = "rbxassetid://95483601477510"
 
@@ -719,7 +717,10 @@ end
             animationTrack.TimePosition = animationTrack.Length - 0.01
             animationTrack:AdjustSpeed(0)
         end
-end
+            end
+
+        end)
+
     end
 end
 
