@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.25"
+local V = "V.0.26"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -412,7 +412,7 @@ if Players2:FindFirstChildOfClass("Highlight") then
 end
 
 	SetupCharacter(Players2,workspace.PLAYERS.ALIVE,Players2.PrimaryPart)
-CreateEsp(Players2,Color3.fromRGB(0,255,0),Players2.Name..Players2:GetAttribute("Character"),Players2.PrimaryPart,2)
+CreateEsp(Players2,Color3.fromRGB(0,255,0),Players2.Name.." "..Players2:GetAttribute("Character"),Players2.PrimaryPart,2)
 end
 end
 else 
@@ -439,7 +439,7 @@ if  Players2:IsA("Model") and Players2:FindFirstChild("RootPart") and not Player
     Players2:FindFirstChildOfClass("Highlight"):Destroy()
 end
     SetupCharacter(Players2,workspace.PLAYERS.KILLER,Players2.RootPart)
-CreateEsp(Players2,Color3.fromRGB(255,0,0),Players2.Name..Players2:GetAttribute("Character"),Players2.RootPart,2)
+CreateEsp(Players2,Color3.fromRGB(255,0,0),Players2.Name.." "..Players2:GetAttribute("Character"),Players2.RootPart,2)
 end
 end
 else
@@ -1071,7 +1071,7 @@ if child:FindFirstChildOfClass("Highlight") then
       child:FindFirstChildOfClass("Highlight"):Destroy()
  end
  	SetupCharacter(child,workspace.PLAYERS.ALIVE,child.PrimaryPart)
-CreateEsp(child,Color3.fromRGB(0,255,0),child.Name,child.PrimaryPart,2)
+CreateEsp(child,Color3.fromRGB(0,255,0),child.Name.." "..child:GetAttribute("Character"),child.PrimaryPart,2)
 end
 end
 end
@@ -1083,7 +1083,7 @@ if GetPByChar then
     child:FindFirstChildOfClass("Highlight"):Destroy()
 end
     	SetupCharacter(child,workspace.PLAYERS.KILLER,child.RootPart)
-CreateEsp(child,Color3.fromRGB(255,0,0),child.Name,child.RootPart,2)
+CreateEsp(child,Color3.fromRGB(255,0,0),child.Name.." "..child:GetAttribute("Character"),child.RootPart,2)
 end
 end
 end
