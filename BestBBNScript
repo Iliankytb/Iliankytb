@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.23"
+local V = "V.0.24"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -594,6 +594,137 @@ if game.Workspace.MAPS["GAME MAP"].Doors then
  end
 end,
 })
+
+	local PlayKillerCutsceneButtons = MainTab:AddButton({
+ Text = "Play killer cutscene", 
+Name = "PlayKillerCutsceneButtons",
+  Callback = function()
+local KillerModel = workspace.PLAYERS.KILLER:FindFirstChildOfClass("Model")
+if KillerModel and KillerModel == game.Players.LocalPlayer.Character then
+ KillerModel:FindFirstChildOfClass("Humanoid"):ChangeState(Enum.HumanoidStateType.Dead)
+end
+end,
+})
+	local SkipCutsceneButton = MainTab:AddButton({
+ Text = "Skip cutscene", 
+Name = "SkipCutsceneButton",
+  Callback = function()
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local CutsceneModule = require(ReplicatedStorage.Modules.Cutscenes)
+
+local savedCameraRigs = {}
+for name, cutscene in pairs(CutsceneModule) do
+    if typeof(cutscene) == "table" and cutscene.CameraRig then
+        
+        local cameraName = cutscene.CameraRig.Name
+
+        if cameraName == "IntroCam"
+        or cameraName == "IntroCamWithLight"
+        or cameraName == "KillCam"
+        or cameraName == "OutroCam" then
+            
+            savedCameraRigs[name] = cutscene.CameraRig
+        end
+    end
+end
+
+
+local function updateCutscenes()
+    for name, savedRig in pairs(savedCameraRigs) do
+        local cutscene = CutsceneModule[name]
+
+        if cutscene and typeof(cutscene) == "table" then
+                cutscene.CameraRig = nil
+        end
+    end
+end
+updateCutscenes()
+end,
+})
+
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+
+local steppedConnection
+local cameraConnection
+local animationTrack
+
+local bodyParts = {}
+
+local function ApplyInvisibility(enabled)
+
+    if not enabled then
+     
+        if animationTrack then
+            animationTrack:Stop()
+            animationTrack = nil
+        end
+
+        if steppedConnection then
+            steppedConnection:Disconnect()
+            steppedConnection = nil
+        end
+
+        if cameraConnection then
+            cameraConnection:Disconnect()
+            cameraConnection = nil
+        end
+
+        workspace.CurrentCamera.CameraSubject = humanoid
+
+    else
+        steppedConnection = RunService.RenderStepped:Connect(function()
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoid = character:WaitForChild("Humanoid")
+local rootPart = character:WaitForChild("HumanoidRootPart")
+
+if character and rootPart and Character:GetAttribute("Character") == "Mimic" and Character:GetAttribute("Team") == "Killer" then
+ bodyParts = {}
+for _, part in ipairs(character:GetDescendants()) do
+    if part:IsA("BasePart") and part.Name ~= "HumanoidRootPart" then
+        table.insert(bodyParts, part)
+    end
+end
+            for _, part in ipairs(bodyParts) do
+                part.CanCollide = false
+            end
+
+            rootPart.CanCollide = true
+        end)
+
+ 
+        workspace.CurrentCamera.CameraSubject = rootPart
+
+        cameraConnection = workspace.CurrentCamera:GetPropertyChangedSignal("CameraSubject"):Connect(function()
+            if workspace.CurrentCamera.CameraSubject ~= rootPart then
+                workspace.CurrentCamera.CameraSubject = rootPart
+            end
+        end)
+
+        
+        local animation = Instance.new("Animation")
+        animation.AnimationId = "rbxassetid://95483601477510"
+
+        local animator = humanoid:FindFirstChildOfClass("Animator") or Instance.new("Animator", humanoid)
+
+        animationTrack = animator:LoadAnimation(animation)
+        animationTrack.Priority = Enum.AnimationPriority.Action
+        animationTrack.Looped = false
+        animationTrack:Play()
+
+        task.wait(0.1)
+
+        if animationTrack.Length > 0 then
+            animationTrack.TimePosition = animationTrack.Length - 0.01
+            animationTrack:AdjustSpeed(0)
+        end
+end
+    end
+end
+
+
+
 	local ButonDiscordLink = DiscordTab:AddButton({
 		Text = "Discord Link",
 		Name = "Button",
@@ -665,6 +796,15 @@ AutoSafeSpot = state
 if not AutoSafeSpot then
    game.Players.LocalPlayer.Character.PrimaryPart.CFrame = SavedCFrame
 end
+		end
+	})
+local ToggleInvisibilityMimic = MainTab:AddToggle({
+		Text = "Infinite invisible (for mimic only!)",
+		Name = "ToggleInvisibilityMimic",
+		Flag = "ToggleInvisibilityMimic",--Put a name flag for save data if you enabled saving data
+		Default = false,
+		Callback = function(state)
+ApplyInvisibility(state)
 		end
 	})
 
