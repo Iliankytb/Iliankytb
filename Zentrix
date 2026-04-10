@@ -1,4 +1,4 @@
-local LibraryVersion = "0.52"
+local LibraryVersion = "0.53"
 
 local HttpService = game:GetService("HttpService")
 local UserInputService = game:GetService("UserInputService")
@@ -722,7 +722,7 @@ local function VisibleWindow(window,settings1,gui)
 				Message = "Remember to join the discord,discord link: "..settings1.Discord.DiscordLink,
 				Duration = settings1.Discord.Duration,
 			})
-			end
+		end
 		if settings1.Discord.CopyLink and settings1.Discord.DiscordLink and  settings1.Discord.DiscordLink ~= "NoInviteLink" and settings1.Discord.DiscordLink ~= nil  then
 			copyToClipboard(settings1.Discord.DiscordLink )
 		end
@@ -1926,7 +1926,7 @@ local function VisibleWindow(window,settings1,gui)
 					BackgroundColor3 = col
 				}):Play()
 
-				
+
 				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
 					tab.ColorToggleValue[flag] = {
 						Enabled = value,
@@ -1944,7 +1944,7 @@ local function VisibleWindow(window,settings1,gui)
 					BackgroundColor3 = c
 				}):Play()
 
-				
+
 				if settings1 and settings1.Data and settings1.Data.EnableSavingData then
 					tab.ColorToggleValue[flag] = {
 						Enabled = value,
@@ -1999,9 +1999,9 @@ local function VisibleWindow(window,settings1,gui)
 				end
 			end)
 
-closeBtn.MouseButton1Click:Connect(function()
-	colorWindow.Visible = false
-end)
+			closeBtn.MouseButton1Click:Connect(function()
+				colorWindow.Visible = false
+			end)
 
 			local obj = {}
 
@@ -2027,6 +2027,7 @@ end)
 			local flag = opts.Flag or opts.Name or "Slider"
 			local min = opts.Min or 0
 			local max = opts.Max or 100
+			local Increment = opts.Increment or 1
 			local default = opts.Default or min
 
 			tab.sliders = tab.sliders or {}
@@ -2100,11 +2101,22 @@ end)
 
 			local obj = {}
 			obj.value = value
+			
+			local function roundToIncrement(value, increment)
+				return math.floor((value / increment) + 0.5) * increment
+			end
+
+			local function cleanFloat(value)
+				
+				return tonumber(string.format("%.10f", value))
+			end
 
 			function obj:SetValue(v)
 				v = math.clamp(v, min, max)
+				v = roundToIncrement(v, Increment)
 				local percent = (v - min) / (max - min)
 				fillBar.Size = UDim2.new(percent, 0, 1, 0)
+				v = cleanFloat(v)
 				label.Text = tostring(v)
 				value = v
 				obj.value = v
@@ -2120,12 +2132,19 @@ end)
 			local moveConn, releaseConn
 			local dragging = false
 
+	
 			local function updateSlider(x)
-				local percent = math.clamp((x - sliderBar.AbsolutePosition.X) / sliderBar.AbsoluteSize.X, 0, 1)
-				local v = math.floor(min + (max - min) * percent)
-				obj:SetValue(v)
-			end
+				local percent = math.clamp(
+					(x - sliderBar.AbsolutePosition.X) / sliderBar.AbsoluteSize.X,
+					0,
+					1
+				)
 
+				local rawValue = min + (max - min) * percent
+				local steppedValue = roundToIncrement(rawValue, Increment)
+
+				obj:SetValue(steppedValue)
+			end
 			sliderBar.InputBegan:Connect(function(input)
 				if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
 					dragging = true
@@ -2142,7 +2161,8 @@ end)
 							if dragging then
 								local X = endInput.Position.X
 								local percent = math.clamp((X - sliderBar.AbsolutePosition.X) / sliderBar.AbsoluteSize.X, 0, 1)
-								local v = math.floor(min + (max - min) * percent)
+								local rawValue = min + (max - min) * percent
+								local v = roundToIncrement(rawValue, Increment)
 								if settings1 and settings1.Data and settings1.Data.EnableSavingData then
 									tab.SlidersValue = tab.SlidersValue or {}
 									tab.SlidersValue[flag] = v
