@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.26"
+local V = "V.0.27"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -80,6 +80,7 @@ local CanGenerator = true
 local TimeForGenerator = 0.5
 local ShakeTime = 0.5
 local SizeBoxBarricade = 0.3
+local InvisibilityKiller = false
 
 local Version = InfoTab:AddText({
         Text = "Version:"..V,
@@ -327,21 +328,6 @@ end
      if ActiveSpeedBoost2 then
     game.Players.LocalPlayer.Character:SetAttribute("WalkSpeed",ValueWalkSpeed)
     end
-  if AutoGen and CanGenerator then
-    if  game:GetService("Players").LocalPlayer.PlayerGui:FindFirstChild("Gen") then
-CanGenerator = false
-task.wait(TimeForGenerator)
-    game:GetService("Players").LocalPlayer.PlayerGui.Gen.GeneratorMain.Event:FireServer({
-        Wires = true,
-        Switches = true,
-        Lever = true
-    })
-task.spawn(function()
-task.wait(TimeForGenerator)
-CanGenerator = true
-end)
-     end
-    end
     if AutoEscape and not Teleported and workspace.GAME.CAN_ESCAPE.Value == true then
         if workspace.MAPS:FindFirstChild("GAME MAP") then
             if game.Players.LocalPlayer.Character.Parent == workspace.PLAYERS.ALIVE then
@@ -364,6 +350,28 @@ end)
     end
  end
  end
+end)
+
+LocalPlayer.PlayerGui.ChildAdded:Connect(function(child)
+    if  child.Name == "Gen" then
+if AutoGen and CanGenerator then
+CanGenerator = false
+task.wait(1.25)
+for i = 1,4 do
+   child.GeneratorMain.Event:FireServer({
+        Wires = true,
+        Switches = true,
+        Lever = true
+    })
+
+task.wait(TimeForGenerator)
+end
+task.spawn(function()
+task.wait(TimeForGenerator)
+CanGenerator = true
+end)
+     end
+    end
 end)
 
 local function KeepEsp(Char, Parent)
@@ -648,15 +656,14 @@ local RunService = game:GetService("RunService")
 local animationTrack
 local steppedConnection
 local cameraConnection
-local bodyParts = {}
 
 local function ApplyInvisibility(enabled)
     local character = player.Character or player.CharacterAdded:Wait()
     local humanoid = character:WaitForChild("Humanoid")
     local rootPart = character:WaitForChild("HumanoidRootPart")
+    local camera = workspace.CurrentCamera
 
     if not enabled then
-        
         if animationTrack then
             animationTrack:Stop()
             animationTrack = nil
@@ -672,59 +679,86 @@ local function ApplyInvisibility(enabled)
             cameraConnection = nil
         end
 
-        workspace.CurrentCamera.CameraSubject = humanoid
-
-    else
-  
-        steppedConnection = RunService.RenderStepped:Connect(function()
-
-            if character and rootPart and character:GetAttribute("Character") == "Mimic"
-            and character:GetAttribute("Team") == "Killer" then
-                  bodyParts = {}
-        for _, part in ipairs(character:GetDescendants()) do
-            if part:IsA("BasePart") and part.Name ~= "HumanoidRootPart" then
-                table.insert(bodyParts, part)
-            end
-        end
-
-                for _, part in ipairs(bodyParts) do
-                    part.CanCollide = false
-                end
-
-                rootPart.CanCollide = true
- workspace.CurrentCamera.CameraSubject = rootPart
-
-        cameraConnection = workspace.CurrentCamera:GetPropertyChangedSignal("CameraSubject"):Connect(function()
-            if workspace.CurrentCamera.CameraSubject ~= rootPart then
-                workspace.CurrentCamera.CameraSubject = rootPart
-            end
-        end)
-
-      
-        local animation = Instance.new("Animation")
-        animation.AnimationId = "rbxassetid://95483601477510"
-
-        local animator = humanoid:FindFirstChildOfClass("Animator") or Instance.new("Animator", humanoid)
-
-        animationTrack = animator:LoadAnimation(animation)
-        animationTrack.Priority = Enum.AnimationPriority.Action
-        animationTrack.Looped = false
-        animationTrack:Play()
-
-        task.wait(0.1)
-
-        if animationTrack.Length > 0 then
-            animationTrack.TimePosition = animationTrack.Length - 0.01
-            animationTrack:AdjustSpeed(0)
-        end
-            end
-
-        end)
-
-    end
+        camera.CameraSubject = humanoid
+if workspace.MAPS:FindFirstChild("GAME MAP") then
+if game.Workspace.MAPS["GAME MAP"].Doors then 
+for _, BasePart in pairs(game.Workspace.MAPS["GAME MAP"].Doors:GetDescendants()) do
+if BasePart:IsA("BasePart") then
+if BasePart:GetAttribute("OriginalCollision") then
+BasePart.CanCollide = BasePart:GetAttribute("OriginalCollision")
 end
+end
+end
+end
+end
+        return
+    end
+if  character:GetAttribute("Team") == "Killer" then
+    if character:GetAttribute("Character") ~= "Mimic" and character:GetAttribute("Character") ~= "Ennard" then
+return
+end
+    for _, part in ipairs(character:GetDescendants()) do
+        if part:IsA("BasePart") and part.Name ~= "HumanoidRootPart" then
+            part.CanCollide = false
+        end
+    end
+    rootPart.CanCollide = true
 
+    camera.CameraSubject = rootPart
 
+    cameraConnection = camera:GetPropertyChangedSignal("CameraSubject"):Connect(function()
+        if camera.CameraSubject ~= rootPart then
+            camera.CameraSubject = rootPart
+        end
+    end)
+
+    local animation = Instance.new("Animation")
+local Id = nil
+    if character:GetAttribute("Character") == "Mimic" then
+Id = "rbxassetid://95483601477510"
+elseif character:GetAttribute("Character") == "Ennard" then
+Id = "rbxassetid://111261793531584"
+else
+Id = nil
+return
+end
+ if workspace.MAPS:FindFirstChild("GAME MAP") then
+if game.Workspace.MAPS["GAME MAP"].Doors then 
+for _, BasePart in pairs(game.Workspace.MAPS["GAME MAP"].Doors:GetDescendants()) do
+if BasePart:IsA("BasePart") and BasePart.CanCollide then
+if not BasePart:GetAttribute("OriginalCollision") then
+BasePart:SetAttribute("OriginalCollision",BasePart.CanCollide)
+end
+BasePart.CanCollide = false
+end
+end
+end
+end
+    animation.AnimationId = Id
+
+    local animator = humanoid:FindFirstChildOfClass("Animator")
+        or Instance.new("Animator", humanoid)
+
+    animationTrack = animator:LoadAnimation(animation)
+    animationTrack.Priority = Enum.AnimationPriority.Action
+    animationTrack.Looped = false
+    animationTrack:Play()
+
+    task.wait(0.1)
+
+    if animationTrack.Length > 0 then
+        animationTrack.TimePosition = animationTrack.Length - 0.01
+        animationTrack:AdjustSpeed(0)
+    end
+
+  
+    steppedConnection = RunService.RenderStepped:Connect(function()
+        if camera.CameraSubject ~= rootPart then
+            camera.CameraSubject = rootPart
+        end
+    end)
+end
+end
 
 	local ButonDiscordLink = DiscordTab:AddButton({
 		Text = "Discord Link",
@@ -736,7 +770,8 @@ end
 
 	--Toggle--
 	local ToggleAG = MainTab:AddToggle({
-		Text = "Auto Generator EXPIREMENT! (maybe i bypassed try it yourself and tell me in my discord server!)",
+		Text = "Auto Generator EXPIREMENT!",
+Note = "Maybe its working now",
 		Name = "ToggleAG",
 		Flag = "ToggleAG",--Put a name flag for save data if you enabled saving data
 		Default = false,
@@ -745,11 +780,22 @@ AutoGen = state
 		end
 	})
 
+workspace.PLAYERS.KILLER.ChildRemoved:Connect(function(child)
+ApplyInvisibility(false)
+end)
+
+workspace.PLAYERS.KILLER.ChildAdded:Connect(function(child)
+if InvisibilityKiller then
+ApplyInvisibility(true)
+end
+end)
+
 local GenTimeSlider = MainTab:AddSlider({
 Text = "Time for generator EXPIREMENT!",
    Name = "GenTimeSlider",
    Min = 0.1,
    Max = 2,
+Increment = 0.1,
    Default = 0.5,
    Flag = "GenTimeSlider", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
@@ -759,7 +805,8 @@ end,
 
 
 	local ToggleAutoParry = MainTab:AddToggle({
-		Text = "Fighter - Auto Parry EXPIREMENT! (Got Improved!)",
+		Text = "Fighter - Auto Parry",
+Note = "Working Great!",
 		Name = "ToggleAutoParry",
 		Flag = "ToggleAutoParry",--Put a name flag for save data if you enabled saving data
 		Default = false,
@@ -788,7 +835,8 @@ SizeBoxBarricade = Value
 end, 
 })
 	local ToggleAutoSafeSpot = MainTab:AddToggle({
-		Text = "Auto Safe spot (when near to die)",
+		Text = "Auto Safe spot",
+Note = " when near to die",
 		Name = "ToggleAutoSafeSpot",
 		Flag = "ToggleAutoSafeSpot",--Put a name flag for save data if you enabled saving data
 		Default = false,
@@ -799,12 +847,14 @@ if not AutoSafeSpot then
 end
 		end
 	})
-local ToggleInvisibilityMimic = MainTab:AddToggle({
-		Text = "Infinite invisible (for mimic only!)",
+local ToggleInvisibility = MainTab:AddToggle({
+		Text = "Invisible Killer",
+Note = "for mimic and ennard only!",
 		Name = "ToggleInvisibilityMimic",
 		Flag = "ToggleInvisibilityMimic",--Put a name flag for save data if you enabled saving data
 		Default = false,
 		Callback = function(state)
+InvisibilityKiller = state
 ApplyInvisibility(state)
 		end
 	})
