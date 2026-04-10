@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.27"
+local V = "V.0.28"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -618,6 +618,27 @@ end,
 Name = "SkipCutsceneButton",
   Callback = function()
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local cutsceneRigs = ReplicatedStorage
+    :WaitForChild("Modules")
+    :WaitForChild("Cutscenes")
+    :WaitForChild("Rigs")
+
+local rigsToRemove = {
+    "IntroCam",
+    "IntroCamWithLight",
+    "KillCam",
+    "OutroCam"
+}
+
+for _, rigName in ipairs(rigsToRemove) do
+    local rig = cutsceneRigs:FindFirstChild(rigName)
+
+    if rig then
+        rig:Destroy()
+    end
+end
+--[[
 local CutsceneModule = require(ReplicatedStorage.Modules.Cutscenes)
 
 local savedCameraRigs = {}
@@ -646,7 +667,7 @@ local function updateCutscenes()
         end
     end
 end
-updateCutscenes()
+updateCutscenes()]]
 end,
 })
 
@@ -740,7 +761,7 @@ end
         or Instance.new("Animator", humanoid)
 
     animationTrack = animator:LoadAnimation(animation)
-    animationTrack.Priority = Enum.AnimationPriority.Action
+    animationTrack.Priority = Enum.AnimationPriority.Action4
     animationTrack.Looped = false
     animationTrack:Play()
 
