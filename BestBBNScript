@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.28"
+local V = "V.0.29"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -77,7 +77,6 @@ local ActiveInfiniteStamina = false
 local CanShake = true
 local NoBlindness = false
 local CanGenerator = true
-local TimeForGenerator = 0.5
 local ShakeTime = 0.5
 local SizeBoxBarricade = 0.3
 local InvisibilityKiller = false
@@ -354,22 +353,13 @@ end)
 
 LocalPlayer.PlayerGui.ChildAdded:Connect(function(child)
     if  child.Name == "Gen" then
-if AutoGen and CanGenerator then
-CanGenerator = false
+if AutoGen  then
 task.wait(1.25)
-for i = 1,4 do
    child.GeneratorMain.Event:FireServer({
         Wires = true,
         Switches = true,
         Lever = true
     })
-
-task.wait(TimeForGenerator)
-end
-task.spawn(function()
-task.wait(TimeForGenerator)
-CanGenerator = true
-end)
      end
     end
 end)
@@ -811,20 +801,6 @@ ApplyInvisibility(true)
 end
 end)
 
-local GenTimeSlider = MainTab:AddSlider({
-Text = "Time for generator EXPIREMENT!",
-   Name = "GenTimeSlider",
-   Min = 0.1,
-   Max = 2,
-Increment = 0.1,
-   Default = 0.5,
-   Flag = "GenTimeSlider", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
-   Callback = function(Value)
-TimeForGenerator = Value
-end, 
-})
-
-
 	local ToggleAutoParry = MainTab:AddToggle({
 		Text = "Fighter - Auto Parry",
 Note = "Working Great!",
@@ -850,6 +826,7 @@ Text = "Size for the box of the barricade",
    Min = 0.3,
    Max = 1.5,
    Default = 0.3,
+Increment = 0.1,
    Flag = "SizeBoxBarricadeSlider", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
 SizeBoxBarricade = Value
@@ -1021,6 +998,7 @@ Text = "Wire eyes Shake time",
    Min = 0.1,
    Max = 1,
    Default = 0.5,
+Increment = 0.1,
    Flag = "ShakeTimeSlider", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
 ShakeTime = Value
