@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.34"
+local V = "V.0.35"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -88,6 +88,7 @@ local UserInputService = game:GetService("UserInputService")
 local ActivateJumping = false
 local JumpPowerValue = 50
 local State = "Idle" 
+local TimeForGenerator = 1.25
 
 local Version = InfoTab:AddText({
         Text = "Version:"..V,
@@ -547,7 +548,7 @@ if AutoFarm then
 
             if CanGo and workspace.GAME.Tasks.Gens.Enabled.Value then
                 local gens = workspace.MAPS["GAME MAP"]:FindFirstChild("Generators")
-                if gens then
+                if gens and not LocalPlayer.PlayerGui:FindFirstChild("Gen") then
                     for _, gen in pairs(gens:GetChildren()) do
                         if gen.Name == "Generator" then
                             
@@ -703,7 +704,7 @@ end)
 LocalPlayer.PlayerGui.ChildAdded:Connect(function(child)
     if  child.Name == "Gen" then
 if AutoGen and not AutoFarm  then
-task.wait(1.25)
+task.wait(TimeForGenerator)
    child.GeneratorMain.Event:FireServer({
         Wires = true,
         Switches = true,
@@ -711,7 +712,7 @@ task.wait(1.25)
     })
      end
 if AutoFarm then
-task.wait(1.25)
+task.wait(TimeForGenerator)
    child.GeneratorMain.Event:FireServer({
         Wires = true,
         Switches = true,
@@ -1178,6 +1179,18 @@ Note = "Generators,Fuse boxes and auto escape at the same time!",
    Callback = function(Value)
   AutoFarm = Value
 end,
+})
+local TimeForGeneratorSlider = MainTab:AddSlider({
+Text = "Time For Generator (Work for Auto Farm and Auto Generator!)",
+   Name = "TimeForGeneratorSlider",
+   Min = 0.5,
+   Max = 3,
+   Default = 1.25,
+Increment = 0.05,
+   Flag = "TimeForGeneratorSlider", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+TimeForGenerator = Value
+end, 
 })
 	local ToggleAutoParry = MainTab:AddToggle({
 		Text = "Fighter - Auto Parry",
