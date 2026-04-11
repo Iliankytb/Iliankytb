@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.33"
+local V = "V.0.34"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -789,18 +789,30 @@ Name = "EspKillers",
   ActiveEspKillers = Value 
 if ActiveEspKillers then
     for _,Players2 in pairs(game.Workspace.PLAYERS.KILLER:GetChildren()) do 
-if  Players2:IsA("Model") and Players2:FindFirstChild("RootPart") and not Players2.RootPart:FindFirstChildOfClass("BillboardGui") then
+if  Players2:IsA("Model") and (Players2:FindFirstChild("RootPart") or Players2:FindFirstChild("HumanoidRootPart")) then
 	if Players2:FindFirstChildOfClass("Highlight") then
     Players2:FindFirstChildOfClass("Highlight"):Destroy()
 end
-    SetupCharacter(Players2,workspace.PLAYERS.KILLER,Players2.RootPart)
-CreateEsp(Players2,Color3.fromRGB(255,0,0),Players2.Name.." "..Players2:GetAttribute("Character"),Players2.RootPart,2)
+   local PART = Players2:FindFirstChild("RootPart") or nil
+    if Players2:GetAttribute("Character") == "Ennard" then
+    PART = Players2:FindFirstChild("HumanoidRootPart")
+    end
+    if not PART:FindFirstChildOfClass("BillboardGui") then
+    SetupCharacter(Players2,workspace.PLAYERS.KILLER,PART)
+CreateEsp(Players2,Color3.fromRGB(255,0,0),Players2.Name.." "..Players2:GetAttribute("Character"),PART,2)
+end
 end
 end
 else
  for _,Players2 in pairs(game.Workspace.PLAYERS.KILLER:GetChildren()) do 
-if Players2:IsA("Model") and Players2:FindFirstChild("RootPart") and Players2:FindFirstChildOfClass("Highlight") and Players2.RootPart:FindFirstChildOfClass("BillboardGui") then
-KeepEsp(Players2,Players2.RootPart)
+if Players2:IsA("Model") and (Players2:FindFirstChild("RootPart") or Players2:FindFirstChild("HumanoidRootPart")) and Players2:FindFirstChildOfClass("Highlight") then
+  local PART = Players2:FindFirstChild("RootPart") or nil
+    if Players2:GetAttribute("Character") == "Ennard" then
+    PART = Players2:FindFirstChild("HumanoidRootPart")
+    end
+    if PART:FindFirstChildOfClass("BillboardGui") then
+KeepEsp(Players2,PART)
+    end
 end
 end 
 end
@@ -1632,11 +1644,15 @@ if ActiveEspKillers then
  local GetPByChar = game:GetService("Players"):GetPlayerFromCharacter(child)
 if child.Parent and child.Parent == workspace.PLAYERS.KILLER and child:IsA("Model") and child:FindFirstChild("RootPart") and not child.RootPart:FindFirstChildOfClass("BillboardGui") then
 if GetPByChar then
+local PART = child:FindFirstChild("RootPart") or nil
+    if GetPByChar.Character:GetAttribute("Character") == "Ennard" then
+    PART = GetPByChar.Character:FindFirstChild("HumanoidRootPart")
+    end
     if child:FindFirstChildOfClass("Highlight") then
     child:FindFirstChildOfClass("Highlight"):Destroy()
 end
-    	SetupCharacter(child,workspace.PLAYERS.KILLER,child.RootPart)
-CreateEsp(child,Color3.fromRGB(255,0,0),child.Name.." "..child:GetAttribute("Character"),child.RootPart,2)
+    	SetupCharacter(child,workspace.PLAYERS.KILLER,PART)
+CreateEsp(child,Color3.fromRGB(255,0,0),child.Name.." "..child:GetAttribute("Character"),PART,2)
 end
 end
 end
@@ -1698,11 +1714,17 @@ workspace.DescendantRemoving:Connect(function(child)
 		end
 
 		if ActiveEspKillers then
-			if child:IsDescendantOf(workspace.PLAYERS.KILLER) and child:FindFirstChild("RootPart") then
-				if child:FindFirstChildOfClass("Highlight") and child.RootPart:FindFirstChildOfClass("BillboardGui") then
-					KeepEsp(child, child.RootPart)
+			if child:IsDescendantOf(workspace.PLAYERS.KILLER) then 
+                                if  (child:FindFirstChild("RootPart") or child:FindFirstChild("HumanoidRootPart")) then
+            local PART = child:FindFirstChild("RootPart") or nil
+    if child:GetAttribute("Character") == "Ennard" then
+    PART = child:FindFirstChild("HumanoidRootPart")
+    end
+				if child:FindFirstChildOfClass("Highlight") and PART:FindFirstChildOfClass("BillboardGui") then
+					KeepEsp(child, PART)
 				end
 			end
+            end
 		end
 
 		if ActiveEspGen and workspace.MAPS:FindFirstChild("GAME MAP") then
