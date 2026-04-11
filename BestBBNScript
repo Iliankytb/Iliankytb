@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.37"
+local V = "V.0.38"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -398,6 +398,8 @@ local function CreateEsp(Char, Color, Text, Parent)
         Color = Color
     })
 end
+local LastAction = 0
+local Cooldown = 1
 
 RunService.RenderStepped:Connect(function()
 task.spawn(function()
@@ -512,11 +514,13 @@ end
 end
 if AutoFarm then
     task.spawn(function()
-
         local Character = game.Players.LocalPlayer.Character
         if not Character or not Character.PrimaryPart then return end
 
+        if tick() - LastAction < Cooldown then return end
+
         if CanGo then
+
             if not Character:FindFirstChild("Battery") and not LocalPlayer.PlayerGui:FindFirstChild("Gen") then
                 for _, child in pairs(workspace.IGNORE:GetChildren()) do
                     if child.Name == "Battery" and child:IsA("BasePart") then
@@ -527,6 +531,7 @@ if AutoFarm then
                         if prompt then
                             CanGo = false
                             State = "Battery"
+                            LastAction = tick()
 
                             Character:PivotTo(child.CFrame)
 
@@ -563,6 +568,7 @@ if AutoFarm then
                                             if point then
                                                 CanGo = false
                                                 State = "Gen"
+                                                LastAction = tick()
 
                                                 Character:PivotTo(point.CFrame)
 
@@ -595,6 +601,7 @@ if AutoFarm then
                             
                             CanGo = false
                             State = "Escape"
+                            LastAction = tick()
 
                             Character:PivotTo(part.CFrame)
 
@@ -628,6 +635,7 @@ if AutoFarm then
                                     if prompt then
                                         CanGo = false
                                         State = "Fuse"
+                                        LastAction = tick()
 
                                         Character:PivotTo(pos.CFrame + Vector3.new(0,5,0))
 
