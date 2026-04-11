@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.35"
+local V = "V.0.36"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -516,9 +516,7 @@ if AutoFarm then
         if not Character or not Character.PrimaryPart then return end
 
         if CanGo then
-
-
-            if not Character:FindFirstChild("Battery") then
+            if not Character:FindFirstChild("Battery") and not LocalPlayer.PlayerGui:FindFirstChild("Gen") then
                 for _, child in pairs(workspace.IGNORE:GetChildren()) do
                     if child.Name == "Battery" and child:IsA("BasePart") then
                         
@@ -571,7 +569,7 @@ if AutoFarm then
                                                     task.wait(0.1)
                                                     fireproximityprompt(prompt)
 
-                                                    task.wait(prompt.HoldDuration + 0.25)
+                                                    task.wait(prompt.HoldDuration + 0.75)
                                                     CanGo = true
                                                     State = "Idle"
                                                 end)
@@ -613,7 +611,7 @@ if AutoFarm then
 
             if CanGo then
                 local map = workspace.MAPS:FindFirstChild("GAME MAP")
-                if map then
+                if map and not LocalPlayer.PlayerGui:FindFirstChild("Gen") then
                     local fuseFolder = map:FindFirstChild("FuseBoxes")
                     if fuseFolder then
                         for _, fuse in pairs(fuseFolder:GetChildren()) do
