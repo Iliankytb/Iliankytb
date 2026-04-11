@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.38"
+local V = "V.0.39"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -515,7 +515,7 @@ end
 if AutoFarm then
     task.spawn(function()
         local Character = game.Players.LocalPlayer.Character
-        if not Character or not Character.PrimaryPart then return end
+        if not Character or not Character.PrimaryPart or not Character:GetAttribute("Team") == "Survivor" then return end
 
         if tick() - LastAction < Cooldown then return end
 
