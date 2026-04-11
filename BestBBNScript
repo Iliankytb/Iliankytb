@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.36"
+local V = "V.0.37"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -89,6 +89,7 @@ local ActivateJumping = false
 local JumpPowerValue = 50
 local State = "Idle" 
 local TimeForGenerator = 1.25
+local AutoHighlightKillerCamera = false
 
 local Version = InfoTab:AddText({
         Text = "Version:"..V,
@@ -699,7 +700,29 @@ end
  end
 end)
 
+local TimeAutoHighlight = 0.1
+
 LocalPlayer.PlayerGui.ChildAdded:Connect(function(child)
+if child.Name == "Camera" then
+if AutoHighlightKillerCamera then
+  local main = child:WaitForChild("Main")
+if main then
+local locateRemote = main:WaitForChild("Locate")
+if locateRemote then
+task.wait(TimeAutoHighlight)
+        local killerFolder = workspace:WaitForChild("PLAYERS"):WaitForChild("KILLER")
+        local killer = killerFolder:FindFirstChildOfClass("Model")
+
+        if killer then
+            local root = killer:FindFirstChild("HumanoidRootPart")
+            if root then
+                locateRemote:FireServer(killer)
+            end
+        end
+end
+end
+end
+end
     if  child.Name == "Gen" then
 if AutoGen and not AutoFarm  then
 task.wait(TimeForGenerator)
@@ -720,6 +743,18 @@ end
     end
 end)
 
+local CollectionService = game:GetService("CollectionService")
+local Players = game:GetService("Players")
+local AntiConfusion = false
+
+CollectionService:GetInstanceAddedSignal("Confusion"):Connect(function(instance)
+if AntiConfusion then
+local character = LocalPlayer.Character
+    if instance == character then
+        CollectionService:RemoveTag(character, "Confusion")
+    end
+end
+end)
 local function KeepEsp(Char, Parent)
     if not Char or not Char:FindFirstChildOfClass("Highlight") then return end
     if not Parent or not Parent:FindFirstChildOfClass("BillboardGui") then return end
@@ -1149,7 +1184,7 @@ end
 
 	--Toggle--
 	local ToggleAG = MainTab:AddToggle({
-		Text = "Auto Generator EXPIREMENT!",
+		Text = "Auto Generator",
 Note = "Maybe its working now",
 		Name = "ToggleAG",
 		Flag = "ToggleAG",--Put a name flag for save data if you enabled saving data
@@ -1158,7 +1193,40 @@ Note = "Maybe its working now",
 AutoGen = state
 		end
 	})
+	--Toggle--
+	local ToggleAutoHighlightKillerAsSG = MainTab:AddToggle({
+		Text = "Auto Highlight Killer As Security Guard",
+		Name = "ToggleAutoHighlightKillerAsSG",
+		Flag = "ToggleAutoHighlightKillerAsSG",--Put a name flag for save data if you enabled saving data
+		Default = false,
+		Callback = function(state)
+AutoHighlightKillerCamera = state
+		end
+	})
+	--Toggle--
+	local ToggleAntiConfusion = MainTab:AddToggle({
+		Text = "Anti Confusion",
+Note = "Work when being tased",
+		Name = "ToggleAntiConfusion",
+		Flag = "ToggleAntiConfusion",--Put a name flag for save data if you enabled saving data
+		Default = false,
+		Callback = function(state)
+AntiConfusion = state
+		end
+	})
 
+local TimeForAH = MainTab:AddSlider({
+Text = "Time For Auto Highlight Killer As Security Guard",
+   Name = "TimeForAH",
+   Min = 0,
+   Max = 2.5,
+   Default = 0.1,
+Increment = 0.1,
+   Flag = "TimeForAH", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+TimeAutoHighlight = Value
+end, 
+})
 workspace.PLAYERS.KILLER.ChildRemoved:Connect(function(child)
 ApplyInvisibility(false)
 end)
@@ -1190,6 +1258,7 @@ Increment = 0.05,
 TimeForGenerator = Value
 end, 
 })
+
 	local ToggleAutoParry = MainTab:AddToggle({
 		Text = "Fighter - Auto Parry",
 Note = "Don't work on Xeno,JJsploit and Solara!",
