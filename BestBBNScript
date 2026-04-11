@@ -512,10 +512,10 @@ if AutoFarm then
 local Character = game:GetService("Players").LocalPlayer.Character
 if (Character:GetAttribute("Team") == "Survivor" or Character.Parent == workspace.PLAYERS.ALIVE) then
     if CanGo then
-    if not Character_upvr:FindFirstChild("Battery") then
+    if not Character:FindFirstChild("Battery") then
         for _, child in pairs(game.Workspace.IGNORE:GetChildren()) do
 if child.Parent and child.Name == "Battery" and child.Parent == workspace.IGNORE and child:IsA("BasePart") then
-Character_upvr.PrimaryPart.CFrame = child.CFrame
+Character.PrimaryPart.CFrame = child.CFrame
 local Prompt = child:FindFirstChild("Attachment"):FindFirstChildOfClass("ProximityPrompt") 
 if Prompt then
 CanGo = false
@@ -527,7 +527,7 @@ CanGo = true
 end)
 end
 end
- if not Character_upvr:FindFirstChild("Battery") then
+ if not Character:FindFirstChild("Battery") then
      if game.Workspace.MAPS:FindFirstChild("GAME MAP") and workspace.GAME.Tasks.Gens.count.Value ~=  workspace.GAME.Tasks.Gens.total.Value and workspace.GAME.Tasks.Gens.Enabled.Value and not workspace.GAME.LMS.Value then
          if not game.Players.LocalPlayer.PlayerGui:FindFirstChild("Gen") then
      for _, child in pairs(game.Workspace.MAPS["GAME MAP"].Generators:GetChildren()) do
