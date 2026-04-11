@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.41"
+local V = "V.0.42"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -402,13 +402,20 @@ local LastAction = 0
 local Cooldown = 0.5
 local TweenService = game:GetService("TweenService")
 
+local SPEED = 45
+
 local function TweenTo(character, cf)
     local root = character:FindFirstChild("HumanoidRootPart") or character.PrimaryPart
     if not root then return end
 
+    local distance = (root.Position - cf.Position).Magnitude
+    local time = distance / SPEED
+
+    time = math.clamp(time, 0.15, 1.5)
+
     local tween = TweenService:Create(
         root,
-        TweenInfo.new(0.75, Enum.EasingStyle.Linear),
+        TweenInfo.new(time, Enum.EasingStyle.Linear),
         {CFrame = cf}
     )
 
