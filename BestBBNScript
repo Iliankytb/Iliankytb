@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.43"
+local V = "V.0.44"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -402,7 +402,7 @@ local LastAction = 0
 local Cooldown = 0.5
 local TweenService = game:GetService("TweenService")
 
-local SPEED = 25
+local SPEED = 20
 
 local function TweenTo(character, cf)
     local root = character:FindFirstChild("HumanoidRootPart") or character.PrimaryPart
@@ -584,7 +584,7 @@ else
                                     local attachment = root:FindFirstChildOfClass("Attachment")
                                     local prompt = attachment and attachment:FindFirstChildOfClass("ProximityPrompt")
 
-                                    if prompt then
+                                    if prompt and prompt.Enabled then
                                         CanGo = false
                                         State = "Fuse"
                                         LastAction = tick()
