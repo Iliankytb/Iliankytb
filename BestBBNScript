@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.29"
+local V = "V.0.30"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -80,6 +80,11 @@ local CanGenerator = true
 local ShakeTime = 0.5
 local SizeBoxBarricade = 0.3
 local InvisibilityKiller = false
+local ActiveNoclip = false
+local ActivateFly = false
+local AutoFarm = false
+local CanGo = true
+local UserInputService = game:GetService("UserInputService")
 
 local Version = InfoTab:AddText({
         Text = "Version:"..V,
@@ -92,6 +97,193 @@ local Version = InfoTab:AddText({
 		Duration = 7.5,
 		UseSound = true,
 	})
+
+local IYMouse = game.Players.LocalPlayer:GetMouse()
+local FLYING = false
+local QEfly = true
+local iyflyspeed = 1
+local vehicleflyspeed = 1
+
+local function sFLY(vfly)
+	repeat wait() until Players.LocalPlayer and Players.LocalPlayer.Character and Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart") and Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+	repeat wait() until IYMouse
+	if flyKeyDown or flyKeyUp then flyKeyDown:Disconnect() flyKeyUp:Disconnect() end
+
+	local T = Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+	local CONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
+	local lCONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
+	local SPEED = 0
+
+	local function FLY()
+		FLYING = true
+		local BG = Instance.new('BodyGyro')
+		local BV = Instance.new('BodyVelocity')
+		BG.P = 9e4
+		BG.Parent = T
+		BV.Parent = T
+		BG.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
+		BG.CFrame = T.CFrame
+		BV.Velocity = Vector3.new(0, 0, 0)
+		BV.MaxForce = Vector3.new(9e9, 9e9, 9e9)
+		task.spawn(function()
+			repeat wait()
+				if not vfly and Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid') then
+					Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').PlatformStand = true
+				end
+				if CONTROL.L + CONTROL.R ~= 0 or CONTROL.F + CONTROL.B ~= 0 or CONTROL.Q + CONTROL.E ~= 0 then
+					SPEED = 50
+				elseif not (CONTROL.L + CONTROL.R ~= 0 or CONTROL.F + CONTROL.B ~= 0 or CONTROL.Q + CONTROL.E ~= 0) and SPEED ~= 0 then
+					SPEED = 0
+				end
+				if (CONTROL.L + CONTROL.R) ~= 0 or (CONTROL.F + CONTROL.B) ~= 0 or (CONTROL.Q + CONTROL.E) ~= 0 then
+					BV.Velocity = ((workspace.CurrentCamera.CoordinateFrame.lookVector * (CONTROL.F + CONTROL.B)) + ((workspace.CurrentCamera.CoordinateFrame * CFrame.new(CONTROL.L + CONTROL.R, (CONTROL.F + CONTROL.B + CONTROL.Q + CONTROL.E) * 0.2, 0).p) - workspace.CurrentCamera.CoordinateFrame.p)) * SPEED
+					lCONTROL = {F = CONTROL.F, B = CONTROL.B, L = CONTROL.L, R = CONTROL.R}
+				elseif (CONTROL.L + CONTROL.R) == 0 and (CONTROL.F + CONTROL.B) == 0 and (CONTROL.Q + CONTROL.E) == 0 and SPEED ~= 0 then
+					BV.Velocity = ((workspace.CurrentCamera.CoordinateFrame.lookVector * (lCONTROL.F + lCONTROL.B)) + ((workspace.CurrentCamera.CoordinateFrame * CFrame.new(lCONTROL.L + lCONTROL.R, (lCONTROL.F + lCONTROL.B + CONTROL.Q + CONTROL.E) * 0.2, 0).p) - workspace.CurrentCamera.CoordinateFrame.p)) * SPEED
+				else
+					BV.Velocity = Vector3.new(0, 0, 0)
+				end
+				BG.CFrame = workspace.CurrentCamera.CoordinateFrame
+			until not FLYING
+			CONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
+			lCONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
+			SPEED = 0
+			BG:Destroy()
+			BV:Destroy()
+			if Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid') then
+				Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').PlatformStand = false
+			end
+		end)
+	end
+	flyKeyDown = IYMouse.KeyDown:Connect(function(KEY)
+		if KEY:lower() == 'w' then
+			CONTROL.F = (vfly and vehicleflyspeed or iyflyspeed)
+		elseif KEY:lower() == 's' then
+			CONTROL.B = - (vfly and vehicleflyspeed or iyflyspeed)
+		elseif KEY:lower() == 'a' then
+			CONTROL.L = - (vfly and vehicleflyspeed or iyflyspeed)
+		elseif KEY:lower() == 'd' then 
+			CONTROL.R = (vfly and vehicleflyspeed or iyflyspeed)
+		elseif QEfly and KEY:lower() == 'e' then
+			CONTROL.Q = (vfly and vehicleflyspeed or iyflyspeed)*2
+		elseif QEfly and KEY:lower() == 'q' then
+			CONTROL.E = -(vfly and vehicleflyspeed or iyflyspeed)*2
+		end
+		pcall(function() workspace.CurrentCamera.CameraType = Enum.CameraType.Track end)
+	end)
+	flyKeyUp = IYMouse.KeyUp:Connect(function(KEY)
+		if KEY:lower() == 'w' then
+			CONTROL.F = 0
+		elseif KEY:lower() == 's' then
+			CONTROL.B = 0
+		elseif KEY:lower() == 'a' then
+			CONTROL.L = 0
+		elseif KEY:lower() == 'd' then
+			CONTROL.R = 0
+		elseif KEY:lower() == 'e' then
+			CONTROL.Q = 0
+		elseif KEY:lower() == 'q' then
+			CONTROL.E = 0
+		end
+	end)
+	FLY()
+end
+
+local function NOFLY()
+	FLYING = false
+	if flyKeyDown or flyKeyUp then flyKeyDown:Disconnect() flyKeyUp:Disconnect() end
+	if Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid') then
+		Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').PlatformStand = false
+	end
+	pcall(function() workspace.CurrentCamera.CameraType = Enum.CameraType.Custom end)
+end
+
+local velocityHandlerName = "BodyVelocity"
+local gyroHandlerName = "BodyGyro"
+local mfly1
+local mfly2
+
+local function UnMobileFly()
+	pcall(function()
+		FLYING = false
+		local root = Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+		root:FindFirstChild(velocityHandlerName):Destroy()
+		root:FindFirstChild(gyroHandlerName):Destroy()
+		Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid").PlatformStand = false
+		mfly1:Disconnect()
+		mfly2:Disconnect()
+	end)
+end
+
+local function MobileFly()
+	UnMobileFly()
+	FLYING = true
+
+	local root = Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+	local camera = workspace.CurrentCamera
+	local v3none = Vector3.new()
+	local v3zero = Vector3.new(0, 0, 0)
+	local v3inf = Vector3.new(9e9, 9e9, 9e9)
+
+	local controlModule = require(Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule"))
+	local bv = Instance.new("BodyVelocity")
+	bv.Name = velocityHandlerName
+	bv.Parent = root
+	bv.MaxForce = v3zero
+	bv.Velocity = v3zero
+
+	local bg = Instance.new("BodyGyro")
+	bg.Name = gyroHandlerName
+	bg.Parent = root
+	bg.MaxTorque = v3inf
+	bg.P = 1000
+	bg.D = 50
+
+	mfly1 = Players.LocalPlayer.CharacterAdded:Connect(function()
+		local bv = Instance.new("BodyVelocity")
+		bv.Name = velocityHandlerName
+		bv.Parent = root
+		bv.MaxForce = v3zero
+		bv.Velocity = v3zero
+
+		local bg = Instance.new("BodyGyro")
+		bg.Name = gyroHandlerName
+		bg.Parent = root
+		bg.MaxTorque = v3inf
+		bg.P = 1000
+		bg.D = 50
+	end)
+
+	mfly2 = RunService.RenderStepped:Connect(function()
+		root = Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+		camera = workspace.CurrentCamera
+		if Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid") and root and root:FindFirstChild(velocityHandlerName) and root:FindFirstChild(gyroHandlerName) then
+			local humanoid = Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid")
+			local VelocityHandler = root:FindFirstChild(velocityHandlerName)
+			local GyroHandler = root:FindFirstChild(gyroHandlerName)
+
+			VelocityHandler.MaxForce = v3inf
+			GyroHandler.MaxTorque = v3inf
+			humanoid.PlatformStand = true
+			GyroHandler.CFrame = camera.CoordinateFrame
+			VelocityHandler.Velocity = v3none
+
+			local direction = controlModule:GetMoveVector()
+			if direction.X > 0 then
+				VelocityHandler.Velocity = VelocityHandler.Velocity + camera.CFrame.RightVector * (direction.X * ((iyflyspeed) * 50))
+			end
+			if direction.X < 0 then
+				VelocityHandler.Velocity = VelocityHandler.Velocity + camera.CFrame.RightVector * (direction.X * ((iyflyspeed) * 50))
+			end
+			if direction.Z > 0 then
+				VelocityHandler.Velocity = VelocityHandler.Velocity - camera.CFrame.LookVector * (direction.Z * ((iyflyspeed) * 50))
+			end
+			if direction.Z < 0 then
+				VelocityHandler.Velocity = VelocityHandler.Velocity - camera.CFrame.LookVector * (direction.Z * ((iyflyspeed) * 50))
+			end
+		end
+	end)
+end
 
 local function doShake(wireyesUI)
     task.spawn(function()
@@ -313,7 +505,101 @@ if game:GetService("ReplicatedStorage").Modules.BlindnessModule:FindFirstChildOf
   game:GetService("ReplicatedStorage").Modules.BlindnessModule:FindFirstChildOfClass("Atmosphere"):Destroy()
 end
 end
-     if AutoSafeSpot then
+if AutoFarm then
+local Character = game:GetService("Players").LocalPlayer.Character
+if (Character:GetAttribute("Team") == "Survivor" or Character.Parent == workspace.PLAYERS.ALIVE) then
+    if CanGo then
+    if not Character_upvr:FindFirstChild("Battery") then
+        for _, child in pairs(game.Workspace.IGNORE:GetChildren()) do
+if child.Parent and child.Name == "Battery" and child.Parent == workspace.IGNORE and child:IsA("BasePart") then
+Character_upvr.PrimaryPart.CFrame = child.CFrame
+local Prompt = child:FindFirstChild("Attachment"):FindFirstChildOfClass("ProximityPrompt") 
+if Prompt then
+CanGo = false
+task.wait(0.1)
+fireproximityprompt(Prompt)
+task.spawn(function()
+task.wait(Prompt.HoldDuration + 0.25)
+CanGo = true
+end)
+end
+end
+ if not Character_upvr:FindFirstChild("Battery") then
+     if game.Workspace.MAPS:FindFirstChild("GAME MAP") and workspace.GAME.Tasks.Gens.count.Value ~=  workspace.GAME.Tasks.Gens.total.Value and workspace.GAME.Tasks.Gens.Enabled.Value and not workspace.GAME.LMS.Value then
+         if not game.Players.LocalPlayer.PlayerGui:FindFirstChild("Gen") then
+     for _, child in pairs(game.Workspace.MAPS["GAME MAP"].Generators:GetChildren()) do
+if child:IsA("Model") and child.Name == "Generator" then
+    local RootPart = child:FindFirstChild("RootPart")
+    if RootPart then
+for _, Atch in ipairs(RootPart:GetChildren()) do
+    if Atch:IsA("Attachment") and Atch:FindFirstChildOfClass("ProximityPrompt") then
+   local Prompt = Atch:FindFirstChildOfClass("ProximityPrompt")
+   if Prompt and Prompt.Enabled then
+   local PointPart = child:FindFirstChild(Atch.Name)
+   if PointPart then
+    CanGo = false
+    Character:SetPrimaryPartCFrame(PointPart.CFrame)
+    task.wait(0.1)
+fireproximityprompt(Prompt)
+task.spawn(function()
+task.wait(Prompt.HoldDuration + 0.25)
+CanGo = true
+end)
+   end
+   end
+    end
+end
+end
+     end
+end
+if not game.Players.LocalPlayer.PlayerGui:FindFirstChild("Gen") then
+ if not Teleported and workspace.GAME.CAN_ESCAPE.Value == true then
+        if workspace.MAPS:FindFirstChild("GAME MAP") then
+            if game.Players.LocalPlayer.Character.Parent == workspace.PLAYERS.ALIVE then
+         for _, Part in pairs(workspace.MAPS:FindFirstChild("GAME MAP"):FindFirstChild("Escapes"):GetChildren()) do
+             if Part and Part:IsA("BasePart") and Part:GetAttribute("Enabled") and Part:FindFirstChildOfClass("Highlight") and Part:FindFirstChildOfClass("Highlight").Enabled then
+          if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+           Teleported = true
+           game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Anchored = true
+               game.Players.LocalPlayer.Character.PrimaryPart.CFrame = Part.CFrame
+               task.spawn(function()
+          wait(0.15)
+          game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Anchored = false
+          end)
+           wait(10)
+            Teleported = false
+             end
+             end
+            end
+        end
+    end
+ end
+end
+end
+end
+end
+end
+end
+else
+if workspace.MAPS["GAME MAP"]:FindFirstChild("FuseBoxes") then
+for _, Fuseboxes in pairs(workspace.MAPS["GAME MAP"].FuseBoxes:GetChildren()) do
+    if Fuseboxes and Fuseboxes:IsA("Model") and Fuseboxes:FindFirstChild("HumanoidRootPart") and  Fuseboxes:FindFirstChild("HumanoidRootPart"):FindFirstChildOfClass("Attachment") and Fuseboxes:FindFirstChild("HumanoidRootPart"):FindFirstChildOfClass("Attachment"):FindFirstChildOfClass("ProximityPrompt") then
+    CanGo = false
+    Character_upvr.PrimaryPart.CFrame = Fuseboxes:FindFirstChild("Position").CFrame + Vector3.new(0,5,0)
+local Prompt = Fuseboxes:FindFirstChild("HumanoidRootPart"):FindFirstChildOfClass("Attachment"):FindFirstChildOfClass("ProximityPrompt")
+task.wait(0.1)
+fireproximityprompt(Prompt)
+task.spawn(function()
+task.wait(Prompt.HoldDuration + 0.25)
+CanGo = true
+end)
+end
+end
+end
+end
+end
+end
+     if AutoSafeSpot and not AutoFarm then
           if game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid").Health > 35 then
          SavedCFrame = game.Players.LocalPlayer.Character.PrimaryPart.CFrame
           end
@@ -327,7 +613,7 @@ end
      if ActiveSpeedBoost2 then
     game.Players.LocalPlayer.Character:SetAttribute("WalkSpeed",ValueWalkSpeed)
     end
-    if AutoEscape and not Teleported and workspace.GAME.CAN_ESCAPE.Value == true then
+    if AutoEscape and not Teleported and workspace.GAME.CAN_ESCAPE.Value == true and not AutoFarm then
         if workspace.MAPS:FindFirstChild("GAME MAP") then
             if game.Players.LocalPlayer.Character.Parent == workspace.PLAYERS.ALIVE then
          for _, Part in pairs(workspace.MAPS:FindFirstChild("GAME MAP"):FindFirstChild("Escapes"):GetChildren()) do
@@ -353,7 +639,7 @@ end)
 
 LocalPlayer.PlayerGui.ChildAdded:Connect(function(child)
     if  child.Name == "Gen" then
-if AutoGen  then
+if AutoGen and not AutoFarm  then
 task.wait(1.25)
    child.GeneratorMain.Event:FireServer({
         Wires = true,
@@ -361,6 +647,14 @@ task.wait(1.25)
         Lever = true
     })
      end
+if AutoFarm then
+task.wait(1.25)
+   child.GeneratorMain.Event:FireServer({
+        Wires = true,
+        Switches = true,
+        Lever = true
+    })
+end
     end
 end)
 
@@ -800,10 +1094,19 @@ if InvisibilityKiller then
 ApplyInvisibility(true)
 end
 end)
-
+local AutoFarmToggle = MainTab:AddToggle({
+Text = "Auto Farm EXPIREMENT!",
+Note = "Generators,Fuse boxes and auto escape at the same time!",
+   Name = "AutoFarmToggle",
+   Default = false,
+   Flag = "AutoFarmToggle", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  AutoFarm = Value
+end,
+})
 	local ToggleAutoParry = MainTab:AddToggle({
 		Text = "Fighter - Auto Parry",
-Note = "Working Great!",
+Note = "Don't work on Xeno,JJsploit and Solara!",
 		Name = "ToggleAutoParry",
 		Flag = "ToggleAutoParry",--Put a name flag for save data if you enabled saving data
 		Default = false,
@@ -891,6 +1194,43 @@ end)
 end,
 })
 
+local function Noclip()
+if ActiveNoclip then
+if game.Players.LocalPlayer.Character then
+for _, Parts in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+if Parts:isA("BasePart") and Parts.CanCollide then
+if not Parts:GetAttribute("OldCollide") then
+Parts:SetAttribute("OldCollide",Parts.CanCollide)
+end
+Parts.CanCollide = false
+end
+end
+end
+else
+if game.Players.LocalPlayer.Character then
+for _, Parts in pairs(game.Players.LocalPlayer.Character:GetDescendants()) do
+if Parts:isA("BasePart") and Parts:GetAttribute("OldCollide") then
+Parts.CanCollide = Parts:GetAttribute("OldCollide")
+end
+end
+end
+end
+end
+
+local PlayerNoclipToggle = PlayerTab:AddToggle({
+   Name = "Noclip",
+   Default = false,
+   Flag = "ButtonNoclip", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  ActiveNoclip = Value 
+Noclip()
+end,
+})
+
+game:GetService("Players").LocalPlayer:GetPropertyChangedSignal("Character"):Connect(function()
+  Noclip()
+end)
+
 local PlayerSpeedSlider = PlayerTab:AddSlider({
 Text = "Run Speed",
    Name = "PlayerSpeedSlider",
@@ -912,6 +1252,75 @@ Text = "Active Modifying Run Speed",
   ActiveSpeedBoost = Value
 end,
 })
+
+local PlayerFlySpeedSlider = PlayerTab:AddSlider({
+    Text = "Fly Speed",
+   Name = "PlayerFlySpeedSlider",
+  Min = 0,
+		Max = 10,
+		Default = 0,
+   Flag = "PlayerFlySpeedSlider", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+iyflyspeed = Value
+end, 
+})
+
+local PlayerFlyToggle = PlayerTab:AddToggle({
+    Text = "Fly",
+   Name = "PlayerFlyToggle",
+   Default = false,
+   Flag = "ButtonFly", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  ActivateFly = Value 
+task.spawn(function()
+if not FLYING and ActivateFly then
+			if UserInputService.TouchEnabled then
+				MobileFly()
+			else
+task.spawn(function()
+if not AlrActivatedFlyPC then 
+AlrActivatedFlyPC = true
+	local Notif = window:Notify({
+		Title = "Fly!",
+		Message = "When you enable to fly you can press F to fly/unfly (it won't disable the button!)!",
+		Duration = 5,
+	})
+end
+end)
+				NOFLY()
+				wait()
+				sFLY()
+			end
+		elseif FLYING and not ActivateFly then
+			if UserInputService.TouchEnabled then
+				UnMobileFly()
+			else
+				NOFLY()
+			end
+		end
+end)
+end,
+})
+UserInputService.InputBegan:Connect(function(input, processed)
+	if processed then return end
+	if input.KeyCode == Enum.KeyCode.F then
+		if not FLYING and ActivateFly then
+			if UserInputService.TouchEnabled then
+				MobileFly()
+			else
+				NOFLY()
+				wait()
+				sFLY()
+			end
+		elseif FLYING and ActivateFly then
+			if UserInputService.TouchEnabled then
+				UnMobileFly()
+			else
+				NOFLY()
+			end
+		end
+	end
+end)
 
 local HESlider = MainTab:AddSlider({
 Text = "Hitbox Size",
