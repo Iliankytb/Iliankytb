@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.32"
+local V = "V.0.33"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -87,6 +87,7 @@ local CanGo = true
 local UserInputService = game:GetService("UserInputService")
 local ActivateJumping = false
 local JumpPowerValue = 50
+local State = "Idle" 
 
 local Version = InfoTab:AddText({
         Text = "Version:"..V,
@@ -509,99 +510,147 @@ end
 end
 if AutoFarm then
     task.spawn(function()
-local Character = game:GetService("Players").LocalPlayer.Character
-if (Character:GetAttribute("Team") == "Survivor" or Character.Parent == workspace.PLAYERS.ALIVE) then
-    if CanGo then
-    if not Character:FindFirstChild("Battery") then
-        for _, child in pairs(game.Workspace.IGNORE:GetChildren()) do
-if child.Parent and child.Name == "Battery" and child.Parent == workspace.IGNORE and child:IsA("BasePart") then
-Character.PrimaryPart.CFrame = child.CFrame
-local Prompt = child:FindFirstChild("Attachment"):FindFirstChildOfClass("ProximityPrompt") 
-if Prompt then
-CanGo = false
-task.wait(0.1)
-fireproximityprompt(Prompt)
-task.spawn(function()
-task.wait(Prompt.HoldDuration + 0.25)
-CanGo = true
-end)
-end
-end
- if not Character:FindFirstChild("Battery") then
-     if game.Workspace.MAPS:FindFirstChild("GAME MAP") and workspace.GAME.Tasks.Gens.count.Value ~=  workspace.GAME.Tasks.Gens.total.Value and workspace.GAME.Tasks.Gens.Enabled.Value and not workspace.GAME.LMS.Value then
-         if not game.Players.LocalPlayer.PlayerGui:FindFirstChild("Gen") then
-     for _, child in pairs(game.Workspace.MAPS["GAME MAP"].Generators:GetChildren()) do
-if child:IsA("Model") and child.Name == "Generator" then
-    local RootPart = child:FindFirstChild("RootPart")
-    if RootPart then
-for _, Atch in ipairs(RootPart:GetChildren()) do
-    if Atch:IsA("Attachment") and Atch:FindFirstChildOfClass("ProximityPrompt") then
-   local Prompt = Atch:FindFirstChildOfClass("ProximityPrompt")
-   if Prompt and Prompt.Enabled then
-   local PointPart = child:FindFirstChild(Atch.Name)
-   if PointPart then
-    CanGo = false
-    Character:SetPrimaryPartCFrame(PointPart.CFrame)
-    task.wait(0.1)
-fireproximityprompt(Prompt)
-task.spawn(function()
-task.wait(Prompt.HoldDuration + 0.25)
-CanGo = true
-end)
-   end
-   end
-    end
-end
-end
-     end
-end
-if not game.Players.LocalPlayer.PlayerGui:FindFirstChild("Gen") then
- if not Teleported and workspace.GAME.CAN_ESCAPE.Value == true then
-        if workspace.MAPS:FindFirstChild("GAME MAP") then
-            if game.Players.LocalPlayer.Character.Parent == workspace.PLAYERS.ALIVE then
-         for _, Part in pairs(workspace.MAPS:FindFirstChild("GAME MAP"):FindFirstChild("Escapes"):GetChildren()) do
-             if Part and Part:IsA("BasePart") and Part:GetAttribute("Enabled") and Part:FindFirstChildOfClass("Highlight") and Part:FindFirstChildOfClass("Highlight").Enabled then
-          if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-           Teleported = true
-           game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Anchored = true
-               game.Players.LocalPlayer.Character.PrimaryPart.CFrame = Part.CFrame
-               task.spawn(function()
-          wait(0.15)
-          game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Anchored = false
-          end)
-           wait(10)
-            Teleported = false
-             end
-             end
+
+        local Character = game.Players.LocalPlayer.Character
+        if not Character or not Character.PrimaryPart then return end
+
+        if CanGo then
+
+
+            if not Character:FindFirstChild("Battery") then
+                for _, child in pairs(workspace.IGNORE:GetChildren()) do
+                    if child.Name == "Battery" and child:IsA("BasePart") then
+                        
+                        local attachment = child:FindFirstChild("Attachment")
+                        local prompt = attachment and attachment:FindFirstChildOfClass("ProximityPrompt")
+
+                        if prompt then
+                            CanGo = false
+                            State = "Battery"
+
+                            Character:PivotTo(child.CFrame)
+
+                            task.spawn(function()
+                                task.wait(0.1)
+                                fireproximityprompt(prompt)
+
+                                task.wait(prompt.HoldDuration + 0.25)
+                                CanGo = true
+                                State = "Idle"
+                            end)
+
+                            break
+                        end
+                    end
+                end
             end
+
+            if CanGo and workspace.GAME.Tasks.Gens.Enabled.Value then
+                local gens = workspace.MAPS["GAME MAP"]:FindFirstChild("Generators")
+                if gens then
+                    for _, gen in pairs(gens:GetChildren()) do
+                        if gen.Name == "Generator" then
+                            
+                            local root = gen:FindFirstChild("RootPart")
+                            if root then
+                                for _, atch in ipairs(root:GetChildren()) do
+                                    if atch:IsA("Attachment") then
+                                        
+                                        local prompt = atch:FindFirstChildOfClass("ProximityPrompt")
+                                        if prompt and prompt.Enabled then
+                                            
+                                            local point = gen:FindFirstChild(atch.Name)
+                                            if point then
+                                                CanGo = false
+                                                State = "Gen"
+
+                                                Character:PivotTo(point.CFrame)
+
+                                                task.spawn(function()
+                                                    task.wait(0.1)
+                                                    fireproximityprompt(prompt)
+
+                                                    task.wait(prompt.HoldDuration + 0.25)
+                                                    CanGo = true
+                                                    State = "Idle"
+                                                end)
+
+                                                break
+                                            end
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                        if not CanGo then break end
+                    end
+                end
+            end
+
+            if CanGo and workspace.GAME.CAN_ESCAPE.Value then
+                local escapes = workspace.MAPS["GAME MAP"]:FindFirstChild("Escapes")
+                if escapes then
+                    for _, part in pairs(escapes:GetChildren()) do
+                        if part:IsA("BasePart") and part:GetAttribute("Enabled") then
+                            
+                            CanGo = false
+                            State = "Escape"
+
+                            Character:PivotTo(part.CFrame)
+
+                            task.spawn(function()
+                                task.wait(1)
+                                CanGo = true
+                                State = "Idle"
+                            end)
+
+                            break
+                        end
+                    end
+                end
+            end
+
+            if CanGo then
+                local map = workspace.MAPS:FindFirstChild("GAME MAP")
+                if map then
+                    local fuseFolder = map:FindFirstChild("FuseBoxes")
+                    if fuseFolder then
+                        for _, fuse in pairs(fuseFolder:GetChildren()) do
+                            if fuse:IsA("Model") then
+                                
+                                local root = fuse:FindFirstChild("HumanoidRootPart")
+                                local pos = fuse:FindFirstChild("Position")
+
+                                if root and pos then
+                                    local attachment = root:FindFirstChildOfClass("Attachment")
+                                    local prompt = attachment and attachment:FindFirstChildOfClass("ProximityPrompt")
+
+                                    if prompt then
+                                        CanGo = false
+                                        State = "Fuse"
+
+                                        Character:PivotTo(pos.CFrame + Vector3.new(0,5,0))
+
+                                        task.spawn(function()
+                                            task.wait(0.1)
+                                            fireproximityprompt(prompt)
+
+                                            task.wait(prompt.HoldDuration + 0.25)
+                                            CanGo = true
+                                            State = "Idle"
+                                        end)
+
+                                        break
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+
         end
-    end
- end
-end
-end
-end
-end
-end
-end
-else
-if workspace.MAPS["GAME MAP"]:FindFirstChild("FuseBoxes") then
-for _, Fuseboxes in pairs(workspace.MAPS["GAME MAP"].FuseBoxes:GetChildren()) do
-    if Fuseboxes and Fuseboxes:IsA("Model") and Fuseboxes:FindFirstChild("HumanoidRootPart") and  Fuseboxes:FindFirstChild("HumanoidRootPart"):FindFirstChildOfClass("Attachment") and Fuseboxes:FindFirstChild("HumanoidRootPart"):FindFirstChildOfClass("Attachment"):FindFirstChildOfClass("ProximityPrompt") then
-    CanGo = false
-    Character_upvr.PrimaryPart.CFrame = Fuseboxes:FindFirstChild("Position").CFrame + Vector3.new(0,5,0)
-local Prompt = Fuseboxes:FindFirstChild("HumanoidRootPart"):FindFirstChildOfClass("Attachment"):FindFirstChildOfClass("ProximityPrompt")
-task.wait(0.1)
-fireproximityprompt(Prompt)
-task.spawn(function()
-task.wait(Prompt.HoldDuration + 0.25)
-CanGo = true
-end)
-end
-end
-end
-end
-end
-end)
+    end)
 end
 if ActivateJumping then
 local Character = game:GetService("Players").LocalPlayer.Character
