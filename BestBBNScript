@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.39"
+local V = "V.0.40"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -515,13 +515,11 @@ end
 if AutoFarm then
     task.spawn(function()
         local Character = game.Players.LocalPlayer.Character
-        if not Character or not Character.PrimaryPart or not Character:GetAttribute("Team") == "Survivor" then return end
-
-        if tick() - LastAction < Cooldown then return end
-
+      if tick() - LastAction >= Cooldown then
+if Character and Character.PrimaryPart and Character.Parent == workspace.PLAYERS.ALIVE then
         if CanGo then
-
-            if not Character:FindFirstChild("Battery") and not LocalPlayer.PlayerGui:FindFirstChild("Gen") then
+if not LocalPlayer.PlayerGui:FindFirstChild("Gen") then
+            if not Character:FindFirstChild("Battery")  then
                 for _, child in pairs(workspace.IGNORE:GetChildren()) do
                     if child.Name == "Battery" and child:IsA("BasePart") then
                         
@@ -535,10 +533,10 @@ if AutoFarm then
 
                             Character:PivotTo(child.CFrame)
 
-                            task.spawn(function()
+                           
                                 task.wait(0.1)
                                 fireproximityprompt(prompt)
-
+ task.spawn(function()
                                 task.wait(prompt.HoldDuration + 0.25)
                                 CanGo = true
                                 State = "Idle"
@@ -548,8 +546,48 @@ if AutoFarm then
                         end
                     end
                 end
-            end
+else
+            if CanGo then
+                local map = workspace.MAPS:FindFirstChild("GAME MAP")
+                if map and not LocalPlayer.PlayerGui:FindFirstChild("Gen") then
+                    local fuseFolder = map:FindFirstChild("FuseBoxes")
+                    if fuseFolder then
+                        for _, fuse in pairs(fuseFolder:GetChildren()) do
+                            if fuse:IsA("Model") then
+                                
+                                local root = fuse:FindFirstChild("HumanoidRootPart")
+                                local pos = fuse:FindFirstChild("Position")
 
+                                if root and pos then
+                                    local attachment = root:FindFirstChildOfClass("Attachment")
+                                    local prompt = attachment and attachment:FindFirstChildOfClass("ProximityPrompt")
+
+                                    if prompt then
+                                        CanGo = false
+                                        State = "Fuse"
+                                        LastAction = tick()
+
+                                        Character:PivotTo(pos.CFrame + Vector3.new(0,5,0))
+
+                                           task.wait(0.5)
+                                            fireproximityprompt(prompt)
+   task.spawn(function()
+                                        
+                                            task.wait(prompt.HoldDuration + 0.25)
+                                            CanGo = true
+                                            State = "Idle"
+                                        end)
+
+                                        break
+                                    end
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+            end
+end
             if CanGo and workspace.GAME.Tasks.Gens.Enabled.Value then
                 local gens = workspace.MAPS["GAME MAP"]:FindFirstChild("Generators")
                 if gens and not LocalPlayer.PlayerGui:FindFirstChild("Gen") then
@@ -572,10 +610,10 @@ if AutoFarm then
 
                                                 Character:PivotTo(point.CFrame)
 
-                                                task.spawn(function()
-                                                    task.wait(0.1)
+                                               task.wait(1)
                                                     fireproximityprompt(prompt)
-
+    task.spawn(function()
+                                                 
                                                     task.wait(prompt.HoldDuration + 0.75)
                                                     CanGo = true
                                                     State = "Idle"
@@ -616,47 +654,8 @@ if AutoFarm then
                     end
                 end
             end
-
-            if CanGo then
-                local map = workspace.MAPS:FindFirstChild("GAME MAP")
-                if map and not LocalPlayer.PlayerGui:FindFirstChild("Gen") then
-                    local fuseFolder = map:FindFirstChild("FuseBoxes")
-                    if fuseFolder then
-                        for _, fuse in pairs(fuseFolder:GetChildren()) do
-                            if fuse:IsA("Model") then
-                                
-                                local root = fuse:FindFirstChild("HumanoidRootPart")
-                                local pos = fuse:FindFirstChild("Position")
-
-                                if root and pos then
-                                    local attachment = root:FindFirstChildOfClass("Attachment")
-                                    local prompt = attachment and attachment:FindFirstChildOfClass("ProximityPrompt")
-
-                                    if prompt then
-                                        CanGo = false
-                                        State = "Fuse"
-                                        LastAction = tick()
-
-                                        Character:PivotTo(pos.CFrame + Vector3.new(0,5,0))
-
-                                        task.spawn(function()
-                                            task.wait(0.1)
-                                            fireproximityprompt(prompt)
-
-                                            task.wait(prompt.HoldDuration + 0.25)
-                                            CanGo = true
-                                            State = "Idle"
-                                        end)
-
-                                        break
-                                    end
-                                end
-                            end
-                        end
-                    end
-                end
-            end
-
+        end
+        end
         end
     end)
 end
