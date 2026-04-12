@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.45"
+local V = "V.0.46"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -612,8 +612,7 @@ end
                 local gens = workspace.MAPS["GAME MAP"]:FindFirstChild("Generators")
                 if gens and not LocalPlayer.PlayerGui:FindFirstChild("Gen") then
                     for _, gen in pairs(gens:GetChildren()) do
-                        if gen.Name == "Generator" then
-                            
+                        if gen.Name == "Generator" and gen:GetAttribute("Progress") < 100 then
                             local root = gen:FindFirstChild("RootPart")
                             if root then
                                 for _, atch in ipairs(root:GetChildren()) do
@@ -753,19 +752,23 @@ end
     if  child.Name == "Gen" then
 if AutoGen and not AutoFarm  then
 task.wait(TimeForGenerator)
+if child and child:FindFirstChild("GeneratorMain") then
    child.GeneratorMain.Event:FireServer({
         Wires = true,
         Switches = true,
         Lever = true
     })
+end
      end
 if AutoFarm then
 task.wait(TimeForGenerator)
+  if child and child:FindFirstChild("GeneratorMain") then
    child.GeneratorMain.Event:FireServer({
         Wires = true,
         Switches = true,
         Lever = true
     })
+end
 end
     end
 end)
