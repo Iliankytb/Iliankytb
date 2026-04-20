@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.45"
+local V = "V.0.46"
 
 library:CreateWindow({
 	Title = "Forsaken - by Iliankytb",-- Title of the script
@@ -476,10 +476,11 @@ Name = "PlayerActiveInfStaminaToggle",
    Callback = function(Value)
   ActiveInfiniteStamina = Value 
   if ActiveInfiniteStamina then
-      if LocalPlayer:GetAttribute("Device") == "PC" then
+local executor, version = identifyexecutor()
+      if executor == "JJSploit" or executor == "Xeno" or executor == "Solara" then
   window:Notify({
 				Title = "Infinite stamina!",
-				Message = "the infinite stamina don't work on pc(normally if it work on you then its good!)",
+				Message = "the Infinite stamina don't work on JJSploit,Xeno and Solara",
 				Duration = 5,
 })
   end
