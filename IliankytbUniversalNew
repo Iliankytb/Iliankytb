@@ -1,7 +1,7 @@
-
+repeat task.wait(1) until game.Players.LocalPlayer.Character
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.20"
+local V = "V.0.21"
 
 library:CreateWindow({
 	Title = "Universel - by Iliankytb",-- Title of the script
@@ -43,7 +43,7 @@ local EspTab = window:CreateTab("Esp",0)
 local AimbotTab = window:CreateTab("Aimbot",0)
 local DiscordTab = window:CreateTab("Discord",0)
 local SettingsTab = window:CreateTab("Settings",0)
-local ActiveSpeedBoost,ActiveNoclip,ActiveEspPlayers,ActivateFly,ActivateInfiniteJump,AlrActivatedFlyPC,ActiveNoCooldownPrompt,ActiveAimbot,HowAim,MaxDistanceForAimbot = false,false,false,false,false,false,false,false,"Camera",0
+local ActiveSpeedBoost,ActiveNoclip,ActiveEspPlayers,ActivateFly,ActivateInfiniteJump,AlrActivatedFlyPC,ActiveNoCooldownPrompt,ActiveAimbot,HowAim = false,false,false,false,false,false,false,false,"Camera"
 local ParagraphInfoServer = InfoTab:AddParagraph({Title = "",Content = "Loading",Name = "Paragraph1"})
 local LocalPlayer = game.Players.LocalPlayer
 local LimitRangerEsp = 25
@@ -78,12 +78,7 @@ window:Notify({
 				Message = V,
 				Duration = 7.5,
 })
-local AimbotSettings = {
-    ["Verify Wall"] = false,
-    ["Verify Team Color"] = false,
-    ["Target Bot"] = false,
-    ["Infinite Aimbot Distance"] = false,
-}
+
 local ESPs = {}
 local LineESPEnabled = false 
 local Players = game:GetService("Players")
@@ -100,96 +95,143 @@ local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local Camera = workspace.CurrentCamera
 
-local function getDistance(a, b)
-	return (a.Position - b.Position).Magnitude
+local AimbotSettings = {
+    TargetPart = "Head",
+    MaxDistance = 300,
+    ["Check Team Color"] = false,
+    ["Check Wall"] = false,
+     ["Use Fov Aim"] = false,
+    FOVRadius = 200,
+    ["Target Bot"] = false,
+    ["Infinite Aimbot Distance"] = false,
+}
+
+local function getDistanceSquared(a, b)
+    local d = a.Position - b.Position
+    return d.X*d.X + d.Y*d.Y + d.Z*d.Z
 end
 
-local function hasClearLineOfSight(from, to)
-	local rayParams = RaycastParams.new()
-	rayParams.FilterType = Enum.RaycastFilterType.Blacklist
-	rayParams.FilterDescendantsInstances = {LocalPlayer.Character}
-	local result = workspace:Raycast(from.Position, (to.Position - from.Position), rayParams)
-	return not (result and result.Instance and result.Instance.Transparency < 1)
+local function isInFOV(part)
+    if not AimbotSettings["Use Fov Aim"] then return true end
+
+    local pos, visible = Camera:WorldToViewportPoint(part.Position)
+    if not visible or pos.Z < 0 then return false end
+
+    local center = Vector2.new(Camera.ViewportSize.X/2, Camera.ViewportSize.Y/2)
+    local dist = (Vector2.new(pos.X, pos.Y) - center).Magnitude
+
+    return dist <= AimbotSettings.FOVRadius
+end
+
+local function getTargetPart(char)
+    if AimbotSettings.TargetPart == "Torso" then
+        return char:FindFirstChild("HumanoidRootPart")
+            or char:FindFirstChild("UpperTorso")
+            or char:FindFirstChild("Torso")
+    end
+ if AimbotSettings.TargetPart == "HRP" then
+        return char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Hitbox") or char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso")
+    end
+    return char:FindFirstChild("Head")
+end
+
+local function hasClearLineOfSight(origin, targetPart)
+    local rayParams = RaycastParams.new()
+    rayParams.FilterType = Enum.RaycastFilterType.Blacklist
+    rayParams.FilterDescendantsInstances = {LocalPlayer.Character}
+    rayParams.IgnoreWater = true
+
+    local direction = targetPart.Position - origin.Position
+    local result = workspace:Raycast(origin.Position, direction, rayParams)
+
+    if not result then return true end
+
+    return result.Instance:IsDescendantOf(targetPart.Parent)
 end
 
 local function isValidTarget(char)
-	if not char or char == LocalPlayer.Character then return false end
-	local humanoid = char:FindFirstChildWhichIsA("Humanoid")
-	local head = char:FindFirstChild("Head")
-	if not humanoid or not head then return false end
-	if humanoid.Health == 0 then return false end
-	if AimbotSettings["Verify Team Color"] then
-		local player = Players:GetPlayerFromCharacter(char)
-		if player and player.TeamColor == LocalPlayer.TeamColor then return false end
-	end
-	if AimbotSettings["Verify Wall"] then
-		local myHead = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Head")
-		if myHead and not hasClearLineOfSight(myHead, head) then return false end
-	end
-	return true
+    if not char or char == LocalPlayer.Character then return false end
+
+    local humanoid = char:FindFirstChildOfClass("Humanoid")
+    if not humanoid or humanoid.Health <= 0 then return false end
+
+    local targetPart = getTargetPart(char)
+    if not targetPart then return false end
+
+    if AimbotSettings["Check Team Color"] == true then
+        local plr = Players:GetPlayerFromCharacter(char)
+        if plr and plr.Team == LocalPlayer.Team then
+            return false
+        end
+    end
+
+    if AimbotSettings["Check Wall"] == true then
+        local myHead = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Head")
+        if myHead and not hasClearLineOfSight(myHead, targetPart) then
+            return false
+        end
+    end
+
+    if not isInFOV(targetPart) then
+        return false
+    end
+
+    return true
 end
 
-local function aimToClosestTarget()
-	local myCharacter = LocalPlayer.Character
-	local myHead = myCharacter and myCharacter:FindFirstChild("Head")
-	local myRoot = myCharacter and myCharacter:FindFirstChild("HumanoidRootPart")
-	if not (myHead and myRoot) then return end
+local function getClosestTarget()
+    local myChar = LocalPlayer.Character
+    local myHead = myChar and myChar:FindFirstChild("Head")
+    if not myHead then return nil end
 
-	local Camera = workspace.CurrentCamera
+    local closest = nil
+    local shortest = AimbotSettings["Infinite Aimbot Distance"] and math.huge or (AimbotSettings.MaxDistance^2)
 
-	local function isInCameraView(part)
-		local screenPos, onScreen = Camera:WorldToViewportPoint(part.Position)
-		return onScreen and screenPos.Z > 0
-	end
+    for _, player in ipairs(Players:GetPlayers()) do
+        local char = player.Character
 
-	local closestTarget = nil
-	local shortestDistance = AimbotSettings["Infinite Aimbot Distance"] and math.huge or MaxDistanceForAimbot
+        if isValidTarget(char) then
+            local part = getTargetPart(char)
 
-	if AimbotSettings["Target Bot"] then
-		for _, instance in pairs(workspace:GetDescendants()) do
-			if instance:IsA("Humanoid") and instance.Health > 0 and isValidTarget(instance.Parent) then
-				local character = instance.Parent
-				local head = character:FindFirstChild("Head")
-				local root = character:FindFirstChild("HumanoidRootPart")
+            local dist = getDistanceSquared(myHead, part)
+            if dist < shortest then
+                shortest = dist
+                closest = part
+            end
+        end
+    end
 
-				if head and root and (isInCameraView(head) or isInCameraView(root)) then
-					local distance = getDistance(myHead, head)
-					if distance < shortestDistance then
-						shortestDistance = distance
-						closestTarget = head
-					end
-				end
-			end
-		end
-	else
-		for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
-			local character = player.Character
-			local humanoid = character and character:FindFirstChildOfClass("Humanoid")
-			local head = character and character:FindFirstChild("Head")
-			local root = character and character:FindFirstChild("HumanoidRootPart")
+    if AimbotSettings["Target Bot"] then
+        for _, v in ipairs(workspace:GetDescendants()) do
+            if v:IsA("Humanoid") and v.Health > 0 then
+                local char = v.Parent
 
-			if humanoid and humanoid.Health > 0 and head and root and isValidTarget(character) then
-				if isInCameraView(head) or isInCameraView(root) then
-					local distance = getDistance(myHead, head)
-					if distance < shortestDistance then
-						shortestDistance = distance
-						closestTarget = head
-					end
-				end
-			end
-		end
-	end
+                if isValidTarget(char) then
+                    local part = getTargetPart(char)
+                    if part then
+                        local dist = getDistanceSquared(myHead, part)
+                        if dist < shortest then
+                            shortest = dist
+                            closest = part
+                        end
+                    end
+                end
+            end
+        end
+    end
 
-	if closestTarget then
-		if HowAim == "Camera" then
-			Camera.CFrame = CFrame.new(Camera.CFrame.Position, closestTarget.Position)
-		elseif HowAim == "Character" then
-			local lookVector = (closestTarget.Position - myRoot.Position).Unit
-			myRoot.CFrame = CFrame.new(
-				myRoot.Position,
-				myRoot.Position + Vector3.new(lookVector.X, 0, lookVector.Z)
-			)
-		end
+    return closest
+end
+
+
+local function aimAt(target)
+    if not target then return end
+if HowAim == "Camera" then
+			Camera.CFrame = CFrame.new(Camera.CFrame.Position, target.Position)
+	elseif HowAim == "Character" then
+		local lookVector = (target.Position - myRoot.Position).Unit
+		local newCFrame = CFrame.new(myRoot.Position, myRoot.Position + Vector3.new(lookVector.X, 0, lookVector.Z))
+		myRoot.CFrame = newCFrame
 	end
 end
 
@@ -505,7 +547,8 @@ if not part or not highlight or not billboard or not label or not line then retu
 	end
     end)
 if ActiveAimbot then
-aimToClosestTarget()
+local target = getClosestTarget()
+aimAt(target)
 end
 if ActiveFullBright then
 if game.Lighting then 
@@ -824,12 +867,10 @@ local PlayerActiveAimbot = AimbotTab:AddToggle({
 end,
 })
 
-
-
 local AimbotDropdown = AimbotTab:AddDropdown({
     Text = "Aimbot Settings",
     Name = "AimbotDropdown",
-    Options = {"Verify Wall", "Verify Team Color", "Target Bot", "Infinite Aimbot Distance"},
+    Options = {"Check Wall", "Check Team Color", "Target Bot", "Infinite Aimbot Distance","Use Fov Aim"},
     Default = "",
     MultiSelect = true,
     Flag = "AimbotDropdown",
@@ -837,11 +878,8 @@ local AimbotDropdown = AimbotTab:AddDropdown({
         if AimbotSettings[Options1] == nil then
             return
         end
-
     
         AimbotSettings[Options1] = not AimbotSettings[Options1]
-
-       
     end,
 })
 
@@ -854,23 +892,44 @@ local AimbotDropdown2 = AimbotTab:AddDropdown({
     MultiSelect = false,
     Flag = "AimbotDropdown2",
     Callback = function(Options)
-        if Options == "Camera" then
-            HowAim = "Camera"
-        elseif Options == "Character" then
-            HowAim = "Character"
-        end
+            HowAim = Options
+    end,
+})
+
+local AimbotTargetDropdown = AimbotTab:AddDropdown({
+    Text = "Target",
+    Name = "AimbotTargetDropdown",
+    Options = {"Head", "Torso","HRP"},
+    Default = "Head",
+    MultiSelect = false,
+    Flag = "AimbotTargetDropdown",
+    Callback = function(Options)
+AimbotSettings[TargetPart] = Options
     end,
 })
 
 local DistanceAimbotSlider = AimbotTab:AddSlider({
-    Text = "Distance Aimbot(Work Only if Infinite Aimbot Distance Is Disabled!)",
+    Text = "Distance Aimbot",
    Name = "DistanceAimbotSlider",
+Note = "(Work Only if Infinite Aimbot Distance Is Disabled!)",
   Min = 10,
   Max = 1500,
    Default = 0,
    Flag = "DistanceAimbotSlider", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
-MaxDistanceForAimbot = Value
+AimbotSettings.MaxDistance = Value
+end,
+})
+
+local AimFovRadiusSlider = AimbotTab:AddSlider({
+    Text = "Aim Fov Radius ",
+   Name = "AimFovRadiusSlider",
+  Min = 10,
+  Max = 200,
+   Default = 70,
+   Flag = "AimFovRadiusSlider", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+AimbotSettings.FOVRadius = Value
 end,
 })
 
@@ -994,7 +1053,7 @@ local ButtonUnloadCheat = SettingsTab:AddButton({
     Text = "Unload Cheat",
    Name = "ButtonUnloadCheat",
    Callback = function()
-
+library:Destroy()
 end,
 })
 local EspDistanceSlider = SettingsTab:AddSlider({
