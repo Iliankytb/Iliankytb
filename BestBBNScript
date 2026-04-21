@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.47"
+local V = "V.0.48"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -467,7 +467,7 @@ if not part or not highlight or not billboard or not label or not line then retu
                 label.Text = esp.Text
             end
 if char:FindFirstChildOfClass("Humanoid") then
-  label.Text =  label.Text.."|" .. char:FindFirstChildOfClass("Humanoid").Health.."/"..char:FindFirstChildOfClass("Humanoid").MaxHealth.." HP"
+  label.Text =  label.Text.."|" .. math.floor(char:FindFirstChildOfClass("Humanoid").Health).."/"..char:FindFirstChildOfClass("Humanoid").MaxHealth.." HP"
 end
             if LineESPEnabled then
                 if onScreen and withinRange then
