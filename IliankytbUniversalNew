@@ -1,40 +1,40 @@
 repeat task.wait(1) until game.Players.LocalPlayer.Character
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.0.21"
+local V = "V.0.22"
 
 library:CreateWindow({
-	Title = "Universel - by Iliankytb",-- Title of the script
-	Theme = selectedTheme,--View more theme in my dicord server!
-	Icon = 0,-- 0 = no icon or add number
-	Intro = false,--Intro or no
-	IntroTitle = "Zentrix Library Testing",--the intro title
-	KeyPC = Enum.KeyCode.K,--the key for pc for Open/close the frame
-	Data = {
-		EnableSavingData = true,--Enabling data saver or no
-		DisableNotifyingLoadedData = false,--set it to true for disable the notify when loaded data
-		FolderName = "SaverUniversalScript",--Folder Name,you can change it
-		FileName = "IliankYTB",-- File name for the data saver,you can change it
-	},
-	Discord = {
-		Enabled = false,--enable to copy the discord
-		DiscordLink = "https://discord.gg/E2TqYRsRP4",-- put thr entire Link of discord
-		RememberJoin = false,-- Set this ti false to make them copy the link every time they load the script
-		Duration = 5,-- 5 is the default you can change the number only for remember join
-	},
-	KeySystem = false,--Key System or no
-	KeySettings = {
-		Title = "Zentrix Library Testing Key System",--Title of the key(just like that)
-		Note = "the key is Zentrix",-- The method for obtaining
-		FileName = "Key",-- File name or no for saving the key
-		SaveKey = true,-- saving the key or no
-		GrabKeyFromSite = false,--Coming soon
-		Key = {"Zentrix"},-- the name you can add many name, Exemple "Key","Key2" or you can add a function to add key but i don't really know
-		AddGetKeyButton = false,
-		AddDiscordButton = true,
-		DiscordLink = "NoInviteLink",
-		GetKeyLink = "NoKeyLink",
-	},
+    Title = "Universel - by Iliankytb",-- Title of the script
+    Theme = selectedTheme,--View more theme in my dicord server!
+    Icon = 0,-- 0 = no icon or add number
+    Intro = false,--Intro or no
+    IntroTitle = "Zentrix Library Testing",--the intro title
+    KeyPC = Enum.KeyCode.K,--the key for pc for Open/close the frame
+    Data = {
+        EnableSavingData = true,--Enabling data saver or no
+        DisableNotifyingLoadedData = false,--set it to true for disable the notify when loaded data
+        FolderName = "SaverUniversalScript",--Folder Name,you can change it
+        FileName = "IliankYTB",-- File name for the data saver,you can change it
+    },
+    Discord = {
+        Enabled = false,--enable to copy the discord
+        DiscordLink = "https://discord.gg/E2TqYRsRP4",-- put thr entire Link of discord
+        RememberJoin = false,-- Set this ti false to make them copy the link every time they load the script
+        Duration = 5,-- 5 is the default you can change the number only for remember join
+    },
+    KeySystem = false,--Key System or no
+    KeySettings = {
+        Title = "Zentrix Library Testing Key System",--Title of the key(just like that)
+        Note = "the key is Zentrix",-- The method for obtaining
+        FileName = "Key",-- File name or no for saving the key
+        SaveKey = true,-- saving the key or no
+        GrabKeyFromSite = false,--Coming soon
+        Key = {"Zentrix"},-- the name you can add many name, Exemple "Key","Key2" or you can add a function to add key but i don't really know
+        AddGetKeyButton = false,
+        AddDiscordButton = true,
+        DiscordLink = "NoInviteLink",
+        GetKeyLink = "NoKeyLink",
+    },
 }, function(window)
 local InfoTab = window:CreateTab("Info",0)
 local PlayerTab = window:CreateTab("Player",0)
@@ -65,18 +65,18 @@ local executor, version = identifyexecutor()
 print('Running on:', executor, version)
 
 local Executor = InfoTab:AddText({
-		Text = "Executor: "..executor.." Version: "..version,
-		Name = "VersionScript"
-	})
+        Text = "Executor: "..executor.." Version: "..version,
+        Name = "VersionScript"
+    })
 end)
 local Version = InfoTab:AddText({
-		Text = "Version:"..V,
-		Name = "VersionScript"
-	})
+        Text = "Version:"..V,
+        Name = "VersionScript"
+    })
 window:Notify({
-				Title = "Script Version!",
-				Message = V,
-				Duration = 7.5,
+                Title = "Script Version!",
+                Message = V,
+                Duration = 7.5,
 })
 
 local ESPs = {}
@@ -128,8 +128,7 @@ local function getTargetPart(char)
         return char:FindFirstChild("HumanoidRootPart")
             or char:FindFirstChild("UpperTorso")
             or char:FindFirstChild("Torso")
-    end
- if AimbotSettings.TargetPart == "HRP" then
+    elseif AimbotSettings.TargetPart == "HRP" then
         return char:FindFirstChild("HumanoidRootPart") or char:FindFirstChild("Hitbox") or char:FindFirstChild("Torso") or char:FindFirstChild("UpperTorso")
     end
     return char:FindFirstChild("Head")
@@ -227,177 +226,177 @@ end
 local function aimAt(target)
     if not target then return end
 if HowAim == "Camera" then
-			Camera.CFrame = CFrame.new(Camera.CFrame.Position, target.Position)
-	elseif HowAim == "Character" then
-		local lookVector = (target.Position - myRoot.Position).Unit
-		local newCFrame = CFrame.new(myRoot.Position, myRoot.Position + Vector3.new(lookVector.X, 0, lookVector.Z))
-		myRoot.CFrame = newCFrame
-	end
+            Camera.CFrame = CFrame.new(Camera.CFrame.Position, target.Position)
+    elseif HowAim == "Character" then
+        local lookVector = (target.Position - myRoot.Position).Unit
+        local newCFrame = CFrame.new(myRoot.Position, myRoot.Position + Vector3.new(lookVector.X, 0, lookVector.Z))
+        myRoot.CFrame = newCFrame
+    end
 end
 
 local function aimToClosestTargetOld()
-	local myCharacter = LocalPlayer.Character
-	local myHead = myCharacter and myCharacter:FindFirstChild("Head")
-	local myRoot = myCharacter and myCharacter:FindFirstChild("HumanoidRootPart")
-	if not (myHead and myRoot) then return end
+    local myCharacter = LocalPlayer.Character
+    local myHead = myCharacter and myCharacter:FindFirstChild("Head")
+    local myRoot = myCharacter and myCharacter:FindFirstChild("HumanoidRootPart")
+    if not (myHead and myRoot) then return end
 
-	local closestTarget = nil
-	local shortestDistance = 0
+    local closestTarget = nil
+    local shortestDistance = 0
 if AimbotSettings["Infinite Aimbot Distance"] then
 shortestDistance = math.huge
 else
 shortestDistance = MaxDistanceForAimbot
 end 
 if AimbotSettings["Target Bot"] then
-	for _, instance in pairs(workspace:GetDescendants()) do
-		if instance:IsA("Humanoid") and instance.Health > 0 then
+    for _, instance in pairs(workspace:GetDescendants()) do
+        if instance:IsA("Humanoid") and instance.Health > 0 then
 if isValidTarget(instance.Parent) then
-			local head = instance.Parent:FindFirstChild("Head")
-			if head then
-				local distance = getDistance(myHead, head)
-				if distance < shortestDistance then
-					shortestDistance = distance
-					closestTarget = head
-				end
+            local head = instance.Parent:FindFirstChild("Head")
+            if head then
+                local distance = getDistance(myHead, head)
+                if distance < shortestDistance then
+                    shortestDistance = distance
+                    closestTarget = head
+                end
 end
-			end
-		end
-	end
+            end
+        end
+    end
 else
 for _, player in ipairs(game:GetService("Players"):GetPlayers()) do
-	local character = player.Character
-	local humanoid = character and character:FindFirstChildOfClass("Humanoid")
-	local head = character and character:FindFirstChild("Head")
+    local character = player.Character
+    local humanoid = character and character:FindFirstChildOfClass("Humanoid")
+    local head = character and character:FindFirstChild("Head")
 
-	if humanoid and humanoid.Health > 0 and head and isValidTarget(character) then
-		local distance = getDistance(myHead, head)
-		if distance < shortestDistance then
-			shortestDistance = distance
-			closestTarget = head
-		end
-	end
+    if humanoid and humanoid.Health > 0 and head and isValidTarget(character) then
+        local distance = getDistance(myHead, head)
+        if distance < shortestDistance then
+            shortestDistance = distance
+            closestTarget = head
+        end
+    end
 end
 
 end
-	if closestTarget then
-		if HowAim == "Camera" then
-			Camera.CFrame = CFrame.new(Camera.CFrame.Position, closestTarget.Position)
-		elseif HowAim == "Character" then
-			local lookVector = (closestTarget.Position - myRoot.Position).Unit
-			local newCFrame = CFrame.new(myRoot.Position, myRoot.Position + Vector3.new(lookVector.X, 0, lookVector.Z))
-			myRoot.CFrame = newCFrame
-		end
-	end
+    if closestTarget then
+        if HowAim == "Camera" then
+            Camera.CFrame = CFrame.new(Camera.CFrame.Position, closestTarget.Position)
+        elseif HowAim == "Character" then
+            local lookVector = (closestTarget.Position - myRoot.Position).Unit
+            local newCFrame = CFrame.new(myRoot.Position, myRoot.Position + Vector3.new(lookVector.X, 0, lookVector.Z))
+            myRoot.CFrame = newCFrame
+        end
+    end
 end
 
 
 local function getServerInfo()
-	local Players = game:GetService("Players")
-	local playerCount = #Players:GetPlayers()
+    local Players = game:GetService("Players")
+    local playerCount = #Players:GetPlayers()
 local maxPlayers = game:GetService("Players").MaxPlayers
 local isStudio = game:GetService("RunService"):IsStudio()
 
-	return {
-		PlaceId = game.PlaceId,
-		JobId = game.JobId,
-		IsStudio = isStudio,
-		CurrentPlayers = playerCount,
+    return {
+        PlaceId = game.PlaceId,
+        JobId = game.JobId,
+        IsStudio = isStudio,
+        CurrentPlayers = playerCount,
 MaxPlayers =maxPlayers
-	}
+    }
 end
 
 local function sFLY(vfly)
-	repeat wait() until Players.LocalPlayer and Players.LocalPlayer.Character and Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart") and Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-	repeat wait() until IYMouse
-	if flyKeyDown or flyKeyUp then flyKeyDown:Disconnect() flyKeyUp:Disconnect() end
+    repeat wait() until Players.LocalPlayer and Players.LocalPlayer.Character and Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart") and Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
+    repeat wait() until IYMouse
+    if flyKeyDown or flyKeyUp then flyKeyDown:Disconnect() flyKeyUp:Disconnect() end
 
-	local T = Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
-	local CONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
-	local lCONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
-	local SPEED = 0
+    local T = Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+    local CONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
+    local lCONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
+    local SPEED = 0
 
-	local function FLY()
-		FLYING = true
-		local BG = Instance.new('BodyGyro')
-		local BV = Instance.new('BodyVelocity')
-		BG.P = 9e4
-		BG.Parent = T
-		BV.Parent = T
-		BG.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
-		BG.CFrame = T.CFrame
-		BV.Velocity = Vector3.new(0, 0, 0)
-		BV.MaxForce = Vector3.new(9e9, 9e9, 9e9)
-		task.spawn(function()
-			repeat wait()
-				if not vfly and Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid') then
-					Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').PlatformStand = true
-				end
-				if CONTROL.L + CONTROL.R ~= 0 or CONTROL.F + CONTROL.B ~= 0 or CONTROL.Q + CONTROL.E ~= 0 then
-					SPEED = 50
-				elseif not (CONTROL.L + CONTROL.R ~= 0 or CONTROL.F + CONTROL.B ~= 0 or CONTROL.Q + CONTROL.E ~= 0) and SPEED ~= 0 then
-					SPEED = 0
-				end
-				if (CONTROL.L + CONTROL.R) ~= 0 or (CONTROL.F + CONTROL.B) ~= 0 or (CONTROL.Q + CONTROL.E) ~= 0 then
-					BV.Velocity = ((workspace.CurrentCamera.CoordinateFrame.lookVector * (CONTROL.F + CONTROL.B)) + ((workspace.CurrentCamera.CoordinateFrame * CFrame.new(CONTROL.L + CONTROL.R, (CONTROL.F + CONTROL.B + CONTROL.Q + CONTROL.E) * 0.2, 0).p) - workspace.CurrentCamera.CoordinateFrame.p)) * SPEED
-					lCONTROL = {F = CONTROL.F, B = CONTROL.B, L = CONTROL.L, R = CONTROL.R}
-				elseif (CONTROL.L + CONTROL.R) == 0 and (CONTROL.F + CONTROL.B) == 0 and (CONTROL.Q + CONTROL.E) == 0 and SPEED ~= 0 then
-					BV.Velocity = ((workspace.CurrentCamera.CoordinateFrame.lookVector * (lCONTROL.F + lCONTROL.B)) + ((workspace.CurrentCamera.CoordinateFrame * CFrame.new(lCONTROL.L + lCONTROL.R, (lCONTROL.F + lCONTROL.B + CONTROL.Q + CONTROL.E) * 0.2, 0).p) - workspace.CurrentCamera.CoordinateFrame.p)) * SPEED
-				else
-					BV.Velocity = Vector3.new(0, 0, 0)
-				end
-				BG.CFrame = workspace.CurrentCamera.CoordinateFrame
-			until not FLYING
-			CONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
-			lCONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
-			SPEED = 0
-			BG:Destroy()
-			BV:Destroy()
-			if Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid') then
-				Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').PlatformStand = false
-			end
-		end)
-	end
-	flyKeyDown = IYMouse.KeyDown:Connect(function(KEY)
-		if KEY:lower() == 'w' then
-			CONTROL.F = (vfly and vehicleflyspeed or iyflyspeed)
-		elseif KEY:lower() == 's' then
-			CONTROL.B = - (vfly and vehicleflyspeed or iyflyspeed)
-		elseif KEY:lower() == 'a' then
-			CONTROL.L = - (vfly and vehicleflyspeed or iyflyspeed)
-		elseif KEY:lower() == 'd' then 
-			CONTROL.R = (vfly and vehicleflyspeed or iyflyspeed)
-		elseif QEfly and KEY:lower() == 'e' then
-			CONTROL.Q = (vfly and vehicleflyspeed or iyflyspeed)*2
-		elseif QEfly and KEY:lower() == 'q' then
-			CONTROL.E = -(vfly and vehicleflyspeed or iyflyspeed)*2
-		end
-		pcall(function() workspace.CurrentCamera.CameraType = Enum.CameraType.Track end)
-	end)
-	flyKeyUp = IYMouse.KeyUp:Connect(function(KEY)
-		if KEY:lower() == 'w' then
-			CONTROL.F = 0
-		elseif KEY:lower() == 's' then
-			CONTROL.B = 0
-		elseif KEY:lower() == 'a' then
-			CONTROL.L = 0
-		elseif KEY:lower() == 'd' then
-			CONTROL.R = 0
-		elseif KEY:lower() == 'e' then
-			CONTROL.Q = 0
-		elseif KEY:lower() == 'q' then
-			CONTROL.E = 0
-		end
-	end)
-	FLY()
+    local function FLY()
+        FLYING = true
+        local BG = Instance.new('BodyGyro')
+        local BV = Instance.new('BodyVelocity')
+        BG.P = 9e4
+        BG.Parent = T
+        BV.Parent = T
+        BG.MaxTorque = Vector3.new(9e9, 9e9, 9e9)
+        BG.CFrame = T.CFrame
+        BV.Velocity = Vector3.new(0, 0, 0)
+        BV.MaxForce = Vector3.new(9e9, 9e9, 9e9)
+        task.spawn(function()
+            repeat wait()
+                if not vfly and Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid') then
+                    Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').PlatformStand = true
+                end
+                if CONTROL.L + CONTROL.R ~= 0 or CONTROL.F + CONTROL.B ~= 0 or CONTROL.Q + CONTROL.E ~= 0 then
+                    SPEED = 50
+                elseif not (CONTROL.L + CONTROL.R ~= 0 or CONTROL.F + CONTROL.B ~= 0 or CONTROL.Q + CONTROL.E ~= 0) and SPEED ~= 0 then
+                    SPEED = 0
+                end
+                if (CONTROL.L + CONTROL.R) ~= 0 or (CONTROL.F + CONTROL.B) ~= 0 or (CONTROL.Q + CONTROL.E) ~= 0 then
+                    BV.Velocity = ((workspace.CurrentCamera.CoordinateFrame.lookVector * (CONTROL.F + CONTROL.B)) + ((workspace.CurrentCamera.CoordinateFrame * CFrame.new(CONTROL.L + CONTROL.R, (CONTROL.F + CONTROL.B + CONTROL.Q + CONTROL.E) * 0.2, 0).p) - workspace.CurrentCamera.CoordinateFrame.p)) * SPEED
+                    lCONTROL = {F = CONTROL.F, B = CONTROL.B, L = CONTROL.L, R = CONTROL.R}
+                elseif (CONTROL.L + CONTROL.R) == 0 and (CONTROL.F + CONTROL.B) == 0 and (CONTROL.Q + CONTROL.E) == 0 and SPEED ~= 0 then
+                    BV.Velocity = ((workspace.CurrentCamera.CoordinateFrame.lookVector * (lCONTROL.F + lCONTROL.B)) + ((workspace.CurrentCamera.CoordinateFrame * CFrame.new(lCONTROL.L + lCONTROL.R, (lCONTROL.F + lCONTROL.B + CONTROL.Q + CONTROL.E) * 0.2, 0).p) - workspace.CurrentCamera.CoordinateFrame.p)) * SPEED
+                else
+                    BV.Velocity = Vector3.new(0, 0, 0)
+                end
+                BG.CFrame = workspace.CurrentCamera.CoordinateFrame
+            until not FLYING
+            CONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
+            lCONTROL = {F = 0, B = 0, L = 0, R = 0, Q = 0, E = 0}
+            SPEED = 0
+            BG:Destroy()
+            BV:Destroy()
+            if Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid') then
+                Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').PlatformStand = false
+            end
+        end)
+    end
+    flyKeyDown = IYMouse.KeyDown:Connect(function(KEY)
+        if KEY:lower() == 'w' then
+            CONTROL.F = (vfly and vehicleflyspeed or iyflyspeed)
+        elseif KEY:lower() == 's' then
+            CONTROL.B = - (vfly and vehicleflyspeed or iyflyspeed)
+        elseif KEY:lower() == 'a' then
+            CONTROL.L = - (vfly and vehicleflyspeed or iyflyspeed)
+        elseif KEY:lower() == 'd' then 
+            CONTROL.R = (vfly and vehicleflyspeed or iyflyspeed)
+        elseif QEfly and KEY:lower() == 'e' then
+            CONTROL.Q = (vfly and vehicleflyspeed or iyflyspeed)*2
+        elseif QEfly and KEY:lower() == 'q' then
+            CONTROL.E = -(vfly and vehicleflyspeed or iyflyspeed)*2
+        end
+        pcall(function() workspace.CurrentCamera.CameraType = Enum.CameraType.Track end)
+    end)
+    flyKeyUp = IYMouse.KeyUp:Connect(function(KEY)
+        if KEY:lower() == 'w' then
+            CONTROL.F = 0
+        elseif KEY:lower() == 's' then
+            CONTROL.B = 0
+        elseif KEY:lower() == 'a' then
+            CONTROL.L = 0
+        elseif KEY:lower() == 'd' then
+            CONTROL.R = 0
+        elseif KEY:lower() == 'e' then
+            CONTROL.Q = 0
+        elseif KEY:lower() == 'q' then
+            CONTROL.E = 0
+        end
+    end)
+    FLY()
 end
 
 local function NOFLY()
-	FLYING = false
-	if flyKeyDown or flyKeyUp then flyKeyDown:Disconnect() flyKeyUp:Disconnect() end
-	if Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid') then
-		Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').PlatformStand = false
-	end
-	pcall(function() workspace.CurrentCamera.CameraType = Enum.CameraType.Custom end)
+    FLYING = false
+    if flyKeyDown or flyKeyUp then flyKeyDown:Disconnect() flyKeyUp:Disconnect() end
+    if Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid') then
+        Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid').PlatformStand = false
+    end
+    pcall(function() workspace.CurrentCamera.CameraType = Enum.CameraType.Custom end)
 end
 
 local velocityHandlerName = "BodyVelocity"
@@ -406,145 +405,145 @@ local mfly1
 local mfly2
 
 local function UnMobileFly()
-	pcall(function()
-		FLYING = false
-		local root = Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
-		root:FindFirstChild(velocityHandlerName):Destroy()
-		root:FindFirstChild(gyroHandlerName):Destroy()
-		Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid").PlatformStand = false
-		mfly1:Disconnect()
-		mfly2:Disconnect()
-	end)
+    pcall(function()
+        FLYING = false
+        local root = Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+        root:FindFirstChild(velocityHandlerName):Destroy()
+        root:FindFirstChild(gyroHandlerName):Destroy()
+        Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid").PlatformStand = false
+        mfly1:Disconnect()
+        mfly2:Disconnect()
+    end)
 end
 
 local function MobileFly()
-	UnMobileFly()
-	FLYING = true
+    UnMobileFly()
+    FLYING = true
 
-	local root = Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
-	local camera = workspace.CurrentCamera
-	local v3none = Vector3.new()
-	local v3zero = Vector3.new(0, 0, 0)
-	local v3inf = Vector3.new(9e9, 9e9, 9e9)
+    local root = Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+    local camera = workspace.CurrentCamera
+    local v3none = Vector3.new()
+    local v3zero = Vector3.new(0, 0, 0)
+    local v3inf = Vector3.new(9e9, 9e9, 9e9)
 
-	local controlModule = require(Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule"))
-	local bv = Instance.new("BodyVelocity")
-	bv.Name = velocityHandlerName
-	bv.Parent = root
-	bv.MaxForce = v3zero
-	bv.Velocity = v3zero
+    local controlModule = require(Players.LocalPlayer.PlayerScripts:WaitForChild("PlayerModule"):WaitForChild("ControlModule"))
+    local bv = Instance.new("BodyVelocity")
+    bv.Name = velocityHandlerName
+    bv.Parent = root
+    bv.MaxForce = v3zero
+    bv.Velocity = v3zero
 
-	local bg = Instance.new("BodyGyro")
-	bg.Name = gyroHandlerName
-	bg.Parent = root
-	bg.MaxTorque = v3inf
-	bg.P = 1000
-	bg.D = 50
+    local bg = Instance.new("BodyGyro")
+    bg.Name = gyroHandlerName
+    bg.Parent = root
+    bg.MaxTorque = v3inf
+    bg.P = 1000
+    bg.D = 50
 
-	mfly1 = Players.LocalPlayer.CharacterAdded:Connect(function()
-		local bv = Instance.new("BodyVelocity")
-		bv.Name = velocityHandlerName
-		bv.Parent = root
-		bv.MaxForce = v3zero
-		bv.Velocity = v3zero
+    mfly1 = Players.LocalPlayer.CharacterAdded:Connect(function()
+        local bv = Instance.new("BodyVelocity")
+        bv.Name = velocityHandlerName
+        bv.Parent = root
+        bv.MaxForce = v3zero
+        bv.Velocity = v3zero
 
-		local bg = Instance.new("BodyGyro")
-		bg.Name = gyroHandlerName
-		bg.Parent = root
-		bg.MaxTorque = v3inf
-		bg.P = 1000
-		bg.D = 50
-	end)
+        local bg = Instance.new("BodyGyro")
+        bg.Name = gyroHandlerName
+        bg.Parent = root
+        bg.MaxTorque = v3inf
+        bg.P = 1000
+        bg.D = 50
+    end)
 
-	mfly2 = RunService.RenderStepped:Connect(function()
-		root = Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
-		camera = workspace.CurrentCamera
-		if Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid") and root and root:FindFirstChild(velocityHandlerName) and root:FindFirstChild(gyroHandlerName) then
-			local humanoid = Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid")
-			local VelocityHandler = root:FindFirstChild(velocityHandlerName)
-			local GyroHandler = root:FindFirstChild(gyroHandlerName)
+    mfly2 = RunService.RenderStepped:Connect(function()
+        root = Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+        camera = workspace.CurrentCamera
+        if Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid") and root and root:FindFirstChild(velocityHandlerName) and root:FindFirstChild(gyroHandlerName) then
+            local humanoid = Players.LocalPlayer.Character:FindFirstChildWhichIsA("Humanoid")
+            local VelocityHandler = root:FindFirstChild(velocityHandlerName)
+            local GyroHandler = root:FindFirstChild(gyroHandlerName)
 
-			VelocityHandler.MaxForce = v3inf
-			GyroHandler.MaxTorque = v3inf
-			humanoid.PlatformStand = true
-			GyroHandler.CFrame = camera.CoordinateFrame
-			VelocityHandler.Velocity = v3none
+            VelocityHandler.MaxForce = v3inf
+            GyroHandler.MaxTorque = v3inf
+            humanoid.PlatformStand = true
+            GyroHandler.CFrame = camera.CoordinateFrame
+            VelocityHandler.Velocity = v3none
 
-			local direction = controlModule:GetMoveVector()
-			if direction.X > 0 then
-				VelocityHandler.Velocity = VelocityHandler.Velocity + camera.CFrame.RightVector * (direction.X * ((iyflyspeed) * 50))
-			end
-			if direction.X < 0 then
-				VelocityHandler.Velocity = VelocityHandler.Velocity + camera.CFrame.RightVector * (direction.X * ((iyflyspeed) * 50))
-			end
-			if direction.Z > 0 then
-				VelocityHandler.Velocity = VelocityHandler.Velocity - camera.CFrame.LookVector * (direction.Z * ((iyflyspeed) * 50))
-			end
-			if direction.Z < 0 then
-				VelocityHandler.Velocity = VelocityHandler.Velocity - camera.CFrame.LookVector * (direction.Z * ((iyflyspeed) * 50))
-			end
-		end
-	end)
+            local direction = controlModule:GetMoveVector()
+            if direction.X > 0 then
+                VelocityHandler.Velocity = VelocityHandler.Velocity + camera.CFrame.RightVector * (direction.X * ((iyflyspeed) * 50))
+            end
+            if direction.X < 0 then
+                VelocityHandler.Velocity = VelocityHandler.Velocity + camera.CFrame.RightVector * (direction.X * ((iyflyspeed) * 50))
+            end
+            if direction.Z > 0 then
+                VelocityHandler.Velocity = VelocityHandler.Velocity - camera.CFrame.LookVector * (direction.Z * ((iyflyspeed) * 50))
+            end
+            if direction.Z < 0 then
+                VelocityHandler.Velocity = VelocityHandler.Velocity - camera.CFrame.LookVector * (direction.Z * ((iyflyspeed) * 50))
+            end
+        end
+    end)
 end
 RunService.RenderStepped:Connect(function(dt)
 task.spawn(function()
-	local updatedInfo = getServerInfo()
-	local updatedContent = string.format(
-		"🎮 Game: %s\n📌 PlaceId: %s\n🔑 JobId: %s\n🧪 IsStudio: %s\n👥 Players: %d/%d",
-	infoGameName.Name,
-    	updatedInfo.PlaceId,
-		updatedInfo.JobId,
-		
-		tostring(updatedInfo.IsStudio),
-		updatedInfo.CurrentPlayers,
+    local updatedInfo = getServerInfo()
+    local updatedContent = string.format(
+        "🎮 Game: %s\n📌 PlaceId: %s\n🔑 JobId: %s\n🧪 IsStudio: %s\n👥 Players: %d/%d",
+    infoGameName.Name,
+        updatedInfo.PlaceId,
+        updatedInfo.JobId,
+        
+        tostring(updatedInfo.IsStudio),
+        updatedInfo.CurrentPlayers,
 updatedInfo.MaxPlayers
 
-	)
+    )
 
-	ParagraphInfoServer:Set({
-		Title = "Info",
-		Content = updatedContent
-	})
+    ParagraphInfoServer:Set({
+        Title = "Info",
+        Content = updatedContent
+    })
 end)
-	local cameraPosition = Camera.CFrame.Position
-	local screenCenter = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y)
+    local cameraPosition = Camera.CFrame.Position
+    local screenCenter = Vector2.new(Camera.ViewportSize.X / 2, Camera.ViewportSize.Y)
 task.spawn(function()
-	for _, esp in ipairs(ESPs) do
-		local part = esp.Part
-		local highlight = esp.Highlight
-		local billboard = esp.Billboard
-		local label = esp.Label
-		local line = esp.Line
+    for _, esp in ipairs(ESPs) do
+        local part = esp.Part
+        local highlight = esp.Highlight
+        local billboard = esp.Billboard
+        local label = esp.Label
+        local line = esp.Line
 if not part or not highlight or not billboard or not label or not line then return end
-		if part and part.Parent and highlight and billboard then
-			local distance = (cameraPosition - part.Position).Magnitude
-			local screenPos, onScreen = Camera:WorldToViewportPoint(part.Position)
-			local withinRange = DisableLimitRangerEsp or distance <= LimitRangerEsp
+        if part and part.Parent and highlight and billboard then
+            local distance = (cameraPosition - part.Position).Magnitude
+            local screenPos, onScreen = Camera:WorldToViewportPoint(part.Position)
+            local withinRange = DisableLimitRangerEsp or distance <= LimitRangerEsp
 
-			highlight.Enabled = withinRange and onScreen
-			billboard.Enabled = withinRange and onScreen
+            highlight.Enabled = withinRange and onScreen
+            billboard.Enabled = withinRange and onScreen
 
-			if ActiveDistanceEsp then
-				label.Text = esp.Text .. " (" .. math.floor(distance + 0.5) .. " m)"
-			else
-				label.Text = esp.Text
-			end
+            if ActiveDistanceEsp then
+                label.Text = esp.Text .. " (" .. math.floor(distance + 0.5) .. " m)"
+            else
+                label.Text = esp.Text
+            end
 
-			if LineESPEnabled then
-				if onScreen and withinRange then
-					line.Visible = true
-					line.From = screenCenter
-					line.To = Vector2.new(screenPos.X, screenPos.Y)
-				else
-					line.Visible = false
-				end
-			else
-				line.Visible = false
-			end
-		else
-			if line then line.Visible = false end
-		end
-	end
+            if LineESPEnabled then
+                if onScreen and withinRange then
+                    line.Visible = true
+                    line.From = screenCenter
+                    line.To = Vector2.new(screenPos.X, screenPos.Y)
+                else
+                    line.Visible = false
+                end
+            else
+                line.Visible = false
+            end
+        else
+            if line then line.Visible = false end
+        end
+    end
     end)
 if ActiveAimbot then
 local target = getClosestTarget()
@@ -566,80 +565,80 @@ end
 end
 end)
 local function CreateEsp(Char, Color, Text, Parent,Num)
-	if not Char or not Parent then return end
-	if Char:FindFirstChild("ESP") and Char:FindFirstChildOfClass("Highlight") then return end
+    if not Char or not Parent then return end
+    if Char:FindFirstChild("ESP") and Char:FindFirstChildOfClass("Highlight") then return end
 
-	
-	local highlight = Char:FindFirstChildOfClass("Highlight") or Instance.new("Highlight")
-	highlight.Name = "ESP_Highlight"
-	highlight.Adornee = Char
-	highlight.FillColor = Color
-	highlight.FillTransparency = 1
-	highlight.OutlineColor = Color
-	highlight.OutlineTransparency = 0
-	highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
-	highlight.Enabled = false
-	highlight.Parent = Char
+    
+    local highlight = Char:FindFirstChildOfClass("Highlight") or Instance.new("Highlight")
+    highlight.Name = "ESP_Highlight"
+    highlight.Adornee = Char
+    highlight.FillColor = Color
+    highlight.FillTransparency = 1
+    highlight.OutlineColor = Color
+    highlight.OutlineTransparency = 0
+    highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+    highlight.Enabled = false
+    highlight.Parent = Char
 
-	
-	local billboard = Char:FindFirstChild("ESP") or Instance.new("BillboardGui")
-	billboard.Name = "ESP"
-	billboard.Size = UDim2.new(0, 50, 0, 25)
-	billboard.AlwaysOnTop = true
-	billboard.StudsOffset = Vector3.new(0, Num, 0)
-	billboard.Adornee = Parent
-	billboard.Enabled = false
-	billboard.Parent = Parent
+    
+    local billboard = Char:FindFirstChild("ESP") or Instance.new("BillboardGui")
+    billboard.Name = "ESP"
+    billboard.Size = UDim2.new(0, 50, 0, 25)
+    billboard.AlwaysOnTop = true
+    billboard.StudsOffset = Vector3.new(0, Num, 0)
+    billboard.Adornee = Parent
+    billboard.Enabled = false
+    billboard.Parent = Parent
 
-	local label = billboard:FindFirstChildOfClass("TextLabel") or Instance.new("TextLabel")
-	label.Size = UDim2.new(1, 0, 1, 0)
-	label.BackgroundTransparency = 1
-	label.Text = Text
-	label.TextColor3 = Color
-	label.TextScaled = true
-	label.Parent = billboard
+    local label = billboard:FindFirstChildOfClass("TextLabel") or Instance.new("TextLabel")
+    label.Size = UDim2.new(1, 0, 1, 0)
+    label.BackgroundTransparency = 1
+    label.Text = Text
+    label.TextColor3 = Color
+    label.TextScaled = true
+    label.Parent = billboard
 
-	local line = Drawing.new("Line")
-	line.Visible = false
-	line.Color = Color
-	line.Thickness = 1.5
-	line.Transparency = 1
+    local line = Drawing.new("Line")
+    line.Visible = false
+    line.Color = Color
+    line.Thickness = 1.5
+    line.Transparency = 1
 
-	table.insert(ESPs, {
-		Char = Char,
-		Highlight = highlight,
-		Billboard = billboard,
-		Label = label,
-		Part = Parent,
-		Line = line,
-		Text = Text,
-		Color = Color
-	})
+    table.insert(ESPs, {
+        Char = Char,
+        Highlight = highlight,
+        Billboard = billboard,
+        Label = label,
+        Part = Parent,
+        Line = line,
+        Text = Text,
+        Color = Color
+    })
 end
 
 local function KeepEsp(Char, Parent)
-	if not Char or not Char:FindFirstChildOfClass("Highlight") then return end
-	if not Parent or not Parent:FindFirstChildOfClass("BillboardGui") then return end
+    if not Char or not Char:FindFirstChildOfClass("Highlight") then return end
+    if not Parent or not Parent:FindFirstChildOfClass("BillboardGui") then return end
 
-	for i = #ESPs, 1, -1 do 
-		local esp = ESPs[i]
-		if esp.Char == Char then 
-			if esp.Highlight then esp.Highlight:Destroy() end
-			if esp.Billboard then esp.Billboard:Destroy() end
-			if esp.Line then esp.Line:Destroy() end
+    for i = #ESPs, 1, -1 do 
+        local esp = ESPs[i]
+        if esp.Char == Char then 
+            if esp.Highlight then esp.Highlight:Destroy() end
+            if esp.Billboard then esp.Billboard:Destroy() end
+            if esp.Line then esp.Line:Destroy() end
 
-			table.remove(ESPs, i) 
-		end
-	end
+            table.remove(ESPs, i) 
+        end
+    end
 end
 
 local function SetupCharacter(child,Map,Part)
-	if not child:IsA("Model") then return end
-	child.AncestryChanged:Connect(function(_, newParent)
-			if not child:IsDescendantOf(Map) then
-				KeepEsp(child, Part)
-			end
-	end)
+    if not child:IsA("Model") then return end
+    child.AncestryChanged:Connect(function(_, newParent)
+            if not child:IsDescendantOf(Map) then
+                KeepEsp(child, Part)
+            end
+    end)
 end
 
 local function copyToClipboard(text)
@@ -742,30 +741,30 @@ local PlayerFlyToggle = PlayerTab:AddToggle({
   ActivateFly = Value 
 task.spawn(function()
 if not FLYING and ActivateFly then
-			if UserInputService.TouchEnabled then
-				MobileFly()
-			else
+            if UserInputService.TouchEnabled then
+                MobileFly()
+            else
 task.spawn(function()
 if not AlrActivatedFlyPC then 
 AlrActivatedFlyPC = true
 window:Notify({
-				Title = "Fly!",
-				Message = "When you enable to fly you can press F to fly/unfly (it won't disable the button!)",
-				Duration = 5,
+                Title = "Fly!",
+                Message = "When you enable to fly you can press F to fly/unfly (it won't disable the button!)",
+                Duration = 5,
 })
 end
 end)
-				NOFLY()
-				wait()
-				sFLY()
-			end
-		elseif FLYING and not ActivateFly then
-			if UserInputService.TouchEnabled then
-				UnMobileFly()
-			else
-				NOFLY()
-			end
-		end
+                NOFLY()
+                wait()
+                sFLY()
+            end
+        elseif FLYING and not ActivateFly then
+            if UserInputService.TouchEnabled then
+                UnMobileFly()
+            else
+                NOFLY()
+            end
+        end
 end)
 end,
 })
@@ -781,24 +780,24 @@ end,
 })
 
 UserInputService.InputBegan:Connect(function(input, processed)
-	if processed then return end
-	if input.KeyCode == Enum.KeyCode.F then
-		if not FLYING and ActivateFly then
-			if UserInputService.TouchEnabled then
-				MobileFly()
-			else
-				NOFLY()
-				wait()
-				sFLY()
-			end
-		elseif FLYING and ActivateFly then
-			if UserInputService.TouchEnabled then
-				UnMobileFly()
-			else
-				NOFLY()
-			end
-		end
-	end
+    if processed then return end
+    if input.KeyCode == Enum.KeyCode.F then
+        if not FLYING and ActivateFly then
+            if UserInputService.TouchEnabled then
+                MobileFly()
+            else
+                NOFLY()
+                wait()
+                sFLY()
+            end
+        elseif FLYING and ActivateFly then
+            if UserInputService.TouchEnabled then
+                UnMobileFly()
+            else
+                NOFLY()
+            end
+        end
+    end
 end)
 
 
@@ -904,7 +903,7 @@ local AimbotTargetDropdown = AimbotTab:AddDropdown({
     MultiSelect = false,
     Flag = "AimbotTargetDropdown",
     Callback = function(Options)
-AimbotSettings[TargetPart] = Options
+    AimbotSettings["TargetPart"] = Options
     end,
 })
 
@@ -1143,31 +1142,31 @@ end
 end
 end,
 })
-  	local AllAvailableThemes = library:GetAllThemes()
+    local AllAvailableThemes = library:GetAllThemes()
 local ChangeThemeDropdown = SettingsTab:AddDropdown({
-		Text = "Change Theme:",
-		Name = "CTD",
-		Options = AllAvailableThemes,
-		Default = "Default",
-		MultiSelect = false,
-		Flag = "CTD", --Put a name flag for save data if you enabled saving data
-		Callback = function(choice)
+        Text = "Change Theme:",
+        Name = "CTD",
+        Options = AllAvailableThemes,
+        Default = "Default",
+        MultiSelect = false,
+        Flag = "CTD", --Put a name flag for save data if you enabled saving data
+        Callback = function(choice)
 window:ChangeTheme(choice)
-		end
-	})
+        end
+    })
 
-	local plr = game:GetService('Players').LocalPlayer
-	local m = plr:GetMouse()
-	m.KeyDown:connect(function(k)
+    local plr = game:GetService('Players').LocalPlayer
+    local m = plr:GetMouse()
+    m.KeyDown:connect(function(k)
 if ActivateInfiniteJump then
-			if k:byte() == 32 then
-			humanoid = game:GetService'Players'.LocalPlayer.Character:FindFirstChildOfClass('Humanoid')
-			humanoid:ChangeState('Jumping')
-			wait()
-			humanoid:ChangeState('Seated')
-			end
+            if k:byte() == 32 then
+            humanoid = game:GetService'Players'.LocalPlayer.Character:FindFirstChildOfClass('Humanoid')
+            humanoid:ChangeState('Jumping')
+            wait()
+            humanoid:ChangeState('Seated')
+            end
 end
-	end)
+    end)
 
 
 library:LoadData()
