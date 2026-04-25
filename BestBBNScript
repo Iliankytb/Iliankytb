@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.50"
+local V = "V.0.51"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -1705,7 +1705,7 @@ NoBlindness = Value
 end,
 })
 local AutoPhaseButton = MainTab:AddToggle({
-Text =  "Auto Phase (Unverified!)",
+Text =  "Auto Phase - only with technician mask (Unverified!)",
    Name ="AutoPhaseButton",
    Default = false,
    Flag = "AutoPhaseButton", 
