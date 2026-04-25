@@ -1705,7 +1705,7 @@ NoBlindness = Value
 end,
 })
 local AutoPhaseButton = MainTab:AddToggle({
-Text =  "Auto Phase",
+Text =  "Auto Phase (Unverified!)",
    Name ="AutoPhaseButton",
    Default = false,
    Flag = "AutoPhaseButton", 
