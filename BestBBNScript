@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.49"
+local V = "V.0.50"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -735,7 +735,7 @@ end
 end
 end
 if AutoPhase and CanPhase then
-local maskClient = char:FindFirstChild("MaskClient")
+local maskClient =  game.Players.LocalPlayer.Character:FindFirstChild("MaskClient")
 if maskClient then
             local lungeFunc =  getLungeFunc(maskClient)
             local checkParts = getCheckParts(maskClient)
