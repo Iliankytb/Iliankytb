@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.48"
+local V = "V.0.49"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -90,6 +90,7 @@ local JumpPowerValue = 50
 local State = "Idle" 
 local TimeForGenerator = 1.25
 local AutoHighlightKillerCamera = false
+local AutoPhase = false
 
 local Version = InfoTab:AddText({
         Text = "Version:"..V,
@@ -309,6 +310,50 @@ end
     end)
 end
 
+local function getCheckParts(maskClient)
+    local module = maskClient:FindFirstChild("CheckParts")
+    if not module then return nil end
+    local ok, result = pcall(require, module)
+    if not ok or type(result) ~= "table" then return nil end
+    return result
+end
+
+local function getPhaseables(checkParts)
+    local other = workspace.MAPS
+        and workspace.MAPS:FindFirstChild("GAME MAP")
+        and workspace.MAPS["GAME MAP"]:FindFirstChild("Other")
+    if not other then return nil end
+
+    local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+    if not hrp then return nil end
+
+    local nearest, nearestDist = nil, math.huge
+    for _, part in next, other:GetDescendants() do
+        if part:IsA("BasePart") then
+            local lower = part.Name:lower()
+            for _, v in next, checkParts do
+                if type(v) == "string" and lower:find(v:lower(), nil, true) then
+                    local dist = (part.Position - hrp.Position).Magnitude
+                    if dist < nearestDist then
+                        nearestDist = dist
+                        nearest = part
+                    end
+                    break
+                end
+            end
+        end
+    end
+    return nearest, nearestDist
+end
+
+local function getLungeFunc(maskClient)
+    local activeLunge = maskClient:FindFirstChild("ActiveLunge")
+    if not activeLunge then return nil end
+    for _, conn in next, getconnections(activeLunge.OnClientEvent) do
+        return conn.Function
+    end
+end
+
 local function getServerInfo()
     local Players = game:GetService("Players")
     local playerCount = #Players:GetPlayers()
@@ -403,6 +448,7 @@ local Cooldown = 0.5
 local TweenService = game:GetService("TweenService")
 
 local SPEED = 30
+local CanPhase = true
 
 local function TweenTo(character, cf)
     local root = character:FindFirstChild("HumanoidRootPart") or character.PrimaryPart
@@ -687,6 +733,25 @@ HUMM.UseJumpPower = ActivateJumping
 HUMM.JumpPower = JumpPowerValue
 end
 end
+end
+if AutoPhase and CanPhase then
+local maskClient = char:FindFirstChild("MaskClient")
+if maskClient then
+            local lungeFunc =  getLungeFunc(maskClient)
+            local checkParts = getCheckParts(maskClient)
+
+            if lungeFunc and checkParts then
+                local nearest, nearestDist = getPhaseables(checkParts)
+
+             
+                if nearest and nearestDist <= 10 then
+CanPhase = false
+                    lungeFunc()
+task.wait(0.3)
+CanPhase = true
+                end
+end
+            end
 end
      if AutoSafeSpot and not AutoFarm then
           if game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid") and game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid").Health > 35 then
@@ -1639,6 +1704,16 @@ Text =  "No Blindness",
 NoBlindness = Value 
 end,
 })
+local AutoPhaseButton = MainTab:AddToggle({
+Text =  "Auto Phase",
+   Name ="AutoPhaseButton",
+   Default = false,
+   Flag = "AutoPhaseButton", 
+   Callback = function(Value)
+AutoPhase = Value 
+end,
+})
+
 local ButtonUnloadCheat = SettingsTab:AddButton({
 Text = "Unload Cheat",
    Name = "ButtonUnloadCheat",
