@@ -1,5 +1,5 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
-local V = "V.0.51"
+local V = "V.0.52"
 local selectedTheme = "Default"
 
 library:CreateWindow({
@@ -324,7 +324,7 @@ local function getPhaseables(checkParts)
         and workspace.MAPS["GAME MAP"]:FindFirstChild("Other")
     if not other then return nil end
 
-    local hrp = player.Character and player.Character:FindFirstChild("HumanoidRootPart")
+    local hrp =  game.Players.LocalPlayer.Character and    game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
     if not hrp then return nil end
 
     local nearest, nearestDist = nil, math.huge
