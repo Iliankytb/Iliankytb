@@ -1,4 +1,4 @@
-local LibraryVersion = "0.53"
+local LibraryVersion = "0.54"
 
 local HttpService = game:GetService("HttpService")
 local UserInputService = game:GetService("UserInputService")
@@ -1335,12 +1335,13 @@ local function VisibleWindow(window,settings1,gui)
 				button.Size = UDim2.new(1, 0, 0, 35)
 				local TextNote = createUI("TextLabel", {
 					Text = opts.Note;
-					Size = UDim2.new(0.15, 0, 0.25, 0);
-					Position = UDim2.new(0,0,0.7,0);
+					Size = UDim2.new(1, -10, 0.3, 0);
+					Position = UDim2.new(0, 5, 0.7, 0);
 					BackgroundTransparency = 1;
 					TextColor3 = Color3.new(0.670588, 0.670588, 0.670588);
 					Font = Enum.Font.Gotham;
 					TextSize = 12;
+					TextXAlignment = Enum.TextXAlignment.Left;
 					Parent = button;
 				})
 			end
@@ -1696,12 +1697,13 @@ local function VisibleWindow(window,settings1,gui)
 				button.Size = UDim2.new(1, 0, 0, 35)
 				local TextNote = createUI("TextLabel", {
 					Text = opts.Note;
-					Size = UDim2.new(0.15, 0, 0.25, 0);
-					Position = UDim2.new(0,0,0.7,0);
+					Size = UDim2.new(1, -10, 0.3, 0);
+					Position = UDim2.new(0, 5, 0.7, 0);
 					BackgroundTransparency = 1;
 					TextColor3 = Color3.new(0.670588, 0.670588, 0.670588);
 					Font = Enum.Font.Gotham;
 					TextSize = 12;
+					TextXAlignment = Enum.TextXAlignment.Left;
 					Parent = button;
 				})
 			end
@@ -1834,12 +1836,13 @@ local function VisibleWindow(window,settings1,gui)
 				container.Size = UDim2.new(1, 0, 0, 35)
 				local TextNote = createUI("TextLabel", {
 					Text = opts.Note;
-					Size = UDim2.new(0.15, 0, 0.25, 0);
-					Position = UDim2.new(0,0,0.7,0);
+					Size = UDim2.new(1, -10, 0.3, 0);
+					Position = UDim2.new(0, 5, 0.7, 0);
 					BackgroundTransparency = 1;
 					TextColor3 = Color3.new(0.670588, 0.670588, 0.670588);
 					Font = Enum.Font.Gotham;
 					TextSize = 12;
+					TextXAlignment = Enum.TextXAlignment.Left;
 					Parent = container;
 				})
 			end
@@ -2043,6 +2046,22 @@ local function VisibleWindow(window,settings1,gui)
 				AutoButtonColor = false;
 				Parent = tab.content;
 			})
+			
+			if opts.Note then
+				slider.Size = UDim2.new(1, 0, 0, 35)
+				local TextNote = createUI("TextLabel", {
+					Text = opts.Note;
+					Size = UDim2.new(1, -10, 0.3, 0);
+					Position = UDim2.new(0, 5, 0.7, 0);
+					BackgroundTransparency = 1;
+					TextColor3 = Color3.new(0.670588, 0.670588, 0.670588);
+					Font = Enum.Font.Gotham;
+					TextSize = 12;
+					TextXAlignment = Enum.TextXAlignment.Left;
+					Parent = slider;
+				})
+			end
+			
 			createUI("UICorner", { Parent = slider })
 
 			createUI("UIPadding", {
@@ -2070,6 +2089,9 @@ local function VisibleWindow(window,settings1,gui)
 				Parent = slider,
 			})
 
+if opts.Note then
+	labelText.TextYAlignment = Enum.TextYAlignment.Top
+end
 
 			local label = createUI("TextLabel", {
 				Size = UDim2.new(1, 0, 0, 12),
@@ -2101,13 +2123,13 @@ local function VisibleWindow(window,settings1,gui)
 
 			local obj = {}
 			obj.value = value
-			
+
 			local function roundToIncrement(value, increment)
 				return math.floor((value / increment) + 0.5) * increment
 			end
 
 			local function cleanFloat(value)
-				
+
 				return tonumber(string.format("%.10f", value))
 			end
 
@@ -2132,7 +2154,7 @@ local function VisibleWindow(window,settings1,gui)
 			local moveConn, releaseConn
 			local dragging = false
 
-	
+
 			local function updateSlider(x)
 				local percent = math.clamp(
 					(x - sliderBar.AbsolutePosition.X) / sliderBar.AbsoluteSize.X,
@@ -2388,7 +2410,7 @@ local function VisibleWindow(window,settings1,gui)
 				if multi then
 					btn.Text = opts.Text .. " (" .. tostring(#dropdown.Selected) .. ")"
 				else
-					btn.Text = opts.Text .. ": " .. tostring(dropdown.Selected[1] or "None")
+					btn.Text = opts.Text .. tostring(dropdown.Selected[1] or "None")
 				end
 			end
 
