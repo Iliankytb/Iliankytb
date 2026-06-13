@@ -13,13 +13,13 @@ local SettingsShaders = {
     Enabled = true,
 
    Raytracing = {
-    Enabled = true,
+   Enabled = true,
 
-    Reflectance = 0.2,
+    Reflectance = 0.02,
     MaxDistance = 150,
 
     UpdateRate = 0.1,
-}
+    },
 
     Lighting = {
         Enabled = true,
@@ -81,7 +81,7 @@ local SettingsShaders = {
     },
 
     ColorCorrection = {
-        Enabled = true,
+    Enabled = false,
 
         Brightness = 0.01,
         Contrast = 0.01,
