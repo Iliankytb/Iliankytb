@@ -1,0 +1,259 @@
+--[[ Welcome To Shaders+ ]]--
+print("Welcome To Shaders+ !")
+local Lighting = game:GetService("Lighting")
+
+local AllowedMaterials = {
+    [Enum.Material.Glass] = true,
+    [Enum.Material.Metal] = true,
+    [Enum.Material.DiamondPlate] = true,
+}
+
+local SettingsShaders = {
+
+    Enabled = true,
+
+   Raytracing = {
+    Enabled = true,
+
+    Reflectance = 0.2,
+    MaxDistance = 150,
+
+    UpdateRate = 0.1,
+}
+
+    Lighting = {
+        Enabled = true,
+
+        Ambient = Color3.fromRGB(85,170,0),
+        ColorShift_Bottom = Color3.fromRGB(255,255,255),
+        ColorShift_Top = Color3.fromRGB(255,255,255),
+
+        Brightness = 7,
+        EnvironmentDiffuseScale = 1,
+        EnvironmentSpecularScale = 1,
+        GlobalShadows = true,
+
+        OutdoorAmbient = Color3.fromRGB(255,255,255),
+        PrioritizeLightingQuality = true,
+        ShadowSoftness = 0.05,
+    },
+
+    Atmosphere = {
+        Enabled = true,
+
+        Density = 0.352,
+        Offset = 1,
+        Color = Color3.fromRGB(216,255,250),
+        Decay = Color3.fromRGB(92,60,13),
+        Glare = 1.95,
+        Haze = 0,
+    },
+
+    Sky = {
+        Enabled = true,
+
+        CelestialBodiesShown = true,
+        MoonAngularSize = 11,
+
+        SkyboxBk = "rbxassetid://144933338",
+        SkyboxDn = "rbxassetid://144931530",
+        SkyboxFt = "rbxassetid://144933262",
+        SkyboxLf = "rbxassetid://144933244",
+        SkyboxRt = "rbxassetid://144933299",
+        SkyboxUp = "rbxassetid://144931564",
+
+        StarCount = 1500,
+        SunAngularSize = 5,
+    },
+
+    Bloom = {
+        Enabled = true,
+
+        Intensity = 1,
+        Size = 56,
+        Threshold = 1.347,
+    },
+
+    Blur = {
+        Enabled = true,
+
+        Size = 2.2,
+    },
+
+    ColorCorrection = {
+        Enabled = true,
+
+        Brightness = 0.01,
+        Contrast = 0.01,
+        Saturation = 0.01,
+        TintColor = Color3.fromRGB(255,255,255),
+    },
+
+    DepthOfField = {
+        Enabled = true,
+
+        FarIntensity = 0.075,
+        FocusDistance = 4.88,
+        InFocusRadius = 50,
+        NearIntensity = 1,
+    },
+
+    SunRays = {
+        Enabled = true,
+
+        Intensity = 0.392,
+        Spread = 0.962,
+    },
+}
+
+local Effects = {}
+
+local function GetOrCreate(ClassName)
+    local Object = Lighting:FindFirstChild(ClassName)
+
+    if not Object then
+        Object = Instance.new(ClassName)
+        Object.Parent = Lighting
+    end
+
+    return Object
+end
+
+local function ApplyShaders()
+
+    if not SettingsShaders.Enabled then
+        return
+    end
+
+    if SettingsShaders.Lighting.Enabled then
+
+        for Property,Value in pairs(SettingsShaders.Lighting) do
+            if Property ~= "Enabled" then
+                Lighting[Property] = Value
+            end
+        end
+
+    end
+    
+    if SettingsShaders.Atmosphere.Enabled then
+
+        local Atmosphere = GetOrCreate("Atmosphere")
+
+        for Property,Value in pairs(SettingsShaders.Atmosphere) do
+            if Property ~= "Enabled" then
+                Atmosphere[Property] = Value
+            end
+        end
+
+    end
+
+    if SettingsShaders.Bloom.Enabled then
+
+        local Bloom = GetOrCreate("BloomEffect")
+
+        for Property,Value in pairs(SettingsShaders.Bloom) do
+            if Property ~= "Enabled" then
+                Bloom[Property] = Value
+            end
+        end
+
+    end
+
+    if SettingsShaders.Blur.Enabled then
+
+        local Blur = GetOrCreate("BlurEffect")
+
+        for Property,Value in pairs(SettingsShaders.Blur) do
+            if Property ~= "Enabled" then
+                Blur[Property] = Value
+            end
+        end
+
+    end
+
+    if SettingsShaders.ColorCorrection.Enabled then
+
+        local CC = GetOrCreate("ColorCorrectionEffect")
+
+        for Property,Value in pairs(SettingsShaders.ColorCorrection) do
+            if Property ~= "Enabled" then
+                CC[Property] = Value
+            end
+        end
+
+    end
+    
+    if SettingsShaders.DepthOfField.Enabled then
+
+        local DOF = GetOrCreate("DepthOfFieldEffect")
+
+        for Property,Value in pairs(SettingsShaders.DepthOfField) do
+            if Property ~= "Enabled" then
+                DOF[Property] = Value
+            end
+        end
+
+    end
+
+    if SettingsShaders.SunRays.Enabled then
+
+        local Rays = GetOrCreate("SunRaysEffect")
+
+        for Property,Value in pairs(SettingsShaders.SunRays) do
+            if Property ~= "Enabled" then
+                Rays[Property] = Value
+            end
+        end
+
+    end
+
+end
+
+local RunService = game:GetService("RunService")
+local Camera = workspace.CurrentCamera
+
+local CachedParts = {}
+
+for _, Object in ipairs(workspace:GetDescendants()) do
+    if Object:IsA("BasePart") then
+        table.insert(CachedParts, Object)
+    end
+end
+
+local LastUpdate = 0
+
+RunService.Heartbeat:Connect(function(DeltaTime)
+
+ApplyShaders()
+
+    LastUpdate += DeltaTime
+
+    if LastUpdate >= SettingsShaders.Raytracing.UpdateRate then
+        LastUpdate = 0
+
+        if SettingsShaders.Raytracing.Enabled then
+
+            local CameraPosition = Camera.CFrame.Position
+
+            for _, Part in ipairs(CachedParts) do
+
+                local Distance = (CameraPosition - Part.Position).Magnitude
+
+                if Distance <= SettingsShaders.Raytracing.MaxDistance then
+
+                    Part.Reflectance =
+                        SettingsShaders.Raytracing.Reflectance
+
+                else
+
+                    Part.Reflectance = 0
+
+                end
+
+            end
+
+        end
+
+    end
+
+end)
