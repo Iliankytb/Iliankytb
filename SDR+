@@ -1,0 +1,49 @@
+local Raytracing = {}
+local RunService = game:GetService("RunService")
+local Camera = workspace.CurrentCamera
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer	
+
+local function IsValidPart(part)
+	if not part:IsA("BasePart") then return false end
+	if part:IsA("Terrain") then return false end
+	if part.Transparency == 1 then return false end
+	if not part:IsDescendantOf(workspace) then return false end
+	return true
+end
+
+function Raytracing.Setup()
+
+	for _, Object in ipairs(workspace.Maps.Main:GetDescendants()) do
+
+		if IsValidPart(Object) then
+
+			local ok, NewRaytracing = pcall(function()
+				return script.Raytracing:Clone()
+			end)
+
+			if not ok or not NewRaytracing then
+				continue
+			end
+
+			NewRaytracing.Size = Object.Size * 2
+
+		
+			local up = Object.CFrame.UpVector
+			local pos = Object.Position + up * 0.1
+
+			NewRaytracing:PivotTo(CFrame.new(pos, pos + Object.CFrame.LookVector))
+
+			NewRaytracing.Parent = Object
+
+			NewRaytracing.Anchored = true
+			NewRaytracing.CanCollide = false
+			NewRaytracing.CanTouch = false
+
+			task.wait(0.1)
+		end
+	end
+
+end
+
+return Raytracing
