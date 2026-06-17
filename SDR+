@@ -18,14 +18,15 @@ function Raytracing.Setup()
 
 		if IsValidPart(Object) then
 
-			local ok, NewRaytracing = pcall(function()
-				return script.Raytracing:Clone()
-			end)
-
-			if not ok or not NewRaytracing then
-				continue
-			end
-
+local NewRaytracing = Instance.new("Part")
+NewRaytracing.Reflectance = 1
+NewRaytracing.Material = Enum.Material.Glass
+NewRaytracing.Transparency = 2.5
+local Highlight = Instance.new("Highlight",NewRaytracing)
+Highlight.Parent = NewRaytracing
+Highlight.FillTransparency = 1
+Highlight.OutlineTransparency = 1
+Highlight.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
 			NewRaytracing.Size = Object.Size * 2
 
 		
