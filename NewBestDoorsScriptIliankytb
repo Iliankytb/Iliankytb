@@ -436,10 +436,10 @@ if  Options == "Bash" and not table.find(OptionNotif, "BashMoving") then
             end
         end
 
-if  Options == "Drones" and not table.find(OptionNotif, "BashMoving") then
-            table.insert(OptionNotif, "RushMoving")
+if  Options == "Drones" and not table.find(OptionNotif, "Drones") then
+            table.insert(OptionNotif, "Drones")
         elseif not  Options ==  "Drones" then
-            local index = table.find(OptionNotif, "BashMoving")
+            local index = table.find(OptionNotif, "Drones")
             if index then
                 table.remove(OptionNotif, index)
             end
@@ -971,7 +971,7 @@ end,
 local MonsterNames = {
     "FigureRig", "SallyMoving", "RushMoving", "Eyes", "SeekMovingNewClone",
     "BackdoorLookman", "BackdoorRush", "GloombatSwarm", "GiggleCeiling",
-    "AmbushMoving", "EyestalkMoving","Groundskeeper","MandrakeLive","Snare","Screech","Grumbo","FrozenAmbush","LiveEntityBramble","TellerRig","Drones,"HonchoRig","BashMoving","ScribblesMoving"
+    "AmbushMoving", "EyestalkMoving","Groundskeeper","MandrakeLive","Snare","Screech","Grumbo","FrozenAmbush","LiveEntityBramble","TellerRig","Drones","HonchoRig","BashMoving","ScribblesMoving"
 }
 local EspMonstersToggle = EspTab:AddToggle({
 Text = "Monsters Esp",
