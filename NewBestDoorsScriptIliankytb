@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.1.1"
+local V = "V.1.2"
 
 library:CreateWindow({
     Title = "Doors - by Iliankytb",-- Title of the script
@@ -53,6 +53,7 @@ local AntiSnare = false
 local AntiGiggle = false
 local AntiScreech = false
 local AntiDrones = false
+local AntiDronesStampede = false
 local AutoAnchorCode = false
 local ParagraphInfoServer = InfoTab:AddParagraph({Title = "",Content = "Loading",Name = "Paragraph1"})
 local MarketplaceService = game:GetService("MarketplaceService")
@@ -111,6 +112,8 @@ local ItemNames = {
 "PaperPlane",
 "WaterCup",
 "FihFlakes",
+"LunchBox",
+"CoinRoll",
 }
 local WardrobesName = {
    "Wardrobe-FOOLS26",
@@ -415,7 +418,7 @@ local Section2 = EspTab:AddSection({Text = "General",Name = "General"})
 local DropdownMonsterSpawnAlert = GameTab:AddDropdown({
 Text =  "Monster Spawn Alert Dropdown",
     Name ="DropdownMonsterSpawnAlert",
-    Options = {"Rush","Seek","Figure","Sally","Eyes","Screech","LookMan","BackdoorRush","Giggle","GloombatSwarm","Ambush","A-60","A-120","Eye stalk","Groundskeeper","Mandrake","Grumble","FrozenAmbush","Bramble","Drones","Bash","Scribbles","Teller","Hazard","Ransom","DroneStampede"},
+    Options = {"Rush","Seek","Figure","Sally","Eyes","Screech","LookMan","BackdoorRush","Giggle","GloombatSwarm","Ambush","A-60","A-120","Eye stalk","Groundskeeper","Mandrake","Grumble","FrozenAmbush","Bramble","Drones","Bash","Scribbles","Teller","Hazard","Ransom","DronesStampede"},
     Default = "",
     MultiSelect  = true,
     Flag = "MonsterSpawnAlertDropdown",
@@ -437,10 +440,10 @@ if  Options == "Bash" and not table.find(OptionNotif, "BashMoving") then
                 table.remove(OptionNotif, index)
             end
         end
-if  Options == "DroneStampede" and not table.find(OptionNotif, "DroneStampede") then
-            table.insert(OptionNotif, "DroneStampede")
-        elseif not  Options ==  "DroneStampede" then
-            local index = table.find(OptionNotif, "DroneStampede")
+if  Options == "DronesStampede" and not table.find(OptionNotif, "DronesStampede") then
+            table.insert(OptionNotif, "DronesStampede")
+        elseif not  Options ==  "DronesStampede" then
+            local index = table.find(OptionNotif, "DronesStampede")
             if index then
                 table.remove(OptionNotif, index)
             end
@@ -454,10 +457,10 @@ if  Options == "Drones" and not table.find(OptionNotif, "Drones") then
             end
         end
 
-if  Options == "Scribbles" and not table.find(OptionNotif, "ScribblesMoving") then
-            table.insert(OptionNotif, "ScribblesMoving")
+if  Options == "Scribbles" and not table.find(OptionNotif, "Scribbles") then
+            table.insert(OptionNotif, "Scribbles")
         elseif not  Options ==  "Scribbles" then
-            local index = table.find(OptionNotif, "ScribblesMoving")
+            local index = table.find(OptionNotif, "Scribbles")
             if index then
                 table.remove(OptionNotif, index)
             end
@@ -995,7 +998,7 @@ end,
 local MonsterNames = {
     "FigureRig", "SallyMoving", "RushMoving", "Eyes", "SeekMovingNewClone",
     "BackdoorLookman", "BackdoorRush", "GloombatSwarm", "GiggleCeiling",
-    "AmbushMoving", "EyestalkMoving","Groundskeeper","MandrakeLive","Snare","Screech","Grumbo","FrozenAmbush","LiveEntityBramble","TellerRig","Drones","HonchoRig","BashMoving","ScribblesMoving"
+    "AmbushMoving", "EyestalkMoving","Groundskeeper","MandrakeLive","Snare","Screech","Grumbo","FrozenAmbush","LiveEntityBramble","TellerRig","Drones","HonchoRig","BashMoving","Scribbles","DronesStampede"
 }
 local EspMonstersToggle = EspTab:AddToggle({
 Text = "Monsters Esp",
@@ -1148,6 +1151,23 @@ Text = "Avoid Drones",
 for _, Assets in pairs(workspace:GetDescendants()) do
         if Assets:IsA("Model") and Assets.Name == "Drones " and Assets:FindFirstChild("WalkedInto") then
    Assets:FindFirstChild("WalkedInto"):Destroy()
+end
+    end
+end
+end,
+})
+
+local AvoidDronesStampedeToggle = MonstersTab:AddToggle({
+Text = "Avoid Drones Stampede",
+   Name = "AvoidDronesStampedeToggle",
+   Default = false,
+   Flag = "ButtonAntiDronesStampede", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  AntiDronesStampede = Value
+ if AntiDronesStampede then
+for _, Assets in pairs(workspace:GetDescendants()) do
+        if Assets:IsA("Model") and Assets.Name == "DronesStampede " and Assets:FindFirstChild("Trampled") then
+   Assets:FindFirstChild("Trampled"):Destroy()
 end
     end
 end
@@ -1483,6 +1503,12 @@ if AntiDrones then
     end
 end
 
+if AntiDronesStampede then
+    if child:IsA("Model") and child.Name == "DronesStampede" and child:FindFirstChild("Trampled") then
+   child:FindFirstChild("Trampled"):Destroy()
+    end
+end
+
     if ActiveEspHidingSpots and table.find(WardrobesName,child.Name)
     and not child:FindFirstChildOfClass("Highlight")
     and not child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
@@ -1670,14 +1696,14 @@ elseif child.Name == "FrozenAmbush" then
 NotifMonsterSpawned("Frozen Ambush",3)
 elseif child.Name == "BashMoving" then
 NotifMonsterSpawned("Bash",3)
-elseif child.Name == "ScribblesMoving" then
+elseif child.Name == "Scribbles" then
 NotifMonsterSpawned("Scribbles",3)
 elseif child.Name == "Drones" then
 NotifMonsterSpawned("Drones",3)
 elseif child.Name == "Ransom" then
 NotifMonsterSpawned("Ransom",3)
-elseif child.Name == "DroneStampede" then
-NotifMonsterSpawned("Drone Stampede",3)
+elseif child.Name == "DronesStampede" then
+NotifMonsterSpawned("Drones Stampede",3)
 end
 end
 end
