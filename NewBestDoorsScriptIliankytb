@@ -547,7 +547,7 @@ if Options == "Eyes" and not table.find(OptionNotif, "Eyes") then
         end
 if Options == "LookMan" and not table.find(OptionNotif, "BackdoorLookman") then
             table.insert(OptionNotif, "BackdoorLookman")
-        elseif not tOptions == "LookMan" then
+        elseif not Options == "LookMan" then
             local index = table.find(OptionNotif, "BackdoorLookman")
             if index then
                 table.remove(OptionNotif, index)
@@ -1115,8 +1115,8 @@ end,
 })
 
 local AvoidDronesToggle = MonstersTab:AddToggle({
-Text =  "Avoid Drones,
-   Name ="AvoidDronesToggle",
+Text = "Avoid Drones",
+   Name = "AvoidDronesToggle",
    Default = false,
    Flag = "ButtonAntiDrones", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
