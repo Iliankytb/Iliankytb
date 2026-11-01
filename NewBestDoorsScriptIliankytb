@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.1.0"
+local V = "V.1.1"
 
 library:CreateWindow({
     Title = "Doors - by Iliankytb",-- Title of the script
@@ -110,6 +110,7 @@ local ItemNames = {
 "PaperPlanePickup",
 "PaperPlane",
 "WaterCup",
+"FihFlakes",
 }
 local WardrobesName = {
    "Wardrobe-FOOLS26",
@@ -414,7 +415,7 @@ local Section2 = EspTab:AddSection({Text = "General",Name = "General"})
 local DropdownMonsterSpawnAlert = GameTab:AddDropdown({
 Text =  "Monster Spawn Alert Dropdown",
     Name ="DropdownMonsterSpawnAlert",
-    Options = {"Rush","Seek","Figure","Sally","Eyes","Screech","LookMan","BackdoorRush","Giggle","GloombatSwarm","Ambush","A-60","A-120","Eye stalk","Groundskeeper","Mandrake","Grumble","FrozenAmbush","Bramble","Drones","Bash","Scribbles","Teller"},
+    Options = {"Rush","Seek","Figure","Sally","Eyes","Screech","LookMan","BackdoorRush","Giggle","GloombatSwarm","Ambush","A-60","A-120","Eye stalk","Groundskeeper","Mandrake","Grumble","FrozenAmbush","Bramble","Drones","Bash","Scribbles","Teller","Hazard","Ransom","DroneStampede"},
     Default = "",
     MultiSelect  = true,
     Flag = "MonsterSpawnAlertDropdown",
@@ -436,7 +437,14 @@ if  Options == "Bash" and not table.find(OptionNotif, "BashMoving") then
                 table.remove(OptionNotif, index)
             end
         end
-
+if  Options == "DroneStampede" and not table.find(OptionNotif, "DroneStampede") then
+            table.insert(OptionNotif, "DroneStampede")
+        elseif not  Options ==  "DroneStampede" then
+            local index = table.find(OptionNotif, "DroneStampede")
+            if index then
+                table.remove(OptionNotif, index)
+            end
+        end
 if  Options == "Drones" and not table.find(OptionNotif, "Drones") then
             table.insert(OptionNotif, "Drones")
         elseif not  Options ==  "Drones" then
@@ -454,11 +462,26 @@ if  Options == "Scribbles" and not table.find(OptionNotif, "ScribblesMoving") th
                 table.remove(OptionNotif, index)
             end
         end
-
+if  Options == "Ransom" and not table.find(OptionNotif, "Ransom") then
+            table.insert(OptionNotif, "Ransom")
+        elseif not  Options ==  "Ransom" then
+            local index = table.find(OptionNotif, "Ransom")
+            if index then
+                table.remove(OptionNotif, index)
+            end
+        end
 if  Options == "Teller" and not table.find(OptionNotif, "TellerRig") then
             table.insert(OptionNotif, "TellerRig")
         elseif not  Options ==  "Teller" then
             local index = table.find(OptionNotif, "TellerRig")
+            if index then
+                table.remove(OptionNotif, index)
+            end
+        end
+if  Options == "Hazard" and not table.find(OptionNotif, "Water") then
+            table.insert(OptionNotif, "Water")
+        elseif not  Options ==  "Water" then
+            local index = table.find(OptionNotif, "Water")
             if index then
                 table.remove(OptionNotif, index)
             end
@@ -1303,6 +1326,7 @@ local ProximityPromptService = game:GetService("ProximityPromptService")
 
 local PromptNames = {
     "HidePrompt",
+"SeatPrompt",
     "InteractPrompt",
 }
 local ItemPromptName = "ModulePrompt"
@@ -1368,6 +1392,8 @@ elseif child.Name == "HonchoRig" then
 NotifMonsterSpawned("Honcho",3)
 elseif child.Name == "TellerRig" then
 NotifMonsterSpawned("Teller",3)
+elseif child.Name == "Water" then
+NotifMonsterSpawned("Hazard",3)
 end
 end
 end
@@ -1648,6 +1674,10 @@ elseif child.Name == "ScribblesMoving" then
 NotifMonsterSpawned("Scribbles",3)
 elseif child.Name == "Drones" then
 NotifMonsterSpawned("Drones",3)
+elseif child.Name == "Ransom" then
+NotifMonsterSpawned("Ransom",3)
+elseif child.Name == "DroneStampede" then
+NotifMonsterSpawned("Drone Stampede",3)
 end
 end
 end
