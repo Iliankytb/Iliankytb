@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.1.14"
+local V = "V.1.15"
 
 library:CreateWindow({
     Title = "Doors - by Iliankytb",-- Title of the script
@@ -436,7 +436,7 @@ local Section2 = EspTab:AddSection({Text = "General",Name = "General"})
 local DropdownMonsterSpawnAlert = GameTab:AddDropdown({
 Text =  "Monster Spawn Alert Dropdown",
     Name ="DropdownMonsterSpawnAlert",
-    Options = {"Rush","Seek","Figure","Sally","Eyes","Screech","LookMan","BackdoorRush","Giggle","GloombatSwarm","Ambush","A-60","A-120","Eye stalk","Groundskeeper","Mandrake","Grumble","FrozenAmbush","Bramble","Drones","Bash","Scribbles","Teller","Hazard","Ransom","DronesStampede","Noise","Creak","Stems","ForgetMeNots"},
+    Options = {"Rush","Seek","Figure","Sally","Eyes","Screech","LookMan","BackdoorRush","Giggle","GloombatSwarm","Ambush","A-60","A-120","Eye stalk","Groundskeeper","Mandrake","Grumble","FrozenAmbush","Bramble","Drones","Bash","Scribbles","Teller","Hazard","Ransom","DronesStampede","Noise","Creak","Stems","ForgetMeNots","Socker"},
     Default = "",
     MultiSelect  = true,
     Flag = "MonsterSpawnAlertDropdown",
@@ -523,10 +523,15 @@ if  Options == "Ransom" and not table.find(OptionNotif, "Ransom") then
         end
 if  Options == "Creak" and not table.find(OptionNotif, "Creak") then
             table.insert(OptionNotif, "Creak")
+   table.insert(OptionNotif, "Creak-HALLOWEEN26")
         elseif not  Options ==  "Creak" then
             local index = table.find(OptionNotif, "Creak")
             if index then
                 table.remove(OptionNotif, index)
+            end
+local index2 = table.find(OptionNotif, "Creak-HALLOWEEN26")
+            if index2 then
+                table.remove(OptionNotif, index2)
             end
         end
 if  Options == "Teller" and not table.find(OptionNotif, "TellerRig") then
@@ -1054,7 +1059,7 @@ end,
 local MonsterNames = {
     "FigureRig", "SallyMoving", "RushMoving", "Eyes", "SeekMovingNewClone",
     "BackdoorLookman", "BackdoorRush", "GloombatSwarm", "GiggleCeiling",
-    "AmbushMoving", "EyestalkMoving","Groundskeeper","MandrakeLive","Snare","Screech","Grumbo","FrozenAmbush","LiveEntityBramble","TellerRig","Drones","HonchoRig","BashMoving","Scribbles","DronesStampede","NoiseModel","TV_Stand","Creak","StemsEntity","ForgetMeNotVineDoors"
+    "AmbushMoving", "EyestalkMoving","Groundskeeper","MandrakeLive","Snare","Screech","Grumbo","FrozenAmbush","LiveEntityBramble","TellerRig","Drones","HonchoRig","BashMoving","Scribbles","DronesStampede","NoiseModel","TV_Stand","Creak","StemsEntity","ForgetMeNotVineDoors","Creak-HALLOWEEN26","Socker"
 }
 local EspMonstersToggle = EspTab:AddToggle({
 Text = "Monsters Esp",
@@ -1553,6 +1558,10 @@ elseif child.Name == "TV_Stand" then
 NotifMonsterSpawned("Noise TV",3)
 elseif child.Name == "Creak" and child:IsA("Model") then
 NotifMonsterSpawned("Creak",3)
+elseif child.Name == "Creak-HALLOWEEN26" and child:IsA("Model") then
+NotifMonsterSpawned("Creak",3)
+elseif child.Name == "Socker" and child:IsA("Model") then
+NotifMonsterSpawned("Socker",3)
 elseif child.Name == "StemsEntity" then
 NotifMonsterSpawned("Stem",3)
 elseif child.Name == "ForgetMeNotVineDoors" then
