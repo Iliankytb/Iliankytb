@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.1.2"
+local V = "V.1.3"
 
 library:CreateWindow({
     Title = "Doors - by Iliankytb",-- Title of the script
@@ -55,6 +55,8 @@ local AntiScreech = false
 local AntiDrones = false
 local AntiDronesStampede = false
 local AutoAnchorCode = false
+local AntiNoise = false
+local ActiveEspSalvages = false
 local ParagraphInfoServer = InfoTab:AddParagraph({Title = "",Content = "Loading",Name = "Paragraph1"})
 local MarketplaceService = game:GetService("MarketplaceService")
 local infoGameName = MarketplaceService:GetProductInfo(game.PlaceId)
@@ -114,6 +116,9 @@ local ItemNames = {
 "FihFlakes",
 "LunchBox",
 "CoinRoll",
+"ShoppingCart",
+"StairwellScrapper",
+"StairwellFireAlarm",
 }
 local WardrobesName = {
    "Wardrobe-FOOLS26",
@@ -133,6 +138,14 @@ local WardrobesName = {
 "HidingSpot8",
 "HidingSpot9",
 "HidingSpot10",
+}
+
+local SalvagesName = {
+   "BottleCrate",
+"GweenSoda",
+"BrokenMonitor",
+"DinkyLamp",
+"JerryCan",
 }
 
 local function getServerInfo()
@@ -418,7 +431,7 @@ local Section2 = EspTab:AddSection({Text = "General",Name = "General"})
 local DropdownMonsterSpawnAlert = GameTab:AddDropdown({
 Text =  "Monster Spawn Alert Dropdown",
     Name ="DropdownMonsterSpawnAlert",
-    Options = {"Rush","Seek","Figure","Sally","Eyes","Screech","LookMan","BackdoorRush","Giggle","GloombatSwarm","Ambush","A-60","A-120","Eye stalk","Groundskeeper","Mandrake","Grumble","FrozenAmbush","Bramble","Drones","Bash","Scribbles","Teller","Hazard","Ransom","DronesStampede"},
+    Options = {"Rush","Seek","Figure","Sally","Eyes","Screech","LookMan","BackdoorRush","Giggle","GloombatSwarm","Ambush","A-60","A-120","Eye stalk","Groundskeeper","Mandrake","Grumble","FrozenAmbush","Bramble","Drones","Bash","Scribbles","Teller","Hazard","Ransom","DronesStampede","Noise","Creak","StemEntity"},
     Default = "",
     MultiSelect  = true,
     Flag = "MonsterSpawnAlertDropdown",
@@ -438,6 +451,20 @@ if  Options == "Bash" and not table.find(OptionNotif, "BashMoving") then
             local index = table.find(OptionNotif, "BashMoving")
             if index then
                 table.remove(OptionNotif, index)
+            end
+        end
+
+if  Options == "Noise" and not table.find(OptionNotif, "TV_Stand") then
+            table.insert(OptionNotif, "TV_Stand")
+table.insert(OptionNotif, "NoiseModel")
+        elseif not  Options ==  "Noise" then
+            local index = table.find(OptionNotif, "TV_Stand")
+            if index then
+                table.remove(OptionNotif, index)
+            end
+local index2 = table.find(OptionNotif, "NoiseModel")
+            if index2 then
+                table.remove(OptionNotif, index2)
             end
         end
 if  Options == "DronesStampede" and not table.find(OptionNotif, "DronesStampede") then
@@ -469,6 +496,14 @@ if  Options == "Ransom" and not table.find(OptionNotif, "Ransom") then
             table.insert(OptionNotif, "Ransom")
         elseif not  Options ==  "Ransom" then
             local index = table.find(OptionNotif, "Ransom")
+            if index then
+                table.remove(OptionNotif, index)
+            end
+        end
+if  Options == "Creak" and not table.find(OptionNotif, "Creak") then
+            table.insert(OptionNotif, "Creak")
+        elseif not  Options ==  "Creak" then
+            local index = table.find(OptionNotif, "Creak")
             if index then
                 table.remove(OptionNotif, index)
             end
@@ -998,7 +1033,7 @@ end,
 local MonsterNames = {
     "FigureRig", "SallyMoving", "RushMoving", "Eyes", "SeekMovingNewClone",
     "BackdoorLookman", "BackdoorRush", "GloombatSwarm", "GiggleCeiling",
-    "AmbushMoving", "EyestalkMoving","Groundskeeper","MandrakeLive","Snare","Screech","Grumbo","FrozenAmbush","LiveEntityBramble","TellerRig","Drones","HonchoRig","BashMoving","Scribbles","DronesStampede"
+    "AmbushMoving", "EyestalkMoving","Groundskeeper","MandrakeLive","Snare","Screech","Grumbo","FrozenAmbush","LiveEntityBramble","TellerRig","Drones","HonchoRig","BashMoving","Scribbles","DronesStampede","NoiseModel","TV_Stand","Creak"
 }
 local EspMonstersToggle = EspTab:AddToggle({
 Text = "Monsters Esp",
@@ -1174,6 +1209,23 @@ end
 end,
 })
 
+--[[local AvoidNoiseToggle = MonstersTab:AddToggle({
+Text = "Avoid Noise Expiremental!",
+   Name = "AvoidNoiseToggle",
+   Default = false,
+   Flag = "ButtonAntiNoise", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+  AntiNoise = Value
+ if AntiNoise then
+for _, Assets in pairs(workspace:GetDescendants()) do
+        if Assets:IsA("Model") and Assets.Name == "TV_Stand " and Assets:FindFirstChild("NoiseTriggerEvent") then
+   Assets:FindFirstChild("NoiseTriggerEvent"):Destroy()
+end
+    end
+end
+end,
+})]]
+
 local ValueFieldOfView = 80
 local PlayerFieldOfViewSlider = PlayerTab:AddSlider({
 Text = "Field Of View(disabled!)",
@@ -1342,12 +1394,66 @@ end
 end,
 })
 
+local Section5 = EspTab:AddSection({Text = "Stairwell",Name = "Stairwell"})
+local EspSalvageToggle = EspTab:AddToggle({
+Text =  "Salvages Esp",
+   Name ="EspSalvageToggle",
+   Default = false,
+   Flag = "EspSalvages", 
+   Callback = function(Value)
+ActiveEspSalvages = Value 
+if ActiveEspSalvages then
+  for _,Assets in pairs(game.Workspace:GetDescendants()) do  
+if Assets:isA("Model") and table.find(SalvagesName, Assets.Name) and not Assets:FindFirstChildOfClass("Highlight") 
+and not  Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
+CreateEsp(Assets,Color3.fromRGB(140, 75, 45),Assets.Name,Assets.PrimaryPart) 
+end
+end  
+else
+     for _,Assets in pairs(game.Workspace:GetDescendants()) do  
+if Assets:isA("Model") and table.find(SalvagesName, Assets.Name)  and  Assets:FindFirstChildOfClass("Highlight") 
+and   Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
+KeepEsp(Assets,Assets.PrimaryPart) 
+end
+end  
+end
+end,
+}) 
+
+local EspGarageToggle = EspTab:AddToggle({
+Text =  "Garage Door Esp",
+   Name ="EspGarageToggle",
+   Default = false,
+   Flag = "EspGarage", 
+   Callback = function(Value)
+ActiveEspGarage = Value 
+if ActiveEspGarage then
+  for _,Assets in pairs(game.Workspace:GetDescendants()) do  
+if Assets:isA("Model") and Assets.Name == "StairwellLockpickDoor" and not Assets:FindFirstChildOfClass("Highlight") 
+and not  Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
+CreateEsp(Assets,Color3.fromRGB(65, 85, 110),"Garage Door",Assets.PrimaryPart) 
+end
+end  
+else
+     for _,Assets in pairs(game.Workspace:GetDescendants()) do  
+if Assets:isA("Model") and Assets.Name == "StairwellLockpickDoor"  and  Assets:FindFirstChildOfClass("Highlight") 
+and   Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
+KeepEsp(Assets,Assets.PrimaryPart) 
+end
+end  
+end
+end,
+}) 
+
+
 local ProximityPromptService = game:GetService("ProximityPromptService")
 
 local PromptNames = {
     "HidePrompt",
 "SeatPrompt",
     "InteractPrompt",
+"CartPrompt",
+"UnlockPrompt",
 }
 local ItemPromptName = "ModulePrompt"
 
@@ -1414,6 +1520,12 @@ elseif child.Name == "TellerRig" then
 NotifMonsterSpawned("Teller",3)
 elseif child.Name == "Water" then
 NotifMonsterSpawned("Hazard",3)
+elseif child.Name == "NoiseModel" then
+NotifMonsterSpawned("Noise",3)
+elseif child.Name == "TV_Stand" then
+NotifMonsterSpawned("Noise TV",3)
+elseif child.Name == "Creak" then
+NotifMonsterSpawned("Creak",3)
 end
 end
 end
@@ -1509,6 +1621,12 @@ if AntiDronesStampede then
     end
 end
 
+if AntiNoise then
+    if child:IsA("Model") and child.Name == "TV_Stand" and child:FindFirstChild("NoiseTriggerEvent") then
+   child:FindFirstChild("NoiseTriggerEvent"):Destroy()
+    end
+end
+
     if ActiveEspHidingSpots and table.find(WardrobesName,child.Name)
     and not child:FindFirstChildOfClass("Highlight")
     and not child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
@@ -1520,6 +1638,18 @@ end
     and not child:FindFirstChildOfClass("Highlight")
     and not child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
         CreateEsp(child, Color3.fromRGB(255,255,0), child.Name, child.PrimaryPart)
+    end
+
+ if ActiveEspSalvages and table.find(SalvagesName, child.Name)
+    and not child:FindFirstChildOfClass("Highlight")
+    and not child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+        CreateEsp(child, Color3.fromRGB(140, 75, 45), child.Name, child.PrimaryPart)
+    end
+
+ if ActiveEspGarage and child.Name == "StairwellLockpickDoor"
+    and not child:FindFirstChildOfClass("Highlight")
+    and not child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+        CreateEsp(child, Color3.fromRGB(140, 75, 45), "Garage Door", child.PrimaryPart)
     end
 
     if ActiveEspCoins and child.Name == "GoldPile"
@@ -1615,6 +1745,18 @@ end
 
   
     if ActiveEspItems and table.find(ItemNames, child.Name)
+    and  child:FindFirstChildOfClass("Highlight")
+    and  child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+     KeepEsp(child,child.PrimaryPart)
+      end
+
+ if ActiveEspSalvages and table.find(SalvagesName, child.Name)
+    and  child:FindFirstChildOfClass("Highlight")
+    and  child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+     KeepEsp(child,child.PrimaryPart)
+      end
+
+if ActiveEspGarage and child.Name == "StairwellLockpickDoor"
     and  child:FindFirstChildOfClass("Highlight")
     and  child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
      KeepEsp(child,child.PrimaryPart)
