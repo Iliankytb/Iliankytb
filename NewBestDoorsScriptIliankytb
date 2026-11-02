@@ -59,6 +59,7 @@ local AntiNoise = false
 local ActiveEspSalvages = false
 local ActiveEspGarage = false
 local InWarningDrones = false
+local ActiveCorrectHonchoBoxEsp = false
 local ParagraphInfoServer = InfoTab:AddParagraph({Title = "",Content = "Loading",Name = "Paragraph1"})
 local MarketplaceService = game:GetService("MarketplaceService")
 local infoGameName = MarketplaceService:GetProductInfo(game.PlaceId)
