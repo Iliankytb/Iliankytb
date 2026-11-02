@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.1.7"
+local V = "V.1.8"
 
 library:CreateWindow({
     Title = "Doors - by Iliankytb",-- Title of the script
@@ -433,7 +433,7 @@ local Section2 = EspTab:AddSection({Text = "General",Name = "General"})
 local DropdownMonsterSpawnAlert = GameTab:AddDropdown({
 Text =  "Monster Spawn Alert Dropdown",
     Name ="DropdownMonsterSpawnAlert",
-    Options = {"Rush","Seek","Figure","Sally","Eyes","Screech","LookMan","BackdoorRush","Giggle","GloombatSwarm","Ambush","A-60","A-120","Eye stalk","Groundskeeper","Mandrake","Grumble","FrozenAmbush","Bramble","Drones","Bash","Scribbles","Teller","Hazard","Ransom","DronesStampede","Noise","Creak"},
+    Options = {"Rush","Seek","Figure","Sally","Eyes","Screech","LookMan","BackdoorRush","Giggle","GloombatSwarm","Ambush","A-60","A-120","Eye stalk","Groundskeeper","Mandrake","Grumble","FrozenAmbush","Bramble","Drones","Bash","Scribbles","Teller","Hazard","Ransom","DronesStampede","Noise","Creak","Stems"},
     Default = "",
     MultiSelect  = true,
     Flag = "MonsterSpawnAlertDropdown",
@@ -451,6 +451,14 @@ if  Options == "Bash" and not table.find(OptionNotif, "BashMoving") then
             table.insert(OptionNotif, "BashMoving")
         elseif not  Options ==  "Bash" then
             local index = table.find(OptionNotif, "BashMoving")
+            if index then
+                table.remove(OptionNotif, index)
+            end
+        end
+if  Options == "Stems" and not table.find(OptionNotif, "StemsEntity") then
+            table.insert(OptionNotif, "StemsEntity")
+        elseif not  Options ==  "Stems" then
+            local index = table.find(OptionNotif, "StemsEntity")
             if index then
                 table.remove(OptionNotif, index)
             end
@@ -1211,7 +1219,7 @@ end
 end,
 })
 
---[[local AvoidNoiseToggle = MonstersTab:AddToggle({
+local AvoidNoiseToggle = MonstersTab:AddToggle({
 Text = "Avoid Noise Expiremental!",
    Name = "AvoidNoiseToggle",
    Default = false,
@@ -1220,13 +1228,18 @@ Text = "Avoid Noise Expiremental!",
   AntiNoise = Value
  if AntiNoise then
 for _, Assets in pairs(workspace:GetDescendants()) do
-        if Assets:IsA("Model") and Assets.Name == "TV_Stand " and Assets:FindFirstChild("NoiseTriggerEvent") then
-   Assets:FindFirstChild("NoiseTriggerEvent"):Destroy()
+        if Assets:IsA("Model") and Assets.Name == "TV_Stand " then
+   Assets:Destroy()
+window:Notify({
+                  Title = "Noise TV",
+   Message = "Deleted Noise TV",
+   Duration = 5,
+})
 end
     end
 end
 end,
-})]]
+})
 
 local ValueFieldOfView = 80
 local PlayerFieldOfViewSlider = PlayerTab:AddSlider({
@@ -1528,6 +1541,8 @@ elseif child.Name == "TV_Stand" then
 NotifMonsterSpawned("Noise TV",3)
 elseif child.Name == "Creak" then
 NotifMonsterSpawned("Creak",3)
+elseif child.Name == "StemsEntity" then
+NotifMonsterSpawned("Stem",3)
 end
 end
 end
@@ -1624,8 +1639,13 @@ if AntiDronesStampede then
 end
 
 if AntiNoise then
-    if child:IsA("Model") and child.Name == "TV_Stand" and child:FindFirstChild("NoiseTriggerEvent") then
-   child:FindFirstChild("NoiseTriggerEvent"):Destroy()
+    if child:IsA("Model") and child.Name == "TV_Stand" then
+   child:Destroy()
+window:Notify({
+                  Title = "Noise TV",
+   Message = "Deleted Noise TV",
+   Duration = 5,
+})
     end
 end
 
