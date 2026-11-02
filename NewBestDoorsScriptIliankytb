@@ -1865,7 +1865,7 @@ elseif child.Name == "BashMoving" then
 NotifMonsterSpawned("Bash",3)
 elseif child.Name == "Scribbles" then
 NotifMonsterSpawned("Scribbles",3)
-elseif child.Name == "Drones" then
+elseif child.Name == "Drones" and not InWarningDrones then
 InWarningDrones = true
 NotifMonsterSpawned("Drones",3)
 task.spawn(function()
