@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.1.6"
+local V = "V.1.7"
 
 library:CreateWindow({
     Title = "Doors - by Iliankytb",-- Title of the script
@@ -147,6 +147,7 @@ local SalvagesName = {
 "BrokenMonitor",
 "DinkyLamp",
 "JerryCan",
+"LargeScrew",
 }
 
 local function getServerInfo()
