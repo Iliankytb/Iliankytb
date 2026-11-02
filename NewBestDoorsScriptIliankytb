@@ -1470,6 +1470,7 @@ local PromptNames = {
     "InteractPrompt",
 "CartPrompt",
 "UnlockPrompt",
+"VendorPrompt"
 }
 local ItemPromptName = "ModulePrompt"
 
