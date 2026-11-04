@@ -1,6 +1,6 @@
 local library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Iliankytb/Iliankytb/main/Zentrix"))()
 local selectedTheme = "Default"
-local V = "V.1.15"
+local V = "V.1.16
 
 library:CreateWindow({
     Title = "Doors - by Iliankytb",-- Title of the script
@@ -66,6 +66,8 @@ local infoGameName = MarketplaceService:GetProductInfo(game.PlaceId)
 local ActiveEspPlayers = false
 local EspGuidingLight = false
 local AutoLibraryCode = false
+local ActivateEspCorrectBox = false
+local ActivateEspDepositBox = false
 
 local Version = InfoTab:AddText({
         Text = "Version:"..V,
@@ -1476,6 +1478,56 @@ end
 end,
 }) 
 
+local Section6 = EspTab:AddSection({Text = "Archives",Name = "Archives"})
+local EspDepositToggle = EspTab:AddToggle({
+Text =  "Deposits box Esp (Experimental!)",
+   Name ="EspDepositToggle",
+   Default = false,
+   Flag = "EspDeposit", 
+   Callback = function(Value)
+ActivateEspDepositBox = Value 
+if ActivateEspDepositBox then
+  for _,Assets in pairs(game.Workspace:GetDescendants()) do  
+if Assets:isA("Model") and Assets.PrimaryPart and Assets.Name == "ArchivesPackageDeposit" and not Assets:FindFirstChildOfClass("Highlight") 
+and not  Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
+CreateEsp(Assets,Color3.fromRGB(65, 85, 110),"Deposit Box: "..Assets:GetAttribute("BoxId"),Assets.PrimaryPart) 
+end
+end  
+else
+     for _,Assets in pairs(game.Workspace:GetDescendants()) do  
+if Assets:isA("Model") and Assets.PrimaryPart and Assets.Name == "ArchivesPackageDeposit"  and  Assets:FindFirstChildOfClass("Highlight") 
+and   Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
+KeepEsp(Assets,Assets.PrimaryPart) 
+end
+end  
+end
+end,
+}) 
+
+--[[local EspCorrectBoxToggle = EspTab:AddToggle({
+Text =  "Correct box Esp (Experimental!)",
+   Name ="EspCorrectBoxToggle",
+   Default = false,
+   Flag = "EspCorrectBox", 
+   Callback = function(Value)
+ActivateEspCorrectBox = Value 
+if ActivateEspCorrectBox then
+  for _,Assets in pairs(game.Workspace:GetDescendants()) do  
+if Assets:isA("Model") and Assets.PrimaryPart and Assets.Name == "ArchivesStorageBox" and not Assets:FindFirstChildOfClass("Highlight") 
+and not  Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
+CreateEsp(Assets,Color3.fromRGB(65, 85, 110),"Box: "..Assets:GetAttribute("Tool_Id"),Assets.PrimaryPart) 
+end
+end  
+else
+     for _,Assets in pairs(game.Workspace:GetDescendants()) do  
+if Assets:isA("Model") and Assets.PrimaryPart and Assets.Name == "ArchivesStorageBox"  and  Assets:FindFirstChildOfClass("Highlight") 
+and   Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui")  then 
+KeepEsp(Assets,Assets.PrimaryPart) 
+end
+end  
+end
+end,
+}) ]]
 
 local ProximityPromptService = game:GetService("ProximityPromptService")
 
@@ -1677,7 +1729,6 @@ end
     and not child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
         CreateEsp(child, Color3.fromRGB(0,255,255), child.Name, child.PrimaryPart)
     end
-
   
     if ActiveEspItems and table.find(ItemNames, child.Name)
     and not child:FindFirstChildOfClass("Highlight")
@@ -1695,6 +1746,12 @@ end
     and not child:FindFirstChildOfClass("Highlight") and child.PrimaryPart
     and not child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
         CreateEsp(child, Color3.fromRGB(140, 75, 45), "Garage Door", child.PrimaryPart)
+    end
+
+ if ActivateEspDepositBox and child.Name == "ArchivesPackageDeposit"
+    and not child:FindFirstChildOfClass("Highlight") and child.PrimaryPart
+    and not child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+        CreateEsp(child, Color3.fromRGB(140, 75, 45), "Deposit Box: "..child:GetAttribute("BoxId"), child.PrimaryPart)
     end
 
     if ActiveEspCoins and child.Name == "GoldPile"
@@ -1807,12 +1864,17 @@ if ActiveEspGarage and child.Name == "StairwellLockpickDoor"
      KeepEsp(child,child.PrimaryPart)
       end
 
+if ActivateEspDepositBox and child.Name == "ArchivesPackageDeposit"
+    and  child:FindFirstChildOfClass("Highlight") and child.PrimaryPart
+    and  child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+     KeepEsp(child,child.PrimaryPart)
+      end
+
     if ActiveEspCoins and child.Name == "GoldPile"
     and  child:FindFirstChildOfClass("Highlight")
     and  child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
     KeepEsp(child,child.PrimaryPart)
       end
-
 
     if ActiveEspChest and (child.Name == "ChestBoxLocked" or child.Name == "ChestBox" or child.Name == "Chest_Vine")
     and child:FindFirstChildOfClass("Highlight")
