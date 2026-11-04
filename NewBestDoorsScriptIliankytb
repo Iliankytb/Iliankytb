@@ -676,7 +676,7 @@ if Options == "GloombatSwarm" and not table.find(OptionNotif, "GloombatSwarm") t
         end
 if Options == "Ambush" and not table.find(OptionNotif, "AmbushMoving") then
             table.insert(OptionNotif, "AmbushMoving")
-        elseif Options == "Ambush"then
+        elseif not Options == "Ambush" then
             local index = table.find(OptionNotif, "AmbushMoving")
             if index then
                 table.remove(OptionNotif, index)
@@ -889,7 +889,7 @@ if EspGuidingLight then
                     if Assets:IsA("BasePart")
                     and Assets.Name == "SeekGuidingLight"
                    and not Assets:FindFirstChildOfClass("Highlight")
-                    and not Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+                    and not Assets:FindFirstChildOfClass("BillboardGui") then
                         CreateEsp(Assets, Color3.fromRGB(100, 255, 255), "Guiding Light", Assets)
                     end
                 end
@@ -899,7 +899,7 @@ else
                     if Assets:IsA("BasePart")
                     and Assets.Name == "SeekGuidingLight"
                     and Assets:FindFirstChildOfClass("Highlight")
-                    and Assets.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+                    and Assets:FindFirstChildOfClass("BillboardGui") then
                         KeepEsp(Assets, Assets)
                     end
                 end
@@ -1189,13 +1189,13 @@ Text =  "Avoid Gloom Bat Egg",
   AntiGloomEgg = Value
  if AntiGloomEgg then
 for _, Assets in pairs(workspace:GetDescendants()) do
-        if Assets:IsA("Model") and Assets.Name == "GloomEgg " and Assets:FindFirstChild("Egg") then
+        if Assets:IsA("Model") and Assets.Name == "GloomEgg" and Assets:FindFirstChild("Egg") then
     Assets:FindFirstChild("Egg").CanTouch = false
 end
     end
 else
 for _, Assets in pairs(workspace:GetDescendants()) do
-        if Assets:IsA("Model") and Assets.Name == "GloomEgg " and Assets:FindFirstChild("Egg") then
+        if Assets:IsA("Model") and Assets.Name == "GloomEgg" and Assets:FindFirstChild("Egg") then
     Assets:FindFirstChild("Egg").CanTouch = true
 end
     end
@@ -1212,7 +1212,7 @@ Text = "Avoid Drones",
   AntiDrones = Value
  if AntiDrones then
 for _, Assets in pairs(workspace:GetDescendants()) do
-        if Assets:IsA("Model") and Assets.Name == "Drones " and Assets:FindFirstChild("WalkedInto") then
+        if Assets:IsA("Model") and Assets.Name == "Drones" and Assets:FindFirstChild("WalkedInto") then
    Assets:FindFirstChild("WalkedInto"):Destroy()
 end
     end
@@ -1221,7 +1221,7 @@ end,
 })
 
 local AvoidDronesStampedeToggle = MonstersTab:AddToggle({
-Text = "Avoid Drones Stampede",
+Text = "Avoid Drones Stampede (Experimental!)",
    Name = "AvoidDronesStampedeToggle",
    Default = false,
    Flag = "ButtonAntiDronesStampede", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
@@ -1229,7 +1229,7 @@ Text = "Avoid Drones Stampede",
   AntiDronesStampede = Value
  if AntiDronesStampede then
 for _, Assets in pairs(workspace:GetDescendants()) do
-        if Assets:IsA("Model") and Assets.Name == "DronesStampede " and Assets:FindFirstChild("Trampled") then
+        if Assets:IsA("Model") and Assets.Name == "DronesStampede" and Assets:FindFirstChild("Trampled") then
    Assets:FindFirstChild("Trampled"):Destroy()
 end
     end
@@ -1481,7 +1481,7 @@ end,
 local Section6 = EspTab:AddSection({Text = "Archives",Name = "Archives"})
 local EspDepositToggle = EspTab:AddToggle({
 Text =  "Deposits box Esp (Experimental!)",
-   Name ="EspDepositToggle",
+   Name = "EspDepositToggle",
    Default = false,
    Flag = "EspDeposit", 
    Callback = function(Value)
@@ -1650,7 +1650,7 @@ if child:IsA("ProximityPrompt") then
                  if child:IsA("BasePart")
                     and child.Name == "SeekGuidingLight"
                    and not child:FindFirstChildOfClass("Highlight")
-                    and not child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+                    and not child:FindFirstChildOfClass("BillboardGui") then
                         CreateEsp(child, Color3.fromRGB(100, 255, 255), "Guiding Light", child)
                     end
  end
@@ -1809,7 +1809,7 @@ workspace.DescendantRemoving:Connect(function(child)
                  if child:IsA("BasePart")
                     and child.Name == "SeekGuidingLight"
                    and child:FindFirstChildOfClass("Highlight")
-                    and child.PrimaryPart:FindFirstChildOfClass("BillboardGui") then
+                    and child:FindFirstChildOfClass("BillboardGui") then
                       KeepEsp(child, child)
                     end
  end
